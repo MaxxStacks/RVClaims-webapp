@@ -64,9 +64,7 @@ export function Navigation() {
               </Link>
             </div>
             <div className="flex items-center space-x-4">
-              <div className="hidden md:block">
-                <LanguageToggle />
-              </div>
+              <LanguageToggle />
               <MobileMenu />
             </div>
           </div>

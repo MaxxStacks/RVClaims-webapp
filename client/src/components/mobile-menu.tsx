@@ -25,12 +25,12 @@ export function MobileMenu() {
 
   return (
     <>
-      {/* Hamburger Button - Only visible on mobile */}
+      {/* Hamburger Button - Visible on all devices */}
       <button
         onClick={toggleMenu}
-        className="md:hidden p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/10 transition-colors"
-        data-testid="button-mobile-menu"
-        aria-label="Open mobile menu"
+        className="p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/10 transition-colors"
+        data-testid="button-pages-menu"
+        aria-label="Open pages menu"
       >
         <Menu size={24} />
       </button>
@@ -38,18 +38,18 @@ export function MobileMenu() {
       {/* Overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 md:hidden"
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
           onClick={closeMenu}
-          data-testid="overlay-mobile-menu"
+          data-testid="overlay-pages-menu"
         />
       )}
 
       {/* Side Menu */}
       <div
-        className={`fixed top-0 right-0 h-full w-80 bg-white border-l border-border shadow-2xl transform transition-transform duration-300 ease-in-out z-50 md:hidden ${
+        className={`fixed top-0 right-0 h-full w-80 bg-white border-l border-border shadow-2xl transform transition-transform duration-300 ease-in-out z-50 ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
-        data-testid="menu-mobile-side"
+        data-testid="menu-pages-side"
       >
         <div className="flex flex-col h-full">
           {/* Header */}
@@ -58,15 +58,15 @@ export function MobileMenu() {
               href="/" 
               className="text-2xl font-bold gradient-text"
               onClick={closeMenu}
-              data-testid="link-mobile-logo"
+              data-testid="link-pages-logo"
             >
               RVClaimTrack
             </Link>
             <button
               onClick={closeMenu}
               className="p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/10 transition-colors"
-              data-testid="button-close-menu"
-              aria-label="Close mobile menu"
+              data-testid="button-close-pages-menu"
+              aria-label="Close pages menu"
             >
               <X size={24} />
             </button>
@@ -84,7 +84,7 @@ export function MobileMenu() {
                     ? 'bg-primary text-primary-foreground shadow-sm'
                     : 'text-foreground hover:bg-primary/10 hover:text-primary hover:pl-6'
                 }`}
-                data-testid={`link-mobile-${item.href.slice(1)}`}
+                data-testid={`link-pages-${item.href.slice(1)}`}
               >
                 {item.label}
               </Link>
