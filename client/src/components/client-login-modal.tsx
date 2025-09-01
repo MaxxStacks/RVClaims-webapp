@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { X, ArrowLeft, Mail, Phone, Eye, EyeOff } from "lucide-react";
+import { SiGoogle, SiFacebook, SiLinkedin } from "react-icons/si";
 import { useLanguage } from "@/hooks/use-language";
 
 interface ClientLoginModalProps {
@@ -48,9 +49,7 @@ export function ClientLoginModal({ isOpen, onClose }: ClientLoginModalProps) {
           data-testid="button-login-google"
         >
           <div className="w-6 h-6 flex items-center justify-center mr-4">
-            <div className="w-5 h-5 rounded-full border-2 border-black flex items-center justify-center">
-              <span className="text-xs font-bold text-black">G</span>
-            </div>
+            <SiGoogle className="w-5 h-5 text-black" style={{ width: '20px', height: '20px' }} />
           </div>
           <span className="flex-1 text-left">Continue with Google</span>
         </button>
@@ -61,9 +60,7 @@ export function ClientLoginModal({ isOpen, onClose }: ClientLoginModalProps) {
           data-testid="button-login-facebook"
         >
           <div className="w-6 h-6 flex items-center justify-center mr-4">
-            <div className="w-5 h-5 rounded border-2 border-black flex items-center justify-center">
-              <span className="text-xs font-bold text-black">f</span>
-            </div>
+            <SiFacebook className="w-5 h-5 text-black" style={{ width: '20px', height: '20px' }} />
           </div>
           <span className="flex-1 text-left">Continue with Facebook</span>
         </button>
@@ -74,9 +71,7 @@ export function ClientLoginModal({ isOpen, onClose }: ClientLoginModalProps) {
           data-testid="button-login-linkedin"
         >
           <div className="w-6 h-6 flex items-center justify-center mr-4">
-            <div className="w-5 h-5 rounded border-2 border-black flex items-center justify-center">
-              <span className="text-xs font-bold text-black">in</span>
-            </div>
+            <SiLinkedin className="w-5 h-5 text-black" style={{ width: '20px', height: '20px' }} />
           </div>
           <span className="flex-1 text-left">Continue with LinkedIn</span>
         </button>
