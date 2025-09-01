@@ -306,7 +306,8 @@ export const translations = {
         agreements: "Iron-Clad NDAs",
         compliance: "PIPEDA Compliant"
       },
-      guarantee: "Your trust is our foundation. Your secrets stay with us. Period."
+      guarantee: "Your trust is our foundation. Your secrets stay with us. Period.",
+      viewNDA: "View Our Non-Disclosure Agreement"
     },
 
     // Cookie Notice
@@ -625,7 +626,8 @@ export const translations = {
         agreements: "Ententes de Non-Divulgation",
         compliance: "Conforme LPRPDE"
       },
-      guarantee: "Votre confiance est notre fondation. Vos secrets restent avec nous. Point final."
+      guarantee: "Votre confiance est notre fondation. Vos secrets restent avec nous. Point final.",
+      viewNDA: "Voir notre entente de non-divulgation"
     },
 
     // Cookie Notice
