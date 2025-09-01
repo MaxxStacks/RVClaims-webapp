@@ -38,7 +38,7 @@ export function MobileMenu() {
       {/* Overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9998]"
+          className="fixed inset-0 bg-black/30 z-[9998]"
           onClick={closeMenu}
           data-testid="overlay-pages-menu"
         />
@@ -55,7 +55,7 @@ export function MobileMenu() {
           background: '#ffffff'
         }}
       >
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col h-full" style={{ backgroundColor: '#ffffff' }}>
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-border" style={{ backgroundColor: '#ffffff' }}>
             <Link 
@@ -77,7 +77,7 @@ export function MobileMenu() {
           </div>
 
           {/* Menu Items */}
-          <div className="flex-1 px-6 py-2 space-y-0.5">
+          <div className="flex-1 px-6 py-2 space-y-0.5" style={{ backgroundColor: '#ffffff' }}>
             {menuItems.map((item) => (
               <Link
                 key={item.href}
