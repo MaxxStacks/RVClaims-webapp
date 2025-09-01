@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Phone, Mail, MapPin } from "lucide-react";
+import { Phone, Mail, MapPin, Code } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/hooks/use-language";
 import { apiRequest } from "@/lib/queryClient";
@@ -18,6 +19,7 @@ export function ContactSection() {
     lastName: "",
     email: "",
     phone: "",
+    subject: "",
     message: ""
   });
 
@@ -44,6 +46,7 @@ export function ContactSection() {
         lastName: "",
         email: "",
         phone: "",
+        subject: "",
         message: ""
       });
     } catch (error) {
@@ -124,6 +127,23 @@ export function ContactSection() {
                   </p>
                 </div>
               </div>
+
+              <div className="flex items-start space-x-4" data-testid="contact-development">
+                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Code className="text-primary" size={20} />
+                </div>
+                <div>
+                  <h4 className="font-semibold">
+                    {t('contactSection.development.title')}
+                  </h4>
+                  <p className="text-muted-foreground">
+                    {t('contactSection.development.address')}
+                  </p>
+                  <p className="text-muted-foreground text-sm">
+                    {t('contactSection.development.focus')}
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -196,6 +216,37 @@ export function ContactSection() {
                     required
                     data-testid="input-phone"
                   />
+                </div>
+                
+                <div>
+                  <Label htmlFor="subject" className="block text-sm font-medium mb-2">
+                    {t('contactSection.form.subject')}
+                  </Label>
+                  <Select value={formData.subject} onValueChange={(value) => handleChange('subject', value)}>
+                    <SelectTrigger data-testid="select-subject">
+                      <SelectValue placeholder={t('contactSection.form.subjectPlaceholder')} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="become-client" data-testid="option-become-client">
+                        {t('contactSection.form.subjects.becomeClient')}
+                      </SelectItem>
+                      <SelectItem value="billing" data-testid="option-billing">
+                        {t('contactSection.form.subjects.billing')}
+                      </SelectItem>
+                      <SelectItem value="technical-support" data-testid="option-technical-support">
+                        {t('contactSection.form.subjects.technicalSupport')}
+                      </SelectItem>
+                      <SelectItem value="accounts-payable" data-testid="option-accounts-payable">
+                        {t('contactSection.form.subjects.accountsPayable')}
+                      </SelectItem>
+                      <SelectItem value="accounts-receivable" data-testid="option-accounts-receivable">
+                        {t('contactSection.form.subjects.accountsReceivable')}
+                      </SelectItem>
+                      <SelectItem value="feature-request" data-testid="option-feature-request">
+                        {t('contactSection.form.subjects.featureRequest')}
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
                 
                 <div>

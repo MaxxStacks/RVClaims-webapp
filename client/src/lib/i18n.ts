@@ -135,14 +135,29 @@ export const translations = {
         address: "Toronto, Ontario, Canada",
         coverage: "Serving all Canadian provinces"
       },
+      development: {
+        title: "Development Office",
+        address: "Montreal, Quebec, Canada",
+        focus: "Technology & Innovation Hub"
+      },
       form: {
         dealershipName: "Dealership Name",
         firstName: "First Name",
         lastName: "Last Name", 
         email: "Email Address",
         phone: "Phone Number",
+        subject: "Subject",
+        subjectPlaceholder: "Select a subject",
         message: "Message",
-        submit: "Get Started Today"
+        submit: "Get Started Today",
+        subjects: {
+          becomeClient: "Become a client",
+          billing: "Billing",
+          technicalSupport: "Technical Support",
+          accountsPayable: "Accounts Payable",
+          accountsReceivable: "Accounts Receivable",
+          featureRequest: "Feature Request"
+        }
       }
     },
 
@@ -363,14 +378,29 @@ export const translations = {
         address: "Toronto, Ontario, Canada", 
         coverage: "Desservant toutes les provinces canadiennes"
       },
+      development: {
+        title: "Bureau de développement",
+        address: "Montréal, Québec, Canada",
+        focus: "Centre de technologie et d'innovation"
+      },
       form: {
         dealershipName: "Nom du concessionnaire",
         firstName: "Prénom",
         lastName: "Nom de famille",
         email: "Adresse e-mail", 
         phone: "Numéro de téléphone",
+        subject: "Sujet",
+        subjectPlaceholder: "Sélectionner un sujet",
         message: "Message",
-        submit: "Commencer aujourd'hui"
+        submit: "Commencer aujourd'hui",
+        subjects: {
+          becomeClient: "Devenir un client",
+          billing: "Facturation",
+          technicalSupport: "Support technique",
+          accountsPayable: "Comptes à payer",
+          accountsReceivable: "Comptes à recevoir",
+          featureRequest: "Demande de fonctionnalité"
+        }
       }
     },
 
