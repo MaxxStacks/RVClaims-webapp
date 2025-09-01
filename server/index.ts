@@ -1,10 +1,15 @@
 import express, { type Request, Response, NextFunction } from "express";
+import path from "path";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+// Serve static files from attached_assets directory
+const assetsPath = path.resolve(import.meta.dirname, "..", "attached_assets");
+app.use("/attached_assets", express.static(assetsPath));
 
 app.use((req, res, next) => {
   const start = Date.now();
