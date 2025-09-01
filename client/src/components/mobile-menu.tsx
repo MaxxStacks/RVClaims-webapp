@@ -51,13 +51,13 @@ export function MobileMenu() {
         }`}
         data-testid="menu-pages-side"
         style={{ 
-          backgroundColor: '#ffffff !important',
-          background: '#ffffff !important'
+          backgroundColor: '#ffffff',
+          background: '#ffffff'
         }}
       >
         <div className="flex flex-col h-full">
           {/* Header */}
-          <div className="flex items-center justify-between p-6 border-b border-border bg-gradient-to-r from-primary/10 to-primary/5">
+          <div className="flex items-center justify-between p-6 border-b border-border" style={{ backgroundColor: '#ffffff' }}>
             <Link 
               href="/" 
               className="text-2xl font-bold gradient-text"
@@ -96,9 +96,9 @@ export function MobileMenu() {
           </div>
 
           {/* Client Login Button */}
-          <div className="px-6 py-3 border-t border-border">
+          <div className="px-6 py-3 border-t border-border" style={{ backgroundColor: '#ffffff' }}>
             <button
-              className="w-full flex items-center justify-center px-4 py-2 bg-gradient-to-r from-primary to-primary/90 text-primary-foreground rounded-lg font-medium hover:from-primary/90 hover:to-primary/80 transition-all duration-200 shadow-sm hover:shadow-md"
+              className="w-full flex items-center justify-center px-4 py-2 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-all duration-200 shadow-sm hover:shadow-md"
               data-testid="button-client-login"
             >
               <User className="mr-2" size={20} />
@@ -106,10 +106,9 @@ export function MobileMenu() {
             </button>
           </div>
 
-          {/* Social Media & Language Toggle */}
-          <div className="px-6 py-3 border-t border-border bg-gradient-to-r from-primary/5 to-muted/20">
-            <div className="flex items-center justify-between">
-              {/* Social Media Icons */}
+          {/* Social Media Icons */}
+          <div className="px-6 py-3 border-t border-border" style={{ backgroundColor: '#ffffff' }}>
+            <div className="flex justify-center">
               <div className="flex space-x-4">
                 <a
                   href="#"
@@ -144,9 +143,6 @@ export function MobileMenu() {
                   <Instagram size={20} />
                 </a>
               </div>
-
-              {/* Language Toggle */}
-              <LanguageToggle />
             </div>
           </div>
         </div>
