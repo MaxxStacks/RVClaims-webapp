@@ -8,7 +8,7 @@ export const translations = {
 
     // Hero Section
     hero: {
-      badge: "🏆 Industry Leading Claims Management",
+      badge: "Industry Leading Claims Management",
       title: "A-Z Claims Processing for Canadian",
       titleHighlight: "RV Dealers",
       description: "15 years of professional claims management expertise with North America's leading manufacturers. Our patent-pending technology boosts dealership revenue through optimized claim processing.",
@@ -54,7 +54,7 @@ export const translations = {
 
     // Technology Section
     technologySection: {
-      badge: "🔬 Patent Pending Technology",
+      badge: "Patent Pending Technology",
       title: "World-Leading Claim Management Software",
       description: "Our proprietary, patent-pending technology platform revolutionizes claims processing with advanced automation, AI-driven insights, and seamless manufacturer integration.",
       automation: {
@@ -126,16 +126,37 @@ export const translations = {
       optimization: "Revenue Optimization", 
       technology: "Technology Platform",
       integration: "Dealer Integration",
+      consultation: "Expert Consultation",
+      training: "Dealer Training",
       rvTypesTitle: "RV Types",
       travelTrailers: "Travel Trailers",
       fifthWheels: "Fifth Wheels",
       classAC: "Class A & C", 
       vanCampers: "Van Campers",
       toyHaulers: "Toy Haulers",
+      popups: "Pop-ups & Hybrids",
+      truckcampers: "Truck Campers",
+      companyTitle: "Company",
+      aboutUs: "About Us",
+      careers: "Careers",
+      partnerships: "Partnerships",
+      testimonials: "Testimonials",
+      resourcesTitle: "Resources",
+      claimGuides: "Claim Guides",
+      industryReports: "Industry Reports",
+      webinars: "Webinars",
+      knowledgeBase: "Knowledge Base",
+      supportTitle: "Support",
+      helpCenter: "Help Center",
+      documentation: "Documentation",
+      apiAccess: "API Access",
+      systemStatus: "System Status",
       contactTitle: "Contact",
       copyright: "© 2024 RVClaimTrack. All rights reserved. Patent Pending Technology.",
       privacyPolicy: "Privacy Policy",
-      termsOfService: "Terms of Service"
+      termsOfService: "Terms of Service",
+      cookiePolicy: "Cookie Policy",
+      compliance: "PIPEDA Compliance"
     },
 
     // Cookie Notice
@@ -156,7 +177,7 @@ export const translations = {
 
     // Hero Section
     hero: {
-      badge: "🏆 Gestion de réclamations leader de l'industrie",
+      badge: "Gestion de réclamations leader de l'industrie",
       title: "Traitement A-Z des réclamations pour les",
       titleHighlight: "concessionnaires VR canadiens", 
       description: "15 ans d'expertise en gestion de réclamations professionnelle avec les principaux fabricants d'Amérique du Nord. Notre technologie en instance de brevet augmente les revenus des concessionnaires grâce à un traitement optimisé des réclamations.",
@@ -202,7 +223,7 @@ export const translations = {
 
     // Technology Section
     technologySection: {
-      badge: "🔬 Technologie en instance de brevet",
+      badge: "Technologie en instance de brevet",
       title: "Logiciel de gestion de réclamations de classe mondiale",
       description: "Notre plateforme technologique propriétaire en instance de brevet révolutionne le traitement des réclamations avec une automatisation avancée, des insights pilotés par l'IA et une intégration transparente des fabricants.",
       automation: {
@@ -274,16 +295,37 @@ export const translations = {
       optimization: "Optimisation des revenus",
       technology: "Plateforme technologique", 
       integration: "Intégration concessionnaire",
+      consultation: "Consultation d'experts",
+      training: "Formation de concessionnaires",
       rvTypesTitle: "Types de VR",
       travelTrailers: "Roulottes de voyage",
       fifthWheels: "Cinquième roue",
       classAC: "Classe A et C",
       vanCampers: "Fourgonnettes",
       toyHaulers: "Porte-jouets",
+      popups: "Tentes-roulottes et hybrides",
+      truckcampers: "Camions-maisons",
+      companyTitle: "Entreprise",
+      aboutUs: "À propos de nous",
+      careers: "Carrières",
+      partnerships: "Partenariats",
+      testimonials: "Témoignages",
+      resourcesTitle: "Ressources",
+      claimGuides: "Guides de réclamation",
+      industryReports: "Rapports de l'industrie",
+      webinars: "Webinaires",
+      knowledgeBase: "Base de connaissances",
+      supportTitle: "Support",
+      helpCenter: "Centre d'aide",
+      documentation: "Documentation",
+      apiAccess: "Accès API",
+      systemStatus: "État du système",
       contactTitle: "Contact",
       copyright: "© 2024 RVClaimTrack. Tous droits réservés. Technologie en instance de brevet.",
       privacyPolicy: "Politique de confidentialité",
-      termsOfService: "Conditions d'utilisation"
+      termsOfService: "Conditions d'utilisation",
+      cookiePolicy: "Politique des cookies",
+      compliance: "Conformité LPRPDE"
     },
 
     // Cookie Notice

@@ -58,8 +58,8 @@ export function TechnologySection() {
           
           <div className="relative">
             <img 
-              src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600" 
-              alt="Advanced technology dashboard interface" 
+              src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600" 
+              alt="Professional business analytics and claims management dashboard" 
               className="rounded-2xl shadow-2xl w-full h-auto"
               data-testid="img-technology"
             />

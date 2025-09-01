@@ -197,31 +197,3 @@
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
 
-.lang-toggle {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  z-index: 1000;
-  background: white;
-  border: 1px solid hsl(214.3 31.8% 91.4%);
-  border-radius: 6px;
-  display: flex;
-  overflow: hidden;
-}
-
-.lang-toggle button {
-  padding: 8px 16px;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.lang-toggle button.active {
-  background: hsl(221 83% 20%);
-  color: white;
-}
-
-.lang-toggle button:hover:not(.active) {
-  background: hsl(210 40% 96%);
-}

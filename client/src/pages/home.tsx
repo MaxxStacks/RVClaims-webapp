@@ -13,7 +13,6 @@ import { CookieNotice } from "@/components/cookie-notice";
 export default function Home() {
   return (
     <div className="min-h-screen w-full">
-      <LanguageToggle />
       <Navigation />
       <HeroSection />
       <ServicesSection />

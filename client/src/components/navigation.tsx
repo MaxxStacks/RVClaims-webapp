@@ -1,4 +1,5 @@
 import { useLanguage } from "@/hooks/use-language";
+import { LanguageToggle } from "@/components/language-toggle";
 
 export function Navigation() {
   const { t } = useLanguage();
@@ -21,8 +22,8 @@ export function Navigation() {
               </h1>
             </div>
           </div>
-          <div className="hidden md:block">
-            <div className="ml-10 flex items-baseline space-x-8">
+          <div className="flex items-center space-x-8">
+            <div className="hidden md:flex items-center space-x-8">
               <button 
                 onClick={() => scrollToSection('services')}
                 className="text-muted-foreground hover:text-foreground transition-colors"
@@ -52,6 +53,7 @@ export function Navigation() {
                 {t('contact')}
               </button>
             </div>
+            <LanguageToggle />
           </div>
         </div>
       </div>
