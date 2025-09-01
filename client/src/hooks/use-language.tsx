@@ -11,8 +11,27 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [language, setLanguage] = useState<Language>(() => {
+    // Check if user has manually set a language preference
     const saved = localStorage.getItem('preferred-language');
-    return (saved as Language) || 'en';
+    if (saved) {
+      return saved as Language;
+    }
+    
+    // Auto-detect browser language for Canadian market
+    const detectBrowserLanguage = (): Language => {
+      const browserLang = navigator.language || navigator.languages?.[0] || 'en';
+      const langCode = browserLang.toLowerCase();
+      
+      // Check for French language variants (fr, fr-CA, fr-FR, etc.)
+      if (langCode.startsWith('fr')) {
+        return 'fr';
+      }
+      
+      // Default to English for all other languages
+      return 'en';
+    };
+    
+    return detectBrowserLanguage();
   });
 
   const t = (key: string): string => {
