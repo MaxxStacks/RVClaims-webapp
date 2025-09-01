@@ -1,5 +1,6 @@
 import { Phone, Mail, MapPin, Heart } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
+import { Link } from "wouter";
 
 export function Footer() {
   const { t } = useLanguage();
@@ -160,9 +161,9 @@ export function Footer() {
               {t('footer.copyright')}
             </p>
             <div className="flex flex-wrap justify-center lg:justify-end gap-6 text-sm text-gray-400">
-              <a href="#" className="hover:text-white transition-colors" data-testid="link-footer-privacy">
+              <Link href="/privacy-policy" className="hover:text-white transition-colors" data-testid="link-footer-privacy">
                 {t('footer.privacyPolicy')}
-              </a>
+              </Link>
               <a href="#" className="hover:text-white transition-colors" data-testid="link-footer-terms">
                 {t('footer.termsOfService')}
               </a>

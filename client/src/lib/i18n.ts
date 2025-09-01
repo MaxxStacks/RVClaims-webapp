@@ -1,11 +1,14 @@
 export const translations = {
   en: {
     // Navigation
-    services: "Services",
-    experience: "Experience", 
-    technology: "Technology",
-    revenueServices: "Revenue Services",
-    contact: "Contact",
+    navigation: {
+      about: "About Us",
+      services: "Services",
+      claims: "Claims Processing",
+      technology: "Technology",
+      revenueServices: "Revenue Services",
+      contact: "Contact"
+    },
 
     // Hero Section
     hero: {
@@ -297,6 +300,148 @@ export const translations = {
       backButton: "Back to Departments"
     },
 
+    // About Page
+    aboutPage: {
+      badge: "15 Years of Excellence",
+      title: "Leading RV Claims Management",
+      description: "Professional claims processing expertise with a proven track record of maximizing dealership revenue across Canada.",
+      storyTitle: "Our Story",
+      storyDescription: "Founded with a mission to revolutionize RV warranty claims processing for Canadian dealers.",
+      experienceTitle: "Industry Leadership",
+      experienceDescription: "15 years of dedicated service to the Canadian RV industry, building relationships with top manufacturers and developing cutting-edge technology solutions.",
+      yearsExperience: "Years Experience",
+      approvalRate: "Approval Rate",
+      revenueIncrease: "Avg Revenue Increase",
+      locationTitle: "Our Locations",
+      headquarters: "Headquarters",
+      development: "Development Office"
+    },
+
+    // Services Page
+    servicesPage: {
+      badge: "Complete Claims Solutions",
+      title: "A-Z Claims Processing Services",
+      description: "Comprehensive claims management from initial submission to final authorization, designed to maximize your revenue.",
+      processing: {
+        title: "End-to-End Processing",
+        description: "Complete claims management workflow from submission to payment.",
+        feature1: "Initial claim review and validation",
+        feature2: "Documentation preparation and optimization",
+        feature3: "Manufacturer submission and follow-up",
+        feature4: "Payment tracking and reconciliation"
+      },
+      optimization: {
+        title: "Revenue Optimization",
+        description: "Expert strategies to maximize claim values and approval rates.",
+        feature1: "Labor rate optimization",
+        feature2: "Parts markup maximization",
+        feature3: "Claim bundling strategies",
+        feature4: "Denial reduction techniques"
+      }
+    },
+
+    // Claims Processing Page
+    claimsPage: {
+      badge: "Specialized Processing",
+      title: "Expert Claims Processing",
+      description: "Professional handling of all major claim types with industry-leading approval rates.",
+      daf: {
+        title: "DAF Claims",
+        description: "Delivery and Freight damage claims processed with manufacturer expertise and documentation standards."
+      },
+      pdi: {
+        title: "PDI Claims", 
+        description: "Pre-Delivery Inspection claims ensuring proper compensation for dealer preparation work."
+      },
+      warranty: {
+        title: "Warranty Claims",
+        description: "Standard manufacturer warranty claims with optimized approval strategies and expert preparation."
+      },
+      extended: {
+        title: "Extended Warranty",
+        description: "Extended warranty claims with specialized knowledge of coverage terms and conditions."
+      },
+      insurance: {
+        title: "Insurance Claims",
+        description: "Insurance damage claims with comprehensive documentation and professional follow-up."
+      }
+    },
+
+    // Technology Page
+    technologyPage: {
+      badge: "Patent Pending Technology",
+      title: "Advanced Claims Platform",
+      description: "Revolutionary claims management software with AI-driven insights and seamless manufacturer integration.",
+      automation: {
+        title: "Automated Processing",
+        description: "Advanced algorithms optimize claim documentation for maximum approval rates and faster processing."
+      },
+      integration: {
+        title: "Manufacturer Integration", 
+        description: "Direct API connections with top 15 North American manufacturers for real-time processing."
+      },
+      analytics: {
+        title: "Revenue Analytics",
+        description: "Comprehensive reporting and optimization recommendations to maximize dealership profitability."
+      }
+    },
+
+    // Revenue Services Page
+    revenueServicesPage: {
+      badge: "Revenue Growth Solutions",
+      title: "Maximize Dealership Revenue",
+      description: "Comprehensive outsourced services that Canadian RV dealers use to boost sales and increase profitability.",
+      finance: {
+        title: "Finance & Insurance Services",
+        description: "Complete F&I outsourcing with higher loan approval rates and premium product placement."
+      },
+      marketing: {
+        title: "Digital Marketing & Lead Generation",
+        description: "Professional marketing services targeting next-generation RV buyers with proven results."
+      },
+      parts: {
+        title: "Parts & Accessories Management",
+        description: "Turn accessories into a robust profit center with expert inventory and sales management."
+      },
+      service: {
+        title: "Service Department Support",
+        description: "Address technician shortages with mobile service capabilities and expert support systems."
+      }
+    },
+
+    // RV Coverage Page
+    rvCoveragePage: {
+      badge: "Complete RV Coverage",
+      title: "All RV Types Covered",
+      description: "Expert claims processing for every RV type and manufacturer in the Canadian market.",
+      travelTrailers: {
+        title: "Travel Trailers",
+        description: "Comprehensive coverage for all travel trailer brands and models."
+      },
+      fifthWheels: {
+        title: "Fifth Wheels",
+        description: "Specialized processing for fifth wheel claims and warranty issues."
+      },
+      classAC: {
+        title: "Class A & C Motorhomes",
+        description: "Expert handling of motorhome claims with complex mechanical systems."
+      }
+    },
+
+    // Contact Page
+    contactPage: {
+      badge: "Get Started Today",
+      title: "Contact Our Claims Experts",
+      description: "Ready to optimize your warranty revenue? Our team is here to help you get started."
+    },
+
+    // Privacy Policy Page
+    privacyPolicyPage: {
+      title: "Privacy Policy",
+      description: "Our commitment to protecting your personal and business information.",
+      content: "RVClaimTrack is committed to protecting the privacy and confidentiality of all client information. This policy outlines our practices for collecting, using, and protecting your data in accordance with Canadian privacy laws including PIPEDA."
+    },
+
     // Privacy Assurance Section
     privacyAssurance: {
       title: "Absolute Client Confidentiality Guaranteed",
@@ -321,11 +466,14 @@ export const translations = {
 
   fr: {
     // Navigation
-    services: "Services",
-    experience: "Expérience",
-    technology: "Technologie",
-    revenueServices: "Services revenus", 
-    contact: "Contact",
+    navigation: {
+      about: "À propos",
+      services: "Services",
+      claims: "Traitement des réclamations",
+      technology: "Technologie",
+      revenueServices: "Services revenus",
+      contact: "Contact"
+    },
 
     // Hero Section
     hero: {
@@ -615,6 +763,148 @@ export const translations = {
       emailInfo: "Réponse sous 2 heures",
       chatInfo: "Disponible maintenant",
       backButton: "Retour aux départements"
+    },
+
+    // About Page
+    aboutPage: {
+      badge: "15 ans d'excellence",
+      title: "Leader en gestion de réclamations VR",
+      description: "Expertise professionnelle en traitement de réclamations avec un historique prouvé de maximisation des revenus des concessionnaires à travers le Canada.",
+      storyTitle: "Notre histoire",
+      storyDescription: "Fondé avec pour mission de révolutionner le traitement des réclamations de garantie VR pour les concessionnaires canadiens.",
+      experienceTitle: "Leadership de l'industrie",
+      experienceDescription: "15 ans de service dédié à l'industrie canadienne du VR, bâtissant des relations avec les principaux fabricants et développant des solutions technologiques de pointe.",
+      yearsExperience: "Années d'expérience",
+      approvalRate: "Taux d'approbation",
+      revenueIncrease: "Augmentation moy. revenus",
+      locationTitle: "Nos emplacements",
+      headquarters: "Siège social",
+      development: "Bureau de développement"
+    },
+
+    // Services Page
+    servicesPage: {
+      badge: "Solutions complètes de réclamations",
+      title: "Services de traitement A-Z",
+      description: "Gestion complète des réclamations de la soumission initiale à l'autorisation finale, conçue pour maximiser vos revenus.",
+      processing: {
+        title: "Traitement de bout en bout",
+        description: "Flux de travail complet de gestion des réclamations de la soumission au paiement.",
+        feature1: "Révision et validation initiale de réclamation",
+        feature2: "Préparation et optimisation de documentation",
+        feature3: "Soumission et suivi auprès du fabricant",
+        feature4: "Suivi des paiements et réconciliation"
+      },
+      optimization: {
+        title: "Optimisation des revenus",
+        description: "Stratégies expertes pour maximiser les valeurs de réclamation et les taux d'approbation.",
+        feature1: "Optimisation des taux de main-d'œuvre",
+        feature2: "Maximisation de la marge sur les pièces",
+        feature3: "Stratégies de regroupement de réclamations",
+        feature4: "Techniques de réduction des refus"
+      }
+    },
+
+    // Claims Processing Page
+    claimsPage: {
+      badge: "Traitement spécialisé",
+      title: "Traitement expert de réclamations",
+      description: "Traitement professionnel de tous les types de réclamations majeurs avec des taux d'approbation leaders de l'industrie.",
+      daf: {
+        title: "Réclamations DAF",
+        description: "Réclamations de dommages de livraison et de fret traitées avec l'expertise du fabricant et les normes de documentation."
+      },
+      pdi: {
+        title: "Réclamations PDI", 
+        description: "Réclamations d'inspection de pré-livraison assurant une compensation appropriée pour le travail de préparation du concessionnaire."
+      },
+      warranty: {
+        title: "Réclamations de garantie",
+        description: "Réclamations de garantie standard du fabricant avec des stratégies d'approbation optimisées et une préparation experte."
+      },
+      extended: {
+        title: "Garantie prolongée",
+        description: "Réclamations de garantie prolongée avec une connaissance spécialisée des termes et conditions de couverture."
+      },
+      insurance: {
+        title: "Réclamations d'assurance",
+        description: "Réclamations de dommages d'assurance avec documentation complète et suivi professionnel."
+      }
+    },
+
+    // Technology Page
+    technologyPage: {
+      badge: "Technologie brevetée en instance",
+      title: "Plateforme de réclamations avancée",
+      description: "Logiciel révolutionnaire de gestion des réclamations avec des insights pilotés par IA et intégration transparente avec les fabricants.",
+      automation: {
+        title: "Traitement automatisé",
+        description: "Algorithmes avancés optimisent la documentation des réclamations pour des taux d'approbation maximaux et un traitement plus rapide."
+      },
+      integration: {
+        title: "Intégration fabricant", 
+        description: "Connexions API directes avec les 15 principaux fabricants d'Amérique du Nord pour un traitement en temps réel."
+      },
+      analytics: {
+        title: "Analytiques de revenus",
+        description: "Rapports complets et recommandations d'optimisation pour maximiser la rentabilité des concessionnaires."
+      }
+    },
+
+    // Revenue Services Page
+    revenueServicesPage: {
+      badge: "Solutions de croissance des revenus",
+      title: "Maximiser les revenus des concessionnaires",
+      description: "Services externalisés complets que les concessionnaires VR canadiens utilisent pour stimuler les ventes et augmenter la rentabilité.",
+      finance: {
+        title: "Services Finance et Assurance",
+        description: "Externalisation F&I complète avec des taux d'approbation de prêt plus élevés et placement de produits premium."
+      },
+      marketing: {
+        title: "Marketing numérique et génération de prospects",
+        description: "Services de marketing professionnel ciblant les acheteurs VR de nouvelle génération avec des résultats prouvés."
+      },
+      parts: {
+        title: "Gestion des pièces et accessoires",
+        description: "Transformer les accessoires en centre de profit robuste avec gestion experte d'inventaire et de ventes."
+      },
+      service: {
+        title: "Support département service",
+        description: "Adresser les pénuries de techniciens avec des capacités de service mobile et des systèmes de support expert."
+      }
+    },
+
+    // RV Coverage Page
+    rvCoveragePage: {
+      badge: "Couverture VR complète",
+      title: "Tous types de VR couverts",
+      description: "Traitement expert de réclamations pour chaque type de VR et fabricant sur le marché canadien.",
+      travelTrailers: {
+        title: "Roulottes de voyage",
+        description: "Couverture complète pour toutes les marques et modèles de roulottes de voyage."
+      },
+      fifthWheels: {
+        title: "Sellettes d'attelage",
+        description: "Traitement spécialisé pour les réclamations de sellettes d'attelage et problèmes de garantie."
+      },
+      classAC: {
+        title: "Autocaravanes Classe A et C",
+        description: "Traitement expert des réclamations d'autocaravanes avec systèmes mécaniques complexes."
+      }
+    },
+
+    // Contact Page
+    contactPage: {
+      badge: "Commencez aujourd'hui",
+      title: "Contactez nos experts en réclamations",
+      description: "Prêt à optimiser vos revenus de garantie? Notre équipe est là pour vous aider à commencer."
+    },
+
+    // Privacy Policy Page
+    privacyPolicyPage: {
+      title: "Politique de confidentialité",
+      description: "Notre engagement à protéger vos informations personnelles et commerciales.",
+      content: "RVClaimTrack s'engage à protéger la confidentialité et la vie privée de toutes les informations clients. Cette politique décrit nos pratiques pour collecter, utiliser et protéger vos données conformément aux lois canadiennes sur la vie privée incluant la LPRPDE."
     },
 
     // Privacy Assurance Section

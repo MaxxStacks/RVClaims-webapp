@@ -1,15 +1,10 @@
 import { useLanguage } from "@/hooks/use-language";
 import { LanguageToggle } from "@/components/language-toggle";
+import { Link, useLocation } from "wouter";
 
 export function Navigation() {
   const { t } = useLanguage();
-
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
+  const [location] = useLocation();
 
   return (
     <nav className="bg-white/95 backdrop-blur-sm border-b border-border sticky top-0 z-50">
@@ -17,48 +12,55 @@ export function Navigation() {
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
             <div className="flex-shrink-0">
-              <h1 className="text-2xl font-bold gradient-text" data-testid="text-logo">
+              <Link href="/" className="text-2xl font-bold gradient-text hover:opacity-90 transition-opacity" data-testid="text-logo">
                 RVClaimTrack
-              </h1>
+              </Link>
             </div>
           </div>
           <div className="flex items-center space-x-8">
             <div className="hidden md:flex items-center space-x-8">
-              <button 
-                onClick={() => scrollToSection('services')}
-                className="text-muted-foreground hover:text-foreground transition-colors"
+              <Link 
+                href="/about"
+                className={`transition-colors ${location === '/about' ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
+                data-testid="link-about"
+              >
+                {t('navigation.about')}
+              </Link>
+              <Link 
+                href="/services"
+                className={`transition-colors ${location === '/services' ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
                 data-testid="link-services"
               >
-                {t('services')}
-              </button>
-              <button 
-                onClick={() => scrollToSection('experience')}
-                className="text-muted-foreground hover:text-foreground transition-colors"
-                data-testid="link-experience"
+                {t('navigation.services')}
+              </Link>
+              <Link 
+                href="/claims-processing"
+                className={`transition-colors ${location === '/claims-processing' ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
+                data-testid="link-claims"
               >
-                {t('experience')}
-              </button>
-              <button 
-                onClick={() => scrollToSection('technology')}
-                className="text-muted-foreground hover:text-foreground transition-colors"
+                {t('navigation.claims')}
+              </Link>
+              <Link 
+                href="/technology"
+                className={`transition-colors ${location === '/technology' ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
                 data-testid="link-technology"
               >
-                {t('technology')}
-              </button>
-              <button 
-                onClick={() => scrollToSection('upsell-services')}
-                className="text-muted-foreground hover:text-foreground transition-colors"
+                {t('navigation.technology')}
+              </Link>
+              <Link 
+                href="/revenue-services"
+                className={`transition-colors ${location === '/revenue-services' ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
                 data-testid="link-revenue-services"
               >
-                {t('revenueServices')}
-              </button>
-              <button 
-                onClick={() => scrollToSection('contact')}
+                {t('navigation.revenueServices')}
+              </Link>
+              <Link 
+                href="/contact"
                 className="bg-primary text-primary-foreground px-4 py-2 rounded-md hover:bg-primary/90 transition-colors h-10"
                 data-testid="button-contact"
               >
-                {t('contact')}
-              </button>
+                {t('navigation.contact')}
+              </Link>
             </div>
             <LanguageToggle />
           </div>
