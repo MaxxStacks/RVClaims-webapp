@@ -297,6 +297,18 @@ export const translations = {
       backButton: "Back to Departments"
     },
 
+    // Privacy Assurance Section
+    privacyAssurance: {
+      title: "Absolute Client Confidentiality Guaranteed",
+      description: "Despite serving multiple dealerships across Canada, we operate under strict non-disclosure protocols. Your sensitive business information, financial data, and operational details are never shared, discussed, or disclosed to any third party - including other clients.",
+      features: {
+        encryption: "Bank-Grade Encryption",
+        agreements: "Iron-Clad NDAs",
+        compliance: "PIPEDA Compliant"
+      },
+      guarantee: "Your trust is our foundation. Your secrets stay with us. Period."
+    },
+
     // Cookie Notice
     cookies: {
       title: "Cookie Policy",
@@ -602,6 +614,18 @@ export const translations = {
       emailInfo: "Réponse sous 2 heures",
       chatInfo: "Disponible maintenant",
       backButton: "Retour aux départements"
+    },
+
+    // Privacy Assurance Section
+    privacyAssurance: {
+      title: "Confidentialité Client Absolue Garantie",
+      description: "Malgré le service à plusieurs concessionnaires à travers le Canada, nous opérons sous des protocoles stricts de non-divulgation. Vos informations commerciales sensibles, données financières et détails opérationnels ne sont jamais partagés, discutés ou divulgués à des tiers - incluant d'autres clients.",
+      features: {
+        encryption: "Chiffrement Bancaire",
+        agreements: "Ententes de Non-Divulgation",
+        compliance: "Conforme LPRPDE"
+      },
+      guarantee: "Votre confiance est notre fondation. Vos secrets restent avec nous. Point final."
     },
 
     // Cookie Notice
