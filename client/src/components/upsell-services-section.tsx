@@ -59,25 +59,31 @@ export function UpsellServicesSection() {
       
       // Check if we're in the horizontal scroll zone
       if (sectionTop <= 0 && sectionBottom >= windowHeight) {
-        // Calculate progress through the section with slower, more controlled scrolling
-        const scrollProgress = Math.abs(sectionTop) / (sectionHeight - windowHeight);
-        // Use easing function to slow down the scroll and ensure all cards are visible
-        const easedProgress = Math.min(Math.max(scrollProgress * 0.85, 0), 1);
+        // Calculate progress through the section
+        const rawProgress = Math.abs(sectionTop) / (sectionHeight - windowHeight);
+        
+        // Apply a much slower, curved easing that gives more time for each card
+        // This creates a slow start, very slow middle, and extremely slow end
+        const slowedProgress = rawProgress * 0.6; // Much slower base speed
+        const curvedProgress = Math.pow(slowedProgress, 1.5); // Exponential curve for even slower end
+        const easedProgress = Math.min(Math.max(curvedProgress, 0), 1);
         
         setIsScrolling(true);
         setScrollProgress(easedProgress);
         
-        // Calculate horizontal scroll position with padding to ensure last cards are visible
+        // Calculate horizontal scroll position with extra padding for last cards
         const maxHorizontalScroll = container.scrollWidth - container.clientWidth;
-        const targetScrollLeft = easedProgress * maxHorizontalScroll;
+        // Add 20% extra scroll distance to ensure last cards have full visibility
+        const extendedMaxScroll = maxHorizontalScroll * 1.2;
+        const targetScrollLeft = Math.min(easedProgress * extendedMaxScroll, maxHorizontalScroll);
         
         // Smooth horizontal scrolling
         animationFrameId = requestAnimationFrame(() => {
           container.scrollLeft = targetScrollLeft;
         });
         
-        // Only allow normal scrolling when we're completely done with horizontal scroll
-        if (scrollProgress >= 1.1) {
+        // Only allow normal scrolling when we're way past completion
+        if (rawProgress >= 1.3) {
           document.body.style.overflow = '';
           setIsScrolling(false);
         }
@@ -111,7 +117,7 @@ export function UpsellServicesSection() {
     <section 
       ref={sectionRef}
       className="py-24 bg-white flex flex-col justify-center" 
-      style={{ minHeight: '200vh' }}
+      style={{ minHeight: '300vh' }}
       id="upsell-services"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
