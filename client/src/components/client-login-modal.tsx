@@ -45,29 +45,35 @@ export function ClientLoginModal({ isOpen, onClose }: ClientLoginModalProps) {
       <div className="space-y-3">
         <button
           onClick={() => handleSocialLogin('google')}
-          className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-white border-2 border-black rounded-lg font-medium text-black hover:bg-gray-50 transition-colors"
+          className="w-full flex items-center px-4 py-3 bg-white border-2 border-black rounded-lg font-medium text-black hover:bg-gray-50 transition-colors"
           data-testid="button-login-google"
         >
-          <SiGoogle className="w-5 h-5 text-black" />
-          Continue with Google
+          <div className="w-6 h-6 flex items-center justify-center mr-4">
+            <SiGoogle className="w-5 h-5 text-black" />
+          </div>
+          <span className="flex-1 text-left">Continue with Google</span>
         </button>
 
         <button
           onClick={() => handleSocialLogin('facebook')}
-          className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-white border-2 border-black rounded-lg font-medium text-black hover:bg-gray-50 transition-colors"
+          className="w-full flex items-center px-4 py-3 bg-white border-2 border-black rounded-lg font-medium text-black hover:bg-gray-50 transition-colors"
           data-testid="button-login-facebook"
         >
-          <SiFacebook className="w-5 h-5 text-black" />
-          Continue with Facebook
+          <div className="w-6 h-6 flex items-center justify-center mr-4">
+            <SiFacebook className="w-5 h-5 text-black" />
+          </div>
+          <span className="flex-1 text-left">Continue with Facebook</span>
         </button>
 
         <button
           onClick={() => handleSocialLogin('linkedin')}
-          className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-white border-2 border-black rounded-lg font-medium text-black hover:bg-gray-50 transition-colors"
+          className="w-full flex items-center px-4 py-3 bg-white border-2 border-black rounded-lg font-medium text-black hover:bg-gray-50 transition-colors"
           data-testid="button-login-linkedin"
         >
-          <SiLinkedin className="w-5 h-5 text-black" />
-          Continue with LinkedIn
+          <div className="w-6 h-6 flex items-center justify-center mr-4">
+            <SiLinkedin className="w-5 h-5 text-black" />
+          </div>
+          <span className="flex-1 text-left">Continue with LinkedIn</span>
         </button>
       </div>
 
