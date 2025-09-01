@@ -5,11 +5,11 @@ export function LanguageToggle() {
   const { language, setLanguage } = useLanguage();
 
   return (
-    <div className="flex bg-white border border-border rounded-md overflow-hidden h-8">
+    <div className="flex bg-white border border-border rounded-md overflow-hidden h-10">
       <Button
         variant="ghost"
         size="sm"
-        className={`rounded-none border-0 px-3 py-1 h-8 ${language === 'en' ? 'bg-primary text-primary-foreground' : 'hover:bg-accent'}`}
+        className={`rounded-none border-0 px-4 py-2 h-10 ${language === 'en' ? 'bg-primary text-primary-foreground' : 'hover:bg-accent'}`}
         onClick={() => setLanguage('en')}
         data-testid="button-language-en"
       >
@@ -18,7 +18,7 @@ export function LanguageToggle() {
       <Button
         variant="ghost"
         size="sm"
-        className={`rounded-none border-0 px-3 py-1 h-8 ${language === 'fr' ? 'bg-primary text-primary-foreground' : 'hover:bg-accent'}`}
+        className={`rounded-none border-0 px-4 py-2 h-10 ${language === 'fr' ? 'bg-primary text-primary-foreground' : 'hover:bg-accent'}`}
         onClick={() => setLanguage('fr')}
         data-testid="button-language-fr"
       >
