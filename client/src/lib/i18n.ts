@@ -467,6 +467,14 @@ export const translations = {
     // Mobile Menu
     mobileMenu: {
       clientLogin: "Client Login"
+    },
+
+    // Client Login
+    clientLogin: {
+      title: "Client Portal Login",
+      credentialsNote: "Login credentials are provided by RVClaimTrack upon signup.",
+      emailLogin: "Email Login",
+      phoneLogin: "Phone Login"
     }
   },
 
@@ -938,6 +946,14 @@ export const translations = {
     // Mobile Menu
     mobileMenu: {
       clientLogin: "Connexion client"
+    },
+
+    // Client Login
+    clientLogin: {
+      title: "Portail Client Connexion",
+      credentialsNote: "Les identifiants de connexion sont fournis par RVClaimTrack lors de l'inscription.",
+      emailLogin: "Connexion Email",
+      phoneLogin: "Connexion Téléphone"
     }
   }
 };
