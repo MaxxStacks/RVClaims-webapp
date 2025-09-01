@@ -59,25 +59,25 @@ export function UpsellServicesSection() {
       
       // Check if we're in the horizontal scroll zone
       if (sectionTop <= 0 && sectionBottom >= windowHeight) {
-        // Calculate progress through the section
+        // Calculate progress through the section with slower, more controlled scrolling
         const scrollProgress = Math.abs(sectionTop) / (sectionHeight - windowHeight);
-        const progress = Math.min(Math.max(scrollProgress, 0), 1);
+        // Use easing function to slow down the scroll and ensure all cards are visible
+        const easedProgress = Math.min(Math.max(scrollProgress * 0.85, 0), 1);
         
         setIsScrolling(true);
-        setScrollProgress(progress);
+        setScrollProgress(easedProgress);
         
-        // Calculate horizontal scroll position
+        // Calculate horizontal scroll position with padding to ensure last cards are visible
         const maxHorizontalScroll = container.scrollWidth - container.clientWidth;
-        const targetScrollLeft = progress * maxHorizontalScroll;
+        const targetScrollLeft = easedProgress * maxHorizontalScroll;
         
         // Smooth horizontal scrolling
         animationFrameId = requestAnimationFrame(() => {
           container.scrollLeft = targetScrollLeft;
         });
         
-        // Only block vertical scrolling during the horizontal scroll phase
-        if (progress >= 0.99) {
-          // Allow normal scrolling to resume when we're nearly done
+        // Only allow normal scrolling when we're completely done with horizontal scroll
+        if (scrollProgress >= 1.1) {
           document.body.style.overflow = '';
           setIsScrolling(false);
         }
@@ -110,7 +110,8 @@ export function UpsellServicesSection() {
   return (
     <section 
       ref={sectionRef}
-      className="py-24 bg-white min-h-screen flex flex-col justify-center" 
+      className="py-24 bg-white flex flex-col justify-center" 
+      style={{ minHeight: '200vh' }}
       id="upsell-services"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -133,13 +134,13 @@ export function UpsellServicesSection() {
         >
           <div 
             className="flex gap-8 transition-transform duration-75"
-            style={{ width: `${services.length * 400}px` }}
+            style={{ width: `${services.length * 420}px` }}
           >
             {services.map(({ key, icon: Icon, revenue }) => (
               <div
                 key={key}
                 className="bg-gray-50 rounded-xl p-8 hover:shadow-lg transition-all duration-300 group flex-shrink-0"
-                style={{ width: '380px' }}
+                style={{ width: '400px' }}
                 data-testid={`card-service-${key}`}
               >
                 <div className="flex items-start justify-between mb-6">
