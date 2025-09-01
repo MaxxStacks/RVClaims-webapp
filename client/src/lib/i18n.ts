@@ -41,6 +41,34 @@ export const translations = {
       }
     },
 
+    // Claims Specialization Section
+    claimsSection: {
+      title: "Specialized Claims Processing",
+      description: "We process all major claim types on behalf of dealers with expert precision and industry-leading approval rates.",
+      claimTypes: {
+        daf: {
+          title: "DAF Claims",
+          description: "Delivery and Freight damage claims processed with manufacturer expertise"
+        },
+        pdi: {
+          title: "PDI Claims", 
+          description: "Pre-Delivery Inspection claims ensuring proper compensation for dealer prep work"
+        },
+        warranty: {
+          title: "Warranty Claims",
+          description: "Standard manufacturer warranty claims with optimized approval strategies"
+        },
+        extended: {
+          title: "Extended Warranty",
+          description: "Extended warranty claims with specialized knowledge of coverage terms"
+        },
+        insurance: {
+          title: "Insurance Claims",
+          description: "Insurance damage claims with comprehensive documentation and follow-up"
+        }
+      }
+    },
+
     // RV Types Section
     rvTypes: {
       title: "Complete RV Coverage",
@@ -238,6 +266,34 @@ export const translations = {
       reduction: {
         title: "Réduction des refus",
         description: "La préparation experte des réclamations réduit les taux de refus et augmente les autorisations réussies."
+      }
+    },
+
+    // Claims Specialization Section
+    claimsSection: {
+      title: "Traitement spécialisé des réclamations",
+      description: "Nous traitons tous les types principaux de réclamations au nom des concessionnaires avec une précision experte et des taux d'approbation leaders de l'industrie.",
+      claimTypes: {
+        daf: {
+          title: "Réclamations DAF",
+          description: "Réclamations de dommages de livraison et de fret traitées avec l'expertise du fabricant"
+        },
+        pdi: {
+          title: "Réclamations PDI", 
+          description: "Réclamations d'inspection pré-livraison garantissant une compensation appropriée pour le travail de préparation du concessionnaire"
+        },
+        warranty: {
+          title: "Réclamations de garantie",
+          description: "Réclamations de garantie fabricant standard avec des stratégies d'approbation optimisées"
+        },
+        extended: {
+          title: "Garantie prolongée",
+          description: "Réclamations de garantie prolongée avec une connaissance spécialisée des conditions de couverture"
+        },
+        insurance: {
+          title: "Réclamations d'assurance",
+          description: "Réclamations de dommages d'assurance avec documentation complète et suivi"
+        }
       }
     },
 
