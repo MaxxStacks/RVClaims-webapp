@@ -43,6 +43,8 @@ export function UpsellServicesSection() {
   ];
 
   useEffect(() => {
+    let animationFrameId: number;
+    
     const handleScroll = () => {
       if (!sectionRef.current || !containerRef.current) return;
 
@@ -51,50 +53,57 @@ export function UpsellServicesSection() {
       const rect = section.getBoundingClientRect();
       const windowHeight = window.innerHeight;
       
-      // Check if section is in view
       const sectionTop = rect.top;
       const sectionBottom = rect.bottom;
       const sectionHeight = rect.height;
       
-      // Section is in view when it starts entering the viewport
-      if (sectionTop <= 0 && sectionBottom > windowHeight) {
-        const scrolled = Math.abs(sectionTop);
-        const maxScroll = sectionHeight - windowHeight;
-        const progress = Math.min(scrolled / maxScroll, 1);
+      // Check if we're in the horizontal scroll zone
+      if (sectionTop <= 0 && sectionBottom >= windowHeight) {
+        // Calculate progress through the section
+        const scrollProgress = Math.abs(sectionTop) / (sectionHeight - windowHeight);
+        const progress = Math.min(Math.max(scrollProgress, 0), 1);
         
         setIsScrolling(true);
         setScrollProgress(progress);
         
-        // Calculate horizontal scroll
+        // Calculate horizontal scroll position
         const maxHorizontalScroll = container.scrollWidth - container.clientWidth;
-        const horizontalScroll = progress * maxHorizontalScroll;
+        const targetScrollLeft = progress * maxHorizontalScroll;
         
-        container.scrollLeft = horizontalScroll;
+        // Smooth horizontal scrolling
+        animationFrameId = requestAnimationFrame(() => {
+          container.scrollLeft = targetScrollLeft;
+        });
         
-        // Prevent body scroll when we're in the horizontal scrolling phase
-        if (progress < 1) {
-          document.body.style.overflow = 'hidden';
-        } else {
+        // Only block vertical scrolling during the horizontal scroll phase
+        if (progress >= 0.99) {
+          // Allow normal scrolling to resume when we're nearly done
           document.body.style.overflow = '';
           setIsScrolling(false);
         }
-      } else if (sectionBottom <= windowHeight) {
-        // Section has passed, ensure body scroll is restored
+      } else {
+        // Outside the horizontal scroll zone - ensure normal scrolling
         document.body.style.overflow = '';
-        setIsScrolling(false);
-      } else if (sectionTop > 0) {
-        // Section hasn't reached yet
         setIsScrolling(false);
         setScrollProgress(0);
-        document.body.style.overflow = '';
       }
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: false });
+    const throttledHandleScroll = () => {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+      handleScroll();
+    };
+
+    window.addEventListener('scroll', throttledHandleScroll, { passive: true });
     
     return () => {
-      window.removeEventListener('scroll', handleScroll);
-      document.body.style.overflow = ''; // Cleanup
+      window.removeEventListener('scroll', throttledHandleScroll);
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+      document.body.style.overflow = ''; // Ensure cleanup
     };
   }, []);
 
