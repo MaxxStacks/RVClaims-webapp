@@ -6,8 +6,7 @@ export function UpsellServicesSection() {
   const { t } = useLanguage();
   const sectionRef = useRef<HTMLElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const [isScrolling, setIsScrolling] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
+  const [currentCardIndex, setCurrentCardIndex] = useState(0);
 
   const services = [
     {
@@ -43,8 +42,6 @@ export function UpsellServicesSection() {
   ];
 
   useEffect(() => {
-    let animationFrameId: number;
-    
     const handleScroll = () => {
       if (!sectionRef.current || !containerRef.current) return;
 
@@ -55,69 +52,58 @@ export function UpsellServicesSection() {
       
       const sectionTop = rect.top;
       const sectionBottom = rect.bottom;
-      const sectionHeight = rect.height;
       
-      // Check if we're in the horizontal scroll zone
-      if (sectionTop <= 0 && sectionBottom >= windowHeight) {
-        // Calculate progress through the section
-        const rawProgress = Math.abs(sectionTop) / (sectionHeight - windowHeight);
+      // Check if section is in the viewport (with generous margins)
+      if (sectionTop <= windowHeight * 0.3 && sectionBottom >= windowHeight * 0.7) {
+        // Calculate which card should be displayed based on scroll position
+        const viewportCenter = windowHeight / 2;
+        const distanceFromTop = viewportCenter - sectionTop;
+        const sectionHeight = rect.height;
+        const progress = Math.max(0, Math.min(1, distanceFromTop / (sectionHeight * 0.6)));
         
-        // Apply a much slower, curved easing that gives more time for each card
-        // This creates a slow start, very slow middle, and extremely slow end
-        const slowedProgress = rawProgress * 0.6; // Much slower base speed
-        const curvedProgress = Math.pow(slowedProgress, 1.5); // Exponential curve for even slower end
-        const easedProgress = Math.min(Math.max(curvedProgress, 0), 1);
+        // Map progress to card index with longer dwell time per card
+        const cardIndex = Math.min(Math.floor(progress * services.length * 1.2), services.length - 1);
         
-        setIsScrolling(true);
-        setScrollProgress(easedProgress);
-        
-        // Calculate horizontal scroll position with extra padding for last cards
-        const maxHorizontalScroll = container.scrollWidth - container.clientWidth;
-        // Add 20% extra scroll distance to ensure last cards have full visibility
-        const extendedMaxScroll = maxHorizontalScroll * 1.2;
-        const targetScrollLeft = Math.min(easedProgress * extendedMaxScroll, maxHorizontalScroll);
-        
-        // Smooth horizontal scrolling
-        animationFrameId = requestAnimationFrame(() => {
-          container.scrollLeft = targetScrollLeft;
-        });
-        
-        // Only allow normal scrolling when we're way past completion
-        if (rawProgress >= 1.3) {
-          document.body.style.overflow = '';
-          setIsScrolling(false);
+        if (cardIndex !== currentCardIndex && cardIndex >= 0 && cardIndex < services.length) {
+          setCurrentCardIndex(cardIndex);
+          
+          // Calculate scroll position to center the current card
+          const cardWidth = 420; // 400px + 20px gap
+          const containerCenter = container.clientWidth / 2;
+          const targetScrollLeft = Math.max(0, (cardIndex * cardWidth) - containerCenter + (cardWidth / 2));
+          
+          container.scrollTo({
+            left: targetScrollLeft,
+            behavior: 'smooth'
+          });
         }
-      } else {
-        // Outside the horizontal scroll zone - ensure normal scrolling
-        document.body.style.overflow = '';
-        setIsScrolling(false);
-        setScrollProgress(0);
       }
     };
 
+    // Use throttling for better performance
+    let ticking = false;
     const throttledHandleScroll = () => {
-      if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId);
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          handleScroll();
+          ticking = false;
+        });
+        ticking = true;
       }
-      handleScroll();
     };
 
     window.addEventListener('scroll', throttledHandleScroll, { passive: true });
     
     return () => {
       window.removeEventListener('scroll', throttledHandleScroll);
-      if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId);
-      }
-      document.body.style.overflow = ''; // Ensure cleanup
     };
-  }, []);
+  }, [currentCardIndex, services.length]);
 
   return (
     <section 
       ref={sectionRef}
       className="py-24 bg-white flex flex-col justify-center" 
-      style={{ minHeight: '300vh' }}
+style={{ minHeight: '100vh' }}
       id="upsell-services"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

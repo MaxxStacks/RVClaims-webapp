@@ -46,6 +46,13 @@ export function Navigation() {
                 {t('technology')}
               </button>
               <button 
+                onClick={() => scrollToSection('upsell-services')}
+                className="text-muted-foreground hover:text-foreground transition-colors"
+                data-testid="link-revenue-services"
+              >
+                {t('revenueServices')}
+              </button>
+              <button 
                 onClick={() => scrollToSection('contact')}
                 className="bg-primary text-primary-foreground px-4 py-2 rounded-md hover:bg-primary/90 transition-colors h-10"
                 data-testid="button-contact"

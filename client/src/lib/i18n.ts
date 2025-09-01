@@ -4,6 +4,7 @@ export const translations = {
     services: "Services",
     experience: "Experience", 
     technology: "Technology",
+    revenueServices: "Revenue Services",
     contact: "Contact",
 
     // Hero Section
@@ -309,7 +310,8 @@ export const translations = {
     // Navigation
     services: "Services",
     experience: "Expérience",
-    technology: "Technologie", 
+    technology: "Technologie",
+    revenueServices: "Services revenus", 
     contact: "Contact",
 
     // Hero Section
