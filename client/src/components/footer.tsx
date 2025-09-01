@@ -1,4 +1,4 @@
-import { Phone, Mail, MapPin } from "lucide-react";
+import { Phone, Mail, MapPin, Heart } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
 
 export function Footer() {
@@ -173,6 +173,11 @@ export function Footer() {
                 {t('footer.compliance')}
               </a>
             </div>
+          </div>
+          <div className="flex justify-center items-center mt-6 pt-6 border-t border-gray-700">
+            <p className="text-sm text-gray-400 flex items-center" data-testid="text-footer-made-with-love">
+              Made with <Heart className="mx-2 w-4 h-4 text-white fill-white" /> in Montreal and Toronto
+            </p>
           </div>
         </div>
       </div>
