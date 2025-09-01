@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { X, ArrowLeft, Mail, Phone, Eye, EyeOff } from "lucide-react";
+import { SiGoogle, SiFacebook, SiLinkedin } from "react-icons/si";
 import { useLanguage } from "@/hooks/use-language";
 
 interface ClientLoginModalProps {
@@ -44,28 +45,28 @@ export function ClientLoginModal({ isOpen, onClose }: ClientLoginModalProps) {
       <div className="space-y-3">
         <button
           onClick={() => handleSocialLogin('google')}
-          className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-white border-2 border-border rounded-lg font-medium text-foreground hover:bg-gray-50 transition-colors"
+          className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-white border-2 border-black rounded-lg font-medium text-black hover:bg-gray-50 transition-colors"
           data-testid="button-login-google"
         >
-          <div className="w-5 h-5 bg-red-500 rounded-full flex items-center justify-center text-white text-xs font-bold">G</div>
+          <SiGoogle className="w-5 h-5 text-black" />
           Continue with Google
         </button>
 
         <button
           onClick={() => handleSocialLogin('facebook')}
-          className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-[#1877F2] text-white rounded-lg font-medium hover:bg-[#166FE5] transition-colors"
+          className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-white border-2 border-black rounded-lg font-medium text-black hover:bg-gray-50 transition-colors"
           data-testid="button-login-facebook"
         >
-          <div className="w-5 h-5 bg-white rounded text-[#1877F2] text-xs font-bold flex items-center justify-center">f</div>
+          <SiFacebook className="w-5 h-5 text-black" />
           Continue with Facebook
         </button>
 
         <button
           onClick={() => handleSocialLogin('linkedin')}
-          className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-[#0A66C2] text-white rounded-lg font-medium hover:bg-[#095AA6] transition-colors"
+          className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-white border-2 border-black rounded-lg font-medium text-black hover:bg-gray-50 transition-colors"
           data-testid="button-login-linkedin"
         >
-          <div className="w-5 h-5 bg-white rounded text-[#0A66C2] text-xs font-bold flex items-center justify-center">in</div>
+          <SiLinkedin className="w-5 h-5 text-black" />
           Continue with LinkedIn
         </button>
       </div>
