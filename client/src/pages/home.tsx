@@ -5,6 +5,7 @@ import { ClaimsSection } from "@/components/claims-section";
 import { RvTypesSection } from "@/components/rv-types-section";
 import { TechnologySection } from "@/components/technology-section";
 import { ExperienceSection } from "@/components/experience-section";
+import { UpsellServicesSection } from "@/components/upsell-services-section";
 import { ContactSection } from "@/components/contact-section";
 import { Footer } from "@/components/footer";
 import { LanguageToggle } from "@/components/language-toggle";
@@ -21,6 +22,7 @@ export default function Home() {
       <RvTypesSection />
       <TechnologySection />
       <ExperienceSection />
+      <UpsellServicesSection />
       <ContactSection />
       <Footer />
       <ChatbotWidget />

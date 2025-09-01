@@ -118,6 +118,69 @@ export const translations = {
       manufacturersTitle: "Trusted by Leading Manufacturers"
     },
 
+    // Upsell Services Section
+    upsellServices: {
+      badge: "Revenue Growth Services",
+      title: "Maximize Dealership Revenue with Expert Services",
+      description: "Beyond warranty claims, we offer comprehensive outsourced services that Canadian RV dealers use to boost sales, improve operations, and increase profitability.",
+      services: {
+        finance: {
+          title: "Finance & Insurance (F&I) Services",
+          description: "Complete F&I outsourcing with 20% higher loan approval rates and premium product placement.",
+          feature1: "Loan origination and approval management",
+          feature2: "Extended warranty and GAP insurance sales",
+          feature3: "F&I product training and compliance",
+          feature4: "Average 8.5% gross margin vs industry 6.9%"
+        },
+        marketing: {
+          title: "Digital Marketing & Lead Generation",
+          description: "Professional marketing services targeting next-generation RV buyers with proven results.",
+          feature1: "SEO, PPC, and social media campaigns",
+          feature2: "Lead generation and CRM integration",
+          feature3: "Website optimization and mobile design",
+          feature4: "Email marketing and customer retention"
+        },
+        parts: {
+          title: "Parts & Accessories Management",
+          description: "Turn accessories into a robust profit center with expert inventory and sales management.",
+          feature1: "Inventory optimization and management",
+          feature2: "Installation and setup services",
+          feature3: "Customer upgrade and customization programs",
+          feature4: "Proactive accessory sales training"
+        },
+        service: {
+          title: "Service Department Support",
+          description: "Address technician shortages with mobile service capabilities and expert support systems.",
+          feature1: "Mobile service deployment and management",
+          feature2: "Online appointment scheduling systems",
+          feature3: "Technician training and certification",
+          feature4: "Service process optimization"
+        },
+        technology: {
+          title: "Customer Experience Technology",
+          description: "Modern CRM and digital platforms that enhance customer relationships and drive sales.",
+          feature1: "Advanced CRM and customer tracking",
+          feature2: "Digital customer engagement platforms",
+          feature3: "Automated follow-up and nurture campaigns",
+          feature4: "Sales process automation tools"
+        },
+        consignment: {
+          title: "Trade-In & Consignment Programs",
+          description: "Professional consignment and trade-in services that expand inventory and increase margins.",
+          feature1: "Professional vehicle appraisal services",
+          feature2: "Consignment program management",
+          feature3: "Trade-in value optimization",
+          feature4: "Inventory turn improvement strategies"
+        }
+      },
+      cta: {
+        title: "Ready to Expand Your Revenue Streams?",
+        description: "Join successful Canadian RV dealers who've partnered with us for comprehensive business growth beyond warranty claims.",
+        contactButton: "Discuss Services",
+        callButton: "Call 1-800-RV-CLAIM"
+      }
+    },
+
     // Contact Section
     contactSection: {
       title: "Ready to Optimize Your Claims?",
@@ -359,6 +422,69 @@ export const translations = {
         description: "Le traitement rapide des réclamations réduit les temps d'arrêt et améliore la trésorerie"
       },
       manufacturersTitle: "Approuvé par les fabricants leaders"
+    },
+
+    // Upsell Services Section
+    upsellServices: {
+      badge: "Services de croissance des revenus",
+      title: "Maximisez les revenus du concessionnaire avec des services experts",
+      description: "Au-delà des réclamations de garantie, nous offrons des services externalisés complets que les concessionnaires VR canadiens utilisent pour stimuler les ventes, améliorer les opérations et augmenter la rentabilité.",
+      services: {
+        finance: {
+          title: "Services de financement et d'assurance (F&I)",
+          description: "Externalisation F&I complète avec 20% de taux d'approbation de prêts plus élevés et placement de produits premium.",
+          feature1: "Gestion de l'origination et de l'approbation des prêts",
+          feature2: "Ventes de garantie prolongée et d'assurance GAP",
+          feature3: "Formation aux produits F&I et conformité",
+          feature4: "Marge brute moyenne de 8,5% vs 6,9% de l'industrie"
+        },
+        marketing: {
+          title: "Marketing numérique et génération de leads",
+          description: "Services de marketing professionnel ciblant la nouvelle génération d'acheteurs VR avec des résultats prouvés.",
+          feature1: "Campagnes SEO, PPC et médias sociaux",
+          feature2: "Génération de leads et intégration CRM",
+          feature3: "Optimisation de site web et design mobile",
+          feature4: "Marketing par courriel et fidélisation client"
+        },
+        parts: {
+          title: "Gestion des pièces et accessoires",
+          description: "Transformez les accessoires en centre de profit robuste avec une gestion experte de l'inventaire et des ventes.",
+          feature1: "Optimisation et gestion d'inventaire",
+          feature2: "Services d'installation et de configuration",
+          feature3: "Programmes de mise à niveau et personnalisation client",
+          feature4: "Formation proactive aux ventes d'accessoires"
+        },
+        service: {
+          title: "Support du département de service",
+          description: "Abordez les pénuries de techniciens avec des capacités de service mobile et des systèmes de support experts.",
+          feature1: "Déploiement et gestion de service mobile",
+          feature2: "Systèmes de prise de rendez-vous en ligne",
+          feature3: "Formation et certification des techniciens",
+          feature4: "Optimisation des processus de service"
+        },
+        technology: {
+          title: "Technologie d'expérience client",
+          description: "CRM moderne et plateformes numériques qui améliorent les relations client et stimulent les ventes.",
+          feature1: "CRM avancé et suivi client",
+          feature2: "Plateformes d'engagement client numérique",
+          feature3: "Campagnes de suivi et de nurturing automatisées",
+          feature4: "Outils d'automatisation des processus de vente"
+        },
+        consignment: {
+          title: "Programmes de reprise et consignation",
+          description: "Services professionnels de consignation et reprise qui élargissent l'inventaire et augmentent les marges.",
+          feature1: "Services d'évaluation professionnelle de véhicules",
+          feature2: "Gestion de programme de consignation",
+          feature3: "Optimisation de la valeur de reprise",
+          feature4: "Stratégies d'amélioration du roulement d'inventaire"
+        }
+      },
+      cta: {
+        title: "Prêt à élargir vos sources de revenus?",
+        description: "Rejoignez les concessionnaires VR canadiens prospères qui se sont associés avec nous pour une croissance d'entreprise complète au-delà des réclamations de garantie.",
+        contactButton: "Discuter des services",
+        callButton: "Appeler 1-800-RV-CLAIM"
+      }
     },
 
     // Contact Section
