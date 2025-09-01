@@ -44,12 +44,13 @@ export function MobileMenu() {
         />
       )}
 
-      {/* Side Menu */}
+      {/* Side Menu - Visible on ALL devices when open */}
       <div
-        className={`fixed top-0 right-0 h-full w-80 bg-white border-l border-border shadow-2xl transform transition-transform duration-300 ease-in-out z-[9999] ${
+        className={`fixed top-0 right-0 h-full w-80 bg-white border-l-2 border-primary/20 shadow-2xl transform transition-transform duration-300 ease-in-out z-[9999] ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
         data-testid="menu-pages-side"
+        style={{ background: 'rgb(255, 255, 255)' }}
       >
         <div className="flex flex-col h-full">
           {/* Header */}
