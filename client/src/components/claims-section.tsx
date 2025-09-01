@@ -7,28 +7,23 @@ export function ClaimsSection() {
   const claimTypes = [
     {
       key: 'daf',
-      icon: Truck,
-      color: 'text-blue-600'
+      icon: Truck
     },
     {
       key: 'pdi',
-      icon: FileText,
-      color: 'text-green-600'
+      icon: FileText
     },
     {
       key: 'warranty',
-      icon: Shield,
-      color: 'text-purple-600'
+      icon: Shield
     },
     {
       key: 'extended',
-      icon: ShieldCheck,
-      color: 'text-orange-600'
+      icon: ShieldCheck
     },
     {
       key: 'insurance',
-      icon: Building,
-      color: 'text-red-600'
+      icon: Building
     }
   ];
 
@@ -45,7 +40,7 @@ export function ClaimsSection() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
-          {claimTypes.map(({ key, icon: Icon, color }) => (
+          {claimTypes.map(({ key, icon: Icon }) => (
             <div
               key={key}
               className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow"
@@ -53,7 +48,7 @@ export function ClaimsSection() {
             >
               <div className="text-center">
                 <div className="mx-auto w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
-                  <Icon className={`${color} w-8 h-8`} />
+                  <Icon className="text-primary w-8 h-8" />
                 </div>
                 <h3 className="font-semibold text-lg mb-3" data-testid={`text-claim-title-${key}`}>
                   {t(`claimsSection.claimTypes.${key}.title`)}
