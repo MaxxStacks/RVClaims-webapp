@@ -1,0 +1,152 @@
+import { useState } from "react";
+import { Menu, X, User, Facebook, Twitter, Linkedin, Instagram } from "lucide-react";
+import { Link, useLocation } from "wouter";
+import { useLanguage } from "@/hooks/use-language";
+import { LanguageToggle } from "@/components/language-toggle";
+
+export function MobileMenu() {
+  const [isOpen, setIsOpen] = useState(false);
+  const { t } = useLanguage();
+  const [location] = useLocation();
+
+  const toggleMenu = () => setIsOpen(!isOpen);
+  const closeMenu = () => setIsOpen(false);
+
+  const menuItems = [
+    { href: "/about", label: t('navigation.about') },
+    { href: "/services", label: t('navigation.services') },
+    { href: "/claims-processing", label: t('navigation.claims') },
+    { href: "/technology", label: t('navigation.technology') },
+    { href: "/revenue-services", label: t('navigation.revenueServices') },
+    { href: "/rv-coverage", label: t('navigation.rvCoverage') },
+    { href: "/contact", label: t('navigation.contact') },
+    { href: "/privacy-policy", label: t('privacyPolicyPage.title') }
+  ];
+
+  return (
+    <>
+      {/* Hamburger Button - Only visible on mobile */}
+      <button
+        onClick={toggleMenu}
+        className="md:hidden p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/10 transition-colors"
+        data-testid="button-mobile-menu"
+        aria-label="Open mobile menu"
+      >
+        <Menu size={24} />
+      </button>
+
+      {/* Overlay */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 md:hidden"
+          onClick={closeMenu}
+          data-testid="overlay-mobile-menu"
+        />
+      )}
+
+      {/* Side Menu */}
+      <div
+        className={`fixed top-0 right-0 h-full w-80 bg-white border-l border-border shadow-2xl transform transition-transform duration-300 ease-in-out z-50 md:hidden ${
+          isOpen ? 'translate-x-0' : 'translate-x-full'
+        }`}
+        data-testid="menu-mobile-side"
+      >
+        <div className="flex flex-col h-full">
+          {/* Header */}
+          <div className="flex items-center justify-between p-6 border-b border-border bg-gradient-to-r from-primary/10 to-primary/5">
+            <Link 
+              href="/" 
+              className="text-2xl font-bold gradient-text"
+              onClick={closeMenu}
+              data-testid="link-mobile-logo"
+            >
+              RVClaimTrack
+            </Link>
+            <button
+              onClick={closeMenu}
+              className="p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/10 transition-colors"
+              data-testid="button-close-menu"
+              aria-label="Close mobile menu"
+            >
+              <X size={24} />
+            </button>
+          </div>
+
+          {/* Menu Items */}
+          <div className="flex-1 px-6 py-4 space-y-1">
+            {menuItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={closeMenu}
+                className={`block px-4 py-3 rounded-lg text-lg font-medium transition-all duration-200 ${
+                  location === item.href
+                    ? 'bg-primary text-primary-foreground shadow-sm'
+                    : 'text-foreground hover:bg-primary/10 hover:text-primary hover:pl-6'
+                }`}
+                data-testid={`link-mobile-${item.href.slice(1)}`}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </div>
+
+          {/* Client Login Button */}
+          <div className="px-6 py-4 border-t border-border">
+            <button
+              className="w-full flex items-center justify-center px-4 py-3 bg-gradient-to-r from-primary to-primary/90 text-primary-foreground rounded-lg font-medium hover:from-primary/90 hover:to-primary/80 transition-all duration-200 shadow-sm hover:shadow-md"
+              data-testid="button-client-login"
+            >
+              <User className="mr-2" size={20} />
+              {t('mobileMenu.clientLogin')}
+            </button>
+          </div>
+
+          {/* Social Media & Language Toggle */}
+          <div className="px-6 py-4 border-t border-border bg-gradient-to-r from-primary/5 to-muted/20">
+            <div className="flex items-center justify-between">
+              {/* Social Media Icons */}
+              <div className="flex space-x-4">
+                <a
+                  href="#"
+                  className="p-2 rounded-md text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
+                  data-testid="link-social-facebook"
+                  aria-label="Facebook"
+                >
+                  <Facebook size={20} />
+                </a>
+                <a
+                  href="#"
+                  className="p-2 rounded-md text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
+                  data-testid="link-social-linkedin"
+                  aria-label="LinkedIn"
+                >
+                  <Linkedin size={20} />
+                </a>
+                <a
+                  href="#"
+                  className="p-2 rounded-md text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
+                  data-testid="link-social-twitter"
+                  aria-label="Twitter"
+                >
+                  <Twitter size={20} />
+                </a>
+                <a
+                  href="#"
+                  className="p-2 rounded-md text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
+                  data-testid="link-social-instagram"
+                  aria-label="Instagram"
+                >
+                  <Instagram size={20} />
+                </a>
+              </div>
+
+              {/* Language Toggle */}
+              <LanguageToggle />
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}

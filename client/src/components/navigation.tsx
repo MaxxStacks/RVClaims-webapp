@@ -1,5 +1,6 @@
 import { useLanguage } from "@/hooks/use-language";
 import { LanguageToggle } from "@/components/language-toggle";
+import { MobileMenu } from "@/components/mobile-menu";
 import { Link, useLocation } from "wouter";
 
 export function Navigation() {
@@ -62,7 +63,12 @@ export function Navigation() {
                 {t('navigation.contact')}
               </Link>
             </div>
-            <LanguageToggle />
+            <div className="flex items-center space-x-4">
+              <div className="hidden md:block">
+                <LanguageToggle />
+              </div>
+              <MobileMenu />
+            </div>
           </div>
         </div>
       </div>

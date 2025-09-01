@@ -7,6 +7,7 @@ export const translations = {
       claims: "Claims Processing",
       technology: "Technology",
       revenueServices: "Revenue Services",
+      rvCoverage: "RV Coverage",
       contact: "Contact"
     },
 
@@ -461,6 +462,11 @@ export const translations = {
       description: "We use enterprise-grade cookies to enhance your experience and analyze performance.",
       accept: "Accept",
       decline: "Decline"
+    },
+
+    // Mobile Menu
+    mobileMenu: {
+      clientLogin: "Client Login"
     }
   },
 
@@ -472,6 +478,7 @@ export const translations = {
       claims: "Traitement des réclamations",
       technology: "Technologie",
       revenueServices: "Services revenus",
+      rvCoverage: "Couverture VR",
       contact: "Contact"
     },
 
@@ -926,6 +933,11 @@ export const translations = {
       description: "Nous utilisons des cookies de niveau entreprise pour améliorer votre expérience et analyser les performances.",
       accept: "Accepter",
       decline: "Refuser"
+    },
+
+    // Mobile Menu
+    mobileMenu: {
+      clientLogin: "Connexion client"
     }
   }
 };
