@@ -49,7 +49,7 @@ export function PrivacyAssuranceSection() {
             </p>
             
             <a 
-              href="/attached_assets/RVClaimTrack-NDA.pdf" 
+              href="/attached_assets/RVClaimTrack-NDA.html" 
               target="_blank" 
               rel="noopener noreferrer"
               className="inline-flex items-center bg-white text-primary px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white/90 transition-colors"
