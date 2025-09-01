@@ -37,14 +37,6 @@ export function MobileMenu() {
         <Menu size={24} />
       </button>
 
-      {/* Overlay */}
-      {isOpen && (
-        <div
-          className="fixed inset-0 bg-black/30 z-[9998]"
-          onClick={closeMenu}
-          data-testid="overlay-pages-menu"
-        />
-      )}
 
       {/* Side Menu - Visible on ALL devices when open */}
       <div

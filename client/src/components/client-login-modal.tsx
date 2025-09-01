@@ -245,10 +245,26 @@ export function ClientLoginModal({ isOpen, onClose }: ClientLoginModalProps) {
   );
 
   return (
-    <div className="fixed inset-0 bg-black/50 z-[10000] flex items-center justify-center p-4">
+    <div 
+      className="fixed inset-0 z-[10000] flex items-center justify-center p-4" 
+      style={{ 
+        position: 'fixed', 
+        top: 0, 
+        left: 0, 
+        width: '100vw', 
+        height: '100vh',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}
+    >
       <div 
-        className="bg-white rounded-xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto"
-        style={{ backgroundColor: '#ffffff' }}
+        className="bg-white rounded-xl shadow-2xl w-full max-w-md max-h-[85vh] overflow-y-auto"
+        style={{ 
+          backgroundColor: '#ffffff',
+          position: 'relative'
+        }}
         data-testid="modal-client-login"
       >
         <div className="sticky top-0 bg-white border-b border-border p-4 flex items-center justify-between">
