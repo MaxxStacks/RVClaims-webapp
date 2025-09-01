@@ -46,11 +46,14 @@ export function MobileMenu() {
 
       {/* Side Menu - Visible on ALL devices when open */}
       <div
-        className={`fixed top-0 right-0 h-full w-80 bg-white border-l-2 border-primary/20 shadow-2xl transform transition-transform duration-300 ease-in-out z-[9999] ${
+        className={`fixed top-0 right-0 h-full w-80 border-l-2 border-primary/20 shadow-2xl transform transition-transform duration-300 ease-in-out z-[9999] ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
         data-testid="menu-pages-side"
-        style={{ background: 'rgb(255, 255, 255)' }}
+        style={{ 
+          backgroundColor: '#ffffff !important',
+          background: '#ffffff !important'
+        }}
       >
         <div className="flex flex-col h-full">
           {/* Header */}
@@ -74,13 +77,13 @@ export function MobileMenu() {
           </div>
 
           {/* Menu Items */}
-          <div className="flex-1 px-6 py-4 space-y-1">
+          <div className="flex-1 px-6 py-2 space-y-0.5">
             {menuItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 onClick={closeMenu}
-                className={`block px-4 py-3 rounded-lg text-lg font-medium transition-all duration-200 ${
+                className={`block px-4 py-2 rounded-lg text-base font-medium transition-all duration-200 ${
                   location === item.href
                     ? 'bg-primary text-primary-foreground shadow-sm'
                     : 'text-foreground hover:bg-primary/10 hover:text-primary hover:pl-6'
@@ -93,9 +96,9 @@ export function MobileMenu() {
           </div>
 
           {/* Client Login Button */}
-          <div className="px-6 py-4 border-t border-border">
+          <div className="px-6 py-3 border-t border-border">
             <button
-              className="w-full flex items-center justify-center px-4 py-3 bg-gradient-to-r from-primary to-primary/90 text-primary-foreground rounded-lg font-medium hover:from-primary/90 hover:to-primary/80 transition-all duration-200 shadow-sm hover:shadow-md"
+              className="w-full flex items-center justify-center px-4 py-2 bg-gradient-to-r from-primary to-primary/90 text-primary-foreground rounded-lg font-medium hover:from-primary/90 hover:to-primary/80 transition-all duration-200 shadow-sm hover:shadow-md"
               data-testid="button-client-login"
             >
               <User className="mr-2" size={20} />
@@ -104,7 +107,7 @@ export function MobileMenu() {
           </div>
 
           {/* Social Media & Language Toggle */}
-          <div className="px-6 py-4 border-t border-border bg-gradient-to-r from-primary/5 to-muted/20">
+          <div className="px-6 py-3 border-t border-border bg-gradient-to-r from-primary/5 to-muted/20">
             <div className="flex items-center justify-between">
               {/* Social Media Icons */}
               <div className="flex space-x-4">
