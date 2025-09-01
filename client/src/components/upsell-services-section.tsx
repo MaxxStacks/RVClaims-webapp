@@ -1,8 +1,13 @@
 import { DollarSign, TrendingUp, Users, Wrench, Smartphone, RefreshCw } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
+import { useEffect, useRef, useState } from "react";
 
 export function UpsellServicesSection() {
   const { t } = useLanguage();
+  const sectionRef = useRef<HTMLElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isScrolling, setIsScrolling] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   const services = [
     {
@@ -37,8 +42,68 @@ export function UpsellServicesSection() {
     }
   ];
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!sectionRef.current || !containerRef.current) return;
+
+      const section = sectionRef.current;
+      const container = containerRef.current;
+      const rect = section.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      
+      // Check if section is in view
+      const sectionTop = rect.top;
+      const sectionBottom = rect.bottom;
+      const sectionHeight = rect.height;
+      
+      // Section is in view when it starts entering the viewport
+      if (sectionTop <= 0 && sectionBottom > windowHeight) {
+        const scrolled = Math.abs(sectionTop);
+        const maxScroll = sectionHeight - windowHeight;
+        const progress = Math.min(scrolled / maxScroll, 1);
+        
+        setIsScrolling(true);
+        setScrollProgress(progress);
+        
+        // Calculate horizontal scroll
+        const maxHorizontalScroll = container.scrollWidth - container.clientWidth;
+        const horizontalScroll = progress * maxHorizontalScroll;
+        
+        container.scrollLeft = horizontalScroll;
+        
+        // Prevent body scroll when we're in the horizontal scrolling phase
+        if (progress < 1) {
+          document.body.style.overflow = 'hidden';
+        } else {
+          document.body.style.overflow = '';
+          setIsScrolling(false);
+        }
+      } else if (sectionBottom <= windowHeight) {
+        // Section has passed, ensure body scroll is restored
+        document.body.style.overflow = '';
+        setIsScrolling(false);
+      } else if (sectionTop > 0) {
+        // Section hasn't reached yet
+        setIsScrolling(false);
+        setScrollProgress(0);
+        document.body.style.overflow = '';
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: false });
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      document.body.style.overflow = ''; // Cleanup
+    };
+  }, []);
+
   return (
-    <section className="py-24 bg-white" id="upsell-services">
+    <section 
+      ref={sectionRef}
+      className="py-24 bg-white min-h-screen flex flex-col justify-center" 
+      id="upsell-services"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center space-y-4 mb-16">
           <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
@@ -52,50 +117,60 @@ export function UpsellServicesSection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-          {services.map(({ key, icon: Icon, revenue }) => (
-            <div
-              key={key}
-              className="bg-gray-50 rounded-xl p-8 hover:shadow-lg transition-all duration-300 group"
-              data-testid={`card-service-${key}`}
-            >
-              <div className="flex items-start justify-between mb-6">
-                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                  <Icon className="text-primary w-6 h-6" />
+        <div 
+          ref={containerRef}
+          className="overflow-x-hidden mb-16"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        >
+          <div 
+            className="flex gap-8 transition-transform duration-75"
+            style={{ width: `${services.length * 400}px` }}
+          >
+            {services.map(({ key, icon: Icon, revenue }) => (
+              <div
+                key={key}
+                className="bg-gray-50 rounded-xl p-8 hover:shadow-lg transition-all duration-300 group flex-shrink-0"
+                style={{ width: '380px' }}
+                data-testid={`card-service-${key}`}
+              >
+                <div className="flex items-start justify-between mb-6">
+                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                    <Icon className="text-primary w-6 h-6" />
+                  </div>
+                  <div className="bg-green-100 text-green-800 text-sm font-semibold px-3 py-1 rounded-full">
+                    {revenue}
+                  </div>
                 </div>
-                <div className="bg-green-100 text-green-800 text-sm font-semibold px-3 py-1 rounded-full">
-                  {revenue}
-                </div>
-              </div>
-              
-              <h3 className="font-semibold text-xl mb-3 text-foreground" data-testid={`text-service-title-${key}`}>
-                {t(`upsellServices.services.${key}.title`)}
-              </h3>
-              
-              <p className="text-muted-foreground text-sm leading-relaxed mb-4" data-testid={`text-service-description-${key}`}>
-                {t(`upsellServices.services.${key}.description`)}
-              </p>
+                
+                <h3 className="font-semibold text-xl mb-3 text-foreground" data-testid={`text-service-title-${key}`}>
+                  {t(`upsellServices.services.${key}.title`)}
+                </h3>
+                
+                <p className="text-muted-foreground text-sm leading-relaxed mb-4" data-testid={`text-service-description-${key}`}>
+                  {t(`upsellServices.services.${key}.description`)}
+                </p>
 
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li className="flex items-center" data-testid={`text-service-feature-${key}-0`}>
-                  <div className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0"></div>
-                  {t(`upsellServices.services.${key}.feature1`)}
-                </li>
-                <li className="flex items-center" data-testid={`text-service-feature-${key}-1`}>
-                  <div className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0"></div>
-                  {t(`upsellServices.services.${key}.feature2`)}
-                </li>
-                <li className="flex items-center" data-testid={`text-service-feature-${key}-2`}>
-                  <div className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0"></div>
-                  {t(`upsellServices.services.${key}.feature3`)}
-                </li>
-                <li className="flex items-center" data-testid={`text-service-feature-${key}-3`}>
-                  <div className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0"></div>
-                  {t(`upsellServices.services.${key}.feature4`)}
-                </li>
-              </ul>
-            </div>
-          ))}
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li className="flex items-center" data-testid={`text-service-feature-${key}-0`}>
+                    <div className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0"></div>
+                    {t(`upsellServices.services.${key}.feature1`)}
+                  </li>
+                  <li className="flex items-center" data-testid={`text-service-feature-${key}-1`}>
+                    <div className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0"></div>
+                    {t(`upsellServices.services.${key}.feature2`)}
+                  </li>
+                  <li className="flex items-center" data-testid={`text-service-feature-${key}-2`}>
+                    <div className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0"></div>
+                    {t(`upsellServices.services.${key}.feature3`)}
+                  </li>
+                  <li className="flex items-center" data-testid={`text-service-feature-${key}-3`}>
+                    <div className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0"></div>
+                    {t(`upsellServices.services.${key}.feature4`)}
+                  </li>
+                </ul>
+              </div>
+            ))}
+          </div>
         </div>
 
         <div className="bg-gradient-to-r from-primary/5 to-primary/10 rounded-2xl p-8 lg:p-12 text-center">
