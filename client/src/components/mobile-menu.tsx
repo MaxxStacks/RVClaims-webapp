@@ -38,7 +38,7 @@ export function MobileMenu() {
       {/* Overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9998]"
           onClick={closeMenu}
           data-testid="overlay-pages-menu"
         />
@@ -46,7 +46,7 @@ export function MobileMenu() {
 
       {/* Side Menu */}
       <div
-        className={`fixed top-0 right-0 h-full w-80 bg-white border-l border-border shadow-2xl transform transition-transform duration-300 ease-in-out z-50 ${
+        className={`fixed top-0 right-0 h-full w-80 bg-white border-l border-border shadow-2xl transform transition-transform duration-300 ease-in-out z-[9999] ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
         data-testid="menu-pages-side"
