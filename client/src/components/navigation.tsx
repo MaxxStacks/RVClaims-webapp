@@ -47,7 +47,7 @@ export function Navigation() {
               </button>
               <button 
                 onClick={() => scrollToSection('contact')}
-                className="bg-primary text-primary-foreground px-4 py-2 rounded-md hover:bg-primary/90 transition-colors"
+                className="bg-primary text-primary-foreground px-3 py-1 rounded-md hover:bg-primary/90 transition-colors h-8"
                 data-testid="button-contact"
               >
                 {t('contact')}

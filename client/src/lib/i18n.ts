@@ -159,6 +159,37 @@ export const translations = {
       compliance: "PIPEDA Compliance"
     },
 
+    // Chatbot
+    chatbot: {
+      title: "Get Expert Support",
+      description: "Our claims experts are ready to help you optimize your RV warranty revenue. Select your department for immediate assistance.",
+      departments: {
+        sales: "Sales Team",
+        claims: "Claims Department", 
+        technical: "Technical Support",
+        accountsPayable: "Accounts Payable",
+        accountsReceivable: "Accounts Receivable"
+      },
+      departmentDescriptions: {
+        sales: "New partnerships and dealership onboarding",
+        claims: "Claims processing and optimization support",
+        technical: "Platform training and technical assistance", 
+        accountsPayable: "Invoice and payment processing",
+        accountsReceivable: "Revenue and collections support"
+      },
+      contactMethods: {
+        title: "How would you like to connect?",
+        description: "Choose your preferred method to reach our {department} team.",
+        phone: "Phone Call",
+        email: "Email Support", 
+        chat: "Live Chat"
+      },
+      phoneInfo: "Mon-Fri, 8AM-6PM EST",
+      emailInfo: "Response within 2 hours",
+      chatInfo: "Available now",
+      backButton: "Back to Departments"
+    },
+
     // Cookie Notice
     cookies: {
       title: "Cookie Policy",
@@ -326,6 +357,37 @@ export const translations = {
       termsOfService: "Conditions d'utilisation",
       cookiePolicy: "Politique des cookies",
       compliance: "Conformité LPRPDE"
+    },
+
+    // Chatbot
+    chatbot: {
+      title: "Obtenir un support expert",
+      description: "Nos experts en réclamations sont prêts à vous aider à optimiser vos revenus de garantie VR. Sélectionnez votre département pour une assistance immédiate.",
+      departments: {
+        sales: "Équipe des ventes",
+        claims: "Département des réclamations", 
+        technical: "Support technique",
+        accountsPayable: "Comptes à payer",
+        accountsReceivable: "Comptes à recevoir"
+      },
+      departmentDescriptions: {
+        sales: "Nouveaux partenariats et intégration de concessionnaires",
+        claims: "Support de traitement et d'optimisation des réclamations",
+        technical: "Formation de plateforme et assistance technique", 
+        accountsPayable: "Traitement des factures et des paiements",
+        accountsReceivable: "Support de revenus et de recouvrements"
+      },
+      contactMethods: {
+        title: "Comment souhaitez-vous vous connecter?",
+        description: "Choisissez votre méthode préférée pour rejoindre notre équipe {department}.",
+        phone: "Appel téléphonique",
+        email: "Support par e-mail", 
+        chat: "Chat en direct"
+      },
+      phoneInfo: "Lun-Ven, 8h-18h EST",
+      emailInfo: "Réponse sous 2 heures",
+      chatInfo: "Disponible maintenant",
+      backButton: "Retour aux départements"
     },
 
     // Cookie Notice
