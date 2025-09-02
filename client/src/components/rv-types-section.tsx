@@ -8,8 +8,8 @@ const TravelTrailerIcon = () => (
     src={travelTrailerIcon} 
     alt="Travel Trailer" 
     style={{ 
-      width: '120px', 
-      height: '120px',
+      width: '100px', 
+      height: '100px',
       imageRendering: 'crisp-edges',
       objectFit: 'contain'
     }} 
@@ -149,7 +149,7 @@ export function RvTypesSection() {
         <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
           {rvTypes.map((type, index) => (
             <div key={index} className="bg-card rounded-lg p-4 text-center border border-border hover-lift" data-testid={type.testId}>
-              <div className="w-32 h-32 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
+              <div className="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
                 <type.icon className="text-primary" size={24} />
               </div>
               <h4 className="font-medium text-sm">
