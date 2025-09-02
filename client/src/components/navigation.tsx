@@ -2,6 +2,7 @@ import { useLanguage } from "@/hooks/use-language";
 import { LanguageToggle } from "@/components/language-toggle";
 import { MobileMenu } from "@/components/mobile-menu";
 import { Link, useLocation } from "wouter";
+import logoImage from "@assets/228829189_1756836510408.png";
 
 export function Navigation() {
   const { t } = useLanguage();
@@ -13,8 +14,13 @@ export function Navigation() {
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
             <div className="flex-shrink-0">
-              <Link href="/" className="text-2xl font-bold gradient-text hover:opacity-90 transition-opacity" data-testid="text-logo">
-                RVClaimTrack
+              <Link href="/" className="flex items-center hover:opacity-90 transition-opacity" data-testid="link-logo">
+                <img 
+                  src={logoImage} 
+                  alt="RV Claims" 
+                  className="h-8 w-auto" 
+                  data-testid="img-logo"
+                />
               </Link>
             </div>
           </div>
