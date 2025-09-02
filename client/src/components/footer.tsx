@@ -6,7 +6,7 @@ export function Footer() {
   const { t } = useLanguage();
 
   return (
-    <footer className="bg-gray-900 text-white py-16">
+    <footer className="bg-gray-900 text-white pt-16 pb-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 mb-12">
           <div className="lg:col-span-2 space-y-4">
@@ -175,7 +175,7 @@ export function Footer() {
               </a>
             </div>
           </div>
-          <div className="flex justify-center items-center mt-6 pt-6 border-t border-gray-700">
+          <div className="flex justify-center items-center mt-4 pt-4 border-t border-gray-700">
             <p className="text-base text-gray-300 flex items-center" data-testid="text-footer-made-with-love">
               Developed and coded with <Heart className="mx-2 w-4 h-4 text-white fill-white" /> in Montreal and Toronto Canada
             </p>
