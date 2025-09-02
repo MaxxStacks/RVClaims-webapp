@@ -4,6 +4,22 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Mobile overflow fixes */
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Prevent horizontal scrolling on all elements */
+.no-horizontal-scroll {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
 :root {
   --background: hsl(0 0% 100%);
   --foreground: hsl(240 10% 3.9%);
@@ -197,7 +213,7 @@
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
 
-/* Scrolling notification animation */
+/* Scrolling notification animation - mobile safe */
 @keyframes scroll {
   0% {
     transform: translateX(100%);
@@ -209,5 +225,8 @@
 
 .animate-scroll {
   animation: scroll 30s linear infinite;
+  /* Ensure animation stays within container */
+  will-change: transform;
+  contain: layout;
 }
 

@@ -22,7 +22,7 @@ export function PageLayout({ children, seoTitle, seoDescription, seoKeywords, ca
         keywords={seoKeywords}
         canonical={canonical}
       />
-      <div className="min-h-screen w-full">
+      <div className="min-h-screen w-full overflow-x-hidden">
         <NotificationBar />
         <Navigation />
         {children}
