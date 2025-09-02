@@ -1,5 +1,11 @@
-import { Caravan, Truck, Bus, CarTaxiFront, Tent } from "lucide-react";
+import { Truck, Bus, CarTaxiFront, Tent } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
+import travelTrailerIcon from "@assets/New Project_1756841574795.png";
+
+// Custom Travel Trailer Icon Component
+const TravelTrailerIcon = () => (
+  <img src={travelTrailerIcon} alt="Travel Trailer" className="w-6 h-6" />
+);
 
 // Custom SVG icons for specific RV types
 const FifthWheelIcon = () => (
@@ -68,7 +74,7 @@ export function RvTypesSection() {
 
   const rvTypes = [
     {
-      icon: Caravan,
+      icon: TravelTrailerIcon,
       title: t('rvTypes.travelTrailer'),
       testId: 'card-travel-trailer'
     },
