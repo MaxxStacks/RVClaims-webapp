@@ -60,9 +60,12 @@ export function ExperienceSection() {
         </div>
 
         <div className="bg-card rounded-xl p-8 border border-border">
-          <h3 className="text-2xl font-semibold text-center mb-8" data-testid="text-manufacturers-title">
+          <h3 className="text-2xl font-semibold text-center mb-3" data-testid="text-manufacturers-title">
             {t('experienceSection.manufacturersTitle')}
           </h3>
+          <p className="text-center text-muted-foreground mb-8 max-w-2xl mx-auto" data-testid="text-manufacturers-subtitle">
+            {t('experienceSection.manufacturersSubtitle')}
+          </p>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-6 items-center max-w-4xl mx-auto">
             {manufacturers.map((manufacturer, index) => (
               <div 

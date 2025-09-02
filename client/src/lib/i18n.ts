@@ -125,7 +125,8 @@ export const translations = {
         title: "Average Processing Time",
         description: "Rapid claim processing reduces downtime and improves cash flow"
       },
-      manufacturersTitle: "We Process Claims for North America's Leading Manufacturers"
+      manufacturersTitle: "We Process Claims for North America's Leading Manufacturers",
+      manufacturersSubtitle: "Proven expertise with industry-leading RV brands, delivering consistent results and maximum approvals for dealerships across Canada."
     },
 
     // Upsell Services Section
@@ -657,7 +658,8 @@ export const translations = {
         title: "Temps de traitement moyen", 
         description: "Le traitement rapide des réclamations réduit les temps d'arrêt et améliore la trésorerie"
       },
-      manufacturersTitle: "Nous traitons les réclamations pour les principaux fabricants d'Amérique du Nord"
+      manufacturersTitle: "Nous traitons les réclamations pour les principaux fabricants d'Amérique du Nord",
+      manufacturersSubtitle: "Expertise éprouvée avec les marques de VR leaders de l'industrie, offrant des résultats cohérents et des approbations maximales pour les concessionnaires à travers le Canada."
     },
 
     // Upsell Services Section
