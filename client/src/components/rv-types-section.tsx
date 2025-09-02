@@ -8,8 +8,8 @@ const TravelTrailerIcon = () => (
     src={travelTrailerIcon} 
     alt="Travel Trailer" 
     style={{ 
-      width: '100px', 
-      height: '100px',
+      width: '150px', 
+      height: '150px',
       imageRendering: 'crisp-edges',
       objectFit: 'contain'
     }} 
