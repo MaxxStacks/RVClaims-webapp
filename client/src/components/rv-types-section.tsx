@@ -4,7 +4,7 @@ import travelTrailerIcon from "@assets/New Project_1756841574795.png";
 
 // Custom Travel Trailer Icon Component
 const TravelTrailerIcon = () => (
-  <img src={travelTrailerIcon} alt="Travel Trailer" className="w-6 h-6" />
+  <img src={travelTrailerIcon} alt="Travel Trailer" className="w-8 h-8" />
 );
 
 // Custom SVG icons for specific RV types
