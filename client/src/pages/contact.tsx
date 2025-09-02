@@ -1,6 +1,7 @@
 import { PageLayout } from "@/components/page-layout";
 import { PageHero } from "@/components/page-hero";
 import { ContactSection } from "@/components/contact-section";
+import { DepartmentDirectory } from "@/components/department-directory";
 import { useLanguage } from "@/hooks/use-language";
 
 export default function Contact() {
@@ -20,6 +21,7 @@ export default function Contact() {
       />
       
       <ContactSection />
+      <DepartmentDirectory />
     </PageLayout>
   );
 }

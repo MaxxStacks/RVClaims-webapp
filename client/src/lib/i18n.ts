@@ -131,8 +131,14 @@ export const translations = {
 
     // Department Directory Section
     departmentDirectory: {
-      title: "Contact Our Departments",
-      description: "Get in touch with the right team for fast, professional service.",
+      title: "Department Directory",
+      description: "Connect directly with our specialized teams for immediate assistance with your specific needs.",
+      groups: {
+        operations: "Operations & Claims",
+        business: "Business Development", 
+        finance: "Financial Services",
+        corporate: "Corporate Communications"
+      },
       departments: {
         claims: "Claims Processing",
         techSupport: "Technical Support",
@@ -146,8 +152,7 @@ export const translations = {
         dealerOnboarding: "Dealer Onboarding",
         dealerRelations: "Dealer Relations",
         general: "General Inquiries"
-      },
-      note: "All emails are monitored during business hours. For urgent matters, please call our main line."
+      }
     },
 
     // Upsell Services Section
@@ -685,8 +690,14 @@ export const translations = {
 
     // Department Directory Section
     departmentDirectory: {
-      title: "Contactez nos départements",
-      description: "Communiquez avec la bonne équipe pour un service rapide et professionnel.",
+      title: "Répertoire des départements",
+      description: "Connectez-vous directement avec nos équipes spécialisées pour une assistance immédiate selon vos besoins spécifiques.",
+      groups: {
+        operations: "Opérations et réclamations",
+        business: "Développement des affaires", 
+        finance: "Services financiers",
+        corporate: "Communications corporatives"
+      },
       departments: {
         claims: "Traitement des réclamations",
         techSupport: "Support technique",
@@ -700,8 +711,7 @@ export const translations = {
         dealerOnboarding: "Intégration des concessionnaires",
         dealerRelations: "Relations concessionnaires",
         general: "Demandes générales"
-      },
-      note: "Tous les courriels sont surveillés pendant les heures d'affaires. Pour les urgences, veuillez appeler notre ligne principale."
+      }
     },
 
     // Upsell Services Section
