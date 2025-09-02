@@ -175,9 +175,9 @@ export function Footer() {
               </a>
             </div>
           </div>
-          <div className="flex justify-start items-center mt-6 pt-6 border-t border-gray-700">
-            <p className="text-sm text-gray-400 flex items-center" data-testid="text-footer-made-with-love">
-              Made with <Heart className="mx-2 w-4 h-4 text-white fill-white" /> in Montreal and Toronto
+          <div className="flex justify-center items-center mt-6 pt-6 border-t border-gray-700">
+            <p className="text-base text-gray-300 flex items-center" data-testid="text-footer-made-with-love">
+              Developed and coded with <Heart className="mx-2 w-4 h-4 text-white fill-white" /> in Montreal and Toronto Canada
             </p>
           </div>
         </div>
