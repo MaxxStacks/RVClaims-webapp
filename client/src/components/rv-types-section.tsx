@@ -157,7 +157,7 @@ export function RvTypesSection() {
           {rvTypes.map((type, index) => (
             <div key={index} className="bg-card rounded-lg p-4 text-center border border-border hover-lift" data-testid={type.testId}>
               <div className="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
-                <type.icon className="text-primary" size={24} />
+                {/* Icons removed - awaiting new images */}
               </div>
               <h4 className="font-medium text-sm">
                 {type.title}
