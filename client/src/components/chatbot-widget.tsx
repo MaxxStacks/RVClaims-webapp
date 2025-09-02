@@ -38,7 +38,7 @@ export function ChatbotWidget() {
     // This would integrate with actual contact systems
     const contactInfo = {
       phone: '1-800-RV-CLAIM',
-      email: 'claims@rvclaimtrack.ca',
+      email: 'support@rvclaims.ca',
       chat: 'Live chat would open here'
     };
 
@@ -131,7 +131,7 @@ export function ChatbotWidget() {
                 <div>
                   <p className="font-medium">{t('chatbot.contactMethods.email')}</p>
                   <p className="text-sm text-muted-foreground">
-                    claims@rvclaimtrack.ca • {t('chatbot.emailInfo')}
+                    support@rvclaims.ca • {t('chatbot.emailInfo')}
                   </p>
                 </div>
               </button>

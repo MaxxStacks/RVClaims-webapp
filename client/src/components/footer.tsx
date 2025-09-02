@@ -29,7 +29,7 @@ export function Footer() {
               </div>
               <div className="flex items-center">
                 <Mail className="mr-2" size={14} />
-                claims@rvclaimtrack.ca
+                support@rvclaims.ca
               </div>
               <div className="flex items-center">
                 <MapPin className="mr-2" size={14} />
