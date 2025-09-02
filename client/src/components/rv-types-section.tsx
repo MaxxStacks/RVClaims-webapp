@@ -4,7 +4,16 @@ import travelTrailerIcon from "@assets/New Project_1756841574795.png";
 
 // Custom Travel Trailer Icon Component
 const TravelTrailerIcon = () => (
-  <img src={travelTrailerIcon} alt="Travel Trailer" style={{ width: '100px', height: '100px' }} />
+  <img 
+    src={travelTrailerIcon} 
+    alt="Travel Trailer" 
+    style={{ 
+      width: '100px', 
+      height: '100px',
+      imageRendering: 'crisp-edges',
+      objectFit: 'contain'
+    }} 
+  />
 );
 
 // Custom SVG icons for specific RV types
