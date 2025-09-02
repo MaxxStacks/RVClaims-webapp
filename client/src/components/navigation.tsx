@@ -2,7 +2,7 @@ import { useLanguage } from "@/hooks/use-language";
 import { LanguageToggle } from "@/components/language-toggle";
 import { MobileMenu } from "@/components/mobile-menu";
 import { Link, useLocation } from "wouter";
-import headerLogoImage from "@assets/Industrial Trapton Logo Design (1)_1756840268435.png";
+import headerLogoImage from "@assets/Industrial Trapton Logo Design (1) (1)_1756855580448.png";
 
 export function Navigation() {
   const { t } = useLanguage();
