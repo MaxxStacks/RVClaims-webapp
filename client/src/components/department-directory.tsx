@@ -68,52 +68,52 @@ export function DepartmentDirectory() {
   ];
 
   return (
-    <section className="py-16 bg-background" data-testid="section-department-directory">
+    <section className="py-16 bg-muted/50" data-testid="section-department-directory">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4" data-testid="text-directory-title">
-            {t('departmentDirectory.title')}
-          </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto" data-testid="text-directory-description">
-            {t('departmentDirectory.description')}
-          </p>
-        </div>
+        <div className="bg-card rounded-xl p-8 border border-border">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl md:text-3xl font-bold mb-3" data-testid="text-directory-title">
+              {t('departmentDirectory.title')}
+            </h2>
+            <p className="text-base text-muted-foreground max-w-xl mx-auto" data-testid="text-directory-description">
+              {t('departmentDirectory.description')}
+            </p>
+          </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {departments.map((dept) => {
-            const IconComponent = dept.icon;
-            return (
-              <div
-                key={dept.key}
-                className="bg-card border border-border rounded-xl p-6 hover:shadow-lg transition-shadow duration-300 hover:border-primary/20"
-                data-testid={`card-department-${dept.key}`}
-              >
-                <div className="flex items-start space-x-4">
-                  <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <IconComponent className="w-5 h-5 text-primary" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-sm mb-2 leading-tight" data-testid={`text-department-name-${dept.key}`}>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            {departments.map((dept) => {
+              const IconComponent = dept.icon;
+              return (
+                <div
+                  key={dept.key}
+                  className="bg-background border border-border rounded-lg p-3 hover:shadow-md transition-all duration-200 hover:border-primary/30 hover:bg-primary/5"
+                  data-testid={`card-department-${dept.key}`}
+                >
+                  <div className="text-center">
+                    <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-2">
+                      <IconComponent className="w-4 h-4 text-primary" />
+                    </div>
+                    <h3 className="font-medium text-xs mb-1 leading-tight text-center" data-testid={`text-department-name-${dept.key}`}>
                       {t(`departmentDirectory.departments.${dept.key}`)}
                     </h3>
                     <a
                       href={`mailto:${dept.email}`}
-                      className="text-primary hover:text-primary/80 text-sm font-medium break-all transition-colors"
+                      className="text-primary hover:text-primary/80 text-xs font-medium transition-colors block break-all"
                       data-testid={`link-email-${dept.key}`}
                     >
                       {dept.email}
                     </a>
                   </div>
                 </div>
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
 
-        <div className="mt-8 text-center">
-          <p className="text-sm text-muted-foreground" data-testid="text-directory-note">
-            {t('departmentDirectory.note')}
-          </p>
+          <div className="mt-6 text-center">
+            <p className="text-xs text-muted-foreground" data-testid="text-directory-note">
+              {t('departmentDirectory.note')}
+            </p>
+          </div>
         </div>
       </div>
     </section>
