@@ -4,6 +4,7 @@ import { Link, useLocation } from "wouter";
 import { useLanguage } from "@/hooks/use-language";
 import { LanguageToggle } from "@/components/language-toggle";
 import { ClientLoginModal } from "@/components/client-login-modal";
+import mobileMenuLogoImage from "@assets/Industrial Trapton Logo Design (1)_1756840919371.png";
 
 export function MobileMenu() {
   const [isOpen, setIsOpen] = useState(false);
@@ -54,11 +55,16 @@ export function MobileMenu() {
           <div className="flex items-center justify-between p-6 border-b border-border" style={{ backgroundColor: '#ffffff' }}>
             <Link 
               href="/" 
-              className="text-2xl font-bold gradient-text"
+              className="flex items-center"
               onClick={closeMenu}
               data-testid="link-pages-logo"
             >
-              RVClaimTrack
+              <img 
+                src={mobileMenuLogoImage} 
+                alt="RV Claims" 
+                className="h-8 w-auto max-w-[200px]" 
+                data-testid="img-mobile-menu-logo"
+              />
             </Link>
             <button
               onClick={closeMenu}

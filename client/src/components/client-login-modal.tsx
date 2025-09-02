@@ -3,6 +3,7 @@ import { X, ArrowLeft, Mail, Phone, Eye, EyeOff } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle, faLinkedinIn } from "@fortawesome/free-brands-svg-icons";
 import { useLanguage } from "@/hooks/use-language";
+import loginModalLogoImage from "@assets/Industrial Trapton Logo Design (1)_1756840919371.png";
 
 interface ClientLoginModalProps {
   isOpen: boolean;
@@ -281,7 +282,12 @@ export function ClientLoginModal({ isOpen, onClose }: ClientLoginModalProps) {
                 <ArrowLeft size={20} />
               </button>
             )}
-            <h1 className="text-lg font-bold text-primary">RVClaimTrack</h1>
+            <img 
+              src={loginModalLogoImage} 
+              alt="RV Claims" 
+              className="h-6 w-auto max-w-[160px]" 
+              data-testid="img-login-modal-logo"
+            />
           </div>
           <button
             onClick={onClose}
