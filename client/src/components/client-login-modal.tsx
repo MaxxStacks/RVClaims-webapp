@@ -46,35 +46,35 @@ export function ClientLoginModal({ isOpen, onClose }: ClientLoginModalProps) {
       <div className="space-y-3">
         <button
           onClick={() => handleSocialLogin('google')}
-          className="w-full flex items-center px-4 py-3 bg-white border-2 border-black rounded-lg font-medium text-black hover:bg-gray-50 transition-colors"
+          className="w-full flex items-center justify-center px-4 py-3 bg-white border-2 border-black rounded-lg font-medium text-black hover:bg-gray-50 transition-colors"
           data-testid="button-login-google"
         >
           <div className="w-6 h-6 flex items-center justify-center mr-4">
             <FontAwesomeIcon icon={faGoogle} className="w-5 h-5 text-black" />
           </div>
-          <span className="flex-1 text-left">Continue with Google</span>
+          <span>Continue with Google</span>
         </button>
 
         <button
           onClick={() => handleSocialLogin('facebook')}
-          className="w-full flex items-center px-4 py-3 bg-white border-2 border-black rounded-lg font-medium text-black hover:bg-gray-50 transition-colors"
+          className="w-full flex items-center justify-center px-4 py-3 bg-white border-2 border-black rounded-lg font-medium text-black hover:bg-gray-50 transition-colors"
           data-testid="button-login-facebook"
         >
           <div className="w-6 h-6 flex items-center justify-center mr-4">
             <FontAwesomeIcon icon={faFacebookF} className="w-5 h-5 text-black" />
           </div>
-          <span className="flex-1 text-left">Continue with Facebook</span>
+          <span>Continue with Facebook</span>
         </button>
 
         <button
           onClick={() => handleSocialLogin('linkedin')}
-          className="w-full flex items-center px-4 py-3 bg-white border-2 border-black rounded-lg font-medium text-black hover:bg-gray-50 transition-colors"
+          className="w-full flex items-center justify-center px-4 py-3 bg-white border-2 border-black rounded-lg font-medium text-black hover:bg-gray-50 transition-colors"
           data-testid="button-login-linkedin"
         >
           <div className="w-6 h-6 flex items-center justify-center mr-4">
             <FontAwesomeIcon icon={faLinkedinIn} className="w-5 h-5 text-black" />
           </div>
-          <span className="flex-1 text-left">Continue with LinkedIn</span>
+          <span>Continue with LinkedIn</span>
         </button>
       </div>
 
