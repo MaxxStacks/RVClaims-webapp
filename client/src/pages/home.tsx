@@ -6,6 +6,7 @@ import { RvTypesSection } from "@/components/rv-types-section";
 import { TechnologySection } from "@/components/technology-section";
 import { ExperienceSection } from "@/components/experience-section";
 import { PrivacyAssuranceSection } from "@/components/privacy-assurance-section";
+import { ConsumerServicesSection } from "@/components/consumer-services-section";
 import { UpsellServicesSection } from "@/components/upsell-services-section";
 import { ContactSection } from "@/components/contact-section";
 import { Footer } from "@/components/footer";
@@ -24,6 +25,7 @@ export default function Home() {
       <TechnologySection />
       <ExperienceSection />
       <PrivacyAssuranceSection />
+      <ConsumerServicesSection />
       <UpsellServicesSection />
       <ContactSection />
       <Footer />

@@ -475,6 +475,51 @@ export const translations = {
       credentialsNote: "Login credentials are provided by RVClaimTrack upon signup.",
       emailLogin: "Email Login",
       phoneLogin: "Phone Login"
+    },
+
+    // Consumer Services Section
+    consumerServices: {
+      badge: "Direct Purchase Services",
+      title: "Purchase Protection Services Directly",
+      description: "Get comprehensive protection for your RV without going through a dealer. Purchase our professional services directly and secure your investment today.",
+      services: {
+        roadside: {
+          title: "24/7 Roadside Assistance",
+          description: "Complete roadside assistance coverage for your RV anywhere in Canada and the US.",
+          feature1: "24/7 emergency roadside assistance",
+          feature2: "Towing up to 100 miles to nearest service center",
+          feature3: "Emergency fuel delivery and flat tire service",
+          feature4: "Lockout service and battery jump-start",
+          purchaseButton: "Purchase Roadside - $149/year",
+          purchaseMessage: "Roadside assistance purchase will be available soon. Contact us for more information."
+        },
+        extended: {
+          title: "Extended Warranty Coverage", 
+          description: "Extend your RV warranty coverage beyond manufacturer terms with comprehensive protection.",
+          feature1: "Extended coverage for mechanical breakdowns",
+          feature2: "Nationwide network of certified repair facilities",
+          feature3: "No deductible on covered repairs",
+          feature4: "Transferable coverage to new owners",
+          purchaseButton: "Purchase Extended Warranty - $299/year",
+          purchaseMessage: "Extended warranty purchase will be available soon. Contact us for more information."
+        },
+        protection: {
+          title: "Tire & Wheel / Appearance Protection",
+          description: "Comprehensive protection for your RV's tires, wheels, and exterior appearance.",
+          feature1: "Tire replacement due to road hazards",
+          feature2: "Wheel protection against damage",
+          feature3: "Paint and finish protection services",
+          feature4: "Interior stain and damage protection",
+          purchaseButton: "Purchase Protection - $199/year",
+          purchaseMessage: "Protection plan purchase will be available soon. Contact us for more information."
+        }
+      },
+      cta: {
+        title: "Need Help Choosing the Right Protection?",
+        description: "Our service experts can help you select the perfect protection package for your RV and usage needs.",
+        contactButton: "Get Expert Advice",
+        callButton: "Call 1-800-RV-PROTECT"
+      }
     }
   },
 
@@ -954,6 +999,51 @@ export const translations = {
       credentialsNote: "Les identifiants de connexion sont fournis par RVClaimTrack lors de l'inscription.",
       emailLogin: "Connexion Email",
       phoneLogin: "Connexion Téléphone"
+    },
+
+    // Consumer Services Section
+    consumerServices: {
+      badge: "Services d'achat direct",
+      title: "Achetez des services de protection directement",
+      description: "Obtenez une protection complète pour votre VR sans passer par un concessionnaire. Achetez nos services professionnels directement et sécurisez votre investissement dès aujourd'hui.",
+      services: {
+        roadside: {
+          title: "Assistance routière 24h/7j",
+          description: "Couverture complète d'assistance routière pour votre VR partout au Canada et aux États-Unis.",
+          feature1: "Assistance routière d'urgence 24h/7j",
+          feature2: "Remorquage jusqu'à 100 miles vers le centre de service le plus proche",
+          feature3: "Livraison de carburant d'urgence et service de pneu crevé",
+          feature4: "Service de déverrouillage et démarrage de batterie",
+          purchaseButton: "Acheter assistance routière - 149$/an",
+          purchaseMessage: "L'achat d'assistance routière sera bientôt disponible. Contactez-nous pour plus d'informations."
+        },
+        extended: {
+          title: "Couverture de garantie prolongée",
+          description: "Prolongez la couverture de garantie de votre VR au-delà des conditions du fabricant avec une protection complète.",
+          feature1: "Couverture prolongée pour les pannes mécaniques",
+          feature2: "Réseau national d'installations de réparation certifiées",
+          feature3: "Aucune franchise sur les réparations couvertes",
+          feature4: "Couverture transférable aux nouveaux propriétaires",
+          purchaseButton: "Acheter garantie prolongée - 299$/an",
+          purchaseMessage: "L'achat de garantie prolongée sera bientôt disponible. Contactez-nous pour plus d'informations."
+        },
+        protection: {
+          title: "Protection pneus et roues / apparence",
+          description: "Protection complète pour les pneus, roues et apparence extérieure de votre VR.",
+          feature1: "Remplacement de pneus dû aux dangers de la route",
+          feature2: "Protection des roues contre les dommages",
+          feature3: "Services de protection de peinture et de finition",
+          feature4: "Protection contre les taches et dommages intérieurs",
+          purchaseButton: "Acheter protection - 199$/an",
+          purchaseMessage: "L'achat du plan de protection sera bientôt disponible. Contactez-nous pour plus d'informations."
+        }
+      },
+      cta: {
+        title: "Besoin d'aide pour choisir la bonne protection?",
+        description: "Nos experts en services peuvent vous aider à sélectionner le forfait de protection parfait pour votre VR et vos besoins d'utilisation.",
+        contactButton: "Obtenir des conseils d'expert",
+        callButton: "Appeler 1-800-RV-PROTECT"
+      }
     }
   }
 };
