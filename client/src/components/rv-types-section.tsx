@@ -1,88 +1,61 @@
-import { Truck, Bus, CarTaxiFront, Tent } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
-import travelTrailerIcon from "@assets/New Project_1756841574795.png";
-import fifthWheelIcon from "@assets/01_1756844211571.png";
+import classAIcon from "@assets/Class A_1756847838643.png";
+import classCIcon from "@assets/Class C_1756847838644.png";
+import destinationTrailerIcon from "@assets/Destination Trailer_1756847838644.png";
+import fifthWheelIcon from "@assets/Fifth Wheel_1756847838645.png";
+import popUpIcon from "@assets/Pop Up_1756847838645.png";
+import smallTrailerIcon from "@assets/Small Trailer_1756847838646.png";
+import toyHaulerIcon from "@assets/Toy Hauler_1756847838646.png";
+import travelTrailerIcon from "@assets/Travel Trailer_1756847838647.png";
+import truckCamperIcon from "@assets/Truck Camper_1756847838647.png";
+import vanCamperIcon from "@assets/Van Camper_1756847838648.png";
 
-// Custom Travel Trailer Icon Component
+// Custom icon components with consistent styling
+const iconStyle = {
+  width: '90px',
+  height: '90px', 
+  imageRendering: 'crisp-edges' as const,
+  objectFit: 'contain' as const
+};
+
 const TravelTrailerIcon = () => (
-  <img 
-    src={travelTrailerIcon} 
-    alt="Travel Trailer" 
-    style={{ 
-      width: '100px', 
-      height: '100px',
-      imageRendering: 'crisp-edges',
-      objectFit: 'contain'
-    }} 
-  />
+  <img src={travelTrailerIcon} alt="Travel Trailer" style={iconStyle} />
 );
 
-// Custom Fifth Wheel Icon Component
 const FifthWheelIcon = () => (
-  <img 
-    src={fifthWheelIcon} 
-    alt="Fifth Wheel" 
-    style={{ 
-      width: '100px', 
-      height: '100px',
-      imageRendering: 'crisp-edges',
-      objectFit: 'contain'
-    }} 
-  />
+  <img src={fifthWheelIcon} alt="Fifth Wheel" style={iconStyle} />
 );
 
-// Custom SVG icons for specific RV types
+const ClassCIcon = () => (
+  <img src={classCIcon} alt="Class C" style={iconStyle} />
+);
+
+const VanCamperIcon = () => (
+  <img src={vanCamperIcon} alt="Van Camper" style={iconStyle} />
+);
 
 const ClassAIcon = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-primary">
-    <path d="M4 16h2v2H4v-2zm14 0h2v2h-2v-2z" fill="currentColor"/>
-    <path d="M2 14V8c0-1.1.9-2 2-2h16c1.1 0 2 .9 2 2v6c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2z" stroke="currentColor" strokeWidth="1.5" fill="none"/>
-    <circle cx="6" cy="17" r="1" fill="currentColor"/>
-    <circle cx="18" cy="17" r="1" fill="currentColor"/>
-    <rect x="6" y="8" width="12" height="4" stroke="currentColor" strokeWidth="1" fill="none"/>
-  </svg>
+  <img src={classAIcon} alt="Class A" style={iconStyle} />
 );
 
 const SmallTrailerIcon = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-primary">
-    <path d="M4 16h2v2H4v-2zm8 0h2v2h-2v-2z" fill="currentColor"/>
-    <path d="M16 14V8c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2z" stroke="currentColor" strokeWidth="1.5" fill="none"/>
-    <circle cx="6" cy="17" r="1" fill="currentColor"/>
-    <circle cx="14" cy="17" r="1" fill="currentColor"/>
-    <path d="M16 10h4v4h-4v-4z" stroke="currentColor" strokeWidth="1" fill="none"/>
-  </svg>
+  <img src={smallTrailerIcon} alt="Small Trailer" style={iconStyle} />
+);
+
+const PopUpIcon = () => (
+  <img src={popUpIcon} alt="Pop Up" style={iconStyle} />
 );
 
 const ToyHaulerIcon = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-primary">
-    <path d="M4 16h2v2H4v-2zm14 0h2v2h-2v-2z" fill="currentColor"/>
-    <path d="M2 14V8c0-1.1.9-2 2-2h16c1.1 0 2 .9 2 2v6c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2z" stroke="currentColor" strokeWidth="1.5" fill="none"/>
-    <circle cx="6" cy="17" r="1" fill="currentColor"/>
-    <circle cx="18" cy="17" r="1" fill="currentColor"/>
-    <path d="M14 12V8h6v4h-6z" stroke="currentColor" strokeWidth="1" fill="none"/>
-    <circle cx="17" cy="10" r="0.5" fill="currentColor"/>
-  </svg>
+  <img src={toyHaulerIcon} alt="Toy Hauler" style={iconStyle} />
 );
 
 const TruckCamperIcon = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-primary">
-    <path d="M4 16h2v2H4v-2zm12 0h2v2h-2v-2z" fill="currentColor"/>
-    <path d="M2 14V10c0-1.1.9-2 2-2h12c1.1 0 2 .9 2 2v4c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2z" stroke="currentColor" strokeWidth="1.5" fill="none"/>
-    <circle cx="6" cy="17" r="1" fill="currentColor"/>
-    <circle cx="16" cy="17" r="1" fill="currentColor"/>
-    <path d="M4 8V6c0-.55.45-1 1-1h10c.55 0 1 .45 1 1v2" stroke="currentColor" strokeWidth="1" fill="none"/>
-  </svg>
+  <img src={truckCamperIcon} alt="Truck Camper" style={iconStyle} />
 );
 
 const DestinationTrailerIcon = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-primary">
-    <path d="M4 16h2v2H4v-2zm14 0h2v2h-2v-2z" fill="currentColor"/>
-    <path d="M2 14V8c0-1.1.9-2 2-2h16c1.1 0 2 .9 2 2v6c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2z" stroke="currentColor" strokeWidth="1.5" fill="none"/>
-    <circle cx="6" cy="17" r="1" fill="currentColor"/>
-    <circle cx="18" cy="17" r="1" fill="currentColor"/>
-    <rect x="5" y="8" width="4" height="4" stroke="currentColor" strokeWidth="1" fill="none"/>
-    <rect x="15" y="8" width="4" height="4" stroke="currentColor" strokeWidth="1" fill="none"/>
-  </svg>
+  <img src={destinationTrailerIcon} alt="Destination Trailer" style={iconStyle} />
 );
 
 export function RvTypesSection() {
@@ -100,12 +73,12 @@ export function RvTypesSection() {
       testId: 'card-fifth-wheel'
     },
     {
-      icon: Bus,
+      icon: ClassCIcon,
       title: t('rvTypes.classC'),
       testId: 'card-class-c'
     },
     {
-      icon: CarTaxiFront,
+      icon: VanCamperIcon,
       title: t('rvTypes.vanCamper'),
       testId: 'card-van-camper'
     },
@@ -120,7 +93,7 @@ export function RvTypesSection() {
       testId: 'card-small-trailer'
     },
     {
-      icon: Tent,
+      icon: PopUpIcon,
       title: t('rvTypes.popUp'),
       testId: 'card-pop-up'
     },
@@ -157,7 +130,7 @@ export function RvTypesSection() {
           {rvTypes.map((type, index) => (
             <div key={index} className="bg-card rounded-lg p-4 text-center border border-border hover-lift" data-testid={type.testId}>
               <div className="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
-                {/* Icons removed - awaiting new images */}
+                <type.icon />
               </div>
               <h4 className="font-medium text-sm">
                 {type.title}
