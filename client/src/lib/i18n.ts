@@ -125,7 +125,7 @@ export const translations = {
         title: "Average Processing Time",
         description: "Rapid claim processing reduces downtime and improves cash flow"
       },
-      manufacturersTitle: "Trusted by Leading Manufacturers"
+      manufacturersTitle: "We Process Claims for North America's Leading Manufacturers"
     },
 
     // Upsell Services Section
@@ -657,7 +657,7 @@ export const translations = {
         title: "Temps de traitement moyen", 
         description: "Le traitement rapide des réclamations réduit les temps d'arrêt et améliore la trésorerie"
       },
-      manufacturersTitle: "Approuvé par les fabricants leaders"
+      manufacturersTitle: "Nous traitons les réclamations pour les principaux fabricants d'Amérique du Nord"
     },
 
     // Upsell Services Section
