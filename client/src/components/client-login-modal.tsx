@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { X, ArrowLeft, Mail, Phone, Eye, EyeOff } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGoogle, faFacebookF, faLinkedinIn } from "@fortawesome/free-brands-svg-icons";
+import { faGoogle, faLinkedinIn } from "@fortawesome/free-brands-svg-icons";
 import { useLanguage } from "@/hooks/use-language";
 
 interface ClientLoginModalProps {
@@ -56,24 +56,12 @@ export function ClientLoginModal({ isOpen, onClose }: ClientLoginModalProps) {
         >
           <div className="flex items-center">
             <div className="w-6 h-6 flex items-center justify-center mr-4">
-              <FontAwesomeIcon icon={faGoogle} className="w-5 h-5 text-red-500" />
+              <FontAwesomeIcon icon={faGoogle} className="w-5 h-5 text-primary" />
             </div>
             <span>Continue with Google</span>
           </div>
         </button>
 
-        <button
-          onClick={() => handleSocialLogin('facebook')}
-          className="w-full flex items-center justify-center px-4 py-3 bg-card border border-border rounded-lg font-medium text-foreground hover:bg-muted/50 transition-colors shadow-sm"
-          data-testid="button-login-facebook"
-        >
-          <div className="flex items-center">
-            <div className="w-6 h-6 flex items-center justify-center mr-4">
-              <FontAwesomeIcon icon={faFacebookF} className="w-5 h-5 text-blue-600" />
-            </div>
-            <span>Continue with Facebook</span>
-          </div>
-        </button>
 
         <button
           onClick={() => handleSocialLogin('linkedin')}
@@ -82,7 +70,7 @@ export function ClientLoginModal({ isOpen, onClose }: ClientLoginModalProps) {
         >
           <div className="flex items-center">
             <div className="w-6 h-6 flex items-center justify-center mr-4">
-              <FontAwesomeIcon icon={faLinkedinIn} className="w-5 h-5 text-blue-700" />
+              <FontAwesomeIcon icon={faLinkedinIn} className="w-5 h-5 text-primary" />
             </div>
             <span>Continue with LinkedIn</span>
           </div>
