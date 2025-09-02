@@ -13,10 +13,12 @@ import { Footer } from "@/components/footer";
 import { LanguageToggle } from "@/components/language-toggle";
 import { ChatbotWidget } from "@/components/chatbot-widget";
 import { CookieNotice } from "@/components/cookie-notice";
+import { NotificationBar } from "@/components/notification-bar";
 
 export default function Home() {
   return (
     <div className="min-h-screen w-full">
+      <NotificationBar />
       <Navigation />
       <HeroSection />
       <ServicesSection />

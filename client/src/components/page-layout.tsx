@@ -3,6 +3,7 @@ import { Footer } from "@/components/footer";
 import { ChatbotWidget } from "@/components/chatbot-widget";
 import { CookieNotice } from "@/components/cookie-notice";
 import { SeoMeta } from "@/components/seo-meta";
+import { NotificationBar } from "@/components/notification-bar";
 
 interface PageLayoutProps {
   children: React.ReactNode;
@@ -22,6 +23,7 @@ export function PageLayout({ children, seoTitle, seoDescription, seoKeywords, ca
         canonical={canonical}
       />
       <div className="min-h-screen w-full">
+        <NotificationBar />
         <Navigation />
         {children}
         <Footer />
