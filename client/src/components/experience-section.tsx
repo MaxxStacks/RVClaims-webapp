@@ -30,8 +30,7 @@ export function ExperienceSection() {
     "Jayco",
     "Keystone",
     "Winnebago",
-    "Grand Design",
-    "And More!"
+    "Grand Design"
   ];
 
   return (
@@ -64,17 +63,20 @@ export function ExperienceSection() {
           <h3 className="text-2xl font-semibold text-center mb-8" data-testid="text-manufacturers-title">
             {t('experienceSection.manufacturersTitle')}
           </h3>
-          <div className="grid grid-cols-3 md:grid-cols-5 gap-8 items-center opacity-60">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-6 items-center max-w-4xl mx-auto">
             {manufacturers.map((manufacturer, index) => (
               <div 
                 key={index}
-                className="h-12 bg-muted rounded flex items-center justify-center text-xs font-semibold text-muted-foreground"
+                className="h-16 bg-gradient-to-r from-primary/5 to-primary/10 border border-primary/20 rounded-lg flex items-center justify-center text-sm font-semibold text-primary hover:from-primary/10 hover:to-primary/15 transition-all duration-300"
                 data-testid={`manufacturer-${manufacturer.toLowerCase().replace(' ', '-')}`}
               >
                 {manufacturer}
               </div>
             ))}
           </div>
+          <p className="text-center text-muted-foreground mt-6 text-sm">
+            + Many more leading RV manufacturers across North America
+          </p>
         </div>
       </div>
     </section>
