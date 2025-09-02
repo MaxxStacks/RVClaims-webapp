@@ -26,10 +26,12 @@ export function ExperienceSection() {
 
   const manufacturers = [
     "Forest River",
-    "Thor Industries", 
-    "Winnebago",
+    "Heartland", 
+    "Jayco",
     "Keystone",
-    "Jayco"
+    "Winnebago",
+    "Grand Design",
+    "And More!"
   ];
 
   return (
