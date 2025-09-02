@@ -1,115 +1,62 @@
-import { Phone, Mail, Users, Settings, CreditCard, Handshake, MessageCircle, UserPlus, Building, FileText, HeadphonesIcon } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
 
 export function DepartmentDirectory() {
   const { t } = useLanguage();
 
   const departments = [
-    {
-      key: 'claims',
-      icon: FileText,
-      email: 'claims@rvclaims.ca'
-    },
-    {
-      key: 'techSupport',
-      icon: Settings,
-      email: 'support@rvclaims.ca'
-    },
-    {
-      key: 'warranty',
-      icon: FileText,
-      email: 'warranty@rvclaims.ca'
-    },
-    {
-      key: 'roadside',
-      icon: HeadphonesIcon,
-      email: 'roadside@rvclaims.ca'
-    },
-    {
-      key: 'sales',
-      icon: Users,
-      email: 'sales@rvclaims.ca'
-    },
-    {
-      key: 'accountsPayable',
-      icon: CreditCard,
-      email: 'ap@rvclaims.ca'
-    },
-    {
-      key: 'accountsReceivable',
-      icon: CreditCard,
-      email: 'ar@rvclaims.ca'
-    },
-    {
-      key: 'partners',
-      icon: Handshake,
-      email: 'partners@rvclaims.ca'
-    },
-    {
-      key: 'media',
-      icon: MessageCircle,
-      email: 'media@rvclaims.ca'
-    },
-    {
-      key: 'dealerOnboarding',
-      icon: UserPlus,
-      email: 'onboarding@rvclaims.ca'
-    },
-    {
-      key: 'dealerRelations',
-      icon: Building,
-      email: 'dealer@rvclaims.ca'
-    },
-    {
-      key: 'general',
-      icon: Mail,
-      email: 'hello@rvclaims.ca'
-    }
+    { key: 'claims', email: 'claims@rvclaims.ca' },
+    { key: 'techSupport', email: 'support@rvclaims.ca' },
+    { key: 'warranty', email: 'warranty@rvclaims.ca' },
+    { key: 'roadside', email: 'roadside@rvclaims.ca' },
+    { key: 'sales', email: 'sales@rvclaims.ca' },
+    { key: 'accountsPayable', email: 'ap@rvclaims.ca' },
+    { key: 'accountsReceivable', email: 'ar@rvclaims.ca' },
+    { key: 'partners', email: 'partners@rvclaims.ca' },
+    { key: 'media', email: 'media@rvclaims.ca' },
+    { key: 'dealerOnboarding', email: 'onboarding@rvclaims.ca' },
+    { key: 'dealerRelations', email: 'dealer@rvclaims.ca' },
+    { key: 'general', email: 'hello@rvclaims.ca' }
   ];
 
   return (
-    <section className="py-16 bg-muted/50" data-testid="section-department-directory">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-card rounded-xl p-8 border border-border">
-          <div className="text-center mb-8">
-            <h2 className="text-2xl md:text-3xl font-bold mb-3" data-testid="text-directory-title">
-              {t('departmentDirectory.title')}
-            </h2>
-            <p className="text-base text-muted-foreground max-w-xl mx-auto" data-testid="text-directory-description">
-              {t('departmentDirectory.description')}
-            </p>
-          </div>
+    <section className="py-12 bg-background" data-testid="section-department-directory">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-10">
+          <h2 className="text-2xl md:text-3xl font-bold text-primary mb-3" data-testid="text-directory-title">
+            {t('departmentDirectory.title')}
+          </h2>
+          <div className="w-16 h-0.5 bg-primary mx-auto mb-4"></div>
+          <p className="text-sm text-muted-foreground max-w-md mx-auto" data-testid="text-directory-description">
+            {t('departmentDirectory.description')}
+          </p>
+        </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-            {departments.map((dept) => {
-              const IconComponent = dept.icon;
-              return (
-                <div
-                  key={dept.key}
-                  className="bg-background border border-border rounded-lg p-3 hover:shadow-md transition-all duration-200 hover:border-primary/30 hover:bg-primary/5"
-                  data-testid={`card-department-${dept.key}`}
+        <div className="bg-card border border-border rounded-lg p-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-3">
+            {departments.map((dept) => (
+              <div
+                key={dept.key}
+                className="flex justify-between items-center py-2 border-b border-border/30 last:border-b-0 hover:bg-primary/5 px-3 -mx-3 rounded transition-colors"
+                data-testid={`row-department-${dept.key}`}
+              >
+                <span 
+                  className="font-medium text-foreground text-sm" 
+                  data-testid={`text-department-name-${dept.key}`}
                 >
-                  <div className="text-center">
-                    <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-2">
-                      <IconComponent className="w-4 h-4 text-primary" />
-                    </div>
-                    <h3 className="font-medium text-xs mb-1 leading-tight text-center" data-testid={`text-department-name-${dept.key}`}>
-                      {t(`departmentDirectory.departments.${dept.key}`)}
-                    </h3>
-                    <a
-                      href={`mailto:${dept.email}`}
-                      className="text-primary hover:text-primary/80 text-xs font-medium transition-colors block break-all"
-                      data-testid={`link-email-${dept.key}`}
-                    >
-                      {dept.email}
-                    </a>
-                  </div>
-                </div>
-              );
-            })}
+                  {t(`departmentDirectory.departments.${dept.key}`)}
+                </span>
+                <a
+                  href={`mailto:${dept.email}`}
+                  className="text-primary hover:text-primary/80 text-sm font-medium transition-colors"
+                  data-testid={`link-email-${dept.key}`}
+                >
+                  {dept.email}
+                </a>
+              </div>
+            ))}
           </div>
-
-          <div className="mt-6 text-center">
+          
+          <div className="mt-6 pt-4 border-t border-border text-center">
             <p className="text-xs text-muted-foreground" data-testid="text-directory-note">
               {t('departmentDirectory.note')}
             </p>
