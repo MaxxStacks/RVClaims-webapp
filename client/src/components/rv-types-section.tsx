@@ -1,6 +1,7 @@
 import { Truck, Bus, CarTaxiFront, Tent } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
 import travelTrailerIcon from "@assets/New Project_1756841574795.png";
+import fifthWheelIcon from "@assets/01_1756844211571.png";
 
 // Custom Travel Trailer Icon Component
 const TravelTrailerIcon = () => (
@@ -16,15 +17,21 @@ const TravelTrailerIcon = () => (
   />
 );
 
-// Custom SVG icons for specific RV types
+// Custom Fifth Wheel Icon Component
 const FifthWheelIcon = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-primary">
-    <path d="M4 16h2v2H4v-2zm14 0h2v2h-2v-2zM8 18h8v-2H8v2z" fill="currentColor"/>
-    <path d="M20 14V8c0-1.1-.9-2-2-2h-4V4c0-.55-.45-1-1-1H3c-.55 0-1 .45-1 1v8c0 .55.45 1 1 1h1v2c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-2z" stroke="currentColor" strokeWidth="1.5" fill="none"/>
-    <circle cx="6" cy="17" r="1" fill="currentColor"/>
-    <circle cx="18" cy="17" r="1" fill="currentColor"/>
-  </svg>
+  <img 
+    src={fifthWheelIcon} 
+    alt="Fifth Wheel" 
+    style={{ 
+      width: '100px', 
+      height: '100px',
+      imageRendering: 'crisp-edges',
+      objectFit: 'contain'
+    }} 
+  />
 );
+
+// Custom SVG icons for specific RV types
 
 const ClassAIcon = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-primary">
