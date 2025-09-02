@@ -78,11 +78,16 @@ export const translations = {
     rvTypes: {
       title: "Complete RV Coverage",
       description: "Expert claims processing for all RV types and manufacturers",
-      travelTrailers: "Travel Trailers",
-      fifthWheels: "Fifth Wheels", 
-      classAC: "Class A & C",
-      vanCampers: "Van Campers",
-      popups: "Pop-ups & More"
+      travelTrailer: "Travel Trailer",
+      fifthWheel: "Fifth Wheel", 
+      classC: "Class C",
+      vanCamper: "Van Camper",
+      classA: "Class A",
+      smallTrailer: "Small Trailer",
+      popUp: "Pop Up",
+      toyHauler: "Toy Hauler",
+      truckCamper: "Truck Camper",
+      destinationTrailer: "Destination Trailer"
     },
 
     // Technology Section
@@ -605,11 +610,16 @@ export const translations = {
     rvTypes: {
       title: "Couverture complète VR",
       description: "Traitement expert des réclamations pour tous les types de VR et fabricants",
-      travelTrailers: "Roulottes de voyage",
-      fifthWheels: "Cinquième roue",
-      classAC: "Classe A et C",
-      vanCampers: "Fourgonnettes", 
-      popups: "Tentes-roulottes +"
+      travelTrailer: "Roulotte de voyage",
+      fifthWheel: "Sellette d'attelage",
+      classC: "Classe C",
+      vanCamper: "Fourgon aménagé",
+      classA: "Classe A",
+      smallTrailer: "Petite roulotte",
+      popUp: "Pop-up",
+      toyHauler: "Toy Hauler",
+      truckCamper: "Camper de camion",
+      destinationTrailer: "Roulotte destination"
     },
 
     // Technology Section
