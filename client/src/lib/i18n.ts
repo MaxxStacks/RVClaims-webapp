@@ -491,6 +491,7 @@ export const translations = {
           feature3: "Emergency fuel delivery and flat tire service",
           feature4: "Lockout service and battery jump-start",
           purchaseButton: "Purchase Roadside - $149/year",
+          shortPurchaseButton: "Purchase Now - $149/year",
           purchaseMessage: "Roadside assistance purchase will be available soon. Contact us for more information."
         },
         extended: {
@@ -501,6 +502,7 @@ export const translations = {
           feature3: "No deductible on covered repairs",
           feature4: "Transferable coverage to new owners",
           purchaseButton: "Purchase Extended Warranty - $299/year",
+          shortPurchaseButton: "Purchase Now - $299/year",
           purchaseMessage: "Extended warranty purchase will be available soon. Contact us for more information."
         },
         protection: {
@@ -511,6 +513,7 @@ export const translations = {
           feature3: "Paint and finish protection services",
           feature4: "Interior stain and damage protection",
           purchaseButton: "Purchase Protection - $199/year",
+          shortPurchaseButton: "Purchase Now - $199/year",
           purchaseMessage: "Protection plan purchase will be available soon. Contact us for more information."
         }
       },
@@ -1015,6 +1018,7 @@ export const translations = {
           feature3: "Livraison de carburant d'urgence et service de pneu crevé",
           feature4: "Service de déverrouillage et démarrage de batterie",
           purchaseButton: "Acheter assistance routière - 149$/an",
+          shortPurchaseButton: "Acheter maintenant - 149$/an",
           purchaseMessage: "L'achat d'assistance routière sera bientôt disponible. Contactez-nous pour plus d'informations."
         },
         extended: {
@@ -1025,6 +1029,7 @@ export const translations = {
           feature3: "Aucune franchise sur les réparations couvertes",
           feature4: "Couverture transférable aux nouveaux propriétaires",
           purchaseButton: "Acheter garantie prolongée - 299$/an",
+          shortPurchaseButton: "Acheter maintenant - 299$/an",
           purchaseMessage: "L'achat de garantie prolongée sera bientôt disponible. Contactez-nous pour plus d'informations."
         },
         protection: {
@@ -1035,6 +1040,7 @@ export const translations = {
           feature3: "Services de protection de peinture et de finition",
           feature4: "Protection contre les taches et dommages intérieurs",
           purchaseButton: "Acheter protection - 199$/an",
+          shortPurchaseButton: "Acheter maintenant - 199$/an",
           purchaseMessage: "L'achat du plan de protection sera bientôt disponible. Contactez-nous pour plus d'informations."
         }
       },

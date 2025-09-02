@@ -48,7 +48,7 @@ export function ConsumerServicesSection() {
           {services.map(({ key, icon: Icon, price }) => (
             <div
               key={key}
-              className="bg-white rounded-xl p-8 shadow-sm hover:shadow-lg transition-all duration-300 group border border-gray-100"
+              className="bg-white rounded-xl p-8 shadow-sm hover:shadow-lg transition-all duration-300 group border border-gray-100 flex flex-col h-full"
               data-testid={`card-consumer-service-${key}`}
             >
               <div className="flex items-start justify-between mb-6">
@@ -60,11 +60,11 @@ export function ConsumerServicesSection() {
                 </div>
               </div>
               
-              <h3 className="font-semibold text-xl mb-3 text-foreground" data-testid={`text-consumer-service-title-${key}`}>
+              <h3 className="font-semibold text-xl mb-3 text-foreground min-h-[3.5rem] flex items-center" data-testid={`text-consumer-service-title-${key}`}>
                 {t(`consumerServices.services.${key}.title`)}
               </h3>
               
-              <p className="text-muted-foreground text-sm leading-relaxed mb-6" data-testid={`text-consumer-service-description-${key}`}>
+              <p className="text-muted-foreground text-sm leading-relaxed mb-6 flex-grow" data-testid={`text-consumer-service-description-${key}`}>
                 {t(`consumerServices.services.${key}.description`)}
               </p>
 
@@ -89,10 +89,10 @@ export function ConsumerServicesSection() {
 
               <button
                 onClick={() => handlePurchase(key)}
-                className="w-full bg-primary text-white font-semibold py-3 px-6 rounded-lg hover:bg-primary/90 transition-colors"
+                className="w-full bg-primary text-white font-semibold py-3 px-6 rounded-lg hover:bg-primary/90 transition-colors mt-auto"
                 data-testid={`button-purchase-${key}`}
               >
-                {t(`consumerServices.services.${key}.purchaseButton`)}
+                {t(`consumerServices.services.${key}.shortPurchaseButton`)}
               </button>
             </div>
           ))}
