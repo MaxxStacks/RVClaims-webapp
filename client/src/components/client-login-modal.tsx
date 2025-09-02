@@ -37,21 +37,26 @@ export function ClientLoginModal({ isOpen, onClose }: ClientLoginModalProps) {
   };
 
   const renderLoginOptions = () => (
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold text-center text-foreground mb-6">
-        {t('clientLogin.title')}
-      </h2>
+    <div className="space-y-6">
+      <div className="text-center">
+        <h2 className="text-2xl font-bold text-primary mb-2">
+          {t('clientLogin.title')}
+        </h2>
+        <p className="text-sm text-muted-foreground">
+          Access your RV claims dashboard and manage your dealership account
+        </p>
+      </div>
       
       {/* Social Login Options */}
       <div className="space-y-3">
         <button
           onClick={() => handleSocialLogin('google')}
-          className="w-full flex items-center justify-center px-4 py-3 bg-white border-2 border-black rounded-lg font-medium text-black hover:bg-gray-50 transition-colors"
+          className="w-full flex items-center justify-center px-4 py-3 bg-card border border-border rounded-lg font-medium text-foreground hover:bg-muted/50 transition-colors shadow-sm"
           data-testid="button-login-google"
         >
           <div className="flex items-center">
             <div className="w-6 h-6 flex items-center justify-center mr-4">
-              <FontAwesomeIcon icon={faGoogle} className="w-5 h-5 text-black" />
+              <FontAwesomeIcon icon={faGoogle} className="w-5 h-5 text-red-500" />
             </div>
             <span>Continue with Google</span>
           </div>
@@ -59,12 +64,12 @@ export function ClientLoginModal({ isOpen, onClose }: ClientLoginModalProps) {
 
         <button
           onClick={() => handleSocialLogin('facebook')}
-          className="w-full flex items-center justify-center px-4 py-3 bg-white border-2 border-black rounded-lg font-medium text-black hover:bg-gray-50 transition-colors"
+          className="w-full flex items-center justify-center px-4 py-3 bg-card border border-border rounded-lg font-medium text-foreground hover:bg-muted/50 transition-colors shadow-sm"
           data-testid="button-login-facebook"
         >
           <div className="flex items-center">
             <div className="w-6 h-6 flex items-center justify-center mr-4">
-              <FontAwesomeIcon icon={faFacebookF} className="w-5 h-5 text-black" />
+              <FontAwesomeIcon icon={faFacebookF} className="w-5 h-5 text-blue-600" />
             </div>
             <span>Continue with Facebook</span>
           </div>
@@ -72,12 +77,12 @@ export function ClientLoginModal({ isOpen, onClose }: ClientLoginModalProps) {
 
         <button
           onClick={() => handleSocialLogin('linkedin')}
-          className="w-full flex items-center justify-center px-4 py-3 bg-white border-2 border-black rounded-lg font-medium text-black hover:bg-gray-50 transition-colors"
+          className="w-full flex items-center justify-center px-4 py-3 bg-card border border-border rounded-lg font-medium text-foreground hover:bg-muted/50 transition-colors shadow-sm"
           data-testid="button-login-linkedin"
         >
           <div className="flex items-center">
             <div className="w-6 h-6 flex items-center justify-center mr-4">
-              <FontAwesomeIcon icon={faLinkedinIn} className="w-5 h-5 text-black" />
+              <FontAwesomeIcon icon={faLinkedinIn} className="w-5 h-5 text-blue-700" />
             </div>
             <span>Continue with LinkedIn</span>
           </div>
@@ -89,7 +94,7 @@ export function ClientLoginModal({ isOpen, onClose }: ClientLoginModalProps) {
           <div className="w-full border-t border-border"></div>
         </div>
         <div className="relative flex justify-center text-sm">
-          <span className="px-2 bg-white text-muted-foreground">Or continue with</span>
+          <span className="px-2 bg-background text-muted-foreground">Or continue with</span>
         </div>
       </div>
 
@@ -130,7 +135,7 @@ export function ClientLoginModal({ isOpen, onClose }: ClientLoginModalProps) {
         >
           <ArrowLeft size={20} />
         </button>
-        <h2 className="text-xl font-bold text-foreground">
+        <h2 className="text-xl font-bold text-primary">
           {t('clientLogin.emailLogin')}
         </h2>
       </div>
@@ -145,7 +150,7 @@ export function ClientLoginModal({ isOpen, onClose }: ClientLoginModalProps) {
             id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+            className="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-background"
             placeholder="Enter your email"
             required
             data-testid="input-email"
@@ -162,7 +167,7 @@ export function ClientLoginModal({ isOpen, onClose }: ClientLoginModalProps) {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-3 py-2 pr-10 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+              className="w-full px-4 py-3 pr-10 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-background"
               placeholder="Enter your password"
               required
               data-testid="input-password"
@@ -199,7 +204,7 @@ export function ClientLoginModal({ isOpen, onClose }: ClientLoginModalProps) {
         >
           <ArrowLeft size={20} />
         </button>
-        <h2 className="text-xl font-bold text-foreground">
+        <h2 className="text-xl font-bold text-primary">
           {t('clientLogin.phoneLogin')}
         </h2>
       </div>
@@ -214,7 +219,7 @@ export function ClientLoginModal({ isOpen, onClose }: ClientLoginModalProps) {
             id="phone"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
-            className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+            className="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-background"
             placeholder="+1 (555) 123-4567"
             required
             data-testid="input-phone"
@@ -231,7 +236,7 @@ export function ClientLoginModal({ isOpen, onClose }: ClientLoginModalProps) {
               id="phone-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-3 py-2 pr-10 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+              className="w-full px-4 py-3 pr-10 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-background"
               placeholder="Enter your password"
               required
               data-testid="input-phone-password"
@@ -274,14 +279,10 @@ export function ClientLoginModal({ isOpen, onClose }: ClientLoginModalProps) {
       }}
     >
       <div 
-        className="bg-white rounded-xl shadow-2xl w-full max-w-md max-h-[85vh] overflow-y-auto"
-        style={{ 
-          backgroundColor: '#ffffff',
-          position: 'relative'
-        }}
+        className="bg-background rounded-xl shadow-2xl w-full max-w-md max-h-[85vh] overflow-y-auto border border-border"
         data-testid="modal-client-login"
       >
-        <div className="sticky top-0 bg-white border-b border-border p-4 flex items-center justify-between">
+        <div className="sticky top-0 bg-background border-b border-border p-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             {loginMethod !== 'options' && (
               <button
@@ -292,7 +293,7 @@ export function ClientLoginModal({ isOpen, onClose }: ClientLoginModalProps) {
                 <ArrowLeft size={20} />
               </button>
             )}
-            <h1 className="text-lg font-bold gradient-text">RVClaimTrack</h1>
+            <h1 className="text-lg font-bold text-primary">RVClaimTrack</h1>
           </div>
           <button
             onClick={onClose}
