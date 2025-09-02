@@ -129,6 +129,27 @@ export const translations = {
       manufacturersSubtitle: "Proven expertise with industry-leading RV brands, delivering consistent results and maximum approvals for dealerships across Canada."
     },
 
+    // Department Directory Section
+    departmentDirectory: {
+      title: "Contact Our Departments",
+      description: "Get in touch with the right team for fast, professional service.",
+      departments: {
+        claims: "Claims Processing",
+        techSupport: "Technical Support",
+        warranty: "Warranty Services",
+        roadside: "Roadside Assistance", 
+        sales: "Sales Team",
+        accountsPayable: "Accounts Payable",
+        accountsReceivable: "Accounts Receivable",
+        partners: "Partner Relations",
+        media: "Media Relations",
+        dealerOnboarding: "Dealer Onboarding",
+        dealerRelations: "Dealer Relations",
+        general: "General Inquiries"
+      },
+      note: "All emails are monitored during business hours. For urgent matters, please call our main line."
+    },
+
     // Upsell Services Section
     upsellServices: {
       badge: "Revenue Growth Services",
@@ -660,6 +681,27 @@ export const translations = {
       },
       manufacturersTitle: "Nous traitons les réclamations pour les principaux fabricants d'Amérique du Nord",
       manufacturersSubtitle: "Expertise éprouvée avec les marques de VR leaders de l'industrie, offrant des résultats cohérents et des approbations maximales pour les concessionnaires à travers le Canada."
+    },
+
+    // Department Directory Section
+    departmentDirectory: {
+      title: "Contactez nos départements",
+      description: "Communiquez avec la bonne équipe pour un service rapide et professionnel.",
+      departments: {
+        claims: "Traitement des réclamations",
+        techSupport: "Support technique",
+        warranty: "Services de garantie",
+        roadside: "Assistance routière", 
+        sales: "Équipe des ventes",
+        accountsPayable: "Comptes à payer",
+        accountsReceivable: "Comptes à recevoir",
+        partners: "Relations partenaires",
+        media: "Relations médias",
+        dealerOnboarding: "Intégration des concessionnaires",
+        dealerRelations: "Relations concessionnaires",
+        general: "Demandes générales"
+      },
+      note: "Tous les courriels sont surveillés pendant les heures d'affaires. Pour les urgences, veuillez appeler notre ligne principale."
     },
 
     // Upsell Services Section
