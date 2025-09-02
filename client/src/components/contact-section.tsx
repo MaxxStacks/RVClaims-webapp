@@ -104,7 +104,7 @@ export function ContactSection() {
                   <h4 className="font-semibold">
                     {t('contactSection.email.title')}
                   </h4>
-                  <p className="text-muted-foreground">claims@rvclaimtrack.ca</p>
+                  <p className="text-muted-foreground">support@rvclaims.ca</p>
                   <p className="text-muted-foreground text-sm">
                     {t('contactSection.email.response')}
                   </p>
