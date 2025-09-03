@@ -1,9 +1,11 @@
 import { DollarSign, TrendingUp, Users, Wrench, Smartphone, RefreshCw } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { useEffect, useRef, useState } from "react";
 
 export function UpsellServicesSection() {
   const { t } = useLanguage();
+  const isMobile = useIsMobile();
   const sectionRef = useRef<HTMLElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
@@ -53,8 +55,11 @@ export function UpsellServicesSection() {
       const sectionTop = rect.top;
       const sectionBottom = rect.bottom;
       
-      // Check if section is in the viewport (with generous margins)
-      if (sectionTop <= windowHeight * 0.3 && sectionBottom >= windowHeight * 0.7) {
+      // Check if section is in the viewport (adjust for mobile)
+      const topThreshold = isMobile ? 0.1 : 0.3;
+      const bottomThreshold = isMobile ? 0.9 : 0.7;
+      
+      if (sectionTop <= windowHeight * topThreshold && sectionBottom >= windowHeight * bottomThreshold) {
         // Calculate which card should be displayed based on scroll position
         const viewportCenter = windowHeight / 2;
         const distanceFromTop = viewportCenter - sectionTop;
@@ -68,7 +73,7 @@ export function UpsellServicesSection() {
           setCurrentCardIndex(cardIndex);
           
           // Calculate scroll position to center the current card
-          const cardWidth = 420; // 400px + 20px gap
+          const cardWidth = isMobile ? 296 : 420; // (280px + 16px gap) or (400px + 32px gap)
           const containerCenter = container.clientWidth / 2;
           const targetScrollLeft = Math.max(0, (cardIndex * cardWidth) - containerCenter + (cardWidth / 2));
           
@@ -102,37 +107,37 @@ export function UpsellServicesSection() {
   return (
     <section 
       ref={sectionRef}
-      className="py-24 bg-white flex flex-col justify-center" 
-style={{ minHeight: '100vh' }}
+      className="py-12 md:py-24 bg-white flex flex-col justify-center" 
+      style={{ minHeight: isMobile ? 'auto' : '100vh' }}
       id="upsell-services"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center space-y-4 mb-16">
+        <div className="text-center space-y-4 mb-8 md:mb-16">
           <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
             {t('upsellServices.badge')}
           </div>
-          <h2 className="text-3xl lg:text-4xl font-bold text-foreground" data-testid="text-upsell-title">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground" data-testid="text-upsell-title">
             {t('upsellServices.title')}
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto" data-testid="text-upsell-description">
+          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto px-4" data-testid="text-upsell-description">
             {t('upsellServices.description')}
           </p>
         </div>
 
         <div 
           ref={containerRef}
-          className="overflow-x-hidden mb-16"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          className="overflow-x-auto mb-8 md:mb-16 px-4 md:px-0 -mx-4 md:mx-0"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}
         >
           <div 
-            className="flex gap-8 transition-transform duration-75"
-            style={{ width: `${services.length * 420}px` }}
+            className="flex gap-4 md:gap-8 transition-transform duration-75"
+            style={{ width: isMobile ? `${services.length * (280 + 16)}px` : `${services.length * 420}px` }}
           >
             {services.map(({ key, icon: Icon, revenue }) => (
               <div
                 key={key}
-                className="bg-gray-50 rounded-xl p-8 hover:shadow-lg transition-all duration-300 group flex-shrink-0"
-                style={{ width: '400px' }}
+                className="bg-gray-50 rounded-xl p-4 md:p-8 hover:shadow-lg transition-all duration-300 group flex-shrink-0"
+                style={{ width: isMobile ? '280px' : '400px' }}
                 data-testid={`card-service-${key}`}
               >
                 <div className="flex items-start justify-between mb-6">
@@ -175,11 +180,11 @@ style={{ minHeight: '100vh' }}
           </div>
         </div>
 
-        <div className="bg-gradient-to-r from-primary/5 to-primary/10 rounded-2xl p-8 lg:p-12 text-center">
-          <h3 className="text-2xl lg:text-3xl font-bold text-foreground mb-4" data-testid="text-upsell-cta-title">
+        <div className="bg-gradient-to-r from-primary/5 to-primary/10 rounded-2xl p-4 md:p-8 lg:p-12 text-center mx-4 md:mx-0">
+          <h3 className="text-xl md:text-2xl lg:text-3xl font-bold text-foreground mb-4" data-testid="text-upsell-cta-title">
             {t('upsellServices.cta.title')}
           </h3>
-          <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto" data-testid="text-upsell-cta-description">
+          <p className="text-base md:text-lg text-muted-foreground mb-6 md:mb-8 max-w-2xl mx-auto" data-testid="text-upsell-cta-description">
             {t('upsellServices.cta.description')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
