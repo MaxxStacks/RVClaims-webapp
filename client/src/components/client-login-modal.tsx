@@ -3,7 +3,7 @@ import { X, ArrowLeft, Mail, Phone, Eye, EyeOff } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle, faLinkedinIn } from "@fortawesome/free-brands-svg-icons";
 import { useLanguage } from "@/hooks/use-language";
-import loginModalLogoImage from "@assets/Industrial Trapton Logo Design (1)_1756840919371.png";
+import loginModalLogoImage from "@assets/Industrial Trapton Logo Design (1) (1)_1756859327359.png";
 
 interface ClientLoginModalProps {
   isOpen: boolean;

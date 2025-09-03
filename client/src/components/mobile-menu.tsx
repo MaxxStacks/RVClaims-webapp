@@ -4,7 +4,7 @@ import { Link, useLocation } from "wouter";
 import { useLanguage } from "@/hooks/use-language";
 import { LanguageToggle } from "@/components/language-toggle";
 import { ClientLoginModal } from "@/components/client-login-modal";
-import mobileMenuLogoImage from "@assets/Industrial Trapton Logo Design (1)_1756840919371.png";
+import mobileMenuLogoImage from "@assets/Industrial Trapton Logo Design (1) (1)_1756859327359.png";
 
 export function MobileMenu() {
   const [isOpen, setIsOpen] = useState(false);
