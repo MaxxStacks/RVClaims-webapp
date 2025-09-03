@@ -3,12 +3,10 @@ import { Menu, X, User, Facebook, Twitter, Linkedin, Instagram } from "lucide-re
 import { Link, useLocation } from "wouter";
 import { useLanguage } from "@/hooks/use-language";
 import { LanguageToggle } from "@/components/language-toggle";
-import { ClientLoginModal } from "@/components/client-login-modal";
 import mobileMenuLogoImage from "@assets/Industrial Trapton Logo Design (1) (1)_1756859327359.png";
 
 export function MobileMenu() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const { t } = useLanguage();
   const [location] = useLocation();
 
@@ -97,17 +95,15 @@ export function MobileMenu() {
 
           {/* Client Login Button */}
           <div className="px-6 py-3 border-t border-border" style={{ backgroundColor: '#ffffff' }}>
-            <button
-              onClick={() => {
-                setIsLoginModalOpen(true);
-                closeMenu();
-              }}
+            <Link
+              href="/client-login"
+              onClick={closeMenu}
               className="w-full flex items-center justify-center px-4 py-2 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-all duration-200 shadow-sm hover:shadow-md"
               data-testid="button-client-login"
             >
               <User className="mr-2" size={20} />
               {t('mobileMenu.clientLogin')}
-            </button>
+            </Link>
           </div>
 
           {/* Social Media Icons */}
@@ -152,10 +148,6 @@ export function MobileMenu() {
         </div>
       </div>
 
-      <ClientLoginModal 
-        isOpen={isLoginModalOpen}
-        onClose={() => setIsLoginModalOpen(false)}
-      />
     </>
   );
 }

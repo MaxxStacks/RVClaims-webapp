@@ -13,6 +13,7 @@ import RevenueServices from "@/pages/revenue-services";
 import RvCoverage from "@/pages/rv-coverage";
 import Contact from "@/pages/contact";
 import PrivacyPolicy from "@/pages/privacy-policy";
+import ClientLogin from "@/pages/client-login";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -27,6 +28,7 @@ function Router() {
       <Route path="/rv-coverage" component={RvCoverage} />
       <Route path="/contact" component={Contact} />
       <Route path="/privacy-policy" component={PrivacyPolicy} />
+      <Route path="/client-login" component={ClientLogin} />
       <Route component={NotFound} />
     </Switch>
   );
