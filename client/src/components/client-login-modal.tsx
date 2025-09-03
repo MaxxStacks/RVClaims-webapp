@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { X, ArrowLeft, Mail, Phone, Eye, EyeOff } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle, faLinkedinIn } from "@fortawesome/free-brands-svg-icons";
@@ -21,6 +21,19 @@ export function ClientLoginModal({ isOpen, onClose }: ClientLoginModalProps) {
   const [showPassword, setShowPassword] = useState(false);
 
   if (!isOpen) return null;
+
+  // Disable body scroll when modal is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
 
   const handleSocialLogin = (provider: string) => {
     // TODO: Integrate with actual OAuth providers
@@ -254,9 +267,61 @@ export function ClientLoginModal({ isOpen, onClose }: ClientLoginModalProps) {
     </div>
   );
 
+  if (isMobile) {
+    // Mobile: Full-screen modal with no overlay
+    return (
+      <div 
+        className="fixed inset-0 z-[10000] bg-white w-full h-full overflow-y-auto"
+        style={{ 
+          position: 'fixed', 
+          top: 0, 
+          left: 0, 
+          width: '100vw', 
+          height: '100vh',
+          minHeight: '100vh'
+        }}
+        data-testid="modal-client-login"
+      >
+        <div className="sticky top-0 bg-white border-b border-border flex items-center justify-between p-4 pt-8">
+          <div className="flex items-center gap-3">
+            {loginMethod !== 'options' && (
+              <button
+                onClick={() => setLoginMethod('options')}
+                className="p-1 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/10 transition-colors"
+                data-testid="button-back-main"
+              >
+                <ArrowLeft size={20} />
+              </button>
+            )}
+            <img 
+              src={loginModalLogoImage} 
+              alt="RV Claims" 
+              className="h-6 w-auto max-w-[160px]" 
+              data-testid="img-login-modal-logo"
+            />
+          </div>
+          <button
+            onClick={onClose}
+            className="p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/10 transition-colors"
+            data-testid="button-close-login-modal"
+          >
+            <X size={20} />
+          </button>
+        </div>
+        
+        <div className="p-4 pb-8 min-h-[calc(100vh-80px)] bg-white">
+          {loginMethod === 'options' && renderLoginOptions()}
+          {loginMethod === 'email' && renderEmailLogin()}
+          {loginMethod === 'phone' && renderPhoneLogin()}
+        </div>
+      </div>
+    );
+  }
+
+  // Desktop: Centered modal with overlay
   return (
     <div 
-      className={`fixed inset-0 z-[10000] ${isMobile ? 'bg-white' : 'flex items-center justify-center p-4 bg-black/50'}`}
+      className="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-black/50"
       style={{ 
         position: 'fixed', 
         top: 0, 
@@ -266,11 +331,7 @@ export function ClientLoginModal({ isOpen, onClose }: ClientLoginModalProps) {
       }}
     >
       <div 
-        className={`bg-background shadow-2xl w-full overflow-y-auto ${
-          isMobile 
-            ? 'h-full' 
-            : 'rounded-xl max-w-md max-h-[85vh] border border-border'
-        }`}
+        className="bg-background rounded-xl shadow-2xl w-full max-w-md max-h-[85vh] overflow-y-auto border border-border"
         data-testid="modal-client-login"
       >
         <div className={`sticky top-0 bg-background border-b border-border flex items-center justify-between ${
