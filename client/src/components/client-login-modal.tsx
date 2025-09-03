@@ -20,8 +20,6 @@ export function ClientLoginModal({ isOpen, onClose }: ClientLoginModalProps) {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
-  if (!isOpen) return null;
-
   // Disable body scroll when modal is open
   useEffect(() => {
     if (isOpen) {
@@ -34,6 +32,8 @@ export function ClientLoginModal({ isOpen, onClose }: ClientLoginModalProps) {
       document.body.style.overflow = 'unset';
     };
   }, [isOpen]);
+
+  if (!isOpen) return null;
 
   const handleSocialLogin = (provider: string) => {
     // TODO: Integrate with actual OAuth providers
