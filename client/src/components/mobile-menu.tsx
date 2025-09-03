@@ -98,7 +98,10 @@ export function MobileMenu() {
           {/* Client Login Button */}
           <div className="px-6 py-3 border-t border-border" style={{ backgroundColor: '#ffffff' }}>
             <button
-              onClick={() => setIsLoginModalOpen(true)}
+              onClick={() => {
+                setIsLoginModalOpen(true);
+                closeMenu();
+              }}
               className="w-full flex items-center justify-center px-4 py-2 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-all duration-200 shadow-sm hover:shadow-md"
               data-testid="button-client-login"
             >

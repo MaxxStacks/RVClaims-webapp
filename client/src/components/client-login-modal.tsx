@@ -3,6 +3,7 @@ import { X, ArrowLeft, Mail, Phone, Eye, EyeOff } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle, faLinkedinIn } from "@fortawesome/free-brands-svg-icons";
 import { useLanguage } from "@/hooks/use-language";
+import { useIsMobile } from "@/hooks/use-mobile";
 import loginModalLogoImage from "@assets/Industrial Trapton Logo Design (1) (1)_1756859327359.png";
 
 interface ClientLoginModalProps {
@@ -12,6 +13,7 @@ interface ClientLoginModalProps {
 
 export function ClientLoginModal({ isOpen, onClose }: ClientLoginModalProps) {
   const { t } = useLanguage();
+  const isMobile = useIsMobile();
   const [loginMethod, setLoginMethod] = useState<'options' | 'email' | 'phone'>('options');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -254,24 +256,26 @@ export function ClientLoginModal({ isOpen, onClose }: ClientLoginModalProps) {
 
   return (
     <div 
-      className="fixed inset-0 z-[10000] flex items-center justify-center p-4" 
+      className={`fixed inset-0 z-[10000] ${isMobile ? 'bg-white' : 'flex items-center justify-center p-4 bg-black/50'}`}
       style={{ 
         position: 'fixed', 
         top: 0, 
         left: 0, 
         width: '100vw', 
-        height: '100vh',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
+        height: '100vh'
       }}
     >
       <div 
-        className="bg-background rounded-xl shadow-2xl w-full max-w-md max-h-[85vh] overflow-y-auto border border-border"
+        className={`bg-background shadow-2xl w-full overflow-y-auto ${
+          isMobile 
+            ? 'h-full' 
+            : 'rounded-xl max-w-md max-h-[85vh] border border-border'
+        }`}
         data-testid="modal-client-login"
       >
-        <div className="sticky top-0 bg-background border-b border-border p-4 flex items-center justify-between">
+        <div className={`sticky top-0 bg-background border-b border-border flex items-center justify-between ${
+          isMobile ? 'p-4 pt-8' : 'p-4'
+        }`}>
           <div className="flex items-center gap-3">
             {loginMethod !== 'options' && (
               <button
@@ -298,7 +302,7 @@ export function ClientLoginModal({ isOpen, onClose }: ClientLoginModalProps) {
           </button>
         </div>
 
-        <div className="p-6">
+        <div className={`${isMobile ? 'p-4 pb-8' : 'p-6'}`}>
           {loginMethod === 'options' && renderLoginOptions()}
           {loginMethod === 'email' && renderEmailLogin()}
           {loginMethod === 'phone' && renderPhoneLogin()}
