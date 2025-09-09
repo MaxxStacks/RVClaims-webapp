@@ -1,7 +1,7 @@
 import { Phone, Mail, MapPin, Heart } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
 import { Link } from "wouter";
-import footerLogoImage from "@assets/RV Claims (White)_1756840828325.png";
+import footerLogoImage from "@assets/white logo_1757446520527.png";
 
 export function Footer() {
   const { t } = useLanguage();
