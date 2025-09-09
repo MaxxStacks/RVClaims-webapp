@@ -15,7 +15,7 @@ export function Footer() {
               <img 
                 src={footerLogoImage} 
                 alt="RV Claims" 
-                className="h-12 w-auto max-w-[280px]" 
+                className="h-16 w-auto max-w-[350px]" 
                 data-testid="img-footer-logo"
               />
             </div>
