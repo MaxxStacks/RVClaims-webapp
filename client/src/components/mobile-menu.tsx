@@ -93,8 +93,17 @@ export function MobileMenu() {
             ))}
           </div>
 
-          {/* Client Login Button */}
+          {/* Dealer Login Button */}
           <div className="px-6 py-3 border-t border-border" style={{ backgroundColor: '#ffffff' }}>
+            <Link
+              href="#"
+              onClick={closeMenu}
+              className="w-full flex items-center justify-center px-4 py-2 bg-secondary text-secondary-foreground rounded-lg font-medium hover:bg-secondary/90 transition-all duration-200 shadow-sm hover:shadow-md mb-2"
+              data-testid="button-dealer-login"
+            >
+              <User className="mr-2" size={20} />
+              {t('mobileMenu.dealerLogin')}
+            </Link>
             <Link
               href="/client-login"
               onClick={closeMenu}
