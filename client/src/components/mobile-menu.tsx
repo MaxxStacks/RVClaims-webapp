@@ -50,7 +50,7 @@ export function MobileMenu() {
       >
         <div className="flex flex-col h-full" style={{ backgroundColor: '#ffffff' }}>
           {/* Header */}
-          <div className="flex items-center justify-between p-6 border-b border-border" style={{ backgroundColor: '#ffffff' }}>
+          <div className="flex items-center justify-between h-16 px-6 border-b border-border" style={{ backgroundColor: '#ffffff' }}>
             <Link 
               href="/" 
               className="flex items-center"
