@@ -182,7 +182,7 @@ export function Footer() {
             </div>
           </div>
           <div className="flex justify-end items-center mt-4 pt-4 pb-2 border-t border-gray-700">
-            <p className="text-base text-gray-300 flex items-center" data-testid="text-footer-made-with-love">
+            <p className="text-sm text-gray-300 flex items-center" data-testid="text-footer-made-with-love">
               Developed and coded with <Heart className="mx-2 w-4 h-4 text-white fill-white" /> in Montreal and Toronto Canada
             </p>
           </div>
