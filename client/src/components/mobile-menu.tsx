@@ -60,7 +60,7 @@ export function MobileMenu() {
               <img 
                 src={mobileMenuLogoImage} 
                 alt="RV Claims" 
-                className="h-8 w-auto max-w-[200px]" 
+                className="h-12 w-auto max-w-[280px]" 
                 data-testid="img-mobile-menu-logo"
               />
             </Link>
