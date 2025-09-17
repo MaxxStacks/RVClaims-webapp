@@ -77,7 +77,7 @@ export function ExperienceSection() {
               </div>
             ))}
           </div>
-          <p className="text-center text-primary mt-6 text-sm font-semibold animate-pulse">
+          <p className="text-center text-primary mt-6 text-[16.8px] font-semibold animate-pulse">
             Plus more of North America's leading RV manufacturers and their top brands!
           </p>
         </div>
