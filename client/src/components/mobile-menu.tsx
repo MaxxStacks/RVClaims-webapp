@@ -3,7 +3,7 @@ import { Menu, X, User, Building, Facebook, Twitter, Linkedin, Instagram } from 
 import { Link, useLocation } from "wouter";
 import { useLanguage } from "@/hooks/use-language";
 import { LanguageToggle } from "@/components/language-toggle";
-import mobileMenuLogoImage from "@assets/Industrial Trapton Logo Design (1) (1)_1756859327359.png";
+import headerLogoImage from "@assets/Industrial Trapton Logo Design (1) (1)_1756855580448.png";
 
 export function MobileMenu() {
   const [isOpen, setIsOpen] = useState(false);
@@ -50,7 +50,7 @@ export function MobileMenu() {
       >
         <div className="flex flex-col h-full" style={{ backgroundColor: '#ffffff' }}>
           {/* Header */}
-          <div className="flex items-center justify-between h-16 px-6 border-b border-border" style={{ backgroundColor: '#ffffff' }}>
+          <div className="flex items-center justify-between h-[var(--header-height)] px-6 border-b border-border" style={{ backgroundColor: '#ffffff' }}>
             <Link 
               href="/" 
               className="flex items-center"
@@ -58,9 +58,9 @@ export function MobileMenu() {
               data-testid="link-pages-logo"
             >
               <img 
-                src={mobileMenuLogoImage} 
+                src={headerLogoImage} 
                 alt="RV Claims" 
-                className="h-12 w-auto max-w-[280px]" 
+                className="h-[var(--logo-height)] w-auto max-w-[280px]" 
                 data-testid="img-mobile-menu-logo"
               />
             </Link>

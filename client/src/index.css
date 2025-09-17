@@ -21,6 +21,8 @@ html, body {
 }
 
 :root {
+  --header-height: 64px;
+  --logo-height: 48px;
   --background: hsl(0 0% 100%);
   --foreground: hsl(240 10% 3.9%);
   --card: hsl(0 0% 100%);
