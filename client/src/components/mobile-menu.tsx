@@ -98,26 +98,28 @@ export function MobileMenu() {
           </div>
 
           {/* Login Section */}
-          <div className="px-6 py-3 border-t border-border" style={{ backgroundColor: '#ffffff' }}>
-            <h3 className="text-sm font-semibold text-muted-foreground mb-3 px-4">{t('mobileMenu.loginHeading')}</h3>
-            <Link
-              href="#"
-              onClick={closeMenu}
-              className="w-full flex items-center justify-center px-4 py-2 bg-secondary text-secondary-foreground rounded-lg font-medium hover:bg-secondary/90 transition-all duration-200 shadow-sm hover:shadow-md mb-2"
-              data-testid="button-dealer-login"
-            >
-              <Building className="mr-2" size={20} />
-              {t('mobileMenu.dealer')}
-            </Link>
-            <Link
-              href="/client-login"
-              onClick={closeMenu}
-              className="w-full flex items-center justify-center px-4 py-2 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-all duration-200 shadow-sm hover:shadow-md"
-              data-testid="button-client-login"
-            >
-              <User className="mr-2" size={20} />
-              {t('mobileMenu.client')}
-            </Link>
+          <div className="px-6 py-4 border-t border-border" style={{ backgroundColor: '#ffffff' }}>
+            <h3 className="text-base font-bold text-foreground mb-4 text-center tracking-wide">{t('mobileMenu.loginHeading')}</h3>
+            <div className="space-y-3">
+              <Link
+                href="#"
+                onClick={closeMenu}
+                className="w-full flex items-center justify-center px-4 py-3 bg-secondary text-secondary-foreground rounded-lg font-semibold hover:bg-secondary/90 transition-all duration-200 shadow-sm hover:shadow-md"
+                data-testid="button-dealer-login"
+              >
+                <Building className="mr-2" size={20} />
+                {t('mobileMenu.dealer')}
+              </Link>
+              <Link
+                href="/client-login"
+                onClick={closeMenu}
+                className="w-full flex items-center justify-center px-4 py-3 bg-primary text-primary-foreground rounded-lg font-semibold hover:bg-primary/90 transition-all duration-200 shadow-sm hover:shadow-md"
+                data-testid="button-client-login"
+              >
+                <User className="mr-2" size={20} />
+                {t('mobileMenu.client')}
+              </Link>
+            </div>
           </div>
 
           {/* Social Media Icons */}
