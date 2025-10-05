@@ -183,7 +183,7 @@ export function Footer() {
           </div>
           <div className="flex justify-end items-center mt-4 pt-4 border-t border-gray-300">
             <p className="text-[15px] text-gray-600 flex items-center" data-testid="text-footer-made-with-love">
-              Developed and coded with <Heart className="mx-2 w-4 h-4 text-primary fill-primary" /> in Montreal and Toronto Canada
+              {t('footer.developedWith')} <Heart className="mx-2 w-4 h-4 text-primary fill-primary" /> {t('footer.developedLocation')}
             </p>
           </div>
         </div>

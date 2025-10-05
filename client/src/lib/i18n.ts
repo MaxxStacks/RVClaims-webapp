@@ -305,7 +305,9 @@ export const translations = {
       privacyPolicy: "Privacy Policy",
       termsOfService: "Terms of Service",
       cookiePolicy: "Cookie Policy",
-      compliance: "PIPEDA Compliance"
+      compliance: "PIPEDA Compliance",
+      developedWith: "Developed and coded with",
+      developedLocation: "in Montreal and Toronto Canada"
     },
 
     // Chatbot
@@ -901,7 +903,9 @@ export const translations = {
       privacyPolicy: "Politique de confidentialité",
       termsOfService: "Conditions d'utilisation",
       cookiePolicy: "Politique des cookies",
-      compliance: "Conformité LPRPDE"
+      compliance: "Conformité LPRPDE",
+      developedWith: "Développé et codé avec",
+      developedLocation: "à Montréal et Toronto Canada"
     },
 
     // Chatbot
