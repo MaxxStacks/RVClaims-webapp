@@ -7,7 +7,7 @@ import headerLogoImage from "@assets/Industrial Trapton Logo Design (1) (1)_1756
 
 export function MobileMenu() {
   const [isOpen, setIsOpen] = useState(false);
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [location] = useLocation();
 
   const toggleMenu = () => setIsOpen(!isOpen);
@@ -103,24 +103,26 @@ export function MobileMenu() {
               <h3 className="text-sm font-bold text-primary uppercase tracking-widest mb-0.5 text-left">{t('mobileMenu.loginHeading')}</h3>
               <p className="text-xs text-muted-foreground mb-3 text-left">{t('mobileMenu.loginSubtext')}</p>
               <div className="space-y-2">
-                <Link
-                  href="#"
-                  onClick={closeMenu}
+                <a
+                  href={`https://portal.rvclaims.ca/dealer/${language}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-white border-2 border-primary/20 text-primary rounded-lg font-semibold hover:bg-primary hover:text-white hover:border-primary transition-all duration-300 shadow-sm hover:shadow-lg group"
                   data-testid="button-dealer-login"
                 >
                   <Building className="group-hover:scale-110 transition-transform" size={20} />
                   <span>{t('mobileMenu.dealer')}</span>
-                </Link>
-                <Link
-                  href="/client-login"
-                  onClick={closeMenu}
+                </a>
+                <a
+                  href={`https://portal.rvclaims.ca/client/${language}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-primary text-white rounded-lg font-semibold hover:bg-primary/90 transition-all duration-300 shadow-md hover:shadow-xl group"
                   data-testid="button-client-login"
                 >
                   <User className="group-hover:scale-110 transition-transform" size={20} />
                   <span>{t('mobileMenu.client')}</span>
-                </Link>
+                </a>
               </div>
             </div>
           </div>
