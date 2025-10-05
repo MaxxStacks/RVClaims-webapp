@@ -8,6 +8,7 @@ import { ExperienceSection } from "@/components/experience-section";
 import { PrivacyAssuranceSection } from "@/components/privacy-assurance-section";
 import { ConsumerServicesSection } from "@/components/consumer-services-section";
 import { UpsellServicesSection } from "@/components/upsell-services-section";
+import { PartsSection } from "@/components/parts-section";
 import { ContactSection } from "@/components/contact-section";
 import { Footer } from "@/components/footer";
 import { LanguageToggle } from "@/components/language-toggle";
@@ -29,6 +30,7 @@ export default function Home() {
       <PrivacyAssuranceSection />
       <ConsumerServicesSection />
       <UpsellServicesSection />
+      <PartsSection />
       <ContactSection />
       <Footer />
       <ChatbotWidget />

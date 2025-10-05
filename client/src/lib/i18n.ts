@@ -496,6 +496,36 @@ export const translations = {
       decline: "Decline"
     },
 
+    // Parts Section
+    partsSection: {
+      badge: "RV Parts & Components",
+      title: "Quality Parts for Claims & Direct Purchase",
+      description: "We provide genuine OEM and aftermarket parts for warranty claims processing and offer direct purchase options for dealerships across Canada.",
+      features: {
+        claimsParts: {
+          title: "Claims Parts Supply",
+          description: "Comprehensive parts provisioning during warranty claims processing to ensure fast approvals and repairs."
+        },
+        directPurchase: {
+          title: "Direct Purchase Available",
+          description: "Buy parts directly from us with bilingual support, perfect for Quebec dealers and French-speaking teams."
+        },
+        quality: {
+          title: "OEM & Certified Parts",
+          description: "Access to genuine manufacturer parts and certified aftermarket components for all major RV brands."
+        },
+        fastShipping: {
+          title: "Fast Canada-Wide Shipping",
+          description: "Quick delivery across Canada with tracking, ensuring minimal downtime for your customers."
+        }
+      },
+      cta: {
+        title: "Need Parts for Your Dealership?",
+        description: "Whether for claims processing or direct purchase, our parts team can help. Full bilingual support available for Quebec dealers.",
+        button: "Buy Parts Now"
+      }
+    },
+
     // Mobile Menu
     mobileMenu: {
       dealerLogin: "Dealer Login",
@@ -1054,6 +1084,36 @@ export const translations = {
       description: "Nous utilisons des cookies de niveau entreprise pour améliorer votre expérience et analyser les performances.",
       accept: "Accepter",
       decline: "Refuser"
+    },
+
+    // Parts Section
+    partsSection: {
+      badge: "Pièces et composants VR",
+      title: "Pièces de qualité pour réclamations et achat direct",
+      description: "Nous fournissons des pièces d'origine et de rechange pour le traitement des réclamations de garantie et offrons des options d'achat direct pour les concessionnaires à travers le Canada.",
+      features: {
+        claimsParts: {
+          title: "Fourniture de pièces pour réclamations",
+          description: "Approvisionnement complet en pièces lors du traitement des réclamations de garantie pour assurer des approbations et réparations rapides."
+        },
+        directPurchase: {
+          title: "Achat direct disponible",
+          description: "Achetez des pièces directement chez nous avec support bilingue, parfait pour les concessionnaires du Québec et les équipes francophones."
+        },
+        quality: {
+          title: "Pièces OEM et certifiées",
+          description: "Accès aux pièces d'origine du fabricant et composants de rechange certifiés pour toutes les grandes marques de VR."
+        },
+        fastShipping: {
+          title: "Livraison rapide partout au Canada",
+          description: "Livraison rapide à travers le Canada avec suivi, assurant un temps d'arrêt minimal pour vos clients."
+        }
+      },
+      cta: {
+        title: "Besoin de pièces pour votre concessionnaire?",
+        description: "Que ce soit pour le traitement des réclamations ou l'achat direct, notre équipe de pièces peut vous aider. Support bilingue complet disponible pour les concessionnaires québécois.",
+        button: "Acheter des pièces maintenant"
+      }
     },
 
     // Mobile Menu
