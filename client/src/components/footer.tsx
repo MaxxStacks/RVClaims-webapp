@@ -1,7 +1,7 @@
 import { Phone, Mail, MapPin, Heart } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
 import { Link } from "wouter";
-import footerLogoImage from "@assets/white logo_1757446520527.png";
+import headerLogoImage from "@assets/Industrial Trapton Logo Design (1) (1)_1756855580448.png";
 
 export function Footer() {
   const { t } = useLanguage();
@@ -13,9 +13,9 @@ export function Footer() {
           <div className="lg:col-span-2 space-y-4">
             <div className="mb-2" data-testid="div-footer-logo">
               <img 
-                src={footerLogoImage} 
+                src={headerLogoImage} 
                 alt="RV Claims" 
-                className="h-16 w-auto max-w-[350px] brightness-0" 
+                className="h-16 w-auto max-w-[350px]" 
                 data-testid="img-footer-logo"
               />
             </div>
