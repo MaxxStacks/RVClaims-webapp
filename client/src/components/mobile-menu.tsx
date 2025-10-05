@@ -98,27 +98,30 @@ export function MobileMenu() {
           </div>
 
           {/* Login Section */}
-          <div className="px-6 py-4 border-t border-border" style={{ backgroundColor: '#ffffff' }}>
-            <h3 className="text-base font-bold text-foreground mb-4 text-center tracking-wide">{t('mobileMenu.loginHeading')}</h3>
-            <div className="space-y-3">
-              <Link
-                href="#"
-                onClick={closeMenu}
-                className="w-full flex items-center justify-center px-4 py-3 bg-secondary text-secondary-foreground rounded-lg font-semibold hover:bg-secondary/90 transition-all duration-200 shadow-sm hover:shadow-md"
-                data-testid="button-dealer-login"
-              >
-                <Building className="mr-2" size={20} />
-                {t('mobileMenu.dealer')}
-              </Link>
-              <Link
-                href="/client-login"
-                onClick={closeMenu}
-                className="w-full flex items-center justify-center px-4 py-3 bg-primary text-primary-foreground rounded-lg font-semibold hover:bg-primary/90 transition-all duration-200 shadow-sm hover:shadow-md"
-                data-testid="button-client-login"
-              >
-                <User className="mr-2" size={20} />
-                {t('mobileMenu.client')}
-              </Link>
+          <div className="p-6 border-t-2 border-primary/20" style={{ backgroundColor: '#f8fafc' }}>
+            <div className="bg-gradient-to-br from-primary/5 to-primary/10 rounded-xl p-5 shadow-sm">
+              <h3 className="text-sm font-bold text-primary uppercase tracking-widest mb-1 text-left">{t('mobileMenu.loginHeading')}</h3>
+              <p className="text-xs text-muted-foreground mb-4 text-left">{t('mobileMenu.loginSubtext')}</p>
+              <div className="space-y-3">
+                <Link
+                  href="#"
+                  onClick={closeMenu}
+                  className="w-full flex items-center justify-center gap-2 px-4 py-3.5 bg-white border-2 border-primary/20 text-primary rounded-lg font-semibold hover:bg-primary hover:text-white hover:border-primary transition-all duration-300 shadow-sm hover:shadow-lg group"
+                  data-testid="button-dealer-login"
+                >
+                  <Building className="group-hover:scale-110 transition-transform" size={20} />
+                  <span>{t('mobileMenu.dealer')}</span>
+                </Link>
+                <Link
+                  href="/client-login"
+                  onClick={closeMenu}
+                  className="w-full flex items-center justify-center gap-2 px-4 py-3.5 bg-primary text-white rounded-lg font-semibold hover:bg-primary/90 transition-all duration-300 shadow-md hover:shadow-xl group"
+                  data-testid="button-client-login"
+                >
+                  <User className="group-hover:scale-110 transition-transform" size={20} />
+                  <span>{t('mobileMenu.client')}</span>
+                </Link>
+              </div>
             </div>
           </div>
 

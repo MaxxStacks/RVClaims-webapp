@@ -537,6 +537,7 @@ export const translations = {
     // Mobile Menu
     mobileMenu: {
       loginHeading: "Login",
+      loginSubtext: "Access your account",
       dealer: "Dealer",
       client: "Client"
     },
@@ -1136,6 +1137,7 @@ export const translations = {
     // Mobile Menu
     mobileMenu: {
       loginHeading: "Connexion",
+      loginSubtext: "Accédez à votre compte",
       dealer: "Concessionnaire",
       client: "Client"
     },
