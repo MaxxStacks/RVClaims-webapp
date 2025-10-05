@@ -97,8 +97,9 @@ export function MobileMenu() {
             ))}
           </div>
 
-          {/* Dealer Login Button */}
+          {/* Login Section */}
           <div className="px-6 py-3 border-t border-border" style={{ backgroundColor: '#ffffff' }}>
+            <h3 className="text-sm font-semibold text-muted-foreground mb-3 px-4">{t('mobileMenu.loginHeading')}</h3>
             <Link
               href="#"
               onClick={closeMenu}
@@ -106,7 +107,7 @@ export function MobileMenu() {
               data-testid="button-dealer-login"
             >
               <Building className="mr-2" size={20} />
-              {t('mobileMenu.dealerLogin')}
+              {t('mobileMenu.dealer')}
             </Link>
             <Link
               href="/client-login"
@@ -115,7 +116,7 @@ export function MobileMenu() {
               data-testid="button-client-login"
             >
               <User className="mr-2" size={20} />
-              {t('mobileMenu.clientLogin')}
+              {t('mobileMenu.client')}
             </Link>
           </div>
 

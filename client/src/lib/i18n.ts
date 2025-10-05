@@ -536,8 +536,9 @@ export const translations = {
 
     // Mobile Menu
     mobileMenu: {
-      dealerLogin: "Pro Login",
-      clientLogin: "Client Login"
+      loginHeading: "Login",
+      dealer: "Dealer",
+      client: "Client"
     },
 
     // Client Login
@@ -1134,8 +1135,9 @@ export const translations = {
 
     // Mobile Menu
     mobileMenu: {
-      dealerLogin: "Connexion Pro",
-      clientLogin: "Connexion client"
+      loginHeading: "Connexion",
+      dealer: "Concessionnaire",
+      client: "Client"
     },
 
     // Client Login
