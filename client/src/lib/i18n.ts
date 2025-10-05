@@ -13,7 +13,8 @@ export const translations = {
 
     // Notification Bar
     notificationBar: {
-      message: "Sign up for the 2026 season now and get 5% off fees — limited-time offer for new dealership partners!"
+      message: "Sign up for the 2026 season before dec 31st 2025 and get 5% off claim fees, parts and services — limited-time offer for new clients!",
+      learnMore: "Learn More"
     },
 
     // Hero Section
@@ -608,7 +609,8 @@ export const translations = {
 
     // Notification Bar
     notificationBar: {
-      message: "Inscrivez-vous pour la saison 2026 maintenant et obtenez 5% de rabais sur les frais — offre à durée limitée pour les nouveaux partenaires concessionnaires!"
+      message: "Inscrivez-vous pour la saison 2026 avant le 31 déc 2025 et obtenez 5% de rabais sur les frais de réclamation, pièces et services — offre à durée limitée pour les nouveaux clients!",
+      learnMore: "En savoir plus"
     },
 
     // Hero Section

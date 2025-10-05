@@ -1,5 +1,6 @@
 import { Zap } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
+import { Link } from "wouter";
 
 export function NotificationBar() {
   const { t } = useLanguage();
@@ -9,22 +10,22 @@ export function NotificationBar() {
       <div className="whitespace-nowrap animate-scroll w-full">
         <span className="text-sm font-medium px-4 inline-flex items-center">
           <Zap className="w-4 h-4 mr-2 text-white animate-pulse" fill="white" />
-          {t('notificationBar.message')}
+          {t('notificationBar.message')} <Link href="/contact" className="ml-1 underline hover:text-gray-200 transition-colors" data-testid="link-learn-more">{t('notificationBar.learnMore')}</Link>
           <Zap className="w-4 h-4 ml-2 text-white animate-pulse" fill="white" />
         </span>
         <span className="text-sm font-medium px-4 inline-flex items-center">
           <Zap className="w-4 h-4 mr-2 text-white animate-pulse" fill="white" />
-          {t('notificationBar.message')}
+          {t('notificationBar.message')} <Link href="/contact" className="ml-1 underline hover:text-gray-200 transition-colors" data-testid="link-learn-more">{t('notificationBar.learnMore')}</Link>
           <Zap className="w-4 h-4 ml-2 text-white animate-pulse" fill="white" />
         </span>
         <span className="text-sm font-medium px-4 inline-flex items-center">
           <Zap className="w-4 h-4 mr-2 text-white animate-pulse" fill="white" />
-          {t('notificationBar.message')}
+          {t('notificationBar.message')} <Link href="/contact" className="ml-1 underline hover:text-gray-200 transition-colors" data-testid="link-learn-more">{t('notificationBar.learnMore')}</Link>
           <Zap className="w-4 h-4 ml-2 text-white animate-pulse" fill="white" />
         </span>
         <span className="text-sm font-medium px-4 inline-flex items-center">
           <Zap className="w-4 h-4 mr-2 text-white animate-pulse" fill="white" />
-          {t('notificationBar.message')}
+          {t('notificationBar.message')} <Link href="/contact" className="ml-1 underline hover:text-gray-200 transition-colors" data-testid="link-learn-more">{t('notificationBar.learnMore')}</Link>
           <Zap className="w-4 h-4 ml-2 text-white animate-pulse" fill="white" />
         </span>
       </div>
