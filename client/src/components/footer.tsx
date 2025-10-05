@@ -161,7 +161,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-gray-300 pt-4 pb-4">
+        <div className="border-t border-gray-300 pt-4 pb-2">
           <div className="flex flex-col lg:flex-row justify-between items-center space-y-4 lg:space-y-0">
             <p className="text-sm text-gray-600" data-testid="text-footer-copyright">
               {t('footer.copyright')}
@@ -182,7 +182,7 @@ export function Footer() {
             </div>
           </div>
           <div className="flex justify-end items-center mt-4 pt-4 border-t border-gray-300">
-            <p className="text-sm text-gray-600 flex items-center" data-testid="text-footer-made-with-love">
+            <p className="text-[15px] text-gray-600 flex items-center" data-testid="text-footer-made-with-love">
               Developed and coded with <Heart className="mx-2 w-4 h-4 text-primary fill-primary" /> in Montreal and Toronto Canada
             </p>
           </div>
