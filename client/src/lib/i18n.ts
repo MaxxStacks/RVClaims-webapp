@@ -11,6 +11,11 @@ export const translations = {
       contact: "Contact"
     },
 
+    // Notification Bar
+    notificationBar: {
+      message: "Sign up for the 2026 season now and get 5% off fees — limited-time offer for new dealership partners!"
+    },
+
     // Hero Section
     hero: {
       badge: "Industry Leading Claims Management",
@@ -599,6 +604,11 @@ export const translations = {
       revenueServices: "Services revenus",
       rvCoverage: "Couverture VR",
       contact: "Contact"
+    },
+
+    // Notification Bar
+    notificationBar: {
+      message: "Inscrivez-vous pour la saison 2026 maintenant et obtenez 5% de rabais sur les frais — offre à durée limitée pour les nouveaux partenaires concessionnaires!"
     },
 
     // Hero Section
