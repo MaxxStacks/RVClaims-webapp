@@ -314,7 +314,19 @@ export const translations = {
     chatbot: {
       title: "Get Expert Support",
       description: "Our claims experts are ready to help you optimize your RV warranty revenue. Select your department for immediate assistance.",
-      departments: {
+      selectSection: "Select a Service",
+      sectionDescription: "Choose the specific service you need assistance with.",
+      categories: {
+        business: "Business Services",
+        support: "Service & Support",
+        accounting: "Accounting"
+      },
+      categoryDescriptions: {
+        business: "Sales, partnerships, and warranty programs",
+        support: "Claims, technical help, and parts",
+        accounting: "Financial and payment services"
+      },
+      sections: {
         sales: "Sales Team",
         claims: "Claims Department", 
         technical: "Technical Support",
@@ -323,7 +335,7 @@ export const translations = {
         parts: "Parts Department",
         extendedWarranty: "Extended Warranty"
       },
-      departmentDescriptions: {
+      sectionDescriptions: {
         sales: "New partnerships and dealership onboarding",
         claims: "Claims processing and optimization support",
         technical: "Platform training and technical assistance", 
@@ -918,7 +930,19 @@ export const translations = {
     chatbot: {
       title: "Obtenir un support expert",
       description: "Nos experts en réclamations sont prêts à vous aider à optimiser vos revenus de garantie VR. Sélectionnez votre département pour une assistance immédiate.",
-      departments: {
+      selectSection: "Sélectionner un service",
+      sectionDescription: "Choisissez le service spécifique pour lequel vous avez besoin d'aide.",
+      categories: {
+        business: "Services d'affaires",
+        support: "Service et support",
+        accounting: "Comptabilité"
+      },
+      categoryDescriptions: {
+        business: "Ventes, partenariats et programmes de garantie",
+        support: "Réclamations, aide technique et pièces",
+        accounting: "Services financiers et de paiement"
+      },
+      sections: {
         sales: "Équipe des ventes",
         claims: "Département des réclamations", 
         technical: "Support technique",
@@ -927,7 +951,7 @@ export const translations = {
         parts: "Département des pièces",
         extendedWarranty: "Garantie prolongée"
       },
-      departmentDescriptions: {
+      sectionDescriptions: {
         sales: "Nouveaux partenariats et intégration de concessionnaires",
         claims: "Support de traitement et d'optimisation des réclamations",
         technical: "Formation de plateforme et assistance technique", 
