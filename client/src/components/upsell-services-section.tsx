@@ -180,24 +180,24 @@ export function UpsellServicesSection() {
           </div>
         </div>
 
-        <div className="bg-gradient-to-r from-primary/5 to-primary/10 rounded-2xl p-4 md:p-8 lg:p-12 text-center mx-4 md:mx-0">
-          <h3 className="text-xl md:text-2xl lg:text-3xl font-bold text-foreground mb-4" data-testid="text-upsell-cta-title">
+        <div className="bg-primary rounded-2xl p-6 md:p-10 lg:p-16 text-center mx-4 md:mx-0 shadow-xl">
+          <h3 className="text-xl md:text-2xl lg:text-3xl font-bold text-white mb-4" data-testid="text-upsell-cta-title">
             {t('upsellServices.cta.title')}
           </h3>
-          <p className="text-base md:text-lg text-muted-foreground mb-6 md:mb-8 max-w-2xl mx-auto" data-testid="text-upsell-cta-description">
+          <p className="text-base md:text-lg text-white/90 mb-6 md:mb-8 max-w-2xl mx-auto" data-testid="text-upsell-cta-description">
             {t('upsellServices.cta.description')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a 
               href="#contact" 
-              className="inline-flex items-center justify-center px-8 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-colors"
+              className="inline-flex items-center justify-center px-8 py-3 bg-white text-primary font-semibold rounded-lg hover:bg-gray-100 transition-colors"
               data-testid="button-upsell-contact"
             >
               {t('upsellServices.cta.contactButton')}
             </a>
             <a 
               href="tel:1-800-RV-CLAIM" 
-              className="inline-flex items-center justify-center px-8 py-3 border-2 border-primary text-primary font-semibold rounded-lg hover:bg-primary hover:text-white transition-colors"
+              className="inline-flex items-center justify-center px-8 py-3 border-2 border-white text-white font-semibold rounded-lg hover:bg-white hover:text-primary transition-colors"
               data-testid="button-upsell-call"
             >
               {t('upsellServices.cta.callButton')}
