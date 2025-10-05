@@ -1,10 +1,10 @@
-import { MessageCircle, Phone, Mail, MessageSquare, ArrowLeft, Users, FileText, HelpCircle, Calculator, DollarSign } from "lucide-react";
+import { MessageCircle, Phone, Mail, MessageSquare, ArrowLeft, Users, FileText, HelpCircle, Calculator, DollarSign, Package, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { useLanguage } from "@/hooks/use-language";
 import { useState } from "react";
 
-type Department = 'sales' | 'claims' | 'technical' | 'accountsPayable' | 'accountsReceivable';
+type Department = 'sales' | 'claims' | 'technical' | 'accountsPayable' | 'accountsReceivable' | 'parts' | 'extendedWarranty';
 
 interface DepartmentInfo {
   icon: React.ComponentType<any>;
@@ -21,7 +21,9 @@ export function ChatbotWidget() {
     { icon: FileText, key: 'claims' },
     { icon: HelpCircle, key: 'technical' },
     { icon: Calculator, key: 'accountsPayable' },
-    { icon: DollarSign, key: 'accountsReceivable' }
+    { icon: DollarSign, key: 'accountsReceivable' },
+    { icon: Package, key: 'parts' },
+    { icon: Shield, key: 'extendedWarranty' }
   ];
 
   const handleDepartmentSelect = (dept: Department) => {

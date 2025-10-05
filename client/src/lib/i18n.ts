@@ -319,14 +319,18 @@ export const translations = {
         claims: "Claims Department", 
         technical: "Technical Support",
         accountsPayable: "Accounts Payable",
-        accountsReceivable: "Accounts Receivable"
+        accountsReceivable: "Accounts Receivable",
+        parts: "Parts Department",
+        extendedWarranty: "Extended Warranty"
       },
       departmentDescriptions: {
         sales: "New partnerships and dealership onboarding",
         claims: "Claims processing and optimization support",
         technical: "Platform training and technical assistance", 
         accountsPayable: "Invoice and payment processing",
-        accountsReceivable: "Revenue and collections support"
+        accountsReceivable: "Revenue and collections support",
+        parts: "RV parts ordering and availability",
+        extendedWarranty: "Extended warranty programs and coverage"
       },
       contactMethods: {
         title: "How would you like to connect?",
@@ -919,14 +923,18 @@ export const translations = {
         claims: "Département des réclamations", 
         technical: "Support technique",
         accountsPayable: "Comptes à payer",
-        accountsReceivable: "Comptes à recevoir"
+        accountsReceivable: "Comptes à recevoir",
+        parts: "Département des pièces",
+        extendedWarranty: "Garantie prolongée"
       },
       departmentDescriptions: {
         sales: "Nouveaux partenariats et intégration de concessionnaires",
         claims: "Support de traitement et d'optimisation des réclamations",
         technical: "Formation de plateforme et assistance technique", 
         accountsPayable: "Traitement des factures et des paiements",
-        accountsReceivable: "Support de revenus et de recouvrements"
+        accountsReceivable: "Support de revenus et de recouvrements",
+        parts: "Commande de pièces VR et disponibilité",
+        extendedWarranty: "Programmes de garantie prolongée et couverture"
       },
       contactMethods: {
         title: "Comment souhaitez-vous vous connecter?",
