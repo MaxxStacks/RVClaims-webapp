@@ -27,13 +27,13 @@ export default function Home() {
       <HeroSection />
       <MainServicesSection />
       <ClaimsSection />
+      <RvTypesSection />
       <FinancingSection />
+      <TechnologySection />
       <WarrantySection />
+      <ExperienceSection />
       <FIServicesSection />
       <SupportingServicesSection />
-      <RvTypesSection />
-      <TechnologySection />
-      <ExperienceSection />
       <PrivacyAssuranceSection />
       <ConsumerServicesSection />
       <PartsSection />
