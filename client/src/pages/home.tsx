@@ -1,8 +1,11 @@
 import { Navigation } from "@/components/navigation";
 import { HeroSection } from "@/components/hero-section";
 import { MainServicesSection } from "@/components/main-services-section";
-import { SupportingServicesSection } from "@/components/supporting-services-section";
 import { ClaimsSection } from "@/components/claims-section";
+import { FinancingSection } from "@/components/financing-section";
+import { WarrantySection } from "@/components/warranty-section";
+import { FIServicesSection } from "@/components/fi-services-section";
+import { SupportingServicesSection } from "@/components/supporting-services-section";
 import { RvTypesSection } from "@/components/rv-types-section";
 import { TechnologySection } from "@/components/technology-section";
 import { ExperienceSection } from "@/components/experience-section";
@@ -23,6 +26,10 @@ export default function Home() {
       <Navigation />
       <HeroSection />
       <MainServicesSection />
+      <ClaimsSection />
+      <FinancingSection />
+      <WarrantySection />
+      <FIServicesSection />
       <SupportingServicesSection />
       <RvTypesSection />
       <TechnologySection />
