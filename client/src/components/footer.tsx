@@ -1,4 +1,4 @@
-import { Phone, Mail, MapPin, Heart } from "lucide-react";
+import { Phone, Mail, MapPin, Heart, Linkedin, Facebook, Youtube, Instagram, Twitter } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
 import { Link } from "wouter";
 import headerLogoImage from "@assets/Industrial Trapton Logo Design (1) (1)_1756855580448.png";
@@ -181,10 +181,54 @@ export function Footer() {
               </a>
             </div>
           </div>
-          <div className="flex justify-end items-center mt-4 pt-4 border-t border-gray-300">
-            <p className="text-[15px] text-gray-600 flex items-center" data-testid="text-footer-made-with-love">
+          <div className="flex flex-col sm:flex-row justify-between items-center mt-4 pt-4 border-t border-gray-300 gap-4">
+            <p className="text-[15px] text-gray-600 flex items-center order-2 sm:order-1" data-testid="text-footer-made-with-love">
               {t('footer.developedWith')} <Heart className="mx-2 w-4 h-4 text-primary fill-primary" /> {t('footer.developedLocation')}
             </p>
+            
+            {/* Social Media Icons */}
+            <div className="flex items-center gap-3 order-1 sm:order-2" data-testid="div-footer-social">
+              <a
+                href="#"
+                className="p-2 rounded-md text-gray-600 hover:text-primary hover:bg-primary/10 transition-colors"
+                data-testid="link-footer-linkedin"
+                aria-label="LinkedIn"
+              >
+                <Linkedin size={20} />
+              </a>
+              <a
+                href="#"
+                className="p-2 rounded-md text-gray-600 hover:text-primary hover:bg-primary/10 transition-colors"
+                data-testid="link-footer-facebook"
+                aria-label="Facebook"
+              >
+                <Facebook size={20} />
+              </a>
+              <a
+                href="#"
+                className="p-2 rounded-md text-gray-600 hover:text-primary hover:bg-primary/10 transition-colors"
+                data-testid="link-footer-youtube"
+                aria-label="YouTube"
+              >
+                <Youtube size={20} />
+              </a>
+              <a
+                href="#"
+                className="p-2 rounded-md text-gray-600 hover:text-primary hover:bg-primary/10 transition-colors"
+                data-testid="link-footer-instagram"
+                aria-label="Instagram"
+              >
+                <Instagram size={20} />
+              </a>
+              <a
+                href="#"
+                className="p-2 rounded-md text-gray-600 hover:text-primary hover:bg-primary/10 transition-colors"
+                data-testid="link-footer-twitter"
+                aria-label="Twitter"
+              >
+                <Twitter size={20} />
+              </a>
+            </div>
           </div>
         </div>
       </div>
