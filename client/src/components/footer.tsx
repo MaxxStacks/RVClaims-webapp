@@ -210,7 +210,7 @@ export function Footer() {
                 data-testid="link-footer-youtube"
                 aria-label="YouTube"
               >
-                <Youtube size={20} />
+                <Youtube size={22} />
               </a>
               <a
                 href="#"

@@ -153,7 +153,7 @@ export function MobileMenu() {
                   data-testid="link-social-youtube"
                   aria-label="YouTube"
                 >
-                  <Youtube size={20} />
+                  <Youtube size={22} />
                 </a>
                 <a
                   href="#"
