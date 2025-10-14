@@ -224,6 +224,135 @@ export const translations = {
       }
     },
 
+    // Main Services Section (4 Pillars)
+    mainServices: {
+      badge: "Core Services",
+      title: "Complete Dealership Solutions",
+      description: "Four pillars of service excellence designed to maximize your dealership's profitability and growth.",
+      claims: {
+        title: "Claims Processing",
+        description: "A-Z warranty claims management with industry-leading approval rates and revenue optimization.",
+        feature1: "Complete end-to-end processing",
+        feature2: "Expert claim preparation",
+        feature3: "Denial reduction strategies",
+        cta: "Learn More"
+      },
+      financing: {
+        title: "Financing Services",
+        description: "Seamless financing solutions that boost unit sales and close more deals with faster approvals.",
+        feature1: "Lender integration & optimization",
+        feature2: "Real-time status tracking",
+        feature3: "Bilingual compliance support",
+        cta: "Get Financing Support"
+      },
+      warranty: {
+        title: "Warranty & Extended Service",
+        description: "Maximize profitability with comprehensive protection packages and effortless warranty management.",
+        feature1: "OEM & aftermarket integration",
+        feature2: "Dynamic pricing models",
+        feature3: "Automated claims processing",
+        cta: "Explore Warranty Solutions"
+      },
+      fiServices: {
+        title: "F&I Services",
+        description: "Professional F&I management with premium products, higher approval rates, and full compliance.",
+        feature1: "Complete F&I outsourcing",
+        feature2: "Premium product portfolio",
+        feature3: "Compliance & documentation",
+        cta: "Partner with F&I Experts"
+      }
+    },
+
+    // Financing Services Page
+    financingPage: {
+      title: "Financing Services",
+      badge: "Financing Solutions",
+      subtitle: "Empower Sales with Seamless Financing Solutions",
+      description: "Boost unit sales and close more deals with our integrated financing services designed exclusively for RV dealerships. We streamline lender communications, automate approval processes, and increase customer satisfaction with transparent, fast, and compliant financing solutions.",
+      dealerIntegration: {
+        title: "Dealer Financing Integration",
+        description: "Connect with leading Canadian lenders for faster approvals and improved deal structures."
+      },
+      approvalOptimization: {
+        title: "Approval Optimization",
+        description: "Increase loan approval rates through precise documentation and optimized lender matching."
+      },
+      statusTracking: {
+        title: "Real-Time Status Tracking",
+        description: "Track every financing request from submission to funding with full transparency."
+      },
+      customerExperience: {
+        title: "Customer Experience Enhancement",
+        description: "Provide customers with an easy, secure, and professional financing experience directly through your dealership."
+      },
+      bilingualSupport: {
+        title: "Bilingual Financing Support",
+        description: "Fully compliant bilingual documentation and support for all Canadian provinces."
+      },
+      quote: "Increase deal closure rates and simplify financing — all while maintaining full compliance and control.",
+      cta: "Get Financing Support"
+    },
+
+    // Warranty & Extended Service Page
+    warrantyExtendedPage: {
+      title: "Warranty & Extended Service Plans",
+      badge: "Warranty Solutions",
+      subtitle: "Maximize Profitability with Every Protection Package",
+      description: "Offer your clients industry-leading warranty and extended service coverage designed to generate recurring revenue and build long-term trust. Our platform makes selling, managing, and tracking warranties effortless — from dealership sale to post-delivery support.",
+      manufacturerIntegration: {
+        title: "Manufacturer & Extended Warranty Integration",
+        description: "Seamlessly manage both OEM and aftermarket protection plans from one unified dashboard."
+      },
+      dynamicPricing: {
+        title: "Dynamic Pricing Models",
+        description: "Adjust coverage levels, deductibles, and term lengths to match each customer's needs."
+      },
+      automatedClaims: {
+        title: "Automated Claims Processing",
+        description: "Link warranty sales directly to our A-Z claims system for instant service validation and faster reimbursement."
+      },
+      upsellRetention: {
+        title: "Upsell & Retention Programs",
+        description: "Increase per-unit gross profit while enhancing customer loyalty through targeted renewal campaigns."
+      },
+      analytics: {
+        title: "Real-Time Analytics",
+        description: "Track warranty performance, profit margins, and claim frequency with clear, actionable metrics."
+      },
+      quote: "Turn warranty sales into one of your dealership's most profitable revenue channels.",
+      cta: "Explore Warranty Solutions"
+    },
+
+    // F&I Services Page
+    fiServicesPage: {
+      title: "F&I (Finance & Insurance) Services",
+      badge: "F&I Solutions",
+      subtitle: "Comprehensive F&I Management for Modern Dealerships",
+      description: "Outsource your Finance & Insurance operations to our professional F&I specialists and gain access to premium products, higher approval rates, and regulatory compliance — without the overhead of in-house management.",
+      outsourcing: {
+        title: "Complete F&I Outsourcing",
+        description: "From loan origination to product sales, our experts handle every detail to maximize profitability."
+      },
+      productPortfolio: {
+        title: "Premium Product Portfolio",
+        description: "Offer extended warranties, GAP, tire & wheel, and appearance protection — all under one system."
+      },
+      compliance: {
+        title: "Compliance & Documentation",
+        description: "Fully compliant with provincial and federal finance regulations, PIPEDA, and dealership policies."
+      },
+      training: {
+        title: "Training & Support",
+        description: "Ongoing F&I product and compliance training for your sales staff to ensure consistent, ethical upselling."
+      },
+      reports: {
+        title: "Revenue & Performance Reports",
+        description: "Comprehensive monthly analytics to track gross margin performance and identify optimization opportunities."
+      },
+      quote: "Our F&I specialists boost dealership profits by 20% on average through better approvals and smarter product integration.",
+      cta: "Partner with Our F&I Experts"
+    },
+
     // Contact Section
     contactSection: {
       title: "Ready to Optimize Your Claims?",
@@ -838,6 +967,135 @@ export const translations = {
         contactButton: "Discuter des services",
         callButton: "Appeler 1-800-RV-CLAIM"
       }
+    },
+
+    // Main Services Section (4 Pillars)
+    mainServices: {
+      badge: "Services principaux",
+      title: "Solutions complètes pour concessionnaires",
+      description: "Quatre piliers d'excellence de service conçus pour maximiser la rentabilité et la croissance de votre concessionnaire.",
+      claims: {
+        title: "Traitement des réclamations",
+        description: "Gestion A-Z des réclamations de garantie avec taux d'approbation leader et optimisation des revenus.",
+        feature1: "Traitement complet de bout en bout",
+        feature2: "Préparation experte des réclamations",
+        feature3: "Stratégies de réduction des refus",
+        cta: "En savoir plus"
+      },
+      financing: {
+        title: "Services de financement",
+        description: "Solutions de financement transparentes qui stimulent les ventes d'unités et concluent plus de transactions avec approbations rapides.",
+        feature1: "Intégration et optimisation des prêteurs",
+        feature2: "Suivi de statut en temps réel",
+        feature3: "Support de conformité bilingue",
+        cta: "Obtenir un soutien financier"
+      },
+      warranty: {
+        title: "Garantie et service prolongé",
+        description: "Maximisez la rentabilité avec des forfaits de protection complets et une gestion de garantie sans effort.",
+        feature1: "Intégration OEM et aftermarket",
+        feature2: "Modèles de tarification dynamiques",
+        feature3: "Traitement automatisé des réclamations",
+        cta: "Explorer les solutions de garantie"
+      },
+      fiServices: {
+        title: "Services F&I",
+        description: "Gestion F&I professionnelle avec produits premium, taux d'approbation élevés et conformité totale.",
+        feature1: "Externalisation F&I complète",
+        feature2: "Portefeuille de produits premium",
+        feature3: "Conformité et documentation",
+        cta: "Partenariat avec experts F&I"
+      }
+    },
+
+    // Financing Services Page
+    financingPage: {
+      title: "Services de financement",
+      badge: "Solutions de financement",
+      subtitle: "Renforcez les ventes avec des solutions de financement transparentes",
+      description: "Augmentez les ventes d'unités et concluez plus de transactions avec nos services de financement intégrés conçus exclusivement pour les concessionnaires VR. Nous rationalisons les communications avec les prêteurs, automatisons les processus d'approbation et augmentons la satisfaction client avec des solutions de financement transparentes, rapides et conformes.",
+      dealerIntegration: {
+        title: "Intégration de financement pour concessionnaires",
+        description: "Connectez-vous avec les principaux prêteurs canadiens pour des approbations plus rapides et des structures de transactions améliorées."
+      },
+      approvalOptimization: {
+        title: "Optimisation des approbations",
+        description: "Augmentez les taux d'approbation de prêts grâce à une documentation précise et à une correspondance optimisée des prêteurs."
+      },
+      statusTracking: {
+        title: "Suivi du statut en temps réel",
+        description: "Suivez chaque demande de financement de la soumission au financement avec une transparence totale."
+      },
+      customerExperience: {
+        title: "Amélioration de l'expérience client",
+        description: "Offrez aux clients une expérience de financement facile, sécurisée et professionnelle directement via votre concessionnaire."
+      },
+      bilingualSupport: {
+        title: "Support de financement bilingue",
+        description: "Documentation et support bilingues entièrement conformes pour toutes les provinces canadiennes."
+      },
+      quote: "Augmentez les taux de conclusion de transactions et simplifiez le financement — tout en maintenant une conformité et un contrôle complets.",
+      cta: "Obtenir un soutien financier"
+    },
+
+    // Warranty & Extended Service Page
+    warrantyExtendedPage: {
+      title: "Plans de garantie et de service prolongé",
+      badge: "Solutions de garantie",
+      subtitle: "Maximisez la rentabilité avec chaque forfait de protection",
+      description: "Offrez à vos clients une couverture de garantie et de service prolongé leader de l'industrie, conçue pour générer des revenus récurrents et établir une confiance à long terme. Notre plateforme rend la vente, la gestion et le suivi des garanties sans effort — de la vente au concessionnaire au support post-livraison.",
+      manufacturerIntegration: {
+        title: "Intégration de garantie fabricant et prolongée",
+        description: "Gérez de manière transparente les plans de protection OEM et aftermarket à partir d'un tableau de bord unifié."
+      },
+      dynamicPricing: {
+        title: "Modèles de tarification dynamiques",
+        description: "Ajustez les niveaux de couverture, les franchises et les durées pour répondre aux besoins de chaque client."
+      },
+      automatedClaims: {
+        title: "Traitement automatisé des réclamations",
+        description: "Liez les ventes de garantie directement à notre système de réclamations A-Z pour une validation de service instantanée et un remboursement plus rapide."
+      },
+      upsellRetention: {
+        title: "Programmes de vente incitative et de fidélisation",
+        description: "Augmentez le profit brut par unité tout en améliorant la fidélité client grâce à des campagnes de renouvellement ciblées."
+      },
+      analytics: {
+        title: "Analyses en temps réel",
+        description: "Suivez les performances de garantie, les marges bénéficiaires et la fréquence des réclamations avec des métriques claires et exploitables."
+      },
+      quote: "Transformez les ventes de garantie en l'un des canaux de revenus les plus rentables de votre concessionnaire.",
+      cta: "Explorer les solutions de garantie"
+    },
+
+    // F&I Services Page
+    fiServicesPage: {
+      title: "Services F&I (Financement et Assurance)",
+      badge: "Solutions F&I",
+      subtitle: "Gestion F&I complète pour concessionnaires modernes",
+      description: "Externalisez vos opérations de financement et d'assurance à nos spécialistes F&I professionnels et accédez à des produits premium, des taux d'approbation plus élevés et une conformité réglementaire — sans les frais généraux de la gestion interne.",
+      outsourcing: {
+        title: "Externalisation F&I complète",
+        description: "De l'origine du prêt aux ventes de produits, nos experts gèrent chaque détail pour maximiser la rentabilité."
+      },
+      productPortfolio: {
+        title: "Portefeuille de produits premium",
+        description: "Offrez des garanties prolongées, GAP, pneus et roues, et protection d'apparence — le tout sous un seul système."
+      },
+      compliance: {
+        title: "Conformité et documentation",
+        description: "Entièrement conforme aux réglementations financières provinciales et fédérales, LPRPDE et politiques des concessionnaires."
+      },
+      training: {
+        title: "Formation et support",
+        description: "Formation continue sur les produits F&I et la conformité pour votre personnel de vente afin d'assurer une vente incitative cohérente et éthique."
+      },
+      reports: {
+        title: "Rapports de revenus et de performance",
+        description: "Analyses mensuelles complètes pour suivre les performances de marge brute et identifier les opportunités d'optimisation."
+      },
+      quote: "Nos spécialistes F&I augmentent les profits des concessionnaires de 20% en moyenne grâce à de meilleures approbations et une intégration de produits plus intelligente.",
+      cta: "Partenariat avec nos experts F&I"
     },
 
     // Contact Section
