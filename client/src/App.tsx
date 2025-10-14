@@ -14,6 +14,9 @@ import RvCoverage from "@/pages/rv-coverage";
 import Contact from "@/pages/contact";
 import PrivacyPolicy from "@/pages/privacy-policy";
 import ClientLogin from "@/pages/client-login";
+import Financing from "@/pages/financing";
+import WarrantyExtendedService from "@/pages/warranty-extended-service";
+import FIServices from "@/pages/fi-services";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -29,6 +32,9 @@ function Router() {
       <Route path="/contact" component={Contact} />
       <Route path="/privacy-policy" component={PrivacyPolicy} />
       <Route path="/client-login" component={ClientLogin} />
+      <Route path="/financing" component={Financing} />
+      <Route path="/warranty-extended-service" component={WarrantyExtendedService} />
+      <Route path="/fi-services" component={FIServices} />
       <Route component={NotFound} />
     </Switch>
   );
