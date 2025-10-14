@@ -28,13 +28,13 @@ export default function Home() {
       <MainServicesSection />
       <ClaimsSection />
       <RvTypesSection />
-      <FinancingSection />
       <TechnologySection />
-      <WarrantySection />
+      <FinancingSection />
       <ExperienceSection />
       <FIServicesSection />
       <SupportingServicesSection />
       <PrivacyAssuranceSection />
+      <WarrantySection />
       <ConsumerServicesSection />
       <PartsSection />
       <ContactSection />
