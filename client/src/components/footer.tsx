@@ -189,7 +189,9 @@ export function Footer() {
             {/* Social Media Icons */}
             <div className="flex items-center gap-2 order-1 sm:order-2" data-testid="div-footer-social">
               <a
-                href="#"
+                href="https://www.linkedin.com"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="p-2 rounded-md text-gray-600 hover:text-primary hover:bg-primary/10 transition-colors flex items-center justify-center"
                 data-testid="link-footer-linkedin"
                 aria-label="LinkedIn"
@@ -197,7 +199,9 @@ export function Footer() {
                 <Linkedin size={20} />
               </a>
               <a
-                href="#"
+                href="https://www.facebook.com"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="p-2 rounded-md text-gray-600 hover:text-primary hover:bg-primary/10 transition-colors flex items-center justify-center"
                 data-testid="link-footer-facebook"
                 aria-label="Facebook"
@@ -205,7 +209,9 @@ export function Footer() {
                 <Facebook size={20} />
               </a>
               <a
-                href="#"
+                href="https://www.youtube.com"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="p-2 rounded-md text-gray-600 hover:text-primary hover:bg-primary/10 transition-colors flex items-center justify-center"
                 data-testid="link-footer-youtube"
                 aria-label="YouTube"
@@ -213,7 +219,9 @@ export function Footer() {
                 <Youtube size={24} />
               </a>
               <a
-                href="#"
+                href="https://www.instagram.com"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="p-2 rounded-md text-gray-600 hover:text-primary hover:bg-primary/10 transition-colors flex items-center justify-center"
                 data-testid="link-footer-instagram"
                 aria-label="Instagram"
@@ -221,7 +229,9 @@ export function Footer() {
                 <Instagram size={20} />
               </a>
               <a
-                href="#"
+                href="https://www.twitter.com"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="p-2 rounded-md text-gray-600 hover:text-primary hover:bg-primary/10 transition-colors flex items-center justify-center"
                 data-testid="link-footer-twitter"
                 aria-label="Twitter"

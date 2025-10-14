@@ -132,7 +132,9 @@ export function MobileMenu() {
             <div className="flex justify-center">
               <div className="flex gap-2">
                 <a
-                  href="#"
+                  href="https://www.linkedin.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="p-2 rounded-md text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors flex items-center justify-center"
                   data-testid="link-social-linkedin"
                   aria-label="LinkedIn"
@@ -140,7 +142,9 @@ export function MobileMenu() {
                   <Linkedin size={20} />
                 </a>
                 <a
-                  href="#"
+                  href="https://www.facebook.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="p-2 rounded-md text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors flex items-center justify-center"
                   data-testid="link-social-facebook"
                   aria-label="Facebook"
@@ -148,7 +152,9 @@ export function MobileMenu() {
                   <Facebook size={20} />
                 </a>
                 <a
-                  href="#"
+                  href="https://www.youtube.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="p-2 rounded-md text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors flex items-center justify-center"
                   data-testid="link-social-youtube"
                   aria-label="YouTube"
@@ -156,7 +162,9 @@ export function MobileMenu() {
                   <Youtube size={24} />
                 </a>
                 <a
-                  href="#"
+                  href="https://www.instagram.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="p-2 rounded-md text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors flex items-center justify-center"
                   data-testid="link-social-instagram"
                   aria-label="Instagram"
@@ -164,7 +172,9 @@ export function MobileMenu() {
                   <Instagram size={20} />
                 </a>
                 <a
-                  href="#"
+                  href="https://www.twitter.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="p-2 rounded-md text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors flex items-center justify-center"
                   data-testid="link-social-twitter"
                   aria-label="Twitter"
