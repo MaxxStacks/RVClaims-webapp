@@ -1,4 +1,4 @@
-import { Check } from "lucide-react";
+import { Check, Monitor, Users } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
 
 export function TechnologySection() {
@@ -22,10 +22,32 @@ export function TechnologySection() {
     }
   ];
 
+  const portalFeatures = [
+    {
+      title: t('technologySection.portals.dealerPortal.title'),
+      description: t('technologySection.portals.dealerPortal.description'),
+      icon: Monitor,
+      testId: 'feature-dealer-portal'
+    },
+    {
+      title: t('technologySection.portals.clientPortal.title'),
+      description: t('technologySection.portals.clientPortal.description'),
+      icon: Users,
+      testId: 'feature-client-portal'
+    },
+    {
+      title: t('technologySection.portals.commitment.title'),
+      description: t('technologySection.portals.commitment.description'),
+      icon: Check,
+      testId: 'feature-commitment'
+    }
+  ];
+
   return (
     <section id="technology" className="py-20 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        {/* Main Technology Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-20">
           <div className="space-y-6">
             <div className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20">
               <span data-testid="text-technology-badge">{t('technologySection.badge')}</span>
@@ -64,6 +86,34 @@ export function TechnologySection() {
               data-testid="img-technology"
             />
             <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent rounded-2xl"></div>
+          </div>
+        </div>
+
+        {/* Portal Section */}
+        <div className="bg-muted/30 rounded-2xl p-8 lg:p-12">
+          <div className="text-center mb-12">
+            <h3 className="text-2xl lg:text-3xl font-bold text-foreground mb-4" data-testid="text-portals-title">
+              {t('technologySection.portals.title')}
+            </h3>
+            <p className="text-lg text-muted-foreground max-w-3xl mx-auto" data-testid="text-portals-description">
+              {t('technologySection.portals.description')}
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {portalFeatures.map((feature, index) => (
+              <div key={index} className="bg-card rounded-xl p-6 border border-border" data-testid={feature.testId}>
+                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                  <feature.icon className="text-primary" size={24} />
+                </div>
+                <h4 className="text-lg font-semibold mb-2 text-foreground">
+                  {feature.title}
+                </h4>
+                <p className="text-muted-foreground text-sm">
+                  {feature.description}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </div>

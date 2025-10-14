@@ -112,6 +112,22 @@ export const translations = {
       analytics: {
         title: "Revenue Analytics & Insights",
         description: "Comprehensive reporting and optimization recommendations"
+      },
+      portals: {
+        title: "Dedicated Dealer & Client Portals",
+        description: "As part of our ongoing commitment to provide exceptional service, our proprietary software includes secure, feature-rich portals designed specifically for dealers and clients.",
+        dealerPortal: {
+          title: "Dealer Portal",
+          description: "Complete claims management dashboard with real-time tracking, reporting, and manufacturer integration"
+        },
+        clientPortal: {
+          title: "Client Portal",
+          description: "Self-service access for RV owners to track claims, view service history, and access protection services"
+        },
+        commitment: {
+          title: "Continuous Innovation",
+          description: "Regular platform updates and new features based on dealer and client feedback to ensure the best experience"
+        }
       }
     },
 
@@ -857,6 +873,22 @@ export const translations = {
       analytics: {
         title: "Analyses et insights de revenus", 
         description: "Rapports complets et recommandations d'optimisation"
+      },
+      portals: {
+        title: "Portails dédiés concessionnaires et clients",
+        description: "Dans le cadre de notre engagement continu à fournir un service exceptionnel, notre logiciel propriétaire comprend des portails sécurisés et riches en fonctionnalités conçus spécifiquement pour les concessionnaires et les clients.",
+        dealerPortal: {
+          title: "Portail concessionnaire",
+          description: "Tableau de bord complet de gestion des réclamations avec suivi en temps réel, rapports et intégration des fabricants"
+        },
+        clientPortal: {
+          title: "Portail client",
+          description: "Accès libre-service pour les propriétaires de VR pour suivre les réclamations, consulter l'historique de service et accéder aux services de protection"
+        },
+        commitment: {
+          title: "Innovation continue",
+          description: "Mises à jour régulières de la plateforme et nouvelles fonctionnalités basées sur les commentaires des concessionnaires et des clients pour garantir la meilleure expérience"
+        }
       }
     },
 
