@@ -7,27 +7,17 @@ export function ConsumerServicesSection() {
   const services = [
     {
       key: 'roadside',
-      icon: Car,
-      price: '$149/year'
+      icon: Car
     },
     {
       key: 'extended',
-      icon: Shield,
-      price: '$299/year'
+      icon: Shield
     },
     {
       key: 'protection',
-      icon: Wrench,
-      price: '$199/year'
+      icon: Wrench
     }
   ];
-
-  const handlePurchase = (serviceKey: string) => {
-    // This will eventually integrate with payment processing
-    console.log(`Initiating purchase for ${serviceKey}`);
-    // For now, show an alert
-    alert(t(`consumerServices.services.${serviceKey}.purchaseMessage`));
-  };
 
   return (
     <section className="py-24 bg-gray-50" id="consumer-services">
@@ -45,18 +35,15 @@ export function ConsumerServicesSection() {
         </div>
 
         <div className="grid md:grid-cols-3 gap-8 mb-16">
-          {services.map(({ key, icon: Icon, price }) => (
+          {services.map(({ key, icon: Icon }) => (
             <div
               key={key}
               className="bg-white rounded-xl p-8 shadow-sm hover:shadow-lg transition-all duration-300 group border border-gray-100 flex flex-col h-full"
               data-testid={`card-consumer-service-${key}`}
             >
-              <div className="flex items-start justify-between mb-6">
+              <div className="flex items-start mb-6">
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-colors">
                   <Icon className="text-primary w-6 h-6" />
-                </div>
-                <div className="bg-green-100 text-green-800 text-sm font-semibold px-3 py-1 rounded-full">
-                  {price}
                 </div>
               </div>
               
@@ -88,11 +75,11 @@ export function ConsumerServicesSection() {
               </ul>
 
               <button
-                onClick={() => handlePurchase(key)}
+                onClick={() => window.location.href = '#contact'}
                 className="w-full bg-primary text-white font-semibold py-3 px-6 rounded-lg hover:bg-primary/90 transition-colors mt-auto"
-                data-testid={`button-purchase-${key}`}
+                data-testid={`button-learn-more-${key}`}
               >
-                {t(`consumerServices.services.${key}.shortPurchaseButton`)}
+                Learn More
               </button>
             </div>
           ))}
