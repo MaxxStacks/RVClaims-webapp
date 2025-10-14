@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Menu, X, User, Building, Facebook, Twitter, Linkedin, Instagram } from "lucide-react";
+import { Menu, X, User, Building, Linkedin, Facebook, Youtube, Instagram, Twitter } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { useLanguage } from "@/hooks/use-language";
 import { LanguageToggle } from "@/components/language-toggle";
@@ -130,15 +130,7 @@ export function MobileMenu() {
           {/* Social Media Icons */}
           <div className="px-6 py-3 border-t border-border" style={{ backgroundColor: '#ffffff' }}>
             <div className="flex justify-center">
-              <div className="flex space-x-4">
-                <a
-                  href="#"
-                  className="p-2 rounded-md text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
-                  data-testid="link-social-facebook"
-                  aria-label="Facebook"
-                >
-                  <Facebook size={20} />
-                </a>
+              <div className="flex space-x-3">
                 <a
                   href="#"
                   className="p-2 rounded-md text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
@@ -150,10 +142,18 @@ export function MobileMenu() {
                 <a
                   href="#"
                   className="p-2 rounded-md text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
-                  data-testid="link-social-twitter"
-                  aria-label="Twitter"
+                  data-testid="link-social-facebook"
+                  aria-label="Facebook"
                 >
-                  <Twitter size={20} />
+                  <Facebook size={20} />
+                </a>
+                <a
+                  href="#"
+                  className="p-2 rounded-md text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
+                  data-testid="link-social-youtube"
+                  aria-label="YouTube"
+                >
+                  <Youtube size={20} />
                 </a>
                 <a
                   href="#"
@@ -162,6 +162,14 @@ export function MobileMenu() {
                   aria-label="Instagram"
                 >
                   <Instagram size={20} />
+                </a>
+                <a
+                  href="#"
+                  className="p-2 rounded-md text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
+                  data-testid="link-social-twitter"
+                  aria-label="Twitter"
+                >
+                  <Twitter size={20} />
                 </a>
               </div>
             </div>
