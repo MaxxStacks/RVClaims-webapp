@@ -130,10 +130,10 @@ export function MobileMenu() {
           {/* Social Media Icons */}
           <div className="px-6 py-3 border-t border-border" style={{ backgroundColor: '#ffffff' }}>
             <div className="flex justify-center">
-              <div className="flex space-x-3">
+              <div className="flex gap-2">
                 <a
                   href="#"
-                  className="p-2 rounded-md text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
+                  className="p-2 rounded-md text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors flex items-center justify-center"
                   data-testid="link-social-linkedin"
                   aria-label="LinkedIn"
                 >
@@ -141,7 +141,7 @@ export function MobileMenu() {
                 </a>
                 <a
                   href="#"
-                  className="p-2 rounded-md text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
+                  className="p-2 rounded-md text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors flex items-center justify-center"
                   data-testid="link-social-facebook"
                   aria-label="Facebook"
                 >
@@ -149,15 +149,15 @@ export function MobileMenu() {
                 </a>
                 <a
                   href="#"
-                  className="p-2 rounded-md text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
+                  className="p-2 rounded-md text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors flex items-center justify-center"
                   data-testid="link-social-youtube"
                   aria-label="YouTube"
                 >
-                  <Youtube size={22} />
+                  <Youtube size={24} />
                 </a>
                 <a
                   href="#"
-                  className="p-2 rounded-md text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
+                  className="p-2 rounded-md text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors flex items-center justify-center"
                   data-testid="link-social-instagram"
                   aria-label="Instagram"
                 >
@@ -165,7 +165,7 @@ export function MobileMenu() {
                 </a>
                 <a
                   href="#"
-                  className="p-2 rounded-md text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
+                  className="p-2 rounded-md text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors flex items-center justify-center"
                   data-testid="link-social-twitter"
                   aria-label="Twitter"
                 >
