@@ -184,15 +184,10 @@ export function Navigation() {
             </Link>
           </div>
 
-          {/* Mobile & Tablet - Language Toggle and Hamburger */}
-          <div className="flex items-center space-x-4 lg:hidden w-full justify-end">
+          {/* Language Toggle and Hamburger - All Screens */}
+          <div className="flex items-center space-x-4">
             <LanguageToggle />
             <MobileMenu />
-          </div>
-
-          {/* Desktop - Language Toggle */}
-          <div className="hidden lg:flex items-center">
-            <LanguageToggle />
           </div>
         </div>
       </div>
