@@ -670,10 +670,12 @@ export const translations = {
 
     // Cookie Notice
     cookies: {
-      title: "Cookie Policy",
-      description: "We use enterprise-grade cookies to enhance your experience and analyze performance.",
-      accept: "Accept",
-      decline: "Decline"
+      title: "We Value Your Privacy",
+      description: "RV Claims Canada uses cookies and similar technologies to improve your browsing experience, analyze site traffic, personalize content, and provide essential website functionality. By accepting, you consent to our use of cookies in accordance with our Privacy Policy.",
+      accept: "Accept All Cookies",
+      decline: "Essential Only",
+      learnMore: "Learn More",
+      types: "We use essential cookies for site functionality, analytics cookies to understand usage patterns, and marketing cookies to provide relevant information."
     },
 
     // Parts Section
@@ -1442,10 +1444,12 @@ export const translations = {
 
     // Cookie Notice
     cookies: {
-      title: "Politique des cookies",
-      description: "Nous utilisons des cookies de niveau entreprise pour améliorer votre expérience et analyser les performances.",
-      accept: "Accepter",
-      decline: "Refuser"
+      title: "Nous valorisons votre vie privée",
+      description: "RV Claims Canada utilise des cookies et des technologies similaires pour améliorer votre expérience de navigation, analyser le trafic du site, personnaliser le contenu et fournir des fonctionnalités essentielles. En acceptant, vous consentez à notre utilisation de cookies conformément à notre Politique de confidentialité.",
+      accept: "Accepter tous les cookies",
+      decline: "Essentiels seulement",
+      learnMore: "En savoir plus",
+      types: "Nous utilisons des cookies essentiels pour la fonctionnalité du site, des cookies analytiques pour comprendre les modèles d'utilisation et des cookies marketing pour fournir des informations pertinentes."
     },
 
     // Parts Section
