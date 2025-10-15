@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Menu, X, User, Building, Linkedin, Facebook, Youtube, Instagram, Twitter } from "lucide-react";
+import { Menu, X, User, Building, Linkedin, Facebook, Youtube, Instagram, Twitter, ChevronRight } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { useLanguage } from "@/hooks/use-language";
 import { LanguageToggle } from "@/components/language-toggle";
@@ -7,21 +7,38 @@ import headerLogoImage from "@assets/Industrial Trapton Logo Design (1) (1)_1756
 
 export function MobileMenu() {
   const [isOpen, setIsOpen] = useState(false);
+  const [expandedMenu, setExpandedMenu] = useState<string | null>(null);
   const { t, language } = useLanguage();
   const [location] = useLocation();
 
   const toggleMenu = () => setIsOpen(!isOpen);
-  const closeMenu = () => setIsOpen(false);
+  const closeMenu = () => {
+    setIsOpen(false);
+    setExpandedMenu(null);
+  };
 
-  const menuItems = [
-    { href: "/about", label: t('navigation.about') },
-    { href: "/services", label: t('navigation.services') },
-    { href: "/claims-processing", label: t('navigation.claims') },
-    { href: "/technology", label: t('navigation.technology') },
-    { href: "/revenue-services", label: t('navigation.revenueServices') },
-    { href: "/rv-coverage", label: t('navigation.rvCoverage') },
-    { href: "/contact", label: t('navigation.contact') },
-    { href: "/privacy-policy", label: t('privacyPolicyPage.title') }
+  const toggleSubmenu = (menuKey: string) => {
+    setExpandedMenu(expandedMenu === menuKey ? null : menuKey);
+  };
+
+  const mainServicesItems = [
+    { href: "/claims-processing", label: t('mainServices.claims.title'), desc: "A-Z warranty claims" },
+    { href: "/financing-services", label: t('mainServices.financing.title'), desc: "Dealership financing" },
+    { href: "/warranty-extended-services", label: t('mainServices.warranty.title'), desc: "Protection packages" },
+    { href: "/fi-services", label: t('mainServices.fiServices.title'), desc: "F&I solutions" }
+  ];
+
+  const supportingServicesItems = [
+    { href: "/parts", label: t('navigation.parts'), desc: "Parts & components" },
+    { href: "/technology", label: t('navigation.technology'), desc: "Patent-pending platform" },
+    { href: "/marketing-services", label: t('navigation.marketing'), desc: "Digital marketing" },
+    { href: "/consignment-services", label: t('navigation.consignment'), desc: "Trade-in programs" }
+  ];
+
+  const findDealerItems = [
+    { href: "/roadside-assistance", label: t('navigation.roadsideAssistance'), desc: "24/7 support" },
+    { href: "/extended-warranty", label: t('navigation.extendedWarranty'), desc: "Protection plans" },
+    { href: "/protection-plans", label: t('navigation.protectionPlans'), desc: "Coverage options" }
   ];
 
   return (
@@ -79,22 +96,143 @@ export function MobileMenu() {
           </div>
 
           {/* Menu Items */}
-          <div className="flex-1 px-6 py-2 space-y-0.5" style={{ backgroundColor: '#ffffff' }}>
-            {menuItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={closeMenu}
-                className={`block px-4 py-2 rounded-lg text-base font-medium transition-all duration-200 ${
-                  location === item.href
-                    ? 'bg-primary text-primary-foreground shadow-sm'
-                    : 'text-foreground hover:bg-primary/10 hover:text-primary hover:pl-6'
-                }`}
-                data-testid={`link-pages-${item.href.slice(1)}`}
+          <div className="flex-1 px-6 py-2 space-y-0.5 overflow-y-auto" style={{ backgroundColor: '#ffffff' }}>
+            {/* Main Services with Submenu */}
+            <div>
+              <button
+                onClick={() => toggleSubmenu('mainServices')}
+                className="w-full flex items-center justify-between px-4 py-2 rounded-lg text-base font-medium text-foreground hover:bg-primary/10 hover:text-primary transition-colors"
+                data-testid="button-main-services"
               >
-                {item.label}
-              </Link>
-            ))}
+                <span>{t('navigation.mainServices')}</span>
+                <ChevronRight size={16} className={`transition-transform ${expandedMenu === 'mainServices' ? 'rotate-90' : ''}`} />
+              </button>
+              {expandedMenu === 'mainServices' && (
+                <div className="ml-4 mt-1 space-y-0.5">
+                  {mainServicesItems.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={closeMenu}
+                      className="block px-4 py-2 rounded-lg text-sm hover:bg-primary/5 hover:text-primary transition-colors"
+                      data-testid={`link-${item.href.slice(1)}`}
+                    >
+                      <div className="font-medium">{item.label}</div>
+                      <div className="text-xs text-muted-foreground">{item.desc}</div>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Supporting Services with Submenu */}
+            <div>
+              <button
+                onClick={() => toggleSubmenu('supportingServices')}
+                className="w-full flex items-center justify-between px-4 py-2 rounded-lg text-base font-medium text-foreground hover:bg-primary/10 hover:text-primary transition-colors"
+                data-testid="button-supporting-services"
+              >
+                <span>{t('navigation.supportingServices')}</span>
+                <ChevronRight size={16} className={`transition-transform ${expandedMenu === 'supportingServices' ? 'rotate-90' : ''}`} />
+              </button>
+              {expandedMenu === 'supportingServices' && (
+                <div className="ml-4 mt-1 space-y-0.5">
+                  {supportingServicesItems.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={closeMenu}
+                      className="block px-4 py-2 rounded-lg text-sm hover:bg-primary/5 hover:text-primary transition-colors"
+                      data-testid={`link-${item.href.slice(1)}`}
+                    >
+                      <div className="font-medium">{item.label}</div>
+                      <div className="text-xs text-muted-foreground">{item.desc}</div>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Find a Dealer with Submenu */}
+            <div>
+              <button
+                onClick={() => toggleSubmenu('findDealer')}
+                className="w-full flex items-center justify-between px-4 py-2 rounded-lg text-base font-medium text-foreground hover:bg-primary/10 hover:text-primary transition-colors"
+                data-testid="button-find-dealer"
+              >
+                <span>{t('navigation.findDealer')}</span>
+                <ChevronRight size={16} className={`transition-transform ${expandedMenu === 'findDealer' ? 'rotate-90' : ''}`} />
+              </button>
+              {expandedMenu === 'findDealer' && (
+                <div className="ml-4 mt-1 space-y-0.5">
+                  {findDealerItems.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={closeMenu}
+                      className="block px-4 py-2 rounded-lg text-sm hover:bg-primary/5 hover:text-primary transition-colors"
+                      data-testid={`link-${item.href.slice(1)}`}
+                    >
+                      <div className="font-medium">{item.label}</div>
+                      <div className="text-xs text-muted-foreground">{item.desc}</div>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Standalone Items */}
+            <Link
+              href="/about"
+              onClick={closeMenu}
+              className={`block px-4 py-2 rounded-lg text-base font-medium transition-all duration-200 ${
+                location === '/about'
+                  ? 'bg-primary text-primary-foreground shadow-sm'
+                  : 'text-foreground hover:bg-primary/10 hover:text-primary hover:pl-6'
+              }`}
+              data-testid="link-pages-about"
+            >
+              {t('navigation.about')}
+            </Link>
+
+            <Link
+              href="/contact"
+              onClick={closeMenu}
+              className={`block px-4 py-2 rounded-lg text-base font-medium transition-all duration-200 ${
+                location === '/contact'
+                  ? 'bg-primary text-primary-foreground shadow-sm'
+                  : 'text-foreground hover:bg-primary/10 hover:text-primary hover:pl-6'
+              }`}
+              data-testid="link-pages-contact"
+            >
+              {t('navigation.contact')}
+            </Link>
+
+            <Link
+              href="/privacy-policy"
+              onClick={closeMenu}
+              className={`block px-4 py-2 rounded-lg text-base font-medium transition-all duration-200 ${
+                location === '/privacy-policy'
+                  ? 'bg-primary text-primary-foreground shadow-sm'
+                  : 'text-foreground hover:bg-primary/10 hover:text-primary hover:pl-6'
+              }`}
+              data-testid="link-pages-privacy-policy"
+            >
+              {t('privacyPolicyPage.title')}
+            </Link>
+
+            <Link
+              href="/careers"
+              onClick={closeMenu}
+              className={`block px-4 py-2 rounded-lg text-base font-medium transition-all duration-200 ${
+                location === '/careers'
+                  ? 'bg-primary text-primary-foreground shadow-sm'
+                  : 'text-foreground hover:bg-primary/10 hover:text-primary hover:pl-6'
+              }`}
+              data-testid="link-pages-careers"
+            >
+              {t('navigation.careers')}
+            </Link>
           </div>
 
           {/* Login Section */}
