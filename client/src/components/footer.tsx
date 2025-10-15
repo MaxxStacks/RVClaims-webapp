@@ -182,12 +182,8 @@ export function Footer() {
             </div>
           </div>
           <div className="flex flex-col sm:flex-row justify-between items-center mt-4 pt-4 border-t border-gray-300 gap-4">
-            <p className="text-[15px] text-gray-600 flex items-center order-2 sm:order-1" data-testid="text-footer-made-with-love">
-              {t('footer.developedWith')} <Heart className="mx-2 w-4 h-4 text-primary fill-primary" /> {t('footer.developedLocation')}
-            </p>
-            
             {/* Social Media Icons */}
-            <div className="flex items-center gap-2 order-1 sm:order-2" data-testid="div-footer-social">
+            <div className="flex items-center gap-2 order-1 sm:order-1" data-testid="div-footer-social">
               <a
                 href="https://www.linkedin.com"
                 target="_blank"
@@ -239,6 +235,10 @@ export function Footer() {
                 <Twitter size={20} />
               </a>
             </div>
+            
+            <p className="text-[15px] text-gray-600 flex items-center order-2 sm:order-2" data-testid="text-footer-made-with-love">
+              {t('footer.developedWith')} <Heart className="mx-2 w-4 h-4 text-primary fill-primary" /> {t('footer.developedLocation')}
+            </p>
           </div>
         </div>
       </div>
