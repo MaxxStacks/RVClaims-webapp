@@ -67,31 +67,29 @@ export function MobileMenu() {
       >
         <div className="flex flex-col h-full" style={{ backgroundColor: '#ffffff' }}>
           {/* Header */}
-          <div className="border-b border-border" style={{ backgroundColor: '#ffffff' }}>
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="flex justify-between items-center h-[var(--header-height)]">
-            <Link 
-              href="/" 
-              className="flex items-center"
-              onClick={closeMenu}
-              data-testid="link-pages-logo"
-            >
-              <img 
-                src={headerLogoImage} 
-                alt="RV Claims" 
-                className="h-[var(--logo-height)] w-auto max-w-[280px]" 
-                data-testid="img-mobile-menu-logo"
-              />
-            </Link>
-            <button
-              onClick={closeMenu}
-              className="p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/10 transition-colors"
-              data-testid="button-close-pages-menu"
-              aria-label="Close pages menu"
-            >
-              <X size={24} />
-            </button>
-              </div>
+          <div className="border-b border-border px-4 py-4" style={{ backgroundColor: '#ffffff' }}>
+            <div className="flex justify-between items-center">
+              <Link 
+                href="/" 
+                className="flex items-center"
+                onClick={closeMenu}
+                data-testid="link-pages-logo"
+              >
+                <img 
+                  src={headerLogoImage} 
+                  alt="RV Claims" 
+                  className="h-10 w-auto" 
+                  data-testid="img-mobile-menu-logo"
+                />
+              </Link>
+              <button
+                onClick={closeMenu}
+                className="p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/10 transition-colors"
+                data-testid="button-close-pages-menu"
+                aria-label="Close pages menu"
+              >
+                <X size={24} />
+              </button>
             </div>
           </div>
 
