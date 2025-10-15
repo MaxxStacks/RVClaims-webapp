@@ -67,8 +67,9 @@ export function ContactSection() {
   };
 
   return (
-    <section id="contact" className="py-20 bg-white">
+    <section id="contact" className="py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-white rounded-3xl p-12">
         <div className="text-center space-y-4 mb-16">
           <h2 className="text-3xl lg:text-4xl font-bold text-foreground" data-testid="text-contact-title">
             {t('contactSection.title')}
@@ -277,6 +278,7 @@ export function ContactSection() {
               </Button>
             </form>
           </div>
+        </div>
         </div>
       </div>
     </section>

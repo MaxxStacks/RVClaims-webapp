@@ -5,8 +5,9 @@ export function PrivacyAssuranceSection() {
   const { t, language } = useLanguage();
 
   return (
-    <section className="py-16 bg-white">
+    <section className="py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-white rounded-3xl p-12">
         <div className="bg-primary rounded-xl p-8 md:p-12 lg:p-16 text-center">
           <div className="flex justify-center mb-6">
             <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
@@ -58,6 +59,7 @@ export function PrivacyAssuranceSection() {
               {t('privacyAssurance.viewNDA')}
             </a>
           </div>
+        </div>
         </div>
       </div>
     </section>

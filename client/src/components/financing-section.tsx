@@ -25,8 +25,9 @@ export function FinancingSection() {
   ];
 
   return (
-    <section id="financing" className="py-20 bg-white">
+    <section id="financing" className="py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-white rounded-3xl p-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div className="space-y-6">
             <div className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20">
@@ -73,6 +74,7 @@ export function FinancingSection() {
             />
             <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent rounded-2xl"></div>
           </div>
+        </div>
         </div>
       </div>
     </section>

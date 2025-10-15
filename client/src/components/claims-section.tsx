@@ -28,8 +28,9 @@ export function ClaimsSection() {
   ];
 
   return (
-    <section className="py-24 bg-gray-50" id="claims">
+    <section className="py-8" id="claims">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-gray-50 rounded-3xl p-12">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold mb-6" data-testid="text-claims-title">
             {t('claimsSection.title')}
@@ -59,6 +60,7 @@ export function ClaimsSection() {
               </div>
             </div>
           ))}
+        </div>
         </div>
       </div>
     </section>
