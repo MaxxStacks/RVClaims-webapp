@@ -25,7 +25,7 @@ export function WarrantySection() {
   ];
 
   return (
-    <section id="warranty" className="py-20 bg-muted/30">
+    <section id="warranty" className="py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div className="relative order-2 lg:order-1">

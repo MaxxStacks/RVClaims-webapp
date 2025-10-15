@@ -24,7 +24,7 @@ export function SupportingServicesSection() {
   ];
 
   return (
-    <section className="py-16 bg-muted/30">
+    <section className="py-16 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center space-y-3 mb-12">

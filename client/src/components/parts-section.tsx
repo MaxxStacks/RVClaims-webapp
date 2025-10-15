@@ -33,7 +33,7 @@ export function PartsSection() {
   ];
 
   return (
-    <section id="parts" className="py-20 bg-muted/30">
+    <section id="parts" className="py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center space-y-4 mb-16">
           <div className="inline-block px-4 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium mb-4" data-testid="badge-parts">

@@ -5,7 +5,7 @@ export function PrivacyAssuranceSection() {
   const { t, language } = useLanguage();
 
   return (
-    <section className="py-16 bg-background">
+    <section className="py-16 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-primary rounded-xl p-8 md:p-12 lg:p-16 text-center">
           <div className="flex justify-center mb-6">
