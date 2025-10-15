@@ -56,7 +56,7 @@ export function MobileMenu() {
 
       {/* Side Menu - Visible on ALL devices when open */}
       <div
-        className={`fixed top-0 right-0 h-full w-96 border-l-2 border-primary/20 shadow-2xl transform transition-transform duration-300 ease-in-out z-[9999] ${
+        className={`fixed top-0 right-0 h-screen w-96 border-l-2 border-primary/20 shadow-2xl transform transition-transform duration-300 ease-in-out z-[9999] ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
         data-testid="menu-pages-side"
@@ -65,7 +65,7 @@ export function MobileMenu() {
           background: '#ffffff'
         }}
       >
-        <div className="flex flex-col h-full" style={{ backgroundColor: '#ffffff' }}>
+        <div className="flex flex-col h-screen" style={{ backgroundColor: '#ffffff' }}>
           {/* Header */}
           <div className="border-b border-border px-4 py-4" style={{ backgroundColor: '#ffffff' }}>
             <div className="flex justify-between items-center">
