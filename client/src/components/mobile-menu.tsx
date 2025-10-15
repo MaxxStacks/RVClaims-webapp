@@ -95,11 +95,9 @@ export function MobileMenu() {
 
           {/* Menu Items */}
           <div 
-            className="flex-1 px-6 py-4 space-y-1 overflow-y-auto hide-scrollbar" 
+            className="flex-1 px-6 py-4 space-y-1" 
             style={{ 
-              backgroundColor: '#f8fafc',
-              scrollbarWidth: 'none',
-              msOverflowStyle: 'none'
+              backgroundColor: '#f8fafc'
             }}
           >
             {/* Main Services with Submenu */}
