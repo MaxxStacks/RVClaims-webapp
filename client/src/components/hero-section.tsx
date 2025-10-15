@@ -40,15 +40,17 @@ export function HeroSection() {
             <div className="flex flex-col sm:flex-row gap-4">
               <Button 
                 onClick={scrollToContact}
-                className="bg-primary text-primary-foreground px-8 py-4 rounded-lg font-semibold hover:bg-primary/90 transition-colors shadow-lg hover:shadow-xl"
+                size="lg"
+                className="bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-colors shadow-lg hover:shadow-xl"
                 data-testid="button-get-started"
               >
                 {t('hero.ctaPrimary')}
               </Button>
               <Button 
                 onClick={scrollToProcess}
+                size="lg"
                 variant="outline"
-                className="border border-border text-foreground px-8 py-4 rounded-lg font-semibold hover:bg-accent transition-colors"
+                className="border border-border text-foreground font-semibold hover:bg-accent transition-colors"
                 data-testid="button-view-process"
               >
                 {t('hero.ctaSecondary')}
