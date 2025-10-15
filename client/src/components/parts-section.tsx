@@ -36,7 +36,7 @@ export function PartsSection() {
     <section id="parts" className="py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center space-y-4 mb-16">
-          <div className="inline-block px-4 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium mb-4" data-testid="badge-parts">
+          <div className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20 mb-4" data-testid="badge-parts">
             {t('partsSection.badge')}
           </div>
           <h2 className="text-3xl lg:text-4xl font-bold text-foreground" data-testid="text-parts-title">

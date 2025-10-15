@@ -23,7 +23,7 @@ export function ConsumerServicesSection() {
     <section className="py-24 bg-white" id="consumer-services">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center space-y-4 mb-16">
-          <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
+          <div className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20 mb-4">
             {t('consumerServices.badge')}
           </div>
           <h2 className="text-3xl lg:text-4xl font-bold text-foreground" data-testid="text-consumer-services-title">
