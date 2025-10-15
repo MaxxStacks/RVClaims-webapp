@@ -8,7 +8,18 @@ export const translations = {
       technology: "Technology",
       revenueServices: "Revenue Services",
       rvCoverage: "RV Coverage",
-      contact: "Contact"
+      contact: "Contact",
+      warrantyExtended: "Warranty & Extended Services",
+      findDealer: "Find a Dealer",
+      mainServices: "Main Services",
+      supportingServices: "Supporting Services",
+      parts: "Parts & Components",
+      marketing: "Marketing Services",
+      consignment: "Consignment Services",
+      roadsideAssistance: "Roadside Assistance",
+      extendedWarranty: "Extended Warranty",
+      protectionPlans: "Protection Plans",
+      careers: "Careers"
     },
 
     // Notification Bar
@@ -769,7 +780,18 @@ export const translations = {
       technology: "Technologie",
       revenueServices: "Services revenus",
       rvCoverage: "Couverture VR",
-      contact: "Contact"
+      contact: "Contact",
+      warrantyExtended: "Garantie et services étendus",
+      findDealer: "Trouver un concessionnaire",
+      mainServices: "Services principaux",
+      supportingServices: "Services de soutien",
+      parts: "Pièces et composants",
+      marketing: "Services de marketing",
+      consignment: "Services de consignation",
+      roadsideAssistance: "Assistance routière",
+      extendedWarranty: "Garantie prolongée",
+      protectionPlans: "Plans de protection",
+      careers: "Carrières"
     },
 
     // Notification Bar
