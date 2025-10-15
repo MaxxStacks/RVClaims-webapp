@@ -152,8 +152,8 @@ export function Navigation() {
               </button>
               
               {rvCoverageOpen && (
-                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-1 w-[600px] bg-white border border-border rounded-lg shadow-xl p-6 z-50">
-                  <div className="grid grid-cols-5 gap-4">
+                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-1 w-[800px] bg-white border border-border rounded-lg shadow-xl p-6 z-50">
+                  <div className="grid grid-cols-5 gap-6">
                     {rvTypes.map((rv) => (
                       <Link
                         key={rv.testId}
