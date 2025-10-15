@@ -56,7 +56,7 @@ export function MobileMenu() {
 
       {/* Side Menu - Visible on ALL devices when open */}
       <div
-        className={`fixed top-0 right-0 h-full w-80 border-l-2 border-primary/20 shadow-2xl transform transition-transform duration-300 ease-in-out z-[9999] ${
+        className={`fixed top-0 right-0 h-full w-96 border-l-2 border-primary/20 shadow-2xl transform transition-transform duration-300 ease-in-out z-[9999] ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
         data-testid="menu-pages-side"
@@ -94,7 +94,14 @@ export function MobileMenu() {
           </div>
 
           {/* Menu Items */}
-          <div className="flex-1 px-6 py-2 space-y-0.5 overflow-y-auto" style={{ backgroundColor: '#ffffff' }}>
+          <div 
+            className="flex-1 px-6 py-2 space-y-0.5 overflow-y-auto hide-scrollbar" 
+            style={{ 
+              backgroundColor: '#ffffff',
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none'
+            }}
+          >
             {/* Main Services with Submenu */}
             <div>
               <button
