@@ -33,9 +33,8 @@ export function PartsSection() {
   ];
 
   return (
-    <section id="parts" className="py-12">
+    <section id="parts" className="py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-gray-50 rounded-3xl px-6 py-16 sm:px-12 sm:py-20">
         <div className="text-center space-y-4 mb-16">
           <div className="inline-block px-4 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium mb-4" data-testid="badge-parts">
             {t('partsSection.badge')}
@@ -79,7 +78,6 @@ export function PartsSection() {
             <ShoppingCart className="mr-2" size={20} />
             {t('partsSection.cta.button')}
           </Button>
-        </div>
         </div>
       </div>
     </section>

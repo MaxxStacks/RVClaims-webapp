@@ -34,9 +34,8 @@ export function ExperienceSection() {
   ];
 
   return (
-    <section id="experience" className="py-12">
+    <section id="experience" className="py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-gray-50 rounded-3xl px-6 py-16 sm:px-12 sm:py-20">
         <div className="text-center space-y-4 mb-16">
           <h2 className="text-3xl lg:text-4xl font-bold text-foreground" data-testid="text-experience-title">
             {t('experienceSection.title')}
@@ -81,7 +80,6 @@ export function ExperienceSection() {
           <p className="text-center text-primary mt-6 text-[16.8px] font-semibold animate-pulse">
             Plus more of North America's leading RV manufacturers and their top brands!
           </p>
-        </div>
         </div>
       </div>
     </section>

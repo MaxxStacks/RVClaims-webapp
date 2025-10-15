@@ -20,9 +20,8 @@ export function ConsumerServicesSection() {
   ];
 
   return (
-    <section className="py-12" id="consumer-services">
+    <section className="py-24 bg-white" id="consumer-services">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white rounded-3xl px-6 py-16 sm:px-12 sm:py-20">
         <div className="text-center space-y-4 mb-16">
           <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
             {t('consumerServices.badge')}
@@ -109,7 +108,6 @@ export function ConsumerServicesSection() {
               {t('consumerServices.cta.callButton')}
             </a>
           </div>
-        </div>
         </div>
       </div>
     </section>
