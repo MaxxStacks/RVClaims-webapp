@@ -106,7 +106,8 @@ export function MobileMenu() {
             <div>
               <button
                 onClick={() => toggleSubmenu('mainServices')}
-                className="w-full flex items-center justify-between px-4 py-2 rounded-lg text-base font-medium text-foreground hover:bg-primary/10 hover:text-primary transition-colors"
+                className="w-full flex items-center justify-between px-4 py-2 rounded-lg text-base font-medium hover:bg-primary/10 hover:text-primary transition-colors"
+                style={{ color: '#1e293b' }}
                 data-testid="button-main-services"
               >
                 <span>{t('navigation.mainServices')}</span>
@@ -134,7 +135,8 @@ export function MobileMenu() {
             <div>
               <button
                 onClick={() => toggleSubmenu('supportingServices')}
-                className="w-full flex items-center justify-between px-4 py-2 rounded-lg text-base font-medium text-foreground hover:bg-primary/10 hover:text-primary transition-colors"
+                className="w-full flex items-center justify-between px-4 py-2 rounded-lg text-base font-medium hover:bg-primary/10 hover:text-primary transition-colors"
+                style={{ color: '#1e293b' }}
                 data-testid="button-supporting-services"
               >
                 <span>{t('navigation.supportingServices')}</span>
@@ -162,7 +164,8 @@ export function MobileMenu() {
             <div>
               <button
                 onClick={() => toggleSubmenu('findDealer')}
-                className="w-full flex items-center justify-between px-4 py-2 rounded-lg text-base font-medium text-foreground hover:bg-primary/10 hover:text-primary transition-colors"
+                className="w-full flex items-center justify-between px-4 py-2 rounded-lg text-base font-medium hover:bg-primary/10 hover:text-primary transition-colors"
+                style={{ color: '#1e293b' }}
                 data-testid="button-find-dealer"
               >
                 <span>{t('navigation.findDealer')}</span>
