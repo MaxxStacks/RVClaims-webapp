@@ -34,9 +34,9 @@ export function MainServicesSection() {
   ];
 
   return (
-    <section id="main-services" className="py-8">
+    <section id="main-services" className="py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white rounded-3xl p-12">
+        <div className="bg-white rounded-3xl px-6 py-16 sm:px-12 sm:py-20">
         <div className="text-center space-y-4 mb-16">
           <div className="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium border border-primary/20 mb-4" data-testid="badge-main-services">
             {t('mainServices.badge')}
