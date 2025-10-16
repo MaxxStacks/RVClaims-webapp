@@ -142,7 +142,7 @@ export function NetworkMarketplaceSection() {
               className="gap-2"
               data-testid="button-network-join"
             >
-              {t('networkMarketplace.cta.secondary')}
+              {t('networkMarketplace.cta.primary')}
               <ArrowRight className="h-4 w-4" />
             </Button>
             <Button 
@@ -152,7 +152,7 @@ export function NetworkMarketplaceSection() {
               data-testid="button-network-contact"
             >
               <Link href="/contact">
-                {t('networkMarketplace.cta.primary')}
+                Contact Us
               </Link>
             </Button>
           </div>
