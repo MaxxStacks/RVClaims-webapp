@@ -3,9 +3,71 @@ import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { useLanguage } from "@/hooks/use-language";
 import { Network, TrendingUp, Users, Sparkles, ArrowRight } from "lucide-react";
+import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { useMutation } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
+import { insertNetworkWaitlistSchema } from "@shared/schema";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 
 export function NetworkMarketplaceSection() {
   const { t } = useLanguage();
+  const [open, setOpen] = useState(false);
+  const { toast } = useToast();
+
+  const form = useForm({
+    resolver: zodResolver(insertNetworkWaitlistSchema),
+    defaultValues: {
+      email: "",
+      dealershipName: "",
+    },
+  });
+
+  const mutation = useMutation({
+    mutationFn: async (data: { email: string; dealershipName?: string }) => {
+      return await apiRequest("/api/network-waitlist", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: { "Content-Type": "application/json" },
+      });
+    },
+    onSuccess: () => {
+      toast({
+        title: "Success!",
+        description: "You've been added to the waitlist. We'll notify you when the network launches in 2026.",
+      });
+      setOpen(false);
+      form.reset();
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to join waitlist. Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const onSubmit = (data: { email: string; dealershipName?: string }) => {
+    mutation.mutate(data);
+  };
 
   return (
     <section className="py-20 bg-white">
@@ -73,11 +135,14 @@ export function NetworkMarketplaceSection() {
             Join the waitlist for exclusive early access to the RVClaims Dealer Network Marketplace in 2026
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
-            <Button size="lg" asChild data-testid="button-network-join">
-              <Link href="/network-marketplace" className="gap-2">
-                {t('networkMarketplace.cta.secondary')}
-                <ArrowRight className="h-4 w-4" />
-              </Link>
+            <Button 
+              size="lg" 
+              onClick={() => setOpen(true)}
+              className="gap-2"
+              data-testid="button-network-join"
+            >
+              {t('networkMarketplace.cta.secondary')}
+              <ArrowRight className="h-4 w-4" />
             </Button>
             <Button 
               size="lg" 
@@ -91,6 +156,78 @@ export function NetworkMarketplaceSection() {
             </Button>
           </div>
         </div>
+
+        <Dialog open={open} onOpenChange={setOpen}>
+          <DialogContent className="sm:max-w-md" data-testid="dialog-network-waitlist">
+            <DialogHeader>
+              <DialogTitle className="text-2xl">Join the Waitlist</DialogTitle>
+              <DialogDescription>
+                Be among the first dealers to access the RVClaims Network Marketplace when it launches in 2026.
+              </DialogDescription>
+            </DialogHeader>
+            
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email Address *</FormLabel>
+                      <FormControl>
+                        <Input 
+                          placeholder="your@email.com" 
+                          type="email"
+                          data-testid="input-waitlist-email"
+                          {...field} 
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                <FormField
+                  control={form.control}
+                  name="dealershipName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Dealership Name (Optional)</FormLabel>
+                      <FormControl>
+                        <Input 
+                          placeholder="Your Dealership Name" 
+                          data-testid="input-waitlist-dealership"
+                          {...field} 
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                <div className="flex gap-3 pt-4">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setOpen(false)}
+                    className="flex-1"
+                    data-testid="button-waitlist-cancel"
+                  >
+                    Cancel
+                  </Button>
+                  <Button 
+                    type="submit" 
+                    className="flex-1"
+                    disabled={mutation.isPending}
+                    data-testid="button-waitlist-submit"
+                  >
+                    {mutation.isPending ? "Joining..." : "Join Waitlist"}
+                  </Button>
+                </div>
+              </form>
+            </Form>
+          </DialogContent>
+        </Dialog>
       </div>
     </section>
   );
