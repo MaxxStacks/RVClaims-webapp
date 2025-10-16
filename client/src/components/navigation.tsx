@@ -93,7 +93,7 @@ export function Navigation() {
                     <div className="text-xs text-muted-foreground mt-0.5">A-Z warranty claims management</div>
                   </Link>
                   <Link
-                    href="/financing-services"
+                    href="/financing"
                     className="block px-4 py-2.5 text-sm hover:bg-primary/10 hover:text-primary transition-colors"
                     data-testid="link-financing-services"
                   >
@@ -101,7 +101,7 @@ export function Navigation() {
                     <div className="text-xs text-muted-foreground mt-0.5">Dealership financing support</div>
                   </Link>
                   <Link
-                    href="/warranty-extended-services"
+                    href="/warranty-extended-service"
                     className="block px-4 py-2.5 text-sm hover:bg-primary/10 hover:text-primary transition-colors"
                     data-testid="link-warranty-extended"
                   >
@@ -122,7 +122,7 @@ export function Navigation() {
 
             {/* Warranty & Extended Services */}
             <Link 
-              href="/warranty-extended-services"
+              href="/warranty-extended-service"
               className={`transition-colors ${location === '/warranty-extended-services' ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
               data-testid="link-warranty"
             >
@@ -140,7 +140,7 @@ export function Navigation() {
 
             {/* Find a Dealer */}
             <Link 
-              href="/find-dealer"
+              href="/contact"
               className={`transition-colors ${location === '/find-dealer' ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
               data-testid="link-find-dealer"
             >
