@@ -67,7 +67,7 @@ export function Navigation() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-14">
           {/* Desktop Menu */}
-          <div className="hidden lg:flex items-center space-x-6 flex-1 justify-center">
+          <div className="hidden lg:flex items-center space-x-6 flex-1 justify-start">
             {/* Services Dropdown */}
             <div 
               className="relative"
