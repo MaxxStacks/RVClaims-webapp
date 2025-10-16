@@ -21,18 +21,39 @@ export function MobileMenu() {
     setExpandedMenu(null);
   };
 
+  const searchableContent = [
+    { title: t('mainServices.claims.title'), description: 'A-Z warranty claims management', path: '/claims-processing', keywords: ['warranty', 'claims', 'processing', 'management'] },
+    { title: t('mainServices.financing.title'), description: 'Flexible financing solutions', path: '/financing', keywords: ['financing', 'finance', 'payment', 'loan'] },
+    { title: t('mainServices.warranty.title'), description: 'Extended warranty programs', path: '/warranty', keywords: ['warranty', 'extended', 'protection', 'coverage'] },
+    { title: t('mainServices.fi.title'), description: 'F&I services and solutions', path: '/fi-services', keywords: ['f&i', 'finance', 'insurance', 'services'] },
+    { title: t('navigation.aboutUs'), description: 'Learn about RV Claims Canada', path: '/about', keywords: ['about', 'company', 'team', 'history'] },
+    { title: t('navigation.contact'), description: 'Get in touch with us', path: '/contact', keywords: ['contact', 'email', 'phone', 'reach'] },
+  ];
+
+  const [searchResults, setSearchResults] = useState<typeof searchableContent>([]);
+  const [showResults, setShowResults] = useState(false);
+
+  const handleSearchInput = (value: string) => {
+    setSearchQuery(value);
+    
+    if (value.trim().length > 0) {
+      const query = value.toLowerCase();
+      const results = searchableContent.filter(item => 
+        item.title.toLowerCase().includes(query) ||
+        item.description.toLowerCase().includes(query) ||
+        item.keywords.some(keyword => keyword.toLowerCase().includes(query))
+      );
+      setSearchResults(results);
+      setShowResults(true);
+    } else {
+      setShowResults(false);
+      setSearchResults([]);
+    }
+  };
+
   const handleSearch = (e: FormEvent) => {
     e.preventDefault();
-    if (searchQuery.trim()) {
-      toast({
-        title: "Search Results",
-        description: `Searching for: "${searchQuery}"`,
-      });
-      // Here you can implement actual search logic
-      // For now, we'll just show a toast notification
-      setSearchQuery("");
-      closeMenu();
-    }
+    // Form submission already handled by real-time search
   };
 
   const toggleSubmenu = (menuKey: string) => {
@@ -88,17 +109,52 @@ export function MobileMenu() {
           <div className="border-b border-border/50" style={{ backgroundColor: '#ffffff' }}>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="flex justify-between items-center py-3 gap-4 h-[88px]">
-                <form onSubmit={handleSearch} className="relative flex-1">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={18} />
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search..."
-                    className="w-full pl-10 pr-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm"
-                    data-testid="input-search"
-                  />
-                </form>
+                <div className="relative flex-1">
+                  <form onSubmit={handleSearch} className="relative">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={18} />
+                    <input
+                      type="text"
+                      value={searchQuery}
+                      onChange={(e) => handleSearchInput(e.target.value)}
+                      placeholder="Search..."
+                      className="w-full pl-10 pr-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm"
+                      data-testid="input-search"
+                    />
+                  </form>
+                  
+                  {/* Search Results Dropdown */}
+                  {showResults && (
+                    <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-border rounded-lg shadow-xl z-50 max-h-96 overflow-y-auto">
+                      {searchResults.length > 0 ? (
+                        <>
+                          <div className="px-4 py-2 border-b border-border bg-gray-50">
+                            <p className="text-xs text-muted-foreground">{searchResults.length} result{searchResults.length !== 1 ? 's' : ''} found</p>
+                          </div>
+                          {searchResults.map((result, index) => (
+                            <Link
+                              key={index}
+                              href={result.path}
+                              onClick={() => {
+                                setShowResults(false);
+                                setSearchQuery("");
+                                closeMenu();
+                              }}
+                              className="block px-4 py-3 hover:bg-primary/5 border-b border-border/50 last:border-b-0 transition-colors"
+                              data-testid={`link-search-result-${index}`}
+                            >
+                              <div className="font-medium text-sm text-foreground">{result.title}</div>
+                              <div className="text-xs text-muted-foreground mt-1">{result.description}</div>
+                            </Link>
+                          ))}
+                        </>
+                      ) : (
+                        <div className="px-4 py-6 text-center">
+                          <p className="text-sm text-muted-foreground">No results found for "{searchQuery}"</p>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
                 <button
                   onClick={closeMenu}
                   className="p-2 rounded-lg bg-primary text-white hover:bg-primary/80 transition-all duration-200 hover:scale-105"
