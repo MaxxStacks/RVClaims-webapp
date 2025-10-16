@@ -81,11 +81,31 @@
 </head>
 <body>
     <div class="header">
-        <img src="Test 2-01_1760617972482.png" alt="RV Claims Canada" style="max-width: 450px; height: auto; margin: 0 auto 20px; display: block;">
+        <img id="nda-logo" src="RV CLAIMS 300 PNG-01-EN_1760627778834.png" alt="RV Claims Canada" style="max-width: 450px; height: auto; margin: 0 auto 20px; display: block;">
         <h2>Confidentiality and Non-Disclosure Agreement</h2>
         <p><strong>Effective Date:</strong> January 1, 2024</p>
         <p><strong>Jurisdiction:</strong> Canada (PIPEDA Compliant)</p>
     </div>
+    
+    <script>
+        // Detect language from localStorage or browser language
+        function getLanguage() {
+            const storedLang = localStorage.getItem('language');
+            if (storedLang) return storedLang;
+            
+            const browserLang = navigator.language || navigator.userLanguage;
+            return browserLang.startsWith('fr') ? 'fr' : 'en';
+        }
+        
+        // Update logo based on language
+        const language = getLanguage();
+        const logoElement = document.getElementById('nda-logo');
+        if (language === 'fr') {
+            logoElement.src = 'RV CLAIMS 300 PNG-02-FR_1760627778835.png';
+        } else {
+            logoElement.src = 'RV CLAIMS 300 PNG-01-EN_1760627778834.png';
+        }
+    </script>
 
     <div class="emphasis">
         <strong>ABSOLUTE CLIENT CONFIDENTIALITY GUARANTEE:</strong> Despite serving multiple RV dealerships across Canada, RV Claims Canada operates under the strictest non-disclosure protocols. Your sensitive business information, financial data, and operational details are never shared, discussed, or disclosed to any third party—including other clients or manufacturers.
