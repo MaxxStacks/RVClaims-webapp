@@ -17,7 +17,7 @@ export async function sendWaitlistNotification(data: {
   try {
     const mailOptions = {
       from: process.env.SMTP_USER || 'noreply@rvclaims.ca',
-      to: 'dealer@rvclaims.ca',
+      to: 'hello@rvclaims.ca',
       subject: 'New Network Marketplace Waitlist Signup',
       html: `
         <h2>New Waitlist Registration</h2>
@@ -41,7 +41,7 @@ This notification was sent automatically from the RV Claims Canada website.
     };
 
     await transporter.sendMail(mailOptions);
-    console.log('Waitlist notification email sent to dealer@rvclaims.ca');
+    console.log('Waitlist notification email sent to hello@rvclaims.ca');
   } catch (error) {
     console.error('Failed to send waitlist notification email:', error);
   }
