@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Menu, X, User, Building, Linkedin, Facebook, Youtube, Instagram, Twitter, ChevronRight } from "lucide-react";
+import { Menu, X, User, Building, Linkedin, Facebook, Youtube, Instagram, Twitter, ChevronRight, Search } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { useLanguage } from "@/hooks/use-language";
 import { LanguageToggle } from "@/components/language-toggle";
@@ -69,28 +69,26 @@ export function MobileMenu() {
         <div className="flex flex-col h-screen" style={{ backgroundColor: '#ffffff' }}>
           {/* Header */}
           <div className="border-b border-border px-4 py-3" style={{ backgroundColor: '#ffffff' }}>
-            <div className="flex justify-between items-center">
-              <Link 
-                href="/" 
-                className="flex items-center"
-                onClick={closeMenu}
-                data-testid="link-pages-logo"
-              >
-                <img 
-                  src={language === 'en' ? logoEN : logoFR} 
-                  alt="RV Claims" 
-                  className="h-16 w-auto max-w-[450px]" 
-                  style={{ imageRendering: 'auto' }}
-                  data-testid="img-mobile-menu-logo"
-                />
-              </Link>
+            <div className="flex justify-between items-start gap-4">
+              <div className="flex-1">
+                <h3 className="text-sm font-semibold text-foreground mb-2">Search Rvclaims.ca</h3>
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={18} />
+                  <input
+                    type="text"
+                    placeholder="Search..."
+                    className="w-full pl-10 pr-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm"
+                    data-testid="input-search"
+                  />
+                </div>
+              </div>
               <button
                 onClick={closeMenu}
-                className="p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/10 transition-colors"
+                className="p-2 rounded-lg bg-primary text-white hover:bg-primary/90 transition-colors"
                 data-testid="button-close-pages-menu"
                 aria-label="Close pages menu"
               >
-                <X size={24} />
+                <X size={20} />
               </button>
             </div>
           </div>
