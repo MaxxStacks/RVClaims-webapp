@@ -239,7 +239,7 @@ html, body {
 }
 
 .animate-scroll {
-  animation: scroll 50s linear infinite;
+  animation: scroll 60s linear infinite;
   /* Ensure animation stays within container */
   will-change: transform;
   contain: layout;
