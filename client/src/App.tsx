@@ -1,9 +1,10 @@
-import { Switch, Route } from "wouter";
+import { Switch, Route, useLocation } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { LanguageProvider } from "@/hooks/use-language";
+import { useEffect } from "react";
 import Home from "@/pages/home";
 import About from "@/pages/about";
 import Services from "@/pages/services";
@@ -20,25 +21,38 @@ import FIServices from "@/pages/fi-services";
 import NetworkMarketplace from "@/pages/network-marketplace";
 import NotFound from "@/pages/not-found";
 
+function ScrollToTop() {
+  const [location] = useLocation();
+  
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
+  
+  return null;
+}
+
 function Router() {
   return (
-    <Switch>
-      <Route path="/" component={Home} />
-      <Route path="/about" component={About} />
-      <Route path="/services" component={Services} />
-      <Route path="/claims-processing" component={ClaimsProcessing} />
-      <Route path="/technology" component={Technology} />
-      <Route path="/revenue-services" component={RevenueServices} />
-      <Route path="/rv-coverage" component={RvCoverage} />
-      <Route path="/contact" component={Contact} />
-      <Route path="/privacy-policy" component={PrivacyPolicy} />
-      <Route path="/client-login" component={ClientLogin} />
-      <Route path="/financing" component={Financing} />
-      <Route path="/warranty-extended-service" component={WarrantyExtendedService} />
-      <Route path="/fi-services" component={FIServices} />
-      <Route path="/network-marketplace" component={NetworkMarketplace} />
-      <Route component={NotFound} />
-    </Switch>
+    <>
+      <ScrollToTop />
+      <Switch>
+        <Route path="/" component={Home} />
+        <Route path="/about" component={About} />
+        <Route path="/services" component={Services} />
+        <Route path="/claims-processing" component={ClaimsProcessing} />
+        <Route path="/technology" component={Technology} />
+        <Route path="/revenue-services" component={RevenueServices} />
+        <Route path="/rv-coverage" component={RvCoverage} />
+        <Route path="/contact" component={Contact} />
+        <Route path="/privacy-policy" component={PrivacyPolicy} />
+        <Route path="/client-login" component={ClientLogin} />
+        <Route path="/financing" component={Financing} />
+        <Route path="/warranty-extended-service" component={WarrantyExtendedService} />
+        <Route path="/fi-services" component={FIServices} />
+        <Route path="/network-marketplace" component={NetworkMarketplace} />
+        <Route component={NotFound} />
+      </Switch>
+    </>
   );
 }
 
