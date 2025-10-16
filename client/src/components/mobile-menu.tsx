@@ -3,7 +3,8 @@ import { Menu, X, User, Building, Linkedin, Facebook, Youtube, Instagram, Twitte
 import { Link, useLocation } from "wouter";
 import { useLanguage } from "@/hooks/use-language";
 import { LanguageToggle } from "@/components/language-toggle";
-import headerLogoImage from "@assets/Industrial Trapton Logo Design (1) (1)_1756855580448.png";
+import logoEN from "@assets/RV CLAIMS-EN_1760581425944.png";
+import logoFR from "@assets/RV CLAIMS-FR_1760581425944.png";
 
 export function MobileMenu() {
   const [isOpen, setIsOpen] = useState(false);
@@ -76,7 +77,7 @@ export function MobileMenu() {
                 data-testid="link-pages-logo"
               >
                 <img 
-                  src={headerLogoImage} 
+                  src={language === 'en' ? logoEN : logoFR} 
                   alt="RV Claims" 
                   className="h-10 w-auto" 
                   data-testid="img-mobile-menu-logo"

@@ -4,7 +4,8 @@ import { MobileMenu } from "@/components/mobile-menu";
 import { Link, useLocation } from "wouter";
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
-import headerLogoImage from "@assets/Industrial Trapton Logo Design (1) (1)_1756855580448.png";
+import logoEN from "@assets/RV CLAIMS-EN_1760581425944.png";
+import logoFR from "@assets/RV CLAIMS-FR_1760581425944.png";
 import travelTrailerIcon from "@assets/Travel Trailer_1756847838647.png";
 import fifthWheelIcon from "@assets/Fifth Wheel_1756847838645.png";
 import classCIcon from "@assets/Class C_1756847838644.png";
@@ -17,7 +18,7 @@ import truckCamperIcon from "@assets/Truck Camper_1756847838647.png";
 import destinationTrailerIcon from "@assets/Destination Trailer_1756847838644.png";
 
 export function Navigation() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [location] = useLocation();
   const [servicesOpen, setServicesOpen] = useState(false);
   const [rvCoverageOpen, setRvCoverageOpen] = useState(false);
@@ -43,7 +44,7 @@ export function Navigation() {
           <div className="flex justify-center items-center py-3">
             <Link href="/" className="flex items-center hover:opacity-90 transition-opacity" data-testid="link-logo">
               <img 
-                src={headerLogoImage} 
+                src={language === 'en' ? logoEN : logoFR} 
                 alt="RV Claims Canada" 
                 className="h-12 w-auto max-w-[280px]" 
                 data-testid="img-header-logo"

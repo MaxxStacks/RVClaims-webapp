@@ -1,10 +1,11 @@
 import { Phone, Mail, MapPin, Heart, Linkedin, Facebook, Youtube, Instagram, Twitter } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
 import { Link } from "wouter";
-import headerLogoImage from "@assets/Industrial Trapton Logo Design (1) (1)_1756855580448.png";
+import logoEN from "@assets/RV CLAIMS-EN_1760581425944.png";
+import logoFR from "@assets/RV CLAIMS-FR_1760581425944.png";
 
 export function Footer() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   return (
     <footer className="bg-gray-50 text-gray-900 pt-16 pb-4">
@@ -13,7 +14,7 @@ export function Footer() {
           <div className="lg:col-span-2 space-y-4">
             <div className="mb-2" data-testid="div-footer-logo">
               <img 
-                src={headerLogoImage} 
+                src={language === 'en' ? logoEN : logoFR} 
                 alt="RV Claims" 
                 className="h-16 w-auto max-w-[350px]" 
                 data-testid="img-footer-logo"
