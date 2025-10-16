@@ -1,21 +1,38 @@
-import { useState } from "react";
+import { useState, FormEvent } from "react";
 import { Menu, X, User, Building, Linkedin, Facebook, Youtube, Instagram, Twitter, ChevronRight, Search } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { useLanguage } from "@/hooks/use-language";
 import { LanguageToggle } from "@/components/language-toggle";
+import { useToast } from "@/hooks/use-toast";
 import logoEN from "@assets/Test 1-01_1760585336142.png";
 import logoFR from "@assets/RV CLAIMS-FR_1760581425944.png";
 
 export function MobileMenu() {
   const [isOpen, setIsOpen] = useState(false);
   const [expandedMenu, setExpandedMenu] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
   const { t, language } = useLanguage();
   const [location] = useLocation();
+  const { toast } = useToast();
 
   const toggleMenu = () => setIsOpen(!isOpen);
   const closeMenu = () => {
     setIsOpen(false);
     setExpandedMenu(null);
+  };
+
+  const handleSearch = (e: FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      toast({
+        title: "Search Results",
+        description: `Searching for: "${searchQuery}"`,
+      });
+      // Here you can implement actual search logic
+      // For now, we'll just show a toast notification
+      setSearchQuery("");
+      closeMenu();
+    }
   };
 
   const toggleSubmenu = (menuKey: string) => {
@@ -71,15 +88,17 @@ export function MobileMenu() {
           <div className="border-b border-border/50" style={{ backgroundColor: '#ffffff' }}>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="flex justify-between items-center py-3 gap-4 h-[88px]">
-                <div className="relative flex-1">
+                <form onSubmit={handleSearch} className="relative flex-1">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={18} />
                   <input
                     type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search..."
                     className="w-full pl-10 pr-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm"
                     data-testid="input-search"
                   />
-                </div>
+                </form>
                 <button
                   onClick={closeMenu}
                   className="p-2 rounded-lg bg-primary text-white hover:bg-primary/80 transition-all duration-200 hover:scale-105"
