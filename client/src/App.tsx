@@ -17,6 +17,7 @@ import ClientLogin from "@/pages/client-login";
 import Financing from "@/pages/financing";
 import WarrantyExtendedService from "@/pages/warranty-extended-service";
 import FIServices from "@/pages/fi-services";
+import NetworkMarketplace from "@/pages/network-marketplace";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -35,6 +36,7 @@ function Router() {
       <Route path="/financing" component={Financing} />
       <Route path="/warranty-extended-service" component={WarrantyExtendedService} />
       <Route path="/fi-services" component={FIServices} />
+      <Route path="/network-marketplace" component={NetworkMarketplace} />
       <Route component={NotFound} />
     </Switch>
   );

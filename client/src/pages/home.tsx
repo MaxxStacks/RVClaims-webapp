@@ -12,6 +12,7 @@ import { ExperienceSection } from "@/components/experience-section";
 import { PrivacyAssuranceSection } from "@/components/privacy-assurance-section";
 import { ConsumerServicesSection } from "@/components/consumer-services-section";
 import { PartsSection } from "@/components/parts-section";
+import { NetworkMarketplaceSection } from "@/components/network-marketplace-section";
 import { ContactSection } from "@/components/contact-section";
 import { Footer } from "@/components/footer";
 import { LanguageToggle } from "@/components/language-toggle";
@@ -37,6 +38,7 @@ export default function Home() {
       <WarrantySection />
       <ConsumerServicesSection />
       <PartsSection />
+      <NetworkMarketplaceSection />
       <ContactSection />
       <Footer />
       <ChatbotWidget />

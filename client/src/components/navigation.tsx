@@ -38,10 +38,10 @@ export function Navigation() {
 
   return (
     <nav className="bg-white/95 backdrop-blur-sm border-b border-border sticky top-0 z-50">
-      {/* Top Row - Logo Only */}
+      {/* Top Row - Logo and Network Button */}
       <div className="border-b border-border/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-start items-center py-3">
+          <div className="flex justify-between items-center py-3">
             <Link href="/" className="flex items-center hover:opacity-90 transition-opacity" data-testid="link-logo">
               <img 
                 src={language === 'en' ? logoEN : logoFR} 
@@ -50,6 +50,14 @@ export function Navigation() {
                 style={{ imageRendering: 'auto' }}
                 data-testid="img-header-logo"
               />
+            </Link>
+            <Link href="/network-marketplace">
+              <button 
+                className="px-6 py-2.5 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-colors shadow-md hover:shadow-lg"
+                data-testid="button-dealer-network"
+              >
+                Dealer Network
+              </button>
             </Link>
           </div>
         </div>
