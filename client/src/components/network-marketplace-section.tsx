@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { useMutation } from "@tanstack/react-query";
-import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { insertNetworkWaitlistSchema } from "@shared/schema";
 import { useForm } from "react-hook-form";
@@ -42,11 +41,13 @@ export function NetworkMarketplaceSection() {
 
   const mutation = useMutation({
     mutationFn: async (data: { email: string; dealershipName?: string }) => {
-      return await apiRequest("/api/network-waitlist", {
+      const response = await fetch("/api/network-waitlist", {
         method: "POST",
         body: JSON.stringify(data),
         headers: { "Content-Type": "application/json" },
       });
+      if (!response.ok) throw new Error("Failed to join waitlist");
+      return response.json();
     },
     onSuccess: () => {
       toast({

@@ -38,7 +38,8 @@ export class MemStorage implements IStorage {
   async createNetworkWaitlist(insertWaitlist: InsertNetworkWaitlist): Promise<NetworkWaitlist> {
     const id = randomUUID();
     const waitlist: NetworkWaitlist = {
-      ...insertWaitlist,
+      email: insertWaitlist.email,
+      dealershipName: insertWaitlist.dealershipName || null,
       id,
       createdAt: new Date()
     };
