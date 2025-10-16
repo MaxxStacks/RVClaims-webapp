@@ -39,7 +39,7 @@ export class MemStorage implements IStorage {
     const id = randomUUID();
     const waitlist: NetworkWaitlist = {
       email: insertWaitlist.email,
-      dealershipName: insertWaitlist.dealershipName || null,
+      dealershipName: insertWaitlist.dealershipName,
       id,
       createdAt: new Date()
     };

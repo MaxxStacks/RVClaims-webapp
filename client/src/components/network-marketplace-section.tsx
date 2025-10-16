@@ -193,7 +193,7 @@ export function NetworkMarketplaceSection() {
                   name="dealershipName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Dealership Name (Optional)</FormLabel>
+                      <FormLabel>Dealership Name *</FormLabel>
                       <FormControl>
                         <Input 
                           placeholder="Your Dealership Name" 

@@ -26,7 +26,7 @@ export type Contact = typeof contacts.$inferSelect;
 export const networkWaitlist = pgTable("network_waitlist", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   email: text("email").notNull(),
-  dealershipName: text("dealership_name"),
+  dealershipName: text("dealership_name").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
