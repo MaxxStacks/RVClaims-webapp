@@ -79,7 +79,7 @@ export function MobileMenu() {
                 <img 
                   src={language === 'en' ? logoEN : logoFR} 
                   alt="RV Claims" 
-                  className="h-14 w-auto" 
+                  className="h-10 w-auto" 
                   data-testid="img-mobile-menu-logo"
                 />
               </Link>
