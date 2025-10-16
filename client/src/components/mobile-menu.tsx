@@ -79,7 +79,8 @@ export function MobileMenu() {
                 <img 
                   src={language === 'en' ? logoEN : logoFR} 
                   alt="RV Claims" 
-                  className="h-10 w-auto" 
+                  className="h-20 w-auto" 
+                  style={{ imageRendering: 'crisp-edges' }}
                   data-testid="img-mobile-menu-logo"
                 />
               </Link>

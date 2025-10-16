@@ -46,7 +46,8 @@ export function Navigation() {
               <img 
                 src={language === 'en' ? logoEN : logoFR} 
                 alt="RV Claims Canada" 
-                className="h-12 w-auto max-w-[280px]" 
+                className="h-20 w-auto max-w-[500px]" 
+                style={{ imageRendering: 'crisp-edges' }}
                 data-testid="img-header-logo"
               />
             </Link>
