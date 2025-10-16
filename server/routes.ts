@@ -3,6 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertContactSchema, insertNetworkWaitlistSchema } from "@shared/schema";
 import { z } from "zod";
+import { sendWaitlistNotification } from "./email";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Contact form submission
@@ -45,6 +46,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const validatedData = insertNetworkWaitlistSchema.parse(req.body);
       const waitlist = await storage.createNetworkWaitlist(validatedData);
+      
+      // Send email notification to dealer@rvclaims.ca
+      await sendWaitlistNotification({
+        email: validatedData.email,
+        dealershipName: validatedData.dealershipName,
+      });
+      
       res.status(201).json({ success: true, waitlist });
     } catch (error) {
       if (error instanceof z.ZodError) {
