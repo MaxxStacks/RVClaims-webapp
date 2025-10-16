@@ -3,7 +3,7 @@ import { Menu, X, User, Building, Linkedin, Facebook, Youtube, Instagram, Twitte
 import { Link, useLocation } from "wouter";
 import { useLanguage } from "@/hooks/use-language";
 import { LanguageToggle } from "@/components/language-toggle";
-import logoEN from "@assets/RV CLAIMS-EN_1760581425944.png";
+import logoEN from "@assets/Test 1-01_1760585336142.png";
 import logoFR from "@assets/RV CLAIMS-FR_1760581425944.png";
 
 export function MobileMenu() {

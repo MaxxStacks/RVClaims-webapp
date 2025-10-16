@@ -4,7 +4,7 @@ import { MobileMenu } from "@/components/mobile-menu";
 import { Link, useLocation } from "wouter";
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
-import logoEN from "@assets/RV CLAIMS-EN_1760581425944.png";
+import logoEN from "@assets/Test 1-01_1760585336142.png";
 import logoFR from "@assets/RV CLAIMS-FR_1760581425944.png";
 import travelTrailerIcon from "@assets/Travel Trailer_1756847838647.png";
 import fifthWheelIcon from "@assets/Fifth Wheel_1756847838645.png";
