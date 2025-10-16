@@ -19,7 +19,8 @@ export const translations = {
       roadsideAssistance: "Roadside Assistance",
       extendedWarranty: "Extended Warranty",
       protectionPlans: "Protection Plans",
-      careers: "Careers"
+      careers: "Careers",
+      searchPlaceholder: "Search..."
     },
 
     // Notification Bar
@@ -861,7 +862,8 @@ export const translations = {
       roadsideAssistance: "Assistance routière",
       extendedWarranty: "Garantie prolongée",
       protectionPlans: "Plans de protection",
-      careers: "Carrières"
+      careers: "Carrières",
+      searchPlaceholder: "Rechercher..."
     },
 
     // Notification Bar
