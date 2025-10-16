@@ -68,7 +68,7 @@ export function MobileMenu() {
       >
         <div className="flex flex-col h-screen" style={{ backgroundColor: '#ffffff' }}>
           {/* Header */}
-          <div className="border-b border-border px-4 py-4" style={{ backgroundColor: '#ffffff' }}>
+          <div className="border-b border-border px-4 py-3" style={{ backgroundColor: '#ffffff' }}>
             <div className="flex justify-between items-center">
               <Link 
                 href="/" 
@@ -79,7 +79,7 @@ export function MobileMenu() {
                 <img 
                   src={language === 'en' ? logoEN : logoFR} 
                   alt="RV Claims" 
-                  className="h-12 w-auto" 
+                  className="h-16 w-auto max-w-[450px]" 
                   style={{ imageRendering: 'crisp-edges' }}
                   data-testid="img-mobile-menu-logo"
                 />
