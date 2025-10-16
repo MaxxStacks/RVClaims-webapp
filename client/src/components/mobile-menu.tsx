@@ -68,25 +68,27 @@ export function MobileMenu() {
       >
         <div className="flex flex-col h-screen" style={{ backgroundColor: '#ffffff' }}>
           {/* Header */}
-          <div className="border-b border-border/50 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#ffffff' }}>
-            <div className="flex justify-between items-center py-3 gap-4">
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={18} />
-                <input
-                  type="text"
-                  placeholder="Search..."
-                  className="w-full pl-10 pr-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm"
-                  data-testid="input-search"
-                />
+          <div className="border-b border-border/50" style={{ backgroundColor: '#ffffff' }}>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="flex justify-between items-center py-3 gap-4 h-[88px]">
+                <div className="relative flex-1">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={18} />
+                  <input
+                    type="text"
+                    placeholder="Search..."
+                    className="w-full pl-10 pr-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm"
+                    data-testid="input-search"
+                  />
+                </div>
+                <button
+                  onClick={closeMenu}
+                  className="p-2 rounded-lg bg-primary text-white hover:bg-primary/80 transition-all duration-200 hover:scale-105"
+                  data-testid="button-close-pages-menu"
+                  aria-label="Close pages menu"
+                >
+                  <X size={16} />
+                </button>
               </div>
-              <button
-                onClick={closeMenu}
-                className="p-2 rounded-lg bg-primary text-white hover:bg-primary/80 transition-all duration-200 hover:scale-105"
-                data-testid="button-close-pages-menu"
-                aria-label="Close pages menu"
-              >
-                <X size={16} />
-              </button>
             </div>
           </div>
 
