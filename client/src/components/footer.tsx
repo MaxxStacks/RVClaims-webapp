@@ -81,7 +81,6 @@ export function Footer() {
                   className="text-primary font-semibold animate-pulse inline-flex items-center gap-1 hover:text-primary/80 transition-colors" 
                   data-testid="link-footer-dealer-network"
                 >
-                  <span className="inline-block">🚀</span>
                   Dealer Network
                   <span className="inline-block text-xs bg-primary text-white px-1.5 py-0.5 rounded">2026</span>
                 </Link>
