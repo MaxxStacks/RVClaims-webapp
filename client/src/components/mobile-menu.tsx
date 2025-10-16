@@ -302,7 +302,7 @@ export function MobileMenu() {
             </Link>
 
             <Link
-              href="/careers"
+              href="/contact"
               onClick={closeMenu}
               className={`block px-4 py-2 rounded-lg text-base font-medium transition-all duration-200 ${
                 location === '/careers'
