@@ -11,7 +11,8 @@ export function DepartmentDirectory() {
         { key: 'claims', email: 'claims@rvclaims.ca' },
         { key: 'warranty', email: 'warranty@rvclaims.ca' },
         { key: 'techSupport', email: 'support@rvclaims.ca' },
-        { key: 'roadside', email: 'roadside@rvclaims.ca' }
+        { key: 'roadside', email: 'roadside@rvclaims.ca' },
+        { key: 'network', email: 'network@rvclaims.ca' }
       ]
     },
     {
@@ -20,21 +21,24 @@ export function DepartmentDirectory() {
         { key: 'sales', email: 'sales@rvclaims.ca' },
         { key: 'dealerRelations', email: 'dealer@rvclaims.ca' },
         { key: 'dealerOnboarding', email: 'onboarding@rvclaims.ca' },
-        { key: 'partners', email: 'partners@rvclaims.ca' }
+        { key: 'partners', email: 'partners@rvclaims.ca' },
+        { key: 'development', email: 'development@rvclaims.ca' }
       ]
     },
     {
       title: t('departmentDirectory.groups.finance'),
       departments: [
         { key: 'accountsPayable', email: 'ap@rvclaims.ca' },
-        { key: 'accountsReceivable', email: 'ar@rvclaims.ca' }
+        { key: 'accountsReceivable', email: 'ar@rvclaims.ca' },
+        { key: 'financing', email: 'financing@rvclaims.ca' }
       ]
     },
     {
       title: t('departmentDirectory.groups.corporate'),
       departments: [
         { key: 'media', email: 'media@rvclaims.ca' },
-        { key: 'general', email: 'hello@rvclaims.ca' }
+        { key: 'general', email: 'hello@rvclaims.ca' },
+        { key: 'legal', email: 'legal@rvclaims.ca' }
       ]
     }
   ];

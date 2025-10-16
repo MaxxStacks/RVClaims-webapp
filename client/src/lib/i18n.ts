@@ -176,15 +176,19 @@ export const translations = {
         claims: "Claims Processing",
         techSupport: "Technical Support",
         warranty: "Warranty Services",
-        roadside: "Roadside Assistance", 
+        roadside: "Roadside Assistance",
+        network: "Network Marketplace",
         sales: "Sales Team",
         accountsPayable: "Accounts Payable",
         accountsReceivable: "Accounts Receivable",
+        financing: "Financing Services",
         partners: "Partner Relations",
         media: "Media Relations",
         dealerOnboarding: "Dealer Onboarding",
         dealerRelations: "Dealer Relations",
-        general: "General Inquiries"
+        development: "Business Development",
+        general: "General Inquiries",
+        legal: "Legal Department"
       }
     },
 
@@ -1014,15 +1018,19 @@ export const translations = {
         claims: "Traitement des réclamations",
         techSupport: "Support technique",
         warranty: "Services de garantie",
-        roadside: "Assistance routière", 
+        roadside: "Assistance routière",
+        network: "Réseau de marché",
         sales: "Équipe des ventes",
         accountsPayable: "Comptes à payer",
         accountsReceivable: "Comptes à recevoir",
+        financing: "Services de financement",
         partners: "Relations partenaires",
         media: "Relations médias",
         dealerOnboarding: "Intégration des concessionnaires",
         dealerRelations: "Relations concessionnaires",
-        general: "Demandes générales"
+        development: "Développement des affaires",
+        general: "Demandes générales",
+        legal: "Département juridique"
       }
     },
 
