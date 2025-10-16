@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertContactSchema } from "@shared/schema";
+import { insertContactSchema, insertNetworkWaitlistSchema } from "@shared/schema";
 import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -36,6 +36,41 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ 
         success: false, 
         message: "Failed to fetch contacts" 
+      });
+    }
+  });
+
+  // Network waitlist submission
+  app.post("/api/network-waitlist", async (req, res) => {
+    try {
+      const validatedData = insertNetworkWaitlistSchema.parse(req.body);
+      const waitlist = await storage.createNetworkWaitlist(validatedData);
+      res.status(201).json({ success: true, waitlist });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ 
+          success: false, 
+          message: "Invalid form data", 
+          errors: error.errors 
+        });
+      } else {
+        res.status(500).json({ 
+          success: false, 
+          message: "Internal server error" 
+        });
+      }
+    }
+  });
+
+  // Get network waitlist (admin endpoint)
+  app.get("/api/network-waitlist", async (req, res) => {
+    try {
+      const waitlist = await storage.getNetworkWaitlist();
+      res.json({ success: true, waitlist });
+    } catch (error) {
+      res.status(500).json({ 
+        success: false, 
+        message: "Failed to fetch waitlist" 
       });
     }
   });

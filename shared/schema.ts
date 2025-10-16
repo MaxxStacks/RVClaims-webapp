@@ -22,3 +22,18 @@ export const insertContactSchema = createInsertSchema(contacts).omit({
 
 export type InsertContact = z.infer<typeof insertContactSchema>;
 export type Contact = typeof contacts.$inferSelect;
+
+export const networkWaitlist = pgTable("network_waitlist", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  email: text("email").notNull(),
+  dealershipName: text("dealership_name"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const insertNetworkWaitlistSchema = createInsertSchema(networkWaitlist).omit({
+  id: true,
+  createdAt: true,
+});
+
+export type InsertNetworkWaitlist = z.infer<typeof insertNetworkWaitlistSchema>;
+export type NetworkWaitlist = typeof networkWaitlist.$inferSelect;
