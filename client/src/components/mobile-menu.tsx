@@ -69,7 +69,6 @@ export function MobileMenu() {
 
   const supportingServicesItems = [
     { href: "/parts", label: t('navigation.parts'), desc: "Parts & components" },
-    { href: "/technology", label: t('navigation.technology'), desc: "Patent-pending platform" },
     { href: "/marketing-services", label: t('navigation.marketing'), desc: "Digital marketing" },
     { href: "/consignment-services", label: t('navigation.consignment'), desc: "Trade-in programs" }
   ];

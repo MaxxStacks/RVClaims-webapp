@@ -129,15 +129,6 @@ export function Navigation() {
               {t('navigation.warrantyExtended')}
             </Link>
 
-            {/* Technology */}
-            <Link 
-              href="/technology"
-              className={`transition-colors ${location === '/technology' ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
-              data-testid="link-technology"
-            >
-              {t('navigation.technology')}
-            </Link>
-
             {/* RV Coverage Megamenu */}
             <div 
               className="relative"
