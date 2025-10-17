@@ -27,7 +27,7 @@ export default function NetworkMarketplace() {
       <Navigation />
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-primary/10 via-white to-primary/5 py-20">
+      <section className="bg-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-4xl mx-auto">
             <Badge 
@@ -86,13 +86,13 @@ export default function NetworkMarketplace() {
         </div>
       </section>
 
-      {/* Selling Perks Section */}
+      {/* Browse Features Section */}
       <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <Badge className="mb-4 border border-primary/20 px-3 py-1 text-xs" variant="outline">
-              <RefreshCcw className="mr-2 h-3 w-3" />
-              For Sellers
+              <ShoppingCart className="mr-2 h-3 w-3" />
+              Explore RVs
             </Badge>
             <h2 className="text-3xl md:text-4xl font-bold" data-testid="text-selling-title">
               {t('networkMarketplace.sellingPerks.title')}
@@ -113,13 +113,13 @@ export default function NetworkMarketplace() {
         </div>
       </section>
 
-      {/* Buying Perks Section */}
+      {/* Purchase Process Section */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <Badge className="mb-4 border border-primary/20 px-3 py-1 text-xs" variant="outline">
-              <DollarSign className="mr-2 h-3 w-3" />
-              For Buyers
+              <CheckCircle2 className="mr-2 h-3 w-3" />
+              Your Journey
             </Badge>
             <h2 className="text-3xl md:text-4xl font-bold" data-testid="text-buying-title">
               {t('networkMarketplace.buyingPerks.title')}
@@ -140,13 +140,13 @@ export default function NetworkMarketplace() {
         </div>
       </section>
 
-      {/* Exclusive Benefits */}
+      {/* Trusted Platform */}
       <section className="py-16 bg-primary/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <Badge className="mb-4 border border-primary/20 px-3 py-1 text-xs" variant="outline">
               <Shield className="mr-2 h-3 w-3" />
-              Members Only
+              Verified & Trusted
             </Badge>
             <h2 className="text-3xl md:text-4xl font-bold mb-6" data-testid="text-exclusive-title">
               {t('networkMarketplace.exclusive.title')}
