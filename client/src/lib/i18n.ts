@@ -917,7 +917,29 @@ export const translations = {
         secondary: "Watch Demo",
         info: "Limited to verified RVClaims network dealerships"
       },
-      comingSoon: "Live Dealer Auctions launching January 16-18, 2026. Join the waitlist for exclusive early access."
+      comingSoon: "Live Dealer Auctions launching January 16-18, 2026. Join the waitlist for exclusive early access.",
+      pricing: {
+        badge: "Launch Promotion",
+        title: "12 Months for the Price of 6",
+        subtitle: "Lock in Lifetime Pricing Before Dec 31st, 2025",
+        price: "$399.99",
+        regularPrice: "$799.99",
+        perMonth: "/month",
+        lifetimeLock: "Early buy-in locks in $399.99/month for life",
+        includes: "What's Included:",
+        features: [
+          "10 monthly listings included",
+          "$0 processing fees",
+          "0% commission on sales",
+          "Monthly live auction events",
+          "5% off all services (claims, financing, warranty, F&I)",
+          "10% off all marketing services & materials",
+          "All discounts locked in for life"
+        ],
+        additionalListings: "Each additional listing: $49.99",
+        cta: "Lock In Lifetime Pricing",
+        deadline: "Offer expires December 31st, 2025"
+      }
     }
   },
 
@@ -1839,7 +1861,29 @@ export const translations = {
         secondary: "Voir la démo",
         info: "Limité aux concessionnaires du réseau RVClaims vérifiés"
       },
-      comingSoon: "Enchères concessionnaires en direct lancement 16-18 janvier 2026. Rejoignez la liste d'attente pour un accès anticipé exclusif."
+      comingSoon: "Enchères concessionnaires en direct lancement 16-18 janvier 2026. Rejoignez la liste d'attente pour un accès anticipé exclusif.",
+      pricing: {
+        badge: "Promotion de lancement",
+        title: "12 mois au prix de 6",
+        subtitle: "Verrouillez le prix à vie avant le 31 déc 2025",
+        price: "399,99 $",
+        regularPrice: "799,99 $",
+        perMonth: "/mois",
+        lifetimeLock: "L'achat anticipé verrouille 399,99 $/mois à vie",
+        includes: "Ce qui est inclus :",
+        features: [
+          "10 annonces mensuelles incluses",
+          "0 $ de frais de traitement",
+          "0 % de commission sur les ventes",
+          "Événements d'enchères en direct mensuels",
+          "5 % de rabais sur tous les services (réclamations, financement, garantie, F&I)",
+          "10 % de rabais sur tous les services et matériels marketing",
+          "Tous les rabais verrouillés à vie"
+        ],
+        additionalListings: "Chaque annonce supplémentaire : 49,99 $",
+        cta: "Verrouiller le prix à vie",
+        deadline: "L'offre expire le 31 décembre 2025"
+      }
     }
   }
 };
