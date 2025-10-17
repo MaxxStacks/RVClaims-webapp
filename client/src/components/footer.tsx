@@ -1,4 +1,4 @@
-import { Phone, Mail, MapPin, Heart, Linkedin, Facebook, Youtube, Instagram, Twitter } from "lucide-react";
+import { Phone, Mail, MapPin, Heart, Linkedin, Facebook, Youtube, Instagram, Twitter, Zap } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
 import { Link } from "wouter";
 import logoEN from "@assets/RV CLAIMS 300 PNG-01-EN_1760627778834.png";
@@ -258,9 +258,12 @@ export function Footer() {
               </a>
             </div>
             
-            <p className="text-[15px] text-gray-600 flex items-center order-2 sm:order-2" data-testid="text-footer-powered-by">
-              {t('footer.developedWith')}
-            </p>
+            <div className="flex items-center gap-2 order-2 sm:order-2" data-testid="text-footer-powered-by">
+              <div className="flex items-center gap-2 px-4 py-1.5 bg-gradient-to-r from-primary/5 to-primary/10 border border-primary/20 rounded-full">
+                <Zap className="w-3.5 h-3.5 text-primary" />
+                <span className="text-sm font-medium text-gray-700">{t('footer.developedWith')}</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>

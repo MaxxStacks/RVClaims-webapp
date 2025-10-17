@@ -469,7 +469,7 @@ export const translations = {
       termsOfService: "Terms of Service",
       cookiePolicy: "Cookie Policy",
       compliance: "PIPEDA Compliance",
-      developedWith: "Powered by Dealer Connect 360",
+      developedWith: "Powered by Dealer Suite 360",
       developedLocation: ""
     },
 
@@ -1391,7 +1391,7 @@ export const translations = {
       termsOfService: "Conditions d'utilisation",
       cookiePolicy: "Politique des cookies",
       compliance: "Conformité LPRPDE",
-      developedWith: "Propulsé par Dealer Connect 360",
+      developedWith: "Propulsé par Dealer Suite 360",
       developedLocation: ""
     },
 
