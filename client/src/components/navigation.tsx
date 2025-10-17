@@ -138,15 +138,6 @@ export function Navigation() {
               {t('navigation.technology')}
             </Link>
 
-            {/* Find a Dealer */}
-            <Link 
-              href="/contact"
-              className={`transition-colors ${location === '/find-dealer' ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
-              data-testid="link-find-dealer"
-            >
-              {t('navigation.findDealer')}
-            </Link>
-
             {/* RV Coverage Megamenu */}
             <div 
               className="relative"
