@@ -469,8 +469,8 @@ export const translations = {
       termsOfService: "Terms of Service",
       cookiePolicy: "Cookie Policy",
       compliance: "PIPEDA Compliance",
-      developedWith: "Developed and coded with",
-      developedLocation: "in Montreal and Toronto Canada"
+      developedWith: "Powered by Dealer Connect 360",
+      developedLocation: ""
     },
 
     // Chatbot
@@ -1391,8 +1391,8 @@ export const translations = {
       termsOfService: "Conditions d'utilisation",
       cookiePolicy: "Politique des cookies",
       compliance: "Conformité LPRPDE",
-      developedWith: "Développé et codé avec",
-      developedLocation: "à Montréal et Toronto Canada"
+      developedWith: "Propulsé par Dealer Connect 360",
+      developedLocation: ""
     },
 
     // Chatbot

@@ -258,8 +258,8 @@ export function Footer() {
               </a>
             </div>
             
-            <p className="text-[15px] text-gray-600 flex items-center order-2 sm:order-2" data-testid="text-footer-made-with-love">
-              {t('footer.developedWith')} <Heart className="mx-2 w-4 h-4 text-primary fill-primary" /> {t('footer.developedLocation')}
+            <p className="text-[15px] text-gray-600 flex items-center order-2 sm:order-2" data-testid="text-footer-powered-by">
+              {t('footer.developedWith')}
             </p>
           </div>
         </div>
