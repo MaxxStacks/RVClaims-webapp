@@ -21,6 +21,7 @@ export const translations = {
       protectionPlans: "Protection Plans",
       careers: "Careers",
       liveAuctions: "Live Dealer Auctions",
+      liveAuctionsLaunchDate: "Starting Jan 15th 2026",
       searchPlaceholder: "Search..."
     },
 
@@ -942,6 +943,7 @@ export const translations = {
       protectionPlans: "Plans de protection",
       careers: "Carrières",
       liveAuctions: "Enchères concessionnaires en direct",
+      liveAuctionsLaunchDate: "Débute le 15 jan 2026",
       searchPlaceholder: "Rechercher..."
     },
 
