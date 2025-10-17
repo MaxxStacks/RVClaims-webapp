@@ -189,6 +189,53 @@ export default function NetworkMarketplace() {
         </div>
       </section>
 
+      {/* Live Auctions Feature Section */}
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <Badge 
+              className="mb-4 border border-primary/20 px-3 py-1 text-xs" 
+              variant="outline"
+              data-testid="badge-auctions-coming"
+            >
+              <Sparkles className="mr-2 h-3 w-3" />
+              {t('liveAuctions.badge')}
+            </Badge>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4" data-testid="text-auctions-marketplace-title">
+              {t('liveAuctions.title')}
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-3xl mx-auto mb-8" data-testid="text-auctions-marketplace-subtitle">
+              {t('liveAuctions.subtitle')}
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-4 gap-6 mb-12">
+            {(t('liveAuctions.types.categories') as any[]).map((category: any, index: number) => (
+              <div 
+                key={index}
+                className="bg-white p-6 rounded-lg border-2 border-gray-200 hover:border-primary/50 transition-colors text-center"
+                data-testid={`card-auction-category-${index}`}
+              >
+                <h3 className="font-semibold mb-2" data-testid={`text-auction-category-title-${index}`}>
+                  {category.title}
+                </h3>
+                <p className="text-sm text-gray-600" data-testid={`text-auction-category-description-${index}`}>
+                  {category.description}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center">
+            <Button size="lg" asChild data-testid="button-learn-auctions">
+              <Link href="/live-auctions">
+                {t('liveAuctions.cta.secondary')}
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
       {/* CTA Footer */}
       <section className="py-16 bg-primary text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
