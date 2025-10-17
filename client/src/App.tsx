@@ -19,6 +19,7 @@ import Financing from "@/pages/financing";
 import WarrantyExtendedService from "@/pages/warranty-extended-service";
 import FIServices from "@/pages/fi-services";
 import NetworkMarketplace from "@/pages/network-marketplace";
+import LiveAuctions from "@/pages/live-auctions";
 import NotFound from "@/pages/not-found";
 
 function ScrollToTop() {
@@ -50,6 +51,7 @@ function Router() {
         <Route path="/warranty-extended-service" component={WarrantyExtendedService} />
         <Route path="/fi-services" component={FIServices} />
         <Route path="/network-marketplace" component={NetworkMarketplace} />
+        <Route path="/live-auctions" component={LiveAuctions} />
         <Route component={NotFound} />
       </Switch>
     </>
