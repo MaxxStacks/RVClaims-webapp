@@ -21,7 +21,7 @@ export const translations = {
       protectionPlans: "Protection Plans",
       careers: "Careers",
       liveAuctions: "Live Dealer Auctions",
-      liveAuctionsLaunchDate: "Auctions Go Live Jan 15, 2026!",
+      liveAuctionsLaunchDate: "Auctions Go Live Jan 16-18, 2026!",
       searchPlaceholder: "Search..."
     },
 
@@ -845,7 +845,7 @@ export const translations = {
 
     // Live Dealer Auctions
     liveAuctions: {
-      badge: "Launching January 15, 2026",
+      badge: "Launching January 16-18, 2026",
       title: "Live Dealer Auctions",
       subtitle: "Real-Time Bidding for New, Used & Overstock RV Units",
       description: "Turn excess inventory into opportunity. Join exclusive live auctions where verified dealerships compete for premium RV units at wholesale pricing.",
@@ -917,7 +917,7 @@ export const translations = {
         secondary: "Watch Demo",
         info: "Limited to verified RVClaims network dealerships"
       },
-      comingSoon: "Live Dealer Auctions launching January 15, 2026. Join the waitlist for exclusive early access."
+      comingSoon: "Live Dealer Auctions launching January 16-18, 2026. Join the waitlist for exclusive early access."
     }
   },
 
@@ -943,7 +943,7 @@ export const translations = {
       protectionPlans: "Plans de protection",
       careers: "Carrières",
       liveAuctions: "Enchères concessionnaires en direct",
-      liveAuctionsLaunchDate: "Enchères en ligne le 15 jan 2026!",
+      liveAuctionsLaunchDate: "Enchères en ligne 16-18 jan 2026!",
       searchPlaceholder: "Rechercher..."
     },
 
@@ -1767,7 +1767,7 @@ export const translations = {
 
     // Live Dealer Auctions
     liveAuctions: {
-      badge: "Lancement 15 janvier 2026",
+      badge: "Lancement 16-18 janvier 2026",
       title: "Enchères concessionnaires en direct",
       subtitle: "Enchères en temps réel pour unités VR neuves, usagées et en surstockage",
       description: "Transformez l'inventaire excédentaire en opportunité. Rejoignez des enchères en direct exclusives où des concessionnaires vérifiés se disputent des unités VR premium à prix de gros.",
@@ -1839,7 +1839,7 @@ export const translations = {
         secondary: "Voir la démo",
         info: "Limité aux concessionnaires du réseau RVClaims vérifiés"
       },
-      comingSoon: "Enchères concessionnaires en direct lancement 15 janvier 2026. Rejoignez la liste d'attente pour un accès anticipé exclusif."
+      comingSoon: "Enchères concessionnaires en direct lancement 16-18 janvier 2026. Rejoignez la liste d'attente pour un accès anticipé exclusif."
     }
   }
 };
