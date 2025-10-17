@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle, faLinkedinIn } from "@fortawesome/free-brands-svg-icons";
 import { useLanguage } from "@/hooks/use-language";
 import { Link } from "wouter";
+import { NotificationBar } from "@/components/notification-bar";
 import loginPageLogoImage from "@assets/Industrial Trapton Logo Design (1) (1)_1756859327359.png";
 
 export default function ClientLogin() {
@@ -247,6 +248,7 @@ export default function ClientLogin() {
 
   return (
     <div className="min-h-screen bg-white flex flex-col overflow-hidden">
+      <NotificationBar />
       {/* Header */}
       <div className="bg-white border-b border-border p-4 flex items-center justify-between">
         <div className="flex items-center gap-3">

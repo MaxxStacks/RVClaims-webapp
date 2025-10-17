@@ -2,6 +2,7 @@ import { useLanguage } from "@/hooks/use-language";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { SeoMeta } from "@/components/seo-meta";
+import { NotificationBar } from "@/components/notification-bar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "wouter";
@@ -25,6 +26,7 @@ export default function LiveAuctions() {
         title={`${t('liveAuctions.title')} - RV Claims Canada`}
         description={t('liveAuctions.description')}
       />
+      <NotificationBar />
       <Navigation />
 
       {/* Hero Section */}
