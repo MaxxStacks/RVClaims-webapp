@@ -85,6 +85,16 @@ export function Footer() {
                   <span className="inline-block text-xs bg-primary text-white px-1.5 py-0.5 rounded">2026</span>
                 </Link>
               </li>
+              <li>
+                <Link 
+                  href="/live-auctions" 
+                  className="text-primary font-semibold inline-flex items-center gap-1 hover:text-primary/80 transition-colors" 
+                  data-testid="link-footer-live-auctions"
+                >
+                  {t('navigation.liveAuctions')}
+                  <span className="inline-block text-xs bg-primary text-white px-1.5 py-0.5 rounded">JAN 15</span>
+                </Link>
+              </li>
             </ul>
           </div>
 

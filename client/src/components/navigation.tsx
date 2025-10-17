@@ -184,6 +184,15 @@ export function Navigation() {
               )}
             </div>
 
+            {/* Live Auctions */}
+            <Link 
+              href="/live-auctions"
+              className={`transition-colors ${location === '/live-auctions' ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
+              data-testid="link-live-auctions"
+            >
+              {t('navigation.liveAuctions')}
+            </Link>
+
             {/* Contact Button */}
             <Link 
               href="/contact"

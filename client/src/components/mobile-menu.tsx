@@ -302,6 +302,19 @@ export function MobileMenu() {
             </Link>
 
             <Link
+              href="/live-auctions"
+              onClick={closeMenu}
+              className={`block px-4 py-2 rounded-lg text-base font-medium transition-all duration-200 ${
+                location === '/live-auctions'
+                  ? 'bg-primary text-primary-foreground shadow-sm'
+                  : 'text-foreground hover:bg-primary/10 hover:text-primary hover:pl-6'
+              }`}
+              data-testid="link-pages-live-auctions"
+            >
+              {t('navigation.liveAuctions')}
+            </Link>
+
+            <Link
               href="/contact"
               onClick={closeMenu}
               className={`block px-4 py-2 rounded-lg text-base font-medium transition-all duration-200 ${
