@@ -20,6 +20,7 @@ export const translations = {
       extendedWarranty: "Extended Warranty",
       protectionPlans: "Protection Plans",
       careers: "Careers",
+      liveAuctions: "Live Dealer Auctions",
       searchPlaceholder: "Search..."
     },
 
@@ -839,6 +840,83 @@ export const translations = {
         secondary: "Learn More"
       },
       footer: "Be among the first to access the RVClaims Dealer Network Marketplace. A revolutionary step toward smarter, faster, more connected dealership operations."
+    },
+
+    // Live Dealer Auctions
+    liveAuctions: {
+      badge: "Launching January 15, 2026",
+      title: "Live Dealer Auctions",
+      subtitle: "Real-Time Bidding for New, Used & Overstock RV Units",
+      description: "Turn excess inventory into opportunity. Join exclusive live auctions where verified dealerships compete for premium RV units at wholesale pricing.",
+      howItWorks: {
+        title: "How It Works",
+        steps: [
+          {
+            number: "1",
+            title: "List Your Unit",
+            description: "Post new, used, or overstock RVs with photos, specs, and reserve price. Simple, fast listing process."
+          },
+          {
+            number: "2",
+            title: "Live Bidding Begins",
+            description: "Verified dealers across the network receive instant notifications and can bid in real-time."
+          },
+          {
+            number: "3",
+            title: "Secure Transaction",
+            description: "Winning bid triggers escrow protection, shipping coordination, and instant payment processing."
+          }
+        ]
+      },
+      benefits: {
+        title: "Auction Benefits",
+        sellers: {
+          title: "For Sellers",
+          points: [
+            "Move overstock units quickly at competitive market rates",
+            "No listing fees — only pay when units sell",
+            "Reach hundreds of verified dealers instantly",
+            "Set reserve prices to protect your margins",
+            "Transparent bidding shows real market demand"
+          ]
+        },
+        buyers: {
+          title: "For Buyers",
+          points: [
+            "Access exclusive wholesale inventory from trusted dealers",
+            "Compete fairly in real-time bidding environment",
+            "Find units unavailable through traditional channels",
+            "Built-in shipping and financing options",
+            "Every unit verified and inspection-ready"
+          ]
+        }
+      },
+      features: {
+        title: "Auction Features",
+        items: [
+          { icon: "Gavel", title: "Real-Time Bidding", description: "Live auction platform with instant bid updates and notifications" },
+          { icon: "Shield", title: "Escrow Protection", description: "Secure payment processing with buyer and seller safeguards" },
+          { icon: "Truck", title: "Integrated Shipping", description: "Seamless transport coordination between dealerships" },
+          { icon: "FileCheck", title: "Verified Units", description: "All listings include detailed inspections and condition reports" },
+          { icon: "Clock", title: "Flexible Schedules", description: "Daily, weekly, and special event auctions to fit your business" },
+          { icon: "TrendingUp", title: "Market Analytics", description: "Real-time pricing data and demand insights" }
+        ]
+      },
+      types: {
+        title: "Auction Categories",
+        categories: [
+          { title: "New Overstock", description: "Current year models that need to move quickly" },
+          { title: "Premium Used", description: "Certified pre-owned units with verified condition" },
+          { title: "Trade-In Deals", description: "Fresh trade-ins ready for dealer network" },
+          { title: "Specialty Units", description: "Unique RVs, vintage models, and rare finds" }
+        ]
+      },
+      cta: {
+        primary: "Get Early Access",
+        secondary: "Watch Demo",
+        info: "Limited to verified RVClaims network dealerships"
+      },
+      comingSoon: "Live Dealer Auctions launching January 15, 2026. Join the waitlist for exclusive early access."
     }
   },
 
@@ -863,6 +941,7 @@ export const translations = {
       extendedWarranty: "Garantie prolongée",
       protectionPlans: "Plans de protection",
       careers: "Carrières",
+      liveAuctions: "Enchères concessionnaires en direct",
       searchPlaceholder: "Rechercher..."
     },
 
@@ -1682,6 +1761,83 @@ export const translations = {
         secondary: "En savoir plus"
       },
       footer: "Soyez parmi les premiers à accéder au marché réseau de concessionnaires RVClaims. Une étape révolutionnaire vers des opérations de concessionnaire plus intelligentes, plus rapides et plus connectées."
+    },
+
+    // Live Dealer Auctions
+    liveAuctions: {
+      badge: "Lancement 15 janvier 2026",
+      title: "Enchères concessionnaires en direct",
+      subtitle: "Enchères en temps réel pour unités VR neuves, usagées et en surstockage",
+      description: "Transformez l'inventaire excédentaire en opportunité. Rejoignez des enchères en direct exclusives où des concessionnaires vérifiés se disputent des unités VR premium à prix de gros.",
+      howItWorks: {
+        title: "Comment ça fonctionne",
+        steps: [
+          {
+            number: "1",
+            title: "Listez votre unité",
+            description: "Publiez des VR neufs, usagés ou en surstockage avec photos, spécifications et prix de réserve. Processus de listage simple et rapide."
+          },
+          {
+            number: "2",
+            title: "Enchères en direct commencent",
+            description: "Les concessionnaires vérifiés du réseau reçoivent des notifications instantanées et peuvent enchérir en temps réel."
+          },
+          {
+            number: "3",
+            title: "Transaction sécurisée",
+            description: "L'enchère gagnante déclenche la protection par séquestre, la coordination de l'expédition et le traitement instantané du paiement."
+          }
+        ]
+      },
+      benefits: {
+        title: "Avantages des enchères",
+        sellers: {
+          title: "Pour les vendeurs",
+          points: [
+            "Déplacez rapidement les unités en surstockage à des tarifs compétitifs",
+            "Aucuns frais de listage — payez uniquement lorsque les unités se vendent",
+            "Atteignez instantanément des centaines de concessionnaires vérifiés",
+            "Définissez des prix de réserve pour protéger vos marges",
+            "Enchères transparentes montrant la demande réelle du marché"
+          ]
+        },
+        buyers: {
+          title: "Pour les acheteurs",
+          points: [
+            "Accédez à l'inventaire exclusif de gros de concessionnaires de confiance",
+            "Compétition équitable dans un environnement d'enchères en temps réel",
+            "Trouvez des unités indisponibles par les canaux traditionnels",
+            "Options d'expédition et de financement intégrées",
+            "Chaque unité vérifiée et prête pour inspection"
+          ]
+        }
+      },
+      features: {
+        title: "Fonctionnalités des enchères",
+        items: [
+          { icon: "Gavel", title: "Enchères en temps réel", description: "Plateforme d'enchères en direct avec mises à jour instantanées et notifications" },
+          { icon: "Shield", title: "Protection par séquestre", description: "Traitement sécurisé des paiements avec garanties pour acheteurs et vendeurs" },
+          { icon: "Truck", title: "Expédition intégrée", description: "Coordination transparente du transport entre concessionnaires" },
+          { icon: "FileCheck", title: "Unités vérifiées", description: "Toutes les annonces incluent des inspections détaillées et rapports de condition" },
+          { icon: "Clock", title: "Horaires flexibles", description: "Enchères quotidiennes, hebdomadaires et événements spéciaux adaptés à votre entreprise" },
+          { icon: "TrendingUp", title: "Analytique de marché", description: "Données de tarification en temps réel et insights de demande" }
+        ]
+      },
+      types: {
+        title: "Catégories d'enchères",
+        categories: [
+          { title: "Surstockage neuf", description: "Modèles de l'année en cours qui doivent se déplacer rapidement" },
+          { title: "Usagé premium", description: "Unités certifiées pré-possédées avec condition vérifiée" },
+          { title: "Offres d'échange", description: "Échanges frais prêts pour le réseau de concessionnaires" },
+          { title: "Unités spécialisées", description: "VR uniques, modèles vintage et trouvailles rares" }
+        ]
+      },
+      cta: {
+        primary: "Accès anticipé",
+        secondary: "Voir la démo",
+        info: "Limité aux concessionnaires du réseau RVClaims vérifiés"
+      },
+      comingSoon: "Enchères concessionnaires en direct lancement 15 janvier 2026. Rejoignez la liste d'attente pour un accès anticipé exclusif."
     }
   }
 };
