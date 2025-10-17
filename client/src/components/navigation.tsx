@@ -185,13 +185,18 @@ export function Navigation() {
             </div>
 
             {/* Live Auctions */}
-            <Link 
-              href="/live-auctions"
-              className={`transition-colors ${location === '/live-auctions' ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
-              data-testid="link-live-auctions"
-            >
-              {t('navigation.liveAuctions')}
-            </Link>
+            <div className="flex flex-col items-center">
+              <span className="text-[10px] text-primary font-medium mb-0.5" data-testid="text-auction-launch-date">
+                {t('navigation.liveAuctionsLaunchDate')}
+              </span>
+              <Link 
+                href="/live-auctions"
+                className={`transition-colors ${location === '/live-auctions' ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
+                data-testid="link-live-auctions"
+              >
+                {t('navigation.liveAuctions')}
+              </Link>
+            </div>
 
             {/* Contact Button */}
             <Link 
