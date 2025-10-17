@@ -779,68 +779,68 @@ export const translations = {
       }
     },
 
-    // Network Marketplace
+    // RV Marketplace
     networkMarketplace: {
       badge: "Coming in 2026",
-      title: "Unlock the Power of the RVClaims Dealer Network",
-      subtitle: "Buy, sell, and trade new or used RV units directly with verified dealers in our nationwide network. Boost sales, move inventory faster, and deliver what your customers want — even when it's not on your lot.",
+      title: "Find Your Perfect RV",
+      subtitle: "Browse thousands of new and used RVs from Canada's most trusted dealerships. Compare models, check verified history, and connect directly with dealers — all in one place.",
       purpose: {
-        title: "Purpose",
-        description: "The Network Marketplace will connect every dealer in the RVClaims network",
+        title: "Why Choose RV Marketplace",
+        description: "Your one-stop destination for finding the perfect RV",
         points: [
-          "Sell excess or slow-moving inventory to other verified dealers",
-          "Source units that customers are requesting in real time",
-          "Negotiate exclusive trade prices within a trusted ecosystem",
-          "Increase unit turnover, cash flow, and customer satisfaction"
+          "Browse inventory from verified dealerships across Canada",
+          "Compare prices, features, and specifications side-by-side",
+          "Access verified maintenance and warranty history for every unit",
+          "Connect directly with dealers for test drives and inquiries"
         ]
       },
       sellingPerks: {
-        title: "For Selling Dealers",
+        title: "Browse with Confidence",
         items: [
-          { title: "Priority Listing Placement", desc: "Featured exposure for active RVClaims subscribers" },
-          { title: "Smart Match AI", desc: "Instantly pairs your listed unit with dealers currently searching for similar models" },
-          { title: "Instant Offers", desc: "Receive bids from verified dealers within minutes" },
-          { title: "Analytics Dashboard", desc: "Track views, interest level, and recent search trends" },
-          { title: "Reduced Commission Fees", desc: "Lower listing fees or % discounts for higher-tier subscribers" },
-          { title: "Auto-Import from DMS/Inventory Systems", desc: "Sync your current stock automatically" },
-          { title: "Pre-Filled Warranty History", desc: "Units sold through the network include verified claim history for transparency" }
+          { title: "Verified Listings", desc: "Every RV is verified by trusted dealerships in our network" },
+          { title: "Complete History Reports", desc: "Access full maintenance records and warranty history for transparency" },
+          { title: "Smart Search & Filters", desc: "Find your ideal RV by type, budget, features, and location" },
+          { title: "Real Photos & Videos", desc: "See detailed images and virtual tours before you visit" },
+          { title: "Price Comparison", desc: "Compare similar models across dealers to get the best value" },
+          { title: "Dealer Ratings", desc: "Read reviews and ratings from verified buyers" },
+          { title: "Save Your Favorites", desc: "Create lists and get alerts when new RVs match your criteria" }
         ]
       },
       buyingPerks: {
-        title: "For Buying Dealers",
+        title: "Easy Purchase Process",
         items: [
-          { title: "Dealer-Only Wholesale Pricing", desc: "Access discounted inventory that's not listed publicly" },
-          { title: "Verified Unit Condition Reports", desc: "Direct integration with the RVClaims claim database for verified maintenance & warranty data" },
-          { title: "Advanced Search Filters", desc: "Find units by manufacturer, floorplan, mileage, claim history, and price" },
-          { title: "'Need It Now' Requests", desc: "Post specific unit requests to alert selling dealers in real time" },
-          { title: "Financing Integrations", desc: "Optional partnerships with lenders to pre-qualify trade purchases" },
-          { title: "Transport & Logistics Add-On", desc: "Integrated shipping quotes between dealerships" },
-          { title: "Credit & Trust Scores", desc: "Every dealer in the network has a trust rating based on successful transactions" }
+          { title: "Direct Dealer Contact", desc: "Connect instantly with dealers for questions and test drives" },
+          { title: "Financing Options", desc: "Explore financing solutions tailored to your budget" },
+          { title: "Trade-In Valuation", desc: "Get instant estimates for your current RV trade-in" },
+          { title: "Delivery Coordination", desc: "Arrange transport and delivery right to your door" },
+          { title: "Extended Warranty Available", desc: "Add protection plans directly through the marketplace" },
+          { title: "Insurance Quotes", desc: "Get competitive RV insurance rates from trusted providers" },
+          { title: "Buyer Protection", desc: "Every purchase includes buyer protection and support" }
         ]
       },
       exclusive: {
-        title: "Exclusive to RVClaims Network Members",
+        title: "Trusted Marketplace Features",
         points: [
-          "Access limited to verified RVClaims partner dealerships",
-          "All transactions protected with escrow and verified inspection records",
-          "Dealers can earn Marketplace Loyalty Points for transactions, redeemable for: Subscription discounts, Free premium listings, Access to early-release software modules"
+          "Only verified, licensed dealerships from the RVClaims network",
+          "All listings include certified inspection reports and history verification",
+          "Secure communication platform to protect your privacy and information"
         ]
       },
       valueDrivers: {
-        title: "\"WOW\" Value Drivers",
+        title: "Why RV Marketplace",
         points: [
-          "Turns competition into collaboration",
-          "Makes every dealership stronger by leveraging collective inventory",
-          "Drastically reduces lost sales from \"out of stock\" units",
-          "Enhances customer satisfaction with faster, wider selection",
-          "Creates a living, breathing RV dealer ecosystem — powered by data"
+          "Largest selection of verified RVs in Canada",
+          "Complete transparency with full vehicle history",
+          "Save time by comparing inventory across multiple dealers",
+          "Direct access to trusted dealerships nationwide",
+          "Financing, insurance, and delivery all in one place"
         ]
       },
       cta: {
-        primary: "Join the Network",
+        primary: "Join the Waitlist",
         secondary: "Learn More"
       },
-      footer: "Be among the first to access the RVClaims Dealer Network Marketplace. A revolutionary step toward smarter, faster, more connected dealership operations."
+      footer: "Be among the first to access the RV Marketplace. Find your dream RV from Canada's most trusted dealers."
     },
 
     // Live Dealer Auctions
@@ -1723,68 +1723,68 @@ export const translations = {
       }
     },
 
-    // Network Marketplace
+    // RV Marketplace
     networkMarketplace: {
       badge: "Arrive en 2026",
-      title: "Débloquez la puissance du réseau de concessionnaires RVClaims",
-      subtitle: "Achetez, vendez et échangez des unités VR neuves ou usagées directement avec des concessionnaires vérifiés dans notre réseau national. Augmentez les ventes, déplacez l'inventaire plus rapidement et livrez ce que vos clients veulent — même quand ce n'est pas sur votre terrain.",
+      title: "Trouvez votre VR parfait",
+      subtitle: "Parcourez des milliers de VR neufs et usagés des concessionnaires les plus fiables du Canada. Comparez les modèles, vérifiez l'historique et connectez directement avec les concessionnaires — tout en un seul endroit.",
       purpose: {
-        title: "Objectif",
-        description: "Le marché réseau connectera chaque concessionnaire du réseau RVClaims",
+        title: "Pourquoi choisir le marché VR",
+        description: "Votre destination unique pour trouver le VR parfait",
         points: [
-          "Vendez l'inventaire excédentaire ou à rotation lente à d'autres concessionnaires vérifiés",
-          "Sourcez des unités que les clients demandent en temps réel",
-          "Négociez des prix d'échange exclusifs au sein d'un écosystème de confiance",
-          "Augmentez la rotation des unités, les flux de trésorerie et la satisfaction client"
+          "Parcourez l'inventaire de concessionnaires vérifiés à travers le Canada",
+          "Comparez les prix, caractéristiques et spécifications côte à côte",
+          "Accédez à l'historique d'entretien et de garantie vérifié pour chaque unité",
+          "Connectez directement avec les concessionnaires pour essais routiers et demandes"
         ]
       },
       sellingPerks: {
-        title: "Pour les concessionnaires vendeurs",
+        title: "Naviguez en toute confiance",
         items: [
-          { title: "Placement prioritaire des annonces", desc: "Exposition vedette pour les abonnés RVClaims actifs" },
-          { title: "IA de jumelage intelligent", desc: "Apparie instantanément votre unité listée avec des concessionnaires recherchant des modèles similaires" },
-          { title: "Offres instantanées", desc: "Recevez des offres de concessionnaires vérifiés en quelques minutes" },
-          { title: "Tableau de bord analytique", desc: "Suivez les vues, le niveau d'intérêt et les tendances de recherche récentes" },
-          { title: "Frais de commission réduits", desc: "Frais d'inscription réduits ou rabais en % pour les abonnés de niveau supérieur" },
-          { title: "Import automatique depuis DMS/Systèmes d'inventaire", desc: "Synchronisez votre stock actuel automatiquement" },
-          { title: "Historique de garantie pré-rempli", desc: "Les unités vendues via le réseau incluent l'historique de réclamation vérifié pour la transparence" }
+          { title: "Annonces vérifiées", desc: "Chaque VR est vérifié par des concessionnaires de confiance dans notre réseau" },
+          { title: "Rapports d'historique complets", desc: "Accédez aux dossiers d'entretien complets et à l'historique de garantie pour la transparence" },
+          { title: "Recherche et filtres intelligents", desc: "Trouvez votre VR idéal par type, budget, caractéristiques et emplacement" },
+          { title: "Photos et vidéos réelles", desc: "Voyez des images détaillées et des visites virtuelles avant de visiter" },
+          { title: "Comparaison de prix", desc: "Comparez des modèles similaires entre concessionnaires pour obtenir la meilleure valeur" },
+          { title: "Évaluations de concessionnaires", desc: "Lisez les avis et notes d'acheteurs vérifiés" },
+          { title: "Enregistrez vos favoris", desc: "Créez des listes et recevez des alertes lorsque de nouveaux VR correspondent à vos critères" }
         ]
       },
       buyingPerks: {
-        title: "Pour les concessionnaires acheteurs",
+        title: "Processus d'achat facile",
         items: [
-          { title: "Prix de gros réservés aux concessionnaires", desc: "Accédez à l'inventaire à prix réduit qui n'est pas listé publiquement" },
-          { title: "Rapports de condition d'unité vérifiés", desc: "Intégration directe avec la base de données de réclamations RVClaims pour données d'entretien et de garantie vérifiées" },
-          { title: "Filtres de recherche avancés", desc: "Trouvez des unités par fabricant, plan d'étage, kilométrage, historique de réclamations et prix" },
-          { title: "Demandes 'Besoin maintenant'", desc: "Publiez des demandes d'unité spécifiques pour alerter les concessionnaires vendeurs en temps réel" },
-          { title: "Intégrations de financement", desc: "Partenariats optionnels avec des prêteurs pour pré-qualifier les achats d'échange" },
-          { title: "Module transport et logistique", desc: "Devis d'expédition intégrés entre concessionnaires" },
-          { title: "Cotes de crédit et de confiance", desc: "Chaque concessionnaire du réseau a une cote de confiance basée sur les transactions réussies" }
+          { title: "Contact direct avec concessionnaire", desc: "Connectez instantanément avec les concessionnaires pour questions et essais routiers" },
+          { title: "Options de financement", desc: "Explorez des solutions de financement adaptées à votre budget" },
+          { title: "Évaluation de reprise", desc: "Obtenez des estimations instantanées pour votre VR actuel en reprise" },
+          { title: "Coordination de livraison", desc: "Organisez le transport et la livraison directement chez vous" },
+          { title: "Garantie prolongée disponible", desc: "Ajoutez des plans de protection directement via le marché" },
+          { title: "Soumissions d'assurance", desc: "Obtenez des tarifs d'assurance VR compétitifs de fournisseurs de confiance" },
+          { title: "Protection de l'acheteur", desc: "Chaque achat inclut une protection et un soutien à l'acheteur" }
         ]
       },
       exclusive: {
-        title: "Exclusif aux membres du réseau RVClaims",
+        title: "Fonctionnalités du marché de confiance",
         points: [
-          "Accès limité aux concessionnaires partenaires RVClaims vérifiés",
-          "Toutes les transactions protégées avec séquestre et dossiers d'inspection vérifiés",
-          "Les concessionnaires peuvent gagner des points de fidélité Marketplace pour les transactions, échangeables contre : Rabais d'abonnement, Annonces premium gratuites, Accès aux modules logiciels en avant-première"
+          "Seulement des concessionnaires vérifiés et licenciés du réseau RVClaims",
+          "Toutes les annonces incluent des rapports d'inspection certifiés et vérification d'historique",
+          "Plateforme de communication sécurisée pour protéger votre vie privée et vos informations"
         ]
       },
       valueDrivers: {
-        title: "Moteurs de valeur \"WOW\"",
+        title: "Pourquoi le marché VR",
         points: [
-          "Transforme la compétition en collaboration",
-          "Rend chaque concessionnaire plus fort en tirant parti de l'inventaire collectif",
-          "Réduit drastiquement les ventes perdues à cause des unités \"en rupture de stock\"",
-          "Améliore la satisfaction client avec une sélection plus rapide et plus large",
-          "Crée un écosystème de concessionnaires VR vivant et respirant — alimenté par les données"
+          "Plus grande sélection de VR vérifiés au Canada",
+          "Transparence complète avec historique complet du véhicule",
+          "Gagnez du temps en comparant l'inventaire de plusieurs concessionnaires",
+          "Accès direct aux concessionnaires de confiance à l'échelle nationale",
+          "Financement, assurance et livraison tout en un seul endroit"
         ]
       },
       cta: {
-        primary: "Rejoindre le réseau",
+        primary: "Rejoindre la liste d'attente",
         secondary: "En savoir plus"
       },
-      footer: "Soyez parmi les premiers à accéder au marché réseau de concessionnaires RVClaims. Une étape révolutionnaire vers des opérations de concessionnaire plus intelligentes, plus rapides et plus connectées."
+      footer: "Soyez parmi les premiers à accéder au marché VR. Trouvez votre VR de rêve auprès des concessionnaires les plus fiables du Canada."
     },
 
     // Live Dealer Auctions
