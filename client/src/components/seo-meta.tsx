@@ -53,7 +53,7 @@ export function SeoMeta({ title, description, keywords, canonical, ogType = "web
           },
           "contactPoint": {
             "@type": "ContactPoint",
-            "telephone": "+1-800-RV-CLAIM",
+            "telephone": "+18882453204",
             "contactType": "customer service",
             "availableLanguage": ["English", "French"]
           },

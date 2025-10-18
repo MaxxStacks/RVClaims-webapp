@@ -101,7 +101,7 @@ export function ConsumerServicesSection() {
               {t('consumerServices.cta.contactButton')}
             </a>
             <a 
-              href="tel:1-800-RV-CLAIM" 
+              href="tel:8882453204" 
               className="inline-flex items-center justify-center px-8 py-3 border-2 border-primary text-primary font-semibold rounded-lg hover:bg-primary hover:text-white transition-colors"
               data-testid="button-consumer-services-call"
             >

@@ -90,8 +90,8 @@ export function DepartmentDirectory() {
           <p className="text-sm text-muted-foreground mb-2">
             For urgent matters or general support, call our main line:
           </p>
-          <a href="tel:1-800-782-5246" className="text-lg font-bold text-primary hover:text-primary/80 transition-colors">
-            1-800-RV-CLAIM (1-800-782-5246)
+          <a href="tel:8882453204" className="text-lg font-bold text-primary hover:text-primary/80 transition-colors">
+            (888) 245-3204
           </a>
           <p className="text-xs text-muted-foreground mt-2">
             Available Monday-Friday, 8:00 AM - 6:00 PM EST

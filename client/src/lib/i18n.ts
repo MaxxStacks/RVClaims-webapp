@@ -254,7 +254,7 @@ export const translations = {
         title: "Ready to Expand Your Revenue Streams?",
         description: "Join successful Canadian RV dealers who've partnered with us for comprehensive business growth beyond warranty claims.",
         contactButton: "Discuss Services",
-        callButton: "Call 1-800-RV-CLAIM"
+        callButton: "Call (888) 245-3204"
       }
     },
 
@@ -775,7 +775,7 @@ export const translations = {
         title: "Need Help Choosing the Right Protection?",
         description: "Our service experts can help you select the perfect protection package for your RV and usage needs.",
         contactButton: "Get Expert Advice",
-        callButton: "Call 1-800-RV-PROTECT"
+        callButton: "Call (888) 245-3204"
       }
     },
 
@@ -1198,7 +1198,7 @@ export const translations = {
         title: "Prêt à élargir vos sources de revenus?",
         description: "Rejoignez les concessionnaires VR canadiens prospères qui se sont associés avec nous pour une croissance d'entreprise complète au-delà des réclamations de garantie.",
         contactButton: "Discuter des services",
-        callButton: "Appeler 1-800-RV-CLAIM"
+        callButton: "Appeler (888) 245-3204"
       }
     },
 
@@ -1719,7 +1719,7 @@ export const translations = {
         title: "Besoin d'aide pour choisir la bonne protection?",
         description: "Nos experts en services peuvent vous aider à sélectionner le forfait de protection parfait pour votre VR et vos besoins d'utilisation.",
         contactButton: "Obtenir des conseils d'expert",
-        callButton: "Appeler 1-800-RV-PROTECT"
+        callButton: "Appeler (888) 245-3204"
       }
     },
 

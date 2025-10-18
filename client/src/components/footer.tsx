@@ -27,7 +27,7 @@ export function Footer() {
             <div className="space-y-2 text-sm text-gray-600">
               <div className="flex items-center">
                 <Phone className="mr-2" size={14} />
-                1-800-RV-CLAIM
+                (888) 245-3204
               </div>
               <div className="flex items-center">
                 <Mail className="mr-2" size={14} />

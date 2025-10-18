@@ -82,9 +82,9 @@ export default function Financing() {
                 {t('financingPage.cta')}
               </Button>
             </Link>
-            <a href="tel:1-800-RV-CLAIM">
+            <a href="tel:8882453204">
               <Button size="lg" variant="outline" className="w-full sm:w-auto" data-testid="button-call-financing">
-                Call 1-800-RV-CLAIM
+                Call (888) 245-3204
               </Button>
             </a>
           </div>

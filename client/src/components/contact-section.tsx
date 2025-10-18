@@ -89,7 +89,7 @@ export function ContactSection() {
                   <h4 className="font-semibold">
                     {t('contactSection.phone.title')}
                   </h4>
-                  <p className="text-muted-foreground">1-800-RV-CLAIM</p>
+                  <p className="text-muted-foreground">(888) 245-3204</p>
                   <p className="text-muted-foreground text-sm">
                     {t('contactSection.phone.hours')}
                   </p>

@@ -196,7 +196,7 @@ export function UpsellServicesSection() {
               {t('upsellServices.cta.contactButton')}
             </a>
             <a 
-              href="tel:1-800-RV-CLAIM" 
+              href="tel:8882453204" 
               className="inline-flex items-center justify-center px-8 py-3 border-2 border-white text-white font-semibold rounded-lg hover:bg-white hover:text-primary transition-colors"
               data-testid="button-upsell-call"
             >
