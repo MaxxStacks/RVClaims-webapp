@@ -89,7 +89,9 @@ export function ContactSection() {
                   <h4 className="font-semibold">
                     {t('contactSection.phone.title')}
                   </h4>
-                  <p className="text-muted-foreground">(888) 245-3204</p>
+                  <a href="tel:8882453204" className="text-muted-foreground hover:text-primary transition-colors">
+                    (888) 245-3204
+                  </a>
                   <p className="text-muted-foreground text-sm">
                     {t('contactSection.phone.hours')}
                   </p>
@@ -104,7 +106,9 @@ export function ContactSection() {
                   <h4 className="font-semibold">
                     {t('contactSection.email.title')}
                   </h4>
-                  <p className="text-muted-foreground">support@rvclaims.ca</p>
+                  <a href="mailto:support@rvclaims.ca" className="text-muted-foreground hover:text-primary transition-colors">
+                    support@rvclaims.ca
+                  </a>
                   <p className="text-muted-foreground text-sm">
                     {t('contactSection.email.response')}
                   </p>

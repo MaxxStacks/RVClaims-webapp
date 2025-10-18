@@ -27,11 +27,15 @@ export function Footer() {
             <div className="space-y-2 text-sm text-gray-600">
               <div className="flex items-center">
                 <Phone className="mr-2" size={14} />
-                (888) 245-3204
+                <a href="tel:8882453204" className="hover:text-primary transition-colors">
+                  (888) 245-3204
+                </a>
               </div>
               <div className="flex items-center">
                 <Mail className="mr-2" size={14} />
-                support@rvclaims.ca
+                <a href="mailto:support@rvclaims.ca" className="hover:text-primary transition-colors">
+                  support@rvclaims.ca
+                </a>
               </div>
               <div className="flex items-center">
                 <MapPin className="mr-2" size={14} />
