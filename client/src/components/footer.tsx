@@ -1,8 +1,8 @@
 import { Phone, Mail, MapPin, Heart, Linkedin, Facebook, Youtube, Instagram, Twitter, Zap } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
 import { Link } from "wouter";
-import logoEN from "@assets/RV CLAIMS 300 PNG-01-EN_1760627778834.png";
-import logoFR from "@assets/RV CLAIMS 300 PNG-02-FR_1760627778835.png";
+import logoEN from "@assets/RV CLAIMS _ Eng-01_1761084951672.png";
+import logoFR from "@assets/RV CLAIMS _ French-01_1761084951671.png";
 
 export function Footer() {
   const { t, language } = useLanguage();
@@ -16,8 +16,8 @@ export function Footer() {
               <img 
                 src={language === 'en' ? logoEN : logoFR} 
                 alt="RV Claims" 
-                className="h-16 w-auto max-w-[450px]" 
-                style={{ imageRendering: 'auto' }}
+                className="h-20 w-auto max-w-[550px]" 
+                style={{ imageRendering: '-webkit-optimize-contrast' }}
                 data-testid="img-footer-logo"
               />
             </div>

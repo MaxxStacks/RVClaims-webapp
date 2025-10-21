@@ -4,8 +4,8 @@ import { Link, useLocation } from "wouter";
 import { useLanguage } from "@/hooks/use-language";
 import { LanguageToggle } from "@/components/language-toggle";
 import { useToast } from "@/hooks/use-toast";
-import logoEN from "@assets/RV CLAIMS 300 PNG-01-EN_1760627778834.png";
-import logoFR from "@assets/RV CLAIMS 300 PNG-02-FR_1760627778835.png";
+import logoEN from "@assets/RV CLAIMS _ Eng-01_1761084951672.png";
+import logoFR from "@assets/RV CLAIMS _ French-01_1761084951671.png";
 
 export function MobileMenu() {
   const [isOpen, setIsOpen] = useState(false);

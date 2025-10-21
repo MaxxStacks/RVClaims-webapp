@@ -4,8 +4,8 @@ import { MobileMenu } from "@/components/mobile-menu";
 import { Link, useLocation } from "wouter";
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
-import logoEN from "@assets/RV CLAIMS 300 PNG-01-EN_1760627778834.png";
-import logoFR from "@assets/RV CLAIMS 300 PNG-02-FR_1760627778835.png";
+import logoEN from "@assets/RV CLAIMS _ Eng-01_1761084951672.png";
+import logoFR from "@assets/RV CLAIMS _ French-01_1761084951671.png";
 import travelTrailerIcon from "@assets/Travel Trailer_1756847838647.png";
 import fifthWheelIcon from "@assets/Fifth Wheel_1756847838645.png";
 import classCIcon from "@assets/Class C_1756847838644.png";
@@ -46,8 +46,8 @@ export function Navigation() {
               <img 
                 src={language === 'en' ? logoEN : logoFR} 
                 alt="RV Claims Canada" 
-                className="h-16 w-auto max-w-[450px]" 
-                style={{ imageRendering: 'auto' }}
+                className="h-20 w-auto max-w-[550px]" 
+                style={{ imageRendering: '-webkit-optimize-contrast' }}
                 data-testid="img-header-logo"
               />
             </Link>
