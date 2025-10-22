@@ -1,8 +1,8 @@
 import { Phone, Mail, MapPin, Heart, Linkedin, Facebook, Youtube, Instagram, Twitter, Zap } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
 import { Link } from "wouter";
-import logoEN from "@assets/RV CLAIMS _ Eng-01 (1)_1761092707464.png";
-import logoFR from "@assets/RV CLAIMS _ French-01_1761084951671.png";
+import logoEN from "@assets/RV CLAIMS _ Eng-01_1761094484688.png";
+import logoFR from "@assets/RV CLAIMS _ French-01_1761094484687.png";
 
 export function Footer() {
   const { t, language } = useLanguage();
