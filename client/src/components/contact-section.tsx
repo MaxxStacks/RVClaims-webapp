@@ -194,32 +194,33 @@ export function ContactSection() {
                   </div>
                 </div>
                 
-                <div>
-                  <Label htmlFor="email" className="block text-sm font-medium mb-2">
-                    {t('contactSection.form.email')}
-                  </Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    value={formData.email}
-                    onChange={(e) => handleChange('email', e.target.value)}
-                    required
-                    data-testid="input-email"
-                  />
-                </div>
-                
-                <div>
-                  <Label htmlFor="phone" className="block text-sm font-medium mb-2">
-                    {t('contactSection.form.phone')}
-                  </Label>
-                  <Input
-                    id="phone"
-                    type="tel"
-                    value={formData.phone}
-                    onChange={(e) => handleChange('phone', e.target.value)}
-                    required
-                    data-testid="input-phone"
-                  />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="email" className="block text-sm font-medium mb-2">
+                      {t('contactSection.form.email')}
+                    </Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      value={formData.email}
+                      onChange={(e) => handleChange('email', e.target.value)}
+                      required
+                      data-testid="input-email"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="phone" className="block text-sm font-medium mb-2">
+                      {t('contactSection.form.phone')}
+                    </Label>
+                    <Input
+                      id="phone"
+                      type="tel"
+                      value={formData.phone}
+                      onChange={(e) => handleChange('phone', e.target.value)}
+                      required
+                      data-testid="input-phone"
+                    />
+                  </div>
                 </div>
                 
                 <div>
