@@ -104,34 +104,10 @@ export function MobileMenu() {
         }}
       >
         <div className="flex flex-col h-screen" style={{ backgroundColor: '#ffffff' }}>
-          {/* Header - Top Row (Logo) */}
+          {/* Header */}
           <div className="border-b border-border/50" style={{ backgroundColor: '#ffffff' }}>
             <div className="px-4 sm:px-6">
-              <div className="flex justify-between items-center py-3">
-                <Link href="/" onClick={closeMenu} className="flex items-center hover:opacity-90 transition-opacity">
-                  <img 
-                    src={language === 'en' ? logoEN : logoFR} 
-                    alt="RV Claims Canada" 
-                    className="h-20 w-auto max-w-[550px]" 
-                    style={{ imageRendering: '-webkit-optimize-contrast' }}
-                  />
-                </Link>
-                <button
-                  onClick={closeMenu}
-                  className="p-2 rounded-lg bg-primary text-white hover:bg-primary/80 transition-all duration-200 hover:scale-105"
-                  data-testid="button-close-pages-menu"
-                  aria-label="Close pages menu"
-                >
-                  <X size={20} />
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* Header - Search Row */}
-          <div className="border-b border-border/50" style={{ backgroundColor: '#ffffff' }}>
-            <div className="px-4 sm:px-6">
-              <div className="flex items-center py-3">
+              <div className="flex justify-between items-center py-6 gap-4">
                 <div className="relative flex-1">
                   <form onSubmit={handleSearch} className="relative">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={18} />
@@ -140,7 +116,7 @@ export function MobileMenu() {
                       value={searchQuery}
                       onChange={(e) => handleSearchInput(e.target.value)}
                       placeholder={t('navigation.searchPlaceholder')}
-                      className="w-full pl-10 pr-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm"
+                      className="w-full pl-10 pr-4 py-2.5 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm"
                       data-testid="input-search"
                     />
                   </form>
@@ -178,6 +154,14 @@ export function MobileMenu() {
                     </div>
                   )}
                 </div>
+                <button
+                  onClick={closeMenu}
+                  className="p-2.5 rounded-md bg-primary hover:bg-primary/90 transition-all duration-200"
+                  data-testid="button-close-pages-menu"
+                  aria-label="Close pages menu"
+                >
+                  <X size={20} className="text-white" />
+                </button>
               </div>
             </div>
           </div>
