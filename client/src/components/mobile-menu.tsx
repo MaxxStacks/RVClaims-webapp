@@ -104,7 +104,23 @@ export function MobileMenu() {
         }}
       >
         <div className="flex flex-col h-screen" style={{ backgroundColor: '#ffffff' }}>
-          {/* Header */}
+          {/* Logo Row - Mobile Only */}
+          <div className="md:hidden border-b border-border/50" style={{ backgroundColor: '#ffffff' }}>
+            <div className="px-4 sm:px-6">
+              <div className="flex justify-between items-center py-3">
+                <Link href="/" onClick={closeMenu} className="flex items-center hover:opacity-90 transition-opacity">
+                  <img 
+                    src={language === 'en' ? logoEN : logoFR} 
+                    alt="RV Claims Canada" 
+                    className="h-16 w-auto max-w-[400px]" 
+                    style={{ imageRendering: '-webkit-optimize-contrast' }}
+                  />
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* Search Header */}
           <div className="border-b border-border/50" style={{ backgroundColor: '#ffffff' }}>
             <div className="px-4 sm:px-6">
               <div className="flex justify-between items-center py-[31px] gap-4">
