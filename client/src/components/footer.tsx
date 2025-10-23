@@ -16,8 +16,13 @@ export function Footer() {
               <img 
                 src={language === 'en' ? logoEN : logoFR} 
                 alt="RV Claims" 
-                className="h-auto w-[87%]" 
-                style={{ imageRendering: '-webkit-optimize-contrast' }}
+                className="h-auto w-[88%]" 
+                style={{ 
+                  imageRendering: '-webkit-optimize-contrast',
+                  WebkitFontSmoothing: 'antialiased',
+                  backfaceVisibility: 'hidden',
+                  transform: 'translateZ(0)'
+                }}
                 data-testid="img-footer-logo"
               />
             </div>
