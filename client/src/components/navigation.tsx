@@ -48,10 +48,13 @@ export function Navigation() {
                 alt="RV Claims Canada" 
                 className="h-auto w-full max-w-[340px]" 
                 style={{ 
-                  imageRendering: '-webkit-optimize-contrast',
+                  imageRendering: 'crisp-edges',
                   WebkitFontSmoothing: 'antialiased',
+                  MozOsxFontSmoothing: 'grayscale',
                   backfaceVisibility: 'hidden',
-                  transform: 'translateZ(0)'
+                  transform: 'translateZ(0)',
+                  willChange: 'transform',
+                  filter: 'contrast(1.02)'
                 }}
                 data-testid="img-header-logo"
               />
