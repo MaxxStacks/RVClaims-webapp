@@ -123,7 +123,7 @@ export function MobileMenu() {
           {/* Search Header */}
           <div className="border-b border-border/50" style={{ backgroundColor: '#ffffff' }}>
             <div className="px-4 sm:px-6">
-              <div className="flex justify-between items-center min-h-[104px] py-3 gap-4">
+              <div className="flex justify-between items-center min-h-[96px] py-3 gap-4">
                 <div className="relative flex-1">
                   <form onSubmit={handleSearch} className="relative">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={18} />
