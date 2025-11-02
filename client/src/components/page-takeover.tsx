@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { X } from "lucide-react";
-import toyHaulerImage from "@assets/stock_images/toy_hauler_travel_tr_7e23cccc.jpg";
+import toyHaulerImage from "@assets/stock_images/modern_sleek_luxury__319de246.jpg";
 
 interface PageTakeoverProps {
   delay?: number; // Delay in milliseconds before showing
