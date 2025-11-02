@@ -37,7 +37,7 @@ function Router() {
   return (
     <>
       <ScrollToTop />
-      <PageTakeover delay={5000} dismissalDays={7}>
+      <PageTakeover delay={1000} dismissalDays={7}>
         <SamplePromoContent />
       </PageTakeover>
       <Switch>

@@ -21,22 +21,34 @@ export function PageTakeover({
   useEffect(() => {
     // Check if popup was previously dismissed
     const dismissedUntil = localStorage.getItem(storageKey);
+    console.log('[PageTakeover] Checking dismissal status:', { dismissedUntil });
+    
     if (dismissedUntil) {
       const dismissedDate = new Date(dismissedUntil);
-      if (new Date() < dismissedDate) {
+      const now = new Date();
+      console.log('[PageTakeover] Dismissed until:', dismissedDate, 'Now:', now);
+      
+      if (now < dismissedDate) {
+        console.log('[PageTakeover] Still within dismissal period - not showing');
         return; // Don't show if still within dismissal period
+      } else {
+        console.log('[PageTakeover] Dismissal period expired - removing from storage');
+        localStorage.removeItem(storageKey);
       }
     }
 
+    console.log('[PageTakeover] Setting timer for', delay, 'ms');
+    
     // Show popup after delay
     const timer = setTimeout(() => {
+      console.log('[PageTakeover] Timer fired - showing popup');
       setShouldRender(true);
       // Small additional delay for animation
       setTimeout(() => setIsVisible(true), 50);
     }, delay);
 
     return () => clearTimeout(timer);
-  }, [delay, storageKey]);
+  }, [delay, storageKey, dismissalDays]);
 
   useEffect(() => {
     // Lock body scroll when modal is visible
