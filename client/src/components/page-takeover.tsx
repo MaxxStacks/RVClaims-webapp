@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { X } from "lucide-react";
+import toyHaulerImage from "@assets/stock_images/modern_luxury_toy_ha_6b75b64b.jpg";
 
 interface PageTakeoverProps {
   delay?: number; // Delay in milliseconds before showing
@@ -164,12 +165,16 @@ export function SamplePromoContent() {
 
       {/* Right Column - 40% (Image) */}
       <div className="md:col-span-2 relative min-h-[400px] md:min-h-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-primary/40 flex items-center justify-center">
-          <div className="text-center text-white p-8">
-            <p className="text-6xl font-bold mb-2">90%</p>
-            <p className="text-xl">Success Rate</p>
-          </div>
-        </div>
+        <img 
+          src={toyHaulerImage} 
+          alt="Modern Toy Hauler RV" 
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{ 
+            imageRendering: 'crisp-edges',
+            WebkitFontSmoothing: 'antialiased',
+            MozOsxFontSmoothing: 'grayscale'
+          }}
+        />
       </div>
     </div>
   );
