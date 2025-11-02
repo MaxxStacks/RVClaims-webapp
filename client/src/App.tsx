@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { LanguageProvider } from "@/hooks/use-language";
 import { useEffect } from "react";
+import { PageTakeover, SamplePromoContent } from "@/components/page-takeover";
 import Home from "@/pages/home";
 import About from "@/pages/about";
 import Services from "@/pages/services";
@@ -36,6 +37,9 @@ function Router() {
   return (
     <>
       <ScrollToTop />
+      <PageTakeover delay={5000} dismissalDays={7}>
+        <SamplePromoContent />
+      </PageTakeover>
       <Switch>
         <Route path="/" component={Home} />
         <Route path="/about" component={About} />
