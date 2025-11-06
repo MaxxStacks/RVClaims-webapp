@@ -20,7 +20,7 @@ export const translations = {
       extendedWarranty: "Extended Warranty",
       protectionPlans: "Protection Plans",
       careers: "Careers",
-      liveAuctions: "Live Dealer Auctions",
+      liveAuctions: "Live Auctions",
       liveAuctionsLaunchDate: "Auctions Go Live Jan 16-18, 2026!",
       searchPlaceholder: "Search..."
     },
@@ -843,10 +843,10 @@ export const translations = {
       footer: "Be among the first to access the RV Marketplace. Find your dream RV from Canada's most trusted dealers."
     },
 
-    // Live Dealer Auctions
+    // Live Auctions
     liveAuctions: {
       badge: "Launching January 16-18, 2026",
-      title: "Live Dealer Auctions",
+      title: "Live Auctions",
       subtitle: "Real-Time Bidding for New, Used & Overstock RV Units",
       description: "Turn excess inventory into opportunity. Join exclusive live auctions where verified dealerships compete for premium RV units at wholesale pricing.",
       howItWorks: {
@@ -917,7 +917,7 @@ export const translations = {
         secondary: "Watch Demo",
         info: "Limited to verified RVClaims network dealerships"
       },
-      comingSoon: "Live Dealer Auctions launching January 16-18, 2026. Join the waitlist for exclusive early access.",
+      comingSoon: "Live Auctions launching January 16-18, 2026. Join the waitlist for exclusive early access.",
       pricing: {
         badge: "Launch Promotion",
         title: "12 Months for the Price of 6",
@@ -964,7 +964,7 @@ export const translations = {
       extendedWarranty: "Garantie prolongée",
       protectionPlans: "Plans de protection",
       careers: "Carrières",
-      liveAuctions: "Enchères concessionnaires en direct",
+      liveAuctions: "Enchères en direct",
       liveAuctionsLaunchDate: "Enchères en ligne 16-18 jan 2026!",
       searchPlaceholder: "Rechercher..."
     },
@@ -1787,10 +1787,10 @@ export const translations = {
       footer: "Soyez parmi les premiers à accéder au marché VR. Trouvez votre VR de rêve auprès des concessionnaires les plus fiables du Canada."
     },
 
-    // Live Dealer Auctions
+    // Live Auctions
     liveAuctions: {
       badge: "Lancement 16-18 janvier 2026",
-      title: "Enchères concessionnaires en direct",
+      title: "Enchères en direct",
       subtitle: "Enchères en temps réel pour unités VR neuves, usagées et en surstockage",
       description: "Transformez l'inventaire excédentaire en opportunité. Rejoignez des enchères en direct exclusives où des concessionnaires vérifiés se disputent des unités VR premium à prix de gros.",
       howItWorks: {
@@ -1861,7 +1861,7 @@ export const translations = {
         secondary: "Voir la démo",
         info: "Limité aux concessionnaires du réseau RVClaims vérifiés"
       },
-      comingSoon: "Enchères concessionnaires en direct lancement 16-18 janvier 2026. Rejoignez la liste d'attente pour un accès anticipé exclusif.",
+      comingSoon: "Enchères en direct lancement 16-18 janvier 2026. Rejoignez la liste d'attente pour un accès anticipé exclusif.",
       pricing: {
         badge: "Promotion de lancement",
         title: "12 mois au prix de 6",
