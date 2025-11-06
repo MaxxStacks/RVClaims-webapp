@@ -112,8 +112,16 @@ export function MobileMenu() {
                   <img 
                     src={language === 'en' ? logoEN : logoFR} 
                     alt="RV Claims Canada" 
-                    className="h-16 w-auto max-w-[400px]" 
-                    style={{ imageRendering: '-webkit-optimize-contrast' }}
+                    className="h-16 w-auto max-w-[340px]" 
+                    style={{ 
+                      imageRendering: 'crisp-edges',
+                      WebkitFontSmoothing: 'antialiased',
+                      MozOsxFontSmoothing: 'grayscale',
+                      backfaceVisibility: 'hidden',
+                      transform: 'translateZ(0)',
+                      willChange: 'transform',
+                      filter: 'contrast(1.02)'
+                    }}
                   />
                 </Link>
               </div>
