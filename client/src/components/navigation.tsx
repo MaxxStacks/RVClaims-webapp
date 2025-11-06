@@ -75,7 +75,7 @@ export function Navigation() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-14">
           {/* Desktop Menu */}
-          <div className="hidden lg:flex items-center space-x-6 flex-1 justify-start">
+          <div className="hidden lg:flex items-center space-x-6">
             {/* Services Dropdown */}
             <div 
               className="relative"
@@ -187,19 +187,19 @@ export function Navigation() {
                 {t('navigation.liveAuctions')}
               </Link>
             </div>
+          </div>
 
-            {/* Contact Button */}
+          {/* Right Side - Contact Button, Language Toggle and Hamburger */}
+          <div className="flex items-center space-x-4">
+            {/* Contact Button - Desktop Only */}
             <Link 
               href="/contact"
-              className="bg-primary text-primary-foreground px-4 py-2 rounded-md hover:bg-primary/90 transition-colors"
+              className="hidden lg:block bg-primary text-primary-foreground px-4 py-2 rounded-md hover:bg-primary/90 transition-colors"
               data-testid="button-contact"
             >
               {t('navigation.contact')}
             </Link>
-          </div>
-
-          {/* Language Toggle and Hamburger - All Screens */}
-          <div className="flex items-center space-x-4">
+            
             <LanguageToggle />
             <MobileMenu />
           </div>
