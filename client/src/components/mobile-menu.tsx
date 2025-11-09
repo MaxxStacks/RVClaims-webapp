@@ -223,7 +223,7 @@ export function MobileMenu() {
                         {(item.href === '/financing-services' || item.href === '/fi-services') && (
                           <span className="inline-flex items-center gap-1">
                             <span className="text-[10px] bg-green-500 text-white px-1.5 py-0.5 rounded font-semibold">NEW</span>
-                            <span className="text-[10px] bg-primary text-white px-1.5 py-0.5 rounded font-semibold">Coming 2026</span>
+                            <span className="text-[10px] bg-primary text-white px-1.5 py-0.5 rounded font-semibold">Q2 2026</span>
                           </span>
                         )}
                       </div>
@@ -346,7 +346,7 @@ export function MobileMenu() {
                 {t('navigation.liveAuctions')}
                 <span className="inline-flex items-center gap-1">
                   <span className="text-[10px] bg-green-500 text-white px-1.5 py-0.5 rounded font-semibold">NEW</span>
-                  <span className="text-[10px] bg-primary text-white px-1.5 py-0.5 rounded font-semibold">Coming 2026</span>
+                  <span className="text-[10px] bg-primary text-white px-1.5 py-0.5 rounded font-semibold">Q3 2026</span>
                 </span>
               </div>
             </Link>
