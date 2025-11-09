@@ -71,7 +71,7 @@ export default function LiveAuctions() {
             {t('liveAuctions.howItWorks.title')}
           </h2>
           <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {(t('liveAuctions.howItWorks.steps') as any[]).map((step: any, index: number) => (
+            {(t('liveAuctions.howItWorks.steps') as unknown as any[]).map((step: any, index: number) => (
               <Card key={index} className="border-2 relative" data-testid={`card-step-${index + 1}`}>
                 <div className="absolute -top-4 left-6 bg-primary text-white rounded-full w-12 h-12 flex items-center justify-center text-xl font-bold" data-testid={`badge-step-${step.number}`}>
                   {step.number}
@@ -148,7 +148,7 @@ export default function LiveAuctions() {
                       {t('liveAuctions.pricing.includes')}
                     </h3>
                     <ul className="space-y-4">
-                      {(t('liveAuctions.pricing.features') as string[]).map((feature: string, index: number) => (
+                      {(t('liveAuctions.pricing.features') as unknown as string[]).map((feature: string, index: number) => (
                         <li key={index} className="flex items-start gap-3" data-testid={`list-feature-${index}`}>
                           <div className="bg-primary/10 text-primary rounded-full p-1 mt-0.5">
                             <Check className="w-5 h-5" />
@@ -183,7 +183,7 @@ export default function LiveAuctions() {
               </CardHeader>
               <CardContent>
                 <ul className="space-y-3">
-                  {(t('liveAuctions.benefits.sellers.points') as string[]).map((point: string, index: number) => (
+                  {(t('liveAuctions.benefits.sellers.points') as unknown as string[]).map((point: string, index: number) => (
                     <li key={index} className="flex items-start gap-3" data-testid={`list-seller-benefit-${index}`}>
                       <div className="bg-primary/10 text-primary rounded-full p-1 mt-0.5">
                         <ArrowRight className="w-4 h-4" />
@@ -202,7 +202,7 @@ export default function LiveAuctions() {
               </CardHeader>
               <CardContent>
                 <ul className="space-y-3">
-                  {(t('liveAuctions.benefits.buyers.points') as string[]).map((point: string, index: number) => (
+                  {(t('liveAuctions.benefits.buyers.points') as unknown as string[]).map((point: string, index: number) => (
                     <li key={index} className="flex items-start gap-3" data-testid={`list-buyer-benefit-${index}`}>
                       <div className="bg-primary/10 text-primary rounded-full p-1 mt-0.5">
                         <ArrowRight className="w-4 h-4" />
@@ -224,7 +224,7 @@ export default function LiveAuctions() {
             {t('liveAuctions.features.title')}
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-            {(t('liveAuctions.features.items') as any[]).map((feature: any, index: number) => {
+            {(t('liveAuctions.features.items') as unknown as any[]).map((feature: any, index: number) => {
               const IconComponent = iconMap[feature.icon];
               return (
                 <Card key={index} className="border-2 hover:border-primary/50 transition-colors" data-testid={`card-feature-${index}`}>
@@ -255,7 +255,7 @@ export default function LiveAuctions() {
             {t('liveAuctions.types.title')}
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
-            {(t('liveAuctions.types.categories') as any[]).map((category: any, index: number) => (
+            {(t('liveAuctions.types.categories') as unknown as any[]).map((category: any, index: number) => (
               <Card key={index} className="text-center" data-testid={`card-category-${index}`}>
                 <CardHeader>
                   <CardTitle className="text-lg" data-testid={`text-category-title-${index}`}>

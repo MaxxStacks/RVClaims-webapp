@@ -32,7 +32,7 @@ export function LiveAuctionsSection() {
                 </h3>
               </div>
               <ul className="space-y-3">
-                {(t('liveAuctions.benefits.sellers.points') as string[]).slice(0, 3).map((point: string, index: number) => (
+                {(t('liveAuctions.benefits.sellers.points') as unknown as string[]).slice(0, 3).map((point: string, index: number) => (
                   <li key={index} className="flex items-start gap-2" data-testid={`list-seller-point-${index}`}>
                     <ArrowRight className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
                     <span className="text-gray-600">{point}</span>
@@ -51,7 +51,7 @@ export function LiveAuctionsSection() {
                 </h3>
               </div>
               <ul className="space-y-3">
-                {(t('liveAuctions.benefits.buyers.points') as string[]).slice(0, 3).map((point: string, index: number) => (
+                {(t('liveAuctions.benefits.buyers.points') as unknown as string[]).slice(0, 3).map((point: string, index: number) => (
                   <li key={index} className="flex items-start gap-2" data-testid={`list-buyer-point-${index}`}>
                     <ArrowRight className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
                     <span className="text-gray-600">{point}</span>
