@@ -105,7 +105,13 @@ export function Navigation() {
                     className="block px-4 py-2.5 text-sm hover:bg-primary/10 hover:text-primary transition-colors"
                     data-testid="link-financing-services"
                   >
-                    <div className="font-medium">{t('mainServices.financing.title')}</div>
+                    <div className="font-medium flex items-center gap-2">
+                      {t('mainServices.financing.title')}
+                      <span className="inline-flex items-center gap-1">
+                        <span className="text-[10px] bg-green-500 text-white px-1.5 py-0.5 rounded font-semibold">NEW</span>
+                        <span className="text-[10px] bg-primary text-white px-1.5 py-0.5 rounded font-semibold">Coming 2026</span>
+                      </span>
+                    </div>
                     <div className="text-xs text-muted-foreground mt-0.5">Dealership financing support</div>
                   </Link>
                   <Link
@@ -121,7 +127,13 @@ export function Navigation() {
                     className="block px-4 py-2.5 text-sm hover:bg-primary/10 hover:text-primary transition-colors"
                     data-testid="link-fi-services"
                   >
-                    <div className="font-medium">{t('mainServices.fiServices.title')}</div>
+                    <div className="font-medium flex items-center gap-2">
+                      {t('mainServices.fiServices.title')}
+                      <span className="inline-flex items-center gap-1">
+                        <span className="text-[10px] bg-green-500 text-white px-1.5 py-0.5 rounded font-semibold">NEW</span>
+                        <span className="text-[10px] bg-primary text-white px-1.5 py-0.5 rounded font-semibold">Coming 2026</span>
+                      </span>
+                    </div>
                     <div className="text-xs text-muted-foreground mt-0.5">Finance & Insurance solutions</div>
                   </Link>
                 </div>
@@ -175,10 +187,7 @@ export function Navigation() {
             </div>
 
             {/* Live Auctions */}
-            <div className="relative">
-              <span className="absolute -top-3 left-1/2 -translate-x-1/2 text-[10px] text-primary font-medium whitespace-nowrap" data-testid="text-auction-launch-date">
-                {t('navigation.liveAuctionsLaunchDate')}
-              </span>
+            <div className="relative flex items-center gap-2">
               <Link 
                 href="/live-auctions"
                 className={`transition-colors ${location === '/live-auctions' ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
@@ -186,6 +195,10 @@ export function Navigation() {
               >
                 {t('navigation.liveAuctions')}
               </Link>
+              <span className="inline-flex items-center gap-1">
+                <span className="text-[10px] bg-green-500 text-white px-1.5 py-0.5 rounded font-semibold">NEW</span>
+                <span className="text-[10px] bg-primary text-white px-1.5 py-0.5 rounded font-semibold">Coming 2026</span>
+              </span>
             </div>
           </div>
 
