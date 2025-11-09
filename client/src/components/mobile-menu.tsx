@@ -347,6 +347,19 @@ export function MobileMenu() {
             </Link>
 
             <Link
+              href="/pricing"
+              onClick={closeMenu}
+              className={`block px-4 py-2 rounded-lg text-base font-medium transition-all duration-200 ${
+                location === '/pricing'
+                  ? 'bg-primary text-primary-foreground shadow-sm'
+                  : 'text-foreground hover:bg-primary/10 hover:text-primary hover:pl-6'
+              }`}
+              data-testid="link-pages-pricing"
+            >
+              {t('navigation.pricing')}
+            </Link>
+
+            <Link
               href="/contact"
               onClick={closeMenu}
               className={`block px-4 py-2 rounded-lg text-base font-medium transition-all duration-200 ${

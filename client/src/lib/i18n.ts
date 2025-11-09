@@ -22,7 +22,8 @@ export const translations = {
       careers: "Careers",
       liveAuctions: "Live Auctions",
       liveAuctionsLaunchDate: "Auctions Go Live Jan 16-18, 2026!",
-      searchPlaceholder: "Search..."
+      searchPlaceholder: "Search...",
+      pricing: "Pricing"
     },
 
     // Notification Bar
@@ -966,7 +967,8 @@ export const translations = {
       careers: "Carrières",
       liveAuctions: "Enchères en direct",
       liveAuctionsLaunchDate: "Enchères en ligne 16-18 jan 2026!",
-      searchPlaceholder: "Rechercher..."
+      searchPlaceholder: "Rechercher...",
+      pricing: "Tarification"
     },
 
     // Notification Bar

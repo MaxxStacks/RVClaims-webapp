@@ -63,9 +63,9 @@ export function Navigation() {
             <Link href="/network-marketplace">
               <button 
                 className="px-6 py-2.5 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-colors shadow-md hover:shadow-lg"
-                data-testid="button-rv-marketplace"
+                data-testid="button-sign-up"
               >
-                RV Marketplace
+                Sign Up
               </button>
             </Link>
           </div>
@@ -192,6 +192,15 @@ export function Navigation() {
               </Link>
               <ServiceBadge quarter="Q3" />
             </div>
+
+            {/* Pricing */}
+            <Link 
+              href="/pricing"
+              className={`transition-colors ${location === '/pricing' ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
+              data-testid="link-pricing"
+            >
+              {t('navigation.pricing')}
+            </Link>
           </div>
 
           {/* Right Side - Contact Button, Language Toggle and Hamburger */}

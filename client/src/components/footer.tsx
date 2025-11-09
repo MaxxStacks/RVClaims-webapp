@@ -112,9 +112,9 @@ export function Footer() {
                 <Link 
                   href="/network-marketplace" 
                   className="text-primary font-semibold animate-pulse inline-flex items-center gap-1 flex-wrap hover:text-primary/80 transition-colors" 
-                  data-testid="link-footer-rv-marketplace"
+                  data-testid="link-footer-sign-up"
                 >
-                  RV Marketplace
+                  Sign Up
                   <ServiceBadge quarter="Q1" />
                 </Link>
               </li>
@@ -126,6 +126,15 @@ export function Footer() {
                 >
                   {t('navigation.liveAuctions')}
                   <ServiceBadge quarter="Q3" />
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  href="/pricing" 
+                  className="hover:text-primary transition-colors" 
+                  data-testid="link-footer-pricing"
+                >
+                  {t('navigation.pricing')}
                 </Link>
               </li>
             </ul>
