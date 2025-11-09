@@ -1,6 +1,7 @@
 import { useLanguage } from "@/hooks/use-language";
 import { LanguageToggle } from "@/components/language-toggle";
 import { MobileMenu } from "@/components/mobile-menu";
+import { ServiceBadge } from "@/components/service-badge";
 import { Link, useLocation } from "wouter";
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
@@ -107,10 +108,7 @@ export function Navigation() {
                   >
                     <div className="font-medium flex items-center gap-2">
                       {t('mainServices.financing.title')}
-                      <span className="inline-flex items-center gap-1">
-                        <span className="text-[10px] bg-green-500 text-white px-1.5 py-0.5 rounded font-semibold">NEW</span>
-                        <span className="text-[10px] bg-primary text-white px-1.5 py-0.5 rounded font-semibold">Q2 2026</span>
-                      </span>
+                      <ServiceBadge quarter="Q2" />
                     </div>
                     <div className="text-xs text-muted-foreground mt-1">Dealership financing support</div>
                   </Link>
@@ -129,10 +127,7 @@ export function Navigation() {
                   >
                     <div className="font-medium flex items-center gap-2">
                       {t('mainServices.fiServices.title')}
-                      <span className="inline-flex items-center gap-1">
-                        <span className="text-[10px] bg-green-500 text-white px-1.5 py-0.5 rounded font-semibold">NEW</span>
-                        <span className="text-[10px] bg-primary text-white px-1.5 py-0.5 rounded font-semibold">Q2 2026</span>
-                      </span>
+                      <ServiceBadge quarter="Q2" />
                     </div>
                     <div className="text-xs text-muted-foreground mt-1">Finance & Insurance solutions</div>
                   </Link>
@@ -195,10 +190,7 @@ export function Navigation() {
               >
                 {t('navigation.liveAuctions')}
               </Link>
-              <span className="inline-flex items-center gap-1">
-                <span className="text-[10px] bg-green-500 text-white px-1.5 py-0.5 rounded font-semibold">NEW</span>
-                <span className="text-[10px] bg-primary text-white px-1.5 py-0.5 rounded font-semibold">Q3 2026</span>
-              </span>
+              <ServiceBadge quarter="Q3" />
             </div>
           </div>
 
