@@ -2,6 +2,7 @@ import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { ChatbotWidget } from "@/components/chatbot-widget";
 import { CookieNotice } from "@/components/cookie-notice";
+import { BackToTop } from "@/components/back-to-top";
 import { SeoMeta } from "@/components/seo-meta";
 import { NotificationBar } from "@/components/notification-bar";
 
@@ -29,6 +30,7 @@ export function PageLayout({ children, seoTitle, seoDescription, seoKeywords, ca
         <Footer />
         <ChatbotWidget />
         <CookieNotice />
+        <BackToTop />
       </div>
     </>
   );
