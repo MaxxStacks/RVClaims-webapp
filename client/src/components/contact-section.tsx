@@ -70,97 +70,71 @@ export function ContactSection() {
   return (
     <section 
       id="contact" 
-      className="py-20 relative overflow-hidden"
-      style={{
-        background: 'linear-gradient(180deg, #ffffff 0%, #f8fafc 100%)'
-      }}
+      className="py-16 bg-gray-50"
     >
-      {/* Subtle Pattern Background */}
-      <div 
-        className="absolute inset-0 opacity-[0.02]"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-          backgroundSize: '60px 60px'
-        }}
-      />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center space-y-4 mb-12">
-          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900" data-testid="text-contact-title">
+        <div className="text-center space-y-3 mb-10">
+          <h2 className="text-3xl lg:text-4xl font-bold text-gray-900" data-testid="text-contact-title">
             {t('contactSection.title')}
           </h2>
-          <p className="text-xl text-gray-700 max-w-4xl mx-auto leading-relaxed" data-testid="text-contact-description">
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto" data-testid="text-contact-description">
             {t('contactSection.description')}
           </p>
         </div>
 
         {/* Stats Bar */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12 max-w-3xl mx-auto">
-          <div className="bg-white border-2 border-gray-200 rounded-xl p-6 text-center shadow-sm">
-            <div className="text-4xl font-bold text-primary mb-2">
+        <div className="flex items-center justify-center gap-8 mb-10">
+          <div className="text-center">
+            <div className="text-3xl font-bold text-primary">
               {t('contactSection.statsValue1')}
             </div>
-            <div className="text-sm text-gray-600 font-medium">
+            <div className="text-sm text-gray-600">
               {t('contactSection.statsLabel1')}
             </div>
           </div>
-          <div className="bg-white border-2 border-gray-200 rounded-xl p-6 text-center shadow-sm">
-            <div className="text-4xl font-bold text-green-500 mb-2">
+          <div className="w-px h-12 bg-gray-300"></div>
+          <div className="text-center">
+            <div className="text-3xl font-bold text-green-500">
               {t('contactSection.statsValue2')}
             </div>
-            <div className="text-sm text-gray-600 font-medium">
+            <div className="text-sm text-gray-600">
               {t('contactSection.statsLabel2')}
             </div>
           </div>
         </div>
 
         {/* Main Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-          {/* Left Column - Trust Elements */}
-          <div className="space-y-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          {/* Left Column - Trust Elements (1/3) */}
+          <div className="space-y-6">
             {/* Trust Badges */}
-            <div className="bg-white border-2 border-gray-200 rounded-xl p-8 shadow-sm">
-              <h3 className="text-xl font-bold text-gray-900 mb-6">Why Dealers Choose Us</h3>
-              <div className="space-y-4">
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-green-50 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Clock className="text-green-600" size={24} />
-                  </div>
+            <div className="bg-white border border-gray-200 rounded-lg p-6">
+              <h3 className="font-bold text-gray-900 mb-4 text-sm">Why Dealers Choose Us</h3>
+              <div className="space-y-3">
+                <div className="flex items-start gap-3">
+                  <Clock className="text-green-600 mt-0.5 flex-shrink-0" size={18} />
                   <div>
-                    <div className="font-semibold text-gray-900 mb-1">
+                    <div className="font-semibold text-gray-900 text-sm">
                       {t('contactSection.trustBadge1')}
                     </div>
-                    <div className="text-sm text-gray-600">
-                      Fast, reliable communication when you need it
-                    </div>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <TrendingUp className="text-primary" size={24} />
-                  </div>
+                <div className="flex items-start gap-3">
+                  <TrendingUp className="text-primary mt-0.5 flex-shrink-0" size={18} />
                   <div>
-                    <div className="font-semibold text-gray-900 mb-1">
+                    <div className="font-semibold text-gray-900 text-sm">
                       {t('contactSection.trustBadge2')}
                     </div>
-                    <div className="text-sm text-gray-600">
-                      99.1% approval rate protects your bottom line
-                    </div>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-gray-900/5 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Shield className="text-gray-900" size={24} />
-                  </div>
+                <div className="flex items-start gap-3">
+                  <Shield className="text-gray-900 mt-0.5 flex-shrink-0" size={18} />
                   <div>
-                    <div className="font-semibold text-gray-900 mb-1">
+                    <div className="font-semibold text-gray-900 text-sm">
                       {t('contactSection.trustBadge3')}
-                    </div>
-                    <div className="text-sm text-gray-600">
-                      Your client relationships stay private
                     </div>
                   </div>
                 </div>
@@ -168,43 +142,36 @@ export function ContactSection() {
             </div>
 
             {/* Anonymous Testimonial */}
-            <div className="bg-gray-900 rounded-xl p-8 shadow-lg relative">
-              <Quote className="absolute top-6 right-6 text-white/10" size={48} />
-              <div className="relative">
-                <p className="text-white text-lg mb-4 italic leading-relaxed">
-                  "{t('contactSection.testimonialQuote')}"
-                </p>
-                <div className="text-white/80 font-medium">
-                  — {t('contactSection.testimonialAuthor')}
-                </div>
+            <div className="bg-gray-900 rounded-lg p-5">
+              <Quote className="text-white/20 mb-2" size={24} />
+              <p className="text-white text-sm mb-3 italic leading-relaxed">
+                "{t('contactSection.testimonialQuote')}"
+              </p>
+              <div className="text-white/70 text-xs font-medium">
+                — {t('contactSection.testimonialAuthor')}
               </div>
             </div>
           </div>
 
-          {/* Right Column - Lead Capture Form */}
-          <div className="bg-white border-2 border-primary/20 rounded-2xl p-8 shadow-xl">
-            <div className="bg-primary text-white text-center py-3 px-4 rounded-lg mb-6 font-semibold">
-              Get Your Free Claims Analysis
-            </div>
-
-            <form onSubmit={handleSubmit} className="space-y-5" data-testid="form-contact">
-              <div>
-                <Label htmlFor="dealershipName" className="block text-sm font-medium mb-2">
-                  {t('contactSection.form.dealershipName')} *
-                </Label>
-                <Input
-                  id="dealershipName"
-                  value={formData.dealershipName}
-                  onChange={(e) => handleChange('dealershipName', e.target.value)}
-                  required
-                  className="h-12"
-                  data-testid="input-dealership-name"
-                />
-              </div>
-              
+          {/* Right Column - Lead Capture Form (2/3) */}
+          <div className="lg:col-span-2 bg-white border border-gray-200 rounded-lg p-6">
+            <form onSubmit={handleSubmit} className="space-y-4" data-testid="form-contact">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="firstName" className="block text-sm font-medium mb-2">
+                  <Label htmlFor="dealershipName" className="text-sm font-medium mb-1.5 block">
+                    {t('contactSection.form.dealershipName')} *
+                  </Label>
+                  <Input
+                    id="dealershipName"
+                    value={formData.dealershipName}
+                    onChange={(e) => handleChange('dealershipName', e.target.value)}
+                    required
+                    data-testid="input-dealership-name"
+                  />
+                </div>
+                
+                <div>
+                  <Label htmlFor="firstName" className="text-sm font-medium mb-1.5 block">
                     {t('contactSection.form.firstName')} *
                   </Label>
                   <Input
@@ -212,12 +179,14 @@ export function ContactSection() {
                     value={formData.firstName}
                     onChange={(e) => handleChange('firstName', e.target.value)}
                     required
-                    className="h-12"
                     data-testid="input-first-name"
                   />
                 </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="lastName" className="block text-sm font-medium mb-2">
+                  <Label htmlFor="lastName" className="text-sm font-medium mb-1.5 block">
                     {t('contactSection.form.lastName')} *
                   </Label>
                   <Input
@@ -225,15 +194,12 @@ export function ContactSection() {
                     value={formData.lastName}
                     onChange={(e) => handleChange('lastName', e.target.value)}
                     required
-                    className="h-12"
                     data-testid="input-last-name"
                   />
                 </div>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                
                 <div>
-                  <Label htmlFor="email" className="block text-sm font-medium mb-2">
+                  <Label htmlFor="email" className="text-sm font-medium mb-1.5 block">
                     {t('contactSection.form.email')} *
                   </Label>
                   <Input
@@ -242,12 +208,14 @@ export function ContactSection() {
                     value={formData.email}
                     onChange={(e) => handleChange('email', e.target.value)}
                     required
-                    className="h-12"
                     data-testid="input-email"
                   />
                 </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="phone" className="block text-sm font-medium mb-2">
+                  <Label htmlFor="phone" className="text-sm font-medium mb-1.5 block">
                     {t('contactSection.form.phone')} *
                   </Label>
                   <Input
@@ -256,54 +224,53 @@ export function ContactSection() {
                     value={formData.phone}
                     onChange={(e) => handleChange('phone', e.target.value)}
                     required
-                    className="h-12"
                     data-testid="input-phone"
                   />
+                </div>
+                
+                <div>
+                  <Label htmlFor="interest" className="text-sm font-medium mb-1.5 block">
+                    {t('contactSection.form.interestLabel')} *
+                  </Label>
+                  <Select value={formData.interest} onValueChange={(value) => handleChange('interest', value)} required>
+                    <SelectTrigger data-testid="select-interest">
+                      <SelectValue placeholder={t('contactSection.form.interestPlaceholder')} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="claims-processing" data-testid="option-claims-processing">
+                        {t('contactSection.form.interests.claimsProcessing')}
+                      </SelectItem>
+                      <SelectItem value="revenue-optimization" data-testid="option-revenue-optimization">
+                        {t('contactSection.form.interests.revenueOptimization')}
+                      </SelectItem>
+                      <SelectItem value="full-service" data-testid="option-full-service">
+                        {t('contactSection.form.interests.fullService')}
+                      </SelectItem>
+                      <SelectItem value="consultation" data-testid="option-consultation">
+                        {t('contactSection.form.interests.consultation')}
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
               
               <div>
-                <Label htmlFor="interest" className="block text-sm font-medium mb-2">
-                  {t('contactSection.form.interestLabel')} *
-                </Label>
-                <Select value={formData.interest} onValueChange={(value) => handleChange('interest', value)} required>
-                  <SelectTrigger className="h-12" data-testid="select-interest">
-                    <SelectValue placeholder={t('contactSection.form.interestPlaceholder')} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="claims-processing" data-testid="option-claims-processing">
-                      {t('contactSection.form.interests.claimsProcessing')}
-                    </SelectItem>
-                    <SelectItem value="revenue-optimization" data-testid="option-revenue-optimization">
-                      {t('contactSection.form.interests.revenueOptimization')}
-                    </SelectItem>
-                    <SelectItem value="full-service" data-testid="option-full-service">
-                      {t('contactSection.form.interests.fullService')}
-                    </SelectItem>
-                    <SelectItem value="consultation" data-testid="option-consultation">
-                      {t('contactSection.form.interests.consultation')}
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <div>
-                <Label htmlFor="message" className="block text-sm font-medium mb-2">
+                <Label htmlFor="message" className="text-sm font-medium mb-1.5 block">
                   {t('contactSection.form.message')}
                 </Label>
                 <Textarea
                   id="message"
-                  rows={3}
+                  rows={2}
                   value={formData.message}
                   onChange={(e) => handleChange('message', e.target.value)}
-                  placeholder="Tell us about your current claims volume, challenges, or goals..."
+                  placeholder="Tell us about your dealership..."
                   data-testid="input-message"
                 />
               </div>
               
               <Button 
                 type="submit" 
-                className="w-full h-14 text-lg font-bold bg-green-500 hover:bg-green-600 text-white shadow-lg hover:shadow-xl transition-all duration-300"
+                className="w-full h-12 text-base font-bold bg-green-500 hover:bg-green-600 text-white"
                 disabled={isSubmitting}
                 data-testid="button-submit-contact"
               >
@@ -312,10 +279,6 @@ export function ContactSection() {
                   : t('contactSection.form.submit')
                 }
               </Button>
-
-              <p className="text-xs text-gray-500 text-center">
-                By submitting, you agree to receive communications from RV Claims Canada. We respect your privacy and never share your information.
-              </p>
             </form>
           </div>
         </div>
