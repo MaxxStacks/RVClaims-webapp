@@ -71,7 +71,7 @@ export function Footer() {
                   {t('mainServices.financing.title')}
                   <span className="inline-flex items-center gap-1">
                     <span className="text-[10px] bg-green-500 text-white px-1.5 py-0.5 rounded font-semibold">NEW</span>
-                    <span className="text-[10px] bg-primary text-white px-1.5 py-0.5 rounded font-semibold">Coming 2026</span>
+                    <span className="text-[10px] bg-primary text-white px-1.5 py-0.5 rounded font-semibold">Q2 2026</span>
                   </span>
                 </Link>
               </li>
@@ -84,7 +84,7 @@ export function Footer() {
                   {t('mainServices.fiServices.title')}
                   <span className="inline-flex items-center gap-1">
                     <span className="text-[10px] bg-green-500 text-white px-1.5 py-0.5 rounded font-semibold">NEW</span>
-                    <span className="text-[10px] bg-primary text-white px-1.5 py-0.5 rounded font-semibold">Coming 2026</span>
+                    <span className="text-[10px] bg-primary text-white px-1.5 py-0.5 rounded font-semibold">Q2 2026</span>
                   </span>
                 </Link>
               </li>
@@ -116,11 +116,14 @@ export function Footer() {
               <li>
                 <Link 
                   href="/network-marketplace" 
-                  className="text-primary font-semibold animate-pulse inline-flex items-center gap-1 hover:text-primary/80 transition-colors" 
+                  className="text-primary font-semibold animate-pulse inline-flex items-center gap-1 flex-wrap hover:text-primary/80 transition-colors" 
                   data-testid="link-footer-rv-marketplace"
                 >
                   RV Marketplace
-                  <span className="inline-block text-xs bg-primary text-white px-1.5 py-0.5 rounded">2026</span>
+                  <span className="inline-flex items-center gap-1">
+                    <span className="text-[10px] bg-green-500 text-white px-1.5 py-0.5 rounded font-semibold">NEW</span>
+                    <span className="text-[10px] bg-primary text-white px-1.5 py-0.5 rounded font-semibold">Q1 2026</span>
+                  </span>
                 </Link>
               </li>
               <li>
@@ -132,7 +135,7 @@ export function Footer() {
                   {t('navigation.liveAuctions')}
                   <span className="inline-flex items-center gap-1">
                     <span className="text-[10px] bg-green-500 text-white px-1.5 py-0.5 rounded font-semibold">NEW</span>
-                    <span className="text-[10px] bg-primary text-white px-1.5 py-0.5 rounded font-semibold">Coming 2026</span>
+                    <span className="text-[10px] bg-primary text-white px-1.5 py-0.5 rounded font-semibold">Q3 2026</span>
                   </span>
                 </Link>
               </li>
