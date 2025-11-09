@@ -1,6 +1,7 @@
 import { Shield, DollarSign, FileText, TrendingUp } from "lucide-react";
 import { Link } from "wouter";
 import { useLanguage } from "@/hooks/use-language";
+import { ServiceBadge } from "@/components/service-badge";
 import { Button } from "@/components/ui/button";
 
 export function MainServicesSection() {
@@ -58,10 +59,7 @@ export function MainServicesSection() {
                 <h3 className="text-lg font-semibold mb-2 flex items-center gap-2 flex-wrap">
                   {t(`mainServices.${service.key}.title`)}
                   {(service.key === 'financing' || service.key === 'fiServices') && (
-                    <span className="inline-flex items-center gap-1">
-                      <span className="text-[10px] bg-green-500 text-white px-1.5 py-0.5 rounded font-semibold">NEW</span>
-                      <span className="text-[10px] bg-primary text-white px-1.5 py-0.5 rounded font-semibold">Q2 2026</span>
-                    </span>
+                    <ServiceBadge quarter="Q2" />
                   )}
                 </h3>
                 <p className="text-muted-foreground text-sm mb-4">
