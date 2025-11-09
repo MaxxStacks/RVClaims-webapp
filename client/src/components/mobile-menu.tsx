@@ -3,6 +3,7 @@ import { Menu, X, User, Building, Linkedin, Facebook, Youtube, Instagram, Twitte
 import { Link, useLocation } from "wouter";
 import { useLanguage } from "@/hooks/use-language";
 import { LanguageToggle } from "@/components/language-toggle";
+import { ServiceBadge } from "@/components/service-badge";
 import { useToast } from "@/hooks/use-toast";
 import logoEN from "@assets/rvclaims_logo_en_1761203145359.png";
 import logoFR from "@assets/rvclaims_logo_fr_1761203145359.png";
@@ -221,10 +222,7 @@ export function MobileMenu() {
                       <div className="font-medium flex items-center gap-2 flex-wrap">
                         {item.label}
                         {(item.href === '/financing-services' || item.href === '/fi-services') && (
-                          <span className="inline-flex items-center gap-1">
-                            <span className="text-[10px] bg-green-500 text-white px-1.5 py-0.5 rounded font-semibold">NEW</span>
-                            <span className="text-[10px] bg-primary text-white px-1.5 py-0.5 rounded font-semibold">Q2 2026</span>
-                          </span>
+                          <ServiceBadge quarter="Q2" />
                         )}
                       </div>
                       <div className="text-xs text-muted-foreground">{item.desc}</div>
@@ -344,10 +342,7 @@ export function MobileMenu() {
             >
               <div className="flex items-center gap-2 flex-wrap">
                 {t('navigation.liveAuctions')}
-                <span className="inline-flex items-center gap-1">
-                  <span className="text-[10px] bg-green-500 text-white px-1.5 py-0.5 rounded font-semibold">NEW</span>
-                  <span className="text-[10px] bg-primary text-white px-1.5 py-0.5 rounded font-semibold">Q3 2026</span>
-                </span>
+                <ServiceBadge quarter="Q3" />
               </div>
             </Link>
 
