@@ -91,50 +91,50 @@ export function Navigation() {
               </button>
               
               {servicesOpen && (
-                <div className="absolute top-full left-0 mt-1 w-64 bg-white border border-border rounded-lg shadow-xl py-2 z-50">
+                <div className="absolute top-full left-0 mt-1 w-80 bg-white border border-border rounded-lg shadow-xl py-3 z-50">
                   <Link
                     href="/claims-processing"
-                    className="block px-4 py-2.5 text-sm hover:bg-primary/10 hover:text-primary transition-colors"
+                    className="block px-5 py-3 text-sm hover:bg-primary/10 hover:text-primary transition-colors"
                     data-testid="link-claims-processing"
                   >
                     <div className="font-medium">{t('mainServices.claims.title')}</div>
-                    <div className="text-xs text-muted-foreground mt-0.5">A-Z warranty claims management</div>
+                    <div className="text-xs text-muted-foreground mt-1">A-Z warranty claims management</div>
                   </Link>
                   <Link
                     href="/financing"
-                    className="block px-4 py-2.5 text-sm hover:bg-primary/10 hover:text-primary transition-colors"
+                    className="block px-5 py-3 text-sm hover:bg-primary/10 hover:text-primary transition-colors"
                     data-testid="link-financing-services"
                   >
                     <div className="font-medium flex items-center gap-2">
                       {t('mainServices.financing.title')}
                       <span className="inline-flex items-center gap-1">
                         <span className="text-[10px] bg-green-500 text-white px-1.5 py-0.5 rounded font-semibold">NEW</span>
-                        <span className="text-[10px] bg-primary text-white px-1.5 py-0.5 rounded font-semibold">Coming 2026</span>
+                        <span className="text-[10px] bg-primary text-white px-1.5 py-0.5 rounded font-semibold">Q2 2026</span>
                       </span>
                     </div>
-                    <div className="text-xs text-muted-foreground mt-0.5">Dealership financing support</div>
+                    <div className="text-xs text-muted-foreground mt-1">Dealership financing support</div>
                   </Link>
                   <Link
                     href="/warranty-extended-service"
-                    className="block px-4 py-2.5 text-sm hover:bg-primary/10 hover:text-primary transition-colors"
+                    className="block px-5 py-3 text-sm hover:bg-primary/10 hover:text-primary transition-colors"
                     data-testid="link-warranty-extended"
                   >
                     <div className="font-medium">{t('mainServices.warranty.title')}</div>
-                    <div className="text-xs text-muted-foreground mt-0.5">Protection packages</div>
+                    <div className="text-xs text-muted-foreground mt-1">Protection packages</div>
                   </Link>
                   <Link
                     href="/fi-services"
-                    className="block px-4 py-2.5 text-sm hover:bg-primary/10 hover:text-primary transition-colors"
+                    className="block px-5 py-3 text-sm hover:bg-primary/10 hover:text-primary transition-colors"
                     data-testid="link-fi-services"
                   >
                     <div className="font-medium flex items-center gap-2">
                       {t('mainServices.fiServices.title')}
                       <span className="inline-flex items-center gap-1">
                         <span className="text-[10px] bg-green-500 text-white px-1.5 py-0.5 rounded font-semibold">NEW</span>
-                        <span className="text-[10px] bg-primary text-white px-1.5 py-0.5 rounded font-semibold">Coming 2026</span>
+                        <span className="text-[10px] bg-primary text-white px-1.5 py-0.5 rounded font-semibold">Q2 2026</span>
                       </span>
                     </div>
-                    <div className="text-xs text-muted-foreground mt-0.5">Finance & Insurance solutions</div>
+                    <div className="text-xs text-muted-foreground mt-1">Finance & Insurance solutions</div>
                   </Link>
                 </div>
               )}
@@ -197,7 +197,7 @@ export function Navigation() {
               </Link>
               <span className="inline-flex items-center gap-1">
                 <span className="text-[10px] bg-green-500 text-white px-1.5 py-0.5 rounded font-semibold">NEW</span>
-                <span className="text-[10px] bg-primary text-white px-1.5 py-0.5 rounded font-semibold">Coming 2026</span>
+                <span className="text-[10px] bg-primary text-white px-1.5 py-0.5 rounded font-semibold">Q3 2026</span>
               </span>
             </div>
           </div>
