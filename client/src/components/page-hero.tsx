@@ -1,3 +1,5 @@
+import { ServiceBadge } from "@/components/service-badge";
+
 interface PageHeroProps {
   title: string;
   description: string;
@@ -11,9 +13,8 @@ export function PageHero({ title, description, badge, badgeType }: PageHeroProps
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
         <div className="text-center space-y-8">
           {badgeType ? (
-            <div className="inline-flex items-center gap-1 mb-4">
-              <span className="text-[10px] bg-green-500 text-white px-1.5 py-0.5 rounded font-semibold">NEW</span>
-              <span className="text-[10px] bg-primary text-white px-1.5 py-0.5 rounded font-semibold">{badgeType} 2026</span>
+            <div className="mb-4">
+              <ServiceBadge quarter={badgeType} />
             </div>
           ) : badge ? (
             <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
