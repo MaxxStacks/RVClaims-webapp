@@ -75,14 +75,10 @@ export function NetworkMarketplaceSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Main Content */}
         <div className="text-center max-w-4xl mx-auto mb-16">
-          <Badge 
-            className="mb-6 border border-primary/20 px-3 py-1 text-xs bg-primary/5 text-primary animate-pulse" 
-            variant="outline"
-            data-testid="badge-coming-2026"
-          >
-            <Sparkles className="mr-2 h-3 w-3" />
-            {t('networkMarketplace.badge')}
-          </Badge>
+          <div className="mb-6 inline-flex items-center gap-1">
+            <span className="text-[10px] bg-green-500 text-white px-1.5 py-0.5 rounded font-semibold">NEW</span>
+            <span className="text-[10px] bg-primary text-white px-1.5 py-0.5 rounded font-semibold" data-testid="badge-coming-2026">Q1 2026</span>
+          </div>
           
           <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground" data-testid="text-network-title">
             {t('networkMarketplace.title')}

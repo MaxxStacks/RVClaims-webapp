@@ -55,8 +55,14 @@ export function MainServicesSection() {
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                   <service.icon className="text-primary" size={24} />
                 </div>
-                <h3 className="text-lg font-semibold mb-2">
+                <h3 className="text-lg font-semibold mb-2 flex items-center gap-2 flex-wrap">
                   {t(`mainServices.${service.key}.title`)}
+                  {(service.key === 'financing' || service.key === 'fiServices') && (
+                    <span className="inline-flex items-center gap-1">
+                      <span className="text-[10px] bg-green-500 text-white px-1.5 py-0.5 rounded font-semibold">NEW</span>
+                      <span className="text-[10px] bg-primary text-white px-1.5 py-0.5 rounded font-semibold">Q2 2026</span>
+                    </span>
+                  )}
                 </h3>
                 <p className="text-muted-foreground text-sm mb-4">
                   {t(`mainServices.${service.key}.description`)}

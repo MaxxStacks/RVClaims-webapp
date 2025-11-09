@@ -11,9 +11,9 @@ export function LiveAuctionsSection() {
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 bg-primary/10 text-primary border border-primary/20 px-3 py-1 rounded-full text-xs font-medium mb-4" data-testid="badge-auctions-launch">
-              <Sparkles className="w-3 h-3" />
-              {t('liveAuctions.badge')}
+            <div className="inline-flex items-center gap-1 mb-4">
+              <span className="text-[10px] bg-green-500 text-white px-1.5 py-0.5 rounded font-semibold">NEW</span>
+              <span className="text-[10px] bg-primary text-white px-1.5 py-0.5 rounded font-semibold" data-testid="badge-auctions-launch">Q3 2026</span>
             </div>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4" data-testid="text-auctions-section-title">
               {t('liveAuctions.title')}
