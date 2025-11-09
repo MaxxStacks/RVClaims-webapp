@@ -218,7 +218,15 @@ export function MobileMenu() {
                       className="block px-4 py-2 rounded-lg text-sm hover:bg-primary/5 hover:text-primary transition-colors"
                       data-testid={`link-${item.href.slice(1)}`}
                     >
-                      <div className="font-medium">{item.label}</div>
+                      <div className="font-medium flex items-center gap-2 flex-wrap">
+                        {item.label}
+                        {(item.href === '/financing-services' || item.href === '/fi-services') && (
+                          <span className="inline-flex items-center gap-1">
+                            <span className="text-[10px] bg-green-500 text-white px-1.5 py-0.5 rounded font-semibold">NEW</span>
+                            <span className="text-[10px] bg-primary text-white px-1.5 py-0.5 rounded font-semibold">Coming 2026</span>
+                          </span>
+                        )}
+                      </div>
                       <div className="text-xs text-muted-foreground">{item.desc}</div>
                     </Link>
                   ))}
@@ -334,7 +342,13 @@ export function MobileMenu() {
               }`}
               data-testid="link-pages-live-auctions"
             >
-              {t('navigation.liveAuctions')}
+              <div className="flex items-center gap-2 flex-wrap">
+                {t('navigation.liveAuctions')}
+                <span className="inline-flex items-center gap-1">
+                  <span className="text-[10px] bg-green-500 text-white px-1.5 py-0.5 rounded font-semibold">NEW</span>
+                  <span className="text-[10px] bg-primary text-white px-1.5 py-0.5 rounded font-semibold">Coming 2026</span>
+                </span>
+              </div>
             </Link>
 
             <Link
