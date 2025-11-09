@@ -63,6 +63,32 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link 
+                  href="/financing" 
+                  className="hover:text-primary transition-colors inline-flex items-center gap-1 flex-wrap" 
+                  data-testid="link-footer-financing"
+                >
+                  {t('mainServices.financing.title')}
+                  <span className="inline-flex items-center gap-1">
+                    <span className="text-[10px] bg-green-500 text-white px-1.5 py-0.5 rounded font-semibold">NEW</span>
+                    <span className="text-[10px] bg-primary text-white px-1.5 py-0.5 rounded font-semibold">Coming 2026</span>
+                  </span>
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  href="/fi-services" 
+                  className="hover:text-primary transition-colors inline-flex items-center gap-1 flex-wrap" 
+                  data-testid="link-footer-fi-services"
+                >
+                  {t('mainServices.fiServices.title')}
+                  <span className="inline-flex items-center gap-1">
+                    <span className="text-[10px] bg-green-500 text-white px-1.5 py-0.5 rounded font-semibold">NEW</span>
+                    <span className="text-[10px] bg-primary text-white px-1.5 py-0.5 rounded font-semibold">Coming 2026</span>
+                  </span>
+                </Link>
+              </li>
+              <li>
                 <Link href="/revenue-services" className="hover:text-primary transition-colors" data-testid="link-footer-optimization">
                   {t('footer.optimization')}
                 </Link>
@@ -100,11 +126,14 @@ export function Footer() {
               <li>
                 <Link 
                   href="/live-auctions" 
-                  className="text-primary font-semibold inline-flex items-center gap-1 hover:text-primary/80 transition-colors" 
+                  className="text-primary font-semibold inline-flex items-center gap-1 flex-wrap hover:text-primary/80 transition-colors" 
                   data-testid="link-footer-live-auctions"
                 >
                   {t('navigation.liveAuctions')}
-                  <span className="inline-block text-xs bg-primary text-white px-1.5 py-0.5 rounded">JAN 16-18</span>
+                  <span className="inline-flex items-center gap-1">
+                    <span className="text-[10px] bg-green-500 text-white px-1.5 py-0.5 rounded font-semibold">NEW</span>
+                    <span className="text-[10px] bg-primary text-white px-1.5 py-0.5 rounded font-semibold">Coming 2026</span>
+                  </span>
                 </Link>
               </li>
             </ul>
