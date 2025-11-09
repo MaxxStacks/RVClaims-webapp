@@ -1,5 +1,6 @@
 import { Phone, Mail, MapPin, Heart, Linkedin, Facebook, Youtube, Instagram, Twitter, Zap } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
+import { ServiceBadge } from "@/components/service-badge";
 import { Link } from "wouter";
 import logoEN from "@assets/rvclaims_logo_en_1761203145359.png";
 import logoFR from "@assets/rvclaims_logo_fr_1761203145359.png";
@@ -69,10 +70,7 @@ export function Footer() {
                   data-testid="link-footer-financing"
                 >
                   {t('mainServices.financing.title')}
-                  <span className="inline-flex items-center gap-1">
-                    <span className="text-[10px] bg-green-500 text-white px-1.5 py-0.5 rounded font-semibold">NEW</span>
-                    <span className="text-[10px] bg-primary text-white px-1.5 py-0.5 rounded font-semibold">Q2 2026</span>
-                  </span>
+                  <ServiceBadge quarter="Q2" />
                 </Link>
               </li>
               <li>
@@ -82,10 +80,7 @@ export function Footer() {
                   data-testid="link-footer-fi-services"
                 >
                   {t('mainServices.fiServices.title')}
-                  <span className="inline-flex items-center gap-1">
-                    <span className="text-[10px] bg-green-500 text-white px-1.5 py-0.5 rounded font-semibold">NEW</span>
-                    <span className="text-[10px] bg-primary text-white px-1.5 py-0.5 rounded font-semibold">Q2 2026</span>
-                  </span>
+                  <ServiceBadge quarter="Q2" />
                 </Link>
               </li>
               <li>
@@ -120,10 +115,7 @@ export function Footer() {
                   data-testid="link-footer-rv-marketplace"
                 >
                   RV Marketplace
-                  <span className="inline-flex items-center gap-1">
-                    <span className="text-[10px] bg-green-500 text-white px-1.5 py-0.5 rounded font-semibold">NEW</span>
-                    <span className="text-[10px] bg-primary text-white px-1.5 py-0.5 rounded font-semibold">Q1 2026</span>
-                  </span>
+                  <ServiceBadge quarter="Q1" />
                 </Link>
               </li>
               <li>
@@ -133,10 +125,7 @@ export function Footer() {
                   data-testid="link-footer-live-auctions"
                 >
                   {t('navigation.liveAuctions')}
-                  <span className="inline-flex items-center gap-1">
-                    <span className="text-[10px] bg-green-500 text-white px-1.5 py-0.5 rounded font-semibold">NEW</span>
-                    <span className="text-[10px] bg-primary text-white px-1.5 py-0.5 rounded font-semibold">Q3 2026</span>
-                  </span>
+                  <ServiceBadge quarter="Q3" />
                 </Link>
               </li>
             </ul>
