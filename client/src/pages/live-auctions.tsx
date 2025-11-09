@@ -33,9 +33,9 @@ export default function LiveAuctions() {
       <section className="pt-32 pb-16 bg-gradient-to-b from-gray-50 to-white">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 bg-primary/10 text-primary border border-primary/20 px-3 py-1 rounded-full text-xs font-medium mb-6" data-testid="badge-launch-date">
-              <Sparkles className="w-3 h-3" />
-              {t('liveAuctions.badge')}
+            <div className="inline-flex items-center gap-1 mb-6">
+              <span className="text-[10px] bg-green-500 text-white px-1.5 py-0.5 rounded font-semibold">NEW</span>
+              <span className="text-[10px] bg-primary text-white px-1.5 py-0.5 rounded font-semibold" data-testid="badge-launch-date">Q3 2026</span>
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6" data-testid="text-auctions-title">
               {t('liveAuctions.title')}

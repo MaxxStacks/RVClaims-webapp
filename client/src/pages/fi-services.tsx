@@ -24,7 +24,7 @@ export default function FIServices() {
       canonical="/fi-services"
     >
       <PageHero
-        badge={t('fiServicesPage.badge')}
+        badgeType="Q2"
         title={t('fiServicesPage.subtitle')}
         description={t('fiServicesPage.description')}
       />

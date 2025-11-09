@@ -24,7 +24,7 @@ export default function Financing() {
       canonical="/financing"
     >
       <PageHero
-        badge={t('financingPage.badge')}
+        badgeType="Q2"
         title={t('financingPage.subtitle')}
         description={t('financingPage.description')}
       />
