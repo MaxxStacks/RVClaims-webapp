@@ -390,8 +390,17 @@ export const translations = {
 
     // Contact Section
     contactSection: {
-      title: "Ready to Optimize Your Claims?",
-      description: "Join Canadian RV dealers already maximizing their warranty revenue",
+      title: "Ready to Optimize Your Claims Revenue?",
+      description: "Schedule a 15-minute call and discover how our A-Z claims processing ensures manufacturers cover warranty costs—not your dealership. Protect your bottom line with expert claim submission.",
+      statsLabel1: "Claims Processed Monthly",
+      statsValue1: "500+",
+      statsLabel2: "Approval Rate",
+      statsValue2: "99.1%",
+      trustBadge1: "2-Hour Response Guarantee",
+      trustBadge2: "Industry-Leading Approval Rates",
+      trustBadge3: "Complete Confidentiality",
+      testimonialQuote: "Our denial rate dropped from 18% to under 1% within the first 90 days. The difference in our bottom line has been transformative.",
+      testimonialAuthor: "Senior RV Dealer, Ontario",
       phone: {
         title: "Phone Support",
         hours: "Monday - Friday, 8AM - 6PM EST"
@@ -416,17 +425,15 @@ export const translations = {
         lastName: "Last Name", 
         email: "Email Address",
         phone: "Phone Number",
-        subject: "Subject",
-        subjectPlaceholder: "Select a subject",
-        message: "Message",
-        submit: "Get Started Today",
-        subjects: {
-          becomeClient: "Become a client",
-          billing: "Billing",
-          technicalSupport: "Technical Support",
-          accountsPayable: "Accounts Payable",
-          accountsReceivable: "Accounts Receivable",
-          featureRequest: "Feature Request"
+        interestLabel: "I'm interested in",
+        interestPlaceholder: "Select your primary interest",
+        message: "Tell us about your dealership (optional)",
+        submit: "Get My Free Claims Analysis",
+        interests: {
+          claimsProcessing: "A-Z Claims Processing",
+          revenueOptimization: "Revenue Optimization",
+          fullService: "Full Service Package",
+          consultation: "Free Consultation"
         }
       }
     },
@@ -1335,8 +1342,17 @@ export const translations = {
 
     // Contact Section
     contactSection: {
-      title: "Prêt à optimiser vos réclamations?",
-      description: "Rejoignez les concessionnaires VR canadiens qui maximisent déjà leurs revenus de garantie",
+      title: "Prêt à optimiser vos revenus de réclamations?",
+      description: "Planifiez un appel de 15 minutes et découvrez comment notre traitement A-Z des réclamations garantit que les fabricants couvrent les coûts de garantie—pas votre concessionnaire. Protégez vos résultats avec une soumission experte.",
+      statsLabel1: "Réclamations traitées mensuellement",
+      statsValue1: "500+",
+      statsLabel2: "Taux d'approbation",
+      statsValue2: "99,1%",
+      trustBadge1: "Garantie de réponse en 2 heures",
+      trustBadge2: "Taux d'approbation leader de l'industrie",
+      trustBadge3: "Confidentialité complète",
+      testimonialQuote: "Notre taux de refus est passé de 18% à moins de 1% dans les 90 premiers jours. La différence dans nos résultats a été transformative.",
+      testimonialAuthor: "Concessionnaire VR senior, Ontario",
       phone: {
         title: "Support téléphonique",
         hours: "Lundi - Vendredi, 8h - 18h EST"
@@ -1361,17 +1377,15 @@ export const translations = {
         lastName: "Nom de famille",
         email: "Adresse e-mail", 
         phone: "Numéro de téléphone",
-        subject: "Sujet",
-        subjectPlaceholder: "Sélectionner un sujet",
-        message: "Message",
-        submit: "Commencer aujourd'hui",
-        subjects: {
-          becomeClient: "Devenir un client",
-          billing: "Facturation",
-          technicalSupport: "Support technique",
-          accountsPayable: "Comptes à payer",
-          accountsReceivable: "Comptes à recevoir",
-          featureRequest: "Demande de fonctionnalité"
+        interestLabel: "Je suis intéressé par",
+        interestPlaceholder: "Sélectionnez votre intérêt principal",
+        message: "Parlez-nous de votre concessionnaire (optionnel)",
+        submit: "Obtenir mon analyse gratuite",
+        interests: {
+          claimsProcessing: "Traitement A-Z des réclamations",
+          revenueOptimization: "Optimisation des revenus",
+          fullService: "Forfait service complet",
+          consultation: "Consultation gratuite"
         }
       }
     },
