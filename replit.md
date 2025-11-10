@@ -25,6 +25,7 @@ Preferred communication style: Simple, everyday language.
 - **Drizzle ORM** configured for PostgreSQL with schema definitions and migrations
 - **Zod** for runtime schema validation and type safety
 - **Modular route handling** with centralized error management
+- **Knowledge-based chatbot** using pattern-matching to provide site-specific information only (no AI/LLM)
 
 ### Internationalization
 - **Custom i18n system** with context-based language switching
@@ -82,3 +83,18 @@ Preferred communication style: Simple, everyday language.
 - **Date-fns** - Date manipulation utilities
 - **Replit-specific plugins** - Development environment integration
 - **Google Fonts** - Typography (Inter, DM Sans, Fira Code, Geist Mono)
+
+## Recent Changes
+
+### November 10, 2025 - Knowledge-Based Chatbot Implementation
+- **Replaced AI/LLM chatbot with pattern-matching knowledge base system**
+  - Removed OpenAI dependency completely
+  - Created `server/chatbot-responses.ts` with pre-defined Q&A pairs from site data
+  - Chatbot now responds exclusively with RV Claims-specific information
+  - No generic AI responses - all answers come directly from services, pricing, and company data
+  - Supports bilingual responses (English/French) for all queries
+  - Pattern matching on keywords like 'pricing', 'services', 'revenue', 'marketplace', etc.
+  - Default fallback response guides users to ask specific questions about RV Claims services
+- **Updated chat endpoint** in `server/routes.ts` to use simple JSON responses instead of streaming
+- **Simplified frontend** chatbot widget to handle non-streaming responses
+- **Benefits**: Deterministic responses, no API key required, consistent brand messaging, faster responses
