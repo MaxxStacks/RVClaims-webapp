@@ -191,7 +191,7 @@ html, body {
   width: 60px;
   height: 60px;
   background: linear-gradient(135deg, hsl(221 83% 20%), hsl(221 83% 35%));
-  border-radius: 50%;
+  border-radius: 0.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
