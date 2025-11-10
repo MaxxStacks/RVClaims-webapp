@@ -1,9 +1,10 @@
-import { MessageCircle, Send, X, Phone, Mail, Loader2 } from "lucide-react";
+import { MessageCircle, Send, X, Phone, Mail, Loader2, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useLanguage } from "@/hooks/use-language";
 import { useState, useRef, useEffect } from "react";
 import { Label } from "@/components/ui/label";
+import logoWhite from "@assets/white logo_1757446520527.png";
 
 interface Message {
   role: 'user' | 'assistant';
@@ -215,10 +216,10 @@ export function ChatbotWidget() {
       {isOpen && (
         <div className="fixed bottom-4 right-4 w-[400px] h-[600px] bg-white rounded-lg shadow-2xl flex flex-col z-[1000] border border-gray-200">
           {/* Header */}
-          <div className="bg-gradient-to-r from-primary to-primary/90 text-white p-4 rounded-t-lg flex items-center justify-between">
+          <div className="bg-primary text-white p-4 rounded-t-lg flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
-                <MessageCircle size={20} />
+              <div className="w-10 h-10 flex items-center justify-center">
+                <img src={logoWhite} alt="RV Claims" className="h-8 w-auto" />
               </div>
               <div>
                 <h3 className="font-semibold text-sm">RV Claims Assistant</h3>
@@ -227,15 +228,30 @@ export function ChatbotWidget() {
                 </p>
               </div>
             </div>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setIsOpen(false)}
-              className="text-white hover:bg-white/20 h-8 w-8 p-0"
-              data-testid="button-close-chat"
-            >
-              <X size={18} />
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  setMessages([]);
+                  setShowContactForm(false);
+                }}
+                className="text-white hover:bg-white/20 h-8 w-8 p-0"
+                data-testid="button-new-chat"
+                title={language === 'fr' ? 'Nouvelle conversation' : 'New chat'}
+              >
+                <RotateCcw size={16} />
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsOpen(false)}
+                className="text-white hover:bg-white/20 h-8 w-8 p-0"
+                data-testid="button-close-chat"
+              >
+                <X size={18} />
+              </Button>
+            </div>
           </div>
 
           {/* Messages */}
@@ -289,28 +305,28 @@ export function ChatbotWidget() {
                   className="text-xs bg-white border border-gray-200 hover:border-primary hover:text-primary rounded-lg px-3 py-2 transition-colors"
                   data-testid="button-quick-pricing"
                 >
-                  {language === 'fr' ? '💰 Tarifs' : '💰 Pricing'}
+                  {language === 'fr' ? 'Tarifs' : 'Pricing'}
                 </button>
                 <button
                   onClick={() => handleQuickAction('services')}
                   className="text-xs bg-white border border-gray-200 hover:border-primary hover:text-primary rounded-lg px-3 py-2 transition-colors"
                   data-testid="button-quick-services"
                 >
-                  {language === 'fr' ? '🔧 Services' : '🔧 Services'}
+                  {language === 'fr' ? 'Services' : 'Services'}
                 </button>
                 <button
                   onClick={() => handleQuickAction('revenue')}
                   className="text-xs bg-white border border-gray-200 hover:border-primary hover:text-primary rounded-lg px-3 py-2 transition-colors"
                   data-testid="button-quick-revenue"
                 >
-                  {language === 'fr' ? '📈 Revenus' : '📈 Revenue'}
+                  {language === 'fr' ? 'Revenus' : 'Revenue'}
                 </button>
                 <button
                   onClick={() => handleQuickAction('contact')}
                   className="text-xs bg-white border border-gray-200 hover:border-primary hover:text-primary rounded-lg px-3 py-2 transition-colors"
                   data-testid="button-quick-contact"
                 >
-                  {language === 'fr' ? '📞 Contact' : '📞 Contact'}
+                  {language === 'fr' ? 'Contact' : 'Contact'}
                 </button>
               </div>
             </div>
