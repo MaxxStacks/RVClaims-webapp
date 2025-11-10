@@ -18,6 +18,7 @@ import { LanguageToggle } from "@/components/language-toggle";
 import { ChatbotWidget } from "@/components/chatbot-widget";
 import { CookieNotice } from "@/components/cookie-notice";
 import { NotificationBar } from "@/components/notification-bar";
+import { BackToTop } from "@/components/back-to-top";
 
 export default function Home() {
   return (
@@ -39,6 +40,7 @@ export default function Home() {
       <PartsSection />
       <ContactSection />
       <Footer />
+      <BackToTop />
       <ChatbotWidget />
       <CookieNotice />
     </div>
