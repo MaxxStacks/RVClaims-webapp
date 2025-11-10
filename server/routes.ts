@@ -4,6 +4,8 @@ import { storage } from "./storage";
 import { insertContactSchema, insertNetworkWaitlistSchema } from "@shared/schema";
 import { z } from "zod";
 import { sendWaitlistNotification, sendContactFormNotification } from "./email";
+import OpenAI from "openai";
+import { CHATBOT_SYSTEM_PROMPT } from "./chatbot-knowledge";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Contact form submission
@@ -92,6 +94,75 @@ export async function registerRoutes(app: Express): Promise<Server> {
         success: false, 
         message: "Failed to fetch waitlist" 
       });
+    }
+  });
+
+  // Chat endpoint with streaming
+  app.post("/api/chat", async (req, res) => {
+    try {
+      const { message, language = 'en', conversationHistory = [] } = req.body;
+
+      if (!message || typeof message !== 'string') {
+        return res.status(400).json({ 
+          success: false, 
+          message: "Message is required" 
+        });
+      }
+
+      const openai = new OpenAI({
+        apiKey: process.env.OPENAI_API_KEY,
+      });
+
+      // Set headers for streaming
+      res.setHeader('Content-Type', 'text/event-stream');
+      res.setHeader('Cache-Control', 'no-cache');
+      res.setHeader('Connection', 'keep-alive');
+
+      // Build conversation messages
+      const messages: OpenAI.Chat.ChatCompletionMessageParam[] = [
+        {
+          role: 'system',
+          content: CHATBOT_SYSTEM_PROMPT + `\n\nIMPORTANT: Respond in ${language === 'fr' ? 'French' : 'English'}.`
+        },
+        ...conversationHistory,
+        {
+          role: 'user',
+          content: message
+        }
+      ];
+
+      // Create streaming completion
+      const stream = await openai.chat.completions.create({
+        model: 'gpt-4o-mini',
+        messages,
+        stream: true,
+        temperature: 0.7,
+        max_tokens: 1000,
+      });
+
+      // Stream the response
+      for await (const chunk of stream) {
+        const content = chunk.choices[0]?.delta?.content || '';
+        if (content) {
+          res.write(`data: ${JSON.stringify({ content })}\n\n`);
+        }
+      }
+
+      res.write('data: [DONE]\n\n');
+      res.end();
+
+    } catch (error) {
+      console.error('Chat error:', error);
+      
+      if (!res.headersSent) {
+        res.status(500).json({ 
+          success: false, 
+          message: error instanceof Error ? error.message : "Failed to process chat message" 
+        });
+      } else {
+        res.write(`data: ${JSON.stringify({ error: 'An error occurred' })}\n\n`);
+        res.end();
+      }
     }
   });
 

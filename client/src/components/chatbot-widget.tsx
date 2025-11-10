@@ -1,224 +1,448 @@
-import { MessageCircle, Phone, Mail, MessageSquare, ArrowLeft, Users, FileText, HelpCircle, Calculator, DollarSign, Package, Shield, Briefcase, Headphones, Wallet } from "lucide-react";
+import { MessageCircle, Send, X, Phone, Mail, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 import { useLanguage } from "@/hooks/use-language";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
+import { Label } from "@/components/ui/label";
 
-type MainCategory = 'business' | 'support' | 'accounting';
-type Section = 'sales' | 'claims' | 'technical' | 'accountsPayable' | 'accountsReceivable' | 'parts' | 'extendedWarranty';
-
-interface CategoryInfo {
-  icon: React.ComponentType<any>;
-  key: MainCategory;
-  sections: Section[];
+interface Message {
+  role: 'user' | 'assistant';
+  content: string;
+  timestamp: Date;
 }
 
-interface SectionInfo {
-  icon: React.ComponentType<any>;
-  key: Section;
+interface ContactFormData {
+  dealershipName: string;
+  contactName: string;
+  email: string;
+  phone: string;
 }
 
 export function ChatbotWidget() {
   const { t, language } = useLanguage();
-  const [step, setStep] = useState<'categories' | 'sections' | 'contact'>('categories');
-  const [selectedCategory, setSelectedCategory] = useState<MainCategory | null>(null);
-  const [selectedSection, setSelectedSection] = useState<Section | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [inputValue, setInputValue] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [showContactForm, setShowContactForm] = useState(false);
+  const [contactForm, setContactForm] = useState<ContactFormData>({
+    dealershipName: '',
+    contactName: '',
+    email: '',
+    phone: ''
+  });
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  const categories: CategoryInfo[] = [
-    { icon: Briefcase, key: 'business', sections: ['sales', 'extendedWarranty'] },
-    { icon: Headphones, key: 'support', sections: ['claims', 'technical', 'parts'] },
-    { icon: Wallet, key: 'accounting', sections: ['accountsPayable', 'accountsReceivable'] }
-  ];
-
-  const sections: SectionInfo[] = [
-    { icon: Users, key: 'sales' },
-    { icon: Shield, key: 'extendedWarranty' },
-    { icon: FileText, key: 'claims' },
-    { icon: HelpCircle, key: 'technical' },
-    { icon: Package, key: 'parts' },
-    { icon: Calculator, key: 'accountsPayable' },
-    { icon: DollarSign, key: 'accountsReceivable' }
-  ];
-
-  const handleCategorySelect = (category: MainCategory) => {
-    setSelectedCategory(category);
-    setStep('sections');
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const handleSectionSelect = (section: Section) => {
-    setSelectedSection(section);
-    setStep('contact');
-  };
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
-  const handleBack = () => {
-    if (step === 'contact') {
-      setStep('sections');
-      setSelectedSection(null);
-    } else if (step === 'sections') {
-      setStep('categories');
-      setSelectedCategory(null);
+  useEffect(() => {
+    if (isOpen && messages.length === 0) {
+      // Welcome message
+      const welcomeMessage: Message = {
+        role: 'assistant',
+        content: language === 'fr' 
+          ? "Bonjour! Je suis l'assistant virtuel RV Claims. Je peux vous aider à comprendre nos services, nos prix et comment nous pouvons augmenter vos revenus de réclamations. Comment puis-je vous aider aujourd'hui?"
+          : "Hello! I'm the RV Claims virtual assistant. I can help you understand our services, pricing, and how we can increase your claim revenue. How can I help you today?",
+        timestamp: new Date()
+      };
+      setMessages([welcomeMessage]);
     }
-  };
+  }, [isOpen, language]);
 
-  const handleContactMethod = (method: 'phone' | 'email' | 'chat') => {
-    // This would integrate with actual contact systems
-    const contactInfo = {
-      phone: '(888) 245-3204',
-      email: 'support@rvclaims.ca',
-      chat: 'Live chat would open here'
+  const sendMessage = async (messageText?: string) => {
+    const textToSend = messageText || inputValue.trim();
+    if (!textToSend || isLoading) return;
+
+    const userMessage: Message = {
+      role: 'user',
+      content: textToSend,
+      timestamp: new Date()
     };
 
-    if (method === 'phone') {
-      window.open(`tel:${contactInfo.phone}`, '_self');
-    } else if (method === 'email') {
-      window.open(`mailto:${contactInfo.email}?subject=RV Claims Support - ${selectedSection}`, '_self');
-    } else {
-      // Chat functionality would be implemented here
-      alert(`${t('chatbot.contactMethods.chat')} - Integration with live chat system would happen here`);
+    setMessages(prev => [...prev, userMessage]);
+    setInputValue('');
+    setIsLoading(true);
+
+    try {
+      // Build conversation history for context
+      const conversationHistory = messages.map(msg => ({
+        role: msg.role,
+        content: msg.content
+      }));
+
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: textToSend,
+          language,
+          conversationHistory
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to get response');
+      }
+
+      const reader = response.body?.getReader();
+      const decoder = new TextDecoder();
+
+      if (!reader) {
+        throw new Error('No reader available');
+      }
+
+      let assistantMessage: Message = {
+        role: 'assistant',
+        content: '',
+        timestamp: new Date()
+      };
+
+      setMessages(prev => [...prev, assistantMessage]);
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        const chunk = decoder.decode(value);
+        const lines = chunk.split('\n');
+
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            const data = line.slice(6);
+            if (data === '[DONE]') {
+              setIsLoading(false);
+              continue;
+            }
+
+            try {
+              const parsed = JSON.parse(data);
+              if (parsed.content) {
+                assistantMessage.content += parsed.content;
+                setMessages(prev => {
+                  const newMessages = [...prev];
+                  newMessages[newMessages.length - 1] = { ...assistantMessage };
+                  return newMessages;
+                });
+              }
+            } catch (e) {
+              // Skip invalid JSON
+            }
+          }
+        }
+      }
+
+      setIsLoading(false);
+    } catch (error) {
+      console.error('Chat error:', error);
+      setIsLoading(false);
+      
+      const errorMessage: Message = {
+        role: 'assistant',
+        content: language === 'fr'
+          ? "Désolé, une erreur s'est produite. Veuillez réessayer ou nous contacter au (888) 245-3204."
+          : "Sorry, an error occurred. Please try again or contact us at (888) 245-3204.",
+        timestamp: new Date()
+      };
+
+      setMessages(prev => [...prev, errorMessage]);
     }
   };
 
-  const getCurrentSections = () => {
-    if (!selectedCategory) return [];
-    const category = categories.find(c => c.key === selectedCategory);
-    return sections.filter(s => category?.sections.includes(s.key));
+  const handleQuickAction = (action: string) => {
+    const quickMessages: Record<string, { en: string; fr: string }> = {
+      pricing: {
+        en: "What are your pricing plans?",
+        fr: "Quels sont vos plans tarifaires?"
+      },
+      services: {
+        en: "Tell me about your claims processing services",
+        fr: "Parlez-moi de vos services de traitement des réclamations"
+      },
+      revenue: {
+        en: "How can you help increase my claim revenue?",
+        fr: "Comment pouvez-vous m'aider à augmenter mes revenus de réclamations?"
+      },
+      contact: {
+        en: "I'd like to schedule a call",
+        fr: "Je voudrais planifier un appel"
+      }
+    };
+
+    const message = quickMessages[action]?.[language];
+    if (message) {
+      if (action === 'contact') {
+        setShowContactForm(true);
+      } else {
+        sendMessage(message);
+      }
+    }
+  };
+
+  const handleContactSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    const contactMessage = language === 'fr'
+      ? `Je voudrais être contacté. Nom de la concession: ${contactForm.dealershipName}, Contact: ${contactForm.contactName}, Email: ${contactForm.email}, Téléphone: ${contactForm.phone}`
+      : `I'd like to be contacted. Dealership: ${contactForm.dealershipName}, Contact: ${contactForm.contactName}, Email: ${contactForm.email}, Phone: ${contactForm.phone}`;
+    
+    await sendMessage(contactMessage);
+    setShowContactForm(false);
+    setContactForm({ dealershipName: '', contactName: '', email: '', phone: '' });
   };
 
   return (
-    <Dialog onOpenChange={() => { setStep('categories'); setSelectedCategory(null); setSelectedSection(null); }}>
-      <DialogTrigger asChild>
+    <>
+      {!isOpen && (
         <Button
           className="chatbot-widget"
+          onClick={() => setIsOpen(true)}
           data-testid="button-chatbot"
-          aria-label="Open support chat"
+          aria-label="Open chat"
         >
           <MessageCircle size={24} />
         </Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-lg">
-        <DialogHeader>
-          <DialogTitle className="text-xl font-semibold">
-            {step === 'categories' ? t('chatbot.title') : 
-             step === 'sections' ? t('chatbot.selectSection') :
-             t('chatbot.contactMethods.title')}
-          </DialogTitle>
-          <DialogDescription className="text-muted-foreground">
-            {step === 'categories' 
-              ? t('chatbot.description')
-              : step === 'sections'
-              ? t('chatbot.sectionDescription')
-              : t('chatbot.contactMethods.description').replace('{department}', selectedSection ? t(`chatbot.sections.${selectedSection}`) : '')
-            }
-          </DialogDescription>
-        </DialogHeader>
+      )}
 
-        {step === 'categories' ? (
-          <div className="space-y-3">
-            {categories.map(({ icon: Icon, key }) => (
-              <button
-                key={key}
-                onClick={() => handleCategorySelect(key)}
-                className="w-full flex items-center space-x-4 p-4 bg-accent hover:bg-accent/80 rounded-lg transition-colors text-left"
-                data-testid={`button-category-${key}`}
-              >
-                <Icon className="text-primary" size={24} />
-                <div>
-                  <p className="font-medium">{t(`chatbot.categories.${key}`)}</p>
-                  <p className="text-sm text-muted-foreground">
-                    {t(`chatbot.categoryDescriptions.${key}`)}
-                  </p>
-                </div>
-              </button>
-            ))}
-          </div>
-        ) : step === 'sections' ? (
-          <div className="space-y-4">
+      {isOpen && (
+        <div className="fixed bottom-4 right-4 w-[400px] h-[600px] bg-white rounded-lg shadow-2xl flex flex-col z-[1000] border border-gray-200">
+          {/* Header */}
+          <div className="bg-gradient-to-r from-primary to-primary/90 text-white p-4 rounded-t-lg flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+                <MessageCircle size={20} />
+              </div>
+              <div>
+                <h3 className="font-semibold text-sm">RV Claims Assistant</h3>
+                <p className="text-xs text-white/80">
+                  {language === 'fr' ? 'En ligne maintenant' : 'Online now'}
+                </p>
+              </div>
+            </div>
             <Button
               variant="ghost"
-              onClick={handleBack}
-              className="mb-2 text-muted-foreground hover:text-foreground"
-              data-testid="button-back"
+              size="sm"
+              onClick={() => setIsOpen(false)}
+              className="text-white hover:bg-white/20 h-8 w-8 p-0"
+              data-testid="button-close-chat"
             >
-              <ArrowLeft size={16} className="mr-2" />
-              {t('chatbot.backButton')}
+              <X size={18} />
             </Button>
-            <div className="space-y-3">
-              {getCurrentSections().map(({ icon: Icon, key }) => (
-                <button
-                  key={key}
-                  onClick={() => handleSectionSelect(key)}
-                  className="w-full flex items-center space-x-4 p-4 bg-accent hover:bg-accent/80 rounded-lg transition-colors text-left"
-                  data-testid={`button-section-${key}`}
+          </div>
+
+          {/* Messages */}
+          <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
+            {messages.map((msg, idx) => (
+              <div
+                key={idx}
+                className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+              >
+                <div
+                  className={`max-w-[80%] rounded-lg px-4 py-2 ${
+                    msg.role === 'user'
+                      ? 'bg-primary text-white'
+                      : 'bg-white text-gray-900 shadow-sm border border-gray-200'
+                  }`}
+                  data-testid={`message-${msg.role}-${idx}`}
                 >
-                  <Icon className="text-primary" size={24} />
-                  <div>
-                    <p className="font-medium">{t(`chatbot.sections.${key}`)}</p>
-                    <p className="text-sm text-muted-foreground">
-                      {t(`chatbot.sectionDescriptions.${key}`)}
-                    </p>
+                  <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                  <p className={`text-xs mt-1 ${msg.role === 'user' ? 'text-white/70' : 'text-gray-500'}`}>
+                    {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  </p>
+                </div>
+              </div>
+            ))}
+
+            {isLoading && (
+              <div className="flex justify-start">
+                <div className="bg-white text-gray-900 shadow-sm border border-gray-200 rounded-lg px-4 py-3">
+                  <div className="flex items-center gap-2">
+                    <Loader2 className="w-4 h-4 animate-spin text-primary" />
+                    <span className="text-sm text-gray-600">
+                      {language === 'fr' ? 'En train de taper...' : 'Typing...'}
+                    </span>
                   </div>
+                </div>
+              </div>
+            )}
+
+            <div ref={messagesEndRef} />
+          </div>
+
+          {/* Quick Actions */}
+          {messages.length === 1 && !isLoading && (
+            <div className="px-4 pb-2 bg-gray-50">
+              <p className="text-xs text-gray-600 mb-2">
+                {language === 'fr' ? 'Actions rapides:' : 'Quick actions:'}
+              </p>
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  onClick={() => handleQuickAction('pricing')}
+                  className="text-xs bg-white border border-gray-200 hover:border-primary hover:text-primary rounded-lg px-3 py-2 transition-colors"
+                  data-testid="button-quick-pricing"
+                >
+                  {language === 'fr' ? '💰 Tarifs' : '💰 Pricing'}
                 </button>
-              ))}
+                <button
+                  onClick={() => handleQuickAction('services')}
+                  className="text-xs bg-white border border-gray-200 hover:border-primary hover:text-primary rounded-lg px-3 py-2 transition-colors"
+                  data-testid="button-quick-services"
+                >
+                  {language === 'fr' ? '🔧 Services' : '🔧 Services'}
+                </button>
+                <button
+                  onClick={() => handleQuickAction('revenue')}
+                  className="text-xs bg-white border border-gray-200 hover:border-primary hover:text-primary rounded-lg px-3 py-2 transition-colors"
+                  data-testid="button-quick-revenue"
+                >
+                  {language === 'fr' ? '📈 Revenus' : '📈 Revenue'}
+                </button>
+                <button
+                  onClick={() => handleQuickAction('contact')}
+                  className="text-xs bg-white border border-gray-200 hover:border-primary hover:text-primary rounded-lg px-3 py-2 transition-colors"
+                  data-testid="button-quick-contact"
+                >
+                  {language === 'fr' ? '📞 Contact' : '📞 Contact'}
+                </button>
+              </div>
             </div>
-          </div>
-        ) : (
-          <div className="space-y-4">
-            <Button
-              variant="ghost"
-              onClick={handleBack}
-              className="mb-2 text-muted-foreground hover:text-foreground"
-              data-testid="button-back"
+          )}
+
+          {/* Contact Form */}
+          {showContactForm && (
+            <div className="px-4 pb-3 bg-white border-t border-gray-200">
+              <form onSubmit={handleContactSubmit} className="space-y-2">
+                <div>
+                  <Label htmlFor="dealership" className="text-xs">
+                    {language === 'fr' ? 'Concession' : 'Dealership'}
+                  </Label>
+                  <Input
+                    id="dealership"
+                    value={contactForm.dealershipName}
+                    onChange={(e) => setContactForm(prev => ({ ...prev, dealershipName: e.target.value }))}
+                    className="h-8 text-sm"
+                    required
+                    data-testid="input-contact-dealership"
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <Label htmlFor="contact-name" className="text-xs">
+                      {language === 'fr' ? 'Nom' : 'Name'}
+                    </Label>
+                    <Input
+                      id="contact-name"
+                      value={contactForm.contactName}
+                      onChange={(e) => setContactForm(prev => ({ ...prev, contactName: e.target.value }))}
+                      className="h-8 text-sm"
+                      required
+                      data-testid="input-contact-name"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="phone" className="text-xs">
+                      {language === 'fr' ? 'Téléphone' : 'Phone'}
+                    </Label>
+                    <Input
+                      id="phone"
+                      type="tel"
+                      value={contactForm.phone}
+                      onChange={(e) => setContactForm(prev => ({ ...prev, phone: e.target.value }))}
+                      className="h-8 text-sm"
+                      required
+                      data-testid="input-contact-phone"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <Label htmlFor="email" className="text-xs">Email</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    value={contactForm.email}
+                    onChange={(e) => setContactForm(prev => ({ ...prev, email: e.target.value }))}
+                    className="h-8 text-sm"
+                    required
+                    data-testid="input-contact-email"
+                  />
+                </div>
+                <div className="flex gap-2">
+                  <Button type="submit" size="sm" className="flex-1 h-8 text-xs" data-testid="button-submit-contact">
+                    {language === 'fr' ? 'Envoyer' : 'Submit'}
+                  </Button>
+                  <Button 
+                    type="button" 
+                    variant="outline" 
+                    size="sm" 
+                    className="h-8 text-xs"
+                    onClick={() => setShowContactForm(false)}
+                    data-testid="button-cancel-contact"
+                  >
+                    {language === 'fr' ? 'Annuler' : 'Cancel'}
+                  </Button>
+                </div>
+              </form>
+            </div>
+          )}
+
+          {/* Input */}
+          <div className="p-3 border-t border-gray-200 bg-white rounded-b-lg">
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                sendMessage();
+              }}
+              className="flex gap-2"
             >
-              <ArrowLeft size={16} className="mr-2" />
-              {t('chatbot.backButton')}
-            </Button>
-
-            <div className="space-y-3">
-              <button
-                onClick={() => handleContactMethod('phone')}
-                className="w-full flex items-center space-x-4 p-4 bg-accent hover:bg-accent/80 rounded-lg transition-colors text-left"
-                data-testid="button-contact-phone"
+              <Input
+                ref={inputRef}
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                placeholder={language === 'fr' ? 'Tapez votre message...' : 'Type your message...'}
+                disabled={isLoading}
+                className="flex-1 h-10"
+                data-testid="input-chat-message"
+              />
+              <Button
+                type="submit"
+                size="sm"
+                disabled={!inputValue.trim() || isLoading}
+                className="h-10 px-4"
+                data-testid="button-send-message"
               >
-                <Phone className="text-primary" size={20} />
-                <div>
-                  <p className="font-medium">{t('chatbot.contactMethods.phone')}</p>
-                  <p className="text-sm text-muted-foreground">
-                    (888) 245-3204 • {t('chatbot.phoneInfo')}
-                  </p>
-                </div>
-              </button>
-
-              <button
-                onClick={() => handleContactMethod('email')}
-                className="w-full flex items-center space-x-4 p-4 bg-accent hover:bg-accent/80 rounded-lg transition-colors text-left"
-                data-testid="button-contact-email"
+                <Send size={16} />
+              </Button>
+            </form>
+            
+            <div className="flex gap-3 mt-2 justify-center">
+              <a
+                href="tel:8882453204"
+                className="text-xs text-gray-600 hover:text-primary flex items-center gap-1"
+                data-testid="link-chat-phone"
               >
-                <Mail className="text-primary" size={20} />
-                <div>
-                  <p className="font-medium">{t('chatbot.contactMethods.email')}</p>
-                  <p className="text-sm text-muted-foreground">
-                    support@rvclaims.ca • {t('chatbot.emailInfo')}
-                  </p>
-                </div>
-              </button>
-
-              <button
-                onClick={() => handleContactMethod('chat')}
-                className="w-full flex items-center space-x-4 p-4 bg-accent hover:bg-accent/80 rounded-lg transition-colors text-left"
-                data-testid="button-contact-chat"
+                <Phone size={12} />
+                (888) 245-3204
+              </a>
+              <a
+                href="mailto:support@rvclaims.ca"
+                className="text-xs text-gray-600 hover:text-primary flex items-center gap-1"
+                data-testid="link-chat-email"
               >
-                <MessageSquare className="text-primary" size={20} />
-                <div>
-                  <p className="font-medium">{t('chatbot.contactMethods.chat')}</p>
-                  <p className="text-sm text-muted-foreground">
-                    {t('chatbot.chatInfo')}
-                  </p>
-                </div>
-              </button>
+                <Mail size={12} />
+                support@rvclaims.ca
+              </a>
             </div>
           </div>
-        )}
-      </DialogContent>
-    </Dialog>
+        </div>
+      )}
+    </>
   );
 }
