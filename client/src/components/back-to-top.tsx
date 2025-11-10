@@ -7,14 +7,17 @@ export function BackToTop() {
 
   useEffect(() => {
     const toggleVisibility = () => {
-      if (window.scrollY > 300) {
-        setIsVisible(true);
-      } else {
-        setIsVisible(false);
-      }
+      // Calculate if user is near bottom of page
+      const scrollPosition = window.scrollY + window.innerHeight;
+      const pageHeight = document.documentElement.scrollHeight;
+      const nearBottom = pageHeight - scrollPosition < 200; // Show when within 200px of bottom
+
+      setIsVisible(nearBottom);
     };
 
     window.addEventListener("scroll", toggleVisibility);
+    // Check on mount as well
+    toggleVisibility();
 
     return () => {
       window.removeEventListener("scroll", toggleVisibility);
