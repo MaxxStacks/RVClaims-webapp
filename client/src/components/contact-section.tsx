@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { TrendingUp, Shield, Clock, Quote } from "lucide-react";
+import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -70,46 +70,61 @@ export function ContactSection() {
   return (
     <section 
       id="contact" 
-      className="py-16 bg-gray-50"
+      className="py-20 bg-gradient-to-b from-white to-gray-50"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Hero Header */}
         <div className="text-center mb-12">
-          <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4" data-testid="text-contact-title">
+          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4" data-testid="text-contact-title">
             {t('contactSection.title')}
           </h2>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto" data-testid="text-contact-description">
+          <p className="text-xl text-gray-700 max-w-3xl mx-auto mb-8" data-testid="text-contact-description">
             {t('contactSection.description')}
           </p>
-        </div>
-
-        {/* Stats Bar */}
-        <div className="flex items-center justify-center gap-12 mb-10">
-          <div className="text-center">
-            <div className="text-4xl font-bold text-primary mb-1">
-              {t('contactSection.statsValue1')}
+          
+          {/* Stats */}
+          <div className="flex items-center justify-center gap-12 mb-6">
+            <div className="flex items-center gap-3">
+              <div className="text-3xl font-bold text-primary">
+                {t('contactSection.statsValue1')}
+              </div>
+              <div className="text-sm text-gray-600 text-left">
+                {t('contactSection.statsLabel1')}
+              </div>
             </div>
-            <div className="text-sm text-gray-600">
-              {t('contactSection.statsLabel1')}
+            <div className="flex items-center gap-3">
+              <div className="text-3xl font-bold text-primary">
+                {t('contactSection.statsValue2')}
+              </div>
+              <div className="text-sm text-gray-600 text-left">
+                {t('contactSection.statsLabel2')}
+              </div>
             </div>
           </div>
-          <div className="text-center">
-            <div className="text-4xl font-bold text-primary mb-1">
-              {t('contactSection.statsValue2')}
+
+          {/* Trust Indicators */}
+          <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-600">
+            <div className="flex items-center gap-2">
+              <Check className="text-primary" size={16} />
+              <span>{t('contactSection.trustBadge1')}</span>
             </div>
-            <div className="text-sm text-gray-600">
-              {t('contactSection.statsLabel2')}
+            <div className="flex items-center gap-2">
+              <Check className="text-primary" size={16} />
+              <span>{t('contactSection.trustBadge2')}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Check className="text-primary" size={16} />
+              <span>{t('contactSection.trustBadge3')}</span>
             </div>
           </div>
         </div>
 
-        {/* Full Width Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Left Column - Form */}
-          <div className="bg-white border border-gray-200 rounded-lg p-8">
-            <form onSubmit={handleSubmit} className="space-y-4" data-testid="form-contact">
+        {/* Hero Form */}
+        <div className="bg-white border-2 border-gray-200 rounded-xl p-8 shadow-lg max-w-3xl mx-auto">
+          <form onSubmit={handleSubmit} className="space-y-5" data-testid="form-contact">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div>
-                <Label htmlFor="dealershipName" className="text-sm font-medium mb-1.5 block">
+                <Label htmlFor="dealershipName" className="text-sm font-medium mb-2 block">
                   {t('contactSection.form.dealershipName')} *
                 </Label>
                 <Input
@@ -117,74 +132,79 @@ export function ContactSection() {
                   value={formData.dealershipName}
                   onChange={(e) => handleChange('dealershipName', e.target.value)}
                   required
+                  className="h-11"
                   data-testid="input-dealership-name"
                 />
               </div>
               
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="firstName" className="text-sm font-medium mb-1.5 block">
-                    {t('contactSection.form.firstName')} *
-                  </Label>
-                  <Input
-                    id="firstName"
-                    value={formData.firstName}
-                    onChange={(e) => handleChange('firstName', e.target.value)}
-                    required
-                    data-testid="input-first-name"
-                  />
-                </div>
-                
-                <div>
-                  <Label htmlFor="lastName" className="text-sm font-medium mb-1.5 block">
-                    {t('contactSection.form.lastName')} *
-                  </Label>
-                  <Input
-                    id="lastName"
-                    value={formData.lastName}
-                    onChange={(e) => handleChange('lastName', e.target.value)}
-                    required
-                    data-testid="input-last-name"
-                  />
-                </div>
+              <div>
+                <Label htmlFor="firstName" className="text-sm font-medium mb-2 block">
+                  {t('contactSection.form.firstName')} *
+                </Label>
+                <Input
+                  id="firstName"
+                  value={formData.firstName}
+                  onChange={(e) => handleChange('firstName', e.target.value)}
+                  required
+                  className="h-11"
+                  data-testid="input-first-name"
+                />
               </div>
+            </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="email" className="text-sm font-medium mb-1.5 block">
-                    {t('contactSection.form.email')} *
-                  </Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    value={formData.email}
-                    onChange={(e) => handleChange('email', e.target.value)}
-                    required
-                    data-testid="input-email"
-                  />
-                </div>
-                
-                <div>
-                  <Label htmlFor="phone" className="text-sm font-medium mb-1.5 block">
-                    {t('contactSection.form.phone')} *
-                  </Label>
-                  <Input
-                    id="phone"
-                    type="tel"
-                    value={formData.phone}
-                    onChange={(e) => handleChange('phone', e.target.value)}
-                    required
-                    data-testid="input-phone"
-                  />
-                </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div>
+                <Label htmlFor="lastName" className="text-sm font-medium mb-2 block">
+                  {t('contactSection.form.lastName')} *
+                </Label>
+                <Input
+                  id="lastName"
+                  value={formData.lastName}
+                  onChange={(e) => handleChange('lastName', e.target.value)}
+                  required
+                  className="h-11"
+                  data-testid="input-last-name"
+                />
               </div>
               
               <div>
-                <Label htmlFor="interest" className="text-sm font-medium mb-1.5 block">
+                <Label htmlFor="email" className="text-sm font-medium mb-2 block">
+                  {t('contactSection.form.email')} *
+                </Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) => handleChange('email', e.target.value)}
+                  required
+                  className="h-11"
+                  data-testid="input-email"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div>
+                <Label htmlFor="phone" className="text-sm font-medium mb-2 block">
+                  {t('contactSection.form.phone')} *
+                </Label>
+                <Input
+                  id="phone"
+                  type="tel"
+                  value={formData.phone}
+                  onChange={(e) => handleChange('phone', e.target.value)}
+                  required
+                  className="h-11"
+                  data-testid="input-phone"
+                />
+              </div>
+              
+              <div>
+                <Label htmlFor="interest" className="text-sm font-medium mb-2 block">
                   {t('contactSection.form.interestLabel')} *
                 </Label>
                 <Select value={formData.interest} onValueChange={(value) => handleChange('interest', value)} required>
-                  <SelectTrigger data-testid="select-interest">
+                  <SelectTrigger className="h-11" data-testid="select-interest">
                     <SelectValue placeholder={t('contactSection.form.interestPlaceholder')} />
                   </SelectTrigger>
                   <SelectContent>
@@ -203,95 +223,51 @@ export function ContactSection() {
                   </SelectContent>
                 </Select>
               </div>
-              
-              <div>
-                <Label htmlFor="message" className="text-sm font-medium mb-1.5 block">
-                  {t('contactSection.form.message')}
-                </Label>
-                <Textarea
-                  id="message"
-                  rows={3}
-                  value={formData.message}
-                  onChange={(e) => handleChange('message', e.target.value)}
-                  placeholder="Tell us about your dealership..."
-                  data-testid="input-message"
-                />
-              </div>
-              
-              <Button 
-                type="submit" 
-                className="w-full h-12 text-base font-semibold"
-                disabled={isSubmitting}
-                data-testid="button-submit-contact"
-              >
-                {isSubmitting 
-                  ? (language === 'en' ? 'Sending...' : 'Envoi...')
-                  : t('contactSection.form.submit')
-                }
-              </Button>
-            </form>
-          </div>
-
-          {/* Right Column - Trust Elements */}
-          <div className="space-y-6">
-            {/* Trust Badges */}
-            <div className="bg-white border border-gray-200 rounded-lg p-6">
-              <h3 className="text-lg font-bold text-gray-900 mb-4">Why Dealers Choose Us</h3>
-              <div className="space-y-4">
-                <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Clock className="text-primary" size={20} />
-                  </div>
-                  <div>
-                    <div className="font-semibold text-gray-900 mb-1">
-                      {t('contactSection.trustBadge1')}
-                    </div>
-                    <div className="text-sm text-gray-600">
-                      Fast, reliable communication when you need it
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <TrendingUp className="text-primary" size={20} />
-                  </div>
-                  <div>
-                    <div className="font-semibold text-gray-900 mb-1">
-                      {t('contactSection.trustBadge2')}
-                    </div>
-                    <div className="text-sm text-gray-600">
-                      99.1% approval rate protects your bottom line
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Shield className="text-primary" size={20} />
-                  </div>
-                  <div>
-                    <div className="font-semibold text-gray-900 mb-1">
-                      {t('contactSection.trustBadge3')}
-                    </div>
-                    <div className="text-sm text-gray-600">
-                      Your client relationships stay private
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
-
-            {/* Testimonial */}
-            <div className="bg-gray-900 rounded-lg p-6">
-              <Quote className="text-white/20 mb-3" size={32} />
-              <p className="text-white text-sm mb-4 italic leading-relaxed">
-                "{t('contactSection.testimonialQuote')}"
-              </p>
-              <div className="text-white/70 text-xs font-medium">
-                — {t('contactSection.testimonialAuthor')}
-              </div>
+            
+            <div>
+              <Label htmlFor="message" className="text-sm font-medium mb-2 block">
+                {t('contactSection.form.message')}
+              </Label>
+              <Textarea
+                id="message"
+                rows={3}
+                value={formData.message}
+                onChange={(e) => handleChange('message', e.target.value)}
+                placeholder="Tell us about your current claims volume and challenges..."
+                data-testid="input-message"
+              />
             </div>
+            
+            <Button 
+              type="submit" 
+              size="lg"
+              className="w-full h-14 text-lg font-semibold"
+              disabled={isSubmitting}
+              data-testid="button-submit-contact"
+            >
+              {isSubmitting 
+                ? (language === 'en' ? 'Sending...' : 'Envoi...')
+                : t('contactSection.form.submit')
+              }
+            </Button>
+
+            <p className="text-xs text-center text-gray-500 mt-4">
+              {language === 'en' 
+                ? "No commitment required. We'll analyze your current claims process and show you exactly where you're losing money."
+                : "Aucun engagement requis. Nous analyserons votre processus de réclamations actuel et vous montrerons exactement où vous perdez de l'argent."
+              }
+            </p>
+          </form>
+
+          {/* Testimonial */}
+          <div className="mt-8 pt-8 border-t border-gray-200 text-center">
+            <p className="text-gray-700 italic mb-2">
+              "{t('contactSection.testimonialQuote')}"
+            </p>
+            <p className="text-sm text-gray-600">
+              — {t('contactSection.testimonialAuthor')}
+            </p>
           </div>
         </div>
       </div>
