@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { useLanguage } from "@/hooks/use-language";
 import { useState, useRef, useEffect } from "react";
 import { Label } from "@/components/ui/label";
-import logoWhite from "@assets/white logo_1757446520527.png";
+import favicon from "@assets/rvclaims_favicon_1761203145358.png";
 
 interface Message {
   role: 'user' | 'assistant';
@@ -219,7 +219,7 @@ export function ChatbotWidget() {
           <div className="bg-primary text-white p-4 rounded-t-lg flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 flex items-center justify-center">
-                <img src={logoWhite} alt="RV Claims" className="h-8 w-auto" />
+                <img src={favicon} alt="RV Claims" className="h-10 w-10 object-contain" />
               </div>
               <div>
                 <h3 className="font-semibold text-sm">RV Claims Assistant</h3>
@@ -254,117 +254,42 @@ export function ChatbotWidget() {
             </div>
           </div>
 
-          {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
-            {messages.map((msg, idx) => (
-              <div
-                key={idx}
-                className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
-              >
-                <div
-                  className={`max-w-[80%] rounded-lg px-4 py-2 ${
-                    msg.role === 'user'
-                      ? 'bg-primary text-white'
-                      : 'bg-white text-gray-900 shadow-sm border border-gray-200'
-                  }`}
-                  data-testid={`message-${msg.role}-${idx}`}
-                >
-                  <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
-                  <p className={`text-xs mt-1 ${msg.role === 'user' ? 'text-white/70' : 'text-gray-500'}`}>
-                    {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                  </p>
-                </div>
-              </div>
-            ))}
-
-            {isLoading && (
-              <div className="flex justify-start">
-                <div className="bg-white text-gray-900 shadow-sm border border-gray-200 rounded-lg px-4 py-3">
-                  <div className="flex items-center gap-2">
-                    <Loader2 className="w-4 h-4 animate-spin text-primary" />
-                    <span className="text-sm text-gray-600">
-                      {language === 'fr' ? 'En train de taper...' : 'Typing...'}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            <div ref={messagesEndRef} />
-          </div>
-
-          {/* Quick Actions */}
-          {messages.length === 1 && !isLoading && (
-            <div className="px-4 pb-2 bg-gray-50">
-              <p className="text-xs text-gray-600 mb-2">
-                {language === 'fr' ? 'Actions rapides:' : 'Quick actions:'}
-              </p>
-              <div className="grid grid-cols-2 gap-2">
-                <button
-                  onClick={() => handleQuickAction('pricing')}
-                  className="text-xs bg-white border border-gray-200 hover:border-primary hover:text-primary rounded-lg px-3 py-2 transition-colors"
-                  data-testid="button-quick-pricing"
-                >
-                  {language === 'fr' ? 'Tarifs' : 'Pricing'}
-                </button>
-                <button
-                  onClick={() => handleQuickAction('services')}
-                  className="text-xs bg-white border border-gray-200 hover:border-primary hover:text-primary rounded-lg px-3 py-2 transition-colors"
-                  data-testid="button-quick-services"
-                >
-                  {language === 'fr' ? 'Services' : 'Services'}
-                </button>
-                <button
-                  onClick={() => handleQuickAction('revenue')}
-                  className="text-xs bg-white border border-gray-200 hover:border-primary hover:text-primary rounded-lg px-3 py-2 transition-colors"
-                  data-testid="button-quick-revenue"
-                >
-                  {language === 'fr' ? 'Revenus' : 'Revenue'}
-                </button>
-                <button
-                  onClick={() => handleQuickAction('contact')}
-                  className="text-xs bg-white border border-gray-200 hover:border-primary hover:text-primary rounded-lg px-3 py-2 transition-colors"
-                  data-testid="button-quick-contact"
-                >
-                  {language === 'fr' ? 'Contact' : 'Contact'}
-                </button>
-              </div>
-            </div>
-          )}
-
-          {/* Contact Form */}
-          {showContactForm && (
-            <div className="px-4 pb-3 bg-white border-t border-gray-200">
-              <form onSubmit={handleContactSubmit} className="space-y-2">
+          {/* Contact Form or Messages */}
+          {showContactForm ? (
+            <div className="flex-1 overflow-y-auto p-6 bg-gray-50 flex flex-col justify-center">
+              <h3 className="text-lg font-semibold mb-4 text-gray-900">
+                {language === 'fr' ? 'Demande de contact' : 'Contact Request'}
+              </h3>
+              <form onSubmit={handleContactSubmit} className="space-y-3">
                 <div>
-                  <Label htmlFor="dealership" className="text-xs">
+                  <Label htmlFor="dealership" className="text-sm font-medium">
                     {language === 'fr' ? 'Concession' : 'Dealership'}
                   </Label>
                   <Input
                     id="dealership"
                     value={contactForm.dealershipName}
                     onChange={(e) => setContactForm(prev => ({ ...prev, dealershipName: e.target.value }))}
-                    className="h-8 text-sm"
+                    className="h-10 mt-1"
                     required
                     data-testid="input-contact-dealership"
                   />
                 </div>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <Label htmlFor="contact-name" className="text-xs">
+                    <Label htmlFor="contact-name" className="text-sm font-medium">
                       {language === 'fr' ? 'Nom' : 'Name'}
                     </Label>
                     <Input
                       id="contact-name"
                       value={contactForm.contactName}
                       onChange={(e) => setContactForm(prev => ({ ...prev, contactName: e.target.value }))}
-                      className="h-8 text-sm"
+                      className="h-10 mt-1"
                       required
                       data-testid="input-contact-name"
                     />
                   </div>
                   <div>
-                    <Label htmlFor="phone" className="text-xs">
+                    <Label htmlFor="phone" className="text-sm font-medium">
                       {language === 'fr' ? 'Téléphone' : 'Phone'}
                     </Label>
                     <Input
@@ -372,33 +297,32 @@ export function ChatbotWidget() {
                       type="tel"
                       value={contactForm.phone}
                       onChange={(e) => setContactForm(prev => ({ ...prev, phone: e.target.value }))}
-                      className="h-8 text-sm"
+                      className="h-10 mt-1"
                       required
                       data-testid="input-contact-phone"
                     />
                   </div>
                 </div>
                 <div>
-                  <Label htmlFor="email" className="text-xs">Email</Label>
+                  <Label htmlFor="email" className="text-sm font-medium">Email</Label>
                   <Input
                     id="email"
                     type="email"
                     value={contactForm.email}
                     onChange={(e) => setContactForm(prev => ({ ...prev, email: e.target.value }))}
-                    className="h-8 text-sm"
+                    className="h-10 mt-1"
                     required
                     data-testid="input-contact-email"
                   />
                 </div>
-                <div className="flex gap-2">
-                  <Button type="submit" size="sm" className="flex-1 h-8 text-xs" data-testid="button-submit-contact">
+                <div className="flex gap-3 pt-2">
+                  <Button type="submit" size="default" className="flex-1" data-testid="button-submit-contact">
                     {language === 'fr' ? 'Envoyer' : 'Submit'}
                   </Button>
                   <Button 
                     type="button" 
                     variant="outline" 
-                    size="sm" 
-                    className="h-8 text-xs"
+                    size="default" 
                     onClick={() => setShowContactForm(false)}
                     data-testid="button-cancel-contact"
                   >
@@ -407,6 +331,86 @@ export function ChatbotWidget() {
                 </div>
               </form>
             </div>
+          ) : (
+            <>
+              {/* Messages */}
+              <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
+                {messages.map((msg, idx) => (
+                  <div
+                    key={idx}
+                    className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                  >
+                    <div
+                      className={`max-w-[80%] rounded-lg px-4 py-2 ${
+                        msg.role === 'user'
+                          ? 'bg-primary text-white'
+                          : 'bg-white text-gray-900 shadow-sm border border-gray-200'
+                      }`}
+                      data-testid={`message-${msg.role}-${idx}`}
+                    >
+                      <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                      <p className={`text-xs mt-1 ${msg.role === 'user' ? 'text-white/70' : 'text-gray-500'}`}>
+                        {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+
+                {isLoading && (
+                  <div className="flex justify-start">
+                    <div className="bg-white text-gray-900 shadow-sm border border-gray-200 rounded-lg px-4 py-3">
+                      <div className="flex items-center gap-2">
+                        <Loader2 className="w-4 h-4 animate-spin text-primary" />
+                        <span className="text-sm text-gray-600">
+                          {language === 'fr' ? 'En train de taper...' : 'Typing...'}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                <div ref={messagesEndRef} />
+              </div>
+
+              {/* Quick Actions */}
+              {messages.length === 1 && !isLoading && (
+                <div className="px-4 pb-2 bg-gray-50">
+                  <p className="text-xs text-gray-600 mb-2">
+                    {language === 'fr' ? 'Actions rapides:' : 'Quick actions:'}
+                  </p>
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      onClick={() => handleQuickAction('pricing')}
+                      className="text-xs bg-white border border-gray-200 hover:border-primary hover:text-primary rounded-lg px-3 py-2 transition-colors"
+                      data-testid="button-quick-pricing"
+                    >
+                      {language === 'fr' ? 'Tarifs' : 'Pricing'}
+                    </button>
+                    <button
+                      onClick={() => handleQuickAction('services')}
+                      className="text-xs bg-white border border-gray-200 hover:border-primary hover:text-primary rounded-lg px-3 py-2 transition-colors"
+                      data-testid="button-quick-services"
+                    >
+                      {language === 'fr' ? 'Services' : 'Services'}
+                    </button>
+                    <button
+                      onClick={() => handleQuickAction('revenue')}
+                      className="text-xs bg-white border border-gray-200 hover:border-primary hover:text-primary rounded-lg px-3 py-2 transition-colors"
+                      data-testid="button-quick-revenue"
+                    >
+                      {language === 'fr' ? 'Revenus' : 'Revenue'}
+                    </button>
+                    <button
+                      onClick={() => handleQuickAction('contact')}
+                      className="text-xs bg-white border border-gray-200 hover:border-primary hover:text-primary rounded-lg px-3 py-2 transition-colors"
+                      data-testid="button-quick-contact"
+                    >
+                      {language === 'fr' ? 'Contact' : 'Contact'}
+                    </button>
+                  </div>
+                </div>
+              )}
+            </>
           )}
 
           {/* Input */}
