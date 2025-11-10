@@ -72,12 +72,6 @@ export function ChatbotWidget() {
     setIsLoading(true);
 
     try {
-      // Build conversation history for context
-      const conversationHistory = messages.map(msg => ({
-        role: msg.role,
-        content: msg.content
-      }));
-
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: {
@@ -85,8 +79,7 @@ export function ChatbotWidget() {
         },
         body: JSON.stringify({
           message: textToSend,
-          language,
-          conversationHistory
+          language
         }),
       });
 
@@ -94,51 +87,17 @@ export function ChatbotWidget() {
         throw new Error('Failed to get response');
       }
 
-      const reader = response.body?.getReader();
-      const decoder = new TextDecoder();
+      const data = await response.json();
 
-      if (!reader) {
-        throw new Error('No reader available');
-      }
-
-      let assistantMessage: Message = {
-        role: 'assistant',
-        content: '',
-        timestamp: new Date()
-      };
-
-      setMessages(prev => [...prev, assistantMessage]);
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-
-        const chunk = decoder.decode(value);
-        const lines = chunk.split('\n');
-
-        for (const line of lines) {
-          if (line.startsWith('data: ')) {
-            const data = line.slice(6);
-            if (data === '[DONE]') {
-              setIsLoading(false);
-              continue;
-            }
-
-            try {
-              const parsed = JSON.parse(data);
-              if (parsed.content) {
-                assistantMessage.content += parsed.content;
-                setMessages(prev => {
-                  const newMessages = [...prev];
-                  newMessages[newMessages.length - 1] = { ...assistantMessage };
-                  return newMessages;
-                });
-              }
-            } catch (e) {
-              // Skip invalid JSON
-            }
-          }
-        }
+      if (data.success && data.response) {
+        const assistantMessage: Message = {
+          role: 'assistant',
+          content: data.response,
+          timestamp: new Date()
+        };
+        setMessages(prev => [...prev, assistantMessage]);
+      } else {
+        throw new Error('Invalid response format');
       }
 
       setIsLoading(false);
