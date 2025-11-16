@@ -115,7 +115,7 @@ export default function Pricing() {
     >
       <div className="bg-white">
         {/* Header Section */}
-        <div className="bg-gradient-to-b from-gray-50 to-white py-16 px-4 sm:px-6 lg:px-8">
+        <div className="bg-gray-50 py-16 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto text-center">
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
               Simple, Transparent Pricing
@@ -155,7 +155,7 @@ export default function Pricing() {
         {/* Annual Discount Banner */}
         {billingPeriod === 'annual' && (
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 mb-12">
-            <div className="bg-gradient-to-r from-primary to-primary/90 rounded-2xl shadow-xl p-8 text-center">
+            <div className="bg-primary rounded-2xl shadow-xl p-8 text-center">
               <div className="flex items-center justify-center gap-2 mb-3">
                 <Sparkles className="w-6 h-6 text-white" />
                 <h2 className="text-2xl md:text-3xl font-bold text-white">
@@ -323,7 +323,7 @@ export default function Pricing() {
 
         {/* FAQ or Trust Section */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <div className="bg-gradient-to-br from-primary/5 to-primary/10 rounded-2xl p-8 md:p-12 text-center">
+          <div className="bg-gray-50 rounded-2xl p-8 md:p-12 text-center">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
               Questions About Pricing?
             </h2>
