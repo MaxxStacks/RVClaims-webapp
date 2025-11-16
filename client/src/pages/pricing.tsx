@@ -150,8 +150,8 @@ export default function Pricing() {
                   Annual
                 </button>
               </div>
-              <span className="h-[18px] inline-flex items-center justify-center text-[10px] bg-primary text-white px-2 py-0.5 rounded font-semibold">
-                20% OFF
+              <span className="inline-flex items-center justify-center text-sm bg-primary text-white px-4 py-2 rounded-lg font-bold shadow-md">
+                20% OFF ANNUAL PLANS
               </span>
             </div>
           </div>
