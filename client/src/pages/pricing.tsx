@@ -2,9 +2,11 @@ import { PageLayout } from "@/components/page-layout";
 import { useLanguage } from "@/hooks/use-language";
 import { Check, Sparkles } from "lucide-react";
 import { Link } from "wouter";
+import { useState } from "react";
 
 export default function Pricing() {
   const { t } = useLanguage();
+  const [billingPeriod, setBillingPeriod] = useState<'monthly' | 'annual'>('monthly');
 
   const plans = [
     {
@@ -118,27 +120,55 @@ export default function Pricing() {
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
               Simple, Transparent Pricing
             </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
               Choose the perfect plan for your dealership. All plans include our industry-leading claims processing technology.
             </p>
+            
+            {/* Billing Period Switcher */}
+            <div className="inline-flex items-center bg-gray-100 rounded-lg p-1">
+              <button
+                onClick={() => setBillingPeriod('monthly')}
+                className={`px-6 py-2 rounded-md font-semibold transition-all duration-200 ${
+                  billingPeriod === 'monthly'
+                    ? 'bg-white text-gray-900 shadow-sm'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+                data-testid="button-billing-monthly"
+              >
+                Monthly
+              </button>
+              <button
+                onClick={() => setBillingPeriod('annual')}
+                className={`px-6 py-2 rounded-md font-semibold transition-all duration-200 ${
+                  billingPeriod === 'annual'
+                    ? 'bg-white text-gray-900 shadow-sm'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+                data-testid="button-billing-annual"
+              >
+                Annual
+              </button>
+            </div>
           </div>
         </div>
 
         {/* Annual Discount Banner */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 mb-12">
-          <div className="bg-gradient-to-r from-green-500 to-green-600 rounded-2xl shadow-xl p-8 text-center">
-            <div className="flex items-center justify-center gap-2 mb-3">
-              <Sparkles className="w-6 h-6 text-white" />
-              <h2 className="text-2xl md:text-3xl font-bold text-white">
-                Save 20% with Annual Billing
-              </h2>
-              <Sparkles className="w-6 h-6 text-white" />
+        {billingPeriod === 'annual' && (
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 mb-12">
+            <div className="bg-gradient-to-r from-primary to-primary/90 rounded-2xl shadow-xl p-8 text-center">
+              <div className="flex items-center justify-center gap-2 mb-3">
+                <Sparkles className="w-6 h-6 text-white" />
+                <h2 className="text-2xl md:text-3xl font-bold text-white">
+                  Save 20% with Annual Billing
+                </h2>
+                <Sparkles className="w-6 h-6 text-white" />
+              </div>
+              <p className="text-white text-lg opacity-95">
+                Lock in your rate and save hundreds with our annual payment option
+              </p>
             </div>
-            <p className="text-white text-lg opacity-95">
-              Lock in your rate and save hundreds with our annual payment option
-            </p>
           </div>
-        </div>
+        )}
 
         {/* Pricing Tables */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
@@ -177,19 +207,29 @@ export default function Pricing() {
                     <div className="mb-4">
                       <div className="flex items-baseline justify-center gap-2">
                         <span className="text-5xl font-bold text-gray-900">
-                          {plan.price}
+                          {billingPeriod === 'annual' ? plan.annualPrice : plan.price}
                         </span>
                         {plan.price !== "Custom" && (
-                          <span className="text-gray-600 text-lg">/month</span>
+                          <span className="text-gray-600 text-lg">
+                            /{billingPeriod === 'annual' ? 'year' : 'month'}
+                          </span>
                         )}
                       </div>
-                      {plan.annualPrice !== "Custom" && (
+                      {billingPeriod === 'monthly' && plan.annualPrice !== "Custom" && (
                         <div className="mt-2 text-sm">
                           <span className="text-gray-500">or </span>
-                          <span className="text-green-600 font-semibold">
+                          <span className="text-primary font-semibold">
                             {plan.annualPrice}/year
                           </span>
                           <span className="text-gray-500"> (save 20%)</span>
+                        </div>
+                      )}
+                      {billingPeriod === 'annual' && plan.price !== "Custom" && (
+                        <div className="mt-2 text-sm">
+                          <span className="text-primary font-semibold">
+                            20% savings
+                          </span>
+                          <span className="text-gray-500"> vs monthly billing</span>
                         </div>
                       )}
                     </div>
@@ -199,7 +239,7 @@ export default function Pricing() {
                   <ul className="space-y-3 mb-8">
                     {plan.features.map((feature, fIndex) => (
                       <li key={fIndex} className="flex items-start gap-3">
-                        <Check className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+                        <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
                         <span className="text-gray-700 text-sm">{feature}</span>
                       </li>
                     ))}
