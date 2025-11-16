@@ -125,29 +125,34 @@ export default function Pricing() {
             </p>
             
             {/* Billing Period Switcher */}
-            <div className="inline-flex items-center bg-gray-100 rounded-lg p-1">
-              <button
-                onClick={() => setBillingPeriod('monthly')}
-                className={`px-6 py-2 rounded-md font-semibold transition-all duration-200 ${
-                  billingPeriod === 'monthly'
-                    ? 'bg-white text-gray-900 shadow-sm'
-                    : 'text-gray-600 hover:text-gray-900'
-                }`}
-                data-testid="button-billing-monthly"
-              >
-                Monthly
-              </button>
-              <button
-                onClick={() => setBillingPeriod('annual')}
-                className={`px-6 py-2 rounded-md font-semibold transition-all duration-200 ${
-                  billingPeriod === 'annual'
-                    ? 'bg-white text-gray-900 shadow-sm'
-                    : 'text-gray-600 hover:text-gray-900'
-                }`}
-                data-testid="button-billing-annual"
-              >
-                Annual
-              </button>
+            <div className="inline-flex items-center gap-3">
+              <div className="inline-flex items-center bg-gray-100 rounded-lg p-1">
+                <button
+                  onClick={() => setBillingPeriod('monthly')}
+                  className={`px-6 py-2 rounded-md font-semibold transition-all duration-200 ${
+                    billingPeriod === 'monthly'
+                      ? 'bg-white text-gray-900 shadow-sm'
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                  data-testid="button-billing-monthly"
+                >
+                  Monthly
+                </button>
+                <button
+                  onClick={() => setBillingPeriod('annual')}
+                  className={`px-6 py-2 rounded-md font-semibold transition-all duration-200 ${
+                    billingPeriod === 'annual'
+                      ? 'bg-white text-gray-900 shadow-sm'
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                  data-testid="button-billing-annual"
+                >
+                  Annual
+                </button>
+              </div>
+              <span className="h-[18px] inline-flex items-center justify-center text-[10px] bg-primary text-white px-2 py-0.5 rounded font-semibold">
+                20% OFF
+              </span>
             </div>
           </div>
         </div>
