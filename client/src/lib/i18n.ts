@@ -948,6 +948,102 @@ export const translations = {
         cta: "Lock In Lifetime Pricing",
         deadline: "Offer expires December 31st, 2025"
       }
+    },
+
+    // Pricing Page
+    pricingPage: {
+      title: "Simple, Transparent Pricing",
+      description: "Choose the perfect plan for your dealership. All plans include our industry-leading claims processing technology.",
+      billingToggle: {
+        monthly: "Monthly",
+        annual: "Annual",
+        discount: "20% OFF"
+      },
+      discountBanner: {
+        title: "Save 20% with Annual Billing",
+        description: "Lock in your rate and save hundreds with our annual payment option"
+      },
+      plans: {
+        starter: {
+          name: "Starter",
+          description: "Perfect for small dealerships starting their claims journey",
+          features: [
+            "Up to 50 claims per month",
+            "Basic claims processing",
+            "Email support",
+            "Standard reporting",
+            "Mobile app access",
+            "Basic integrations"
+          ],
+          cta: "Get Started"
+        },
+        professional: {
+          name: "Professional",
+          description: "Ideal for growing dealerships with higher volume needs",
+          features: [
+            "Up to 200 claims per month",
+            "A-Z claims processing",
+            "Priority phone & email support",
+            "Advanced analytics & reporting",
+            "Mobile app access",
+            "All manufacturer integrations",
+            "Dedicated account manager",
+            "Revenue optimization tools"
+          ],
+          cta: "Start Free Trial"
+        },
+        enterprise: {
+          name: "Enterprise",
+          description: "Tailored solutions for multi-location dealership groups",
+          features: [
+            "Unlimited claims processing",
+            "White-glove A-Z processing",
+            "24/7 priority support",
+            "Custom reporting & dashboards",
+            "Mobile app access",
+            "Full API access",
+            "Multi-location management",
+            "Custom integrations",
+            "Dedicated success team",
+            "On-site training available"
+          ],
+          cta: "Contact Sales"
+        }
+      },
+      badges: {
+        mostPopular: "Most Popular"
+      },
+      pricing: {
+        perMonth: "/month",
+        perYear: "/year",
+        or: "or",
+        save: "save",
+        savings: "savings",
+        vsBilling: "vs monthly billing"
+      },
+      addons: {
+        title: "Additional Services & Modules",
+        description: "Enhance your plan with powerful add-ons tailored to your business needs",
+        items: {
+          marketplace: {
+            name: "RV Marketplace Access",
+            description: "10 monthly listings, $0 processing fees, 0% commission"
+          },
+          auctions: {
+            name: "Live Auctions Access",
+            description: "Exclusive B2B wholesale auction platform"
+          }
+        },
+        perMonth: "per month",
+        additionalListings: "Each additional listing:",
+        cta: "Contact Sales for Custom Package"
+      },
+      faq: {
+        title: "Questions About Pricing?",
+        description: "Our team is here to help you find the perfect solution for your dealership's needs.",
+        ctaDemo: "Schedule a Demo",
+        ctaCall: "Call Us: (888) 245-3204"
+      }
     }
   },
 
@@ -1899,6 +1995,102 @@ export const translations = {
         additionalListings: "Chaque annonce supplémentaire : 49,99 $",
         cta: "Verrouiller le prix à vie",
         deadline: "L'offre expire le 31 décembre 2025"
+      }
+    },
+
+    // Pricing Page
+    pricingPage: {
+      title: "Tarification simple et transparente",
+      description: "Choisissez le forfait parfait pour votre concessionnaire. Tous les forfaits incluent notre technologie de traitement des réclamations de pointe.",
+      billingToggle: {
+        monthly: "Mensuel",
+        annual: "Annuel",
+        discount: "20% RABAIS"
+      },
+      discountBanner: {
+        title: "Économisez 20% avec la facturation annuelle",
+        description: "Verrouillez votre tarif et économisez des centaines avec notre option de paiement annuel"
+      },
+      plans: {
+        starter: {
+          name: "Débutant",
+          description: "Parfait pour les petits concessionnaires qui débutent leur parcours de réclamations",
+          features: [
+            "Jusqu'à 50 réclamations par mois",
+            "Traitement de base des réclamations",
+            "Support par courriel",
+            "Rapports standards",
+            "Accès à l'application mobile",
+            "Intégrations de base"
+          ],
+          cta: "Commencer"
+        },
+        professional: {
+          name: "Professionnel",
+          description: "Idéal pour les concessionnaires en croissance avec des besoins de volume plus élevés",
+          features: [
+            "Jusqu'à 200 réclamations par mois",
+            "Traitement de réclamations A-Z",
+            "Support prioritaire par téléphone et courriel",
+            "Analytiques et rapports avancés",
+            "Accès à l'application mobile",
+            "Toutes les intégrations de fabricants",
+            "Gestionnaire de compte dédié",
+            "Outils d'optimisation des revenus"
+          ],
+          cta: "Démarrer l'essai gratuit"
+        },
+        enterprise: {
+          name: "Entreprise",
+          description: "Solutions sur mesure pour les groupes de concessionnaires multi-sites",
+          features: [
+            "Traitement illimité des réclamations",
+            "Traitement A-Z gants blancs",
+            "Support prioritaire 24/7",
+            "Rapports et tableaux de bord personnalisés",
+            "Accès à l'application mobile",
+            "Accès API complet",
+            "Gestion multi-sites",
+            "Intégrations personnalisées",
+            "Équipe de succès dédiée",
+            "Formation sur site disponible"
+          ],
+          cta: "Contacter les ventes"
+        }
+      },
+      badges: {
+        mostPopular: "Plus populaire"
+      },
+      pricing: {
+        perMonth: "/mois",
+        perYear: "/an",
+        or: "ou",
+        save: "économisez",
+        savings: "économies",
+        vsBilling: "vs facturation mensuelle"
+      },
+      addons: {
+        title: "Services et modules supplémentaires",
+        description: "Améliorez votre forfait avec des modules puissants adaptés aux besoins de votre entreprise",
+        items: {
+          marketplace: {
+            name: "Accès au marché VR",
+            description: "10 annonces mensuelles, 0 $ de frais de traitement, 0 % de commission"
+          },
+          auctions: {
+            name: "Accès aux enchères en direct",
+            description: "Plateforme d'enchères de gros B2B exclusive"
+          }
+        },
+        perMonth: "par mois",
+        additionalListings: "Chaque annonce supplémentaire:",
+        cta: "Contacter les ventes pour un forfait personnalisé"
+      },
+      faq: {
+        title: "Questions sur la tarification?",
+        description: "Notre équipe est là pour vous aider à trouver la solution parfaite pour les besoins de votre concessionnaire.",
+        ctaDemo: "Planifier une démo",
+        ctaCall: "Appelez-nous: (888) 245-3204"
       }
     }
   }
