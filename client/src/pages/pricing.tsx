@@ -125,33 +125,31 @@ export default function Pricing() {
             </p>
             
             {/* Billing Period Switcher */}
-            <div className="inline-flex items-center gap-3">
-              <div className="inline-flex items-center bg-gray-100 rounded-lg p-1">
-                <button
-                  onClick={() => setBillingPeriod('monthly')}
-                  className={`px-6 py-2 rounded-md font-semibold transition-all duration-200 ${
-                    billingPeriod === 'monthly'
-                      ? 'bg-white text-gray-900 shadow-sm'
-                      : 'text-gray-600 hover:text-gray-900'
-                  }`}
-                  data-testid="button-billing-monthly"
-                >
-                  Monthly
-                </button>
-                <button
-                  onClick={() => setBillingPeriod('annual')}
-                  className={`px-6 py-2 rounded-md font-semibold transition-all duration-200 ${
-                    billingPeriod === 'annual'
-                      ? 'bg-white text-gray-900 shadow-sm'
-                      : 'text-gray-600 hover:text-gray-900'
-                  }`}
-                  data-testid="button-billing-annual"
-                >
-                  Annual
-                </button>
-              </div>
-              <span className="inline-flex items-center justify-center text-sm bg-primary text-white px-4 py-2 rounded-lg font-bold shadow-md">
-                20% OFF ANNUAL PLANS
+            <div className="inline-flex items-center bg-gray-100 rounded-lg p-1 gap-1">
+              <button
+                onClick={() => setBillingPeriod('monthly')}
+                className={`px-6 py-2 rounded-md font-semibold transition-all duration-200 ${
+                  billingPeriod === 'monthly'
+                    ? 'bg-white text-gray-900 shadow-sm'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+                data-testid="button-billing-monthly"
+              >
+                Monthly
+              </button>
+              <button
+                onClick={() => setBillingPeriod('annual')}
+                className={`px-6 py-2 rounded-md font-semibold transition-all duration-200 ${
+                  billingPeriod === 'annual'
+                    ? 'bg-white text-gray-900 shadow-sm'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+                data-testid="button-billing-annual"
+              >
+                Annual
+              </button>
+              <span className="inline-flex items-center justify-center text-xs bg-primary text-white px-3 py-1 rounded-md font-bold ml-1">
+                20% OFF
               </span>
             </div>
           </div>
