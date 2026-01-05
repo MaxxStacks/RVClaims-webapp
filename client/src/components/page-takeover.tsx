@@ -108,7 +108,7 @@ export function PageTakeover({
 
       {/* Modal Container */}
       <div
-        className={`relative bg-white rounded-lg max-w-4xl w-full overflow-hidden shadow-2xl transition-all duration-300 ease-out ${
+        className={`relative bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl transition-all duration-300 ease-out ${
           isVisible ? 'scale-100' : 'scale-95'
         }`}
         data-testid="page-takeover-modal"
@@ -116,11 +116,12 @@ export function PageTakeover({
         {/* Close Button */}
         <button
           onClick={handleClose}
-          className="absolute top-4 right-4 z-10 p-2 rounded-full bg-white/90 hover:bg-white text-gray-700 hover:text-gray-900 transition-all duration-200 shadow-md hover:shadow-lg"
+          className="absolute top-2 right-2 md:top-4 md:right-4 z-10 p-2 rounded-full bg-white/90 hover:bg-white text-gray-700 hover:text-gray-900 transition-all duration-200 shadow-md hover:shadow-lg"
           aria-label="Close popup"
           data-testid="button-close-takeover"
         >
-          <X size={24} />
+          <X size={20} className="md:hidden" />
+          <X size={24} className="hidden md:block" />
         </button>
 
         {/* Modal Content */}
@@ -135,48 +136,48 @@ export function SamplePromoContent() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-5">
       {/* Left Column - 60% */}
-      <div className="md:col-span-3 p-12">
+      <div className="md:col-span-3 p-6 md:p-12">
         {/* Badge */}
-        <div className="inline-block mb-6">
-          <span className="px-4 py-1.5 bg-primary/10 text-primary text-sm font-semibold rounded-full">
+        <div className="inline-block mb-4 md:mb-6">
+          <span className="px-3 md:px-4 py-1 md:py-1.5 bg-primary/10 text-primary text-xs md:text-sm font-semibold rounded-full">
             Limited Time Offer
           </span>
         </div>
 
         {/* Headline */}
-        <h2 className="text-3xl font-bold text-gray-900 mb-6">
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 md:mb-6">
           Spring RV Season Special
         </h2>
 
         {/* Bullet Points */}
-        <ul className="space-y-4 mb-8">
-          <li className="flex items-start text-lg text-gray-700">
-            <span className="text-primary mr-3 mt-1">✓</span>
+        <ul className="space-y-3 md:space-y-4 mb-6 md:mb-8">
+          <li className="flex items-start text-base md:text-lg text-gray-700">
+            <span className="text-primary mr-2 md:mr-3 mt-0.5 md:mt-1">✓</span>
             <span>Free claims assessment for all new clients</span>
           </li>
-          <li className="flex items-start text-lg text-gray-700">
-            <span className="text-primary mr-3 mt-1">✓</span>
+          <li className="flex items-start text-base md:text-lg text-gray-700">
+            <span className="text-primary mr-2 md:mr-3 mt-0.5 md:mt-1">✓</span>
             <span>Expert bilingual support in English & French</span>
           </li>
-          <li className="flex items-start text-lg text-gray-700">
-            <span className="text-primary mr-3 mt-1">✓</span>
+          <li className="flex items-start text-base md:text-lg text-gray-700">
+            <span className="text-primary mr-2 md:mr-3 mt-0.5 md:mt-1">✓</span>
             <span>90% authorization rate on warranty claims</span>
           </li>
         </ul>
 
         {/* CTA Button */}
-        <button className="w-full bg-primary text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-primary/90 transition-colors shadow-md hover:shadow-lg">
+        <button className="w-full bg-primary text-white px-6 md:px-8 py-3 md:py-4 rounded-lg font-semibold text-base md:text-lg hover:bg-primary/90 transition-colors shadow-md hover:shadow-lg">
           Get Started Today
         </button>
 
         {/* Fine Print */}
-        <p className="text-sm text-gray-500 mt-4 text-center">
+        <p className="text-xs md:text-sm text-gray-500 mt-3 md:mt-4 text-center">
           Offer valid until June 30, 2025. Terms and conditions apply.
         </p>
       </div>
 
-      {/* Right Column - 40% (Image) */}
-      <div className="md:col-span-2 relative min-h-[400px] md:min-h-0">
+      {/* Right Column - 40% (Image) - Hidden on mobile for better UX */}
+      <div className="hidden md:block md:col-span-2 relative">
         <img 
           src={toyHaulerImage} 
           alt="Modern Toy Hauler RV" 
