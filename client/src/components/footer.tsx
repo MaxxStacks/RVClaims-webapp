@@ -2,8 +2,8 @@ import { Phone, Mail, MapPin, Heart, Linkedin, Facebook, Youtube, Instagram, Twi
 import { useLanguage } from "@/hooks/use-language";
 import { ServiceBadge } from "@/components/service-badge";
 import { Link } from "wouter";
-import logoEN from "@assets/rvclaims_logo_en_1761203145359.png";
-import logoFR from "@assets/rvclaims_logo_fr_1761203145359.png";
+import logoEN from "@assets/Official_RVclaims_logo_en.png";
+import logoFR from "@assets/Official_RVclaims_logo_fr.png";
 
 export function Footer() {
   const { t, language } = useLanguage();
@@ -14,19 +14,10 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 mb-12">
           <div className="lg:col-span-2 space-y-4">
             <div className="mb-2" data-testid="div-footer-logo">
-              <img 
-                src={language === 'en' ? logoEN : logoFR} 
-                alt="RV Claims" 
-                className="h-auto w-full max-w-[340px]" 
-                style={{ 
-                  imageRendering: 'crisp-edges',
-                  WebkitFontSmoothing: 'antialiased',
-                  MozOsxFontSmoothing: 'grayscale',
-                  backfaceVisibility: 'hidden',
-                  transform: 'translateZ(0)',
-                  willChange: 'transform',
-                  filter: 'contrast(1.02)'
-                }}
+              <img
+                src={language === 'en' ? logoEN : logoFR}
+                alt="RV Claims"
+                style={{ height: "72px", width: "auto" }}
                 data-testid="img-footer-logo"
               />
             </div>

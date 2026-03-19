@@ -44,11 +44,10 @@ export function ChatbotWidget() {
   }, [messages]);
 
   useEffect(() => {
-    if (isOpen && messages.length === 0) {
-      // Welcome message
+    if (isOpen) {
       const welcomeMessage: Message = {
         role: 'assistant',
-        content: language === 'fr' 
+        content: language === 'fr'
           ? "Bonjour! Je suis l'assistant virtuel RV Claims. Je peux vous aider à comprendre nos services, nos prix et comment nous pouvons augmenter vos revenus de réclamations. Comment puis-je vous aider aujourd'hui?"
           : "Hello! I'm the RV Claims virtual assistant. I can help you understand our services, pricing, and how we can increase your claim revenue. How can I help you today?",
         timestamp: new Date()

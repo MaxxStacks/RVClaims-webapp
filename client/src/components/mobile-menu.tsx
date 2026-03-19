@@ -1,12 +1,12 @@
 import { useState, FormEvent } from "react";
-import { Menu, X, User, Building, Linkedin, Facebook, Youtube, Instagram, Twitter, ChevronRight, Search } from "lucide-react";
+import { Menu, X, Building, Linkedin, Facebook, Youtube, Instagram, Twitter, ChevronRight, Search } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { useLanguage } from "@/hooks/use-language";
 import { LanguageToggle } from "@/components/language-toggle";
 import { ServiceBadge } from "@/components/service-badge";
 import { useToast } from "@/hooks/use-toast";
-import logoEN from "@assets/rvclaims_logo_en_1761203145359.png";
-import logoFR from "@assets/rvclaims_logo_fr_1761203145359.png";
+import logoEN from "@assets/Official_RVclaims_logo_en.png";
+import logoFR from "@assets/Official_RVclaims_logo_fr.png";
 
 export function MobileMenu() {
   const [isOpen, setIsOpen] = useState(false);
@@ -110,19 +110,10 @@ export function MobileMenu() {
             <div className="px-4 sm:px-6">
               <div className="flex justify-between items-center py-3">
                 <Link href="/" onClick={closeMenu} className="flex items-center hover:opacity-90 transition-opacity">
-                  <img 
-                    src={language === 'en' ? logoEN : logoFR} 
-                    alt="RV Claims Canada" 
-                    className="h-16 w-auto max-w-[340px]" 
-                    style={{ 
-                      imageRendering: 'crisp-edges',
-                      WebkitFontSmoothing: 'antialiased',
-                      MozOsxFontSmoothing: 'grayscale',
-                      backfaceVisibility: 'hidden',
-                      transform: 'translateZ(0)',
-                      willChange: 'transform',
-                      filter: 'contrast(1.02)'
-                    }}
+                  <img
+                    src={language === 'en' ? logoEN : logoFR}
+                    alt="RV Claims Canada"
+                    style={{ height: "72px", width: "auto" }}
                   />
                 </Link>
               </div>
@@ -379,26 +370,15 @@ export function MobileMenu() {
               <h3 className="text-sm font-bold text-primary uppercase tracking-widest mb-0.5 text-left">{t('mobileMenu.loginHeading')}</h3>
               <p className="text-xs text-muted-foreground mb-3 text-left">{t('mobileMenu.loginSubtext')}</p>
               <div className="space-y-2">
-                <a
-                  href={`https://portal.rvclaims.ca/dealer/${language}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-white border-2 border-primary/20 text-primary rounded-lg font-semibold hover:bg-primary hover:text-white hover:border-primary transition-all duration-300 shadow-sm hover:shadow-lg group"
+                <Link
+                  href="/dealer"
+                  onClick={closeMenu}
+                  className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-primary text-white rounded-lg font-semibold hover:bg-primary/90 transition-all duration-300 shadow-md hover:shadow-xl group"
                   data-testid="button-dealer-login"
                 >
                   <Building className="group-hover:scale-110 transition-transform" size={20} />
                   <span>{t('mobileMenu.dealer')}</span>
-                </a>
-                <a
-                  href={`https://portal.rvclaims.ca/client/${language}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-primary text-white rounded-lg font-semibold hover:bg-primary/90 transition-all duration-300 shadow-md hover:shadow-xl group"
-                  data-testid="button-client-login"
-                >
-                  <User className="group-hover:scale-110 transition-transform" size={20} />
-                  <span>{t('mobileMenu.client')}</span>
-                </a>
+                </Link>
               </div>
             </div>
           </div>

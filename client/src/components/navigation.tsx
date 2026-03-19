@@ -5,8 +5,8 @@ import { ServiceBadge } from "@/components/service-badge";
 import { Link, useLocation } from "wouter";
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
-import logoEN from "@assets/rvclaims_logo_en_1761203145359.png";
-import logoFR from "@assets/rvclaims_logo_fr_1761203145359.png";
+import logoEN from "@assets/Official_RVclaims_logo_en.png";
+import logoFR from "@assets/Official_RVclaims_logo_fr.png";
 import travelTrailerIcon from "@assets/Travel Trailer_1756847838647.png";
 import fifthWheelIcon from "@assets/Fifth Wheel_1756847838645.png";
 import classCIcon from "@assets/Class C_1756847838644.png";
@@ -47,25 +47,16 @@ export function Navigation() {
               <img 
                 src={language === 'en' ? logoEN : logoFR} 
                 alt="RV Claims Canada" 
-                className="h-auto w-full max-w-[340px]" 
-                style={{ 
-                  imageRendering: 'crisp-edges',
-                  WebkitFontSmoothing: 'antialiased',
-                  MozOsxFontSmoothing: 'grayscale',
-                  backfaceVisibility: 'hidden',
-                  transform: 'translateZ(0)',
-                  willChange: 'transform',
-                  filter: 'contrast(1.02)'
-                }}
+                style={{ height: "72px", width: "auto" }}
                 data-testid="img-header-logo"
               />
             </Link>
-            <Link href="/network-marketplace">
-              <button 
+            <Link href="/signup">
+              <button
                 className="px-6 py-2.5 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-colors shadow-md hover:shadow-lg"
                 data-testid="button-sign-up"
               >
-                Sign Up
+                {t('navigation.signUp')}
               </button>
             </Link>
           </div>

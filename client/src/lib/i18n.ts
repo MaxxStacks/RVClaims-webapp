@@ -23,12 +23,13 @@ export const translations = {
       liveAuctions: "Live Auctions",
       liveAuctionsLaunchDate: "Auctions Go Live Jan 16-18, 2026!",
       searchPlaceholder: "Search...",
-      pricing: "Pricing"
+      pricing: "Pricing",
+      signUp: "Sign Up"
     },
 
     // Notification Bar
     notificationBar: {
-      message: "Sign up for the 2026 season before dec 31st 2025 and get 5% off claim fees, parts and services — limited-time offer for new clients!",
+      message: "Sign up for the 2026 season before April 30th 2026 and get 5% off claim fees, parts and services — limited-time offer for new clients!",
       learnMore: "Learn More"
     },
 
@@ -472,7 +473,7 @@ export const translations = {
       apiAccess: "API Access",
       systemStatus: "System Status",
       contactTitle: "Contact",
-      copyright: "© 2025 RV Claims. All rights reserved. Patent Pending Technology.",
+      copyright: "© 2026 RV Claims. All rights reserved. Patent Pending Technology.",
       privacyPolicy: "Privacy Policy",
       termsOfService: "Terms of Service",
       cookiePolicy: "Cookie Policy",
@@ -1044,6 +1045,142 @@ export const translations = {
         ctaDemo: "Schedule a Demo",
         ctaCall: "Call Us: (888) 245-3204"
       }
+    },
+
+    // Signup Page
+    signupPage: {
+      badge: "Join RV Claims Canada",
+      headline: "Your Complete Dealership Platform",
+      subheadline: "Everything your dealership needs to process claims, grow revenue, and serve customers — in one place.",
+      benefits: {
+        title: "What you get with RV Claims Canada",
+        items: [
+          "Full warranty claims processing: DAF, PDI, warranty & extended",
+          "FRC code management across all major manufacturers",
+          "Parts sourcing, ordering & inventory management",
+          "Finance & insurance product integration",
+          "Live auction access to wholesale RV inventory",
+          "RV marketplace with 0% commission listings",
+          "Roadside assistance coordination & tracking",
+          "Compliance tools, reporting & document management",
+          "Billing, invoicing & wallet management",
+          "Dedicated account support & onboarding"
+        ]
+      },
+      nextSteps: {
+        title: "What happens next",
+        steps: [
+          "Submit your dealership registration",
+          "Our team verifies & activates your account",
+          "Receive credentials & onboarding call",
+          "Go live — typically within 1 business day"
+        ]
+      },
+      manufacturersLabel: "Supported Manufacturers",
+      footer: "Powered by Dealer Suite 360 · Authorized Dealers Only",
+      formTitle: "Create Your Account",
+      formSubtitle: "Start your free 30-day trial — no credit card required",
+      fields: {
+        firstName: "First Name",
+        firstNamePlaceholder: "Jane",
+        lastName: "Last Name",
+        lastNamePlaceholder: "Smith",
+        email: "Email Address",
+        emailPlaceholder: "jane@yourdealership.com",
+        password: "Password",
+        passwordPlaceholder: "Min. 8 characters",
+        confirmPassword: "Confirm Password",
+        confirmPasswordPlaceholder: "Re-enter your password",
+        dealershipName: "Dealership Name",
+        dealershipNamePlaceholder: "Smith RV Centre",
+        dealershipEmail: "Dealership Email",
+        dealershipEmailPlaceholder: "info@smithrv.com",
+        dealershipPhone: "Dealership Phone (optional)",
+        dealershipPhonePlaceholder: "(555) 000-0000"
+      },
+      passwordMismatch: "Passwords do not match",
+      submit: "Create Account",
+      submitting: "Creating account…",
+      loginPrompt: "Already have an account?",
+      loginLink: "Sign in here",
+      termsNote: "By creating an account you agree to our",
+      termsLink: "Terms of Service",
+      privacyLink: "Privacy Policy",
+      encryption: "Secured with 256-bit encryption"
+    },
+
+    // Dealer Login Page
+    dealerLoginPage: {
+      headline: "Your Dealership. Every Service.",
+      subheadline: "Claims processing, parts, auctions, F&I, marketplace, roadside and more — the complete platform built for Canadian RV dealers.",
+      features: [
+        { text: "DAF, PDI, Warranty & Extended claims processing" },
+        { text: "FRC code management across all manufacturers" },
+        { text: "Parts sourcing, ordering & inventory tools" },
+        { text: "Finance & insurance product integration" },
+        { text: "Live auction access & RV marketplace listings" },
+        { text: "Roadside assistance coordination" },
+        { text: "Billing, invoicing & real-time status tracking" }
+      ],
+      manufacturersLabel: "Supported Manufacturers",
+      footer: "Powered by Dealer Suite 360",
+      badge: "Dealer Portal",
+      title: "Dealer Sign In",
+      subtitle: "Access your dealership account and services",
+      continueEmail: "Continue with Email",
+      continueGoogle: "Continue with Google",
+      continueLinkedIn: "Continue with LinkedIn",
+      orDivider: "or",
+      credentialsNote: "Use the credentials provided by your account manager or during signup.",
+      emailLabel: "Email Address",
+      emailPlaceholder: "you@dealership.com",
+      passwordLabel: "Password",
+      forgotPassword: "Forgot password?",
+      passwordPlaceholder: "Enter your password",
+      submit: "Sign In",
+      submitting: "Signing in…",
+      encryption: "Secured with 256-bit encryption",
+      operatorPrompt: "Operator?",
+      operatorLink: "Sign in here",
+      privacyPolicy: "Privacy Policy"
+    },
+
+    // Operator Login Page
+    operatorLoginPage: {
+      portalLabel: "Operations Portal",
+      headline: "Claims Command\nCentre",
+      subheadline: "Manage every claim, dealer, service and dollar across the entire Dealer Suite 360 platform.",
+      stats: {
+        claimsProcessed: "Claims Processed",
+        avgApprovalRate: "Avg. Approval Rate",
+        activeDealers: "Active Dealers",
+        manufacturers: "Manufacturers"
+      },
+      capabilities: [
+        "Full claims processing across all dealers & manufacturers",
+        "FRC code assignment, management & approval tracking",
+        "Photo review, quality flags & manufacturer communication",
+        "Parts orders, supplier management & inventory oversight",
+        "Billing, invoicing, subscriptions & wallet management",
+        "Dealer onboarding, user management & platform settings",
+        "Reporting, compliance tools & audit logs"
+      ],
+      footer: "© {year} RV Claims Canada · Dealer Suite 360 · Authorized Staff Only",
+      accessBadge: "Authorized Access Only",
+      title: "Operator Sign In",
+      subtitle: "Sign in to access the operations backend",
+      continueEmail: "Continue with Email",
+      warningText: "This portal is for RV Claims Canada staff only.\nUnauthorized access attempts are logged.",
+      emailLabel: "Email Address",
+      emailPlaceholder: "operator@rvclaims.ca",
+      passwordLabel: "Password",
+      passwordPlaceholder: "Enter your password",
+      submit: "Sign In",
+      submitting: "Signing in…",
+      encryption: "Secured with 256-bit encryption",
+      dealerPrompt: "Dealer login?",
+      dealerLink: "Sign in here",
+      privacyPolicy: "Privacy Policy"
     }
   },
 
@@ -1071,12 +1208,13 @@ export const translations = {
       liveAuctions: "Enchères en direct",
       liveAuctionsLaunchDate: "Enchères en ligne 16-18 jan 2026!",
       searchPlaceholder: "Rechercher...",
-      pricing: "Tarification"
+      pricing: "Tarification",
+      signUp: "S'inscrire"
     },
 
     // Notification Bar
     notificationBar: {
-      message: "Inscrivez-vous pour la saison 2026 avant le 31 déc 2025 et obtenez 5% de rabais sur les frais de réclamation, pièces et services — offre à durée limitée pour les nouveaux clients!",
+      message: "Inscrivez-vous pour la saison 2026 avant le 30 avril 2026 et obtenez 5% de rabais sur les frais de réclamation, pièces et services — offre à durée limitée pour les nouveaux clients!",
       learnMore: "En savoir plus"
     },
 
@@ -1520,7 +1658,7 @@ export const translations = {
       apiAccess: "Accès API",
       systemStatus: "État du système",
       contactTitle: "Contact",
-      copyright: "© 2025 RV Claims. Tous droits réservés. Technologie en instance de brevet.",
+      copyright: "© 2026 RV Claims. Tous droits réservés. Technologie en instance de brevet.",
       privacyPolicy: "Politique de confidentialité",
       termsOfService: "Conditions d'utilisation",
       cookiePolicy: "Politique des cookies",
@@ -2092,9 +2230,494 @@ export const translations = {
         ctaDemo: "Planifier une démo",
         ctaCall: "Appelez-nous: (888) 245-3204"
       }
+    },
+
+    // Signup Page (FR)
+    signupPage: {
+      badge: "Rejoignez RV Claims Canada",
+      headline: "Votre plateforme complète pour concessionnaires",
+      subheadline: "Tout ce dont votre concessionnaire a besoin pour traiter les réclamations, augmenter les revenus et servir vos clients — en un seul endroit.",
+      benefits: {
+        title: "Ce que vous obtenez avec RV Claims Canada",
+        items: [
+          "Traitement complet des réclamations : DAF, PDI, garantie et étendue",
+          "Gestion des codes FRC chez tous les grands fabricants",
+          "Approvisionnement, commande et gestion des pièces",
+          "Intégration des produits finance et assurance",
+          "Accès aux enchères en direct et inventaire VR en gros",
+          "Place de marché VR avec annonces à 0 % de commission",
+          "Coordination et suivi de l'assistance routière",
+          "Outils de conformité, rapports et gestion des documents",
+          "Facturation, gestion des portefeuilles et paiements",
+          "Soutien dédié à l'intégration et à la gestion de compte"
+        ]
+      },
+      nextSteps: {
+        title: "Ce qui se passe ensuite",
+        steps: [
+          "Soumettez votre inscription de concessionnaire",
+          "Notre équipe vérifie et active votre compte",
+          "Recevez vos identifiants et un appel d'intégration",
+          "Démarrez — généralement en moins d'un jour ouvrable"
+        ]
+      },
+      manufacturersLabel: "Fabricants pris en charge",
+      footer: "Propulsé par Dealer Suite 360 · Concessionnaires autorisés seulement",
+      formTitle: "Créez votre compte",
+      formSubtitle: "Commencez votre essai gratuit de 30 jours — aucune carte de crédit requise",
+      fields: {
+        firstName: "Prénom",
+        firstNamePlaceholder: "Jane",
+        lastName: "Nom de famille",
+        lastNamePlaceholder: "Smith",
+        email: "Adresse courriel",
+        emailPlaceholder: "jane@votreconcessionnaire.com",
+        password: "Mot de passe",
+        passwordPlaceholder: "Min. 8 caractères",
+        confirmPassword: "Confirmer le mot de passe",
+        confirmPasswordPlaceholder: "Saisissez à nouveau votre mot de passe",
+        dealershipName: "Nom du concessionnaire",
+        dealershipNamePlaceholder: "Centre VR Smith",
+        dealershipEmail: "Courriel du concessionnaire",
+        dealershipEmailPlaceholder: "info@smithvr.com",
+        dealershipPhone: "Téléphone du concessionnaire (optionnel)",
+        dealershipPhonePlaceholder: "(555) 000-0000"
+      },
+      passwordMismatch: "Les mots de passe ne correspondent pas",
+      submit: "Créer un compte",
+      submitting: "Création du compte…",
+      loginPrompt: "Vous avez déjà un compte?",
+      loginLink: "Connectez-vous ici",
+      termsNote: "En créant un compte, vous acceptez nos",
+      termsLink: "Conditions d'utilisation",
+      privacyLink: "Politique de confidentialité",
+      encryption: "Sécurisé avec un chiffrement 256 bits"
+    },
+
+    // Dealer Login Page (FR)
+    dealerLoginPage: {
+      headline: "Votre concessionnaire. Tous les services.",
+      subheadline: "Traitement des réclamations, pièces, enchères, F&A, place de marché, assistance routière et plus — la plateforme complète pour les concessionnaires VR canadiens.",
+      features: [
+        { text: "Traitement des réclamations DAF, PDI, garantie et étendue" },
+        { text: "Gestion des codes FRC chez tous les fabricants" },
+        { text: "Outils d'approvisionnement, commande et inventaire de pièces" },
+        { text: "Intégration des produits finance et assurance" },
+        { text: "Accès aux enchères en direct et annonces sur la place de marché VR" },
+        { text: "Coordination de l'assistance routière" },
+        { text: "Facturation, gestion des portefeuilles et suivi en temps réel" }
+      ],
+      manufacturersLabel: "Fabricants pris en charge",
+      footer: "Propulsé par Dealer Suite 360",
+      badge: "Portail concessionnaire",
+      title: "Connexion concessionnaire",
+      subtitle: "Accédez à votre compte et à vos services de concessionnaire",
+      continueEmail: "Continuer avec courriel",
+      continueGoogle: "Continuer avec Google",
+      continueLinkedIn: "Continuer avec LinkedIn",
+      orDivider: "ou",
+      credentialsNote: "Utilisez les identifiants fournis par votre gestionnaire de compte ou lors de l'inscription.",
+      emailLabel: "Adresse courriel",
+      emailPlaceholder: "vous@concessionnaire.com",
+      passwordLabel: "Mot de passe",
+      forgotPassword: "Mot de passe oublié?",
+      passwordPlaceholder: "Entrez votre mot de passe",
+      submit: "Se connecter",
+      submitting: "Connexion en cours…",
+      encryption: "Sécurisé avec un chiffrement 256 bits",
+      operatorPrompt: "Opérateur?",
+      operatorLink: "Connectez-vous ici",
+      privacyPolicy: "Politique de confidentialité"
+    },
+
+    // Operator Login Page (FR)
+    operatorLoginPage: {
+      portalLabel: "Portail des opérations",
+      headline: "Centre de commandement\ndes réclamations",
+      subheadline: "Gérez chaque réclamation, concessionnaire, service et transaction sur l'ensemble de la plateforme Dealer Suite 360.",
+      stats: {
+        claimsProcessed: "Réclamations traitées",
+        avgApprovalRate: "Taux d'approbation moy.",
+        activeDealers: "Concessionnaires actifs",
+        manufacturers: "Fabricants"
+      },
+      capabilities: [
+        "Traitement complet des réclamations pour tous les concessionnaires et fabricants",
+        "Attribution, gestion et suivi d'approbation des codes FRC",
+        "Révision des photos, signalements de qualité et communication fabricant",
+        "Commandes de pièces, gestion des fournisseurs et supervision des stocks",
+        "Facturation, abonnements et gestion des portefeuilles",
+        "Intégration des concessionnaires, gestion des utilisateurs et paramètres",
+        "Rapports, outils de conformité et journaux d'audit"
+      ],
+      footer: "© {year} RV Claims Canada · Dealer Suite 360 · Personnel autorisé seulement",
+      accessBadge: "Accès autorisé uniquement",
+      title: "Connexion opérateur",
+      subtitle: "Connectez-vous pour accéder à l'interface d'opérations",
+      continueEmail: "Continuer avec courriel",
+      warningText: "Ce portail est réservé au personnel de RV Claims Canada.\nLes tentatives d'accès non autorisées sont enregistrées.",
+      emailLabel: "Adresse courriel",
+      emailPlaceholder: "operateur@rvclaims.ca",
+      passwordLabel: "Mot de passe",
+      passwordPlaceholder: "Entrez votre mot de passe",
+      submit: "Se connecter",
+      submitting: "Connexion en cours…",
+      encryption: "Sécurisé avec un chiffrement 256 bits",
+      dealerPrompt: "Connexion concessionnaire?",
+      dealerLink: "Connectez-vous ici",
+      privacyPolicy: "Politique de confidentialité"
     }
   }
 };
 
 export type Language = keyof typeof translations;
 export type TranslationKey = keyof typeof translations.en;
+
+// ─── Portal DOM-walker i18n ───────────────────────────────────────────────────
+// Used by OperatorPortal, DealerPortal, CustomerPortal (monolithic DOM components)
+export const portalTranslations: Record<string, string> = {
+  'Overview': 'Aperçu',
+  'Claims': 'Réclamations',
+  'Units': 'Unités',
+  'Services': 'Services',
+  'Finance': 'Finances',
+  'Customers': 'Clients',
+  'Settings': 'Paramètres',
+  'Account': 'Compte',
+  'Extras': 'Extras',
+  'Service': 'Service',
+  'My RV': 'Mon VR',
+  'Dashboard': 'Tableau de bord',
+  'Processing Queue': 'File de traitement',
+  'All Claims': 'Toutes les réclamations',
+  'Stale Claims': 'Réclamations en retard',
+  'Dealer Management': 'Gestion des concessionnaires',
+  'Unit Inventory': 'Inventaire des unités',
+  'FRC Codes': 'Codes FRC',
+  'Service Marketplace': 'Marché de services',
+  'Financing Services': 'Services de financement',
+  'Financing': 'Financement',
+  'F&I Services': 'Services F&A',
+  'F&I Products': 'Produits F&A',
+  'Warranty Plans': 'Plans de garantie',
+  'Parts & Accessories': 'Pièces et accessoires',
+  'Parts Orders': 'Commandes de pièces',
+  'Billing & Invoices': 'Facturation',
+  'Invoices & Billing': 'Facturation',
+  'Products & Services': 'Produits et services',
+  'Revenue Reports': 'Rapports de revenus',
+  'Notifications': 'Notifications',
+  'Users & Roles': 'Utilisateurs et rôles',
+  'Changelog': 'Journal des modifications',
+  'Upload Photos': 'Télécharger des photos',
+  'My Claims': 'Mes réclamations',
+  'My Units': 'Mes unités',
+  'Customer Portal': 'Portail client',
+  'Customer Tickets': 'Tickets clients',
+  'Staff': 'Personnel',
+  'Branding & Domain': 'Image de marque',
+  's New': 'Nouveautés',
+  'My Unit': 'Mon unité',
+  'Warranty & Coverage': 'Garantie et couverture',
+  'Documents': 'Documents',
+  'Claim Status': 'Suivi des réclamations',
+  'Report an Issue': 'Signaler un problème',
+  'Protection Plans': 'Plans de protection',
+  'Roadside Assist': 'Assistance routière',
+  'Support Tickets': 'Tickets de support',
+  'Quick Chat': 'Chat rapide',
+  'Messages': 'Messages',
+  'Welcome back, Robert': 'Bon retour, Robert',
+  's RV Centre': "Smith's",
+  'Command Centre': 'Centre de commande',
+  'Dealership Portal': 'Portail concessionnaire',
+  'Save': 'Enregistrer',
+  'Cancel': 'Annuler',
+  'Edit': 'Modifier',
+  'View': 'Voir',
+  'Delete': 'Supprimer',
+  'Submit': 'Soumettre',
+  'Send': 'Envoyer',
+  'Reply': 'Répondre',
+  'Search': 'Rechercher',
+  'Reset': 'Réinitialiser',
+  'Pay Now': 'Payer maintenant',
+  'Track': 'Suivre',
+  'Download': 'Télécharger',
+  'Preview': 'Aperçu',
+  'Manage': 'Gérer',
+  'Resend': 'Renvoyer',
+  'Revoke': 'Révoquer',
+  'Save Profile': 'Enregistrer le profil',
+  "Save Branding": "Enregistrer l'image de marque",
+  'Save Changes': 'Enregistrer les modifications',
+  'Save Account': 'Enregistrer le compte',
+  'Save Preferences': 'Enregistrer les préférences',
+  'Update Password': 'Mettre à jour le mot de passe',
+  'Save & Send': 'Enregistrer et envoyer',
+  'Save Draft': 'Enregistrer le brouillon',
+  'Push to Claim →': 'Soumettre la réclamation →',
+  'Save as Draft': 'Enregistrer comme brouillon',
+  'Submit Request': 'Soumettre la demande',
+  'Submit Issue': 'Soumettre le problème',
+  'Submit Ticket': 'Soumettre le ticket',
+  'Send Reply': 'Envoyer la réponse',
+  "Send Invitation": "Envoyer l'invitation",
+  'Add Unit': 'Ajouter une unité',
+  'Submit Order': 'Soumettre la commande',
+  'Change Photo': 'Changer la photo',
+  'Upload Photo': 'Télécharger la photo',
+  'Message Dealer': 'Contacter le concessionnaire',
+  'View Documents': 'Voir les documents',
+  'View Details': 'Voir les détails',
+  'View Coverage': 'Voir la couverture',
+  'Learn More': 'En savoir plus',
+  'Notify Me When Available': 'Me notifier quand disponible',
+  'Create Support Ticket': 'Créer un ticket',
+  'Restore Defaults': 'Restaurer les défauts',
+  'Enable 2FA': 'Activer 2FA',
+  'Update Card': 'Mettre à jour la carte',
+  'Verify Domain': 'Vérifier le domaine',
+  'Attach Photo': 'Joindre une photo',
+  'Mark as Resolved': 'Marquer comme résolu',
+  'Talk to an Expert →': 'Parler à un expert →',
+  '+ Add Product / Service': '+ Ajouter un produit',
+  '+ New Ticket': '+ Nouveau ticket',
+  '+ Add Unit': '+ Ajouter une unité',
+  '+ Order Parts': '+ Commander des pièces',
+  '+ Add Request': '+ Ajouter une demande',
+  '+ Request Financing': '+ Demander un financement',
+  '+ Invite Customer': '+ Inviter un client',
+  '+ Add Staff': '+ Ajouter du personnel',
+  '+ Upload Document': '+ Télécharger un document',
+  'Claim': 'Réclamation',
+  'Claim #': 'Réclam. #',
+  'Dealer': 'Concessionnaire',
+  'Unit': 'Unité',
+  'Mfr': 'Fabricant',
+  'Type': 'Type',
+  'Status': 'Statut',
+  'Amount': 'Montant',
+  'Updated': 'Mis à jour',
+  'Submitted': 'Soumis',
+  'Action': 'Action',
+  'Items': 'Articles',
+  'Customer': 'Client',
+  'VIN': 'NIV',
+  'Stock #': '# Stock',
+  'Model': 'Modèle',
+  'Est. Value': 'Valeur est.',
+  'Est. Cost': 'Coût est.',
+  'ETA': 'Délai estimé',
+  'Price': 'Prix',
+  'Billing': 'Facturation',
+  'Tax': 'Taxe',
+  'Dealers': 'Concessionnaires',
+  'Priority': 'Priorité',
+  'Target': 'Cible',
+  'Name': 'Nom',
+  'Email': 'Courriel',
+  'Phone': 'Téléphone',
+  'Role': 'Rôle',
+  'Last Login': 'Dernière connexion',
+  'Invoice': 'Facture',
+  'Description': 'Description',
+  'Total': 'Total',
+  'Issued': 'Émis',
+  'Subject': 'Sujet',
+  'Category': 'Catégorie',
+  'Related': 'Lié à',
+  'Last Update': 'Dernière mise à jour',
+  'Requested By': 'Demandé par',
+  'Request': 'Demande',
+  'Document': 'Document',
+  'Date': 'Date',
+  'Provider': 'Fournisseur',
+  'Coverage': 'Couverture',
+  'Expiry': 'Expiration',
+  'Order': 'Commande',
+  'Best Rate': 'Meilleur taux',
+  'Issues': 'Problèmes',
+  'Photos': 'Photos',
+  'Qty': 'Qté',
+  'Quantity': 'Quantité',
+  'Active': 'Actif',
+  'Pending': 'En attente',
+  'Processing': 'En traitement',
+  'Completed': 'Terminé',
+  'Paid': 'Payé',
+  'Denied': 'Refusé',
+  'Shipped': 'Expédié',
+  'Delivered': 'Livré',
+  'Open': 'Ouvert',
+  'Resolved': 'Résolu',
+  'Closed': 'Fermé',
+  'Draft': 'Brouillon',
+  'Authorized': 'Autorisé',
+  'Waiting on Dealer': 'En attente du concessionnaire',
+  'Waiting on Customer': 'En attente du client',
+  'Action Needed': 'Action requise',
+  'Sourcing': 'En approvisionnement',
+  'Under Review': 'En révision',
+  'Planned': 'Planifié',
+  'Backlog': 'En attente',
+  'In Development': 'En développement',
+  'Shopping Lenders': 'Recherche de prêteurs',
+  'Recommending': 'En recommandation',
+  'Coming Soon': 'Bientôt disponible',
+  'Expiring': 'Expire bientôt',
+  'Claim Info': 'Info réclamation',
+  'Ticket Info': 'Info ticket',
+  'Linked Items': 'Éléments liés',
+  'Request Details': 'Détails de la demande',
+  'Your Dealer': 'Votre concessionnaire',
+  'Quick Actions': 'Actions rapides',
+  'Recent Claims': 'Réclamations récentes',
+  'Recent Activity': 'Activité récente',
+  'Claim Progress': 'Progression de la réclamation',
+  'Issues Found': 'Problèmes identifiés',
+  'Conversation': 'Conversation',
+  'Best Offer': 'Meilleure offre',
+  'Vehicle': 'Véhicule',
+  'Warranty': 'Garantie',
+  'Inspections': 'Inspections',
+  'Service History': 'Historique de service',
+  'Your Plan': 'Votre forfait',
+  'Fee Schedule': 'Barème de frais',
+  'Payment Method': 'Mode de paiement',
+  'Business Information': 'Informations commerciales',
+  'Address': 'Adresse',
+  'Primary Contact': 'Contact principal',
+  'Manufacturers': 'Fabricants',
+  'General Settings': 'Paramètres généraux',
+  'Claim Fee Defaults': 'Frais de réclamation par défaut',
+  'Billing Configuration': 'Configuration de facturation',
+  'Notification Settings': 'Paramètres de notifications',
+  'Integrations': 'Intégrations',
+  'Security': 'Sécurité',
+  'Security Settings': 'Paramètres de sécurité',
+  'My Profile': 'Mon profil',
+  'Dealership Account': 'Compte du concessionnaire',
+  'Subscription & Billing': 'Abonnement et facturation',
+  'Notification Preferences': 'Préférences de notifications',
+  'Current Release': 'Version actuelle',
+  'Past Updates': 'Mises à jour passées',
+  'Upcoming': 'À venir',
+  'Feature Requests': 'Demandes de fonctionnalités',
+  'Request a Feature': 'Demander une fonctionnalité',
+  'First Name': 'Prénom',
+  'Last Name': 'Nom',
+  'Password': 'Mot de passe',
+  'Current Password': 'Mot de passe actuel',
+  'New Password': 'Nouveau mot de passe',
+  'Confirm Password': 'Confirmer le mot de passe',
+  'Timezone': 'Fuseau horaire',
+  'Language': 'Langue',
+  'Select': 'Sélectionner',
+  'Select dealer...': 'Sélectionner un concessionnaire...',
+  'Select unit...': 'Sélectionner une unité...',
+  'Select item...': 'Sélectionner un article...',
+  'Search tickets...': 'Rechercher des tickets...',
+  'Search claims...': 'Rechercher des réclamations...',
+  'Search...': 'Rechercher...',
+  'Invoice Date': 'Date de facturation',
+  'Payment Due': 'Échéance de paiement',
+  'Notes / Terms': 'Notes / Conditions',
+  'Subtotal': 'Sous-total',
+  'Amount Due': 'Montant dû',
+  'Discount': 'Rabais',
+  'Operator': 'Opérateur',
+  'Owner': 'Propriétaire',
+  'Protect Your Investment': 'Protégez votre investissement',
+  'Roadside Assistance': 'Assistance routière',
+  's Covered': 'Ce qui est couvert',
+  'Structural': 'Structure',
+  'Plumbing': 'Plomberie',
+  'Electrical': 'Électrique',
+  'HVAC': 'CVC',
+  'Appliances': 'Appareils',
+  'Slide-Outs': 'Glissières',
+  'days remaining': 'jours restants',
+  'GAP Insurance': 'Assurance GAP',
+  'Paint & Fabric Protection': 'Protection peinture et tissu',
+  'New Features': 'Nouvelles fonctionnalités',
+  'Architecture': 'Architecture',
+  'Released': 'Publié',
+  'Claim / Warranty Issue': 'Réclamation / Garantie',
+  'Billing / Invoice Question': 'Question de facturation',
+  'Parts Order Inquiry': 'Demande de pièces',
+  'General Question': 'Question générale',
+  'Warranty Expiry / Renewal': 'Expiration / Renouvellement de garantie',
+  'F&I / Protection Plans': 'Plans F&A / Protection',
+  'Feedback / Complaint': 'Commentaire / Plainte',
+};
+
+export const reverseTranslations: Record<string, string> = {};
+for (const [k, v] of Object.entries(portalTranslations)) { reverseTranslations[v] = k; }
+
+export function translatePage(lang: 'en' | 'fr') {
+  const dict = lang === 'fr' ? portalTranslations : reverseTranslations;
+
+  // Nav items, labels, titles
+  document.querySelectorAll('.nav-item,.nav-label,.pn-t,.pn-a,.cd-section-h,.cd-label,.detail-title,.detail-meta,.header-title,.sc-l,.al-t,.al-d,.al-a,.act-t,.qb-t,.settings-link,.svc-title,.svc-desc,.fi-card-title,.fi-card-desc').forEach((el) => {
+    el.childNodes.forEach((n) => {
+      if (n.nodeType === 3 && n.textContent?.trim()) {
+        const t = n.textContent.trim();
+        if (dict[t]) n.textContent = n.textContent!.replace(t, dict[t]);
+      }
+    });
+  });
+
+  // Buttons
+  document.querySelectorAll('.btn,button,th').forEach((el) => {
+    if (el.children.length === 0 || (el.children.length === 1 && el.children[0].tagName === 'SVG')) {
+      const t = el.textContent?.trim() || '';
+      if (dict[t]) el.textContent = dict[t];
+    } else {
+      el.childNodes.forEach((n) => {
+        if (n.nodeType === 3 && n.textContent?.trim()) {
+          const t = n.textContent.trim();
+          if (dict[t]) n.textContent = n.textContent!.replace(t, dict[t]);
+        }
+      });
+    }
+  });
+
+  // Labels
+  document.querySelectorAll('label,.form-group label').forEach((el) => {
+    const t = el.textContent?.trim() || '';
+    if (dict[t]) el.textContent = dict[t];
+  });
+
+  // Status badges
+  document.querySelectorAll('.bg,.nb,.mfr,.sidebar-badge').forEach((el) => {
+    const t = el.textContent?.trim() || '';
+    if (dict[t]) el.textContent = dict[t];
+  });
+
+  // Placeholders
+  document.querySelectorAll('input[placeholder],textarea[placeholder]').forEach((el) => {
+    const t = (el as HTMLInputElement).getAttribute('placeholder') || '';
+    if (dict[t]) (el as HTMLInputElement).setAttribute('placeholder', dict[t]);
+  });
+
+  // Tabs (preserve count numbers)
+  document.querySelectorAll('.tab').forEach((el) => {
+    el.childNodes.forEach((n) => {
+      if (n.nodeType === 3 && n.textContent?.trim()) {
+        const t = n.textContent.trim().replace(/\s*\(\d+\)\s*/, '');
+        if (dict[t]) {
+          const num = n.textContent!.match(/\((\d+)\)/);
+          n.textContent = num ? ' ' + dict[t] + ' ' + num[0] : ' ' + dict[t] + ' ';
+        }
+      }
+    });
+  });
+}
+
+export function detectLanguage(): 'en' | 'fr' {
+  const saved = localStorage.getItem('ds360-lang');
+  if (saved === 'fr' || saved === 'en') return saved;
+  const nav = navigator.language || 'en';
+  return nav.toLowerCase().startsWith('fr') ? 'fr' : 'en';
+}

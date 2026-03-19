@@ -1,0 +1,176 @@
+/* portal-responsive.css — Mobile & Tablet Breakpoints
+   ADDITIVE ONLY — this file contains ONLY @media queries.
+   It does NOT override any desktop styles from portal.css.
+   Import this AFTER portal.css. */
+
+/* ==================== TABLET (768px - 1024px) ==================== */
+
+@media (max-width: 1024px) {
+  :root { --sidebar-w: 200px; }
+  .content { padding: 20px 24px; }
+  .header { padding: 0 24px; }
+  .sc { padding: 16px; }
+  .form-grid { grid-template-columns: 1fr 1fr; }
+}
+
+/* ==================== MOBILE (below 768px) ==================== */
+
+@media (max-width: 768px) {
+  :root { --sidebar-w: 0px; --header-h: 56px; }
+
+  /* Sidebar: off-screen by default, slides in when toggled */
+  .sidebar {
+    transform: translateX(-280px);
+    width: 280px;
+    transition: transform 0.25s ease;
+    z-index: 200;
+    box-shadow: none;
+  }
+  .sidebar.mobile-open {
+    transform: translateX(0);
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Mobile overlay when sidebar is open */
+  .mobile-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 199;
+  }
+  .mobile-overlay.active { display: block; }
+
+  /* Main content takes full width */
+  .main { margin-left: 0; }
+
+  /* Header adjustments */
+  .header { padding: 0 16px; gap: 8px; }
+  .header-title { font-size: 15px; }
+  .header-sub { display: none; }
+  .header-right { gap: 6px; }
+  .hbtn { width: 32px; height: 32px; border-radius: 6px; }
+
+  /* Mobile hamburger button (injected by JS) */
+  .mobile-menu-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #666;
+    flex-shrink: 0;
+  }
+  [data-theme="dark"] .mobile-menu-btn {
+    background: var(--bg-secondary);
+    border-color: var(--border);
+    color: var(--text-muted);
+  }
+
+  /* Lang/theme toggles compact */
+  .lang-toggle { height: 32px; }
+  .lang-btn-opt { padding: 0 8px; font-size: 10px; }
+  .theme-toggle { height: 32px; padding: 0 8px; }
+
+  /* Content area */
+  .content { padding: 16px; }
+
+  /* Stat cards: 2 columns on mobile */
+  .stats { grid-template-columns: 1fr 1fr !important; gap: 12px !important; }
+  .sc { padding: 14px; }
+  .sc-v { font-size: 20px; }
+  .sc-l { font-size: 10px; }
+
+  /* Panels */
+  .pn { border-radius: 8px; }
+
+  /* Tables: horizontal scroll */
+  .tw { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .tw table { min-width: 600px; }
+  th, td { padding: 10px 12px; font-size: 12px; white-space: nowrap; }
+
+  /* Form grids: single column */
+  .form-grid { grid-template-columns: 1fr !important; gap: 12px !important; padding: 16px !important; }
+  .form-group.full { grid-column: 1 !important; }
+
+  /* Detail pages */
+  .detail-header { flex-wrap: wrap; gap: 12px; }
+  .detail-title { font-size: 16px; }
+  .detail-meta { font-size: 11px; }
+
+  /* Claim detail sections */
+  .cd-section { border-radius: 8px; }
+  .cd-row { flex-direction: column; gap: 4px; }
+  .cd-label { min-width: auto; }
+
+  /* Tabs: scrollable on mobile */
+  .tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; flex-wrap: nowrap; }
+  .tab { white-space: nowrap; flex-shrink: 0; padding: 10px 14px; font-size: 12px; }
+
+  /* Quick buttons / action cards */
+  .qb { padding: 14px; }
+  .qb-t { font-size: 13px; }
+
+  /* Communication box */
+  .comm-box { max-height: 300px; }
+
+  /* Upload zone */
+  .upload-zone { padding: 24px 16px; }
+
+  /* Activity list */
+  .al { padding: 12px; }
+
+  /* Buttons */
+  .btn-bar { flex-wrap: wrap; gap: 8px; padding: 16px; }
+  .btn { font-size: 13px; padding: 9px 16px; }
+  .btn-sm { font-size: 11px; padding: 6px 10px; }
+
+  /* Filter bar */
+  .filter-bar { flex-wrap: wrap; gap: 8px; }
+  .filter-bar input, .filter-bar select { min-width: 120px; flex: 1; }
+
+  /* Settings page: stack sidebar */
+  .settings-layout { flex-direction: column !important; }
+  .settings-nav { flex-direction: row !important; overflow-x: auto; border-right: none !important; border-bottom: 1px solid #e5e7eb; padding: 0 !important; min-width: auto !important; }
+  .settings-link { white-space: nowrap; padding: 10px 14px !important; }
+
+  /* Service cards */
+  .svc-card { padding: 16px; }
+
+  /* Invoice builder */
+  .inv-top-bar { flex-direction: column !important; gap: 12px !important; }
+
+  /* Changelog */
+  .cltab, .dcltab { padding: 16px; }
+}
+
+/* ==================== SMALL MOBILE (below 480px) ==================== */
+
+@media (max-width: 480px) {
+  .stats { grid-template-columns: 1fr !important; }
+  .header-title { font-size: 14px; max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .tw table { min-width: 500px; }
+  .content { padding: 12px; }
+  .form-grid { padding: 12px !important; }
+  .btn-bar { padding: 12px; }
+
+  /* Customer portal: unit card full width */
+  .unit-card { flex-direction: column !important; }
+
+  /* Protection plans: stack cards */
+  .fi-cards { grid-template-columns: 1fr !important; }
+}
+
+/* ==================== PRINT STYLES ==================== */
+
+@media print {
+  .sidebar, .header, .mobile-menu-btn, .mobile-overlay,
+  .theme-toggle, .lang-toggle, .hbtn, .btn-bar { display: none !important; }
+  .main { margin-left: 0 !important; }
+  .content { padding: 0 !important; }
+  .pn { border: 1px solid #ddd !important; box-shadow: none !important; break-inside: avoid; }
+}

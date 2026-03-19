@@ -72,7 +72,7 @@ export default function NetworkMarketplace() {
             </p>
           </div>
           <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-            {(t('networkMarketplace.purpose.points') as string[]).map((point: string, index: number) => (
+            {(t('networkMarketplace.purpose.points') as unknown as string[]).map((point: string, index: number) => (
               <div 
                 key={index} 
                 className="flex items-start gap-3 p-4 rounded-lg bg-gray-50"
@@ -99,7 +99,7 @@ export default function NetworkMarketplace() {
             </h2>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {(t('networkMarketplace.sellingPerks.items') as any[]).map((item: any, index: number) => (
+            {(t('networkMarketplace.sellingPerks.items') as unknown as any[]).map((item: any, index: number) => (
               <div 
                 key={index}
                 className="bg-white p-6 rounded-lg border border-border hover:shadow-lg transition-shadow"
@@ -126,7 +126,7 @@ export default function NetworkMarketplace() {
             </h2>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {(t('networkMarketplace.buyingPerks.items') as any[]).map((item: any, index: number) => (
+            {(t('networkMarketplace.buyingPerks.items') as unknown as any[]).map((item: any, index: number) => (
               <div 
                 key={index}
                 className="bg-gray-50 p-6 rounded-lg border border-border hover:shadow-lg transition-shadow"
@@ -153,7 +153,7 @@ export default function NetworkMarketplace() {
             </h2>
           </div>
           <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {(t('networkMarketplace.exclusive.points') as string[]).map((point: string, index: number) => (
+            {(t('networkMarketplace.exclusive.points') as unknown as string[]).map((point: string, index: number) => (
               <div 
                 key={index}
                 className="bg-white p-6 rounded-lg border border-primary/20 text-center"
@@ -175,7 +175,7 @@ export default function NetworkMarketplace() {
             </h2>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {(t('networkMarketplace.valueDrivers.points') as string[]).map((point: string, index: number) => (
+            {(t('networkMarketplace.valueDrivers.points') as unknown as string[]).map((point: string, index: number) => (
               <div 
                 key={index}
                 className="flex items-start gap-3 p-4"
@@ -210,7 +210,7 @@ export default function NetworkMarketplace() {
           </div>
 
           <div className="grid md:grid-cols-4 gap-6 mb-12">
-            {(t('liveAuctions.types.categories') as any[]).map((category: any, index: number) => (
+            {(t('liveAuctions.types.categories') as unknown as any[]).map((category: any, index: number) => (
               <div 
                 key={index}
                 className="bg-white p-6 rounded-lg border-2 border-gray-200 hover:border-primary/50 transition-colors text-center"
