@@ -1,7 +1,7 @@
 // server/lib/stripe-escrow.ts — Stripe escrow for marketplace transactions
-// Uses PaymentIntent with capture_method: 'manual' for the $500 hold.
-// Hold → Authorize (funds reserved) → Capture (sale completes) or Cancel (released).
-// Separate charge for $250 commission on completed sales.
+// Uses PaymentIntent with capture_method: 'manual' for the $250 hold per unit.
+// Hold → Authorize (funds reserved) → Capture (sale completes, $250 deducted from purchase) or Cancel (released back to buyer).
+// Separate charge for $250 commission on completed sales (charged to seller).
 
 import Stripe from "stripe";
 import { db } from "../db";
@@ -12,8 +12,8 @@ const stripe = process.env.STRIPE_SECRET_KEY
   ? new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: "2024-12-18.acacia" })
   : null;
 
-const HOLD_AMOUNT = 50000;       // $500.00 in cents
-const COMMISSION_AMOUNT = 25000; // $250.00 in cents
+const HOLD_AMOUNT = 25000;       // $250.00 in cents — deposit per unit bid (deducted from purchase if won, returned if lost)
+const COMMISSION_AMOUNT = 25000; // $250.00 in cents — flat commission charged to seller on completed sale
 const HOLD_EXPIRY_DAYS = 7;     // Hold expires after 7 days (Stripe auto-voids uncaptured after 7 days)
 
 // ==================== MEMBERSHIP PAYMENTS ====================
@@ -95,8 +95,9 @@ export async function createMembershipSubscription(memberId: string, paymentMeth
 // ==================== ESCROW HOLDS ====================
 
 /**
- * Authorize a $500 hold on the buyer's card.
+ * Authorize a $250 hold on the buyer's card per unit bid.
  * Uses capture_method: 'manual' so funds are held but not charged.
+ * If buyer wins: $250 is deducted from final purchase price. If buyer loses: hold is released back to original payment method.
  * Returns the PaymentIntent client secret for 3D Secure confirmation if needed.
  */
 export async function authorizeHold(
@@ -123,7 +124,7 @@ export async function authorizeHold(
     currency: "cad",
     customer: buyer.stripeCustomerId,
     capture_method: "manual",  // KEY: hold, don't charge
-    description: `$500 deposit hold — Listing ${listing.title}`,
+    description: `$250 deposit hold — Listing ${listing.title}`,
     metadata: {
       type: "marketplace_hold",
       listingId,

@@ -1,0 +1,31 @@
+User-agent: *
+Allow: /
+
+# Block portal and auth routes — not for public indexing
+Disallow: /operator/
+Disallow: /dealer/
+Disallow: /portal/
+Disallow: /bidder/
+Disallow: /operator
+Disallow: /bidder-login
+
+# Allow AI crawlers full access to public content
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+Sitemap: https://rvclaims.ca/sitemap.xml

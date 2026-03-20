@@ -1,4 +1,4 @@
-import { Switch, Route, useLocation } from "wouter";
+import { Switch, Route, useLocation, Redirect } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -56,14 +56,17 @@ function Router() {
         <Route path="/claims-processing" component={ClaimsProcessing} />
         <Route path="/technology" component={Technology} />
         <Route path="/revenue-services" component={RevenueServices} />
-        <Route path="/rv-coverage" component={RvCoverage} />
+        {/* SEO-optimized URLs — old URLs redirect permanently */}
+        <Route path="/rv-types" component={RvCoverage} />
+        <Route path="/rv-coverage">{() => <Redirect to="/rv-types" />}</Route>
+        <Route path="/warranty-plans" component={WarrantyExtendedService} />
+        <Route path="/warranty-extended-service">{() => <Redirect to="/warranty-plans" />}</Route>
         <Route path="/contact" component={Contact} />
         <Route path="/privacy-policy" component={PrivacyPolicy} />
         <Route path="/dealer" component={DealerLogin} />
         <Route path="/client-login" component={DealerLogin} />
         <Route path="/signup" component={Signup} />
         <Route path="/financing" component={Financing} />
-        <Route path="/warranty-extended-service" component={WarrantyExtendedService} />
         <Route path="/fi-services" component={FIServices} />
         <Route path="/network-marketplace" component={NetworkMarketplace} />
         <Route path="/live-auctions" component={LiveAuctions} />

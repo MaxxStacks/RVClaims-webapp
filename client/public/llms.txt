@@ -1,0 +1,92 @@
+# RV Claims Canada
+> RV Claims Canada (rvclaims.ca) is the all-in-one dealership operating system for Canadian RV dealers. Powered by Dealer Suite 360.
+
+RV Claims Canada provides a comprehensive SaaS platform combining AI-powered warranty claims processing with a full suite of dealership revenue services including F&I, financing, parts management, a dealer-to-dealer network marketplace, and monthly live auctions open to the public.
+
+## Who We Serve
+- Canadian RV dealerships (primary audience)
+- RV dealers looking to outsource warranty claims processing
+- Dealers seeking to grow revenue through F&I, financing, and parts services
+- Dealers wanting to buy or sell RV inventory through a verified network marketplace
+- General public looking to purchase RVs at wholesale prices through live auctions
+
+## Core Services
+
+### Claims Processing (Live — Module 1)
+- A-Z Warranty Claims Processing: DAF (Dealer Authorization Form), PDI (Pre-Delivery Inspection), Warranty, Extended Warranty, Insurance
+- Supported manufacturers: Jayco, Forest River, Heartland, Columbia NW, Keystone, Midwest Auto
+- Covers all RV types: Travel Trailer, Fifth Wheel, Class A, Class C, Van Camper, Small Trailer, Pop Up, Toy Hauler, Truck Camper, Destination Trailer
+- AI-powered FRC code lookup, photo quality scoring, and claim readiness scoring
+- Patent-pending technology platform
+
+### Financial Services (Q2 2026)
+- Financing Services: lender integration, approval optimization, bilingual compliance
+- F&I (Finance & Insurance) Outsourcing: loan origination, GAP insurance, extended warranty sales
+- Warranty & Extended Service Plans: OEM and aftermarket plan management
+
+### Revenue Growth Services (Q3 2026)
+- Digital Marketing & Lead Generation
+- Parts & Accessories Management
+- Service Department Support
+- Customer Experience Technology
+- Trade-In & Consignment Programs
+
+### Marketplace & Auctions (Q3–Q4 2026)
+- Network Marketplace: dealer-to-dealer RV inventory listings, 24/7 access, $250 flat commission per unit sold, RV Claims acts as escrow
+- Live Auctions: monthly public auctions running 48 hours, bidder account required, $250 refundable deposit per unit bid (deducted from purchase price if won, returned if lost)
+
+### Consumer Direct Services (Q4 2026)
+- Roadside Assistance
+- Extended Warranty
+- RV Protection Packages
+
+## Pricing
+- Plan A: $349/month — core claims processing subscription
+- Plan B: $749/month — professional tier with expanded services
+- Marketplace Membership: $499/year
+- Live Auction Access: $99/month or $899/year
+- Network Marketplace Commission: $250 flat fee per completed unit sale
+- Live Auction Bidder Deposit: $250 per unit bid (fully refundable if not won)
+- Claim processing fees: available by contract and through dealer portal
+
+## Technology
+- AI-powered FRC Lookup Engine for manufacturer-specific repair codes
+- Photo Quality Gatekeeper for claim photo analysis
+- Claim Readiness Score (0–100% confidence before submission)
+- Document Scanner with OCR for correspondence
+- Denial Prediction engine based on historical claim patterns
+- Invoice Matcher for parts to claim lines
+- AI F&I Presenter (Tavus/D-ID video avatar)
+- Bilingual platform: English and French (Canadian)
+
+## Business Model
+- Two-sided SaaS platform: dealers subscribe, operator team delivers services
+- Revenue: monthly subscriptions + per-claim fees + marketplace commissions + auction fees + F&I referral fees + financing origination fees
+- Target market: ~7,400 RV dealerships across North America
+
+## Brand Architecture
+- RVClaims.ca — the dealer-facing brand (Canadian market)
+- Dealer Suite 360 — the underlying technology platform (North American expansion)
+
+## Contact
+- Phone: 888-443-2204
+- Website: https://rvclaims.ca
+- Location: Toronto, Ontario, Canada
+- Languages: English, French
+
+## Pages
+- / — Home
+- /about — About RV Claims Canada
+- /services — Full service ecosystem
+- /claims-processing — Claims processing detail (DAF, PDI, Warranty, Extended Warranty, Insurance)
+- /technology — Platform technology and AI features
+- /revenue-services — Dealer revenue growth services
+- /rv-types — RV types covered
+- /financing — Financing services
+- /warranty-plans — Warranty and extended service plans
+- /fi-services — F&I outsourcing services
+- /network-marketplace — Dealer-to-dealer RV marketplace
+- /live-auctions — Monthly public live auctions
+- /pricing — Full pricing
+- /contact — Contact and support
+- /signup — Dealer registration
