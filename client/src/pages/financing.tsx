@@ -71,10 +71,10 @@ export default function Financing() {
       <section className="py-20 bg-background">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
           <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
-            Ready to Boost Your Sales?
+            {t('financingPage.ctaTitle')}
           </h2>
           <p className="text-xl text-muted-foreground">
-            Connect with our financing experts to streamline your dealership's loan process.
+            {t('financingPage.ctaDescription')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/contact">
@@ -82,9 +82,9 @@ export default function Financing() {
                 {t('financingPage.cta')}
               </Button>
             </Link>
-            <a href="tel:8882453204">
+            <a href="tel:8884432204">
               <Button size="lg" variant="outline" className="w-full sm:w-auto" data-testid="button-call-financing">
-                Call (888) 245-3204
+                {t('financingPage.ctaCallButton')}
               </Button>
             </a>
           </div>

@@ -12,8 +12,8 @@ export default function Pricing() {
   const plans = [
     {
       name: t('pricingPage.plans.starter.name'),
-      price: "$299",
-      annualPrice: "$2,870",
+      price: "$349",
+      annualPrice: "$3,350",
       description: t('pricingPage.plans.starter.description'),
       features: translations[language].pricingPage.plans.starter.features,
       cta: t('pricingPage.plans.starter.cta'),
@@ -21,8 +21,8 @@ export default function Pricing() {
     },
     {
       name: t('pricingPage.plans.professional.name'),
-      price: "$599",
-      annualPrice: "$5,750",
+      price: "$749",
+      annualPrice: "$7,190",
       description: t('pricingPage.plans.professional.description'),
       features: translations[language].pricingPage.plans.professional.features,
       cta: t('pricingPage.plans.professional.cta'),
@@ -68,14 +68,14 @@ export default function Pricing() {
     },
     {
       name: t('pricingPage.addons.items.marketplace.name'),
-      price: "$399",
-      unit: t('pricingPage.addons.perMonth'),
+      price: "$499",
+      unit: "/year",
       description: t('pricingPage.addons.items.marketplace.description'),
       badge: "Q1 2026"
     },
     {
       name: t('pricingPage.addons.items.auctions.name'),
-      price: "$299",
+      price: "$99",
       unit: t('pricingPage.addons.perMonth'),
       description: t('pricingPage.addons.items.auctions.description'),
       badge: "Q3 2026"
@@ -316,7 +316,7 @@ export default function Pricing() {
                   {t('pricingPage.faq.ctaDemo')}
                 </button>
               </Link>
-              <a href="tel:8882453204">
+              <a href="tel:8884432204">
                 <button
                   className="bg-white text-gray-900 border-2 border-gray-900 px-8 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors"
                   data-testid="button-call-us"

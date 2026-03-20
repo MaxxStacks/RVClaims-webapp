@@ -1,68 +1,175 @@
 import { PageLayout } from "@/components/page-layout";
-import { PageHero } from "@/components/page-hero";
 import { useLanguage } from "@/hooks/use-language";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Link } from "wouter";
+import { CheckCircle, Shield, Zap, TrendingUp, Users, Globe, Award } from "lucide-react";
+
+const pillarIcons = [Shield, TrendingUp, Zap, Award, Users];
 
 export default function About() {
   const { t } = useLanguage();
 
+  const stats = [
+    { value: t('aboutPage.statValue1'), label: t('aboutPage.statLabel1') },
+    { value: t('aboutPage.statValue2'), label: t('aboutPage.statLabel2') },
+    { value: t('aboutPage.statValue3'), label: t('aboutPage.statLabel3') },
+    { value: t('aboutPage.statValue4'), label: t('aboutPage.statLabel4') },
+  ];
+
+  const pillars = [
+    { title: t('aboutPage.pillar1Title'), body: t('aboutPage.pillar1Body') },
+    { title: t('aboutPage.pillar2Title'), body: t('aboutPage.pillar2Body') },
+    { title: t('aboutPage.pillar3Title'), body: t('aboutPage.pillar3Body') },
+    { title: t('aboutPage.pillar4Title'), body: t('aboutPage.pillar4Body') },
+    { title: t('aboutPage.pillar5Title'), body: t('aboutPage.pillar5Body') },
+  ];
+
+  const whyPoints = [
+    t('aboutPage.why1'),
+    t('aboutPage.why2'),
+    t('aboutPage.why3'),
+    t('aboutPage.why4'),
+    t('aboutPage.why5'),
+    t('aboutPage.why6'),
+  ];
+
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    "name": "About RV Claims Canada",
+    "description": "RV Claims Canada is Canada's dealership operating system — combining AI-powered claims processing with financing, F&I, marketplace, and revenue growth services.",
+    "url": "https://rvclaims.ca/about"
+  };
+
   return (
     <PageLayout
-      seoTitle={t('aboutPage.title')}
-      seoDescription={t('aboutPage.description')}
-      seoKeywords="RV claims processing, Canadian RV dealers, warranty claims, 15 years experience, claims management"
+      seoTitle="About RV Claims Canada | Canada's Dealership Operating System"
+      seoDescription="RV Claims Canada is the all-in-one platform for Canadian RV dealerships. 15+ years of claims expertise, patent-pending AI technology, bilingual service across Canada."
+      seoKeywords="about RV Claims Canada, Canadian RV dealers, warranty claims platform, dealer operating system, Dealer Suite 360"
       canonical="/about"
+      schema={schema}
     >
-      <PageHero
-        badge={t('aboutPage.badge')}
-        title={t('aboutPage.title')}
-        description={t('aboutPage.description')}
-      />
-      
+      {/* Hero */}
+      <section className="pt-24 pb-16 bg-gradient-to-b from-primary/5 to-background">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-4xl mx-auto">
+            <Badge className="mb-6 border border-primary/20 px-3 py-1 text-xs" variant="outline">
+              {t('aboutPage.missionBadge')}
+            </Badge>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+              {t('aboutPage.missionTitle')}
+            </h1>
+            <p className="text-lg md:text-xl text-muted-foreground mb-10 max-w-3xl mx-auto">
+              {t('aboutPage.missionBody')}
+            </p>
+            <div className="flex flex-wrap gap-4 justify-center">
+              <Button size="lg" asChild>
+                <Link href="/signup">{t('aboutPage.ctaButton')}</Link>
+              </Button>
+              <Button size="lg" variant="outline" asChild>
+                <Link href="/pricing">{t('aboutPage.ctaSecondary')}</Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Stats Strip */}
+      <section className="py-12 bg-primary text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            {stats.map((stat, i) => (
+              <div key={i}>
+                <div className="text-3xl md:text-4xl font-bold mb-1">{stat.value}</div>
+                <div className="text-white/75 text-sm">{stat.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Platform Overview */}
       <section className="py-20 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              {t('aboutPage.storyTitle')}
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              {t('aboutPage.storyDescription')}
-            </p>
+          <div className="text-center mb-14">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">{t('aboutPage.platformTitle')}</h2>
+            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">{t('aboutPage.platformBody')}</p>
           </div>
-          
-          <div className="grid md:grid-cols-2 gap-12 items-center mb-20">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {pillars.map((pillar, i) => {
+              const Icon = pillarIcons[i];
+              return (
+                <div key={i} className="bg-card rounded-xl p-8 border border-border hover:border-primary/40 hover:shadow-lg transition-all duration-300">
+                  <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4">
+                    <Icon className="w-6 h-6 text-primary" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-3">{pillar.title}</h3>
+                  <p className="text-muted-foreground leading-relaxed">{pillar.body}</p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Why Choose Section */}
+      <section className="py-20 bg-muted/30">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
-              <h3 className="text-2xl font-semibold mb-6">{t('aboutPage.experienceTitle')}</h3>
-              <p className="text-muted-foreground mb-6 leading-relaxed">
-                {t('aboutPage.experienceDescription')}
-              </p>
-              <div className="grid grid-cols-3 gap-6">
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-primary mb-2">15+</div>
-                  <div className="text-sm text-muted-foreground">{t('aboutPage.yearsExperience')}</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-primary mb-2">95%</div>
-                  <div className="text-sm text-muted-foreground">{t('aboutPage.approvalRate')}</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-primary mb-2">30%</div>
-                  <div className="text-sm text-muted-foreground">{t('aboutPage.revenueIncrease')}</div>
-                </div>
-              </div>
-            </div>
-            <div className="bg-muted/30 rounded-xl p-8">
-              <h4 className="text-xl font-semibold mb-4">{t('aboutPage.locationTitle')}</h4>
+              <h2 className="text-3xl md:text-4xl font-bold mb-8">{t('aboutPage.whyTitle')}</h2>
               <div className="space-y-4">
-                <div>
-                  <h5 className="font-medium">{t('aboutPage.headquarters')}</h5>
-                  <p className="text-muted-foreground">Toronto, Ontario, Canada</p>
-                </div>
-                <div>
-                  <h5 className="font-medium">{t('aboutPage.development')}</h5>
-                  <p className="text-muted-foreground">Montreal, Quebec, Canada</p>
-                </div>
+                {whyPoints.map((point, i) => (
+                  <div key={i} className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                    <p className="text-foreground">{point}</p>
+                  </div>
+                ))}
               </div>
             </div>
+            <div className="bg-card rounded-2xl p-10 border border-border">
+              <blockquote className="text-lg md:text-xl font-semibold italic text-foreground mb-6 leading-relaxed">
+                "{t('aboutPage.founderQuote')}"
+              </blockquote>
+              <p className="text-muted-foreground font-medium">— {t('aboutPage.founderAttribution')}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Team Section */}
+      <section className="py-20 bg-background">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-3xl mx-auto text-center">
+            <Globe className="w-12 h-12 text-primary mx-auto mb-6" />
+            <h2 className="text-3xl font-bold mb-4">{t('aboutPage.teamTitle')}</h2>
+            <p className="text-lg text-muted-foreground mb-10">{t('aboutPage.teamBody')}</p>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="bg-card rounded-xl p-6 border border-border text-center">
+                <p className="font-semibold">{t('aboutPage.headquarters')}</p>
+                <p className="text-muted-foreground text-sm mt-1">Toronto, Ontario, Canada</p>
+              </div>
+              <div className="bg-card rounded-xl p-6 border border-border text-center">
+                <p className="font-semibold">{t('aboutPage.development')}</p>
+                <p className="text-muted-foreground text-sm mt-1">Montreal, Quebec, Canada</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-20 bg-primary text-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">{t('aboutPage.ctaHeading')}</h2>
+          <div className="flex flex-wrap gap-4 justify-center mt-8">
+            <Button size="lg" variant="secondary" asChild>
+              <Link href="/contact">{t('aboutPage.ctaButton')}</Link>
+            </Button>
+            <Button size="lg" variant="outline" className="bg-transparent border-white text-white hover:bg-white hover:text-primary" asChild>
+              <Link href="/pricing">{t('aboutPage.ctaSecondary')}</Link>
+            </Button>
           </div>
         </div>
       </section>

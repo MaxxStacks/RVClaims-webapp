@@ -256,7 +256,7 @@ export const translations = {
         title: "Ready to Expand Your Revenue Streams?",
         description: "Join successful Canadian RV dealers who've partnered with us for comprehensive business growth beyond warranty claims.",
         contactButton: "Discuss Services",
-        callButton: "Call (888) 245-3204"
+        callButton: "Call (888) 443-2204"
       }
     },
 
@@ -326,7 +326,10 @@ export const translations = {
         description: "Fully compliant bilingual documentation and support for all Canadian provinces."
       },
       quote: "Increase deal closure rates and simplify financing — all while maintaining full compliance and control.",
-      cta: "Get Financing Support"
+      cta: "Get Financing Support",
+      ctaTitle: "Ready to Boost Your Sales?",
+      ctaDescription: "Connect with our financing experts to streamline your dealership's loan process.",
+      ctaCallButton: "Call (888) 443-2204"
     },
 
     // Warranty & Extended Service Page
@@ -356,7 +359,10 @@ export const translations = {
         description: "Track warranty performance, profit margins, and claim frequency with clear, actionable metrics."
       },
       quote: "Turn warranty sales into one of your dealership's most profitable revenue channels.",
-      cta: "Explore Warranty Solutions"
+      cta: "Explore Warranty Solutions",
+      ctaTitle: "Transform Your Warranty Revenue",
+      ctaDescription: "Partner with our warranty experts to maximize protection plan profitability.",
+      ctaCallButton: "Call (888) 443-2204"
     },
 
     // F&I Services Page
@@ -386,7 +392,10 @@ export const translations = {
         description: "Comprehensive monthly analytics to track gross margin performance and identify optimization opportunities."
       },
       quote: "Our F&I specialists boost dealership profits by 20% on average through better approvals and smarter product integration.",
-      cta: "Partner with Our F&I Experts"
+      cta: "Partner with Our F&I Experts",
+      ctaTitle: "Elevate Your F&I Performance",
+      ctaDescription: "Connect with our F&I specialists to boost dealership profits by 20% on average.",
+      ctaCallButton: "Call (888) 443-2204"
     },
 
     // Contact Section
@@ -543,7 +552,44 @@ export const translations = {
       revenueIncrease: "Avg Revenue Increase",
       locationTitle: "Our Locations",
       headquarters: "Headquarters",
-      development: "Development Office"
+      development: "Development Office",
+      missionBadge: "Canada's Dealership Operating System",
+      missionTitle: "We're Not a Claims Company. We're the Platform Your Dealership Runs On.",
+      missionBody: "RV Claims Canada was founded by people who spent 15 years inside RV dealerships, watching warranty revenue disappear into manual paperwork, denied claims, and fragmented vendor relationships. We built the platform we wished existed.",
+      platformTitle: "One Subscription. Every Service.",
+      platformBody: "From the moment a repair is identified to the moment a customer drives away — claims, financing, F&I, parts, marketing, and beyond — RV Claims Canada handles it. No more managing five different vendors. One platform, one team, one bill.",
+      pillar1Title: "Claims Processing",
+      pillar1Body: "A-Z warranty claims — DAF, PDI, Warranty, Extended, Insurance — handled by our expert team using patent-pending AI technology. Module 1 is live now.",
+      pillar2Title: "Financial Services",
+      pillar2Body: "Financing integration, F&I outsourcing, and warranty plan management. Launching Q2 2026.",
+      pillar3Title: "Revenue Growth",
+      pillar3Body: "Digital marketing, parts management, service department support, CRM, and trade-in programs. Launching Q3 2026.",
+      pillar4Title: "Marketplace & Auctions",
+      pillar4Body: "Dealer-to-dealer inventory marketplace and monthly public live auctions. Launching Q3–Q4 2026.",
+      pillar5Title: "Consumer Direct",
+      pillar5Body: "Roadside assistance, extended warranty, and RV protection packages sold directly to RV owners. Launching Q4 2026.",
+      whyTitle: "Why Canadian Dealers Choose RV Claims Canada",
+      why1: "15+ years of RV claims expertise — not auto, not generic. RV-specific, Canada-focused.",
+      why2: "AI-powered platform with patent-pending FRC code matching and photo quality scoring",
+      why3: "Fully bilingual — every service operates in English and French across all Canadian provinces",
+      why4: "Canada-first — built for Canadian manufacturers, regulations, and PIPEDA compliance",
+      why5: "Two-sided SaaS platform — our network and AI get stronger with every dealer who joins",
+      why6: "Modular — start with claims today, add new revenue modules as they launch",
+      founderQuote: "We built RV Claims Canada because we saw how much money Canadian dealers were leaving on the table every month. Bad photos. Wrong FRC codes. Incomplete paperwork. One expert team with the right technology fixes all of that — and then some.",
+      founderAttribution: "Founder, RV Claims Canada",
+      teamTitle: "Expert Team. Real Results.",
+      teamBody: "Our operator team is made up of RV industry veterans with deep expertise in manufacturer warranty systems, F&I compliance, and dealership operations. When you subscribe to RV Claims Canada, you get a full service team working as an extension of your dealership.",
+      statValue1: "15+",
+      statLabel1: "Years in the RV industry",
+      statValue2: "95%+",
+      statLabel2: "First-submission approval rate",
+      statValue3: "30%",
+      statLabel3: "Average revenue increase per claim",
+      statValue4: "7,400+",
+      statLabel4: "Target RV dealerships in North America",
+      ctaHeading: "Ready to See What You've Been Missing?",
+      ctaButton: "Book a Free Demo",
+      ctaSecondary: "See Our Pricing"
     },
 
     // Services Page
@@ -683,104 +729,259 @@ export const translations = {
 
     // Claims Processing Page
     claimsPage: {
-      badge: "Specialized Processing",
-      title: "Expert Claims Processing",
-      description: "Professional handling of all major claim types with industry-leading approval rates.",
+      badge: "Module 1 — Live Now",
+      title: "Expert A-Z Claims Processing",
+      description: "We handle every step of the warranty claims process for Canadian RV dealers — from identifying the claim to receiving payment from the manufacturer.",
       daf: {
         title: "DAF Claims",
-        description: "Delivery and Freight damage claims processed with manufacturer expertise and documentation standards."
+        description: "The Dealer Authorization Form is completed when a unit first arrives from the manufacturer. Our team documents all transit damage, ensures proper photo documentation, and submits the DAF to maximize recovery on every unit received."
       },
       pdi: {
-        title: "PDI Claims", 
-        description: "Pre-Delivery Inspection claims ensuring proper compensation for dealer preparation work."
+        title: "PDI Claims",
+        description: "The Pre-Delivery Inspection is completed before handing a unit to a customer. Our team handles the PDI claim to ensure your dealership is properly compensated for every hour of inspection and prep work required."
       },
       warranty: {
         title: "Warranty Claims",
-        description: "Standard manufacturer warranty claims with optimized approval strategies and expert preparation."
+        description: "Standard manufacturer warranty claims for customer-reported issues during the warranty period. Our AI matches every repair line to the correct FRC code for that manufacturer, and our experts prepare documentation to the manufacturer's exact standards."
       },
       extended: {
         title: "Extended Warranty",
-        description: "Extended warranty claims with specialized knowledge of coverage terms and conditions."
+        description: "After the manufacturer warranty expires, extended warranty claims follow different rules and coverage terms. Our team has specialized knowledge of all major extended warranty providers and ensures claims are submitted correctly to maximize approvals."
       },
       insurance: {
         title: "Insurance Claims",
-        description: "Insurance damage claims with comprehensive documentation and professional follow-up."
-      }
+        description: "Collision, weather, theft, and liability claims require different documentation standards. Our team coordinates with insurance adjusters and manufacturers to ensure complete, compliant submissions every time."
+      },
+      processTitle: "How Our Claims Process Works",
+      step1Title: "Claim Identified & Created",
+      step1Body: "Your team creates a claim in the dealer portal by VIN. We handle DAF upon unit arrival, PDI before delivery, and warranty or insurance claims as they're reported.",
+      step2Title: "FRC Code Assignment",
+      step2Body: "Our team uses the AI FRC Lookup Engine to match repair descriptions to the exact manufacturer-specific codes — maximizing billable amounts on every line.",
+      step3Title: "Photo Quality Gate",
+      step3Body: "Every image is scored before it reaches the manufacturer. Poor quality photos are flagged and returned for replacement — eliminating the number one cause of denials.",
+      step4Title: "Denial Prediction Review",
+      step4Body: "Before submission, our AI Denial Prediction engine analyzes each line against historical patterns. High-risk items are reviewed and corrected by our experts.",
+      step5Title: "Manufacturer Submission",
+      step5Body: "We submit the claim through the manufacturer's portal on your behalf, log the claim number and pre-authorization number, and track it through to final decision.",
+      step6Title: "Authorization & Payment",
+      step6Body: "Approved lines are tracked through parts ordering and repair completion. Once the manufacturer pays, we invoice your dealership and reconcile the transaction.",
+      mfrTitle: "Supported Manufacturers",
+      mfrBody: "We currently process claims for: Jayco, Forest River, Heartland, Columbia NW, Keystone, and Midwest Auto. Additional manufacturers are added regularly.",
+      techBadge: "Patent-Pending Technology",
+      techTitle: "The AI Platform Behind Every Claim",
+      techBody: "Our patent-pending Dealer Suite 360 platform powers every claim we process. The AI makes our experts faster, more accurate, and more thorough.",
+      tech1: "FRC Lookup Engine — fuzzy matches repair descriptions to manufacturer-specific FRC codes",
+      tech2: "Photo Quality Gatekeeper — scores every image before submission",
+      tech3: "Claim Readiness Score — 0–100% confidence metric before each manufacturer submission",
+      tech4: "Denial Prediction — flags high-risk claim lines from historical approval patterns",
+      statValue1: "95%+",
+      statLabel1: "First-submission approval rate",
+      statValue2: "30%",
+      statLabel2: "Average revenue increase per claim",
+      statValue3: "500+",
+      statLabel3: "Claims processed monthly",
+      statValue4: "6",
+      statLabel4: "Manufacturers supported",
+      ctaHeading: "Let Our Experts Handle Your Claims",
+      ctaButton: "Create Your Account",
+      ctaSecondary: "Talk to a Claims Expert"
     },
 
     // Technology Page
     technologyPage: {
-      badge: "Patent Pending Technology",
-      title: "Advanced Claims Platform",
-      description: "Revolutionary claims management software with AI-driven insights and seamless manufacturer integration.",
+      badge: "Patent-Pending Platform",
+      title: "The Technology That Powers Every Claim — And Every Service",
+      description: "Dealer Suite 360 is our proprietary platform powering RV Claims Canada. Built from the ground up for RV warranty workflows, it combines patent-pending AI with a complete dealership operating system.",
       automation: {
         title: "Automated Processing",
         description: "Advanced algorithms optimize claim documentation for maximum approval rates and faster processing."
       },
       integration: {
-        title: "Manufacturer Integration", 
-        description: "Direct API connections with top 15 North American manufacturers for real-time processing."
+        title: "Manufacturer Integration",
+        description: "Direct API connections with top North American manufacturers for real-time claim tracking."
       },
       analytics: {
         title: "Revenue Analytics",
         description: "Comprehensive reporting and optimization recommendations to maximize dealership profitability."
-      }
+      },
+      aiTitle: "8 AI-Powered Modules. One Integrated Platform.",
+      ai1Title: "FRC Lookup Engine",
+      ai1Body: "Fuzzy-matches repair descriptions to manufacturer-specific FRC codes. Each manufacturer has unique code systems — our AI knows them all and suggests the best match for maximum billable time.",
+      ai2Title: "Photo Quality Gatekeeper",
+      ai2Body: "Every claim photo is analyzed before submission. Sharpness, lighting, angle, and relevance are scored automatically. Poor photos are rejected before they reach the manufacturer — eliminating the number one cause of denials.",
+      ai3Title: "Claim Readiness Score",
+      ai3Body: "A 0–100% confidence score is calculated for every claim before submission. Claims below 80% are flagged for expert review. Our operators work with your team to reach submission-ready before any claim goes out.",
+      ai4Title: "Denial Prediction Engine",
+      ai4Body: "Trained on historical approval and denial patterns across all supported manufacturers, our AI flags claim lines with high denial risk before submission — giving our experts time to correct them.",
+      ai5Title: "Document Scanner (OCR)",
+      ai5Body: "Manufacturer correspondence, approval letters, and denial notices are scanned and auto-populated into the claim record. No more manual data entry from PDF attachments.",
+      ai6Title: "Invoice Matcher",
+      ai6Body: "Parts invoices are automatically matched to the correct claim lines. Mismatched or missing invoices are flagged before billing — reducing disputes and payment delays.",
+      ai7Title: "AI F&I Presenter",
+      ai7Body: "A live video avatar powered by AI that delivers your F&I product presentations remotely. Consistent, compliant, and engaging — without an in-room F&I manager.",
+      ai8Title: "AI Chatbot (RAG-Based)",
+      ai8Body: "Our customer-facing chatbot is powered by retrieval-augmented generation, not keyword matching. It answers questions accurately from our full knowledge base — available 24/7.",
+      portalTitle: "Built for the Full Dealership Lifecycle",
+      portal1Title: "Dealer Portal",
+      portal1Body: "Claim creation, unit tracking, photo upload, status monitoring, billing, and team management — all in one place for your dealership staff.",
+      portal2Title: "Operator Portal",
+      portal2Body: "Full claim processing dashboard for our expert team: FRC assignment, photo review, manufacturer submission, parts tracking, billing engine, and dealer management.",
+      portal3Title: "Customer Portal",
+      portal3Body: "Self-service access for your customers to track claims, view warranty coverage, access roadside assistance, and manage protection plans.",
+      portal4Title: "Bidder Portal",
+      portal4Body: "Live auction interface for public bidders — browse units, place bids, manage deposits, and complete purchases through RV Claims escrow.",
+      patentTitle: "Patent-Pending Technology",
+      patentBody: "The Dealer Suite 360 platform and its AI-powered claims processing workflows are subject to patent-pending applications. No other platform in North America combines AI-powered RV claims processing with a full dealership operating system.",
+      ctaHeading: "See the Platform in Action",
+      ctaButton: "Schedule a Demo",
+      ctaSecondary: "View Pricing"
     },
 
     // Revenue Services Page
     revenueServicesPage: {
-      badge: "Revenue Growth Solutions",
-      title: "Maximize Dealership Revenue",
-      description: "Comprehensive outsourced services that Canadian RV dealers use to boost sales and increase profitability.",
+      badge: "Q3 2026",
+      title: "Five Revenue Channels. One Platform.",
+      description: "Beyond claims processing, RV Claims Canada delivers five proven revenue growth services for Canadian dealerships — each fully outsourced so your team can focus on selling.",
       finance: {
-        title: "Finance & Insurance Services",
-        description: "Complete F&I outsourcing with higher loan approval rates and premium product placement."
+        title: "Finance & Insurance (F&I)",
+        description: "Outsource your entire F&I operation to our certified specialists — higher approvals, better products, full compliance.",
+        f1: "Loan origination and approval optimization",
+        f2: "GAP, extended warranty, and protection product sales",
+        f3: "Compliance documentation and regulatory adherence",
+        f4: "Average 20% increase in F&I gross profit"
       },
       marketing: {
         title: "Digital Marketing & Lead Generation",
-        description: "Professional marketing services targeting next-generation RV buyers with proven results."
+        description: "SEO, PPC, and social media campaigns built specifically for RV dealerships — measurable ROI, CRM integration, proven results.",
+        f1: "Search engine optimization for RV dealerships",
+        f2: "PPC and social media advertising campaigns",
+        f3: "Lead generation and CRM integration",
+        f4: "Website optimization and mobile-first design"
       },
       parts: {
         title: "Parts & Accessories Management",
-        description: "Turn accessories into a robust profit center with expert inventory and sales management."
+        description: "Turn your parts counter into a profit center with inventory optimization, installation services, and customer upgrade programs.",
+        f1: "Inventory optimization and demand forecasting",
+        f2: "Installation and accessories upsell programs",
+        f3: "Customer customization and upgrade packages",
+        f4: "Parts sales training for service and sales staff"
       },
       service: {
         title: "Service Department Support",
-        description: "Address technician shortages with mobile service capabilities and expert support systems."
-      }
+        description: "Address technician shortages and maximize service bay throughput with mobile deployment, online scheduling, and technician training.",
+        f1: "Mobile service deployment and scheduling management",
+        f2: "Online appointment booking and customer notifications",
+        f3: "Technician training and certification programs",
+        f4: "Service process optimization and throughput reporting"
+      },
+      crm: {
+        title: "Customer Experience Technology",
+        description: "Advanced CRM and digital engagement tools that turn one-time buyers into lifetime customers.",
+        f1: "Advanced CRM with full customer and unit history",
+        f2: "Digital customer engagement and communication platform",
+        f3: "Automated follow-up and loyalty programs",
+        f4: "Sales process automation and pipeline reporting"
+      },
+      trade: {
+        title: "Trade-In & Consignment Programs",
+        description: "Professional appraisal, consignment management, and trade-in optimization to move more inventory at better margins.",
+        f1: "Professional RV appraisal and trade-in valuation",
+        f2: "Consignment program management and marketing",
+        f3: "Trade-in value optimization strategies",
+        f4: "Inventory turn acceleration and margin improvement"
+      },
+      ctaHeading: "Add a New Revenue Stream to Your Dealership",
+      ctaButton: "Talk to Our Team",
+      ctaSecondary: "View Pricing"
     },
 
     // RV Coverage Page
     rvCoveragePage: {
-      badge: "Complete RV Coverage",
-      title: "All RV Types Covered",
-      description: "Expert claims processing for every RV type and manufacturer in the Canadian market.",
+      badge: "All 10 RV Types",
+      title: "Every RV Type. Expert Claims Processing.",
+      description: "Our team processes warranty claims for all 10 RV types across all Canadian provinces — from compact pop-ups to full-size Class A motorhomes.",
       travelTrailers: {
         title: "Travel Trailers",
-        description: "Comprehensive coverage for all travel trailer brands and models."
+        description: "The most popular RV type in Canada. We process all travel trailer warranty claims including structural defects, slide-out systems, appliances, plumbing, and electrical issues across all supported manufacturers."
       },
       fifthWheels: {
         title: "Fifth Wheels",
-        description: "Specialized processing for fifth wheel claims and warranty issues."
+        description: "Fifth wheel claims involve complex hitch systems, multi-slide configurations, and residential-grade amenities. Our team is trained on the unique FRC codes and coverage terms for all major fifth wheel brands."
+      },
+      classA: {
+        title: "Class A Motorhomes",
+        description: "The largest and most complex RV type. Class A warranty claims often involve chassis systems, diesel powertrains, full-body slide-outs, and integrated appliances. Our experts handle the full scope."
+      },
+      classC: {
+        title: "Class C Motorhomes",
+        description: "Built on commercial truck chassis, Class C claims include both manufacturer and chassis-builder warranty coverage. We coordinate claims across multiple warranty systems on your behalf."
+      },
+      vanCamper: {
+        title: "Van Campers / Class B",
+        description: "Van-based camper vans require specialized knowledge of factory conversions, pop-top systems, and integrated cabinetry. We process Class B claims with the same expert precision as all other types."
+      },
+      smallTrailer: {
+        title: "Small Trailers",
+        description: "Compact trailers under 20 feet often have unique warranty terms and simplified FRC code structures. Our team ensures small trailer claims are fully documented and optimized for maximum recovery."
+      },
+      popUp: {
+        title: "Pop-Up / Folding Trailers",
+        description: "Pop-up camper claims involve canvas, lift systems, folding hardware, and compact appliances. We process these claims with full knowledge of manufacturer-specific coverage terms."
+      },
+      toyHauler: {
+        title: "Toy Haulers",
+        description: "Toy haulers combine living quarters with a cargo bay, creating unique warranty considerations for ramp doors, tie-down systems, and dual-zone HVAC. We handle the full claim complexity."
+      },
+      truckCamper: {
+        title: "Truck Campers",
+        description: "Slide-on truck campers have unique warranty structures that don't always align with traditional RV claim systems. Our team navigates manufacturer-specific processes to ensure full compensation."
+      },
+      destinationTrailer: {
+        title: "Destination Trailers",
+        description: "Destination trailers are the largest non-motorized RV type, often used semi-permanently. Their residential-grade systems require expert handling to match warranty coverage with FRC codes correctly."
       },
       classAC: {
         title: "Class A & C Motorhomes",
-        description: "Expert handling of motorhome claims with complex mechanical systems."
-      }
+        description: "Expert handling of motorhome claims with complex mechanical systems and multi-system warranty coverage."
+      },
+      ctaHeading: "All 10 Types. One Expert Team.",
+      ctaBody: "Whether your dealership specializes in one RV type or carries all ten, our team handles every claim type with the same expert precision.",
+      ctaButton: "Get Started"
     },
 
     // Contact Page
     contactPage: {
       badge: "Get Started Today",
-      title: "Contact Our Claims Experts",
-      description: "Ready to optimize your warranty revenue? Our team is here to help you get started."
+      title: "Let's Talk",
+      description: "Whether you're ready to cut claim denials, grow revenue, or just want to see the platform — our team is ready to help.",
+      phone: "(888) 443-2204"
     },
 
     // Privacy Policy Page
     privacyPolicyPage: {
       title: "Privacy Policy",
-      description: "Our commitment to protecting your personal and business information.",
-      content: "RVClaimTrack is committed to protecting the privacy and confidentiality of all client information. This policy outlines our practices for collecting, using, and protecting your data in accordance with Canadian privacy laws including PIPEDA."
+      description: "RV Claims Canada's commitment to protecting your personal and business information under PIPEDA.",
+      effective: "Effective Date: January 1, 2026",
+      s1Title: "1. About This Policy",
+      s1Body: "RV Claims Canada (operated by the owner of rvclaims.ca, powered by Dealer Suite 360) is committed to protecting the privacy of all individuals whose personal information we collect, use, and disclose. This Privacy Policy explains how we handle personal information in accordance with the Personal Information Protection and Electronic Documents Act (PIPEDA) and applicable provincial privacy legislation.",
+      s2Title: "2. Information We Collect",
+      s2Body: "We collect personal information necessary to provide our services to Canadian RV dealerships and their customers. This includes: contact information (name, email, phone number, mailing address); business information (dealership name, business address, licence number); financial information (banking details for payment processing, billing history); technical information (IP address, browser type, device identifiers); usage data (pages visited, features used, claim activity within the portal); and vehicle information (VIN numbers, unit specifications, warranty records) provided in connection with claims processing.",
+      s3Title: "3. How We Use Your Information",
+      s3Body: "We use personal information to: deliver our claims processing, financing, F&I, marketplace, and auction services; communicate with you about your account, claims status, and platform updates; process payments and manage billing; comply with legal obligations under Canadian law; improve our platform and services based on usage patterns; send relevant service communications and, with consent, marketing materials. We do not use personal information for automated decision-making that produces legal or similarly significant effects without human review.",
+      s4Title: "4. How We Share Your Information",
+      s4Body: "We do not sell personal information. We do not share dealership data with other dealers. We share information only as follows: with service providers who assist us in delivering our platform (payment processors, cloud hosting, email delivery) under strict confidentiality obligations; with manufacturers where required to submit warranty claims on your behalf; with regulators and law enforcement as required by applicable law; with your explicit consent in all other circumstances.",
+      s5Title: "5. Data Security",
+      s5Body: "We implement industry-standard security measures to protect personal information from unauthorized access, use, disclosure, alteration, or destruction. These include: 256-bit TLS encryption for all data in transit; AES-256 encryption for sensitive data at rest; role-based access controls limiting employee access to data based on job function; regular security audits and vulnerability assessments; secure data centres located in Canada and operated by certified cloud providers.",
+      s6Title: "6. Your Privacy Rights Under PIPEDA",
+      s6Body: "Under PIPEDA, you have the right to: access your personal information held by us; correct inaccurate personal information; withdraw consent to certain uses of your information (subject to legal and contractual limitations); file a complaint with the Office of the Privacy Commissioner of Canada (OPC) if you believe your rights have been violated. To exercise these rights, contact our Privacy Officer at privacy@rvclaims.ca or by mail at our Toronto, Ontario address.",
+      s7Title: "7. Cookies and Tracking",
+      s7Body: "Our website uses cookies and similar technologies to: enable essential site functionality; analyze traffic and usage patterns (analytics cookies); remember your language and display preferences. You may control cookie settings through your browser. Declining non-essential cookies will not affect your access to core platform features. We honour your cookie preferences as set through our consent banner.",
+      s8Title: "8. Data Retention",
+      s8Body: "We retain personal information for as long as necessary to fulfill the purposes for which it was collected, comply with legal and regulatory requirements, and resolve any disputes. Dealer account data is retained for a minimum of seven years following account closure to satisfy Canadian tax and regulatory retention obligations. You may request deletion of your personal information subject to these legal retention requirements.",
+      s9Title: "9. Changes to This Policy",
+      s9Body: "We may update this Privacy Policy from time to time to reflect changes in our practices or applicable law. Material changes will be communicated to registered dealers by email at least 30 days before they take effect. The effective date at the top of this policy reflects the date of the most recent revision.",
+      s10Title: "10. Contact Our Privacy Officer",
+      s10Body: "If you have questions about this Privacy Policy, how we handle your personal information, or to exercise your rights, contact our Privacy Officer: Email: privacy@rvclaims.ca | Phone: (888) 443-2204 | Mail: Privacy Officer, RV Claims Canada, Toronto, Ontario, Canada. If you are not satisfied with our response, you may escalate your complaint to the Office of the Privacy Commissioner of Canada at www.priv.gc.ca."
     },
 
     // Privacy Assurance Section
@@ -896,72 +1097,76 @@ export const translations = {
         title: "Need Help Choosing the Right Protection?",
         description: "Our service experts can help you select the perfect protection package for your RV and usage needs.",
         contactButton: "Get Expert Advice",
-        callButton: "Call (888) 245-3204"
+        callButton: "Call (888) 443-2204"
       }
     },
 
     // RV Marketplace
     networkMarketplace: {
-      badge: "Coming in 2026",
-      title: "Find Your Perfect RV",
-      subtitle: "Browse thousands of new and used RVs from Canada's most trusted dealerships. Compare models, check verified history, and connect directly with dealers — all in one place.",
+      badge: "Q3–Q4 2026",
+      title: "The Dealer-to-Dealer RV Network Marketplace",
+      subtitle: "A 24/7 verified marketplace where Canadian RV dealers buy and sell inventory directly — with RV Claims acting as escrow on every transaction.",
+      heroBody: "Stop losing money on aged inventory. The RV Claims Network Marketplace connects you with verified dealers across Canada who need what you have — and have what you need.",
       purpose: {
-        title: "Why Choose RV Marketplace",
-        description: "Your one-stop destination for finding the perfect RV",
+        title: "How the Marketplace Works",
+        description: "Three simple steps to move your inventory to the right dealer",
         points: [
-          "Browse inventory from verified dealerships across Canada",
-          "Compare prices, features, and specifications side-by-side",
-          "Access verified maintenance and warranty history for every unit",
-          "Connect directly with dealers for test drives and inquiries"
+          "List units that aren't moving at your location — visible 24/7 to all subscribed dealers",
+          "Verified buyers contact you through the platform — your identity is protected until you accept",
+          "RV Claims holds funds in escrow until transfer is confirmed — flat $250 commission per sale",
+          "Subscription-required for all buyers and sellers — verified Canadian RV dealerships only"
         ]
       },
       sellingPerks: {
-        title: "Browse with Confidence",
+        title: "Marketplace Features",
         items: [
-          { title: "Verified Listings", desc: "Every RV is verified by trusted dealerships in our network" },
-          { title: "Complete History Reports", desc: "Access full maintenance records and warranty history for transparency" },
-          { title: "Smart Search & Filters", desc: "Find your ideal RV by type, budget, features, and location" },
-          { title: "Real Photos & Videos", desc: "See detailed images and virtual tours before you visit" },
-          { title: "Price Comparison", desc: "Compare similar models across dealers to get the best value" },
-          { title: "Dealer Ratings", desc: "Read reviews and ratings from verified buyers" },
-          { title: "Save Your Favorites", desc: "Create lists and get alerts when new RVs match your criteria" }
+          { title: "Verified Dealers Only", desc: "Every buyer and seller is a verified, subscribed RV Claims Canada dealer. No consumers, no wholesalers." },
+          { title: "RV Claims Escrow", desc: "We hold funds between buyer and seller on every transaction. No payment risk, no non-paying buyers." },
+          { title: "Flat $250 Commission", desc: "No percentage fees. No hidden costs. One flat $250 commission per completed unit sale — paid by the seller." },
+          { title: "Verified Vehicle History", desc: "Every listing includes vehicle history documentation. Buyers know exactly what they're purchasing before committing." },
+          { title: "24/7 Access", desc: "Listings are live around the clock. Deals can start any time, from any province." },
+          { title: "Integrated Claims History", desc: "Buyers can see claim history and warranty status directly in the listing — built on our claims platform." },
+          { title: "Seller Identity Protection", desc: "Your dealership identity and contact details are hidden until you accept a buyer's approach." }
         ]
       },
       buyingPerks: {
-        title: "Easy Purchase Process",
+        title: "Why Dealers List Here",
         items: [
-          { title: "Direct Dealer Contact", desc: "Connect instantly with dealers for questions and test drives" },
-          { title: "Financing Options", desc: "Explore financing solutions tailored to your budget" },
-          { title: "Trade-In Valuation", desc: "Get instant estimates for your current RV trade-in" },
-          { title: "Delivery Coordination", desc: "Arrange transport and delivery right to your door" },
-          { title: "Extended Warranty Available", desc: "Add protection plans directly through the marketplace" },
-          { title: "Insurance Quotes", desc: "Get competitive RV insurance rates from trusted providers" },
-          { title: "Buyer Protection", desc: "Every purchase includes buyer protection and support" }
+          { title: "Move Aged Inventory", desc: "Units sitting 90+ days cost you money. List them here and reach dealers across Canada with active demand." },
+          { title: "Access Wholesale Inventory", desc: "Find specific models, configurations, or brands your customers are requesting — at dealer-to-dealer pricing." },
+          { title: "No Auction Pressure", desc: "Unlike auctions, marketplace listings allow negotiated pricing and direct buyer-seller communication." },
+          { title: "Financing Available", desc: "Buyers can access RV Claims financing partners for inventory purchases on the marketplace." },
+          { title: "Fast Transactions", desc: "Escrow-backed transactions close faster — both sides protected, documentation handled by RV Claims." },
+          { title: "No Geographic Limits", desc: "Sell to a dealer in BC from your Ontario lot. Transport coordination is available through our network." },
+          { title: "One Platform", desc: "Manage your marketplace listings in the same portal where you process claims, track units, and manage billing." }
         ]
       },
       exclusive: {
-        title: "Trusted Marketplace Features",
+        title: "Why Escrow Matters",
         points: [
-          "Only verified, licensed dealerships from the RVClaims network",
-          "All listings include certified inspection reports and history verification",
-          "Secure communication platform to protect your privacy and information"
+          "Dealer-to-dealer transactions without escrow create real risk — payments get delayed, units get disputed",
+          "RV Claims acts as a neutral trusted third party, holding funds until both sides confirm the transfer",
+          "Your $250 commission is only collected when the transaction completes successfully"
         ]
       },
       valueDrivers: {
-        title: "Why RV Marketplace",
+        title: "Marketplace vs. Traditional Channels",
         points: [
-          "Largest selection of verified RVs in Canada",
-          "Complete transparency with full vehicle history",
-          "Save time by comparing inventory across multiple dealers",
-          "Direct access to trusted dealerships nationwide",
-          "Financing, insurance, and delivery all in one place"
+          "No auction fees — negotiate directly at prices that work for both parties",
+          "Verified buyers only — no time wasted on unqualified inquiries",
+          "Escrow protection on every transaction — zero payment risk",
+          "Flat $250 commission — keep more of your margin on every sale",
+          "24/7 visibility — your listings work while you sleep"
         ]
       },
       cta: {
         primary: "Join the Waitlist",
-        secondary: "Learn More"
+        secondary: "Learn About Pricing"
       },
-      footer: "Be among the first to access the RV Marketplace. Find your dream RV from Canada's most trusted dealers."
+      membershipTitle: "Marketplace Membership",
+      membershipPrice: "$499/year",
+      membershipBody: "One annual membership includes access to both the Network Marketplace and Live Auctions.",
+      footer: "List your aged inventory. Access wholesale units. Every transaction protected by RV Claims escrow."
     },
 
     // Live Auctions
@@ -1066,7 +1271,7 @@ export const translations = {
     // Pricing Page
     pricingPage: {
       title: "Simple, Transparent Pricing",
-      description: "Choose the perfect plan for your dealership. All plans include our industry-leading claims processing technology.",
+      description: "Two plans for Canadian RV dealerships. Both include full A-Z claims processing powered by our patent-pending AI platform.",
       billingToggle: {
         monthly: "Monthly",
         annual: "Annual",
@@ -1078,47 +1283,46 @@ export const translations = {
       },
       plans: {
         starter: {
-          name: "Starter",
-          description: "Perfect for small dealerships starting their claims journey",
+          name: "Plan A — Core",
+          description: "The complete claims processing subscription for Canadian RV dealerships",
           features: [
-            "Up to 50 claims per month",
-            "Basic claims processing",
-            "Email support",
-            "Standard reporting",
-            "Mobile app access",
-            "Basic integrations"
+            "Full A-Z claims processing: DAF, PDI, Warranty, Extended, Insurance",
+            "AI FRC code lookup and photo quality scoring",
+            "Dealer portal with real-time claim status tracking",
+            "VIN-based unit tracking across your inventory",
+            "Bilingual support — English and French",
+            "Manufacturer submissions: Jayco, Forest River, Heartland, Columbia NW, Keystone, Midwest Auto",
+            "Per-claim fees apply (available in dealer portal)"
           ],
           cta: "Get Started"
         },
         professional: {
-          name: "Professional",
-          description: "Ideal for growing dealerships with higher volume needs",
+          name: "Plan B — Professional",
+          description: "Expanded services for dealerships ready to grow beyond claims processing",
           features: [
-            "Up to 200 claims per month",
-            "A-Z claims processing",
-            "Priority phone & email support",
-            "Advanced analytics & reporting",
-            "Mobile app access",
-            "All manufacturer integrations",
+            "Everything in Plan A — Core",
+            "Revenue optimization on every claim submission",
+            "Priority claim processing and queue position",
+            "Advanced analytics and revenue reporting",
             "Dedicated account manager",
-            "Revenue optimization tools"
+            "Reduced per-claim processing fees",
+            "Early access to Financial Services modules (Q2 2026)",
+            "Early access to Revenue Growth modules (Q3 2026)"
           ],
-          cta: "Start Free Trial"
+          cta: "Get Started"
         },
         enterprise: {
-          name: "Enterprise",
-          description: "Tailored solutions for multi-location dealership groups",
+          name: "Enterprise / Multi-Location",
+          description: "Tailored solutions for multi-location dealership groups or high-volume operations",
           features: [
-            "Unlimited claims processing",
-            "White-glove A-Z processing",
-            "24/7 priority support",
-            "Custom reporting & dashboards",
-            "Mobile app access",
-            "Full API access",
-            "Multi-location management",
-            "Custom integrations",
-            "Dedicated success team",
-            "On-site training available"
+            "Everything in Plan B — Professional",
+            "Multi-location management and consolidated reporting",
+            "Custom per-claim fee structures",
+            "White-glove onboarding and dedicated success team",
+            "Full API access for DMS integration",
+            "Custom manufacturer integrations",
+            "On-site training available",
+            "24/7 priority support"
           ],
           cta: "Contact Sales"
         }
@@ -1155,7 +1359,7 @@ export const translations = {
         title: "Questions About Pricing?",
         description: "Our team is here to help you find the perfect solution for your dealership's needs.",
         ctaDemo: "Schedule a Demo",
-        ctaCall: "Call Us: (888) 245-3204"
+        ctaCall: "Call Us: (888) 443-2204"
       }
     },
 
@@ -1553,7 +1757,7 @@ export const translations = {
         title: "Prêt à élargir vos sources de revenus?",
         description: "Rejoignez les concessionnaires VR canadiens prospères qui se sont associés avec nous pour une croissance d'entreprise complète au-delà des réclamations de garantie.",
         contactButton: "Discuter des services",
-        callButton: "Appeler (888) 245-3204"
+        callButton: "Appeler (888) 443-2204"
       }
     },
 
@@ -1623,7 +1827,10 @@ export const translations = {
         description: "Documentation et support bilingues entièrement conformes pour toutes les provinces canadiennes."
       },
       quote: "Augmentez les taux de conclusion de transactions et simplifiez le financement — tout en maintenant une conformité et un contrôle complets.",
-      cta: "Obtenir un soutien financier"
+      cta: "Obtenir un soutien financier",
+      ctaTitle: "Prêt à stimuler vos ventes?",
+      ctaDescription: "Connectez-vous avec nos experts en financement pour rationaliser le processus de prêt de votre concessionnaire.",
+      ctaCallButton: "Appeler (888) 443-2204"
     },
 
     // Warranty & Extended Service Page
@@ -1653,7 +1860,10 @@ export const translations = {
         description: "Suivez les performances de garantie, les marges bénéficiaires et la fréquence des réclamations avec des métriques claires et exploitables."
       },
       quote: "Transformez les ventes de garantie en l'un des canaux de revenus les plus rentables de votre concessionnaire.",
-      cta: "Explorer les solutions de garantie"
+      cta: "Explorer les solutions de garantie",
+      ctaTitle: "Transformez vos revenus de garantie",
+      ctaDescription: "Associez-vous à nos experts en garantie pour maximiser la rentabilité des plans de protection.",
+      ctaCallButton: "Appeler (888) 443-2204"
     },
 
     // F&I Services Page
@@ -1683,7 +1893,10 @@ export const translations = {
         description: "Analyses mensuelles complètes pour suivre les performances de marge brute et identifier les opportunités d'optimisation."
       },
       quote: "Nos spécialistes F&I augmentent les profits des concessionnaires de 20% en moyenne grâce à de meilleures approbations et une intégration de produits plus intelligente.",
-      cta: "Partenariat avec nos experts F&I"
+      cta: "Partenariat avec nos experts F&I",
+      ctaTitle: "Élevez votre performance F&I",
+      ctaDescription: "Connectez-vous avec nos spécialistes F&I pour augmenter les profits du concessionnaire de 20% en moyenne.",
+      ctaCallButton: "Appeler (888) 443-2204"
     },
 
     // Contact Section
@@ -1840,7 +2053,44 @@ export const translations = {
       revenueIncrease: "Augmentation moy. revenus",
       locationTitle: "Nos emplacements",
       headquarters: "Siège social",
-      development: "Bureau de développement"
+      development: "Bureau de développement",
+      missionBadge: "Le système d'exploitation des concessionnaires du Canada",
+      missionTitle: "Nous ne sommes pas une entreprise de réclamations. Nous sommes la plateforme sur laquelle tourne votre concessionnaire.",
+      missionBody: "RV Claims Canada a été fondé par des gens qui ont passé 15 ans dans des concessions VR, à regarder les revenus de garantie disparaître dans des paperasses manuelles, des réclamations refusées et des relations fragmentées. Nous avons construit la plateforme que nous aurions voulu avoir.",
+      platformTitle: "Un abonnement. Tous les services.",
+      platformBody: "Du moment où une réparation est identifiée jusqu'au départ du client — réclamations, financement, F&I, pièces, marketing et plus — RV Claims Canada s'en occupe. Plus de gestion de cinq fournisseurs différents. Une plateforme, une équipe, une facture.",
+      pillar1Title: "Traitement des réclamations",
+      pillar1Body: "Réclamations de garantie de A à Z — DAF, PDI, Garantie, Prolongée, Assurance — gérées par notre équipe experte avec technologie IA brevetée en instance. Module 1 disponible maintenant.",
+      pillar2Title: "Services financiers",
+      pillar2Body: "Intégration de financement, externalisation F&I et gestion des plans de garantie. Lancement T2 2026.",
+      pillar3Title: "Croissance des revenus",
+      pillar3Body: "Marketing numérique, gestion des pièces, support du département service, CRM et programmes de reprise. Lancement T3 2026.",
+      pillar4Title: "Marché et enchères",
+      pillar4Body: "Marché d'inventaire entre concessionnaires et enchères publiques mensuelles en direct. Lancement T3–T4 2026.",
+      pillar5Title: "Direct aux consommateurs",
+      pillar5Body: "Assistance routière, garantie prolongée et forfaits de protection vendus directement aux propriétaires de VR. Lancement T4 2026.",
+      whyTitle: "Pourquoi les concessionnaires canadiens choisissent RV Claims Canada",
+      why1: "Plus de 15 ans d'expertise en réclamations VR — pas auto, pas générique. Spécifique VR, centré Canada.",
+      why2: "Plateforme propulsée par l'IA avec correspondance FRC brevetée en instance et évaluation qualité photos",
+      why3: "Entièrement bilingue — chaque service en anglais et en français dans toutes les provinces canadiennes",
+      why4: "Canada d'abord — conçu pour les fabricants canadiens, réglementations et conformité LPRPDE",
+      why5: "Plateforme SaaS bilatérale — notre réseau et notre IA se renforcent avec chaque concessionnaire",
+      why6: "Modulaire — commencez avec les réclamations aujourd'hui, ajoutez des modules au fil des lancements",
+      founderQuote: "Nous avons construit RV Claims Canada parce que nous avons vu combien d'argent les concessionnaires canadiens laissaient sur la table chaque mois. Mauvaises photos. Mauvais codes FRC. Paperasse incomplète. Une équipe experte avec la bonne technologie règle tout ça — et bien plus encore.",
+      founderAttribution: "Fondateur, RV Claims Canada",
+      teamTitle: "Équipe experte. Résultats réels.",
+      teamBody: "Notre équipe opérateur est composée de vétérans de l'industrie VR avec une expertise approfondie dans les systèmes de garantie fabricant, la conformité F&I et les opérations des concessionnaires.",
+      statValue1: "15+",
+      statLabel1: "Années dans l'industrie VR",
+      statValue2: "95 %+",
+      statLabel2: "Taux d'approbation à la première soumission",
+      statValue3: "30 %",
+      statLabel3: "Augmentation moyenne des revenus par réclamation",
+      statValue4: "7 400+",
+      statLabel4: "Concessionnaires VR cibles en Amérique du Nord",
+      ctaHeading: "Prêt à voir ce que vous manquez?",
+      ctaButton: "Réserver une démo gratuite",
+      ctaSecondary: "Voir nos tarifs"
     },
 
     // Services Page
@@ -1980,104 +2230,259 @@ export const translations = {
 
     // Claims Processing Page
     claimsPage: {
-      badge: "Traitement spécialisé",
-      title: "Traitement expert de réclamations",
-      description: "Traitement professionnel de tous les types de réclamations majeurs avec des taux d'approbation leaders de l'industrie.",
+      badge: "Module 1 — En service maintenant",
+      title: "Traitement expert de réclamations de A à Z",
+      description: "Nous gérons chaque étape du processus de réclamations de garantie pour les concessionnaires VR canadiens — de l'identification de la réclamation à la réception du paiement du fabricant.",
       daf: {
         title: "Réclamations DAF",
-        description: "Réclamations de dommages de livraison et de fret traitées avec l'expertise du fabricant et les normes de documentation."
+        description: "Le formulaire d'autorisation concessionnaire est complété à l'arrivée d'une unité du fabricant. Notre équipe documente tous les dommages de transit et soumet le DAF pour maximiser le remboursement sur chaque unité reçue."
       },
       pdi: {
-        title: "Réclamations PDI", 
-        description: "Réclamations d'inspection de pré-livraison assurant une compensation appropriée pour le travail de préparation du concessionnaire."
+        title: "Réclamations PDI",
+        description: "L'inspection pré-livraison est effectuée avant la remise d'une unité au client. Notre équipe gère la réclamation PDI pour s'assurer que votre concessionnaire est correctement rémunéré pour chaque heure d'inspection et de préparation."
       },
       warranty: {
         title: "Réclamations de garantie",
-        description: "Réclamations de garantie standard du fabricant avec des stratégies d'approbation optimisées et une préparation experte."
+        description: "Réclamations de garantie standard du fabricant pour les problèmes signalés par les clients pendant la période de garantie. Notre IA associe chaque ligne de réparation au bon code FRC pour ce fabricant, selon ses normes exactes."
       },
       extended: {
         title: "Garantie prolongée",
-        description: "Réclamations de garantie prolongée avec une connaissance spécialisée des termes et conditions de couverture."
+        description: "Après l'expiration de la garantie fabricant, les réclamations de garantie prolongée suivent des règles et conditions différentes. Notre équipe a une connaissance spécialisée de tous les grands fournisseurs de garantie prolongée."
       },
       insurance: {
         title: "Réclamations d'assurance",
-        description: "Réclamations de dommages d'assurance avec documentation complète et suivi professionnel."
-      }
+        description: "Les réclamations de collision, météo, vol et responsabilité civile nécessitent des normes de documentation différentes. Notre équipe coordonne avec les experts en sinistres pour des soumissions complètes et conformes."
+      },
+      processTitle: "Comment fonctionne notre processus de réclamations",
+      step1Title: "Réclamation identifiée et créée",
+      step1Body: "Votre équipe crée une réclamation dans le portail par NIV. Nous gérons le DAF à l'arrivée, le PDI avant livraison, et les réclamations de garantie ou d'assurance au fur et à mesure.",
+      step2Title: "Attribution des codes FRC",
+      step2Body: "Notre équipe utilise le moteur IA de recherche FRC pour associer les descriptions de réparation aux codes exacts du fabricant — maximisant les montants facturables sur chaque ligne.",
+      step3Title: "Contrôle qualité photos",
+      step3Body: "Chaque image est évaluée avant d'atteindre le fabricant. Les photos de mauvaise qualité sont signalées et renvoyées — éliminant la principale cause de refus.",
+      step4Title: "Revue de prédiction des refus",
+      step4Body: "Avant soumission, notre IA analyse chaque ligne selon les schémas historiques. Les éléments à risque élevé sont examinés et corrigés par nos experts.",
+      step5Title: "Soumission au fabricant",
+      step5Body: "Nous soumettons la réclamation via le portail du fabricant en votre nom, enregistrons le numéro de réclamation et de préautorisation, et suivons jusqu'à la décision finale.",
+      step6Title: "Autorisation et paiement",
+      step6Body: "Les lignes approuvées sont suivies jusqu'à la commande des pièces et la fin des réparations. Une fois le fabricant payé, nous facturons votre concessionnaire.",
+      mfrTitle: "Fabricants pris en charge",
+      mfrBody: "Nous traitons actuellement les réclamations pour : Jayco, Forest River, Heartland, Columbia NW, Keystone et Midwest Auto. Des fabricants supplémentaires sont ajoutés régulièrement.",
+      techBadge: "Technologie brevetée en instance",
+      techTitle: "La plateforme IA derrière chaque réclamation",
+      techBody: "Notre plateforme Dealer Suite 360, brevetée en instance, propulse chaque réclamation que nous traitons. L'IA rend nos experts plus rapides, plus précis et plus complets.",
+      tech1: "Moteur de recherche FRC — associe les descriptions de réparation aux codes FRC spécifiques au fabricant",
+      tech2: "Contrôleur qualité photos — évalue chaque image avant soumission",
+      tech3: "Score de prêt-à-soumettre — indice de confiance 0–100 % avant chaque soumission",
+      tech4: "Prédiction des refus — signale les lignes à risque élevé basé sur les schémas historiques",
+      statValue1: "95 %+",
+      statLabel1: "Taux d'approbation à la première soumission",
+      statValue2: "30 %",
+      statLabel2: "Augmentation moyenne des revenus par réclamation",
+      statValue3: "500+",
+      statLabel3: "Réclamations traitées mensuellement",
+      statValue4: "6",
+      statLabel4: "Fabricants pris en charge",
+      ctaHeading: "Laissez nos experts gérer vos réclamations",
+      ctaButton: "Créez votre compte",
+      ctaSecondary: "Parler à un expert en réclamations"
     },
 
     // Technology Page
     technologyPage: {
-      badge: "Technologie brevetée en instance",
-      title: "Plateforme de réclamations avancée",
-      description: "Logiciel révolutionnaire de gestion des réclamations avec des insights pilotés par IA et intégration transparente avec les fabricants.",
+      badge: "Plateforme brevetée en instance",
+      title: "La technologie qui propulse chaque réclamation — et chaque service",
+      description: "Dealer Suite 360 est notre plateforme propriétaire qui propulse RV Claims Canada. Construite de zéro pour les flux de réclamations VR, elle combine une IA brevetée en instance avec un système d'exploitation complet pour concessionnaires.",
       automation: {
         title: "Traitement automatisé",
         description: "Algorithmes avancés optimisent la documentation des réclamations pour des taux d'approbation maximaux et un traitement plus rapide."
       },
       integration: {
-        title: "Intégration fabricant", 
-        description: "Connexions API directes avec les 15 principaux fabricants d'Amérique du Nord pour un traitement en temps réel."
+        title: "Intégration fabricant",
+        description: "Connexions directes avec les principaux fabricants nord-américains pour un suivi des réclamations en temps réel."
       },
       analytics: {
         title: "Analytiques de revenus",
         description: "Rapports complets et recommandations d'optimisation pour maximiser la rentabilité des concessionnaires."
-      }
+      },
+      aiTitle: "8 modules propulsés par l'IA. Une plateforme intégrée.",
+      ai1Title: "Moteur de recherche FRC",
+      ai1Body: "Associe les descriptions de réparation aux codes FRC spécifiques au fabricant. Chaque fabricant a des systèmes de codes uniques — notre IA les connaît tous.",
+      ai2Title: "Contrôleur qualité photos",
+      ai2Body: "Chaque photo de réclamation est analysée avant soumission. Netteté, éclairage, angle et pertinence sont évalués automatiquement. Les mauvaises photos sont rejetées avant d'atteindre le fabricant.",
+      ai3Title: "Score de prêt-à-soumettre",
+      ai3Body: "Un score de confiance 0–100 % est calculé pour chaque réclamation avant soumission. Les réclamations sous 80 % sont signalées pour revue experte.",
+      ai4Title: "Moteur de prédiction des refus",
+      ai4Body: "Entraîné sur les schémas historiques d'approbation et de refus, notre IA signale les lignes à risque élevé avant soumission — donnant à nos experts le temps de les corriger.",
+      ai5Title: "Scanner de documents (OCR)",
+      ai5Body: "Les correspondances fabricant, lettres d'approbation et avis de refus sont numérisés et auto-remplis dans le dossier de réclamation. Plus de saisie manuelle depuis des PDF.",
+      ai6Title: "Comparateur de factures",
+      ai6Body: "Les factures de pièces sont automatiquement associées aux bonnes lignes de réclamation. Les factures manquantes ou mal associées sont signalées avant facturation.",
+      ai7Title: "Présentateur F&I IA",
+      ai7Body: "Un avatar vidéo en direct propulsé par IA qui présente vos produits F&I à distance. Cohérent, conforme et engageant — sans gestionnaire F&I dans la pièce.",
+      ai8Title: "Chatbot IA (basé sur RAG)",
+      ai8Body: "Notre chatbot est propulsé par la génération augmentée par récupération, pas par correspondance de mots-clés. Il répond avec précision depuis notre base de connaissances complète — 24h/7j.",
+      portalTitle: "Conçu pour le cycle de vie complet du concessionnaire",
+      portal1Title: "Portail concessionnaire",
+      portal1Body: "Création de réclamations, suivi d'unités, téléchargement de photos, suivi du statut, facturation et gestion d'équipe — tout en un seul endroit.",
+      portal2Title: "Portail opérateur",
+      portal2Body: "Tableau de bord complet pour notre équipe experte : attribution FRC, revue photo, soumission fabricant, suivi des pièces, moteur de facturation et gestion des concessionnaires.",
+      portal3Title: "Portail client",
+      portal3Body: "Accès libre-service pour vos clients pour suivre les réclamations, consulter la couverture de garantie, accéder à l'assistance routière et gérer les plans de protection.",
+      portal4Title: "Portail enchérisseur",
+      portal4Body: "Interface d'enchères en direct pour les enchérisseurs publics — parcourir les unités, placer des offres, gérer les dépôts et finaliser les achats via RV Claims.",
+      patentTitle: "Technologie brevetée en instance",
+      patentBody: "La plateforme Dealer Suite 360 et ses flux de traitement de réclamations propulsés par l'IA font l'objet de demandes de brevet en instance. Aucune autre plateforme en Amérique du Nord ne combine le traitement IA des réclamations VR avec un système d'exploitation complet.",
+      ctaHeading: "Voyez la plateforme en action",
+      ctaButton: "Planifier une démo",
+      ctaSecondary: "Voir les tarifs"
     },
 
     // Revenue Services Page
     revenueServicesPage: {
-      badge: "Solutions de croissance des revenus",
-      title: "Maximiser les revenus des concessionnaires",
-      description: "Services externalisés complets que les concessionnaires VR canadiens utilisent pour stimuler les ventes et augmenter la rentabilité.",
+      badge: "T3 2026",
+      title: "Cinq canaux de revenus. Une plateforme.",
+      description: "Au-delà du traitement des réclamations, RV Claims Canada offre cinq services éprouvés de croissance des revenus pour les concessionnaires canadiens — chacun entièrement externalisé.",
       finance: {
-        title: "Services Finance et Assurance",
-        description: "Externalisation F&I complète avec des taux d'approbation de prêt plus élevés et placement de produits premium."
+        title: "Finance et assurance (F&I)",
+        description: "Externalisez l'ensemble de vos opérations F&I à nos spécialistes certifiés — meilleures approbations, meilleurs produits, conformité complète.",
+        f1: "Origination de prêts et optimisation des approbations",
+        f2: "Ventes de GAP, garantie prolongée et produits de protection",
+        f3: "Documentation de conformité et respect des réglementations",
+        f4: "Augmentation moyenne de 20 % du bénéfice brut F&I"
       },
       marketing: {
         title: "Marketing numérique et génération de prospects",
-        description: "Services de marketing professionnel ciblant les acheteurs VR de nouvelle génération avec des résultats prouvés."
+        description: "Campagnes SEO, PPC et réseaux sociaux conçues pour les concessionnaires VR — ROI mesurable, intégration CRM, résultats prouvés.",
+        f1: "Optimisation pour les moteurs de recherche pour concessionnaires VR",
+        f2: "Campagnes PPC et publicité sur les réseaux sociaux",
+        f3: "Génération de prospects et intégration CRM",
+        f4: "Optimisation de site web et conception mobile-first"
       },
       parts: {
         title: "Gestion des pièces et accessoires",
-        description: "Transformer les accessoires en centre de profit robuste avec gestion experte d'inventaire et de ventes."
+        description: "Transformez votre comptoir de pièces en centre de profit avec optimisation des stocks, services d'installation et programmes de mise à niveau.",
+        f1: "Optimisation des stocks et prévision de la demande",
+        f2: "Programmes de vente incitative d'installation et d'accessoires",
+        f3: "Forfaits de personnalisation et de mise à niveau client",
+        f4: "Formation aux ventes de pièces pour le personnel de service et de vente"
       },
       service: {
-        title: "Support département service",
-        description: "Adresser les pénuries de techniciens avec des capacités de service mobile et des systèmes de support expert."
-      }
+        title: "Support du département service",
+        description: "Palliez les pénuries de techniciens et maximisez le débit de l'atelier avec déploiement mobile, prise de rendez-vous en ligne et formation.",
+        f1: "Déploiement de service mobile et gestion des horaires",
+        f2: "Réservation en ligne et notifications clients",
+        f3: "Programmes de formation et certification des techniciens",
+        f4: "Optimisation des processus et rapports de débit"
+      },
+      crm: {
+        title: "Technologie d'expérience client",
+        description: "CRM avancé et outils d'engagement numérique qui transforment les acheteurs uniques en clients à vie.",
+        f1: "CRM avancé avec historique complet client et unité",
+        f2: "Plateforme d'engagement et de communication numérique",
+        f3: "Programmes de suivi automatisé et de fidélisation",
+        f4: "Automatisation des processus de vente et rapports de pipeline"
+      },
+      trade: {
+        title: "Programmes de reprise et consignation",
+        description: "Évaluation professionnelle, gestion de consignation et optimisation des reprises pour déplacer plus d'inventaire à de meilleures marges.",
+        f1: "Évaluation professionnelle et valorisation des reprises VR",
+        f2: "Gestion de programme de consignation et marketing",
+        f3: "Stratégies d'optimisation de la valeur de reprise",
+        f4: "Accélération du roulement d'inventaire et amélioration des marges"
+      },
+      ctaHeading: "Ajoutez un nouveau flux de revenus à votre concessionnaire",
+      ctaButton: "Parler à notre équipe",
+      ctaSecondary: "Voir les tarifs"
     },
 
     // RV Coverage Page
     rvCoveragePage: {
-      badge: "Couverture VR complète",
-      title: "Tous types de VR couverts",
-      description: "Traitement expert de réclamations pour chaque type de VR et fabricant sur le marché canadien.",
+      badge: "Les 10 types de VR",
+      title: "Chaque type de VR. Traitement expert des réclamations.",
+      description: "Notre équipe traite les réclamations de garantie pour les 10 types de VR dans toutes les provinces canadiennes — des pop-up compacts aux autocaravanes Classe A.",
       travelTrailers: {
         title: "Roulottes de voyage",
-        description: "Couverture complète pour toutes les marques et modèles de roulottes de voyage."
+        description: "Le type de VR le plus populaire au Canada. Nous traitons toutes les réclamations de garantie de roulottes de voyage incluant défauts structurels, systèmes de glissières, appareils, plomberie et problèmes électriques."
       },
       fifthWheels: {
-        title: "Sellettes d'attelage",
-        description: "Traitement spécialisé pour les réclamations de sellettes d'attelage et problèmes de garantie."
+        title: "Sellettes d'attelage (5e roue)",
+        description: "Les réclamations de 5e roue impliquent des systèmes d'attelage complexes, des configurations multi-glissières et des équipements de qualité résidentielle. Notre équipe est formée aux codes FRC uniques de toutes les grandes marques."
+      },
+      classA: {
+        title: "Autocaravanes Classe A",
+        description: "Le type de VR le plus grand et le plus complexe. Les réclamations Classe A impliquent souvent des systèmes de châssis, des groupes motopropulseurs diesel, des glissières pleine carrosserie et des appareils intégrés."
+      },
+      classC: {
+        title: "Autocaravanes Classe C",
+        description: "Construits sur châssis de camion commercial, les réclamations Classe C incluent les couvertures de garantie du fabricant et du constructeur du châssis. Nous coordonnons les réclamations sur plusieurs systèmes."
+      },
+      vanCamper: {
+        title: "Fourgons aménagés / Classe B",
+        description: "Les fourgons campeurs nécessitent une connaissance spécialisée des aménagements d'usine, systèmes pop-top et armoires intégrées. Nous traitons les réclamations Classe B avec la même précision experte."
+      },
+      smallTrailer: {
+        title: "Petites roulottes",
+        description: "Les roulottes compactes de moins de 6 mètres ont souvent des conditions de garantie uniques et des structures de codes FRC simplifiées. Notre équipe assure une documentation complète et maximale."
+      },
+      popUp: {
+        title: "Pop-up / Roulottes pliantes",
+        description: "Les réclamations de pop-up impliquent la toile, les systèmes de levage, la ferronnerie pliante et les appareils compacts. Nous traitons ces réclamations avec pleine connaissance des conditions spécifiques au fabricant."
+      },
+      toyHauler: {
+        title: "Toy Haulers",
+        description: "Les toy haulers combinent quartiers d'habitation et compartiment de chargement, créant des considérations de garantie uniques pour les rampes, systèmes d'arrimage et CVCA double zone."
+      },
+      truckCamper: {
+        title: "Campers de camion",
+        description: "Les campers coulissants ont des structures de garantie uniques qui ne s'alignent pas toujours avec les systèmes de réclamations VR traditionnels. Notre équipe navigue les processus spécifiques pour assurer une compensation complète."
+      },
+      destinationTrailer: {
+        title: "Roulottes destination",
+        description: "Les roulottes destination sont le plus grand type de VR non motorisé, souvent utilisé semi-permanent. Leurs systèmes de qualité résidentielle nécessitent une expertise pour associer correctement la couverture de garantie aux codes FRC."
       },
       classAC: {
         title: "Autocaravanes Classe A et C",
-        description: "Traitement expert des réclamations d'autocaravanes avec systèmes mécaniques complexes."
-      }
+        description: "Traitement expert des réclamations d'autocaravanes avec systèmes mécaniques complexes et couverture de garantie multi-systèmes."
+      },
+      ctaHeading: "Les 10 types. Une équipe experte.",
+      ctaBody: "Que votre concessionnaire se spécialise dans un type de VR ou les dix, notre équipe gère chaque type de réclamation avec la même précision experte.",
+      ctaButton: "Commencer"
     },
 
     // Contact Page
     contactPage: {
       badge: "Commencez aujourd'hui",
-      title: "Contactez nos experts en réclamations",
-      description: "Prêt à optimiser vos revenus de garantie? Notre équipe est là pour vous aider à commencer."
+      title: "Parlons-en",
+      description: "Que vous souhaitiez réduire les refus de réclamations, augmenter vos revenus ou simplement voir la plateforme — notre équipe est prête à vous aider.",
+      phone: "(888) 443-2204"
     },
 
     // Privacy Policy Page
     privacyPolicyPage: {
       title: "Politique de confidentialité",
-      description: "Notre engagement à protéger vos informations personnelles et commerciales.",
-      content: "RVClaimTrack s'engage à protéger la confidentialité et la vie privée de toutes les informations clients. Cette politique décrit nos pratiques pour collecter, utiliser et protéger vos données conformément aux lois canadiennes sur la vie privée incluant la LPRPDE."
+      description: "L'engagement de RV Claims Canada à protéger vos informations personnelles et commerciales en vertu de la LPRPDE.",
+      effective: "Date d'entrée en vigueur : 1er janvier 2026",
+      s1Title: "1. À propos de cette politique",
+      s1Body: "RV Claims Canada (exploité par le propriétaire de rvclaims.ca, propulsé par Dealer Suite 360) s'engage à protéger la confidentialité de toutes les personnes dont nous collectons, utilisons et divulguons les renseignements personnels. Cette politique explique comment nous traitons les renseignements personnels conformément à la Loi sur la protection des renseignements personnels et les documents électroniques (LPRPDE) et à la législation provinciale applicable.",
+      s2Title: "2. Renseignements que nous collectons",
+      s2Body: "Nous collectons les renseignements personnels nécessaires pour fournir nos services aux concessionnaires VR canadiens et à leurs clients : coordonnées (nom, courriel, téléphone, adresse postale) ; renseignements commerciaux (nom du concessionnaire, adresse, numéro de licence) ; renseignements financiers (coordonnées bancaires pour le traitement des paiements, historique de facturation) ; renseignements techniques (adresse IP, type de navigateur, identifiants d'appareil) ; données d'utilisation (pages visitées, fonctionnalités utilisées, activité de réclamations dans le portail) ; et renseignements sur les véhicules (NIV, spécifications, dossiers de garantie).",
+      s3Title: "3. Comment nous utilisons vos renseignements",
+      s3Body: "Nous utilisons les renseignements personnels pour : fournir nos services de réclamations, financement, F&I, marché et enchères ; communiquer sur votre compte et les mises à jour de la plateforme ; traiter les paiements et gérer la facturation ; respecter les obligations légales canadiennes ; améliorer notre plateforme basée sur les schémas d'utilisation ; envoyer des communications de service pertinentes et, avec consentement, des matériaux marketing.",
+      s4Title: "4. Comment nous partageons vos renseignements",
+      s4Body: "Nous ne vendons pas les renseignements personnels. Nous ne partageons pas les données des concessionnaires avec d'autres concessionnaires. Nous partageons uniquement : avec les fournisseurs de services qui nous aident à fournir notre plateforme (sous strictes obligations de confidentialité) ; avec les fabricants pour soumettre les réclamations de garantie en votre nom ; avec les autorités réglementaires selon la loi applicable ; avec votre consentement explicite dans toutes les autres circonstances.",
+      s5Title: "5. Sécurité des données",
+      s5Body: "Nous mettons en œuvre des mesures de sécurité conformes aux normes de l'industrie : chiffrement TLS 256 bits pour toutes les données en transit ; chiffrement AES-256 pour les données sensibles au repos ; contrôles d'accès basés sur les rôles ; audits de sécurité réguliers ; centres de données situés au Canada opérés par des fournisseurs cloud certifiés.",
+      s6Title: "6. Vos droits en vertu de la LPRPDE",
+      s6Body: "En vertu de la LPRPDE, vous avez le droit d'accéder à vos renseignements personnels, de corriger les renseignements inexacts, de retirer votre consentement à certaines utilisations (sous réserve des limitations légales et contractuelles), et de déposer une plainte auprès du Commissariat à la protection de la vie privée du Canada (CPVP). Pour exercer ces droits, contactez notre responsable de la protection de la vie privée à privacy@rvclaims.ca.",
+      s7Title: "7. Témoins et suivi",
+      s7Body: "Notre site Web utilise des témoins (cookies) pour activer les fonctionnalités essentielles, analyser les schémas de trafic et mémoriser vos préférences de langue. Vous pouvez contrôler les paramètres de témoins via votre navigateur. Le refus des témoins non essentiels n'affectera pas votre accès aux fonctionnalités essentielles de la plateforme.",
+      s8Title: "8. Conservation des données",
+      s8Body: "Nous conservons les renseignements personnels aussi longtemps que nécessaire pour remplir les objectifs pour lesquels ils ont été collectés et respecter les exigences légales et réglementaires canadiennes. Les données de compte concessionnaire sont conservées au moins sept ans après la fermeture du compte pour satisfaire aux obligations de conservation fiscales et réglementaires.",
+      s9Title: "9. Modifications de cette politique",
+      s9Body: "Nous pouvons mettre à jour cette politique de confidentialité de temps en temps pour refléter des changements dans nos pratiques ou la loi applicable. Les modifications importantes seront communiquées aux concessionnaires inscrits par courriel au moins 30 jours avant leur entrée en vigueur.",
+      s10Title: "10. Contacter notre responsable de la protection de la vie privée",
+      s10Body: "Courriel : privacy@rvclaims.ca | Téléphone : (888) 443-2204 | Courrier : Responsable de la vie privée, RV Claims Canada, Toronto, Ontario, Canada. Si vous n'êtes pas satisfait de notre réponse, vous pouvez soumettre votre plainte au Commissariat à la protection de la vie privée du Canada à www.priv.gc.ca."
     },
 
     // Privacy Assurance Section
@@ -2193,72 +2598,76 @@ export const translations = {
         title: "Besoin d'aide pour choisir la bonne protection?",
         description: "Nos experts en services peuvent vous aider à sélectionner le forfait de protection parfait pour votre VR et vos besoins d'utilisation.",
         contactButton: "Obtenir des conseils d'expert",
-        callButton: "Appeler (888) 245-3204"
+        callButton: "Appeler (888) 443-2204"
       }
     },
 
     // RV Marketplace
     networkMarketplace: {
-      badge: "Arrive en 2026",
-      title: "Trouvez votre VR parfait",
-      subtitle: "Parcourez des milliers de VR neufs et usagés des concessionnaires les plus fiables du Canada. Comparez les modèles, vérifiez l'historique et connectez directement avec les concessionnaires — tout en un seul endroit.",
+      badge: "T3–T4 2026",
+      title: "Le marché VR en réseau entre concessionnaires",
+      subtitle: "Un marché vérifié 24h/7j où les concessionnaires VR canadiens achètent et vendent des inventaires directement — RV Claims agissant comme entiercement sur chaque transaction.",
+      heroBody: "Cessez de perdre de l'argent sur l'inventaire vieillissant. Le Marché en réseau RV Claims vous connecte avec des concessionnaires vérifiés partout au Canada qui ont besoin de ce que vous avez — et ont ce dont vous avez besoin.",
       purpose: {
-        title: "Pourquoi choisir le marché VR",
-        description: "Votre destination unique pour trouver le VR parfait",
+        title: "Comment fonctionne le marché",
+        description: "Trois étapes simples pour déplacer votre inventaire vers le bon concessionnaire",
         points: [
-          "Parcourez l'inventaire de concessionnaires vérifiés à travers le Canada",
-          "Comparez les prix, caractéristiques et spécifications côte à côte",
-          "Accédez à l'historique d'entretien et de garantie vérifié pour chaque unité",
-          "Connectez directement avec les concessionnaires pour essais routiers et demandes"
+          "Listez les unités qui ne bougent pas — visibles 24h/7j à tous les concessionnaires abonnés",
+          "Les acheteurs vérifiés vous contactent via la plateforme — votre identité est protégée jusqu'à votre acceptation",
+          "RV Claims détient les fonds en entiercement jusqu'à confirmation du transfert — commission fixe de 250 $",
+          "Abonnement requis pour tous les acheteurs et vendeurs — concessionnaires VR canadiens vérifiés seulement"
         ]
       },
       sellingPerks: {
-        title: "Naviguez en toute confiance",
+        title: "Fonctionnalités du marché",
         items: [
-          { title: "Annonces vérifiées", desc: "Chaque VR est vérifié par des concessionnaires de confiance dans notre réseau" },
-          { title: "Rapports d'historique complets", desc: "Accédez aux dossiers d'entretien complets et à l'historique de garantie pour la transparence" },
-          { title: "Recherche et filtres intelligents", desc: "Trouvez votre VR idéal par type, budget, caractéristiques et emplacement" },
-          { title: "Photos et vidéos réelles", desc: "Voyez des images détaillées et des visites virtuelles avant de visiter" },
-          { title: "Comparaison de prix", desc: "Comparez des modèles similaires entre concessionnaires pour obtenir la meilleure valeur" },
-          { title: "Évaluations de concessionnaires", desc: "Lisez les avis et notes d'acheteurs vérifiés" },
-          { title: "Enregistrez vos favoris", desc: "Créez des listes et recevez des alertes lorsque de nouveaux VR correspondent à vos critères" }
+          { title: "Concessionnaires vérifiés seulement", desc: "Chaque acheteur et vendeur est un concessionnaire VR abonné et vérifié. Pas de consommateurs, pas de grossistes." },
+          { title: "Entiercement RV Claims", desc: "Nous détenons les fonds entre acheteur et vendeur sur chaque transaction. Aucun risque de paiement, pas d'acheteurs non-payants." },
+          { title: "Commission fixe de 250 $", desc: "Pas de frais en pourcentage. Pas de coûts cachés. Une seule commission fixe de 250 $ par unité vendue — payée par le vendeur." },
+          { title: "Historique de véhicule vérifié", desc: "Chaque annonce inclut la documentation d'historique du véhicule. Les acheteurs savent exactement ce qu'ils achètent." },
+          { title: "Accès 24h/7j", desc: "Les annonces sont actives en tout temps. Des transactions peuvent commencer n'importe quand, de n'importe quelle province." },
+          { title: "Historique des réclamations intégré", desc: "Les acheteurs peuvent voir l'historique des réclamations et l'état de la garantie directement dans l'annonce." },
+          { title: "Protection de l'identité du vendeur", desc: "Votre identité et vos coordonnées sont cachées jusqu'à ce que vous acceptiez un acheteur." }
         ]
       },
       buyingPerks: {
-        title: "Processus d'achat facile",
+        title: "Pourquoi les concessionnaires listent ici",
         items: [
-          { title: "Contact direct avec concessionnaire", desc: "Connectez instantanément avec les concessionnaires pour questions et essais routiers" },
-          { title: "Options de financement", desc: "Explorez des solutions de financement adaptées à votre budget" },
-          { title: "Évaluation de reprise", desc: "Obtenez des estimations instantanées pour votre VR actuel en reprise" },
-          { title: "Coordination de livraison", desc: "Organisez le transport et la livraison directement chez vous" },
-          { title: "Garantie prolongée disponible", desc: "Ajoutez des plans de protection directement via le marché" },
-          { title: "Soumissions d'assurance", desc: "Obtenez des tarifs d'assurance VR compétitifs de fournisseurs de confiance" },
-          { title: "Protection de l'acheteur", desc: "Chaque achat inclut une protection et un soutien à l'acheteur" }
+          { title: "Déplacer l'inventaire vieillissant", desc: "Les unités qui stagnent depuis 90+ jours vous coûtent de l'argent. Listez-les ici et rejoignez des concessionnaires partout au Canada." },
+          { title: "Accéder à l'inventaire en gros", desc: "Trouvez des modèles, configurations ou marques spécifiques que vos clients demandent — à des prix entre concessionnaires." },
+          { title: "Pas de pression d'enchères", desc: "Contrairement aux enchères, les annonces permettent une tarification négociée et une communication directe acheteur-vendeur." },
+          { title: "Financement disponible", desc: "Les acheteurs peuvent accéder aux partenaires financiers de RV Claims pour les achats d'inventaire sur le marché." },
+          { title: "Transactions rapides", desc: "Les transactions avec entiercement se concluent plus vite — les deux parties protégées, la documentation gérée par RV Claims." },
+          { title: "Aucune limite géographique", desc: "Vendez à un concessionnaire en CB depuis votre lot en Ontario. La coordination du transport est disponible via notre réseau." },
+          { title: "Une seule plateforme", desc: "Gérez vos annonces du marché dans le même portail où vous traitez les réclamations, suivez les unités et gérez la facturation." }
         ]
       },
       exclusive: {
-        title: "Fonctionnalités du marché de confiance",
+        title: "Pourquoi l'entiercement est essentiel",
         points: [
-          "Seulement des concessionnaires vérifiés et licenciés du réseau RVClaims",
-          "Toutes les annonces incluent des rapports d'inspection certifiés et vérification d'historique",
-          "Plateforme de communication sécurisée pour protéger votre vie privée et vos informations"
+          "Les transactions entre concessionnaires sans entiercement créent de vrais risques — paiements retardés, unités contestées",
+          "RV Claims agit comme tiers neutre de confiance, détenant les fonds jusqu'à confirmation par les deux parties",
+          "Votre commission de 250 $ n'est perçue que lorsque la transaction se complète avec succès"
         ]
       },
       valueDrivers: {
-        title: "Pourquoi le marché VR",
+        title: "Marché vs. canaux traditionnels",
         points: [
-          "Plus grande sélection de VR vérifiés au Canada",
-          "Transparence complète avec historique complet du véhicule",
-          "Gagnez du temps en comparant l'inventaire de plusieurs concessionnaires",
-          "Accès direct aux concessionnaires de confiance à l'échelle nationale",
-          "Financement, assurance et livraison tout en un seul endroit"
+          "Pas de frais d'enchères — négociez directement à des prix qui fonctionnent pour les deux parties",
+          "Acheteurs vérifiés seulement — aucun temps perdu sur des demandes non qualifiées",
+          "Protection par entiercement sur chaque transaction — risque de paiement nul",
+          "Commission fixe de 250 $ — gardez plus de votre marge sur chaque vente",
+          "Visibilité 24h/7j — vos annonces travaillent pendant que vous dormez"
         ]
       },
       cta: {
         primary: "Rejoindre la liste d'attente",
-        secondary: "En savoir plus"
+        secondary: "En savoir plus sur les tarifs"
       },
-      footer: "Soyez parmi les premiers à accéder au marché VR. Trouvez votre VR de rêve auprès des concessionnaires les plus fiables du Canada."
+      membershipTitle: "Adhésion au marché",
+      membershipPrice: "499 $/an",
+      membershipBody: "Une adhésion annuelle inclut l'accès au Marché en réseau et aux Enchères en direct.",
+      footer: "Listez votre inventaire vieillissant. Accédez aux unités en gros. Chaque transaction protégée par l'entiercement RV Claims."
     },
 
     // Live Auctions
@@ -2363,7 +2772,7 @@ export const translations = {
     // Pricing Page
     pricingPage: {
       title: "Tarification simple et transparente",
-      description: "Choisissez le forfait parfait pour votre concessionnaire. Tous les forfaits incluent notre technologie de traitement des réclamations de pointe.",
+      description: "Deux forfaits pour les concessionnaires VR canadiens. Les deux incluent le traitement complet A-Z des réclamations propulsé par notre plateforme IA brevetée en instance.",
       billingToggle: {
         monthly: "Mensuel",
         annual: "Annuel",
@@ -2375,47 +2784,46 @@ export const translations = {
       },
       plans: {
         starter: {
-          name: "Débutant",
-          description: "Parfait pour les petits concessionnaires qui débutent leur parcours de réclamations",
+          name: "Forfait A — Essentiel",
+          description: "L'abonnement complet de traitement des réclamations pour les concessionnaires VR canadiens",
           features: [
-            "Jusqu'à 50 réclamations par mois",
-            "Traitement de base des réclamations",
-            "Support par courriel",
-            "Rapports standards",
-            "Accès à l'application mobile",
-            "Intégrations de base"
+            "Traitement complet A-Z : DAF, PDI, Garantie, Prolongée, Assurance",
+            "Recherche IA de codes FRC et évaluation qualité photos",
+            "Portail concessionnaire avec suivi des réclamations en temps réel",
+            "Suivi des unités par NIV sur tout l'inventaire",
+            "Support bilingue — anglais et français",
+            "Soumissions fabricants : Jayco, Forest River, Heartland, Columbia NW, Keystone, Midwest Auto",
+            "Frais par réclamation applicables (disponibles dans le portail)"
           ],
           cta: "Commencer"
         },
         professional: {
-          name: "Professionnel",
-          description: "Idéal pour les concessionnaires en croissance avec des besoins de volume plus élevés",
+          name: "Forfait B — Professionnel",
+          description: "Services élargis pour les concessionnaires prêts à croître au-delà du traitement des réclamations",
           features: [
-            "Jusqu'à 200 réclamations par mois",
-            "Traitement de réclamations A-Z",
-            "Support prioritaire par téléphone et courriel",
-            "Analytiques et rapports avancés",
-            "Accès à l'application mobile",
-            "Toutes les intégrations de fabricants",
+            "Tout du Forfait A — Essentiel",
+            "Optimisation des revenus sur chaque soumission de réclamation",
+            "Traitement prioritaire des réclamations et position dans la file",
+            "Analytiques avancées et rapports de revenus",
             "Gestionnaire de compte dédié",
-            "Outils d'optimisation des revenus"
+            "Frais de traitement réduits par réclamation",
+            "Accès anticipé aux modules Services financiers (T2 2026)",
+            "Accès anticipé aux modules Croissance des revenus (T3 2026)"
           ],
-          cta: "Démarrer l'essai gratuit"
+          cta: "Commencer"
         },
         enterprise: {
-          name: "Entreprise",
-          description: "Solutions sur mesure pour les groupes de concessionnaires multi-sites",
+          name: "Entreprise / Multi-sites",
+          description: "Solutions sur mesure pour les groupes de concessionnaires multi-sites ou les opérations à volume élevé",
           features: [
-            "Traitement illimité des réclamations",
-            "Traitement A-Z gants blancs",
-            "Support prioritaire 24/7",
-            "Rapports et tableaux de bord personnalisés",
-            "Accès à l'application mobile",
-            "Accès API complet",
-            "Gestion multi-sites",
-            "Intégrations personnalisées",
-            "Équipe de succès dédiée",
-            "Formation sur site disponible"
+            "Tout du Forfait B — Professionnel",
+            "Gestion multi-sites et rapports consolidés",
+            "Structures de frais par réclamation personnalisées",
+            "Intégration et équipe de succès dédiée",
+            "Accès API complet pour intégration SGC",
+            "Intégrations fabricants personnalisées",
+            "Formation sur site disponible",
+            "Support prioritaire 24/7"
           ],
           cta: "Contacter les ventes"
         }
@@ -2452,7 +2860,7 @@ export const translations = {
         title: "Questions sur la tarification?",
         description: "Notre équipe est là pour vous aider à trouver la solution parfaite pour les besoins de votre concessionnaire.",
         ctaDemo: "Planifier une démo",
-        ctaCall: "Appelez-nous: (888) 245-3204"
+        ctaCall: "Appelez-nous: (888) 443-2204"
       }
     },
 

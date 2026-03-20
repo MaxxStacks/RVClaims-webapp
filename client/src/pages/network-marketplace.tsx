@@ -1,110 +1,148 @@
-import { Navigation } from "@/components/navigation";
-import { Footer } from "@/components/footer";
-import { NotificationBar } from "@/components/notification-bar";
+import { PageLayout } from "@/components/page-layout";
 import { useLanguage } from "@/hooks/use-language";
 import { Button } from "@/components/ui/button";
-import { Link } from "wouter";
 import { Badge } from "@/components/ui/badge";
-import { 
-  ShoppingCart, 
-  TrendingUp, 
-  Network, 
-  Shield, 
-  Zap, 
-  DollarSign,
-  BarChart3,
-  RefreshCcw,
-  CheckCircle2,
-  Sparkles
+import { Link } from "wouter";
+import {
+  Shield, DollarSign, Clock, CheckCircle2, Zap, Store, Sparkles, Lock
 } from "lucide-react";
+
+const featureIcons = [Shield, Lock, DollarSign, CheckCircle2, Clock, Zap, Shield, Store];
 
 export default function NetworkMarketplace() {
   const { t } = useLanguage();
 
-  return (
-    <div className="min-h-screen w-full overflow-x-hidden">
-      <NotificationBar />
-      <Navigation />
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "RV Claims Network Marketplace",
+    "provider": {
+      "@type": "Organization",
+      "name": "RV Claims Canada"
+    },
+    "description": "Dealer-to-dealer RV inventory marketplace with RV Claims escrow. Verified Canadian dealers only. Flat $250 commission per unit sold. Available 24/7.",
+    "url": "https://rvclaims.ca/network-marketplace"
+  };
 
-      {/* Hero Section */}
-      <section className="bg-white py-20">
+  const sellingPerks = (t('networkMarketplace.sellingPerks.items') as unknown as { title: string; desc: string }[]);
+  const buyingPerks = (t('networkMarketplace.buyingPerks.items') as unknown as { title: string; desc: string }[]);
+  const escrowPoints = (t('networkMarketplace.exclusive.points') as unknown as string[]);
+  const valueDrivers = (t('networkMarketplace.valueDrivers.points') as unknown as string[]);
+  const howItWorks = (t('networkMarketplace.purpose.points') as unknown as string[]);
+
+  return (
+    <PageLayout
+      seoTitle="RV Dealer Network Marketplace | Dealer-to-Dealer RV Inventory | RV Claims Canada"
+      seoDescription="The RV Claims Network Marketplace connects verified Canadian RV dealers to buy and sell inventory 24/7. Flat $250 commission, RV Claims escrow, verified dealers only."
+      seoKeywords="RV dealer marketplace, dealer to dealer RV inventory, wholesale RV marketplace, RV Claims marketplace, RV escrow service, Canadian RV dealers"
+      canonical="/network-marketplace"
+      schema={schema}
+    >
+      {/* Hero */}
+      <section className="pt-24 pb-16 bg-gradient-to-b from-primary/5 to-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-4xl mx-auto">
-            <Badge 
-              className="mb-6 border border-primary/20 px-3 py-1 text-xs animate-pulse" 
-              variant="outline"
-              data-testid="badge-coming-soon"
-            >
+            <Badge className="mb-6 border border-primary/20 px-3 py-1 text-xs animate-pulse" variant="outline">
               <Sparkles className="mr-2 h-3 w-3" />
               {t('networkMarketplace.badge')}
             </Badge>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6" data-testid="text-marketplace-title">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
               {t('networkMarketplace.title')}
             </h1>
-            <p className="text-lg md:text-xl text-muted-foreground mb-8" data-testid="text-marketplace-subtitle">
+            <p className="text-lg md:text-xl text-muted-foreground mb-4">
               {t('networkMarketplace.subtitle')}
             </p>
+            <p className="text-muted-foreground mb-10 max-w-3xl mx-auto">
+              {t('networkMarketplace.heroBody')}
+            </p>
             <div className="flex flex-wrap gap-4 justify-center">
-              <Button size="lg" asChild data-testid="button-join-network">
-                <Link href="/contact">
-                  {t('networkMarketplace.cta.primary')}
-                </Link>
+              <Button size="lg" asChild>
+                <Link href="/contact">{t('networkMarketplace.cta.primary')}</Link>
               </Button>
-              <Button size="lg" variant="outline" asChild data-testid="button-learn-more">
-                <Link href="/about">
-                  {t('networkMarketplace.cta.secondary')}
-                </Link>
+              <Button size="lg" variant="outline" asChild>
+                <Link href="/pricing">{t('networkMarketplace.cta.secondary')}</Link>
               </Button>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Purpose Section */}
-      <section className="py-16 bg-white">
+      {/* Key Numbers Strip */}
+      <section className="py-12 bg-primary text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4" data-testid="text-purpose-title">
-              {t('networkMarketplace.purpose.title')}
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-3xl mx-auto" data-testid="text-purpose-description">
-              {t('networkMarketplace.purpose.description')}
-            </p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            <div>
+              <div className="text-3xl font-bold mb-1">$250</div>
+              <div className="text-white/75 text-sm">Flat commission per sale</div>
+            </div>
+            <div>
+              <div className="text-3xl font-bold mb-1">24/7</div>
+              <div className="text-white/75 text-sm">Marketplace access</div>
+            </div>
+            <div>
+              <div className="text-3xl font-bold mb-1">$499</div>
+              <div className="text-white/75 text-sm">Annual membership</div>
+            </div>
+            <div>
+              <div className="text-3xl font-bold mb-1">100%</div>
+              <div className="text-white/75 text-sm">Escrow-backed transactions</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* How It Works */}
+      <section className="py-20 bg-background">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-14">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">{t('networkMarketplace.purpose.title')}</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">{t('networkMarketplace.purpose.description')}</p>
           </div>
           <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-            {(t('networkMarketplace.purpose.points') as unknown as string[]).map((point: string, index: number) => (
-              <div 
-                key={index} 
-                className="flex items-start gap-3 p-4 rounded-lg bg-gray-50"
-                data-testid={`card-purpose-${index}`}
-              >
-                <CheckCircle2 className="h-6 w-6 text-primary flex-shrink-0 mt-0.5" />
-                <p className="text-gray-700">{point}</p>
+            {howItWorks.map((point: string, i: number) => (
+              <div key={i} className="flex items-start gap-4 p-6 rounded-xl bg-card border border-border">
+                <div className="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">
+                  {i + 1}
+                </div>
+                <p className="text-foreground">{point}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Browse Features Section */}
-      <section className="py-16 bg-gray-50">
+      {/* Marketplace Features */}
+      <section className="py-20 bg-muted/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <Badge className="mb-4 border border-primary/20 px-3 py-1 text-xs" variant="outline">
-              <ShoppingCart className="mr-2 h-3 w-3" />
-              Explore RVs
-            </Badge>
-            <h2 className="text-3xl md:text-4xl font-bold" data-testid="text-selling-title">
-              {t('networkMarketplace.sellingPerks.title')}
-            </h2>
+          <div className="text-center mb-14">
+            <h2 className="text-3xl md:text-4xl font-bold">{t('networkMarketplace.sellingPerks.title')}</h2>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {(t('networkMarketplace.sellingPerks.items') as unknown as any[]).map((item: any, index: number) => (
-              <div 
-                key={index}
-                className="bg-white p-6 rounded-lg border border-border hover:shadow-lg transition-shadow"
-                data-testid={`card-selling-perk-${index}`}
-              >
+            {sellingPerks.map((item, i: number) => {
+              const Icon = featureIcons[i % featureIcons.length];
+              return (
+                <div key={i} className="bg-card p-6 rounded-xl border border-border hover:border-primary/40 hover:shadow-lg transition-all duration-300">
+                  <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                    <Icon className="w-5 h-5 text-primary" />
+                  </div>
+                  <h3 className="font-semibold text-lg mb-2">{item.title}</h3>
+                  <p className="text-sm text-muted-foreground">{item.desc}</p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Why Dealers List */}
+      <section className="py-20 bg-background">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-14">
+            <h2 className="text-3xl md:text-4xl font-bold">{t('networkMarketplace.buyingPerks.title')}</h2>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {buyingPerks.map((item, i: number) => (
+              <div key={i} className="bg-muted/30 p-6 rounded-xl border border-border hover:shadow-lg transition-shadow">
                 <h3 className="font-semibold text-lg mb-2">{item.title}</h3>
                 <p className="text-sm text-muted-foreground">{item.desc}</p>
               </div>
@@ -113,151 +151,77 @@ export default function NetworkMarketplace() {
         </div>
       </section>
 
-      {/* Purchase Process Section */}
-      <section className="py-16 bg-white">
+      {/* Escrow Section */}
+      <section className="py-20 bg-primary/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <Badge className="mb-4 border border-primary/20 px-3 py-1 text-xs" variant="outline">
-              <CheckCircle2 className="mr-2 h-3 w-3" />
-              Your Journey
-            </Badge>
-            <h2 className="text-3xl md:text-4xl font-bold" data-testid="text-buying-title">
-              {t('networkMarketplace.buyingPerks.title')}
-            </h2>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {(t('networkMarketplace.buyingPerks.items') as unknown as any[]).map((item: any, index: number) => (
-              <div 
-                key={index}
-                className="bg-gray-50 p-6 rounded-lg border border-border hover:shadow-lg transition-shadow"
-                data-testid={`card-buying-perk-${index}`}
-              >
-                <h3 className="font-semibold text-lg mb-2">{item.title}</h3>
-                <p className="text-sm text-muted-foreground">{item.desc}</p>
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+              <Shield className="w-12 h-12 text-primary mb-6" />
+              <h2 className="text-3xl font-bold mb-4">{t('networkMarketplace.exclusive.title')}</h2>
+              <div className="space-y-4">
+                {escrowPoints.map((point: string, i: number) => (
+                  <div key={i} className="flex items-start gap-3">
+                    <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                    <p className="text-foreground">{point}</p>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
+            <div className="bg-card rounded-2xl p-8 border border-primary/20">
+              <h3 className="font-bold text-lg mb-5">{t('networkMarketplace.membershipTitle')}</h3>
+              <div className="flex items-baseline gap-2 mb-4">
+                <span className="text-4xl font-bold text-primary">{t('networkMarketplace.membershipPrice')}</span>
+              </div>
+              <p className="text-muted-foreground text-sm mb-6">{t('networkMarketplace.membershipBody')}</p>
+              <div className="space-y-2">
+                {valueDrivers.map((point: string, i: number) => (
+                  <div key={i} className="flex items-start gap-2 text-sm">
+                    <Zap className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+                    <span>{point}</span>
+                  </div>
+                ))}
+              </div>
+              <Button className="w-full mt-6" asChild>
+                <Link href="/contact">{t('networkMarketplace.cta.primary')}</Link>
+              </Button>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Trusted Platform */}
-      <section className="py-16 bg-primary/5">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <Badge className="mb-4 border border-primary/20 px-3 py-1 text-xs" variant="outline">
-              <Shield className="mr-2 h-3 w-3" />
-              Verified & Trusted
-            </Badge>
-            <h2 className="text-3xl md:text-4xl font-bold mb-6" data-testid="text-exclusive-title">
-              {t('networkMarketplace.exclusive.title')}
-            </h2>
-          </div>
-          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {(t('networkMarketplace.exclusive.points') as unknown as string[]).map((point: string, index: number) => (
-              <div 
-                key={index}
-                className="bg-white p-6 rounded-lg border border-primary/20 text-center"
-                data-testid={`card-exclusive-${index}`}
-              >
-                <p className="text-gray-700">{point}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Value Drivers */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4" data-testid="text-wow-title">
-              {t('networkMarketplace.valueDrivers.title')}
-            </h2>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {(t('networkMarketplace.valueDrivers.points') as unknown as string[]).map((point: string, index: number) => (
-              <div 
-                key={index}
-                className="flex items-start gap-3 p-4"
-                data-testid={`card-value-${index}`}
-              >
-                <Zap className="h-6 w-6 text-primary flex-shrink-0 mt-0.5" />
-                <p className="text-gray-700 font-medium">{point}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Live Auctions Feature Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <Badge 
-              className="mb-4 border border-primary/20 px-3 py-1 text-xs" 
-              variant="outline"
-              data-testid="badge-auctions-coming"
-            >
-              <Sparkles className="mr-2 h-3 w-3" />
-              {t('liveAuctions.badge')}
-            </Badge>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4" data-testid="text-auctions-marketplace-title">
-              {t('liveAuctions.title')}
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-3xl mx-auto mb-8" data-testid="text-auctions-marketplace-subtitle">
-              {t('liveAuctions.subtitle')}
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-4 gap-6 mb-12">
-            {(t('liveAuctions.types.categories') as unknown as any[]).map((category: any, index: number) => (
-              <div 
-                key={index}
-                className="bg-white p-6 rounded-lg border-2 border-gray-200 hover:border-primary/50 transition-colors text-center"
-                data-testid={`card-auction-category-${index}`}
-              >
-                <h3 className="font-semibold mb-2" data-testid={`text-auction-category-title-${index}`}>
-                  {category.title}
-                </h3>
-                <p className="text-sm text-gray-600" data-testid={`text-auction-category-description-${index}`}>
-                  {category.description}
-                </p>
-              </div>
-            ))}
-          </div>
-
-          <div className="text-center">
-            <Button size="lg" asChild data-testid="button-learn-auctions">
-              <Link href="/live-auctions">
-                {t('liveAuctions.cta.secondary')}
-              </Link>
-            </Button>
-          </div>
+      {/* Live Auctions Feature */}
+      <section className="py-16 bg-muted/30">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <Badge className="mb-4 border border-primary/20 px-3 py-1 text-xs" variant="outline">
+            <Sparkles className="mr-2 h-3 w-3" />
+            Also Included with Membership
+          </Badge>
+          <h2 className="text-2xl md:text-3xl font-bold mb-4">Monthly Public Live Auctions</h2>
+          <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
+            Marketplace members also get access to our monthly 48-hour public live auctions — list wholesale inventory for fast liquidation at competitive prices.
+          </p>
+          <Button variant="outline" asChild>
+            <Link href="/live-auctions">Learn About Live Auctions →</Link>
+          </Button>
         </div>
       </section>
 
       {/* CTA Footer */}
       <section className="py-16 bg-primary text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6" data-testid="text-cta-footer">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
             {t('networkMarketplace.footer')}
           </h2>
-          <div className="flex flex-wrap gap-4 justify-center">
-            <Button size="lg" variant="secondary" asChild data-testid="button-footer-join">
-              <Link href="/contact">
-                {t('networkMarketplace.cta.primary')}
-              </Link>
+          <div className="flex flex-wrap gap-4 justify-center mt-8">
+            <Button size="lg" variant="secondary" asChild>
+              <Link href="/contact">{t('networkMarketplace.cta.primary')}</Link>
             </Button>
-            <Button size="lg" variant="outline" className="bg-transparent border-white text-white hover:bg-white hover:text-primary" asChild data-testid="button-footer-learn">
-              <Link href="/about">
-                {t('networkMarketplace.cta.secondary')}
-              </Link>
+            <Button size="lg" variant="outline" className="bg-transparent border-white text-white hover:bg-white hover:text-primary" asChild>
+              <Link href="/pricing">{t('networkMarketplace.cta.secondary')}</Link>
             </Button>
           </div>
         </div>
       </section>
-
-      <Footer />
-    </div>
+    </PageLayout>
   );
 }

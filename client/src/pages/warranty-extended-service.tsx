@@ -21,7 +21,7 @@ export default function WarrantyExtendedService() {
       seoTitle={t('warrantyExtendedPage.title')}
       seoDescription={t('warrantyExtendedPage.description')}
       seoKeywords="RV warranty, extended service, warranty management, protection plans, warranty sales"
-      canonical="/warranty-extended-service"
+      canonical="/warranty-plans"
     >
       <PageHero
         badge={t('warrantyExtendedPage.badge')}
@@ -71,10 +71,10 @@ export default function WarrantyExtendedService() {
       <section className="py-20 bg-background">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
           <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
-            Transform Your Warranty Revenue
+            {t('warrantyExtendedPage.ctaTitle')}
           </h2>
           <p className="text-xl text-muted-foreground">
-            Partner with our warranty experts to maximize protection plan profitability.
+            {t('warrantyExtendedPage.ctaDescription')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/contact">
@@ -82,9 +82,9 @@ export default function WarrantyExtendedService() {
                 {t('warrantyExtendedPage.cta')}
               </Button>
             </Link>
-            <a href="tel:8882453204">
+            <a href="tel:8884432204">
               <Button size="lg" variant="outline" className="w-full sm:w-auto" data-testid="button-call-warranty">
-                Call (888) 245-3204
+                {t('warrantyExtendedPage.ctaCallButton')}
               </Button>
             </a>
           </div>

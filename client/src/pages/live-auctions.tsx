@@ -14,7 +14,7 @@ import {
 
 // Auction window: May 8, 2026 12:00 PM EDT (UTC-4) → 16:00 UTC
 const AUCTION_START = new Date('2026-05-08T16:00:00Z');
-const AUCTION_END   = new Date('2026-05-09T16:00:00Z');
+const AUCTION_END   = new Date('2026-05-10T16:00:00Z');
 
 type AuctionState = 'pre' | 'live' | 'ended';
 type UserState    = 'guest' | 'registered' | 'bidder';
@@ -61,7 +61,7 @@ const FAQ = [
   { q: 'Is financing available?', a: 'Yes. RV Claims partners with Canadian lenders. Apply during or after the auction. Pre-approval is recommended before bidding on high-value units.' },
   { q: 'Who are the sellers?', a: 'All units are listed by verified Canadian RV dealerships. Dealer identities are hidden during the auction. You deal exclusively through RV Claims as escrow.' },
   { q: 'What happens if the reserve is not met?', a: 'If the winning bid is below the seller\'s reserve price, the unit is not sold and all holds are released.' },
-  { q: 'How often are public auctions held?', a: 'Once per month, running for 24 hours. Sign up for notifications to be alerted when the next event is announced.' },
+  { q: 'How often are public auctions held?', a: 'Once per month, running for 48 hours. Sign up for notifications to be alerted when the next event is announced.' },
 ];
 
 // ─── CountdownBlock ───────────────────────────────────────────────────────────
@@ -213,7 +213,7 @@ export default function LiveAuctions() {
                 No dealer license required.
               </p>
               <p className="text-white/60 text-sm mb-12">
-                Next auction opens May 8, 2026 at 12:00 PM EDT · Runs 24 hours
+                Next auction opens May 8, 2026 at 12:00 PM EDT · Runs 48 hours
               </p>
 
               {/* Countdown */}
@@ -258,7 +258,7 @@ export default function LiveAuctions() {
               <div className="text-center mb-12">
                 <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">How It Works</h2>
                 <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-                  RV Claims connects the public directly with verified Canadian dealerships — once a month, for 24 hours.
+                  RV Claims connects the public directly with verified Canadian dealerships — once a month, for 48 hours.
                 </p>
               </div>
               <div className="grid md:grid-cols-3 gap-8">
@@ -326,7 +326,7 @@ export default function LiveAuctions() {
                   <h3 className="font-bold text-gray-900 text-lg mb-5">Auction Rules at a Glance</h3>
                   <div className="space-y-3 text-sm text-gray-700">
                     {[
-                      ['Auction Window', '24 hours — May 8 at 12 PM EDT to May 9 at 12 PM EDT'],
+                      ['Auction Window', '48 hours — May 8 at 12 PM EDT to May 10 at 12 PM EDT'],
                       ['Who Can Bid', 'Any adult Canadian resident'],
                       ['Bid Hold', '$250 per auction (not per unit)'],
                       ['Hold Refund', 'Automatic within 5 business days if you lose'],
