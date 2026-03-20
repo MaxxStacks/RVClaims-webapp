@@ -672,6 +672,29 @@ export const insertNetworkWaitlistSchema = createInsertSchema(networkWaitlist).o
 export type InsertNetworkWaitlist = z.infer<typeof insertNetworkWaitlistSchema>;
 export type NetworkWaitlist = typeof networkWaitlist.$inferSelect;
 
+// ==================== BOOKINGS (public demo/discovery call booking) ====================
+
+export const bookings = pgTable("bookings", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  firstName: text("first_name").notNull(),
+  lastName: text("last_name").notNull(),
+  email: text("email").notNull(),
+  phone: text("phone"),
+  dealershipName: text("dealership_name").notNull(),
+  province: text("province").notNull(),
+  serviceInterest: text("service_interest").array().notNull().default(sql`'{}'`),
+  scheduledDate: text("scheduled_date").notNull(), // "YYYY-MM-DD"
+  scheduledTime: text("scheduled_time").notNull(), // "09:00"
+  notes: text("notes"),
+  language: text("language").default("en"),
+  status: text("status", { enum: ["pending", "confirmed", "cancelled", "completed"] }).default("pending").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const insertBookingSchema = createInsertSchema(bookings).omit({ id: true, createdAt: true, status: true });
+export type InsertBooking = z.infer<typeof insertBookingSchema>;
+export type Booking = typeof bookings.$inferSelect;
+
 // Re-export UserRole for client-side consumers that import from @shared/schema
 export type { UserRole } from "./constants";
 

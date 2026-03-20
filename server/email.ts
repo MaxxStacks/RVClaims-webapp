@@ -47,6 +47,65 @@ This notification was sent automatically from the RV Claims Canada website.
   }
 }
 
+export async function sendBookingNotification(data: {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone?: string;
+  dealershipName: string;
+  province: string;
+  serviceInterest: string[];
+  scheduledDate: string;
+  scheduledTime: string;
+  notes?: string;
+  language: string;
+}) {
+  try {
+    const interestList = data.serviceInterest.join(', ') || 'Not specified';
+    const mailOptions = {
+      from: process.env.SMTP_USER || 'noreply@rvclaims.ca',
+      to: 'hello@rvclaims.ca',
+      subject: `New Discovery Call Booking — ${data.dealershipName} · ${data.scheduledDate} ${data.scheduledTime} ET`,
+      html: `
+        <h2>New Discovery Call Booking</h2>
+        <p>A dealer has booked a discovery call:</p>
+        <table cellpadding="6" style="border-collapse:collapse;font-size:14px;">
+          <tr><td><strong>Name:</strong></td><td>${data.firstName} ${data.lastName}</td></tr>
+          <tr><td><strong>Dealership:</strong></td><td>${data.dealershipName}</td></tr>
+          <tr><td><strong>Province:</strong></td><td>${data.province}</td></tr>
+          <tr><td><strong>Email:</strong></td><td>${data.email}</td></tr>
+          <tr><td><strong>Phone:</strong></td><td>${data.phone || '—'}</td></tr>
+          <tr><td><strong>Date:</strong></td><td>${data.scheduledDate}</td></tr>
+          <tr><td><strong>Time:</strong></td><td>${data.scheduledTime} ET</td></tr>
+          <tr><td><strong>Interests:</strong></td><td>${interestList}</td></tr>
+          <tr><td><strong>Language:</strong></td><td>${data.language === 'fr' ? 'French' : 'English'}</td></tr>
+          ${data.notes ? `<tr><td><strong>Notes:</strong></td><td>${data.notes}</td></tr>` : ''}
+        </table>
+        <hr>
+        <p style="color:#666;font-size:12px;">Sent automatically from rvclaims.ca/book-demo</p>
+      `,
+      text: `
+New Discovery Call Booking
+
+Name: ${data.firstName} ${data.lastName}
+Dealership: ${data.dealershipName}
+Province: ${data.province}
+Email: ${data.email}
+Phone: ${data.phone || '—'}
+Date: ${data.scheduledDate}
+Time: ${data.scheduledTime} ET
+Interests: ${interestList}
+Language: ${data.language === 'fr' ? 'French' : 'English'}
+${data.notes ? `Notes: ${data.notes}` : ''}
+      `.trim(),
+    };
+    await transporter.sendMail(mailOptions);
+    console.log('Booking notification email sent to hello@rvclaims.ca');
+  } catch (error) {
+    console.error('Failed to send booking notification email:', error);
+  }
+}
+
 export async function sendContactFormNotification(data: {
   dealershipName: string;
   firstName: string;

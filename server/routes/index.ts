@@ -24,9 +24,9 @@ import publicAuctionRoutes from './public-auctions';
 
 // Import existing routes for backward compat
 import { storage } from "../storage";
-import { insertContactSchema, insertNetworkWaitlistSchema } from "@shared/schema";
+import { insertContactSchema, insertNetworkWaitlistSchema, insertBookingSchema } from "@shared/schema";
 import { z } from "zod";
-import { sendWaitlistNotification, sendContactFormNotification } from "../email";
+import { sendWaitlistNotification, sendContactFormNotification, sendBookingNotification } from "../email";
 import { findBestResponse } from "../chatbot-responses";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -114,6 +114,43 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({ success: true, waitlist });
     } catch (error) {
       res.status(500).json({ success: false, message: "Failed to fetch waitlist" });
+    }
+  });
+
+  // Discovery call booking
+  app.post("/api/bookings", async (req, res) => {
+    try {
+      const validatedData = insertBookingSchema.parse(req.body);
+      const booking = await storage.createBooking(validatedData);
+      await sendBookingNotification({
+        firstName: validatedData.firstName,
+        lastName: validatedData.lastName,
+        email: validatedData.email,
+        phone: validatedData.phone ?? undefined,
+        dealershipName: validatedData.dealershipName,
+        province: validatedData.province,
+        serviceInterest: validatedData.serviceInterest ?? [],
+        scheduledDate: validatedData.scheduledDate,
+        scheduledTime: validatedData.scheduledTime,
+        notes: validatedData.notes ?? undefined,
+        language: validatedData.language ?? 'en',
+      });
+      res.status(201).json({ success: true, booking });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ success: false, message: "Invalid booking data", errors: error.errors });
+      } else {
+        res.status(500).json({ success: false, message: "Internal server error" });
+      }
+    }
+  });
+
+  app.get("/api/bookings", async (req, res) => {
+    try {
+      const bookings = await storage.getBookings();
+      res.json({ success: true, bookings });
+    } catch (error) {
+      res.status(500).json({ success: false, message: "Failed to fetch bookings" });
     }
   });
 

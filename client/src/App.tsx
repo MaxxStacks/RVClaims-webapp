@@ -26,6 +26,7 @@ import LiveAuctions from "@/pages/live-auctions";
 import Pricing from "@/pages/pricing";
 import OperatorLogin from "@/pages/operator-login";
 import BidderLoginPage from "@/pages/bidder-login";
+import BookDemo from "@/pages/book-demo";
 import NotFound from "@/pages/not-found";
 import OperatorPortal from "./portals/OperatorPortal";
 import DealerPortal from "./portals/DealerPortal";
@@ -73,6 +74,7 @@ function Router() {
         <Route path="/pricing" component={Pricing} />
         <Route path="/operator" component={OperatorLogin} />
         <Route path="/bidder-login" component={BidderLoginPage} />
+        <Route path="/book-demo" component={BookDemo} />
         <Route component={NotFound} />
       </Switch>
     </>
