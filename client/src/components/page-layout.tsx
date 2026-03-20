@@ -12,9 +12,10 @@ interface PageLayoutProps {
   seoDescription: string;
   seoKeywords?: string;
   canonical?: string;
+  schema?: object | object[];
 }
 
-export function PageLayout({ children, seoTitle, seoDescription, seoKeywords, canonical }: PageLayoutProps) {
+export function PageLayout({ children, seoTitle, seoDescription, seoKeywords, canonical, schema }: PageLayoutProps) {
   return (
     <>
       <SeoMeta
@@ -22,6 +23,7 @@ export function PageLayout({ children, seoTitle, seoDescription, seoKeywords, ca
         description={seoDescription}
         keywords={seoKeywords}
         canonical={canonical}
+        schema={schema}
       />
       <div className="min-h-screen w-full overflow-x-hidden">
         <NotificationBar />
