@@ -2,8 +2,8 @@ import { useState } from "react";
 import { Mail, Eye, EyeOff, ArrowLeft, FileText, TrendingUp, Users, Building2 } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
 import { Link } from "wouter";
-import logoEN from "@assets/Official_RVclaims_logo_en.png";
-import logoFR from "@assets/Official_RVclaims_logo_fr.png";
+import logoEN from "@assets/Official_RVclaims_logo_en.webp";
+import logoFR from "@assets/Official_RVclaims_logo_fr.webp";
 
 export default function OperatorLogin() {
   const { language } = useLanguage();

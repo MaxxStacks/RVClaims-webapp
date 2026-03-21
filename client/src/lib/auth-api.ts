@@ -30,7 +30,9 @@ async function apiFetch<T>(path: string, options: ApiOptions = {}): Promise<T> {
   const { skipAuth, ...fetchOptions } = options;
 
   const headers = new Headers(fetchOptions.headers);
-  headers.set("Content-Type", "application/json");
+  if (fetchOptions.body !== undefined) {
+    headers.set("Content-Type", "application/json");
+  }
 
   if (!skipAuth && _accessToken) {
     headers.set("Authorization", `Bearer ${_accessToken}`);

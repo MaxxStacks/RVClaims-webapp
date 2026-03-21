@@ -2,8 +2,8 @@ import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
 import { Link } from "wouter";
-import logoEN from "@assets/Official_RVclaims_logo_en.png";
-import logoFR from "@assets/Official_RVclaims_logo_fr.png";
+import logoEN from "@assets/Official_RVclaims_logo_en.webp";
+import logoFR from "@assets/Official_RVclaims_logo_fr.webp";
 
 export default function Signup() {
   const { language } = useLanguage();

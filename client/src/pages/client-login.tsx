@@ -5,8 +5,8 @@ import { faGoogle, faLinkedinIn } from "@fortawesome/free-brands-svg-icons";
 import { useLanguage } from "@/hooks/use-language";
 import { useAuth } from "@/hooks/use-auth";
 import { Link, useLocation } from "wouter";
-import logoEN from "@assets/Official_RVclaims_logo_en.png";
-import logoFR from "@assets/Official_RVclaims_logo_fr.png";
+import logoEN from "@assets/Official_RVclaims_logo_en.webp";
+import logoFR from "@assets/Official_RVclaims_logo_fr.webp";
 
 type LoginStep = "options" | "email";
 
