@@ -14,12 +14,15 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 mb-12">
           <div className="lg:col-span-2 space-y-4">
             <div className="mb-2" data-testid="div-footer-logo">
-              <img
-                src={language === 'en' ? logoEN : logoFR}
-                alt="RV Claims"
-                style={{ height: "72px", width: "auto" }}
-                data-testid="img-footer-logo"
-              />
+              <Link href="/">
+                <img
+                  src={language === 'en' ? logoEN : logoFR}
+                  alt="RV Claims"
+                  style={{ height: "72px", width: "auto" }}
+                  className="cursor-pointer"
+                  data-testid="img-footer-logo"
+                />
+              </Link>
             </div>
             <p className="text-gray-600 text-sm" data-testid="text-footer-description">
               {t('footer.description')}
