@@ -28,7 +28,8 @@ export const translations = {
       bookDemo: "Book a Demo",
       dealerLogin: "Dealer Login",
       marketplace: "Marketplace",
-      networkMarketplace: "Network Marketplace"
+      networkMarketplace: "Network Marketplace",
+      onSiteRepairs: "On-Site Repairs"
     },
 
     // Notification Bar
@@ -1611,7 +1612,8 @@ export const translations = {
       bookDemo: "Réserver un appel",
       dealerLogin: "Connexion concessionnaire",
       marketplace: "Place de marché",
-      networkMarketplace: "Place de marché réseau"
+      networkMarketplace: "Place de marché réseau",
+      onSiteRepairs: "Réparations sur site"
     },
 
     // Notification Bar

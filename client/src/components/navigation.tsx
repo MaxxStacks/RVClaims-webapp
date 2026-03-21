@@ -104,7 +104,7 @@ export function Navigation() {
               </button>
 
               {servicesOpen && (
-                <div className="absolute top-full left-0 mt-1 w-[680px] bg-white border border-border rounded-lg shadow-xl py-3 z-50">
+                <div className="absolute top-full left-0 mt-1 w-[900px] bg-white border border-border rounded-lg shadow-xl py-3 z-50">
                   <div className="grid grid-cols-3">
                     {/* Column 1: Core Claims */}
                     <div>
@@ -196,6 +196,28 @@ export function Navigation() {
                         </div>
                         <div className="text-xs text-muted-foreground mt-1">AI-powered dealership tools</div>
                       </Link>
+                      <Link
+                        href="/contact"
+                        className="block px-5 py-3 text-sm hover:bg-primary/10 hover:text-primary transition-colors"
+                        data-testid="link-on-site-repairs"
+                      >
+                        <div className="font-medium flex items-center gap-2">
+                          {t('navigation.onSiteRepairs')}
+                          <ServiceBadge quarter="Q3" />
+                        </div>
+                        <div className="text-xs text-muted-foreground mt-1">Technician dispatched to your location</div>
+                      </Link>
+                      <Link
+                        href="/contact"
+                        className="block px-5 py-3 text-sm hover:bg-primary/10 hover:text-primary transition-colors"
+                        data-testid="link-roadside-assistance"
+                      >
+                        <div className="font-medium flex items-center gap-2">
+                          {t('navigation.roadsideAssistance')}
+                          <ServiceBadge quarter="Q4" />
+                        </div>
+                        <div className="text-xs text-muted-foreground mt-1">24/7 emergency towing & roadside support</div>
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -217,7 +239,7 @@ export function Navigation() {
               </button>
 
               {rvCoverageOpen && (
-                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-1 w-[800px] bg-white border border-border rounded-lg shadow-xl p-6 z-50">
+                <div className="absolute top-full left-0 mt-1 w-[800px] bg-white border border-border rounded-lg shadow-xl p-6 z-50">
                   <div className="grid grid-cols-5 gap-6">
                     {rvTypes.map((rv) => (
                       <Link
