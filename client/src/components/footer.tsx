@@ -2,8 +2,8 @@ import { Phone, Mail, MapPin, Heart, Linkedin, Facebook, Youtube, Instagram, Twi
 import { useLanguage } from "@/hooks/use-language";
 import { ServiceBadge } from "@/components/service-badge";
 import { Link } from "wouter";
-import logoEN from "@assets/DS360_logo_en.webp";
-import logoFR from "@assets/DS360_logo_fr.webp";
+import logoEN from "@assets/DS360_logo_en.png";
+import logoFR from "@assets/DS360_logo_fr.png";
 
 export function Footer() {
   const { t, language } = useLanguage();
