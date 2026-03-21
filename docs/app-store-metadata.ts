@@ -3,18 +3,18 @@
 
 export const appMetadata = {
   // ===== COMMON =====
-  appName: 'RV Claims',
-  shortDescription: 'RV warranty claims management for Canadian dealerships',
+  appName: 'Dealer Suite 360',
+  shortDescription: 'The all-in-one dealership operating system for Canadian RV dealers',
 
   // ===== GOOGLE PLAY =====
   googlePlay: {
-    packageName: 'ca.rvclaims.app',
+    packageName: 'com.dealersuite360.app',
     defaultLanguage: 'en-CA',
 
-    title: 'RV Claims - Warranty Claims Manager',
+    title: 'Dealer Suite 360 - Dealership Operating System',
     shortDescription: 'Manage RV warranty claims, track parts, process financing, and connect with your dealer network.',
 
-    fullDescription: `RV Claims is the complete warranty claims management platform for Canadian RV dealerships and their customers.
+    fullDescription: `Dealer Suite 360 is the complete dealership operating platform for Canadian RV dealerships and their customers.
 
 FOR DEALERSHIPS:
 • Upload claim photos directly from your phone
@@ -66,25 +66,25 @@ FEATURES:
     ],
 
     // Feature graphic: 1024x500 PNG/JPG
-    featureGraphicText: 'RV Claims — Get Paid for Warranty Work',
+    featureGraphicText: 'Dealer Suite 360 — Get Paid for Warranty Work',
 
-    privacyPolicyUrl: 'https://rvclaims.ca/privacy-policy',
-    websiteUrl: 'https://rvclaims.ca',
-    supportEmail: 'support@rvclaims.ca',
+    privacyPolicyUrl: 'https://dealersuite360.com/privacy-policy',
+    websiteUrl: 'https://dealersuite360.com',
+    supportEmail: 'support@dealersuite360.com',
   },
 
   // ===== APPLE APP STORE =====
   appStore: {
-    bundleId: 'ca.rvclaims.app',
-    sku: 'RVCLAIMS001',
+    bundleId: 'com.dealersuite360.app',
+    sku: 'DS360001',
     primaryLanguage: 'en-CA',
 
-    name: 'RV Claims',
-    subtitle: 'Warranty Claims for RV Dealers',
+    name: 'Dealer Suite 360',
+    subtitle: 'The Dealership Operating System',
 
     promotionalText: 'Now with financing services, F&I product tracking, and parts ordering — all from your phone.',
 
-    description: `RV Claims is the complete warranty claims management platform built for Canadian RV dealerships.
+    description: `Dealer Suite 360 is the complete dealership operating platform built for Canadian RV dealerships.
 
 Upload claim photos from the field, push to your claims team for processing, and track every claim from submission to payment. Manage your entire unit inventory, request financing for customers, order parts, and connect with your dealer network — all from one app.
 
@@ -106,9 +106,9 @@ Key Features:
     primaryCategory: 'Business',
     secondaryCategory: 'Productivity',
 
-    supportUrl: 'https://rvclaims.ca/contact',
-    marketingUrl: 'https://rvclaims.ca',
-    privacyUrl: 'https://rvclaims.ca/privacy-policy',
+    supportUrl: 'https://dealersuite360.com/contact',
+    marketingUrl: 'https://dealersuite360.com',
+    privacyUrl: 'https://dealersuite360.com/privacy-policy',
 
     // Screenshots needed:
     // 6.7" (iPhone 15 Pro Max): 1290x2796 or 2796x1290
@@ -123,24 +123,24 @@ Key Features:
     },
 
     // App Review Information
-    reviewNotes: 'This app requires a dealer account to access full features. Test credentials: Email: demo@rvclaims.ca / Password: Demo2026! — This will log into the dealer portal with sample data.',
+    reviewNotes: 'This app requires a dealer account to access full features. Test credentials: Email: demo@dealersuite360.com / Password: Demo2026! — This will log into the dealer portal with sample data.',
 
     // Age Rating
     ageRating: '4+',
 
     // Permissions descriptions (Info.plist)
     permissions: {
-      NSCameraUsageDescription: 'RV Claims needs camera access to photograph claim damage, scan unit VIN tags, and update profile photos.',
-      NSPhotoLibraryUsageDescription: 'RV Claims needs photo library access to upload existing claim photos and documents.',
-      NSPhotoLibraryAddUsageDescription: 'RV Claims saves claim photos to your library for backup.',
-      NSLocationWhenInUseUsageDescription: 'RV Claims uses your location for the roadside assistance feature to dispatch help to your location.',
+      NSCameraUsageDescription: 'Dealer Suite 360 needs camera access to photograph claim damage, scan unit VIN tags, and update profile photos.',
+      NSPhotoLibraryUsageDescription: 'Dealer Suite 360 needs photo library access to upload existing claim photos and documents.',
+      NSPhotoLibraryAddUsageDescription: 'Dealer Suite 360 saves claim photos to your library for backup.',
+      NSLocationWhenInUseUsageDescription: 'Dealer Suite 360 uses your location for the roadside assistance feature to dispatch help to your location.',
     },
   },
 
   // ===== FRENCH LOCALIZATION =====
   french: {
-    title: 'RV Claims - Gestion de réclamations',
-    subtitle: 'Réclamations de garantie pour concessionnaires VR',
+    title: 'Dealer Suite 360 - Gestion de réclamations',
+    subtitle: 'Le système d'''exploitation des concessionnaires',
     shortDescription: 'Gérez les réclamations de garantie VR, suivez les pièces et connectez-vous à votre réseau de concessionnaires.',
     keywords: 'vr,réclamation,garantie,concessionnaire,véhicule récréatif,caravane,remorque,réparation,service',
   },

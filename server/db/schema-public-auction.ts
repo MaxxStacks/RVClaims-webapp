@@ -11,7 +11,7 @@ import { z } from 'zod';
 export const publicBidderStatusEnum = pgEnum('public_bidder_status', [
   'registered',     // Free account created
   'card_on_file',   // Credit card added — can bid
-  'suspended',      // Blocked by RV Claims
+  'suspended',      // Blocked by Dealer Suite 360
 ]);
 
 export const publicAuctionStatusEnum = pgEnum('public_auction_status', [
@@ -25,8 +25,8 @@ export const publicAuctionStatusEnum = pgEnum('public_auction_status', [
 
 export const showcaseStatusEnum = pgEnum('showcase_status', [
   'submitted',      // Dealer submitted unit for this event
-  'approved',       // RV Claims approved the listing
-  'rejected',       // RV Claims rejected (bad photos, incomplete, etc.)
+  'approved',       // Dealer Suite 360 approved the listing
+  'rejected',       // Dealer Suite 360 rejected (bad photos, incomplete, etc.)
   'live',           // Currently in the public auction
   'sold',           // Won by a bidder
   'unsold',         // Auction ended, no winner / reserve not met

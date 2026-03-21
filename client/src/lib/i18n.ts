@@ -507,7 +507,7 @@ export const translations = {
       apiAccess: "API Access",
       systemStatus: "System Status",
       contactTitle: "Contact",
-      copyright: "© 2026 RV Claims. All rights reserved. Patent Pending Technology.",
+      copyright: "© 2026 Dealer Suite 360. All rights reserved. Patent Pending Technology.",
       privacyPolicy: "Privacy Policy",
       termsOfService: "Terms of Service",
       cookiePolicy: "Cookie Policy",
@@ -566,7 +566,7 @@ export const translations = {
     // About Page
     aboutPage: {
       badge: "15 Years of Excellence",
-      title: "Leading RV Claims Management",
+      title: "Leading Dealership Operations Platform",
       description: "Professional claims processing expertise with a proven track record of maximizing dealership revenue across Canada.",
       storyTitle: "Our Story",
       storyDescription: "Founded with a mission to revolutionize RV warranty claims processing for Canadian dealers.",
@@ -580,9 +580,9 @@ export const translations = {
       development: "Development Office",
       missionBadge: "Canada's Dealership Operating System",
       missionTitle: "We're Not a Claims Company. We're the Platform Your Dealership Runs On.",
-      missionBody: "RV Claims Canada was founded by people who spent 15 years inside RV dealerships, watching warranty revenue disappear into manual paperwork, denied claims, and fragmented vendor relationships. We built the platform we wished existed.",
+      missionBody: "Dealer Suite 360 was founded by people who spent 15 years inside RV dealerships, watching warranty revenue disappear into manual paperwork, denied claims, and fragmented vendor relationships. We built the platform we wished existed.",
       platformTitle: "One Subscription. Every Service.",
-      platformBody: "From the moment a repair is identified to the moment a customer drives away — claims, financing, F&I, parts, marketing, and beyond — RV Claims Canada handles it. No more managing five different vendors. One platform, one team, one bill.",
+      platformBody: "From the moment a repair is identified to the moment a customer drives away — claims, financing, F&I, parts, marketing, and beyond — Dealer Suite 360 handles it. No more managing five different vendors. One platform, one team, one bill.",
       pillar1Title: "Claims Processing",
       pillar1Body: "A-Z warranty claims — DAF, PDI, Warranty, Extended, Insurance — handled by our expert team using patent-pending AI technology. Module 1 is live now.",
       pillar2Title: "Financial Services",
@@ -593,17 +593,17 @@ export const translations = {
       pillar4Body: "Dealer-to-dealer inventory marketplace and monthly public live auctions. Launching Q3–Q4 2026.",
       pillar5Title: "Consumer Direct",
       pillar5Body: "Roadside assistance, extended warranty, and RV protection packages sold directly to RV owners. Launching Q4 2026.",
-      whyTitle: "Why Canadian Dealers Choose RV Claims Canada",
+      whyTitle: "Why Canadian Dealers Choose Dealer Suite 360",
       why1: "15+ years of RV claims expertise — not auto, not generic. RV-specific, Canada-focused.",
       why2: "AI-powered platform with patent-pending FRC code matching and photo quality scoring",
       why3: "Fully bilingual — every service operates in English and French across all Canadian provinces",
       why4: "Canada-first — built for Canadian manufacturers, regulations, and PIPEDA compliance",
       why5: "Two-sided SaaS platform — our network and AI get stronger with every dealer who joins",
       why6: "Modular — start with claims today, add new revenue modules as they launch",
-      founderQuote: "We built RV Claims Canada because we saw how much money Canadian dealers were leaving on the table every month. Bad photos. Wrong FRC codes. Incomplete paperwork. One expert team with the right technology fixes all of that — and then some.",
-      founderAttribution: "Founder, RV Claims Canada",
+      founderQuote: "We built Dealer Suite 360 because we saw how much money Canadian dealers were leaving on the table every month. Bad photos. Wrong FRC codes. Incomplete paperwork. One expert team with the right technology fixes all of that — and then some.",
+      founderAttribution: "Founder, Dealer Suite 360",
       teamTitle: "Expert Team. Real Results.",
-      teamBody: "Our operator team is made up of RV industry veterans with deep expertise in manufacturer warranty systems, F&I compliance, and dealership operations. When you subscribe to RV Claims Canada, you get a full service team working as an extension of your dealership.",
+      teamBody: "Our operator team is made up of RV industry veterans with deep expertise in manufacturer warranty systems, F&I compliance, and dealership operations. When you subscribe to Dealer Suite 360, you get a full service team working as an extension of your dealership.",
       statValue1: "15+",
       statLabel1: "Years in the RV industry",
       statValue2: "95%+",
@@ -621,9 +621,9 @@ export const translations = {
     servicesPage: {
       badge: "The Complete Dealership Platform",
       title: "Every Service Your Dealership Needs",
-      description: "RV Claims Canada is the single platform Canadian RV dealers need to run their entire operation — from warranty claims to financing, F&I, parts, marketplace, and live auctions.",
+      description: "Dealer Suite 360 is the single platform Canadian RV dealers need to run their entire operation — from warranty claims to financing, F&I, parts, marketplace, and live auctions.",
       introHeading: "One Platform. 16+ Services. Zero Complexity.",
-      introBody: "Think of RV Claims Canada the way dealers think of Shopify for e-commerce — one subscription gives your dealership access to every service you need. Start with claims processing today and activate new revenue modules as your business grows.",
+      introBody: "Think of Dealer Suite 360 the way dealers think of Shopify for e-commerce — one subscription gives your dealership access to every service you need. Start with claims processing today and activate new revenue modules as your business grows.",
       cat1Badge: "Module 1 — Live Now",
       cat1Title: "Core Claims Services",
       cat1Description: "The foundation of the platform. A-Z warranty claims management handled by our expert team using patent-pending AI technology — so your team can focus on selling.",
@@ -688,7 +688,7 @@ export const translations = {
       mktplaceTitle: "Network Marketplace",
       mktplaceDescription: "A verified dealer-to-dealer RV inventory platform available 24/7. List units that aren't moving at your location and connect with dealers across Canada who have active demand.",
       mktplaceF1: "Subscription required — verified dealers only",
-      mktplaceF2: "RV Claims acts as escrow on all transactions",
+      mktplaceF2: "Dealer Suite 360 acts as escrow on all transactions",
       mktplaceF3: "Flat $250 commission per unit sold — no percentage fees",
       mktplaceF4: "Verified vehicle history on every listing",
       auctTitle: "Live Auctions",
@@ -718,20 +718,20 @@ export const translations = {
       faqHeading: "Frequently Asked Questions",
       faq1Q: "Do I need to subscribe to all services, or can I start with just claims?",
       faq1A: "You can start with claims processing alone — it's Module 1 and available right now. Additional service modules activate as they launch, and you choose which ones to add based on your dealership's needs.",
-      faq2Q: "Which RV manufacturers does RV Claims support for warranty claims?",
+      faq2Q: "Which RV manufacturers does Dealer Suite 360 support for warranty claims?",
       faq2A: "We currently support Jayco, Forest River, Heartland, Columbia NW, Keystone, and Midwest Auto — covering the majority of Canadian RV inventory. Additional manufacturers are added regularly.",
-      faq3Q: "Is RV Claims Canada available in French?",
+      faq3Q: "Is Dealer Suite 360 available in French?",
       faq3A: "Yes. The entire platform — dealer portal, operator communications, and all documentation — is fully bilingual in English and French to serve dealerships across all Canadian provinces.",
       faq4Q: "What is the difference between the Network Marketplace and Live Auctions?",
       faq4A: "The Network Marketplace is a private, subscription-only platform for verified RV dealers to buy and sell inventory 24/7 at negotiated prices. Live Auctions are monthly 48-hour public events open to the general public with competitive bidding.",
       faq5Q: "How does the escrow service work on the Network Marketplace?",
-      faq5A: "RV Claims acts as a neutral escrow agent on every marketplace transaction. Funds are held securely until both parties confirm the transfer is complete. A flat $250 commission is charged per completed sale — no percentage of the sale price.",
+      faq5A: "Dealer Suite 360 acts as a neutral escrow agent on every marketplace transaction. Funds are held securely until both parties confirm the transfer is complete. A flat $250 commission is charged per completed sale — no percentage of the sale price.",
       faq6Q: "What happens to my $250 deposit if I don't win a Live Auction bid?",
       faq6A: "If you do not win the bid, the full $250 deposit is returned to your original payment method. If you win, the $250 is applied directly toward the purchase price of the unit.",
       faq7Q: "When are the Financial Services and Revenue Growth modules launching?",
       faq7A: "Financial Services (Financing, F&I, Warranty Plans) are scheduled for Q2 2026. Revenue Growth Services (Marketing, Parts, Service Support, CRM, Trade-In) are scheduled for Q3 2026. All subscribers will be notified before each module launches.",
       ctaHeading: "Ready to Run Your Entire Dealership From One Platform?",
-      ctaDescription: "Join Canadian RV dealers already using RV Claims Canada to process claims faster, reduce denials, and unlock new revenue streams.",
+      ctaDescription: "Join Canadian RV dealers already using Dealer Suite 360 to process claims faster, reduce denials, and unlock new revenue streams.",
       ctaButton: "Get Started — Create Your Account",
       ctaSecondary: "View Pricing",
       processing: {
@@ -816,7 +816,7 @@ export const translations = {
     technologyPage: {
       badge: "Patent-Pending Platform",
       title: "The Technology That Powers Every Claim — And Every Service",
-      description: "Dealer Suite 360 is our proprietary platform powering RV Claims Canada. Built from the ground up for RV warranty workflows, it combines patent-pending AI with a complete dealership operating system.",
+      description: "Dealer Suite 360 is the single platform powering the entire dealership operating system. Built from the ground up for RV warranty workflows, it combines patent-pending AI with a complete dealership operating system.",
       automation: {
         title: "Automated Processing",
         description: "Advanced algorithms optimize claim documentation for maximum approval rates and faster processing."
@@ -854,7 +854,7 @@ export const translations = {
       portal3Title: "Customer Portal",
       portal3Body: "Self-service access for your customers to track claims, view warranty coverage, access roadside assistance, and manage protection plans.",
       portal4Title: "Bidder Portal",
-      portal4Body: "Live auction interface for public bidders — browse units, place bids, manage deposits, and complete purchases through RV Claims escrow.",
+      portal4Body: "Live auction interface for public bidders — browse units, place bids, manage deposits, and complete purchases through Dealer Suite 360 escrow.",
       patentTitle: "Patent-Pending Technology",
       patentBody: "The Dealer Suite 360 platform and its AI-powered claims processing workflows are subject to patent-pending applications. No other platform in North America combines AI-powered RV claims processing with a full dealership operating system.",
       ctaHeading: "See the Platform in Action",
@@ -866,7 +866,7 @@ export const translations = {
     revenueServicesPage: {
       badge: "Q3 2026",
       title: "Five Revenue Channels. One Platform.",
-      description: "Beyond claims processing, RV Claims Canada delivers five proven revenue growth services for Canadian dealerships — each fully outsourced so your team can focus on selling.",
+      description: "Beyond claims processing, Dealer Suite 360 delivers five proven revenue growth services for Canadian dealerships — each fully outsourced so your team can focus on selling.",
       finance: {
         title: "Finance & Insurance (F&I)",
         description: "Outsource your entire F&I operation to our certified specialists — higher approvals, better products, full compliance.",
@@ -944,11 +944,11 @@ export const translations = {
       },
       coordination: {
         title: "Repair Coordination",
-        description: "Full repair documentation tied directly to your dealer account. Parts ordering, repair records, and warranty tracking all managed through the RV Claims platform."
+        description: "Full repair documentation tied directly to your dealer account. Parts ordering, repair records, and warranty tracking all managed through the Dealer Suite 360 platform."
       },
       dealerNetwork: {
         title: "Dealer Network Participation",
-        description: "Join the RV Claims service network and earn revenue on every dispatched repair. Expand your service footprint beyond your physical location without additional overhead."
+        description: "Join the Dealer Suite 360 service network and earn revenue on every dispatched repair. Expand your service footprint beyond your physical location without additional overhead."
       },
       ctaTitle: "Offer On-Site Repairs to Your Customers",
       ctaDescription: "Join our network and start generating service revenue from every customer location — not just your service bay.",
@@ -968,7 +968,7 @@ export const translations = {
       },
       towing: {
         title: "Towing to Certified Dealer",
-        description: "When a unit can't be repaired roadside, our network prioritizes towing to the nearest RV Claims certified dealership — keeping repair revenue in the network."
+        description: "When a unit can't be repaired roadside, our network prioritizes towing to the nearest Dealer Suite 360 certified dealership — keeping repair revenue in the network."
       },
       tireBattery: {
         title: "Flat Tire & Jump Start",
@@ -1057,10 +1057,10 @@ export const translations = {
     // Privacy Policy Page
     privacyPolicyPage: {
       title: "Privacy Policy",
-      description: "RV Claims Canada's commitment to protecting your personal and business information under PIPEDA.",
+      description: "Dealer Suite 360's commitment to protecting your personal and business information under PIPEDA.",
       effective: "Effective Date: January 1, 2026",
       s1Title: "1. About This Policy",
-      s1Body: "RV Claims Canada (operated by the owner of rvclaims.ca, powered by Dealer Suite 360) is committed to protecting the privacy of all individuals whose personal information we collect, use, and disclose. This Privacy Policy explains how we handle personal information in accordance with the Personal Information Protection and Electronic Documents Act (PIPEDA) and applicable provincial privacy legislation.",
+      s1Body: "Dealer Suite 360 (Dealer Suite 360) is committed to protecting the privacy of all individuals whose personal information we collect, use, and disclose. This Privacy Policy explains how we handle personal information in accordance with the Personal Information Protection and Electronic Documents Act (PIPEDA) and applicable provincial privacy legislation.",
       s2Title: "2. Information We Collect",
       s2Body: "We collect personal information necessary to provide our services to Canadian RV dealerships and their customers. This includes: contact information (name, email, phone number, mailing address); business information (dealership name, business address, licence number); financial information (banking details for payment processing, billing history); technical information (IP address, browser type, device identifiers); usage data (pages visited, features used, claim activity within the portal); and vehicle information (VIN numbers, unit specifications, warranty records) provided in connection with claims processing.",
       s3Title: "3. How We Use Your Information",
@@ -1070,7 +1070,7 @@ export const translations = {
       s5Title: "5. Data Security",
       s5Body: "We implement industry-standard security measures to protect personal information from unauthorized access, use, disclosure, alteration, or destruction. These include: 256-bit TLS encryption for all data in transit; AES-256 encryption for sensitive data at rest; role-based access controls limiting employee access to data based on job function; regular security audits and vulnerability assessments; secure data centres located in Canada and operated by certified cloud providers.",
       s6Title: "6. Your Privacy Rights Under PIPEDA",
-      s6Body: "Under PIPEDA, you have the right to: access your personal information held by us; correct inaccurate personal information; withdraw consent to certain uses of your information (subject to legal and contractual limitations); file a complaint with the Office of the Privacy Commissioner of Canada (OPC) if you believe your rights have been violated. To exercise these rights, contact our Privacy Officer at privacy@rvclaims.ca or by mail at our Toronto, Ontario address.",
+      s6Body: "Under PIPEDA, you have the right to: access your personal information held by us; correct inaccurate personal information; withdraw consent to certain uses of your information (subject to legal and contractual limitations); file a complaint with the Office of the Privacy Commissioner of Canada (OPC) if you believe your rights have been violated. To exercise these rights, contact our Privacy Officer at privacy@dealersuite360.com or by mail at our Toronto, Ontario address.",
       s7Title: "7. Cookies and Tracking",
       s7Body: "Our website uses cookies and similar technologies to: enable essential site functionality; analyze traffic and usage patterns (analytics cookies); remember your language and display preferences. You may control cookie settings through your browser. Declining non-essential cookies will not affect your access to core platform features. We honour your cookie preferences as set through our consent banner.",
       s8Title: "8. Data Retention",
@@ -1078,7 +1078,7 @@ export const translations = {
       s9Title: "9. Changes to This Policy",
       s9Body: "We may update this Privacy Policy from time to time to reflect changes in our practices or applicable law. Material changes will be communicated to registered dealers by email at least 30 days before they take effect. The effective date at the top of this policy reflects the date of the most recent revision.",
       s10Title: "10. Contact Our Privacy Officer",
-      s10Body: "If you have questions about this Privacy Policy, how we handle your personal information, or to exercise your rights, contact our Privacy Officer: Email: privacy@rvclaims.ca | Phone: (888) 443-2204 | Mail: Privacy Officer, RV Claims Canada, Toronto, Ontario, Canada. If you are not satisfied with our response, you may escalate your complaint to the Office of the Privacy Commissioner of Canada at www.priv.gc.ca."
+      s10Body: "If you have questions about this Privacy Policy, how we handle your personal information, or to exercise your rights, contact our Privacy Officer: Email: privacy@dealersuite360.com | Phone: (888) 443-2204 | Mail: Privacy Officer, Dealer Suite 360, Toronto, Ontario, Canada. If you are not satisfied with our response, you may escalate your complaint to the Office of the Privacy Commissioner of Canada at www.priv.gc.ca."
     },
 
     // Privacy Assurance Section
@@ -1097,7 +1097,7 @@ export const translations = {
     // Cookie Notice
     cookies: {
       title: "We Value Your Privacy",
-      description: "RV Claims Canada uses cookies and similar technologies to improve your browsing experience, analyze site traffic, personalize content, and provide essential website functionality. By accepting, you consent to our use of cookies in accordance with our Privacy Policy.",
+      description: "Dealer Suite 360 uses cookies and similar technologies to improve your browsing experience, analyze site traffic, personalize content, and provide essential website functionality. By accepting, you consent to our use of cookies in accordance with our Privacy Policy.",
       accept: "Accept All Cookies",
       decline: "Essential Only",
       learnMore: "Learn More",
@@ -1202,23 +1202,23 @@ export const translations = {
     networkMarketplace: {
       badge: "Q3–Q4 2026",
       title: "The Dealer-to-Dealer RV Network Marketplace",
-      subtitle: "A 24/7 verified marketplace where Canadian RV dealers buy and sell inventory directly — with RV Claims acting as escrow on every transaction.",
-      heroBody: "Stop losing money on aged inventory. The RV Claims Network Marketplace connects you with verified dealers across Canada who need what you have — and have what you need.",
+      subtitle: "A 24/7 verified marketplace where Canadian RV dealers buy and sell inventory directly — with Dealer Suite 360 acting as escrow on every transaction.",
+      heroBody: "Stop losing money on aged inventory. The Dealer Suite 360 Network Marketplace connects you with verified dealers across Canada who need what you have — and have what you need.",
       purpose: {
         title: "How the Marketplace Works",
         description: "Three simple steps to move your inventory to the right dealer",
         points: [
           "List units that aren't moving at your location — visible 24/7 to all subscribed dealers",
           "Verified buyers contact you through the platform — your identity is protected until you accept",
-          "RV Claims holds funds in escrow until transfer is confirmed — flat $250 commission per sale",
+          "Dealer Suite 360 holds funds in escrow until transfer is confirmed — flat $250 commission per sale",
           "Subscription-required for all buyers and sellers — verified Canadian RV dealerships only"
         ]
       },
       sellingPerks: {
         title: "Marketplace Features",
         items: [
-          { title: "Verified Dealers Only", desc: "Every buyer and seller is a verified, subscribed RV Claims Canada dealer. No consumers, no wholesalers." },
-          { title: "RV Claims Escrow", desc: "We hold funds between buyer and seller on every transaction. No payment risk, no non-paying buyers." },
+          { title: "Verified Dealers Only", desc: "Every buyer and seller is a verified, subscribed Dealer Suite 360 dealer. No consumers, no wholesalers." },
+          { title: "Dealer Suite 360 Escrow", desc: "We hold funds between buyer and seller on every transaction. No payment risk, no non-paying buyers." },
           { title: "Flat $250 Commission", desc: "No percentage fees. No hidden costs. One flat $250 commission per completed unit sale — paid by the seller." },
           { title: "Verified Vehicle History", desc: "Every listing includes vehicle history documentation. Buyers know exactly what they're purchasing before committing." },
           { title: "24/7 Access", desc: "Listings are live around the clock. Deals can start any time, from any province." },
@@ -1232,8 +1232,8 @@ export const translations = {
           { title: "Move Aged Inventory", desc: "Units sitting 90+ days cost you money. List them here and reach dealers across Canada with active demand." },
           { title: "Access Wholesale Inventory", desc: "Find specific models, configurations, or brands your customers are requesting — at dealer-to-dealer pricing." },
           { title: "No Auction Pressure", desc: "Unlike auctions, marketplace listings allow negotiated pricing and direct buyer-seller communication." },
-          { title: "Financing Available", desc: "Buyers can access RV Claims financing partners for inventory purchases on the marketplace." },
-          { title: "Fast Transactions", desc: "Escrow-backed transactions close faster — both sides protected, documentation handled by RV Claims." },
+          { title: "Financing Available", desc: "Buyers can access Dealer Suite 360 financing partners for inventory purchases on the marketplace." },
+          { title: "Fast Transactions", desc: "Escrow-backed transactions close faster — both sides protected, documentation handled by Dealer Suite 360." },
           { title: "No Geographic Limits", desc: "Sell to a dealer in BC from your Ontario lot. Transport coordination is available through our network." },
           { title: "One Platform", desc: "Manage your marketplace listings in the same portal where you process claims, track units, and manage billing." }
         ]
@@ -1242,7 +1242,7 @@ export const translations = {
         title: "Why Escrow Matters",
         points: [
           "Dealer-to-dealer transactions without escrow create real risk — payments get delayed, units get disputed",
-          "RV Claims acts as a neutral trusted third party, holding funds until both sides confirm the transfer",
+          "Dealer Suite 360 acts as a neutral trusted third party, holding funds until both sides confirm the transfer",
           "Your $250 commission is only collected when the transaction completes successfully"
         ]
       },
@@ -1263,7 +1263,7 @@ export const translations = {
       membershipTitle: "Marketplace Membership",
       membershipPrice: "$499/year",
       membershipBody: "One annual membership includes access to both the Network Marketplace and Live Auctions.",
-      footer: "List your aged inventory. Access wholesale units. Every transaction protected by RV Claims escrow."
+      footer: "List your aged inventory. Access wholesale units. Every transaction protected by Dealer Suite 360 escrow."
     },
 
     // Live Auctions
@@ -1338,7 +1338,7 @@ export const translations = {
       cta: {
         primary: "Get Early Access",
         secondary: "Watch Demo",
-        info: "Limited to verified RVClaims network dealerships"
+        info: "Limited to verified Dealer Suite 360 network dealerships"
       },
       comingSoon: "Live Auctions launching January 16-18, 2026. Join the waitlist for exclusive early access.",
       pricing: {
@@ -1462,11 +1462,11 @@ export const translations = {
 
     // Signup Page
     signupPage: {
-      badge: "Join RV Claims Canada",
+      badge: "Join Dealer Suite 360",
       headline: "Your Complete Dealership Platform",
       subheadline: "Everything your dealership needs to process claims, grow revenue, and serve customers — in one place.",
       benefits: {
-        title: "What you get with RV Claims Canada",
+        title: "What you get with Dealer Suite 360",
         items: [
           "Full warranty claims processing: DAF, PDI, warranty & extended",
           "FRC code management across all major manufacturers",
@@ -1578,14 +1578,14 @@ export const translations = {
         "Dealer onboarding, user management & platform settings",
         "Reporting, compliance tools & audit logs"
       ],
-      footer: "© {year} RV Claims Canada · Dealer Suite 360 · Authorized Staff Only",
+      footer: "© {year} Dealer Suite 360 · Dealer Suite 360 · Authorized Staff Only",
       accessBadge: "Authorized Access Only",
       title: "Operator Sign In",
       subtitle: "Sign in to access the operations backend",
       continueEmail: "Continue with Email",
-      warningText: "This portal is for RV Claims Canada staff only.\nUnauthorized access attempts are logged.",
+      warningText: "This portal is for Dealer Suite 360 staff only.\nUnauthorized access attempts are logged.",
       emailLabel: "Email Address",
-      emailPlaceholder: "operator@rvclaims.ca",
+      emailPlaceholder: "operator@dealersuite360.com",
       passwordLabel: "Password",
       passwordPlaceholder: "Enter your password",
       submit: "Sign In",
@@ -1597,8 +1597,8 @@ export const translations = {
     },
 
     bookingPage: {
-      seoTitle: "Book a Discovery Call | RV Claims Canada",
-      seoDescription: "Schedule a free 30-minute discovery call with an RV Claims Canada advisor. Learn how our platform can transform your dealership operations.",
+      seoTitle: "Book a Discovery Call | Dealer Suite 360",
+      seoDescription: "Schedule a free 30-minute discovery call with an Dealer Suite 360 advisor. Learn how our platform can transform your dealership operations.",
       badge: "Free 30-Minute Discovery Call",
       title: "Book a Discovery Call",
       description: "Speak with a Dealer Success Advisor — no pressure, no obligation. Choose your topics and pick a time that works for you.",
@@ -1629,7 +1629,7 @@ export const translations = {
       confirmedDate: "Date",
       confirmedTime: "Time (ET)",
       confirmedWith: "With",
-      advisorName: "RV Claims Advisor",
+      advisorName: "Dealer Suite 360 Advisor",
       addToCalendar: "Add to Calendar (.ics)",
       backToHome: "Back to Homepage",
       panelTitle: "What to expect on your call",
@@ -1651,7 +1651,7 @@ export const translations = {
         warrantyLabel: "Warranty & Extended Plans",
         warrantyDesc: "OEM + aftermarket plan management and analytics",
         marketplaceLabel: "Network Marketplace",
-        marketplaceDesc: "Dealer-to-dealer inventory with RV Claims escrow",
+        marketplaceDesc: "Dealer-to-dealer inventory with Dealer Suite 360 escrow",
         auctionsLabel: "Live Auctions",
         auctionsDesc: "Monthly 48-hour public auction access and unit listing",
         fullDemoLabel: "Full Platform Demo",
@@ -2183,7 +2183,7 @@ export const translations = {
       apiAccess: "Accès API",
       systemStatus: "État du système",
       contactTitle: "Contact",
-      copyright: "© 2026 RV Claims. Tous droits réservés. Technologie en instance de brevet.",
+      copyright: "© 2026 Dealer Suite 360. Tous droits réservés. Technologie en instance de brevet.",
       privacyPolicy: "Politique de confidentialité",
       termsOfService: "Conditions d'utilisation",
       cookiePolicy: "Politique des cookies",
@@ -2256,9 +2256,9 @@ export const translations = {
       development: "Bureau de développement",
       missionBadge: "Le système d'exploitation des concessionnaires du Canada",
       missionTitle: "Nous ne sommes pas une entreprise de réclamations. Nous sommes la plateforme sur laquelle tourne votre concessionnaire.",
-      missionBody: "RV Claims Canada a été fondé par des gens qui ont passé 15 ans dans des concessions VR, à regarder les revenus de garantie disparaître dans des paperasses manuelles, des réclamations refusées et des relations fragmentées. Nous avons construit la plateforme que nous aurions voulu avoir.",
+      missionBody: "Dealer Suite 360 a été fondé par des gens qui ont passé 15 ans dans des concessions VR, à regarder les revenus de garantie disparaître dans des paperasses manuelles, des réclamations refusées et des relations fragmentées. Nous avons construit la plateforme que nous aurions voulu avoir.",
       platformTitle: "Un abonnement. Tous les services.",
-      platformBody: "Du moment où une réparation est identifiée jusqu'au départ du client — réclamations, financement, F&I, pièces, marketing et plus — RV Claims Canada s'en occupe. Plus de gestion de cinq fournisseurs différents. Une plateforme, une équipe, une facture.",
+      platformBody: "Du moment où une réparation est identifiée jusqu'au départ du client — réclamations, financement, F&I, pièces, marketing et plus — Dealer Suite 360 s'en occupe. Plus de gestion de cinq fournisseurs différents. Une plateforme, une équipe, une facture.",
       pillar1Title: "Traitement des réclamations",
       pillar1Body: "Réclamations de garantie de A à Z — DAF, PDI, Garantie, Prolongée, Assurance — gérées par notre équipe experte avec technologie IA brevetée en instance. Module 1 disponible maintenant.",
       pillar2Title: "Services financiers",
@@ -2269,15 +2269,15 @@ export const translations = {
       pillar4Body: "Marché d'inventaire entre concessionnaires et enchères publiques mensuelles en direct. Lancement T3–T4 2026.",
       pillar5Title: "Direct aux consommateurs",
       pillar5Body: "Assistance routière, garantie prolongée et forfaits de protection vendus directement aux propriétaires de VR. Lancement T4 2026.",
-      whyTitle: "Pourquoi les concessionnaires canadiens choisissent RV Claims Canada",
+      whyTitle: "Pourquoi les concessionnaires canadiens choisissent Dealer Suite 360",
       why1: "Plus de 15 ans d'expertise en réclamations VR — pas auto, pas générique. Spécifique VR, centré Canada.",
       why2: "Plateforme propulsée par l'IA avec correspondance FRC brevetée en instance et évaluation qualité photos",
       why3: "Entièrement bilingue — chaque service en anglais et en français dans toutes les provinces canadiennes",
       why4: "Canada d'abord — conçu pour les fabricants canadiens, réglementations et conformité LPRPDE",
       why5: "Plateforme SaaS bilatérale — notre réseau et notre IA se renforcent avec chaque concessionnaire",
       why6: "Modulaire — commencez avec les réclamations aujourd'hui, ajoutez des modules au fil des lancements",
-      founderQuote: "Nous avons construit RV Claims Canada parce que nous avons vu combien d'argent les concessionnaires canadiens laissaient sur la table chaque mois. Mauvaises photos. Mauvais codes FRC. Paperasse incomplète. Une équipe experte avec la bonne technologie règle tout ça — et bien plus encore.",
-      founderAttribution: "Fondateur, RV Claims Canada",
+      founderQuote: "Nous avons construit Dealer Suite 360 parce que nous avons vu combien d'argent les concessionnaires canadiens laissaient sur la table chaque mois. Mauvaises photos. Mauvais codes FRC. Paperasse incomplète. Une équipe experte avec la bonne technologie règle tout ça — et bien plus encore.",
+      founderAttribution: "Fondateur, Dealer Suite 360",
       teamTitle: "Équipe experte. Résultats réels.",
       teamBody: "Notre équipe opérateur est composée de vétérans de l'industrie VR avec une expertise approfondie dans les systèmes de garantie fabricant, la conformité F&I et les opérations des concessionnaires.",
       statValue1: "15+",
@@ -2297,9 +2297,9 @@ export const translations = {
     servicesPage: {
       badge: "La plateforme complète pour concessionnaires",
       title: "Tous les services dont votre concessionnaire a besoin",
-      description: "RV Claims Canada est la plateforme unique dont les concessionnaires VR canadiens ont besoin pour gérer l'ensemble de leurs opérations — des réclamations de garantie au financement, aux services F&I, aux pièces, au marché et aux enchères en direct.",
+      description: "Dealer Suite 360 est la plateforme unique dont les concessionnaires VR canadiens ont besoin pour gérer l'ensemble de leurs opérations — des réclamations de garantie au financement, aux services F&I, aux pièces, au marché et aux enchères en direct.",
       introHeading: "Une plateforme. 16+ services. Zéro complexité.",
-      introBody: "Pensez à RV Claims Canada comme les concessionnaires pensent à Shopify pour le commerce électronique — un abonnement donne accès à tous les services dont vous avez besoin. Commencez par le traitement des réclamations aujourd'hui et activez de nouveaux modules à mesure que votre entreprise grandit.",
+      introBody: "Pensez à Dealer Suite 360 comme les concessionnaires pensent à Shopify pour le commerce électronique — un abonnement donne accès à tous les services dont vous avez besoin. Commencez par le traitement des réclamations aujourd'hui et activez de nouveaux modules à mesure que votre entreprise grandit.",
       cat1Badge: "Module 1 — En service maintenant",
       cat1Title: "Services de réclamations principaux",
       cat1Description: "La fondation de la plateforme. Gestion complète des réclamations de garantie de A à Z par notre équipe d'experts utilisant notre technologie IA brevetée en instance.",
@@ -2364,7 +2364,7 @@ export const translations = {
       mktplaceTitle: "Marché en réseau",
       mktplaceDescription: "Une plateforme d'inventaire VR vérifiée entre concessionnaires disponible 24/7. Listez les unités qui ne bougent pas et connectez-vous avec des concessionnaires partout au Canada.",
       mktplaceF1: "Abonnement requis — concessionnaires vérifiés seulement",
-      mktplaceF2: "RV Claims agit comme entiercement sur toutes les transactions",
+      mktplaceF2: "Dealer Suite 360 agit comme entiercement sur toutes les transactions",
       mktplaceF3: "Commission fixe de 250 $ par unité vendue — pas de frais en pourcentage",
       mktplaceF4: "Historique de véhicule vérifié sur chaque annonce",
       auctTitle: "Enchères en direct",
@@ -2394,20 +2394,20 @@ export const translations = {
       faqHeading: "Questions fréquemment posées",
       faq1Q: "Dois-je m'abonner à tous les services ou puis-je commencer uniquement avec les réclamations ?",
       faq1A: "Vous pouvez commencer uniquement avec le traitement des réclamations — c'est le Module 1, disponible dès maintenant. Des modules supplémentaires s'activent au fur et à mesure de leur lancement.",
-      faq2Q: "Quels fabricants de VR RV Claims prend-il en charge ?",
+      faq2Q: "Quels fabricants de VR Dealer Suite 360 prend-il en charge ?",
       faq2A: "Nous prenons en charge Jayco, Forest River, Heartland, Columbia NW, Keystone et Midwest Auto. Des fabricants supplémentaires sont ajoutés régulièrement.",
-      faq3Q: "RV Claims Canada est-il disponible en français ?",
+      faq3Q: "Dealer Suite 360 est-il disponible en français ?",
       faq3A: "Oui. L'ensemble de la plateforme — portail concessionnaire, communications et documentation — est entièrement bilingue en anglais et en français.",
       faq4Q: "Quelle est la différence entre le Marché en réseau et les Enchères en direct ?",
       faq4A: "Le Marché en réseau est une plateforme privée sur abonnement pour les concessionnaires vérifiés, disponible 24/7 à prix négociés. Les Enchères en direct sont des événements publics mensuels avec enchères compétitives sur 48 heures.",
       faq5Q: "Comment fonctionne l'entiercement sur le Marché en réseau ?",
-      faq5A: "RV Claims agit comme agent d'entiercement neutre sur chaque transaction. Les fonds sont conservés jusqu'à confirmation du transfert par les deux parties. Une commission fixe de 250 $ est facturée par vente complétée.",
+      faq5A: "Dealer Suite 360 agit comme agent d'entiercement neutre sur chaque transaction. Les fonds sont conservés jusqu'à confirmation du transfert par les deux parties. Une commission fixe de 250 $ est facturée par vente complétée.",
       faq6Q: "Que se passe-t-il avec mon dépôt de 250 $ si je ne gagne pas une enchère ?",
       faq6A: "Si vous ne gagnez pas, le dépôt de 250 $ est intégralement remboursé à votre méthode de paiement d'origine. Si vous gagnez, les 250 $ sont déduits du prix d'achat.",
       faq7Q: "Quand les modules Services financiers et Croissance des revenus seront-ils lancés ?",
       faq7A: "Les Services financiers sont prévus pour le T2 2026. Les Services de croissance des revenus sont prévus pour le T3 2026. Tous les abonnés seront notifiés avant chaque lancement.",
       ctaHeading: "Prêt à gérer l'ensemble de votre concessionnaire depuis une seule plateforme ?",
-      ctaDescription: "Rejoignez les concessionnaires VR canadiens qui utilisent déjà RV Claims Canada pour traiter les réclamations plus rapidement, réduire les refus et débloquer de nouveaux revenus.",
+      ctaDescription: "Rejoignez les concessionnaires VR canadiens qui utilisent déjà Dealer Suite 360 pour traiter les réclamations plus rapidement, réduire les refus et débloquer de nouveaux revenus.",
       ctaButton: "Commencer — Créer votre compte",
       ctaSecondary: "Voir les tarifs",
       processing: {
@@ -2492,7 +2492,7 @@ export const translations = {
     technologyPage: {
       badge: "Plateforme brevetée en instance",
       title: "La technologie qui propulse chaque réclamation — et chaque service",
-      description: "Dealer Suite 360 est notre plateforme propriétaire qui propulse RV Claims Canada. Construite de zéro pour les flux de réclamations VR, elle combine une IA brevetée en instance avec un système d'exploitation complet pour concessionnaires.",
+      description: "Dealer Suite 360 est notre plateforme propriétaire qui propulse Dealer Suite 360. Construite de zéro pour les flux de réclamations VR, elle combine une IA brevetée en instance avec un système d'exploitation complet pour concessionnaires.",
       automation: {
         title: "Traitement automatisé",
         description: "Algorithmes avancés optimisent la documentation des réclamations pour des taux d'approbation maximaux et un traitement plus rapide."
@@ -2530,7 +2530,7 @@ export const translations = {
       portal3Title: "Portail client",
       portal3Body: "Accès libre-service pour vos clients pour suivre les réclamations, consulter la couverture de garantie, accéder à l'assistance routière et gérer les plans de protection.",
       portal4Title: "Portail enchérisseur",
-      portal4Body: "Interface d'enchères en direct pour les enchérisseurs publics — parcourir les unités, placer des offres, gérer les dépôts et finaliser les achats via RV Claims.",
+      portal4Body: "Interface d'enchères en direct pour les enchérisseurs publics — parcourir les unités, placer des offres, gérer les dépôts et finaliser les achats via Dealer Suite 360.",
       patentTitle: "Technologie brevetée en instance",
       patentBody: "La plateforme Dealer Suite 360 et ses flux de traitement de réclamations propulsés par l'IA font l'objet de demandes de brevet en instance. Aucune autre plateforme en Amérique du Nord ne combine le traitement IA des réclamations VR avec un système d'exploitation complet.",
       ctaHeading: "Voyez la plateforme en action",
@@ -2542,7 +2542,7 @@ export const translations = {
     revenueServicesPage: {
       badge: "T3 2026",
       title: "Cinq canaux de revenus. Une plateforme.",
-      description: "Au-delà du traitement des réclamations, RV Claims Canada offre cinq services éprouvés de croissance des revenus pour les concessionnaires canadiens — chacun entièrement externalisé.",
+      description: "Au-delà du traitement des réclamations, Dealer Suite 360 offre cinq services éprouvés de croissance des revenus pour les concessionnaires canadiens — chacun entièrement externalisé.",
       finance: {
         title: "Finance et assurance (F&I)",
         description: "Externalisez l'ensemble de vos opérations F&I à nos spécialistes certifiés — meilleures approbations, meilleurs produits, conformité complète.",
@@ -2620,11 +2620,11 @@ export const translations = {
       },
       coordination: {
         title: "Coordination des réparations",
-        description: "Documentation complète des réparations liée directement à votre compte concessionnaire. Commandes de pièces, registres de réparations et suivi de garantie gérés via la plateforme RV Claims."
+        description: "Documentation complète des réparations liée directement à votre compte concessionnaire. Commandes de pièces, registres de réparations et suivi de garantie gérés via la plateforme Dealer Suite 360."
       },
       dealerNetwork: {
         title: "Participation au réseau de concessionnaires",
-        description: "Rejoignez le réseau de service RV Claims et générez des revenus à chaque réparation dépêchée. Étendez votre portée de service au-delà de votre emplacement physique sans frais supplémentaires."
+        description: "Rejoignez le réseau de service Dealer Suite 360 et générez des revenus à chaque réparation dépêchée. Étendez votre portée de service au-delà de votre emplacement physique sans frais supplémentaires."
       },
       ctaTitle: "Offrez des réparations sur place à vos clients",
       ctaDescription: "Rejoignez notre réseau et commencez à générer des revenus de service depuis chaque emplacement client — pas seulement votre atelier.",
@@ -2644,7 +2644,7 @@ export const translations = {
       },
       towing: {
         title: "Remorquage vers un concessionnaire certifié",
-        description: "Lorsqu'une unité ne peut pas être réparée sur place, notre réseau priorise le remorquage vers le concessionnaire RV Claims certifié le plus proche — gardant les revenus de réparation dans le réseau."
+        description: "Lorsqu'une unité ne peut pas être réparée sur place, notre réseau priorise le remorquage vers le concessionnaire Dealer Suite 360 certifié le plus proche — gardant les revenus de réparation dans le réseau."
       },
       tireBattery: {
         title: "Crevaison et démarrage de batterie",
@@ -2733,10 +2733,10 @@ export const translations = {
     // Privacy Policy Page
     privacyPolicyPage: {
       title: "Politique de confidentialité",
-      description: "L'engagement de RV Claims Canada à protéger vos informations personnelles et commerciales en vertu de la LPRPDE.",
+      description: "L'engagement de Dealer Suite 360 à protéger vos informations personnelles et commerciales en vertu de la LPRPDE.",
       effective: "Date d'entrée en vigueur : 1er janvier 2026",
       s1Title: "1. À propos de cette politique",
-      s1Body: "RV Claims Canada (exploité par le propriétaire de rvclaims.ca, propulsé par Dealer Suite 360) s'engage à protéger la confidentialité de toutes les personnes dont nous collectons, utilisons et divulguons les renseignements personnels. Cette politique explique comment nous traitons les renseignements personnels conformément à la Loi sur la protection des renseignements personnels et les documents électroniques (LPRPDE) et à la législation provinciale applicable.",
+      s1Body: "Dealer Suite 360 (Dealer Suite 360) s'engage à protéger la confidentialité de toutes les personnes dont nous collectons, utilisons et divulguons les renseignements personnels. Cette politique explique comment nous traitons les renseignements personnels conformément à la Loi sur la protection des renseignements personnels et les documents électroniques (LPRPDE) et à la législation provinciale applicable.",
       s2Title: "2. Renseignements que nous collectons",
       s2Body: "Nous collectons les renseignements personnels nécessaires pour fournir nos services aux concessionnaires VR canadiens et à leurs clients : coordonnées (nom, courriel, téléphone, adresse postale) ; renseignements commerciaux (nom du concessionnaire, adresse, numéro de licence) ; renseignements financiers (coordonnées bancaires pour le traitement des paiements, historique de facturation) ; renseignements techniques (adresse IP, type de navigateur, identifiants d'appareil) ; données d'utilisation (pages visitées, fonctionnalités utilisées, activité de réclamations dans le portail) ; et renseignements sur les véhicules (NIV, spécifications, dossiers de garantie).",
       s3Title: "3. Comment nous utilisons vos renseignements",
@@ -2746,7 +2746,7 @@ export const translations = {
       s5Title: "5. Sécurité des données",
       s5Body: "Nous mettons en œuvre des mesures de sécurité conformes aux normes de l'industrie : chiffrement TLS 256 bits pour toutes les données en transit ; chiffrement AES-256 pour les données sensibles au repos ; contrôles d'accès basés sur les rôles ; audits de sécurité réguliers ; centres de données situés au Canada opérés par des fournisseurs cloud certifiés.",
       s6Title: "6. Vos droits en vertu de la LPRPDE",
-      s6Body: "En vertu de la LPRPDE, vous avez le droit d'accéder à vos renseignements personnels, de corriger les renseignements inexacts, de retirer votre consentement à certaines utilisations (sous réserve des limitations légales et contractuelles), et de déposer une plainte auprès du Commissariat à la protection de la vie privée du Canada (CPVP). Pour exercer ces droits, contactez notre responsable de la protection de la vie privée à privacy@rvclaims.ca.",
+      s6Body: "En vertu de la LPRPDE, vous avez le droit d'accéder à vos renseignements personnels, de corriger les renseignements inexacts, de retirer votre consentement à certaines utilisations (sous réserve des limitations légales et contractuelles), et de déposer une plainte auprès du Commissariat à la protection de la vie privée du Canada (CPVP). Pour exercer ces droits, contactez notre responsable de la protection de la vie privée à privacy@dealersuite360.com.",
       s7Title: "7. Témoins et suivi",
       s7Body: "Notre site Web utilise des témoins (cookies) pour activer les fonctionnalités essentielles, analyser les schémas de trafic et mémoriser vos préférences de langue. Vous pouvez contrôler les paramètres de témoins via votre navigateur. Le refus des témoins non essentiels n'affectera pas votre accès aux fonctionnalités essentielles de la plateforme.",
       s8Title: "8. Conservation des données",
@@ -2754,7 +2754,7 @@ export const translations = {
       s9Title: "9. Modifications de cette politique",
       s9Body: "Nous pouvons mettre à jour cette politique de confidentialité de temps en temps pour refléter des changements dans nos pratiques ou la loi applicable. Les modifications importantes seront communiquées aux concessionnaires inscrits par courriel au moins 30 jours avant leur entrée en vigueur.",
       s10Title: "10. Contacter notre responsable de la protection de la vie privée",
-      s10Body: "Courriel : privacy@rvclaims.ca | Téléphone : (888) 443-2204 | Courrier : Responsable de la vie privée, RV Claims Canada, Toronto, Ontario, Canada. Si vous n'êtes pas satisfait de notre réponse, vous pouvez soumettre votre plainte au Commissariat à la protection de la vie privée du Canada à www.priv.gc.ca."
+      s10Body: "Courriel : privacy@dealersuite360.com | Téléphone : (888) 443-2204 | Courrier : Responsable de la vie privée, Dealer Suite 360, Toronto, Ontario, Canada. Si vous n'êtes pas satisfait de notre réponse, vous pouvez soumettre votre plainte au Commissariat à la protection de la vie privée du Canada à www.priv.gc.ca."
     },
 
     // Privacy Assurance Section
@@ -2773,7 +2773,7 @@ export const translations = {
     // Cookie Notice
     cookies: {
       title: "Nous valorisons votre vie privée",
-      description: "RV Claims Canada utilise des cookies et des technologies similaires pour améliorer votre expérience de navigation, analyser le trafic du site, personnaliser le contenu et fournir des fonctionnalités essentielles. En acceptant, vous consentez à notre utilisation de cookies conformément à notre Politique de confidentialité.",
+      description: "Dealer Suite 360 utilise des cookies et des technologies similaires pour améliorer votre expérience de navigation, analyser le trafic du site, personnaliser le contenu et fournir des fonctionnalités essentielles. En acceptant, vous consentez à notre utilisation de cookies conformément à notre Politique de confidentialité.",
       accept: "Accepter tous les cookies",
       decline: "Essentiels seulement",
       learnMore: "En savoir plus",
@@ -2878,15 +2878,15 @@ export const translations = {
     networkMarketplace: {
       badge: "T3–T4 2026",
       title: "Le marché VR en réseau entre concessionnaires",
-      subtitle: "Un marché vérifié 24h/7j où les concessionnaires VR canadiens achètent et vendent des inventaires directement — RV Claims agissant comme entiercement sur chaque transaction.",
-      heroBody: "Cessez de perdre de l'argent sur l'inventaire vieillissant. Le Marché en réseau RV Claims vous connecte avec des concessionnaires vérifiés partout au Canada qui ont besoin de ce que vous avez — et ont ce dont vous avez besoin.",
+      subtitle: "Un marché vérifié 24h/7j où les concessionnaires VR canadiens achètent et vendent des inventaires directement — Dealer Suite 360 agissant comme entiercement sur chaque transaction.",
+      heroBody: "Cessez de perdre de l'argent sur l'inventaire vieillissant. Le Marché en réseau Dealer Suite 360 vous connecte avec des concessionnaires vérifiés partout au Canada qui ont besoin de ce que vous avez — et ont ce dont vous avez besoin.",
       purpose: {
         title: "Comment fonctionne le marché",
         description: "Trois étapes simples pour déplacer votre inventaire vers le bon concessionnaire",
         points: [
           "Listez les unités qui ne bougent pas — visibles 24h/7j à tous les concessionnaires abonnés",
           "Les acheteurs vérifiés vous contactent via la plateforme — votre identité est protégée jusqu'à votre acceptation",
-          "RV Claims détient les fonds en entiercement jusqu'à confirmation du transfert — commission fixe de 250 $",
+          "Dealer Suite 360 détient les fonds en entiercement jusqu'à confirmation du transfert — commission fixe de 250 $",
           "Abonnement requis pour tous les acheteurs et vendeurs — concessionnaires VR canadiens vérifiés seulement"
         ]
       },
@@ -2894,7 +2894,7 @@ export const translations = {
         title: "Fonctionnalités du marché",
         items: [
           { title: "Concessionnaires vérifiés seulement", desc: "Chaque acheteur et vendeur est un concessionnaire VR abonné et vérifié. Pas de consommateurs, pas de grossistes." },
-          { title: "Entiercement RV Claims", desc: "Nous détenons les fonds entre acheteur et vendeur sur chaque transaction. Aucun risque de paiement, pas d'acheteurs non-payants." },
+          { title: "Entiercement Dealer Suite 360", desc: "Nous détenons les fonds entre acheteur et vendeur sur chaque transaction. Aucun risque de paiement, pas d'acheteurs non-payants." },
           { title: "Commission fixe de 250 $", desc: "Pas de frais en pourcentage. Pas de coûts cachés. Une seule commission fixe de 250 $ par unité vendue — payée par le vendeur." },
           { title: "Historique de véhicule vérifié", desc: "Chaque annonce inclut la documentation d'historique du véhicule. Les acheteurs savent exactement ce qu'ils achètent." },
           { title: "Accès 24h/7j", desc: "Les annonces sont actives en tout temps. Des transactions peuvent commencer n'importe quand, de n'importe quelle province." },
@@ -2908,8 +2908,8 @@ export const translations = {
           { title: "Déplacer l'inventaire vieillissant", desc: "Les unités qui stagnent depuis 90+ jours vous coûtent de l'argent. Listez-les ici et rejoignez des concessionnaires partout au Canada." },
           { title: "Accéder à l'inventaire en gros", desc: "Trouvez des modèles, configurations ou marques spécifiques que vos clients demandent — à des prix entre concessionnaires." },
           { title: "Pas de pression d'enchères", desc: "Contrairement aux enchères, les annonces permettent une tarification négociée et une communication directe acheteur-vendeur." },
-          { title: "Financement disponible", desc: "Les acheteurs peuvent accéder aux partenaires financiers de RV Claims pour les achats d'inventaire sur le marché." },
-          { title: "Transactions rapides", desc: "Les transactions avec entiercement se concluent plus vite — les deux parties protégées, la documentation gérée par RV Claims." },
+          { title: "Financement disponible", desc: "Les acheteurs peuvent accéder aux partenaires financiers de Dealer Suite 360 pour les achats d'inventaire sur le marché." },
+          { title: "Transactions rapides", desc: "Les transactions avec entiercement se concluent plus vite — les deux parties protégées, la documentation gérée par Dealer Suite 360." },
           { title: "Aucune limite géographique", desc: "Vendez à un concessionnaire en CB depuis votre lot en Ontario. La coordination du transport est disponible via notre réseau." },
           { title: "Une seule plateforme", desc: "Gérez vos annonces du marché dans le même portail où vous traitez les réclamations, suivez les unités et gérez la facturation." }
         ]
@@ -2918,7 +2918,7 @@ export const translations = {
         title: "Pourquoi l'entiercement est essentiel",
         points: [
           "Les transactions entre concessionnaires sans entiercement créent de vrais risques — paiements retardés, unités contestées",
-          "RV Claims agit comme tiers neutre de confiance, détenant les fonds jusqu'à confirmation par les deux parties",
+          "Dealer Suite 360 agit comme tiers neutre de confiance, détenant les fonds jusqu'à confirmation par les deux parties",
           "Votre commission de 250 $ n'est perçue que lorsque la transaction se complète avec succès"
         ]
       },
@@ -2939,7 +2939,7 @@ export const translations = {
       membershipTitle: "Adhésion au marché",
       membershipPrice: "499 $/an",
       membershipBody: "Une adhésion annuelle inclut l'accès au Marché en réseau et aux Enchères en direct.",
-      footer: "Listez votre inventaire vieillissant. Accédez aux unités en gros. Chaque transaction protégée par l'entiercement RV Claims."
+      footer: "Listez votre inventaire vieillissant. Accédez aux unités en gros. Chaque transaction protégée par l'entiercement Dealer Suite 360."
     },
 
     // Live Auctions
@@ -3014,7 +3014,7 @@ export const translations = {
       cta: {
         primary: "Accès anticipé",
         secondary: "Voir la démo",
-        info: "Limité aux concessionnaires du réseau RVClaims vérifiés"
+        info: "Limité aux concessionnaires du réseau Dealer Suite 360 vérifiés"
       },
       comingSoon: "Enchères en direct lancement 16-18 janvier 2026. Rejoignez la liste d'attente pour un accès anticipé exclusif.",
       pricing: {
@@ -3138,11 +3138,11 @@ export const translations = {
 
     // Signup Page (FR)
     signupPage: {
-      badge: "Rejoignez RV Claims Canada",
+      badge: "Rejoignez Dealer Suite 360",
       headline: "Votre plateforme complète pour concessionnaires",
       subheadline: "Tout ce dont votre concessionnaire a besoin pour traiter les réclamations, augmenter les revenus et servir vos clients — en un seul endroit.",
       benefits: {
-        title: "Ce que vous obtenez avec RV Claims Canada",
+        title: "Ce que vous obtenez avec Dealer Suite 360",
         items: [
           "Traitement complet des réclamations : DAF, PDI, garantie et étendue",
           "Gestion des codes FRC chez tous les grands fabricants",
@@ -3254,14 +3254,14 @@ export const translations = {
         "Intégration des concessionnaires, gestion des utilisateurs et paramètres",
         "Rapports, outils de conformité et journaux d'audit"
       ],
-      footer: "© {year} RV Claims Canada · Dealer Suite 360 · Personnel autorisé seulement",
+      footer: "© {year} Dealer Suite 360 · Dealer Suite 360 · Personnel autorisé seulement",
       accessBadge: "Accès autorisé uniquement",
       title: "Connexion opérateur",
       subtitle: "Connectez-vous pour accéder à l'interface d'opérations",
       continueEmail: "Continuer avec courriel",
-      warningText: "Ce portail est réservé au personnel de RV Claims Canada.\nLes tentatives d'accès non autorisées sont enregistrées.",
+      warningText: "Ce portail est réservé au personnel de Dealer Suite 360.\nLes tentatives d'accès non autorisées sont enregistrées.",
       emailLabel: "Adresse courriel",
-      emailPlaceholder: "operateur@rvclaims.ca",
+      emailPlaceholder: "operateur@dealersuite360.com",
       passwordLabel: "Mot de passe",
       passwordPlaceholder: "Entrez votre mot de passe",
       submit: "Se connecter",
@@ -3273,8 +3273,8 @@ export const translations = {
     },
 
     bookingPage: {
-      seoTitle: "Réservez un appel découverte | RV Claims Canada",
-      seoDescription: "Planifiez un appel découverte gratuit de 30 minutes avec un conseiller RV Claims Canada. Découvrez comment notre plateforme peut transformer vos opérations.",
+      seoTitle: "Réservez un appel découverte | Dealer Suite 360",
+      seoDescription: "Planifiez un appel découverte gratuit de 30 minutes avec un conseiller Dealer Suite 360. Découvrez comment notre plateforme peut transformer vos opérations.",
       badge: "Appel découverte gratuit de 30 minutes",
       title: "Réservez un appel découverte",
       description: "Parlez avec un conseiller en succès des concessionnaires — sans pression, sans obligation. Choisissez vos sujets et un moment qui vous convient.",
@@ -3305,7 +3305,7 @@ export const translations = {
       confirmedDate: "Date",
       confirmedTime: "Heure (HE)",
       confirmedWith: "Avec",
-      advisorName: "Conseiller RV Claims",
+      advisorName: "Conseiller Dealer Suite 360",
       addToCalendar: "Ajouter au calendrier (.ics)",
       backToHome: "Retour à l'accueil",
       panelTitle: "À quoi s'attendre lors de votre appel",
@@ -3327,7 +3327,7 @@ export const translations = {
         warrantyLabel: "Garantie et plans étendus",
         warrantyDesc: "Gestion de plans OEM + après-vente et analytique",
         marketplaceLabel: "Marché réseau",
-        marketplaceDesc: "Inventaire entre concessionnaires avec séquestre RV Claims",
+        marketplaceDesc: "Inventaire entre concessionnaires avec séquestre Dealer Suite 360",
         auctionsLabel: "Enchères en direct",
         auctionsDesc: "Accès aux enchères publiques mensuelles de 48 heures et inscription des unités",
         fullDemoLabel: "Démo complète de la plateforme",

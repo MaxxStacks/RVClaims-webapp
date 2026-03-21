@@ -45,13 +45,13 @@ export interface JwtPayload {
 export function signAccessToken(payload: JwtPayload): string {
   return jwt.sign(payload, getJwtSecret(), {
     expiresIn: ACCESS_TOKEN_EXPIRY,
-    issuer: "rvclaims",
+    issuer: "dealersuite360",
   });
 }
 
 export function verifyAccessToken(token: string): JwtPayload {
   const decoded = jwt.verify(token, getJwtSecret(), {
-    issuer: "rvclaims",
+    issuer: "dealersuite360",
   }) as jwt.JwtPayload & JwtPayload;
 
   return {

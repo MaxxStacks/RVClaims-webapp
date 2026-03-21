@@ -33,7 +33,7 @@ export async function createMembershipSubscription(memberId: string, paymentMeth
     const customer = await stripe.customers.create({
       email: member.businessEmail,
       name: member.businessName,
-      metadata: { memberId: member.id, platform: "rvclaims-marketplace" },
+      metadata: { memberId: member.id, platform: "dealersuite360-marketplace" },
     });
     customerId = customer.id;
     await db.update(marketplaceMembers).set({ stripeCustomerId: customerId }).where(eq(marketplaceMembers.id, memberId));
@@ -129,14 +129,14 @@ export async function authorizeHold(
       type: "marketplace_hold",
       listingId,
       buyerId,
-      platform: "rvclaims",
+      platform: "dealersuite360",
     },
   };
 
   if (paymentMethodId) {
     paymentIntentParams.payment_method = paymentMethodId;
     paymentIntentParams.confirm = true;
-    paymentIntentParams.return_url = `${process.env.APP_URL || "https://rvclaims.ca"}/marketplace/hold-confirmed`;
+    paymentIntentParams.return_url = `${process.env.APP_URL || "https://dealersuite360.com"}/marketplace/hold-confirmed`;
   }
 
   const paymentIntent = await stripe.paymentIntents.create(paymentIntentParams);

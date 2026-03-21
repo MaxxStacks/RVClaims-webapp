@@ -113,7 +113,7 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
   return (
     <>
 <nav className="sidebar">
-  <div className="sidebar-logo"><svg width="36" height="36" viewBox="0 0 36 36"><rect width="36" height="36" rx="8" fill="var(--brand)"/><path d="M9 25L18 11L27 25H9Z" fill="white" opacity="0.8"/></svg><div className="sidebar-logo-text"><div className="sidebar-logo-name">RV Claims Canada</div><div className="sidebar-logo-sub">Command Centre</div></div><span className="sidebar-badge">Operator</span></div>
+  <div className="sidebar-logo"><svg width="36" height="36" viewBox="0 0 36 36"><rect width="36" height="36" rx="8" fill="var(--brand)"/><path d="M9 25L18 11L27 25H9Z" fill="white" opacity="0.8"/></svg><div className="sidebar-logo-text"><div className="sidebar-logo-name">Dealer Suite 360</div><div className="sidebar-logo-sub">Command Centre</div></div><span className="sidebar-badge">Operator</span></div>
   <div className="sidebar-nav">
     <div className="nav-section"><div className="nav-label">Overview</div>
       <div className={`nav-item ${isNavActive('dashboard') ? 'active' : ''}`} onClick={() => showPage('dashboard')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</div></div>
@@ -827,10 +827,10 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
   <div className="tabs"><div className="tab active" onClick={(e) => switchTab(e)}>Operator Staff (4)</div><div className="tab" onClick={(e) => switchTab(e)}>Dealer Users (38)</div></div>
   <div className="pn" style={{borderTop: 'none', borderRadius: '0 0 8px 8px'}}><div className="filter-bar"><input type="text" placeholder="Search users..." /><select><option>All Roles</option><option>Operator Admin</option><option>Operator Staff</option><option>Dealer Owner</option><option>Dealer Staff</option></select><div style={{marginLeft: 'auto'}}><button className="btn btn-p btn-sm">+ Add User</button></div></div>
     <div className="tw"><table><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Assigned Dealers</th><th>Status</th><th>Last Login</th><th>Action</th></tr></thead><tbody>
-      <tr><td style={{fontWeight: 500}}>Jonathan Delorme</td><td>jonathan@rvclaims.ca</td><td><span className="bg" style={{background: '#eff6ff', color: 'var(--brand)'}}>Operator Admin</span></td><td>All</td><td><span className="bg active">Active</span></td><td>Now</td><td><button className="btn btn-o btn-sm">Edit</button></td></tr>
-      <tr><td style={{fontWeight: 500}}>Marie Tremblay</td><td>marie@rvclaims.ca</td><td><span className="bg" style={{background: '#f0fdf4', color: '#16a34a'}}>Operator Staff</span></td><td>Smith's RV, Atlantic RV</td><td><span className="bg active">Active</span></td><td>1h ago</td><td><button className="btn btn-o btn-sm">Edit</button></td></tr>
-      <tr><td style={{fontWeight: 500}}>Alex Beaulieu</td><td>alex@rvclaims.ca</td><td><span className="bg" style={{background: '#f0fdf4', color: '#16a34a'}}>Operator Staff</span></td><td>Prairie Wind, West Coast</td><td><span className="bg active">Active</span></td><td>3h ago</td><td><button className="btn btn-o btn-sm">Edit</button></td></tr>
-      <tr><td style={{fontWeight: 500}}>Sophie Martin</td><td>sophie@rvclaims.ca</td><td><span className="bg" style={{background: '#f0fdf4', color: '#16a34a'}}>Operator Staff</span></td><td>BC Camper, Northern Trails</td><td><span className="bg active">Active</span></td><td>Yesterday</td><td><button className="btn btn-o btn-sm">Edit</button></td></tr>
+      <tr><td style={{fontWeight: 500}}>Jonathan Delorme</td><td>jonathan@dealersuite360.com</td><td><span className="bg" style={{background: '#eff6ff', color: 'var(--brand)'}}>Operator Admin</span></td><td>All</td><td><span className="bg active">Active</span></td><td>Now</td><td><button className="btn btn-o btn-sm">Edit</button></td></tr>
+      <tr><td style={{fontWeight: 500}}>Marie Tremblay</td><td>marie@dealersuite360.com</td><td><span className="bg" style={{background: '#f0fdf4', color: '#16a34a'}}>Operator Staff</span></td><td>Smith's RV, Atlantic RV</td><td><span className="bg active">Active</span></td><td>1h ago</td><td><button className="btn btn-o btn-sm">Edit</button></td></tr>
+      <tr><td style={{fontWeight: 500}}>Alex Beaulieu</td><td>alex@dealersuite360.com</td><td><span className="bg" style={{background: '#f0fdf4', color: '#16a34a'}}>Operator Staff</span></td><td>Prairie Wind, West Coast</td><td><span className="bg active">Active</span></td><td>3h ago</td><td><button className="btn btn-o btn-sm">Edit</button></td></tr>
+      <tr><td style={{fontWeight: 500}}>Sophie Martin</td><td>sophie@dealersuite360.com</td><td><span className="bg" style={{background: '#f0fdf4', color: '#16a34a'}}>Operator Staff</span></td><td>BC Camper, Northern Trails</td><td><span className="bg active">Active</span></td><td>Yesterday</td><td><button className="btn btn-o btn-sm">Edit</button></td></tr>
     </tbody></table></div></div>
 </div>
 
@@ -839,10 +839,10 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
   <div className="tabs"><div className="tab active" onClick={(e) => switchTab(e)}>Operator Staff (4)</div><div className="tab" onClick={(e) => switchTab(e)}>Dealer Users (38)</div></div>
   <div className="pn" style={{borderTop: 'none', borderRadius: '0 0 8px 8px'}}><div className="filter-bar"><input type="text" placeholder="Search users..." /><select><option>All Roles</option><option>Operator Admin</option><option>Operator Staff</option><option>Dealer Owner</option><option>Dealer Staff</option></select><div style={{marginLeft: 'auto'}}><button className="btn btn-p btn-sm">+ Add User</button></div></div>
     <div className="tw"><table><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Assigned Dealers</th><th>Status</th><th>Last Login</th><th>Action</th></tr></thead><tbody>
-      <tr><td style={{fontWeight: 500}}>Jonathan Delorme</td><td>jonathan@rvclaims.ca</td><td><span className="bg" style={{background: '#eff6ff', color: 'var(--brand)'}}>Operator Admin</span></td><td>All</td><td><span className="bg active">Active</span></td><td>Now</td><td><button className="btn btn-o btn-sm">Edit</button></td></tr>
-      <tr><td style={{fontWeight: 500}}>Marie Tremblay</td><td>marie@rvclaims.ca</td><td><span className="bg" style={{background: '#f0fdf4', color: '#16a34a'}}>Operator Staff</span></td><td>Smith's RV, Atlantic RV</td><td><span className="bg active">Active</span></td><td>1h ago</td><td><button className="btn btn-o btn-sm">Edit</button></td></tr>
-      <tr><td style={{fontWeight: 500}}>Alex Beaulieu</td><td>alex@rvclaims.ca</td><td><span className="bg" style={{background: '#f0fdf4', color: '#16a34a'}}>Operator Staff</span></td><td>Prairie Wind, West Coast</td><td><span className="bg active">Active</span></td><td>3h ago</td><td><button className="btn btn-o btn-sm">Edit</button></td></tr>
-      <tr><td style={{fontWeight: 500}}>Sophie Martin</td><td>sophie@rvclaims.ca</td><td><span className="bg" style={{background: '#f0fdf4', color: '#16a34a'}}>Operator Staff</span></td><td>BC Camper, Northern Trails</td><td><span className="bg active">Active</span></td><td>Yesterday</td><td><button className="btn btn-o btn-sm">Edit</button></td></tr>
+      <tr><td style={{fontWeight: 500}}>Jonathan Delorme</td><td>jonathan@dealersuite360.com</td><td><span className="bg" style={{background: '#eff6ff', color: 'var(--brand)'}}>Operator Admin</span></td><td>All</td><td><span className="bg active">Active</span></td><td>Now</td><td><button className="btn btn-o btn-sm">Edit</button></td></tr>
+      <tr><td style={{fontWeight: 500}}>Marie Tremblay</td><td>marie@dealersuite360.com</td><td><span className="bg" style={{background: '#f0fdf4', color: '#16a34a'}}>Operator Staff</span></td><td>Smith's RV, Atlantic RV</td><td><span className="bg active">Active</span></td><td>1h ago</td><td><button className="btn btn-o btn-sm">Edit</button></td></tr>
+      <tr><td style={{fontWeight: 500}}>Alex Beaulieu</td><td>alex@dealersuite360.com</td><td><span className="bg" style={{background: '#f0fdf4', color: '#16a34a'}}>Operator Staff</span></td><td>Prairie Wind, West Coast</td><td><span className="bg active">Active</span></td><td>3h ago</td><td><button className="btn btn-o btn-sm">Edit</button></td></tr>
+      <tr><td style={{fontWeight: 500}}>Sophie Martin</td><td>sophie@dealersuite360.com</td><td><span className="bg" style={{background: '#f0fdf4', color: '#16a34a'}}>Operator Staff</span></td><td>BC Camper, Northern Trails</td><td><span className="bg active">Active</span></td><td>Yesterday</td><td><button className="btn btn-o btn-sm">Edit</button></td></tr>
     </tbody></table></div></div>
 </div>
 
@@ -917,12 +917,12 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
             <input type="file" id="op-profile-input" accept="image/*" style={{display: 'none'}} onChange={updateOpProfile} />
             <button className="btn btn-o btn-sm" onClick={() => document.getElementById('op-profile-input')?.click()}>Change Photo</button>
           </div>
-          <div style={{flex: 1}}><div style={{fontSize: 16, fontWeight: 600, marginBottom: 2}}>Jonathan Delorme</div><div style={{fontSize: 13, color: '#888'}}>Operator Admin · RV Claims Canada</div></div>
+          <div style={{flex: 1}}><div style={{fontSize: 16, fontWeight: 600, marginBottom: 2}}>Jonathan Delorme</div><div style={{fontSize: 13, color: '#888'}}>Operator Admin · Dealer Suite 360</div></div>
         </div>
         <div className="form-grid">
           <div className="form-group"><label>First Name</label><input value="Jonathan" /></div>
           <div className="form-group"><label>Last Name</label><input value="Delorme" /></div>
-          <div className="form-group"><label>Email</label><input value="jonathan@rvclaims.ca" /></div>
+          <div className="form-group"><label>Email</label><input value="jonathan@dealersuite360.com" /></div>
           <div className="form-group"><label>Phone</label><input value="(514) 555-0100" /></div>
           <div className="form-group"><label>Role</label><input value="Operator Admin" readOnly style={{background: '#f3f4f6', color: '#888'}} /></div>
           <div className="form-group"><label>Timezone</label><select><option defaultSelected>Eastern (ET)</option><option>Central</option><option>Mountain</option><option>Pacific</option></select></div>
@@ -932,14 +932,14 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
 
       
       <div className={`pn stab ${settingsTab === "stab-s-general" ? "active" : ""}`} id="stab-s-general" style={{display: settingsTab === "stab-s-general" ? "block" : "none"}}><div className="pn-h"><span className="pn-t">General Settings</span></div><div className="form-grid">
-        <div className="form-group"><label>Platform Name</label><input value="RV Claims Canada" /></div>
-        <div className="form-group"><label>Support Email</label><input value="support@rvclaims.ca" /></div>
+        <div className="form-group"><label>Platform Name</label><input value="Dealer Suite 360" /></div>
+        <div className="form-group"><label>Support Email</label><input value="support@dealersuite360.com" /></div>
         <div className="form-group"><label>Support Phone</label><input value="(888) 245-3204" /></div>
         <div className="form-group"><label>Default Language</label><select><option>English</option><option>French</option></select></div>
         <div className="form-group"><label>Currency</label><select><option defaultSelected>CAD ($)</option><option>USD ($)</option></select></div>
         <div className="form-group"><label>Timezone</label><select><option defaultSelected>Eastern</option><option>Central</option><option>Mountain</option><option>Pacific</option></select></div>
         <div className="form-group"><label>Stale Claim Threshold</label><input value="36" type="number" /> </div>
-        <div className="form-group"><label>Platform URL</label><input value="https://rvclaims.ca" /></div>
+        <div className="form-group"><label>Platform URL</label><input value="https://dealersuite360.com" /></div>
       </div><div className="btn-bar"><button className="btn btn-p">Save</button><button className="btn btn-o">Reset</button></div></div>
 
       
@@ -992,8 +992,8 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
         <div className="form-group"><label>Parts order update</label><select><option defaultSelected>Push + Email</option><option>Push only</option><option>Email only</option><option>Off</option></select></div>
         <div className="form-group"><label>Financing status change</label><select><option defaultSelected>Push + Email</option><option>Push only</option><option>Email only</option><option>Off</option></select></div>
         <div className="form-group full" style={{borderTop: '1px solid #f0f0f0', paddingTop: 16}}><label style={{fontWeight: 600, fontSize: 13}}>Email Configuration</label></div>
-        <div className="form-group"><label>From Name</label><input value="RV Claims Canada" /></div>
-        <div className="form-group"><label>Reply-To Email</label><input value="support@rvclaims.ca" /></div>
+        <div className="form-group"><label>From Name</label><input value="Dealer Suite 360" /></div>
+        <div className="form-group"><label>Reply-To Email</label><input value="support@dealersuite360.com" /></div>
       </div><div className="btn-bar"><button className="btn btn-p">Save</button><button className="btn btn-o">Reset</button></div></div>
 
       
@@ -1076,7 +1076,7 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
     <div style={{padding: 20}}>
       <div style={{borderLeft: '3px solid #e5e7eb', paddingLeft: 20, marginBottom: 32}}>
         <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8}}><div style={{fontSize: 18, fontWeight: 700, color: '#333'}}>v1.0.0</div><span style={{fontSize: 12, color: '#888'}}>November 2025</span></div>
-        <div style={{fontSize: 13, color: '#888', marginBottom: 12}}>Original RVClaims.xyz portal — single-portal claims tracking system</div>
+        <div style={{fontSize: 13, color: '#888', marginBottom: 12}}>Original dealersuite360.com portal — single-portal claims tracking system</div>
         <div style={{fontSize: 13, color: '#555', lineHeight: '1.8'}}>
           <div>• Basic claims tracking portal (operator only)</div>
           <div>• Contact form and waitlist with email notifications</div>

@@ -1,7 +1,7 @@
 {
-  "name": "RV Claims Canada",
-  "short_name": "RV Claims",
-  "description": "RV warranty claims management platform for Canadian dealerships",
+  "name": "Dealer Suite 360",
+  "short_name": "DS360",
+  "description": "The all-in-one dealership operating system for Canadian RV dealerships",
   "start_url": "/dealer",
   "display": "standalone",
   "orientation": "any",

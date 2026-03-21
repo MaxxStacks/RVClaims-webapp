@@ -157,12 +157,12 @@ export function DealerShowcasePages({ activePage, showPage }: DealerProps) {
         <div style={{padding: 20, fontSize: 13, lineHeight: '2'}}>
           <div>✓ List units in the monthly public auction (24-hour event)</div>
           <div>✓ Your units shown to verified public buyers across Canada</div>
-          <div>✓ RV Claims handles all bidder verification + credit card holds</div>
+          <div>✓ Dealer Suite 360 handles all bidder verification + credit card holds</div>
           <div>✓ Set reserve prices + optional Buy Now pricing</div>
           <div>✓ Real-time bidding with auto-extend protection</div>
           <div>✓ $250 flat commission per completed sale (same as marketplace)</div>
           <div>✓ Professional listing with photos, specs, descriptions</div>
-          <div>✓ RV Claims promotes the event to registered bidders</div>
+          <div>✓ Dealer Suite 360 promotes the event to registered bidders</div>
         </div>
         <div style={{padding: '12px 20px', background: '#eff6ff', borderTop: '1px solid #bfdbfe', fontSize: 12, color: '#1e40af'}}>
           This is an add-on to your $499/year marketplace membership. Total: $798/year for marketplace + public showcase.
@@ -227,7 +227,7 @@ export function DealerShowcasePages({ activePage, showPage }: DealerProps) {
       <div className="form-group full" style={{borderTop: '1px solid #f0f0f0', paddingTop: 16}}><label>Public Description</label><textarea placeholder="This description is shown to public bidders. Highlight condition, features, options, warranty status..." style={{minHeight: 100}} /></div>
     </div>
     <div className="btn-bar">
-      <button className="btn btn-s" onClick={() => { alert('Unit submitted for review! RV Claims will approve within 24 hours.'); showPage('mkt-showcase'); }}>Submit for Review</button>
+      <button className="btn btn-s" onClick={() => { alert('Unit submitted for review! Dealer Suite 360 will approve within 24 hours.'); showPage('mkt-showcase'); }}>Submit for Review</button>
       <button className="btn btn-o" onClick={() => showPage('mkt-showcase')}>Save Draft</button>
       <button className="btn btn-o" onClick={() => showPage('mkt-showcase')}>Cancel</button>
     </div>

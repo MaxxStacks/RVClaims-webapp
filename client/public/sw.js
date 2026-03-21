@@ -1,7 +1,7 @@
-// public/sw.js — Service Worker for RV Claims PWA
+// public/sw.js — Service Worker for Dealer Suite 360 PWA
 // Cache-first for assets, network-first for API calls
 
-const CACHE_NAME = "rvclaims-v2.3.0";
+const CACHE_NAME = "dealersuite360-v2.3.0";
 const STATIC_ASSETS = [
   "/",
   "/dealer",
@@ -128,7 +128,7 @@ self.addEventListener("push", (event) => {
       body: data.message || data.body || "",
       icon: "/icons/icon-192.png",
       badge: "/icons/icon-72.png",
-      tag: data.tag || "rvclaims",
+      tag: data.tag || "dealersuite360",
       data: { url: data.url || data.linkTo || "/dealer" },
       actions: [
         { action: "open", title: "View" },
@@ -137,7 +137,7 @@ self.addEventListener("push", (event) => {
     };
 
     event.waitUntil(
-      self.registration.showNotification(data.title || "RV Claims", options)
+      self.registration.showNotification(data.title || "Dealer Suite 360", options)
     );
   } catch (error) {
     console.error("[SW] Push notification error:", error);

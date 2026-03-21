@@ -5,8 +5,8 @@ import { faGoogle, faLinkedinIn } from "@fortawesome/free-brands-svg-icons";
 import { useLanguage } from "@/hooks/use-language";
 import { useAuth } from "@/hooks/use-auth";
 import { Link, useLocation } from "wouter";
-import logoEN from "@assets/Official_RVclaims_logo_en.webp";
-import logoFR from "@assets/Official_RVclaims_logo_fr.webp";
+import logoEN from "@assets/DS360_logo_en.webp";
+import logoFR from "@assets/DS360_logo_fr.webp";
 
 type LoginStep = "options" | "email";
 
@@ -107,7 +107,7 @@ export default function ClientLogin() {
           ))}
         </div>
         <p className="text-white/40 text-xs">
-          © {new Date().getFullYear()} RV Claims Canada · {t("dealerLoginPage.footer")}
+          © {new Date().getFullYear()} Dealer Suite 360 · {t("dealerLoginPage.footer")}
         </p>
       </div>
     </div>
@@ -121,7 +121,7 @@ export default function ClientLogin() {
       <div className="lg:hidden mb-6">
         <img
           src={language === "en" ? logoEN : logoFR}
-          alt="RV Claims Canada"
+          alt="Dealer Suite 360"
           style={{ height: "72px", width: "auto" }}
         />
       </div>
@@ -188,7 +188,7 @@ export default function ClientLogin() {
       <div className="lg:hidden mb-6">
         <img
           src={language === "en" ? logoEN : logoFR}
-          alt="RV Claims Canada"
+          alt="Dealer Suite 360"
           style={{ height: "72px", width: "auto" }}
         />
       </div>
@@ -293,7 +293,7 @@ export default function ClientLogin() {
         <div className="hidden lg:flex items-center justify-between px-10 py-5 border-b border-border/60">
           <img
             src={language === "en" ? logoEN : logoFR}
-            alt="RV Claims Canada"
+            alt="Dealer Suite 360"
             style={{ height: "72px", width: "auto" }}
             data-testid="img-login-page-logo"
           />

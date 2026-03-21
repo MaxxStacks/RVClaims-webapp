@@ -227,7 +227,7 @@ router.post("/invite", requireAuth, validateBody(inviteSchema), async (req: Requ
       .returning();
 
     await sendInvitationEmail(email, {
-      dealershipName: "RV Claims Dealer",
+      dealershipName: "Dealer Suite 360 Dealer",
       role,
       token,
       lang: "en",

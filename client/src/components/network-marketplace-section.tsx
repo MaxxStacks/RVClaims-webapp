@@ -129,7 +129,7 @@ export function NetworkMarketplaceSection() {
         <div className="bg-gray-50 rounded-2xl p-8 md:p-12 text-center border border-border">
           <h3 className="text-2xl md:text-3xl font-bold mb-4">Be First to Access the Network</h3>
           <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-            Join the waitlist for exclusive early access to the RVClaims Dealer Network Marketplace in 2026
+            Join the waitlist for exclusive early access to the Dealer Suite 360 Network Marketplace in 2026
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
             <Button 
@@ -159,7 +159,7 @@ export function NetworkMarketplaceSection() {
             <DialogHeader>
               <DialogTitle className="text-2xl">Join the Waitlist</DialogTitle>
               <DialogDescription>
-                Be among the first dealers to access the RVClaims Network Marketplace when it launches in 2026.
+                Be among the first dealers to access the Dealer Suite 360 Network Marketplace when it launches in 2026.
               </DialogDescription>
             </DialogHeader>
             

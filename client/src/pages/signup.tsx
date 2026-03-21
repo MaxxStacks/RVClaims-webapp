@@ -2,8 +2,8 @@ import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
 import { Link } from "wouter";
-import logoEN from "@assets/Official_RVclaims_logo_en.webp";
-import logoFR from "@assets/Official_RVclaims_logo_fr.webp";
+import logoEN from "@assets/DS360_logo_en.webp";
+import logoFR from "@assets/DS360_logo_fr.webp";
 
 export default function Signup() {
   const { language } = useLanguage();
@@ -115,7 +115,7 @@ export default function Signup() {
           </div>
 
           <div style={{ fontSize: "11px", color: "rgba(255,255,255,0.3)" }}>
-            © 2026 RV Claims Canada · Powered by Dealer Suite 360
+            © 2026 Dealer Suite 360 · Powered by Dealer Suite 360
           </div>
         </div>
       </div>
@@ -125,7 +125,7 @@ export default function Signup() {
         {/* Header */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 48px", borderBottom: "1px solid #f0f0f0" }}>
           <Link href="/">
-            <img src={language === "en" ? logoEN : logoFR} alt="RV Claims" style={{ height: "72px", width: "auto" }} />
+            <img src={language === "en" ? logoEN : logoFR} alt="Dealer Suite 360" style={{ height: "72px", width: "auto" }} />
           </Link>
           <Link href="/" style={{ fontSize: "13px", color: "#666", textDecoration: "none" }}>← Back to site</Link>
         </div>

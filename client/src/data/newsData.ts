@@ -36,11 +36,11 @@ export const newsArticles: NewsArticle[] = [
 
 <p>The capital will be allocated across four priorities: continued development of core platform modules, expansion of the AI intelligence layer, infrastructure to support the dealer network at scale, and a go-to-market effort targeting Canadian dealerships in the 2026 operating season.</p>
 
-<p>Critically, DealerSuite 360 is not starting from zero. The platform is already in active beta with its first dealer partner, with the RVClaims.ca claims processing module live and processing real transactions. That operational foundation — combined with new capital — positions the company to move fast.</p>
+<p>Critically, DealerSuite 360 is not starting from zero. The platform is already in active beta with its first dealer partner, with the dealersuite360.com claims processing module live and processing real transactions. That operational foundation — combined with new capital — positions the company to move fast.</p>
 
 <p>The US market expansion, planned under the DealerSuite 360 brand, is targeted for Q3 2026. International expansion and enterprise licensing are under consideration for 2027.</p>
 
-<p>For dealerships interested in joining the platform, early access sign-ups are open at RVClaims.ca. New clients who sign up before April 30, 2026 are eligible for a 5% discount on claim fees, parts, and services.</p>`,
+<p>For dealerships interested in joining the platform, early access sign-ups are open at dealersuite360.com. New clients who sign up before April 30, 2026 are eligible for a 5% discount on claim fees, parts, and services.</p>`,
     },
     fr: {
       title: "DealerSuite 360 obtient 1,1 million de dollars en financement privé pour transformer l\u2019industrie du VR en Amérique du Nord",
@@ -55,7 +55,7 @@ export const newsArticles: NewsArticle[] = [
 
 <p>Le capital sera alloué à quatre priorités : le développement continu des modules de la plateforme principale, l'expansion de la couche d'intelligence artificielle, l'infrastructure pour soutenir le réseau de concessionnaires à grande échelle, et une mise sur le marché ciblant les concessionnaires canadiens pour la saison d'exploitation 2026.</p>
 
-<p>DealerSuite 360 ne part pas de zéro. La plateforme est déjà en bêta active avec son premier partenaire concessionnaire, le module de traitement des réclamations RVClaims.ca étant en production et traitant de vraies transactions. Cette base opérationnelle — combinée au nouveau capital — positionne l'entreprise pour avancer rapidement.</p>
+<p>DealerSuite 360 ne part pas de zéro. La plateforme est déjà en bêta active avec son premier partenaire concessionnaire, le module de traitement des réclamations dealersuite360.com étant en production et traitant de vraies transactions. Cette base opérationnelle — combinée au nouveau capital — positionne l'entreprise pour avancer rapidement.</p>
 
 <p>L'expansion sur le marché américain, prévue sous la marque DealerSuite 360, est ciblée pour le troisième trimestre 2026. L'expansion internationale et les licences d'entreprise sont envisagées pour 2027.</p>`,
     },
@@ -96,7 +96,7 @@ export const newsArticles: NewsArticle[] = [
 
 <p>The platform is built on React 18, TypeScript, Node.js, and PostgreSQL — with AI deeply embedded throughout, not bolted on as an afterthought. We're currently in beta in Canada, with the US market expansion under the DealerSuite 360 brand planned for Q3 2026.</p>
 
-<p>Sign-ups are open at RVClaims.ca. Dealers who join before April 30, 2026 receive a 5% discount on claim fees, parts, and services for the season.</p>`,
+<p>Sign-ups are open at dealersuite360.com. Dealers who join before April 30, 2026 receive a 5% discount on claim fees, parts, and services for the season.</p>`,
     },
     fr: {
       title: 'Présentation de DealerSuite 360 : La plateforme tout-en-un conçue pour les concessionnaires de VR',
@@ -197,8 +197,8 @@ export const newsArticles: NewsArticle[] = [
     image: '',
     en: {
       title: 'Warranty Claims Management, Reimagined for the RV Industry',
-      summary: 'RVClaims was the first module built and battle-tested — now fully integrated into DealerSuite 360. It handles the complete claim lifecycle across all major manufacturers with per-line FRC tracking, photo documentation, and role-based access.',
-      content: `<p>Before there was DealerSuite 360, there was RVClaims.ca — a warranty claims processing service built out of direct experience with the frustrations Canadian RV dealers face every day. Too many manufacturers. Too many portals. Too many denials from claims that could have been approved with better preparation. RVClaims was built to fix that. Now, it's the foundational module inside DealerSuite 360.</p>
+      summary: 'Dealer Suite 360 was the first module built and battle-tested — now fully integrated into DealerSuite 360. It handles the complete claim lifecycle across all major manufacturers with per-line FRC tracking, photo documentation, and role-based access.',
+      content: `<p>Before there was DealerSuite 360, there was Dealer Suite 360 — a warranty claims processing service built out of direct experience with the frustrations Canadian RV dealers face every day. Too many manufacturers. Too many portals. Too many denials from claims that could have been approved with better preparation. Dealer Suite 360 was built to fix that. Now, it's the foundational module inside DealerSuite 360.</p>
 
 <h3>What It Handles</h3>
 
@@ -232,12 +232,12 @@ export const newsArticles: NewsArticle[] = [
 
 <p>Dealer Owners, Dealer Staff, Operator Admins, and Operator Staff each see the data and controls appropriate to their role. Nothing more, nothing less. The right people have the right access — and no one can accidentally (or intentionally) see data that isn't theirs.</p>
 
-<p>RVClaims has been battle-tested in real dealership conditions. As the entry module into DealerSuite 360, it is the platform's most mature capability and the starting point for every new dealer relationship.</p>`,
+<p>Dealer Suite 360 has been battle-tested in real dealership conditions. As the entry module into Dealer Suite 360, it is the platform's most mature capability and the starting point for every new dealer relationship.</p>`,
     },
     fr: {
       title: "La gestion des réclamations de garantie, réinventée pour l\u2019industrie du VR",
-      summary: 'RVClaims a été le premier module construit et éprouvé en conditions réelles — maintenant entièrement intégré dans DealerSuite 360. Il gère le cycle de vie complet des réclamations auprès de tous les grands fabricants avec un suivi FRC par ligne, une documentation photographique et un accès basé sur les rôles.',
-      content: `<p>Avant qu'il y ait DealerSuite 360, il y avait RVClaims.ca — un service de traitement des réclamations de garantie construit à partir de l'expérience directe des frustrations auxquelles font face les concessionnaires canadiens de VR chaque jour. Trop de fabricants. Trop de portails. Trop de refus pour des réclamations qui auraient pu être approuvées avec une meilleure préparation. RVClaims a été construit pour remédier à cela. Maintenant, c'est le module fondamental de DealerSuite 360.</p>
+      summary: 'Dealer Suite 360 a été le premier module construit et éprouvé en conditions réelles — maintenant entièrement intégré dans DealerSuite 360. Il gère le cycle de vie complet des réclamations auprès de tous les grands fabricants avec un suivi FRC par ligne, une documentation photographique et un accès basé sur les rôles.',
+      content: `<p>Avant qu'il y ait DealerSuite 360, il y avait Dealer Suite 360 — un service de traitement des réclamations de garantie construit à partir de l'expérience directe des frustrations auxquelles font face les concessionnaires canadiens de VR chaque jour. Trop de fabricants. Trop de portails. Trop de refus pour des réclamations qui auraient pu être approuvées avec une meilleure préparation. Dealer Suite 360 a été construit pour remédier à cela. Maintenant, c'est le module fondamental de DealerSuite 360.</p>
 
 <h3>Ce qu'il gère</h3>
 
@@ -267,7 +267,7 @@ export const newsArticles: NewsArticle[] = [
 
 <p>La qualité des photos a un impact direct sur les taux d'approbation et les revenus des concessionnaires. La plateforme exige une documentation photographique par ligne FRC — et non par réclamation — garantissant que chaque problème individuel est soutenu par les photos en gros plan et contextuelles que les fabricants exigent.</p>
 
-<p>RVClaims a été éprouvé dans des conditions réelles de concessionnaire. En tant que module d'entrée dans DealerSuite 360, c'est la capacité la plus mature de la plateforme et le point de départ de chaque nouvelle relation avec un concessionnaire.</p>`,
+<p>Dealer Suite 360 a été éprouvé dans des conditions réelles de concessionnaire. En tant que module d'entrée dans Dealer Suite 360, c'est la capacité la plus mature de la plateforme et le point de départ de chaque nouvelle relation avec un concessionnaire.</p>`,
     },
   },
   {

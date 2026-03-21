@@ -86,7 +86,7 @@ export async function createFiPresenterSession(data: {
     if (!dealership) throw new Error("Dealership not found");
 
     const sessionId = randomBytes(16).toString("hex");
-    const platformUrl = process.env.PLATFORM_URL || "https://rvclaims.ca";
+    const platformUrl = process.env.PLATFORM_URL || "https://dealersuite360.com";
 
     const session: FiPresenterSession = {
       sessionId,

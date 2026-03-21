@@ -10,9 +10,9 @@ export default function PrivacyPolicy() {
 
   return (
     <PageLayout
-      seoTitle="Privacy Policy | PIPEDA Compliance | RV Claims Canada"
-      seoDescription="RV Claims Canada privacy policy. How we collect, use, and protect personal information in compliance with Canada's PIPEDA legislation."
-      seoKeywords="privacy policy, PIPEDA compliance, data protection, personal information, Canadian privacy law, RV Claims Canada"
+      seoTitle="Privacy Policy | PIPEDA Compliance | Dealer Suite 360"
+      seoDescription="Dealer Suite 360 privacy policy. How we collect, use, and protect personal information in compliance with Canada's PIPEDA legislation."
+      seoKeywords="privacy policy, PIPEDA compliance, data protection, personal information, Canadian privacy law, Dealer Suite 360"
       canonical="/privacy-policy"
     >
       {/* Hero */}

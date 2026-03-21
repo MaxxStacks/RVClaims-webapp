@@ -14,13 +14,13 @@ async function seed() {
   const [existingAdmin] = await db
     .select()
     .from(users)
-    .where(eq(users.email, "admin@rvclaims.ca"))
+    .where(eq(users.email, "admin@dealersuite360.com"))
     .limit(1);
 
   if (!existingAdmin) {
     const passwordHash = await hashPassword("Admin@2026!");
     await db.insert(users).values({
-      email: "admin@rvclaims.ca",
+      email: "admin@dealersuite360.com",
       passwordHash,
       firstName: "Jonathan",
       lastName: "D.",
@@ -28,7 +28,7 @@ async function seed() {
       language: "en",
       isActive: true,
     });
-    console.log("  ✅ Operator admin created: admin@rvclaims.ca / Admin@2026!");
+    console.log("  ✅ Operator admin created: admin@dealersuite360.com / Admin@2026!");
   } else {
     console.log("  ⏭️  Operator admin already exists");
   }
@@ -37,13 +37,13 @@ async function seed() {
   const [existingStaff] = await db
     .select()
     .from(users)
-    .where(eq(users.email, "staff@rvclaims.ca"))
+    .where(eq(users.email, "staff@dealersuite360.com"))
     .limit(1);
 
   if (!existingStaff) {
     const passwordHash = await hashPassword("Staff@2026!");
     await db.insert(users).values({
-      email: "staff@rvclaims.ca",
+      email: "staff@dealersuite360.com",
       passwordHash,
       firstName: "Sarah",
       lastName: "K.",
@@ -51,7 +51,7 @@ async function seed() {
       language: "en",
       isActive: true,
     });
-    console.log("  ✅ Operator staff created: staff@rvclaims.ca / Staff@2026!");
+    console.log("  ✅ Operator staff created: staff@dealersuite360.com / Staff@2026!");
   } else {
     console.log("  ⏭️  Operator staff already exists");
   }
@@ -178,9 +178,9 @@ async function seed() {
     { key: "pdi_fee", value: "95.00" },
     { key: "default_tax_rate", value: "0.13" },
     { key: "platform_version", value: "2.0.0" },
-    { key: "company_name", value: "RV Claims Canada" },
-    { key: "company_email", value: "hello@rvclaims.ca" },
-    { key: "support_email", value: "support@rvclaims.ca" },
+    { key: "company_name", value: "Dealer Suite 360" },
+    { key: "company_email", value: "hello@dealersuite360.com" },
+    { key: "support_email", value: "support@dealersuite360.com" },
   ];
 
   for (const setting of defaults) {
@@ -198,8 +198,8 @@ async function seed() {
 
   console.log("\n🎉 Seed complete!\n");
   console.log("Login credentials:");
-  console.log("  Operator Admin:  admin@rvclaims.ca     / Admin@2026!");
-  console.log("  Operator Staff:  staff@rvclaims.ca     / Staff@2026!");
+  console.log("  Operator Admin:  admin@dealersuite360.com     / Admin@2026!");
+  console.log("  Operator Staff:  staff@dealersuite360.com     / Staff@2026!");
   console.log("  Dealer Owner:    mike@smithsrv.ca      / Dealer@2026!");
   console.log("  Customer:        robert.martin@email.com / Customer@2026!");
   console.log("");

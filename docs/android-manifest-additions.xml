@@ -30,7 +30,7 @@
         <action android:name="android.intent.action.VIEW" />
         <category android:name="android.intent.category.DEFAULT" />
         <category android:name="android.intent.category.BROWSABLE" />
-        <data android:scheme="https" android:host="app.rvclaims.ca" />
-        <data android:scheme="rvclaims" android:host="open" />
+        <data android:scheme="https" android:host="app.dealersuite360.com" />
+        <data android:scheme="dealersuite360" android:host="open" />
     </intent-filter>
 -->

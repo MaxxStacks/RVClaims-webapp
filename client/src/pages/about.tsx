@@ -37,16 +37,16 @@ export default function About() {
   const schema = {
     "@context": "https://schema.org",
     "@type": "AboutPage",
-    "name": "About RV Claims Canada",
-    "description": "RV Claims Canada is Canada's dealership operating system — combining AI-powered claims processing with financing, F&I, marketplace, and revenue growth services.",
-    "url": "https://rvclaims.ca/about"
+    "name": "About Dealer Suite 360",
+    "description": "Dealer Suite 360 is Canada's dealership operating system — combining AI-powered claims processing with financing, F&I, marketplace, and revenue growth services.",
+    "url": "https://dealersuite360.com/about"
   };
 
   return (
     <PageLayout
-      seoTitle="About RV Claims Canada | Canada's Dealership Operating System"
-      seoDescription="RV Claims Canada is the all-in-one platform for Canadian RV dealerships. 15+ years of claims expertise, patent-pending AI technology, bilingual service across Canada."
-      seoKeywords="about RV Claims Canada, Canadian RV dealers, warranty claims platform, dealer operating system, Dealer Suite 360"
+      seoTitle="About Dealer Suite 360 | Canada's Dealership Operating System"
+      seoDescription="Dealer Suite 360 is the all-in-one platform for Canadian RV dealerships. 15+ years of claims expertise, patent-pending AI technology, bilingual service across Canada."
+      seoKeywords="about Dealer Suite 360, Canadian RV dealers, warranty claims platform, dealer operating system, Dealer Suite 360"
       canonical="/about"
       schema={schema}
     >

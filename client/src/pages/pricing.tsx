@@ -84,7 +84,7 @@ export default function Pricing() {
 
   return (
     <PageLayout
-      seoTitle="Pricing - RV Claims Canada"
+      seoTitle="Pricing - Dealer Suite 360"
       seoDescription="Transparent pricing for professional RV claims management services. Choose the plan that fits your dealership's needs with flexible monthly or annual billing options."
     >
       <div className="bg-white">

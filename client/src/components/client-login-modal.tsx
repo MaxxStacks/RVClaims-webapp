@@ -295,7 +295,7 @@ export function ClientLoginModal({ isOpen, onClose }: ClientLoginModalProps) {
             )}
             <img 
               src={loginModalLogoImage} 
-              alt="RV Claims" 
+              alt="Dealer Suite 360" 
               className="h-6 w-auto max-w-[160px]" 
               data-testid="img-login-modal-logo"
             />
@@ -349,7 +349,7 @@ export function ClientLoginModal({ isOpen, onClose }: ClientLoginModalProps) {
             )}
             <img 
               src={loginModalLogoImage} 
-              alt="RV Claims" 
+              alt="Dealer Suite 360" 
               className="h-6 w-auto max-w-[160px]" 
               data-testid="img-login-modal-logo"
             />

@@ -8,37 +8,37 @@ export function DepartmentDirectory() {
     {
       title: t('departmentDirectory.groups.operations'),
       departments: [
-        { key: 'claims', email: 'claims@rvclaims.ca' },
-        { key: 'warranty', email: 'warranty@rvclaims.ca' },
-        { key: 'techSupport', email: 'support@rvclaims.ca' },
-        { key: 'roadside', email: 'roadside@rvclaims.ca' },
-        { key: 'network', email: 'network@rvclaims.ca' }
+        { key: 'claims', email: 'claims@dealersuite360.com' },
+        { key: 'warranty', email: 'warranty@dealersuite360.com' },
+        { key: 'techSupport', email: 'support@dealersuite360.com' },
+        { key: 'roadside', email: 'roadside@dealersuite360.com' },
+        { key: 'network', email: 'network@dealersuite360.com' }
       ]
     },
     {
       title: t('departmentDirectory.groups.business'),
       departments: [
-        { key: 'sales', email: 'sales@rvclaims.ca' },
-        { key: 'dealerRelations', email: 'dealer@rvclaims.ca' },
-        { key: 'dealerOnboarding', email: 'onboarding@rvclaims.ca' },
-        { key: 'partners', email: 'partners@rvclaims.ca' },
-        { key: 'development', email: 'development@rvclaims.ca' }
+        { key: 'sales', email: 'sales@dealersuite360.com' },
+        { key: 'dealerRelations', email: 'dealer@dealersuite360.com' },
+        { key: 'dealerOnboarding', email: 'onboarding@dealersuite360.com' },
+        { key: 'partners', email: 'partners@dealersuite360.com' },
+        { key: 'development', email: 'development@dealersuite360.com' }
       ]
     },
     {
       title: t('departmentDirectory.groups.finance'),
       departments: [
-        { key: 'accountsPayable', email: 'ap@rvclaims.ca' },
-        { key: 'accountsReceivable', email: 'ar@rvclaims.ca' },
-        { key: 'financing', email: 'financing@rvclaims.ca' }
+        { key: 'accountsPayable', email: 'ap@dealersuite360.com' },
+        { key: 'accountsReceivable', email: 'ar@dealersuite360.com' },
+        { key: 'financing', email: 'financing@dealersuite360.com' }
       ]
     },
     {
       title: t('departmentDirectory.groups.corporate'),
       departments: [
-        { key: 'media', email: 'media@rvclaims.ca' },
-        { key: 'general', email: 'hello@rvclaims.ca' },
-        { key: 'legal', email: 'legal@rvclaims.ca' }
+        { key: 'media', email: 'media@dealersuite360.com' },
+        { key: 'general', email: 'hello@dealersuite360.com' },
+        { key: 'legal', email: 'legal@dealersuite360.com' }
       ]
     }
   ];

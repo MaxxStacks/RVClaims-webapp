@@ -2,8 +2,8 @@ import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
 import { Link } from "wouter";
-import logoEN from "@assets/Official_RVclaims_logo_en.webp";
-import logoFR from "@assets/Official_RVclaims_logo_fr.webp";
+import logoEN from "@assets/DS360_logo_en.webp";
+import logoFR from "@assets/DS360_logo_fr.webp";
 
 export default function BidderLogin() {
   const { language } = useLanguage();
@@ -77,7 +77,7 @@ export default function BidderLogin() {
   const features = [
     "No dealer license required — open to all Canadians",
     "$250 hold placed on first bid — refunded automatically if you lose",
-    "RV Claims acts as escrow for every transaction",
+    "Dealer Suite 360 acts as escrow for every transaction",
     "Financing available for auction winners",
   ];
 
@@ -99,7 +99,7 @@ export default function BidderLogin() {
             Bid on Real Canadian<br />RV Inventory.
           </div>
           <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.7)", lineHeight: 1.6, marginBottom: "40px", maxWidth: "380px" }}>
-            Monthly public auction. Verified dealerships. RV Claims handles all transactions — so you buy with confidence.
+            Monthly public auction. Verified dealerships. Dealer Suite 360 handles all transactions — so you buy with confidence.
           </p>
 
           {/* Features */}
@@ -151,7 +151,7 @@ export default function BidderLogin() {
           </div>
 
           <div style={{ fontSize: "11px", color: "rgba(255,255,255,0.3)" }}>
-            © 2026 RV Claims Canada · Powered by Dealer Suite 360
+            © 2026 Dealer Suite 360 · Powered by Dealer Suite 360
           </div>
         </div>
       </div>
@@ -162,7 +162,7 @@ export default function BidderLogin() {
         {/* Header */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 48px", borderBottom: "1px solid #f0f0f0" }}>
           <Link href="/">
-            <img src={language === "en" ? logoEN : logoFR} alt="RV Claims" style={{ height: "72px", width: "auto" }} />
+            <img src={language === "en" ? logoEN : logoFR} alt="Dealer Suite 360" style={{ height: "72px", width: "auto" }} />
           </Link>
           <Link href="/live-auctions" style={{ fontSize: "13px", color: "#666", textDecoration: "none" }}>
             ← Back to Live Auctions

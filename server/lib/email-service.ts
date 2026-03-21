@@ -10,9 +10,9 @@ interface EmailOptions {
 }
 
 const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY;
-const FROM_EMAIL = process.env.FROM_EMAIL || "noreply@rvclaims.ca";
-const FROM_NAME = process.env.FROM_NAME || "RV Claims Canada";
-const PLATFORM_URL = process.env.PLATFORM_URL || "https://rvclaims.ca";
+const FROM_EMAIL = process.env.FROM_EMAIL || "noreply@dealersuite360.com";
+const FROM_NAME = process.env.FROM_NAME || "Dealer Suite 360";
+const PLATFORM_URL = process.env.PLATFORM_URL || "https://dealersuite360.com";
 
 async function sendEmail(options: EmailOptions): Promise<boolean> {
   const { to, subject, html, from, replyTo } = options;
@@ -57,8 +57,8 @@ async function sendEmail(options: EmailOptions): Promise<boolean> {
 
 function wrapTemplate(content: string, lang: "en" | "fr" = "en"): string {
   const footer = lang === "fr"
-    ? "RV Claims Canada · Propulsé par Dealer Suite 360"
-    : "RV Claims Canada · Powered by Dealer Suite 360";
+    ? "Dealer Suite 360 · Propulsé par Dealer Suite 360"
+    : "Dealer Suite 360 · Powered by Dealer Suite 360";
 
   return `
 <!DOCTYPE html>
@@ -70,7 +70,7 @@ function wrapTemplate(content: string, lang: "en" | "fr" = "en"): string {
       <table width="600" cellpadding="0" cellspacing="0" style="background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.06)">
         <!-- Header -->
         <tr><td style="background:#08235d;padding:24px 32px">
-          <span style="color:#fff;font-size:18px;font-weight:700">RV Claims Canada</span>
+          <span style="color:#fff;font-size:18px;font-weight:700">Dealer Suite 360</span>
         </td></tr>
         <!-- Content -->
         <tr><td style="padding:32px">${content}</td></tr>
@@ -99,8 +99,8 @@ export async function sendInvitationEmail(
   const url = `${PLATFORM_URL}/accept-invite?token=${token}`;
 
   const subject = lang === "fr"
-    ? `Vous êtes invité à rejoindre ${dealershipName} sur RV Claims`
-    : `You're invited to join ${dealershipName} on RV Claims`;
+    ? `Vous êtes invité à rejoindre ${dealershipName} sur Dealer Suite 360`
+    : `You're invited to join ${dealershipName} on Dealer Suite 360`;
 
   const greeting = firstName
     ? (lang === "fr" ? `Bonjour ${firstName},` : `Hi ${firstName},`)
@@ -116,8 +116,8 @@ export async function sendInvitationEmail(
     <p style="font-size:15px;color:#333;line-height:1.6">${greeting}</p>
     <p style="font-size:15px;color:#333;line-height:1.6">
       ${lang === "fr"
-        ? `Vous avez été invité en tant que <strong>${roleLabel}</strong> chez <strong>${dealershipName}</strong> sur la plateforme RV Claims Canada.`
-        : `You've been invited as a <strong>${roleLabel}</strong> at <strong>${dealershipName}</strong> on the RV Claims Canada platform.`}
+        ? `Vous avez été invité en tant que <strong>${roleLabel}</strong> chez <strong>${dealershipName}</strong> sur la plateforme Dealer Suite 360.`
+        : `You've been invited as a <strong>${roleLabel}</strong> at <strong>${dealershipName}</strong> on the Dealer Suite 360 platform.`}
     </p>
     <div style="text-align:center">${btn(lang === "fr" ? "Accepter l'invitation" : "Accept Invitation", url)}</div>
     <p style="font-size:13px;color:#888;margin-top:24px">
@@ -137,8 +137,8 @@ export async function sendPasswordResetEmail(
   const url = `${PLATFORM_URL}/reset-password?token=${token}`;
 
   const subject = lang === "fr"
-    ? "Réinitialisation de votre mot de passe — RV Claims"
-    : "Reset your password — RV Claims";
+    ? "Réinitialisation de votre mot de passe — Dealer Suite 360"
+    : "Reset your password — Dealer Suite 360";
 
   const content = `
     <p style="font-size:15px;color:#333;line-height:1.6">${lang === "fr" ? `Bonjour ${firstName},` : `Hi ${firstName},`}</p>
@@ -263,8 +263,8 @@ export async function sendWelcomeEmail(
   const url = `${PLATFORM_URL}/dealer`;
 
   const subject = lang === "fr"
-    ? `Bienvenue chez RV Claims Canada, ${firstName}!`
-    : `Welcome to RV Claims Canada, ${firstName}!`;
+    ? `Bienvenue chez Dealer Suite 360, ${firstName}!`
+    : `Welcome to Dealer Suite 360, ${firstName}!`;
 
   const content = `
     <p style="font-size:15px;color:#333;line-height:1.6">${lang === "fr" ? `Bonjour ${firstName},` : `Hi ${firstName},`}</p>

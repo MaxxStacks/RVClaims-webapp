@@ -225,7 +225,7 @@ export function OperatorMarketplacePages({ activePage, showPage }: Props) {
       <div className="pn" style={{marginBottom: 16}}><div className="pn-h"><span className="pn-t">Escrow Timeline</span></div>
         <div className="act">
           <div className="act-i"><span className="act-dot ok"></span><div><div className="act-t"><strong>Ontario RV Depot</strong> placed $500 hold</div><div className="act-tm">Mar 15, 2:30 PM · Stripe PI: pi_3NxR...</div></div></div>
-          <div className="act-i"><span className="act-dot new"></span><div><div className="act-t">RV Claims notified <strong>Atlantic RV</strong> (seller)</div><div className="act-tm">Mar 15, 2:31 PM</div></div></div>
+          <div className="act-i"><span className="act-dot new"></span><div><div className="act-t">Dealer Suite 360 notified <strong>Atlantic RV</strong> (seller)</div><div className="act-tm">Mar 15, 2:31 PM</div></div></div>
           <div className="act-i"><span className="act-dot ok"></span><div><div className="act-t">Atlantic RV <strong>accepted</strong> — unit reserved</div><div className="act-tm">Mar 15, 4:15 PM</div></div></div>
           <div className="act-i"><span className="act-dot pt"></span><div><div className="act-t">Awaiting <strong>transport / pickup</strong></div><div className="act-tm">In progress</div></div></div>
         </div>
@@ -233,7 +233,7 @@ export function OperatorMarketplacePages({ activePage, showPage }: Props) {
       <div className="pn"><div className="pn-h"><span className="pn-t">Communication</span></div>
         <div className="comm-box">
           <div className="comm-msg"><div className="comm-avatar dl">OR</div><div className="comm-content"><div className="comm-name">Ontario RV Depot (Buyer)</div><div className="comm-text">We'd like pickup Friday. Can seller have it prepped?</div><div className="comm-time">Mar 16, 9:00 AM</div></div></div>
-          <div className="comm-msg"><div className="comm-avatar op">RC</div><div className="comm-content"><div className="comm-name">RV Claims (You)</div><div className="comm-text">Confirmed — unit prepped Friday 10 AM. Address sent privately.</div><div className="comm-time">Mar 16, 10:30 AM</div></div></div>
+          <div className="comm-msg"><div className="comm-avatar op">RC</div><div className="comm-content"><div className="comm-name">Dealer Suite 360 (You)</div><div className="comm-text">Confirmed — unit prepped Friday 10 AM. Address sent privately.</div><div className="comm-time">Mar 16, 10:30 AM</div></div></div>
         </div>
         <div style={{padding: '16px 20px'}}>
           <textarea placeholder="Message both parties..." style={{width: '100%', padding: '10px 12px', border: '1px solid #e0e0e0', borderRadius: 8, fontSize: 13, fontFamily: 'inherit', minHeight: 50, resize: 'vertical' as const}} />

@@ -2,8 +2,8 @@ import { useState } from "react";
 import { Mail, Eye, EyeOff, ArrowLeft, FileText, TrendingUp, Users, Building2 } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
 import { Link } from "wouter";
-import logoEN from "@assets/Official_RVclaims_logo_en.webp";
-import logoFR from "@assets/Official_RVclaims_logo_fr.webp";
+import logoEN from "@assets/DS360_logo_en.webp";
+import logoFR from "@assets/DS360_logo_fr.webp";
 
 export default function OperatorLogin() {
   const { language } = useLanguage();
@@ -66,7 +66,7 @@ export default function OperatorLogin() {
             Command Centre.
           </div>
           <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.6)", lineHeight: 1.6, marginBottom: "40px", maxWidth: "380px" }}>
-            Manage every claim, dealer, and service across the entire RV Claims platform.
+            Manage every claim, dealer, and service across the entire Dealer Suite 360 platform.
           </p>
 
           {/* Stats Grid */}
@@ -101,7 +101,7 @@ export default function OperatorLogin() {
           </div>
 
           <div style={{ fontSize: "11px", color: "rgba(255,255,255,0.25)", marginTop: "16px" }}>
-            © 2026 RV Claims Canada · Dealer Suite 360 · Authorized Staff Only
+            © 2026 Dealer Suite 360 · Dealer Suite 360 · Authorized Staff Only
           </div>
         </div>
       </div>
@@ -111,7 +111,7 @@ export default function OperatorLogin() {
         {/* Header */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 48px", borderBottom: "1px solid #f0f0f0" }}>
           <Link href="/">
-            <img src={language === "en" ? logoEN : logoFR} alt="RV Claims" style={{ height: "72px", width: "auto" }} />
+            <img src={language === "en" ? logoEN : logoFR} alt="Dealer Suite 360" style={{ height: "72px", width: "auto" }} />
           </Link>
           <Link href="/" style={{ fontSize: "13px", color: "#666", textDecoration: "none" }}>← Back to site</Link>
         </div>
@@ -140,7 +140,7 @@ export default function OperatorLogin() {
                 </button>
 
                 <div style={{ marginTop: "24px", padding: "16px", background: "#f8f8f8", borderRadius: "8px" }}>
-                  <p style={{ fontSize: "12px", color: "#666", fontWeight: 500, marginBottom: "2px" }}>RV Claims Canada staff only.</p>
+                  <p style={{ fontSize: "12px", color: "#666", fontWeight: 500, marginBottom: "2px" }}>Dealer Suite 360 staff only.</p>
                   <p style={{ fontSize: "12px", color: "#999", lineHeight: 1.5 }}>Unauthorized access attempts are logged and monitored.</p>
                 </div>
               </>
@@ -159,7 +159,7 @@ export default function OperatorLogin() {
                 <form onSubmit={handleLogin}>
                   <div style={{ marginBottom: "16px" }}>
                     <label style={{ display: "block", fontSize: "13px", fontWeight: 500, color: "#333", marginBottom: "6px" }}>Email Address</label>
-                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@rvclaims.ca" style={inputStyle} required />
+                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@dealersuite360.com" style={inputStyle} required />
                   </div>
 
                   <div style={{ marginBottom: "16px" }}>

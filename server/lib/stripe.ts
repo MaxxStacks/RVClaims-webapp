@@ -36,7 +36,7 @@ export async function getOrCreateStripeCustomer(dealershipId: string): Promise<s
     name: dealership.name,
     metadata: {
       dealershipId: dealership.id,
-      platform: "rvclaims",
+      platform: "dealersuite360",
     },
     address: {
       line1: dealership.street || "",

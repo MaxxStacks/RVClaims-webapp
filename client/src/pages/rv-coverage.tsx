@@ -29,15 +29,15 @@ export default function RvCoverage() {
     "name": "RV Warranty Claims Processing — All RV Types",
     "provider": {
       "@type": "Organization",
-      "name": "RV Claims Canada"
+      "name": "Dealer Suite 360"
     },
     "description": "Expert warranty claims processing for all 10 RV types in Canada: Travel Trailers, Fifth Wheels, Class A & C Motorhomes, Van Campers, Small Trailers, Pop-Ups, Toy Haulers, Truck Campers, and Destination Trailers.",
-    "url": "https://rvclaims.ca/rv-types"
+    "url": "https://dealersuite360.com/rv-types"
   };
 
   return (
     <PageLayout
-      seoTitle="RV Types Covered | Travel Trailers, Fifth Wheels, Class A & More | RV Claims Canada"
+      seoTitle="RV Types Covered | Travel Trailers, Fifth Wheels, Class A & More | Dealer Suite 360"
       seoDescription="Expert warranty claims processing for all 10 RV types in Canada. Travel Trailers, Fifth Wheels, Class A, Class C, Van Campers, Pop-Ups, Toy Haulers, Truck Campers, and Destination Trailers."
       seoKeywords="travel trailer warranty claims, fifth wheel claims, Class A motorhome claims, Class C RV claims, van camper warranty, pop-up trailer claims, toy hauler warranty, truck camper claims, destination trailer"
       canonical="/rv-types"

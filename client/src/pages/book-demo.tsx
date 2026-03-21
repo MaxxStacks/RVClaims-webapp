@@ -65,14 +65,14 @@ function generateICS(date: Date, timeValue: string, dealership: string) {
   const ics = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
-    'PRODID:-//RV Claims Canada//Discovery Call//EN',
+    'PRODID:-//Dealer Suite 360//Discovery Call//EN',
     'BEGIN:VEVENT',
     `DTSTART:${fmt(startUTC)}`,
     `DTEND:${fmt(endUTC)}`,
-    'SUMMARY:RV Claims Canada — Discovery Call',
-    `DESCRIPTION:30-minute discovery call with an RV Claims Canada advisor.\\nDealership: ${dealership}`,
-    'ORGANIZER;CN=RV Claims Canada:MAILTO:hello@rvclaims.ca',
-    `UID:${Date.now()}@rvclaims.ca`,
+    'SUMMARY:Dealer Suite 360 — Discovery Call',
+    `DESCRIPTION:30-minute discovery call with a Dealer Suite 360 advisor.\\nDealership: ${dealership}`,
+    'ORGANIZER;CN=Dealer Suite 360:MAILTO:hello@dealersuite360.com',
+    `UID:${Date.now()}@dealersuite360.com`,
     'END:VEVENT',
     'END:VCALENDAR',
   ].join('\r\n');
@@ -80,7 +80,7 @@ function generateICS(date: Date, timeValue: string, dealership: string) {
   const url  = URL.createObjectURL(blob);
   const a    = document.createElement('a');
   a.href     = url;
-  a.download = 'rvclaims-discovery-call.ics';
+  a.download = 'dealersuite360-discovery-call.ics';
   a.click();
   URL.revokeObjectURL(url);
 }
@@ -285,17 +285,17 @@ export default function BookDemo() {
   const schema = {
     "@context": "https://schema.org",
     "@type": "Service",
-    "name": "RV Claims Canada Discovery Call Booking",
-    "provider": { "@type": "Organization", "name": "RV Claims Canada" },
-    "description": "Schedule a free 30-minute discovery call with an RV Claims Canada advisor.",
-    "url": "https://rvclaims.ca/book-demo",
+    "name": "Dealer Suite 360 Discovery Call Booking",
+    "provider": { "@type": "Organization", "name": "Dealer Suite 360" },
+    "description": "Schedule a free 30-minute discovery call with a Dealer Suite 360 advisor.",
+    "url": "https://dealersuite360.com/book-demo",
   };
 
   return (
     <PageLayout
       seoTitle={t('bookingPage.seoTitle') as string}
       seoDescription={t('bookingPage.seoDescription') as string}
-      seoKeywords="book a demo, RV Claims Canada, discovery call, RV dealer consultation, schedule a call"
+      seoKeywords="book a demo, Dealer Suite 360, discovery call, RV dealer consultation, schedule a call"
       canonical="/book-demo"
       schema={schema}
     >

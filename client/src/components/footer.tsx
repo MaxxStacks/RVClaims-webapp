@@ -2,8 +2,8 @@ import { Phone, Mail, MapPin, Heart, Linkedin, Facebook, Youtube, Instagram, Twi
 import { useLanguage } from "@/hooks/use-language";
 import { ServiceBadge } from "@/components/service-badge";
 import { Link } from "wouter";
-import logoEN from "@assets/Official_RVclaims_logo_en.webp";
-import logoFR from "@assets/Official_RVclaims_logo_fr.webp";
+import logoEN from "@assets/DS360_logo_en.webp";
+import logoFR from "@assets/DS360_logo_fr.webp";
 
 export function Footer() {
   const { t, language } = useLanguage();
@@ -17,7 +17,7 @@ export function Footer() {
               <Link href="/">
                 <img
                   src={language === 'en' ? logoEN : logoFR}
-                  alt="RV Claims"
+                  alt="Dealer Suite 360"
                   width={512}
                   height={108}
                   style={{ height: "72px", width: "auto" }}
@@ -38,8 +38,8 @@ export function Footer() {
               </div>
               <div className="flex items-center">
                 <Mail className="mr-2" size={14} />
-                <a href="mailto:support@rvclaims.ca" className="hover:text-primary transition-colors">
-                  support@rvclaims.ca
+                <a href="mailto:support@dealersuite360.com" className="hover:text-primary transition-colors">
+                  support@dealersuite360.com
                 </a>
               </div>
               <div className="flex items-center">

@@ -1,5 +1,5 @@
 // server/routes/marketplace-membership.ts — Membership signup, verification, Stripe subscription
-// Dealers apply → RV Claims verifies → Dealer pays $499/year → Access granted
+// Dealers apply → Dealer Suite 360 verifies → Dealer pays $499/year → Access granted
 
 import { Router, Request, Response } from 'express';
 import { db } from '../db';
@@ -32,7 +32,7 @@ router.post('/signup', async (req: Request, res: Response) => {
       status: 'pending',
     }).returning();
     
-    // TODO: Send notification to RV Claims staff for review
+    // TODO: Send notification to Dealer Suite 360 staff for review
     // TODO: Send confirmation email to dealer
     
     res.status(201).json({ 

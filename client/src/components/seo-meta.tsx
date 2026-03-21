@@ -10,8 +10,8 @@ interface SeoMetaProps {
   schema?: object | object[];
 }
 
-const BRAND = "RV Claims Canada";
-const BASE_URL = "https://rvclaims.ca";
+const BRAND = "Dealer Suite 360";
+const BASE_URL = "https://dealersuite360.com";
 const OG_IMAGE = `${BASE_URL}/og-image.png`;
 const PHONE = "+18884432204";
 
@@ -20,13 +20,13 @@ const organizationSchema = {
   "@type": "Organization",
   "@id": `${BASE_URL}/#organization`,
   "name": BRAND,
-  "alternateName": "RVClaims.ca",
+  "alternateName": "dealersuite360.com",
   "url": BASE_URL,
   "logo": {
     "@type": "ImageObject",
-    "url": `${BASE_URL}/attached_assets/Official_RVclaims_logo_en.png`
+    "url": `${BASE_URL}/attached_assets/DS360_logo_en.png`
   },
-  "description": "RV Claims Canada is the all-in-one dealership operating system for Canadian RV dealers — AI-powered warranty claims processing, F&I, financing, parts management, dealer-to-dealer marketplace, and live auctions. Powered by Dealer Suite 360.",
+  "description": "Dealer Suite 360 is the all-in-one dealership operating system for Canadian RV dealers — AI-powered warranty claims processing, F&I, financing, parts management, dealer-to-dealer marketplace, and live auctions. Powered by Dealer Suite 360.",
   "address": {
     "@type": "PostalAddress",
     "addressCountry": "CA",
@@ -82,7 +82,7 @@ const websiteSchema = {
 const siteNavigationSchema = {
   "@context": "https://schema.org",
   "@type": "ItemList",
-  "name": "RV Claims Canada Site Navigation",
+  "name": "Dealer Suite 360 Site Navigation",
   "itemListElement": [
     { "@type": "SiteLinksSearchBox", "target": BASE_URL },
     { "@type": "ListItem", "position": 1, "name": "Services", "url": `${BASE_URL}/services` },

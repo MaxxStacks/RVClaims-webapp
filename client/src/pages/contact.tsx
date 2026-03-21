@@ -11,7 +11,7 @@ export default function Contact() {
     <PageLayout
       seoTitle={t('contactPage.title')}
       seoDescription={t('contactPage.description')}
-      seoKeywords="contact RV Claims Canada, RV warranty claims experts, dealership support, Canadian RV dealers, claims processing support"
+      seoKeywords="contact Dealer Suite 360, RV warranty claims experts, dealership support, Canadian RV dealers, claims processing support"
       canonical="/contact"
     >
       <PageHero

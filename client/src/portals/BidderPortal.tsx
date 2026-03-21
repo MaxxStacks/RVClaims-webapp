@@ -143,7 +143,7 @@ export default function BidderPortal() {
       <path d="M22 18l-4 6" stroke="white" strokeWidth="2"/>
     </svg>
     <div className="sidebar-logo-text">
-      <div className="sidebar-logo-name">RV Claims</div>
+      <div className="sidebar-logo-name">Dealer Suite 360</div>
       <div className="sidebar-logo-sub">Public Auction Bidder</div>
     </div>
     <span className="sidebar-badge">Bidder</span>
@@ -303,7 +303,7 @@ export default function BidderPortal() {
       {/* Recent activity */}
       <div className="pn"><div className="pn-h"><span className="pn-t">Recent Activity</span></div>
         <div className="act">
-          <div className="act-i"><span className="act-dot new"></span><div><div className="act-t">Account created — welcome to RV Claims Public Auctions</div><div className="act-tm">Today</div></div></div>
+          <div className="act-i"><span className="act-dot new"></span><div><div className="act-t">Account created — welcome to Dealer Suite 360 Public Auctions</div><div className="act-tm">Today</div></div></div>
           {cardAdded && <div className="act-i"><span className="act-dot ok"></span><div><div className="act-t">Credit card added — account ready to bid</div><div className="act-tm">Just now</div></div></div>}
           {idUploaded && <div className="act-i"><span className="act-dot ok"></span><div><div className="act-t">Government ID uploaded — verification pending</div><div className="act-tm">Just now</div></div></div>}
         </div>
@@ -567,7 +567,7 @@ export default function BidderPortal() {
     <div style={{padding: 24}}>
       <div style={{fontSize: 11, opacity: 0.7, letterSpacing: 1, textTransform: 'uppercase', marginBottom: 6}}>Next Public Auction</div>
       <div style={{fontSize: 22, fontWeight: 700, marginBottom: 4}}>May 8, 2026 · 12:00 PM EDT</div>
-      <div style={{fontSize: 13, opacity: 0.7, marginBottom: 20}}>24-hour window · Open to all registered Canadians · RV Claims escrow</div>
+      <div style={{fontSize: 13, opacity: 0.7, marginBottom: 20}}>24-hour window · Open to all registered Canadians · Dealer Suite 360 escrow</div>
 
       {/* Countdown */}
       <div style={{display: 'flex', gap: 12, marginBottom: 20}}>
@@ -782,7 +782,7 @@ export default function BidderPortal() {
           <div className="cd-row" style={{paddingBottom: 12}}><span className="cd-label">Member Since</span><span className="cd-value">March 2026</span></div>
           <div style={{marginTop: 20, paddingTop: 16, borderTop: '1px solid var(--border-light)', display: 'flex', gap: 8}}>
             <button className="btn btn-o" onClick={() => { if(confirm('Log out?')) window.location.href = '/live-auctions'; }}>Log Out</button>
-            <button className="btn btn-o" style={{color: '#dc2626', borderColor: '#fca5a5'}} onClick={() => alert('Please contact support@rvclaims.ca to delete your account.')}>Delete Account</button>
+            <button className="btn btn-o" style={{color: '#dc2626', borderColor: '#fca5a5'}} onClick={() => alert('Please contact support@dealersuite360.com to delete your account.')}>Delete Account</button>
           </div>
         </div>
       )}

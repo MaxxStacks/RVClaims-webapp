@@ -27,15 +27,15 @@ export default function RevenueServices() {
     "name": "RV Dealership Revenue Growth Services",
     "provider": {
       "@type": "Organization",
-      "name": "RV Claims Canada"
+      "name": "Dealer Suite 360"
     },
     "description": "Five outsourced revenue growth services for Canadian RV dealerships: F&I, digital marketing, parts management, service support, CRM, and trade-in programs.",
-    "url": "https://rvclaims.ca/revenue-services"
+    "url": "https://dealersuite360.com/revenue-services"
   };
 
   return (
     <PageLayout
-      seoTitle="RV Dealership Revenue Services | F&I, Marketing, Parts & More | RV Claims Canada"
+      seoTitle="RV Dealership Revenue Services | F&I, Marketing, Parts & More | Dealer Suite 360"
       seoDescription="Five proven revenue growth services for Canadian RV dealerships — F&I outsourcing, digital marketing, parts management, service support, CRM, and trade-in programs. Launching Q3 2026."
       seoKeywords="RV dealership revenue services, F&I outsourcing, digital marketing RV dealers, parts management, service department support, CRM, trade-in programs"
       canonical="/revenue-services"
@@ -98,7 +98,7 @@ export default function RevenueServices() {
       <section className="py-16 bg-muted/30">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p className="text-muted-foreground mb-2 text-sm uppercase tracking-wide font-medium">These services are delivered through</p>
-          <h2 className="text-2xl md:text-3xl font-bold mb-4">The RV Claims Canada Platform</h2>
+          <h2 className="text-2xl md:text-3xl font-bold mb-4">The Dealer Suite 360 Platform</h2>
           <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">
             All revenue growth services are managed through the same dealer portal where you process claims — one platform, one login, all your services.
           </p>

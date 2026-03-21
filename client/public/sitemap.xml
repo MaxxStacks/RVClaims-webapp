@@ -4,10 +4,10 @@
 
   <!-- Home -->
   <url>
-    <loc>https://rvclaims.ca/</loc>
-    <xhtml:link rel="alternate" hreflang="en-CA" href="https://rvclaims.ca/"/>
-    <xhtml:link rel="alternate" hreflang="fr-CA" href="https://rvclaims.ca/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rvclaims.ca/"/>
+    <loc>https://dealersuite360.com/</loc>
+    <xhtml:link rel="alternate" hreflang="en-CA" href="https://dealersuite360.com/"/>
+    <xhtml:link rel="alternate" hreflang="fr-CA" href="https://dealersuite360.com/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dealersuite360.com/"/>
     <lastmod>2026-03-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
@@ -15,9 +15,9 @@
 
   <!-- About -->
   <url>
-    <loc>https://rvclaims.ca/about</loc>
-    <xhtml:link rel="alternate" hreflang="en-CA" href="https://rvclaims.ca/about"/>
-    <xhtml:link rel="alternate" hreflang="fr-CA" href="https://rvclaims.ca/about"/>
+    <loc>https://dealersuite360.com/about</loc>
+    <xhtml:link rel="alternate" hreflang="en-CA" href="https://dealersuite360.com/about"/>
+    <xhtml:link rel="alternate" hreflang="fr-CA" href="https://dealersuite360.com/about"/>
     <lastmod>2026-03-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -25,9 +25,9 @@
 
   <!-- Services -->
   <url>
-    <loc>https://rvclaims.ca/services</loc>
-    <xhtml:link rel="alternate" hreflang="en-CA" href="https://rvclaims.ca/services"/>
-    <xhtml:link rel="alternate" hreflang="fr-CA" href="https://rvclaims.ca/services"/>
+    <loc>https://dealersuite360.com/services</loc>
+    <xhtml:link rel="alternate" hreflang="en-CA" href="https://dealersuite360.com/services"/>
+    <xhtml:link rel="alternate" hreflang="fr-CA" href="https://dealersuite360.com/services"/>
     <lastmod>2026-03-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
@@ -35,9 +35,9 @@
 
   <!-- Claims Processing -->
   <url>
-    <loc>https://rvclaims.ca/claims-processing</loc>
-    <xhtml:link rel="alternate" hreflang="en-CA" href="https://rvclaims.ca/claims-processing"/>
-    <xhtml:link rel="alternate" hreflang="fr-CA" href="https://rvclaims.ca/claims-processing"/>
+    <loc>https://dealersuite360.com/claims-processing</loc>
+    <xhtml:link rel="alternate" hreflang="en-CA" href="https://dealersuite360.com/claims-processing"/>
+    <xhtml:link rel="alternate" hreflang="fr-CA" href="https://dealersuite360.com/claims-processing"/>
     <lastmod>2026-03-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
@@ -45,9 +45,9 @@
 
   <!-- Technology -->
   <url>
-    <loc>https://rvclaims.ca/technology</loc>
-    <xhtml:link rel="alternate" hreflang="en-CA" href="https://rvclaims.ca/technology"/>
-    <xhtml:link rel="alternate" hreflang="fr-CA" href="https://rvclaims.ca/technology"/>
+    <loc>https://dealersuite360.com/technology</loc>
+    <xhtml:link rel="alternate" hreflang="en-CA" href="https://dealersuite360.com/technology"/>
+    <xhtml:link rel="alternate" hreflang="fr-CA" href="https://dealersuite360.com/technology"/>
     <lastmod>2026-03-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -55,9 +55,9 @@
 
   <!-- Revenue Services -->
   <url>
-    <loc>https://rvclaims.ca/revenue-services</loc>
-    <xhtml:link rel="alternate" hreflang="en-CA" href="https://rvclaims.ca/revenue-services"/>
-    <xhtml:link rel="alternate" hreflang="fr-CA" href="https://rvclaims.ca/revenue-services"/>
+    <loc>https://dealersuite360.com/revenue-services</loc>
+    <xhtml:link rel="alternate" hreflang="en-CA" href="https://dealersuite360.com/revenue-services"/>
+    <xhtml:link rel="alternate" hreflang="fr-CA" href="https://dealersuite360.com/revenue-services"/>
     <lastmod>2026-03-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -65,9 +65,9 @@
 
   <!-- RV Types -->
   <url>
-    <loc>https://rvclaims.ca/rv-types</loc>
-    <xhtml:link rel="alternate" hreflang="en-CA" href="https://rvclaims.ca/rv-types"/>
-    <xhtml:link rel="alternate" hreflang="fr-CA" href="https://rvclaims.ca/rv-types"/>
+    <loc>https://dealersuite360.com/rv-types</loc>
+    <xhtml:link rel="alternate" hreflang="en-CA" href="https://dealersuite360.com/rv-types"/>
+    <xhtml:link rel="alternate" hreflang="fr-CA" href="https://dealersuite360.com/rv-types"/>
     <lastmod>2026-03-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -75,9 +75,9 @@
 
   <!-- Financing -->
   <url>
-    <loc>https://rvclaims.ca/financing</loc>
-    <xhtml:link rel="alternate" hreflang="en-CA" href="https://rvclaims.ca/financing"/>
-    <xhtml:link rel="alternate" hreflang="fr-CA" href="https://rvclaims.ca/financing"/>
+    <loc>https://dealersuite360.com/financing</loc>
+    <xhtml:link rel="alternate" hreflang="en-CA" href="https://dealersuite360.com/financing"/>
+    <xhtml:link rel="alternate" hreflang="fr-CA" href="https://dealersuite360.com/financing"/>
     <lastmod>2026-03-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -85,9 +85,9 @@
 
   <!-- Warranty Plans -->
   <url>
-    <loc>https://rvclaims.ca/warranty-plans</loc>
-    <xhtml:link rel="alternate" hreflang="en-CA" href="https://rvclaims.ca/warranty-plans"/>
-    <xhtml:link rel="alternate" hreflang="fr-CA" href="https://rvclaims.ca/warranty-plans"/>
+    <loc>https://dealersuite360.com/warranty-plans</loc>
+    <xhtml:link rel="alternate" hreflang="en-CA" href="https://dealersuite360.com/warranty-plans"/>
+    <xhtml:link rel="alternate" hreflang="fr-CA" href="https://dealersuite360.com/warranty-plans"/>
     <lastmod>2026-03-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -95,9 +95,9 @@
 
   <!-- F&I Services -->
   <url>
-    <loc>https://rvclaims.ca/fi-services</loc>
-    <xhtml:link rel="alternate" hreflang="en-CA" href="https://rvclaims.ca/fi-services"/>
-    <xhtml:link rel="alternate" hreflang="fr-CA" href="https://rvclaims.ca/fi-services"/>
+    <loc>https://dealersuite360.com/fi-services</loc>
+    <xhtml:link rel="alternate" hreflang="en-CA" href="https://dealersuite360.com/fi-services"/>
+    <xhtml:link rel="alternate" hreflang="fr-CA" href="https://dealersuite360.com/fi-services"/>
     <lastmod>2026-03-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -105,9 +105,9 @@
 
   <!-- Network Marketplace -->
   <url>
-    <loc>https://rvclaims.ca/network-marketplace</loc>
-    <xhtml:link rel="alternate" hreflang="en-CA" href="https://rvclaims.ca/network-marketplace"/>
-    <xhtml:link rel="alternate" hreflang="fr-CA" href="https://rvclaims.ca/network-marketplace"/>
+    <loc>https://dealersuite360.com/network-marketplace</loc>
+    <xhtml:link rel="alternate" hreflang="en-CA" href="https://dealersuite360.com/network-marketplace"/>
+    <xhtml:link rel="alternate" hreflang="fr-CA" href="https://dealersuite360.com/network-marketplace"/>
     <lastmod>2026-03-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -115,9 +115,9 @@
 
   <!-- Live Auctions -->
   <url>
-    <loc>https://rvclaims.ca/live-auctions</loc>
-    <xhtml:link rel="alternate" hreflang="en-CA" href="https://rvclaims.ca/live-auctions"/>
-    <xhtml:link rel="alternate" hreflang="fr-CA" href="https://rvclaims.ca/live-auctions"/>
+    <loc>https://dealersuite360.com/live-auctions</loc>
+    <xhtml:link rel="alternate" hreflang="en-CA" href="https://dealersuite360.com/live-auctions"/>
+    <xhtml:link rel="alternate" hreflang="fr-CA" href="https://dealersuite360.com/live-auctions"/>
     <lastmod>2026-03-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -125,9 +125,9 @@
 
   <!-- Pricing -->
   <url>
-    <loc>https://rvclaims.ca/pricing</loc>
-    <xhtml:link rel="alternate" hreflang="en-CA" href="https://rvclaims.ca/pricing"/>
-    <xhtml:link rel="alternate" hreflang="fr-CA" href="https://rvclaims.ca/pricing"/>
+    <loc>https://dealersuite360.com/pricing</loc>
+    <xhtml:link rel="alternate" hreflang="en-CA" href="https://dealersuite360.com/pricing"/>
+    <xhtml:link rel="alternate" hreflang="fr-CA" href="https://dealersuite360.com/pricing"/>
     <lastmod>2026-03-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -135,9 +135,9 @@
 
   <!-- Contact -->
   <url>
-    <loc>https://rvclaims.ca/contact</loc>
-    <xhtml:link rel="alternate" hreflang="en-CA" href="https://rvclaims.ca/contact"/>
-    <xhtml:link rel="alternate" hreflang="fr-CA" href="https://rvclaims.ca/contact"/>
+    <loc>https://dealersuite360.com/contact</loc>
+    <xhtml:link rel="alternate" hreflang="en-CA" href="https://dealersuite360.com/contact"/>
+    <xhtml:link rel="alternate" hreflang="fr-CA" href="https://dealersuite360.com/contact"/>
     <lastmod>2026-03-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -145,9 +145,9 @@
 
   <!-- Privacy Policy -->
   <url>
-    <loc>https://rvclaims.ca/privacy-policy</loc>
-    <xhtml:link rel="alternate" hreflang="en-CA" href="https://rvclaims.ca/privacy-policy"/>
-    <xhtml:link rel="alternate" hreflang="fr-CA" href="https://rvclaims.ca/privacy-policy"/>
+    <loc>https://dealersuite360.com/privacy-policy</loc>
+    <xhtml:link rel="alternate" hreflang="en-CA" href="https://dealersuite360.com/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="fr-CA" href="https://dealersuite360.com/privacy-policy"/>
     <lastmod>2026-03-20</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
@@ -155,9 +155,9 @@
 
   <!-- Dealer Signup -->
   <url>
-    <loc>https://rvclaims.ca/signup</loc>
-    <xhtml:link rel="alternate" hreflang="en-CA" href="https://rvclaims.ca/signup"/>
-    <xhtml:link rel="alternate" hreflang="fr-CA" href="https://rvclaims.ca/signup"/>
+    <loc>https://dealersuite360.com/signup</loc>
+    <xhtml:link rel="alternate" hreflang="en-CA" href="https://dealersuite360.com/signup"/>
+    <xhtml:link rel="alternate" hreflang="fr-CA" href="https://dealersuite360.com/signup"/>
     <lastmod>2026-03-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>

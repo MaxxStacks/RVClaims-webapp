@@ -28,4 +28,4 @@ Allow: /
 User-agent: Applebot
 Allow: /
 
-Sitemap: https://rvclaims.ca/sitemap.xml
+Sitemap: https://dealersuite360.com/sitemap.xml

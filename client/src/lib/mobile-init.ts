@@ -49,7 +49,7 @@ export async function initMobileApp() {
   try {
     const { App } = await import('@capacitor/app');
     App.addListener('appUrlOpen', (event) => {
-      // Handle deep links: rvclaims://claims/CLM-0248
+      // Handle deep links: dealersuite360://claims/CLM-0248
       const url = new URL(event.url);
       const path = url.pathname;
       if (path) {
@@ -91,7 +91,7 @@ export async function initMobileApp() {
   `;
   document.head.appendChild(safeAreaStyle);
 
-  console.log('[RVClaims] Native app initialized');
+  console.log('[DS360] Native app initialized');
 }
 
 // === Theme Sync ===

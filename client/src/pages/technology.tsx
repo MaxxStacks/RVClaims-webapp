@@ -36,13 +36,13 @@ export default function Technology() {
     "applicationCategory": "BusinessApplication",
     "description": "Patent-pending AI-powered dealership operating system for Canadian RV dealers. Includes FRC code lookup, photo quality AI, claim readiness scoring, and denial prediction.",
     "operatingSystem": "Web",
-    "url": "https://rvclaims.ca/technology"
+    "url": "https://dealersuite360.com/technology"
   };
 
   return (
     <PageLayout
-      seoTitle="Dealer Suite 360 Platform Technology | Patent-Pending AI | RV Claims Canada"
-      seoDescription="The patent-pending Dealer Suite 360 platform powers RV Claims Canada. 8 AI modules including FRC lookup, photo quality scoring, claim readiness, and denial prediction."
+      seoTitle="Dealer Suite 360 Platform Technology | Patent-Pending AI | Dealer Suite 360"
+      seoDescription="The patent-pending Dealer Suite 360 platform powers Dealer Suite 360. 8 AI modules including FRC lookup, photo quality scoring, claim readiness, and denial prediction."
       seoKeywords="RV claims technology, Dealer Suite 360, patent pending AI, FRC lookup engine, claim readiness score, denial prediction, RV dealer software"
       canonical="/technology"
       schema={schema}

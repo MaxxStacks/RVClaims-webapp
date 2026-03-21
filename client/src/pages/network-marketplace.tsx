@@ -15,13 +15,13 @@ export default function NetworkMarketplace() {
   const schema = {
     "@context": "https://schema.org",
     "@type": "Service",
-    "name": "RV Claims Network Marketplace",
+    "name": "Dealer Suite 360 Network Marketplace",
     "provider": {
       "@type": "Organization",
-      "name": "RV Claims Canada"
+      "name": "Dealer Suite 360"
     },
-    "description": "Dealer-to-dealer RV inventory marketplace with RV Claims escrow. Verified Canadian dealers only. Flat $250 commission per unit sold. Available 24/7.",
-    "url": "https://rvclaims.ca/network-marketplace"
+    "description": "Dealer-to-dealer RV inventory marketplace with Dealer Suite 360 escrow. Verified Canadian dealers only. Flat $250 commission per unit sold. Available 24/7.",
+    "url": "https://dealersuite360.com/network-marketplace"
   };
 
   const sellingPerks = (t('networkMarketplace.sellingPerks.items') as unknown as { title: string; desc: string }[]);
@@ -32,9 +32,9 @@ export default function NetworkMarketplace() {
 
   return (
     <PageLayout
-      seoTitle="RV Dealer Network Marketplace | Dealer-to-Dealer RV Inventory | RV Claims Canada"
-      seoDescription="The RV Claims Network Marketplace connects verified Canadian RV dealers to buy and sell inventory 24/7. Flat $250 commission, RV Claims escrow, verified dealers only."
-      seoKeywords="RV dealer marketplace, dealer to dealer RV inventory, wholesale RV marketplace, RV Claims marketplace, RV escrow service, Canadian RV dealers"
+      seoTitle="RV Dealer Network Marketplace | Dealer-to-Dealer RV Inventory | Dealer Suite 360"
+      seoDescription="The Dealer Suite 360 Network Marketplace connects verified Canadian RV dealers to buy and sell inventory 24/7. Flat $250 commission, Dealer Suite 360 escrow, verified dealers only."
+      seoKeywords="RV dealer marketplace, dealer to dealer RV inventory, wholesale RV marketplace, Dealer Suite 360 marketplace, RV escrow service, Canadian RV dealers"
       canonical="/network-marketplace"
       schema={schema}
     >

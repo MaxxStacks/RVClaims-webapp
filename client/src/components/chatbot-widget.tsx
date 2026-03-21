@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { useLanguage } from "@/hooks/use-language";
 import { useState, useRef, useEffect } from "react";
 import { Label } from "@/components/ui/label";
-import favicon from "@assets/rvclaims_favicon_1761203145358.png";
+import favicon from "@assets/ds360_favicon.png";
 
 interface Message {
   role: 'user' | 'assistant';
@@ -48,8 +48,8 @@ export function ChatbotWidget() {
       const welcomeMessage: Message = {
         role: 'assistant',
         content: language === 'fr'
-          ? "Bonjour! Je suis l'assistant virtuel RV Claims. Je peux vous aider à comprendre nos services, nos prix et comment nous pouvons augmenter vos revenus de réclamations. Comment puis-je vous aider aujourd'hui?"
-          : "Hello! I'm the RV Claims virtual assistant. I can help you understand our services, pricing, and how we can increase your claim revenue. How can I help you today?",
+          ? "Bonjour! Je suis l'assistant virtuel Dealer Suite 360. Je peux vous aider à comprendre nos services, nos prix et comment nous pouvons augmenter vos revenus de réclamations. Comment puis-je vous aider aujourd'hui?"
+          : "Hello! I'm the Dealer Suite 360 virtual assistant. I can help you understand our services, pricing, and how we can increase your claim revenue. How can I help you today?",
         timestamp: new Date()
       };
       setMessages([welcomeMessage]);
@@ -177,10 +177,10 @@ export function ChatbotWidget() {
           <div className="bg-primary text-white p-4 rounded-t-lg flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 flex items-center justify-center">
-                <img src={favicon} alt="RV Claims" className="h-10 w-10 object-contain" />
+                <img src={favicon} alt="Dealer Suite 360" className="h-10 w-10 object-contain" />
               </div>
               <div>
-                <h3 className="font-semibold text-sm">RV Claims Assistant</h3>
+                <h3 className="font-semibold text-sm">Dealer Suite 360 Assistant</h3>
                 <p className="text-xs text-white/80">
                   {language === 'fr' ? 'En ligne maintenant' : 'Online now'}
                 </p>
@@ -410,12 +410,12 @@ export function ChatbotWidget() {
                 (888) 245-3204
               </a>
               <a
-                href="mailto:support@rvclaims.ca"
+                href="mailto:support@dealersuite360.com"
                 className="text-xs text-gray-600 hover:text-primary flex items-center gap-1"
                 data-testid="link-chat-email"
               >
                 <Mail size={12} />
-                support@rvclaims.ca
+                support@dealersuite360.com
               </a>
             </div>
           </div>

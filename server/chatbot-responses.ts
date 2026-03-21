@@ -73,7 +73,7 @@ Souhaitez-vous parler à notre équipe? Appelez le (888) 245-3204 ou cliquez sur
   {
     keywords: ['service', 'what do you do', 'help', 'offer', 'provide', 'qu\'est-ce que', 'services', 'offrez'],
     response: {
-      en: `RV Claims Canada specializes in A-Z warranty claims processing for Canadian RV dealerships. **We help dealers get PAID by manufacturers for warranty work** - protecting your bottom line and maximizing revenue.
+      en: `Dealer Suite 360 specializes in A-Z warranty claims processing for Canadian RV dealerships. **We help dealers get PAID by manufacturers for warranty work** - protecting your bottom line and maximizing revenue.
 
 **Our Core Services:**
 - Complete warranty claims management (PDI, In-Service, Goodwill)
@@ -97,7 +97,7 @@ Souhaitez-vous parler à notre équipe? Appelez le (888) 245-3204 ou cliquez sur
 - Live Auctions (Q3 2026)
 
 Ready to increase your claim revenue? Call (888) 245-3204 or request contact below.`,
-      fr: `RV Claims Canada se spécialise dans le traitement de réclamations de garantie de A à Z pour les concessionnaires VR canadiens. **Nous aidons les concessionnaires à être PAYÉS par les fabricants pour le travail de garantie** - protégeant vos profits et maximisant vos revenus.
+      fr: `Dealer Suite 360 se spécialise dans le traitement de réclamations de garantie de A à Z pour les concessionnaires VR canadiens. **Nous aidons les concessionnaires à être PAYÉS par les fabricants pour le travail de garantie** - protégeant vos profits et maximisant vos revenus.
 
 **Nos Services Principaux:**
 - Gestion complète des réclamations de garantie (PDI, En service, Bonne volonté)
@@ -126,7 +126,7 @@ Prêt à augmenter vos revenus de réclamations? Appelez le (888) 245-3204 ou de
   {
     keywords: ['revenue', 'increase', 'maximize', 'make money', 'profit', 'earn', 'get paid', 'revenus', 'augmenter', 'maximiser', 'payé'],
     response: {
-      en: `**How RV Claims Increases Your Revenue:**
+      en: `**How Dealer Suite 360 Increases Your Revenue:**
 
 We help dealerships maximize warranty claim revenue through:
 
@@ -145,7 +145,7 @@ We help dealerships maximize warranty claim revenue through:
 **The Bottom Line:** We help you get paid by manufacturers for warranty work, so you're not left holding the bill. Our dealers see significant revenue increases within the first quarter.
 
 Want to see how much revenue you're leaving on the table? Call (888) 245-3204 for a free consultation.`,
-      fr: `**Comment RV Claims Augmente Vos Revenus:**
+      fr: `**Comment Dealer Suite 360 Augmente Vos Revenus:**
 
 Nous aidons les concessionnaires à maximiser les revenus de réclamations de garantie grâce à :
 
@@ -169,7 +169,7 @@ Vous voulez voir combien de revenus vous laissez sur la table? Appelez le (888) 
   {
     keywords: ['approval rate', 'success', 'statistics', 'stats', 'taux d\'approbation', 'statistiques', 'succès'],
     response: {
-      en: `**RV Claims Canada Statistics:**
+      en: `**Dealer Suite 360 Statistics:**
 
 - **99.1% approval rate** - Industry-leading claim authorization
 - **500+ claims processed monthly** - High-volume expertise
@@ -177,10 +177,10 @@ Vous voulez voir combien de revenus vous laissez sur la table? Appelez le (888) 
 - **Works with all major North American RV manufacturers**
 - **Specialized in the Canadian RV dealership market**
 
-Our track record speaks for itself. When you work with RV Claims, you're working with proven experts who help you get paid by manufacturers for warranty work.
+Our track record speaks for itself. When you work with Dealer Suite 360, you're working with proven experts who help you get paid by manufacturers for warranty work.
 
 Ready to improve your approval rate? Call (888) 245-3204 or request contact below.`,
-      fr: `**Statistiques de RV Claims Canada:**
+      fr: `**Statistiques de Dealer Suite 360:**
 
 - **99,1% de taux d'approbation** - Autorisation de réclamations leader de l'industrie
 - **500+ réclamations traitées mensuellement** - Expertise à haut volume
@@ -188,7 +188,7 @@ Ready to improve your approval rate? Call (888) 245-3204 or request contact belo
 - **Travaille avec tous les principaux fabricants VR nord-américains**
 - **Spécialisé dans le marché des concessionnaires VR canadiens**
 
-Notre bilan parle de lui-même. Lorsque vous travaillez avec RV Claims, vous travaillez avec des experts éprouvés qui vous aident à être payé par les fabricants pour le travail de garantie.
+Notre bilan parle de lui-même. Lorsque vous travaillez avec Dealer Suite 360, vous travaillez avec des experts éprouvés qui vous aident à être payé par les fabricants pour le travail de garantie.
 
 Prêt à améliorer votre taux d'approbation? Appelez le (888) 245-3204 ou demandez un contact ci-dessous.`
     }
@@ -205,7 +205,7 @@ Our B2C consumer-facing marketplace will connect RV buyers with trusted Canadian
 - Financing options
 - Connect directly with dealers
 
-**Sign up for early access now!** Contact us at (888) 245-3204 or support@rvclaims.ca
+**Sign up for early access now!** Contact us at (888) 245-3204 or support@dealersuite360.com
 
 While you wait, learn how our Claims Processing service can increase your dealership revenue today.`,
       fr: `**Marché VR - Lancement T1 2026**
@@ -217,7 +217,7 @@ Notre marché B2C pour consommateurs connectera les acheteurs de VR avec des con
 - Options de financement
 - Connexion directe avec les concessionnaires
 
-**Inscrivez-vous dès maintenant pour un accès anticipé!** Contactez-nous au (888) 245-3204 ou support@rvclaims.ca
+**Inscrivez-vous dès maintenant pour un accès anticipé!** Contactez-nous au (888) 245-3204 ou support@dealersuite360.com
 
 En attendant, découvrez comment notre service de traitement des réclamations peut augmenter les revenus de votre concessionnaire dès aujourd'hui.`
     }
@@ -289,20 +289,20 @@ Vous voulez en savoir plus ou commencer avec le traitement des réclamations? Ap
   {
     keywords: ['contact', 'call', 'email', 'phone', 'reach', 'speak', 'talk', 'contacter', 'appeler', 'parler'],
     response: {
-      en: `**Contact RV Claims Canada:**
+      en: `**Contact Dealer Suite 360:**
 
 📞 **Phone:** (888) 245-3204
-📧 **Email:** support@rvclaims.ca
+📧 **Email:** support@dealersuite360.com
 
 We offer bilingual support in English and French.
 
 **Ready to get started?** Click the "Contact" quick action below to request a consultation, or call us directly at (888) 245-3204.
 
 Our team is ready to show you how we can help increase your warranty claim revenue with our 99.1% approval rate.`,
-      fr: `**Contacter RV Claims Canada:**
+      fr: `**Contacter Dealer Suite 360:**
 
 📞 **Téléphone:** (888) 245-3204
-📧 **Courriel:** support@rvclaims.ca
+📧 **Courriel:** support@dealersuite360.com
 
 Nous offrons un support bilingue en anglais et en français.
 
@@ -361,7 +361,7 @@ Les modules complémentaires peuvent être combinés avec n'importe quel plan. A
   {
     keywords: ['start', 'begin', 'get started', 'sign up', 'onboard', 'commencer', 'démarrer', 'inscrire'],
     response: {
-      en: `**Getting Started with RV Claims:**
+      en: `**Getting Started with Dealer Suite 360:**
 
 Ready to maximize your warranty claim revenue? Here's how to get started:
 
@@ -372,7 +372,7 @@ Ready to maximize your warranty claim revenue? Here's how to get started:
 
 2. **Contact Us**
    - Call: (888) 245-3204
-   - Email: support@rvclaims.ca
+   - Email: support@dealersuite360.com
    - Or click "Contact" below
 
 3. **Quick Onboarding**
@@ -384,7 +384,7 @@ Ready to maximize your warranty claim revenue? Here's how to get started:
 **Save 20% with annual billing!**
 
 Ready to take the next step? Click Contact below or call (888) 245-3204 now.`,
-      fr: `**Démarrer avec RV Claims:**
+      fr: `**Démarrer avec Dealer Suite 360:**
 
 Prêt à maximiser vos revenus de réclamations de garantie? Voici comment commencer :
 
@@ -395,7 +395,7 @@ Prêt à maximiser vos revenus de réclamations de garantie? Voici comment comme
 
 2. **Contactez-Nous**
    - Téléphone: (888) 245-3204
-   - Courriel: support@rvclaims.ca
+   - Courriel: support@dealersuite360.com
    - Ou cliquez sur "Contact" ci-dessous
 
 3. **Intégration Rapide**
@@ -412,7 +412,7 @@ Prêt à passer à l'étape suivante? Cliquez sur Contact ci-dessous ou appelez 
 ];
 
 export const defaultResponse = {
-  en: `I'm here to help you learn about RV Claims Canada's services for Canadian RV dealerships.
+  en: `I'm here to help you learn about Dealer Suite 360's services for Canadian RV dealerships.
 
 **I can tell you about:**
 - Our pricing plans and packages
@@ -429,10 +429,10 @@ export const defaultResponse = {
 
 For specific questions or to speak with our team:
 📞 (888) 245-3204
-📧 support@rvclaims.ca
+📧 support@dealersuite360.com
 
 What would you like to know?`,
-  fr: `Je suis ici pour vous aider à en savoir plus sur les services de RV Claims Canada pour les concessionnaires VR canadiens.
+  fr: `Je suis ici pour vous aider à en savoir plus sur les services de Dealer Suite 360 pour les concessionnaires VR canadiens.
 
 **Je peux vous parler de:**
 - Nos plans tarifaires et forfaits
@@ -449,7 +449,7 @@ What would you like to know?`,
 
 Pour des questions spécifiques ou pour parler avec notre équipe:
 📞 (888) 245-3204
-📧 support@rvclaims.ca
+📧 support@dealersuite360.com
 
 Que souhaitez-vous savoir?`
 };

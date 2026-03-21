@@ -16,8 +16,8 @@ export async function sendWaitlistNotification(data: {
 }) {
   try {
     const mailOptions = {
-      from: process.env.SMTP_USER || 'noreply@rvclaims.ca',
-      to: 'hello@rvclaims.ca',
+      from: process.env.SMTP_USER || 'noreply@dealersuite360.com',
+      to: 'hello@dealersuite360.com',
       subject: 'New Network Marketplace Waitlist Signup',
       html: `
         <h2>New Waitlist Registration</h2>
@@ -26,7 +26,7 @@ export async function sendWaitlistNotification(data: {
           <li><strong>Dealership Name:</strong> ${data.dealershipName}</li>
           <li><strong>Email:</strong> ${data.email}</li>
         </ul>
-        <p>This notification was sent automatically from the RV Claims Canada website.</p>
+        <p>This notification was sent automatically from the Dealer Suite 360 website.</p>
       `,
       text: `
 New Waitlist Registration
@@ -36,12 +36,12 @@ A new dealer has joined the Network Marketplace waitlist:
 Dealership Name: ${data.dealershipName}
 Email: ${data.email}
 
-This notification was sent automatically from the RV Claims Canada website.
+This notification was sent automatically from the Dealer Suite 360 website.
       `.trim(),
     };
 
     await transporter.sendMail(mailOptions);
-    console.log('Waitlist notification email sent to hello@rvclaims.ca');
+    console.log('Waitlist notification email sent to hello@dealersuite360.com');
   } catch (error) {
     console.error('Failed to send waitlist notification email:', error);
   }
@@ -63,8 +63,8 @@ export async function sendBookingNotification(data: {
   try {
     const interestList = data.serviceInterest.join(', ') || 'Not specified';
     const mailOptions = {
-      from: process.env.SMTP_USER || 'noreply@rvclaims.ca',
-      to: 'hello@rvclaims.ca',
+      from: process.env.SMTP_USER || 'noreply@dealersuite360.com',
+      to: 'hello@dealersuite360.com',
       subject: `New Discovery Call Booking — ${data.dealershipName} · ${data.scheduledDate} ${data.scheduledTime} ET`,
       html: `
         <h2>New Discovery Call Booking</h2>
@@ -82,7 +82,7 @@ export async function sendBookingNotification(data: {
           ${data.notes ? `<tr><td><strong>Notes:</strong></td><td>${data.notes}</td></tr>` : ''}
         </table>
         <hr>
-        <p style="color:#666;font-size:12px;">Sent automatically from rvclaims.ca/book-demo</p>
+        <p style="color:#666;font-size:12px;">Sent automatically from dealersuite360.com/book-demo</p>
       `,
       text: `
 New Discovery Call Booking
@@ -100,7 +100,7 @@ ${data.notes ? `Notes: ${data.notes}` : ''}
       `.trim(),
     };
     await transporter.sendMail(mailOptions);
-    console.log('Booking notification email sent to hello@rvclaims.ca');
+    console.log('Booking notification email sent to hello@dealersuite360.com');
   } catch (error) {
     console.error('Failed to send booking notification email:', error);
   }
@@ -117,12 +117,12 @@ export async function sendContactFormNotification(data: {
 }) {
   try {
     const mailOptions = {
-      from: process.env.SMTP_USER || 'noreply@rvclaims.ca',
-      to: 'hello@rvclaims.ca',
+      from: process.env.SMTP_USER || 'noreply@dealersuite360.com',
+      to: 'hello@dealersuite360.com',
       subject: 'New Contact Form Submission',
       html: `
         <h2>New Contact Form Submission</h2>
-        <p>You have received a new message from the RV Claims Canada website:</p>
+        <p>You have received a new message from the Dealer Suite 360 website:</p>
         <ul>
           <li><strong>Dealership Name:</strong> ${data.dealershipName}</li>
           <li><strong>Name:</strong> ${data.firstName} ${data.lastName}</li>
@@ -133,12 +133,12 @@ export async function sendContactFormNotification(data: {
         <h3>Message:</h3>
         <p>${data.message}</p>
         <hr>
-        <p style="color: #666; font-size: 12px;">This notification was sent automatically from the RV Claims Canada website.</p>
+        <p style="color: #666; font-size: 12px;">This notification was sent automatically from the Dealer Suite 360 website.</p>
       `,
       text: `
 New Contact Form Submission
 
-You have received a new message from the RV Claims Canada website:
+You have received a new message from the Dealer Suite 360 website:
 
 Dealership Name: ${data.dealershipName}
 Name: ${data.firstName} ${data.lastName}
@@ -149,12 +149,12 @@ Language: ${data.language === 'en' ? 'English' : 'French'}
 Message:
 ${data.message}
 
-This notification was sent automatically from the RV Claims Canada website.
+This notification was sent automatically from the Dealer Suite 360 website.
       `.trim(),
     };
 
     await transporter.sendMail(mailOptions);
-    console.log('Contact form notification email sent to hello@rvclaims.ca');
+    console.log('Contact form notification email sent to hello@dealersuite360.com');
   } catch (error) {
     console.error('Failed to send contact form notification email:', error);
   }

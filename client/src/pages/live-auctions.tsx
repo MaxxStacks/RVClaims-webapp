@@ -56,10 +56,10 @@ const MOCK_UNITS = [
 
 const FAQ = [
   { q: 'Who can bid?', a: 'Any adult Canadian resident. Create a free account, add a credit card, and you\'re ready to bid. No dealer license required.' },
-  { q: 'What is the $250 hold?', a: 'When you place your first bid, RV Claims places a $250 authorization hold on your card. This hold is released automatically if you lose the auction. If you win, the $250 is applied toward your purchase price.' },
-  { q: 'How does payment work if I win?', a: 'You have 72 hours to arrange full payment through RV Claims. Financing is available. If payment is not received in 72 hours, the unit goes to the second-highest bidder and your $250 hold is forfeited.' },
-  { q: 'Is financing available?', a: 'Yes. RV Claims partners with Canadian lenders. Apply during or after the auction. Pre-approval is recommended before bidding on high-value units.' },
-  { q: 'Who are the sellers?', a: 'All units are listed by verified Canadian RV dealerships. Dealer identities are hidden during the auction. You deal exclusively through RV Claims as escrow.' },
+  { q: 'What is the $250 hold?', a: 'When you place your first bid, Dealer Suite 360 places a $250 authorization hold on your card. This hold is released automatically if you lose the auction. If you win, the $250 is applied toward your purchase price.' },
+  { q: 'How does payment work if I win?', a: 'You have 72 hours to arrange full payment through Dealer Suite 360. Financing is available. If payment is not received in 72 hours, the unit goes to the second-highest bidder and your $250 hold is forfeited.' },
+  { q: 'Is financing available?', a: 'Yes. Dealer Suite 360 partners with Canadian lenders. Apply during or after the auction. Pre-approval is recommended before bidding on high-value units.' },
+  { q: 'Who are the sellers?', a: 'All units are listed by verified Canadian RV dealerships. Dealer identities are hidden during the auction. You deal exclusively through Dealer Suite 360 as escrow.' },
   { q: 'What happens if the reserve is not met?', a: 'If the winning bid is below the seller\'s reserve price, the unit is not sold and all holds are released.' },
   { q: 'How often are public auctions held?', a: 'Once per month, running for 48 hours. Sign up for notifications to be alerted when the next event is announced.' },
 ];
@@ -177,8 +177,8 @@ export default function LiveAuctions() {
   return (
     <div className="min-h-screen bg-white overflow-x-hidden">
       <SeoMeta
-        title="Public Auction — RV Claims Canada"
-        description="Bid on Canadian RV dealership units in RV Claims monthly public auction. No dealer license required. $250 refundable hold. RV Claims acts as escrow."
+        title="Public Auction — Dealer Suite 360"
+        description="Bid on Canadian RV dealership units in the Dealer Suite 360 monthly public auction. No dealer license required. $250 refundable hold. Dealer Suite 360 acts as escrow."
       />
       <NotificationBar />
       <Navigation />
@@ -206,7 +206,7 @@ export default function LiveAuctions() {
                 Monthly Public Auction · May 8, 2026
               </div>
               <h1 className="text-4xl md:text-6xl font-bold mb-4 leading-tight">
-                RV Claims Public Auction
+                Dealer Suite 360 Public Auction
               </h1>
               <p className="text-xl text-white/80 mb-3 max-w-2xl mx-auto">
                 Shop real Canadian RV dealership inventory at auction prices.
@@ -258,7 +258,7 @@ export default function LiveAuctions() {
               <div className="text-center mb-12">
                 <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">How It Works</h2>
                 <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-                  RV Claims connects the public directly with verified Canadian dealerships — once a month, for 48 hours.
+                  Dealer Suite 360 connects the public directly with verified Canadian dealerships — once a month, for 48 hours.
                 </p>
               </div>
               <div className="grid md:grid-cols-3 gap-8">
@@ -279,7 +279,7 @@ export default function LiveAuctions() {
                     icon: <Trophy className="w-6 h-6 text-primary" />,
                     step: '03',
                     title: 'Win & Complete Purchase',
-                    body: 'If you win, you have 72 hours to complete payment through RV Claims escrow. Financing available. The $250 hold applies toward your total.',
+                    body: 'If you win, you have 72 hours to complete payment through Dealer Suite 360 escrow. Financing available. The $250 hold applies toward your total.',
                   },
                 ].map((item) => (
                   <Card key={item.step} className="border-2 border-gray-100 relative pt-2">
@@ -306,14 +306,14 @@ export default function LiveAuctions() {
             <div className="max-w-6xl mx-auto px-4">
               <div className="grid md:grid-cols-2 gap-12 items-center">
                 <div>
-                  <h2 className="text-3xl font-bold text-gray-900 mb-6">RV Claims Acts as Escrow</h2>
+                  <h2 className="text-3xl font-bold text-gray-900 mb-6">Dealer Suite 360 Acts as Escrow</h2>
                   <div className="space-y-4">
                     {[
-                      { icon: <Shield className="w-5 h-5 text-primary" />, text: 'All transactions go through RV Claims — you never deal directly with the seller.' },
+                      { icon: <Shield className="w-5 h-5 text-primary" />, text: 'All transactions go through Dealer Suite 360 — you never deal directly with the seller.' },
                       { icon: <Banknote className="w-5 h-5 text-primary" />, text: '$250 hold is placed when you bid. Refunded automatically if you lose. Applied to purchase if you win.' },
                       { icon: <Clock className="w-5 h-5 text-primary" />, text: '72-hour payment window after winning. If you cannot pay, the unit goes to the second-highest bidder.' },
                       { icon: <Users className="w-5 h-5 text-primary" />, text: 'All units are from verified Canadian RV dealerships. Seller identities are revealed only after payment.' },
-                      { icon: <CheckCircle className="w-5 h-5 text-primary" />, text: 'Financing available through RV Claims lending partners. Pre-approval recommended for bids over $40,000.' },
+                      { icon: <CheckCircle className="w-5 h-5 text-primary" />, text: 'Financing available through Dealer Suite 360 lending partners. Pre-approval recommended for bids over $40,000.' },
                     ].map((item, i) => (
                       <div key={i} className="flex items-start gap-3">
                         <div className="mt-0.5 shrink-0">{item.icon}</div>
@@ -411,8 +411,8 @@ export default function LiveAuctions() {
                     </span>
                     <span className="text-white/60 text-sm">May 8, 2026 Public Auction</span>
                   </div>
-                  <h1 className="text-3xl md:text-4xl font-bold mb-1">RV Claims Public Auction</h1>
-                  <p className="text-white/70 text-sm">{MOCK_UNITS.length} units · All from verified Canadian dealers · RV Claims escrow</p>
+                  <h1 className="text-3xl md:text-4xl font-bold mb-1">Dealer Suite 360 Public Auction</h1>
+                  <p className="text-white/70 text-sm">{MOCK_UNITS.length} units · All from verified Canadian dealers · Dealer Suite 360 escrow</p>
                 </div>
                 <div className="flex flex-col items-center bg-white/10 border border-white/20 rounded-2xl px-8 py-4">
                   <span className="text-white/70 text-xs uppercase tracking-widest mb-1">Closes In</span>

@@ -5,8 +5,8 @@ import { ServiceBadge } from "@/components/service-badge";
 import { Link, useLocation } from "wouter";
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
-import logoEN from "@assets/Official_RVclaims_logo_en.webp";
-import logoFR from "@assets/Official_RVclaims_logo_fr.webp";
+import logoEN from "@assets/DS360_logo_en.webp";
+import logoFR from "@assets/DS360_logo_fr.webp";
 import travelTrailerIcon from "@assets/Travel Trailer_1756847838647.webp";
 import fifthWheelIcon from "@assets/Fifth Wheel_1756847838645.webp";
 import classCIcon from "@assets/Class C_1756847838644.webp";
@@ -47,7 +47,7 @@ export function Navigation() {
             <Link href="/" className="flex items-center hover:opacity-90 transition-opacity" data-testid="link-logo">
               <img
                 src={language === 'en' ? logoEN : logoFR}
-                alt="RV Claims Canada"
+                alt="Dealer Suite 360"
                 width={341}
                 height={72}
                 style={{ height: "72px", width: "auto" }}

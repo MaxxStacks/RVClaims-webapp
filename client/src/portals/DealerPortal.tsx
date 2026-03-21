@@ -293,7 +293,7 @@ staff:['Staff Management','Manage team access'],'add-staff':['Add Staff','Invite
       </div>
       
       <div className="pn"><div className="pn-h"><span className="pn-t">Messages</span></div>
-        <div className="comm-box"><div className="comm-msg"><div className="comm-avatar dl">MS</div><div className="comm-content"><div className="comm-name">You</div><div className="comm-text">Photos uploaded. Customer is anxious about the roof leak — please prioritize.</div><div className="comm-time">Mar 16, 8:15 AM</div></div></div><div className="comm-msg"><div className="comm-avatar op">RC</div><div className="comm-content"><div className="comm-name">RV Claims Team</div><div className="comm-text">Got it. Strong documentation. Recommending all 4 items. Will submit to Jayco today.</div><div className="comm-time">Mar 16, 10:30 AM</div></div></div></div>
+        <div className="comm-box"><div className="comm-msg"><div className="comm-avatar dl">MS</div><div className="comm-content"><div className="comm-name">You</div><div className="comm-text">Photos uploaded. Customer is anxious about the roof leak — please prioritize.</div><div className="comm-time">Mar 16, 8:15 AM</div></div></div><div className="comm-msg"><div className="comm-avatar op">RC</div><div className="comm-content"><div className="comm-name">Dealer Suite 360 Team</div><div className="comm-text">Got it. Strong documentation. Recommending all 4 items. Will submit to Jayco today.</div><div className="comm-time">Mar 16, 10:30 AM</div></div></div></div>
         <div style={{padding: '16px 20px'}}><textarea placeholder="Send a message..." style={{width: '100%', padding: '10px 12px', border: '1px solid #e0e0e0', borderRadius: 8, fontSize: 13, fontFamily: 'inherit', minHeight: 50, resize: 'vertical', outline: 'none'}}></textarea><div style={{textAlign: 'right', marginTop: 8}}><button className="btn btn-p btn-sm">Send</button></div></div>
       </div>
     </div>
@@ -395,7 +395,7 @@ staff:['Staff Management','Manage team access'],'add-staff':['Add Staff','Invite
           <tr><td style={{fontWeight: 500}}>TD Auto</td><td>6.29%</td><td>180 mo</td><td>$368</td><td><span className="bg authorized">Approved</span></td></tr>
         </tbody></table></div></div>
       <div className="pn"><div className="pn-h"><span className="pn-t">Messages</span></div>
-        <div className="comm-box"><div className="comm-msg"><div className="comm-avatar dl">MS</div><div className="comm-content"><div className="comm-name">You</div><div className="comm-text">Customer wants lowest rate, flexible on term. Good credit.</div><div className="comm-time">Mar 16, 8:30 AM</div></div></div><div className="comm-msg"><div className="comm-avatar op">RC</div><div className="comm-content"><div className="comm-name">RV Claims Team</div><div className="comm-text">RBC came back at 5.49% — strong offer. Waiting on Desjardins. Will update by EOD.</div><div className="comm-time">Mar 16, 11:15 AM</div></div></div></div>
+        <div className="comm-box"><div className="comm-msg"><div className="comm-avatar dl">MS</div><div className="comm-content"><div className="comm-name">You</div><div className="comm-text">Customer wants lowest rate, flexible on term. Good credit.</div><div className="comm-time">Mar 16, 8:30 AM</div></div></div><div className="comm-msg"><div className="comm-avatar op">RC</div><div className="comm-content"><div className="comm-name">Dealer Suite 360 Team</div><div className="comm-text">RBC came back at 5.49% — strong offer. Waiting on Desjardins. Will update by EOD.</div><div className="comm-time">Mar 16, 11:15 AM</div></div></div></div>
         <div style={{padding: '16px 20px'}}><textarea placeholder="Send a message..." style={{width: '100%', padding: '10px 12px', border: '1px solid #e0e0e0', borderRadius: 8, fontSize: 13, fontFamily: 'inherit', minHeight: 50, resize: 'vertical', outline: 'none'}}></textarea><div style={{textAlign: 'right', marginTop: 8}}><button className="btn btn-p btn-sm">Send</button></div></div></div>
     </div>
     <div><div className="cd-section"><div className="cd-section-h">Request Details</div><div className="cd-row"><span className="cd-label">Customer</span><span className="cd-value">Daniel Tremblay</span></div><div className="cd-row"><span className="cd-label">Unit</span><span className="cd-value">2024 Jayco Eagle HT</span></div><div className="cd-row"><span className="cd-label">Amount</span><span className="cd-value">$42,500</span></div><div className="cd-row"><span className="cd-label">Down Payment</span><span className="cd-value">$5,000</span></div><div className="cd-row"><span className="cd-label">Submitted</span><span className="cd-value">Mar 16</span></div></div>
@@ -576,14 +576,14 @@ staff:['Staff Management','Manage team access'],'add-staff':['Add Staff','Invite
     </div><div className="btn-bar"><button className="btn btn-p" onClick={() => applyBranding()}>Save Branding</button><button className="btn btn-o" onClick={() => previewBranding()}>Preview</button><button className="btn btn-o" onClick={() => restoreBranding()} style={{marginLeft: 'auto'}}>Restore Defaults</button><span id="brand-saved" style={{fontSize: 12, color: '#22c55e', fontWeight: 500, display: 'none', marginLeft: 8}}>✓ Branding saved and applied!</span></div></div>
     <div className="pn"><div className="pn-h"><span className="pn-t">Custom Domain</span></div>
       <div style={{padding: 20}}>
-        <div style={{fontSize: 13, color: '#666', marginBottom: 16, lineHeight: '1.5'}}>Set up a custom domain so your customers see your dealership's URL instead of rvclaims.ca. Example: <strong>portal.smithsrv.ca</strong></div>
+        <div style={{fontSize: 13, color: '#666', marginBottom: 16, lineHeight: '1.5'}}>Set up a custom domain so your customers see your dealership's URL instead of dealersuite360.com. Example: <strong>portal.smithsrv.ca</strong></div>
         <div className="form-grid" style={{padding: 0}}>
           <div className="form-group full"><label>Custom Domain</label><input value="portal.smithsrv.ca" placeholder="portal.yourdealership.com" /></div>
           <div className="form-group full"><label>Status</label><div style={{display: 'flex', alignItems: 'center', gap: 8}}><span className="bg pending">Pending DNS</span><span style={{fontSize: 12, color: '#888'}}>CNAME record not detected</span></div></div>
           <div className="form-group full"><label>DNS Instructions</label><div style={{background: '#f5f6f8', padding: 14, borderRadius: 8, fontSize: 12, color: '#555', lineHeight: '1.6', fontFamily: '\'SF Mono\',\'Fira Code\',monospace'}}>
             Add a CNAME record to your DNS:<br />
             <strong>Host:</strong> portal<br />
-            <strong>Value:</strong> dealers.rvclaims.ca<br />
+            <strong>Value:</strong> dealers.dealersuite360.com<br />
             <strong>TTL:</strong> 3600
           </div></div>
         </div>

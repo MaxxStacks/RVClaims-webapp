@@ -1,12 +1,12 @@
-// capacitor.config.ts — Capacitor configuration for RV Claims mobile app
+// capacitor.config.ts — Capacitor configuration for Dealer Suite 360 mobile app
 // Wraps the existing React web app into native iOS + Android shells
 // Run: npx cap init → npx cap add ios → npx cap add android
 
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'ca.rvclaims.app',
-  appName: 'RV Claims',
+  appId: 'com.dealersuite360.app',
+  appName: 'Dealer Suite 360',
   webDir: 'dist/public',
 
   // Server config — in dev, point to local Vite server
@@ -73,11 +73,11 @@ const config: CapacitorConfig = {
   ios: {
     contentInset: 'automatic',
     preferredContentMode: 'mobile',
-    scheme: 'RVClaims',
+    scheme: 'DealerSuite360',
     // These go in Info.plist via Xcode:
-    // NSCameraUsageDescription: "RV Claims needs camera access to photograph claim damage, scan unit tags, and update profile photos."
-    // NSPhotoLibraryUsageDescription: "RV Claims needs photo library access to upload claim photos and documents."
-    // NSLocationWhenInUseUsageDescription: "RV Claims uses your location for roadside assistance features."
+    // NSCameraUsageDescription: "Dealer Suite 360 needs camera access to photograph claim damage, scan unit tags, and update profile photos."
+    // NSPhotoLibraryUsageDescription: "Dealer Suite 360 needs photo library access to upload claim photos and documents."
+    // NSLocationWhenInUseUsageDescription: "Dealer Suite 360 uses your location for roadside assistance features."
   },
 
   // Android-specific

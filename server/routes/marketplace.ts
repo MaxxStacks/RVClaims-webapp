@@ -405,7 +405,7 @@ router.get("/watchlist", async (req: Request, res: Response) => {
 
 // ==================== INQUIRIES & OFFERS ====================
 
-// POST /api/marketplace/inquiries — Submit inquiry or offer (goes through RV Claims)
+// POST /api/marketplace/inquiries — Submit inquiry or offer (goes through Dealer Suite 360)
 router.post("/inquiries", async (req: Request, res: Response) => {
   try {
     const { listingId, buyerId, type, message, offerAmount } = req.body;

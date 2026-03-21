@@ -5,8 +5,8 @@ import { useLanguage } from "@/hooks/use-language";
 import { LanguageToggle } from "@/components/language-toggle";
 import { ServiceBadge } from "@/components/service-badge";
 import { useToast } from "@/hooks/use-toast";
-import logoEN from "@assets/Official_RVclaims_logo_en.webp";
-import logoFR from "@assets/Official_RVclaims_logo_fr.webp";
+import logoEN from "@assets/DS360_logo_en.webp";
+import logoFR from "@assets/DS360_logo_fr.webp";
 
 export function MobileMenu() {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,7 +27,7 @@ export function MobileMenu() {
     { title: t('mainServices.financing.title'), description: 'Flexible financing solutions', path: '/financing', keywords: ['financing', 'finance', 'payment', 'loan'] },
     { title: t('mainServices.warranty.title'), description: 'Extended warranty programs', path: '/warranty', keywords: ['warranty', 'extended', 'protection', 'coverage'] },
     { title: t('mainServices.fi.title'), description: 'F&I services and solutions', path: '/fi-services', keywords: ['f&i', 'finance', 'insurance', 'services'] },
-    { title: t('navigation.aboutUs'), description: 'Learn about RV Claims Canada', path: '/about', keywords: ['about', 'company', 'team', 'history'] },
+    { title: t('navigation.aboutUs'), description: 'Learn about Dealer Suite 360', path: '/about', keywords: ['about', 'company', 'team', 'history'] },
     { title: t('navigation.contact'), description: 'Get in touch with us', path: '/contact', keywords: ['contact', 'email', 'phone', 'reach'] },
   ];
 
@@ -112,7 +112,7 @@ export function MobileMenu() {
                 <Link href="/" onClick={closeMenu} className="flex items-center hover:opacity-90 transition-opacity">
                   <img
                     src={language === 'en' ? logoEN : logoFR}
-                    alt="RV Claims Canada"
+                    alt="Dealer Suite 360"
                     width={512}
                     height={108}
                     style={{ height: "72px", width: "auto" }}

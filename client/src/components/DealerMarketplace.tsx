@@ -71,7 +71,7 @@ export function DealerMarketplacePages({ activePage, showPage }: Props) {
           <div>✓ List your own units for sale (seller identity hidden)</div>
           <div>✓ Participate in scheduled live auctions</div>
           <div>✓ Place $500 refundable holds to secure units</div>
-          <div>✓ RV Claims mediates all transactions</div>
+          <div>✓ Dealer Suite 360 mediates all transactions</div>
           <div>✓ $250 flat commission per completed sale</div>
           <div>✓ Search by specs: slides, bunks, length, weight, price, type</div>
         </div>
@@ -123,7 +123,7 @@ export function DealerMarketplacePages({ activePage, showPage }: Props) {
 {/* ============ BROWSE MARKETPLACE ============ */}
 <div className={`page ${activePage === 'mkt-browse' ? 'active' : ''}`} id="page-mkt-browse">
   <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20}}>
-    <div><div style={{fontSize: 16, fontWeight: 700, marginBottom: 4}}>Dealer Marketplace</div><div style={{fontSize: 13, color: '#888'}}>Browse units from verified dealers across Canada. All transactions go through RV Claims.</div></div>
+    <div><div style={{fontSize: 16, fontWeight: 700, marginBottom: 4}}>Dealer Marketplace</div><div style={{fontSize: 13, color: '#888'}}>Browse units from verified dealers across Canada. All transactions go through Dealer Suite 360.</div></div>
     <button className="btn btn-p btn-sm" onClick={() => showPage('mkt-post-unit')}>+ List a Unit for Sale</button>
   </div>
 
@@ -217,7 +217,7 @@ export function DealerMarketplacePages({ activePage, showPage }: Props) {
       <div className="cd-section" style={{background: '#f0fdf4', borderColor: '#bbf7d0'}}>
         <div style={{padding: 20, textAlign: 'center'}}>
           <div style={{fontSize: 32, fontWeight: 700, color: '#111', marginBottom: 4}}>$42,900</div>
-          <div style={{fontSize: 13, color: '#888', marginBottom: 16}}>Asking price · Negotiable through RV Claims</div>
+          <div style={{fontSize: 13, color: '#888', marginBottom: 16}}>Asking price · Negotiable through Dealer Suite 360</div>
 
           {/* Hold button / confirm */}
           {!holdConfirm ? (
@@ -227,7 +227,7 @@ export function DealerMarketplacePages({ activePage, showPage }: Props) {
               <div style={{fontSize: 13, fontWeight: 600, color: '#92400e', marginBottom: 6}}>Confirm $500 Hold</div>
               <div style={{fontSize: 12, color: '#666', lineHeight: '1.5', marginBottom: 10}}>A $500 refundable deposit will be charged to your card. This reserves the unit. Seller identity revealed after hold.</div>
               <div style={{display: 'flex', gap: 8}}>
-                <button className="btn btn-s btn-sm" onClick={() => { alert('Hold placed! RV Claims will contact both parties.'); setHoldConfirm(false); }}>Confirm — Charge $500</button>
+                <button className="btn btn-s btn-sm" onClick={() => { alert('Hold placed! Dealer Suite 360 will contact both parties.'); setHoldConfirm(false); }}>Confirm — Charge $500</button>
                 <button className="btn btn-o btn-sm" onClick={() => setHoldConfirm(false)}>Cancel</button>
               </div>
             </div>
@@ -240,7 +240,7 @@ export function DealerMarketplacePages({ activePage, showPage }: Props) {
               <input placeholder="Offer amount ($)" style={{width: '100%', padding: '8px 10px', border: '1px solid #e0e0e0', borderRadius: 6, fontSize: 13, marginBottom: 8, fontFamily: 'inherit'}} />
               <textarea placeholder="Message to seller (optional)..." style={{width: '100%', padding: '8px 10px', border: '1px solid #e0e0e0', borderRadius: 6, fontSize: 12, minHeight: 50, marginBottom: 8, fontFamily: 'inherit', resize: 'vertical' as const}} />
               <div style={{display: 'flex', gap: 8}}>
-                <button className="btn btn-p btn-sm" onClick={() => { alert('Offer submitted! RV Claims will forward to the seller anonymously.'); setShowOfferForm(false); }}>Submit Offer</button>
+                <button className="btn btn-p btn-sm" onClick={() => { alert('Offer submitted! Dealer Suite 360 will forward to the seller anonymously.'); setShowOfferForm(false); }}>Submit Offer</button>
                 <button className="btn btn-o btn-sm" onClick={() => setShowOfferForm(false)}>Cancel</button>
               </div>
             </div>
@@ -250,7 +250,7 @@ export function DealerMarketplacePages({ activePage, showPage }: Props) {
           <button className="btn btn-o" style={{width: '100%', justifyContent: 'center'}} onClick={() => { setShowQuestionForm(!showQuestionForm); setShowOfferForm(false); }}>Ask a Question</button>
           {showQuestionForm && (
             <div style={{textAlign: 'left', padding: 12, background: '#fafafa', borderRadius: 8, border: '1px solid #e5e7eb', marginTop: 8}}>
-              <textarea placeholder="Your question (sent anonymously through RV Claims)..." style={{width: '100%', padding: '8px 10px', border: '1px solid #e0e0e0', borderRadius: 6, fontSize: 12, minHeight: 60, marginBottom: 8, fontFamily: 'inherit', resize: 'vertical' as const}} />
+              <textarea placeholder="Your question (sent anonymously through Dealer Suite 360)..." style={{width: '100%', padding: '8px 10px', border: '1px solid #e0e0e0', borderRadius: 6, fontSize: 12, minHeight: 60, marginBottom: 8, fontFamily: 'inherit', resize: 'vertical' as const}} />
               <div style={{display: 'flex', gap: 8}}>
                 <button className="btn btn-p btn-sm" onClick={() => { alert('Question sent! You will be notified when the seller responds.'); setShowQuestionForm(false); }}>Send Question</button>
                 <button className="btn btn-o btn-sm" onClick={() => setShowQuestionForm(false)}>Cancel</button>
@@ -258,7 +258,7 @@ export function DealerMarketplacePages({ activePage, showPage }: Props) {
             </div>
           )}
 
-          <div style={{fontSize: 11, color: '#888', marginTop: 12, lineHeight: '1.4'}}>$500 refundable deposit secures the unit. RV Claims facilitates all transactions. Seller identity revealed after hold.</div>
+          <div style={{fontSize: 11, color: '#888', marginTop: 12, lineHeight: '1.4'}}>$500 refundable deposit secures the unit. Dealer Suite 360 facilitates all transactions. Seller identity revealed after hold.</div>
         </div>
       </div>
       <div className="cd-section"><div className="cd-section-h">Listing Info</div>
@@ -286,7 +286,7 @@ export function DealerMarketplacePages({ activePage, showPage }: Props) {
   <div className="pn">
     <div style={{padding: '12px 20px', background: '#eff6ff', borderBottom: '1px solid #bfdbfe', fontSize: 12, color: '#1e40af', display: 'flex', alignItems: 'center', gap: 8}}>
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
-      Your dealership name and contact info will NOT be shown. RV Claims mediates all inquiries. $250 commission on completed sales.
+      Your dealership name and contact info will NOT be shown. Dealer Suite 360 mediates all inquiries. $250 commission on completed sales.
     </div>
     <div className="form-grid c3">
       <div className="form-group full" style={{borderBottom: '1px solid #f0f0f0', paddingBottom: 16}}><label style={{fontWeight: 600, fontSize: 13}}>Select from Inventory or Enter Manually</label></div>
@@ -434,7 +434,7 @@ export function DealerMarketplacePages({ activePage, showPage }: Props) {
 {/* ============ LIVE AUCTIONS ============ */}
 <div className={`page ${activePage === 'mkt-live-auctions' ? 'active' : ''}`} id="page-mkt-live-auctions">
   <div style={{fontSize: 16, fontWeight: 700, marginBottom: 4}}>Live Auctions</div>
-  <div style={{fontSize: 13, color: '#888', marginBottom: 20}}>Bid on units in real-time. $500 deposit from winner. RV Claims facilitates all transactions.</div>
+  <div style={{fontSize: 13, color: '#888', marginBottom: 20}}>Bid on units in real-time. $500 deposit from winner. Dealer Suite 360 facilitates all transactions.</div>
   <div className="tabs">
     <div className={`tab ${auctionTab === 'live' ? 'active' : ''}`} onClick={() => setAuctionTab('live')}>Live Now (1)</div>
     <div className={`tab ${auctionTab === 'upcoming' ? 'active' : ''}`} onClick={() => setAuctionTab('upcoming')}>Upcoming (2)</div>
