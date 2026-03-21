@@ -29,7 +29,27 @@ export const translations = {
       dealerLogin: "Dealer Login",
       marketplace: "Marketplace",
       networkMarketplace: "Network Marketplace",
-      onSiteRepairs: "On-Site Repairs"
+      onSiteRepairs: "On-Site Repairs",
+      news: "News"
+    },
+
+    // News Section
+    news: {
+      pageTitle: "News & Updates",
+      pageDescription: "The latest announcements, product updates, and industry insights from DealerSuite 360.",
+      latestHeading: "Latest News",
+      latestSubheading: "Stay up to date with the latest from DealerSuite 360.",
+      filterAll: "All",
+      filterCompany: "Company",
+      filterProduct: "Product",
+      filterIndustry: "Industry",
+      readMore: "Read More →",
+      backToNews: "← Back to News",
+      moreArticles: "More Articles",
+      featured: "Featured",
+      categoryCompany: "Company",
+      categoryProduct: "Product",
+      categoryIndustry: "Industry"
     },
 
     // Notification Bar
@@ -1685,7 +1705,27 @@ export const translations = {
       dealerLogin: "Connexion concessionnaire",
       marketplace: "Place de marché",
       networkMarketplace: "Place de marché réseau",
-      onSiteRepairs: "Réparations sur site"
+      onSiteRepairs: "Réparations sur site",
+      news: "Nouvelles"
+    },
+
+    // News Section
+    news: {
+      pageTitle: "Nouvelles et mises à jour",
+      pageDescription: "Les dernières annonces, mises à jour de produits et perspectives de l'industrie de DealerSuite 360.",
+      latestHeading: "Dernières nouvelles",
+      latestSubheading: "Restez à jour avec les dernières nouvelles de DealerSuite 360.",
+      filterAll: "Tout",
+      filterCompany: "Entreprise",
+      filterProduct: "Produit",
+      filterIndustry: "Industrie",
+      readMore: "Lire la suite →",
+      backToNews: "← Retour aux nouvelles",
+      moreArticles: "Plus d'articles",
+      featured: "À la une",
+      categoryCompany: "Entreprise",
+      categoryProduct: "Produit",
+      categoryIndustry: "Industrie"
     },
 
     // Notification Bar

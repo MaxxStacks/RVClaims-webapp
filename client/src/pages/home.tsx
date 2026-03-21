@@ -13,6 +13,7 @@ import { PrivacyAssuranceSection } from "@/components/privacy-assurance-section"
 import { ConsumerServicesSection } from "@/components/consumer-services-section";
 import { PartsSection } from "@/components/parts-section";
 import { ContactSection } from "@/components/contact-section";
+import { LatestNewsSection } from "@/components/latest-news-section";
 import { Footer } from "@/components/footer";
 import { LanguageToggle } from "@/components/language-toggle";
 import { ChatbotWidget } from "@/components/chatbot-widget";
@@ -39,6 +40,7 @@ export default function Home() {
       <ConsumerServicesSection />
       <PartsSection />
       <ContactSection />
+      <LatestNewsSection />
       <Footer />
       <BackToTop />
       <ChatbotWidget />

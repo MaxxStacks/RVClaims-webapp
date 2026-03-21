@@ -29,6 +29,8 @@ import BidderLoginPage from "@/pages/bidder-login";
 import BookDemo from "@/pages/book-demo";
 import OnSiteRepairs from "@/pages/on-site-repairs";
 import RoadsideAssistance from "@/pages/roadside-assistance";
+import NewsPage from "@/pages/news";
+import NewsArticlePage from "@/pages/news-article";
 import NotFound from "@/pages/not-found";
 import OperatorPortal from "./portals/OperatorPortal";
 import DealerPortal from "./portals/DealerPortal";
@@ -79,6 +81,10 @@ function Router() {
         <Route path="/book-demo" component={BookDemo} />
         <Route path="/on-site-repairs" component={OnSiteRepairs} />
         <Route path="/roadside-assistance" component={RoadsideAssistance} />
+        <Route path="/news" component={NewsPage} />
+        <Route path="/news/:id" component={NewsArticlePage} />
+        <Route path="/actualites" component={NewsPage} />
+        <Route path="/actualites/:id" component={NewsArticlePage} />
         <Route component={NotFound} />
       </Switch>
     </>

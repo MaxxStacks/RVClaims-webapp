@@ -300,6 +300,15 @@ export function Navigation() {
               )}
             </div>
 
+            {/* News */}
+            <Link
+              href={language === 'fr' ? '/actualites' : '/news'}
+              className={`transition-colors ${location === '/news' || location === '/actualites' ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
+              data-testid="link-news"
+            >
+              {t('navigation.news')}
+            </Link>
+
             {/* About */}
             <Link
               href="/about"
