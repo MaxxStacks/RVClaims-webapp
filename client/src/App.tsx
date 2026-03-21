@@ -5,37 +5,38 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { LanguageProvider } from "@/hooks/use-language";
 import { AuthProvider } from "@/hooks/use-auth";
-import { useEffect } from "react";
+import { useEffect, lazy, Suspense } from "react";
 import { PageTakeover, SamplePromoContent } from "@/components/page-takeover";
-import Home from "@/pages/home";
-import About from "@/pages/about";
-import Services from "@/pages/services";
-import ClaimsProcessing from "@/pages/claims-processing";
-import Technology from "@/pages/technology";
-import RevenueServices from "@/pages/revenue-services";
-import RvCoverage from "@/pages/rv-coverage";
-import Contact from "@/pages/contact";
-import PrivacyPolicy from "@/pages/privacy-policy";
-import DealerLogin from "@/pages/dealer-login";
-import Signup from "@/pages/signup";
-import Financing from "@/pages/financing";
-import WarrantyExtendedService from "@/pages/warranty-extended-service";
-import FIServices from "@/pages/fi-services";
-import NetworkMarketplace from "@/pages/network-marketplace";
-import LiveAuctions from "@/pages/live-auctions";
-import Pricing from "@/pages/pricing";
-import OperatorLogin from "@/pages/operator-login";
-import BidderLoginPage from "@/pages/bidder-login";
-import BookDemo from "@/pages/book-demo";
-import OnSiteRepairs from "@/pages/on-site-repairs";
-import RoadsideAssistance from "@/pages/roadside-assistance";
-import NewsPage from "@/pages/news";
-import NewsArticlePage from "@/pages/news-article";
-import NotFound from "@/pages/not-found";
-import OperatorPortal from "./portals/OperatorPortal";
-import DealerPortal from "./portals/DealerPortal";
-import CustomerPortal from "./portals/CustomerPortal";
-import BidderPortal from "./portals/BidderPortal";
+
+const Home = lazy(() => import("@/pages/home"));
+const About = lazy(() => import("@/pages/about"));
+const Services = lazy(() => import("@/pages/services"));
+const ClaimsProcessing = lazy(() => import("@/pages/claims-processing"));
+const Technology = lazy(() => import("@/pages/technology"));
+const RevenueServices = lazy(() => import("@/pages/revenue-services"));
+const RvCoverage = lazy(() => import("@/pages/rv-coverage"));
+const Contact = lazy(() => import("@/pages/contact"));
+const PrivacyPolicy = lazy(() => import("@/pages/privacy-policy"));
+const DealerLogin = lazy(() => import("@/pages/dealer-login"));
+const Signup = lazy(() => import("@/pages/signup"));
+const Financing = lazy(() => import("@/pages/financing"));
+const WarrantyExtendedService = lazy(() => import("@/pages/warranty-extended-service"));
+const FIServices = lazy(() => import("@/pages/fi-services"));
+const NetworkMarketplace = lazy(() => import("@/pages/network-marketplace"));
+const LiveAuctions = lazy(() => import("@/pages/live-auctions"));
+const Pricing = lazy(() => import("@/pages/pricing"));
+const OperatorLogin = lazy(() => import("@/pages/operator-login"));
+const BidderLoginPage = lazy(() => import("@/pages/bidder-login"));
+const BookDemo = lazy(() => import("@/pages/book-demo"));
+const OnSiteRepairs = lazy(() => import("@/pages/on-site-repairs"));
+const RoadsideAssistance = lazy(() => import("@/pages/roadside-assistance"));
+const NewsPage = lazy(() => import("@/pages/news"));
+const NewsArticlePage = lazy(() => import("@/pages/news-article"));
+const NotFound = lazy(() => import("@/pages/not-found"));
+const OperatorPortal = lazy(() => import("./portals/OperatorPortal"));
+const DealerPortal = lazy(() => import("./portals/DealerPortal"));
+const CustomerPortal = lazy(() => import("./portals/CustomerPortal"));
+const BidderPortal = lazy(() => import("./portals/BidderPortal"));
 
 function ScrollToTop() {
   const [location] = useLocation();
@@ -120,14 +121,16 @@ function App() {
   if (isPortal) {
     return (
       <QueryClientProvider client={queryClient}>
-        <Switch>
-          <Route path="/operator/:rest*" component={OperatorPortal} />
-          <Route path="/dealer/:rest*" component={DealerPortal} />
-          <Route path="/portal" component={CustomerPortal} />
-          <Route path="/portal/:rest*" component={CustomerPortal} />
-          <Route path="/bidder" component={BidderPortal} />
-          <Route path="/bidder/:rest*" component={BidderPortal} />
-        </Switch>
+        <Suspense fallback={null}>
+          <Switch>
+            <Route path="/operator/:rest*" component={OperatorPortal} />
+            <Route path="/dealer/:rest*" component={DealerPortal} />
+            <Route path="/portal" component={CustomerPortal} />
+            <Route path="/portal/:rest*" component={CustomerPortal} />
+            <Route path="/bidder" component={BidderPortal} />
+            <Route path="/bidder/:rest*" component={BidderPortal} />
+          </Switch>
+        </Suspense>
       </QueryClientProvider>
     );
   }
@@ -139,7 +142,9 @@ function App() {
           <LanguageProvider>
             <TooltipProvider>
               <Toaster />
-              <Router />
+              <Suspense fallback={null}>
+                <Router />
+              </Suspense>
             </TooltipProvider>
           </LanguageProvider>
         </AuthProvider>

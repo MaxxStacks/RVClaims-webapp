@@ -9,7 +9,31 @@ import { setupVite, serveStatic, log } from "./vite";
 
 const app = express();
 app.use(express.json());
-app.use(helmet({ contentSecurityPolicy: false }));
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+        styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+        fontSrc: ["'self'", "https://fonts.gstatic.com"],
+        imgSrc: ["'self'", "data:", "blob:", "https://images.unsplash.com", "https://*.unsplash.com"],
+        connectSrc: ["'self'", "wss:", "ws:"],
+        mediaSrc: ["'self'"],
+        objectSrc: ["'none'"],
+        frameSrc: ["'none'"],
+        baseUri: ["'self'"],
+        formAction: ["'self'"],
+        upgradeInsecureRequests: [],
+      },
+    },
+    hsts: {
+      maxAge: 31536000, // 1 year
+      includeSubDomains: true,
+      preload: true,
+    },
+  })
+);
 app.use("/api/auth/login", rateLimit({ windowMs: 15 * 60 * 1000, max: 20 }));
 app.use("/api/auth/forgot-password", rateLimit({ windowMs: 60 * 60 * 1000, max: 5 }));
 app.use(express.urlencoded({ extended: false }));
