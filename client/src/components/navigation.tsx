@@ -197,7 +197,7 @@ export function Navigation() {
                         <div className="text-xs text-muted-foreground mt-1">AI-powered dealership tools</div>
                       </Link>
                       <Link
-                        href="/contact"
+                        href="/on-site-repairs"
                         className="block px-5 py-3 text-sm hover:bg-primary/10 hover:text-primary transition-colors"
                         data-testid="link-on-site-repairs"
                       >
@@ -208,7 +208,7 @@ export function Navigation() {
                         <div className="text-xs text-muted-foreground mt-1">Technician dispatched to your location</div>
                       </Link>
                       <Link
-                        href="/contact"
+                        href="/roadside-assistance"
                         className="block px-5 py-3 text-sm hover:bg-primary/10 hover:text-primary transition-colors"
                         data-testid="link-roadside-assistance"
                       >

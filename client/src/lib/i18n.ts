@@ -900,6 +900,78 @@ export const translations = {
       ctaSecondary: "View Pricing"
     },
 
+    // On-Site Repairs Page
+    onSiteRepairsPage: {
+      title: "On-Site RV Repairs",
+      badge: "Q3 2026",
+      subtitle: "Expert Repairs Dispatched to Your Customer's Location",
+      description: "Expand your dealership's service offering with on-site repair dispatch. Our certified technician network handles non-emergency repairs wherever the RV is located — campground, storage facility, or customer driveway — without requiring the unit to be moved.",
+      dispatch: {
+        title: "Technician Dispatch",
+        description: "Certified RV technicians dispatched directly to your customer's location. Scheduled appointments with real-time status updates for dealers and customers."
+      },
+      campground: {
+        title: "Campground & Storage Repairs",
+        description: "Service RVs at campgrounds, storage facilities, or customer properties. No tow, no inconvenience — repairs completed on-site with professional documentation."
+      },
+      waterInfiltration: {
+        title: "Water Infiltration & Seals",
+        description: "Diagnose and repair roof seams, window seals, slideout seals, and other water entry points before damage escalates and warranty claims become more complex."
+      },
+      appliances: {
+        title: "Appliance & Systems Repairs",
+        description: "On-site diagnosis and repair for furnaces, water heaters, refrigerators, AC units, slideout systems, and electrical issues — the most common non-tow service calls."
+      },
+      coordination: {
+        title: "Repair Coordination",
+        description: "Full repair documentation tied directly to your dealer account. Parts ordering, repair records, and warranty tracking all managed through the RV Claims platform."
+      },
+      dealerNetwork: {
+        title: "Dealer Network Participation",
+        description: "Join the RV Claims service network and earn revenue on every dispatched repair. Expand your service footprint beyond your physical location without additional overhead."
+      },
+      ctaTitle: "Offer On-Site Repairs to Your Customers",
+      ctaDescription: "Join our network and start generating service revenue from every customer location — not just your service bay.",
+      cta: "Join Our Network",
+      ctaSecondary: "Talk to Our Team"
+    },
+
+    // Roadside Assistance Page
+    roadsideAssistancePage: {
+      title: "RV Roadside Assistance",
+      badge: "Q4 2026",
+      subtitle: "24/7 Emergency Roadside Coverage for RV Owners",
+      description: "Give your customers peace of mind on every trip with dealer-backed roadside assistance. When an RV breaks down on the road, our 24/7 dispatch network connects stranded customers to certified help — and routes recoveries back to your dealership.",
+      dispatch: {
+        title: "24/7 Emergency Dispatch",
+        description: "Round-the-clock emergency response for stranded RV owners. Calls handled by trained dispatch agents who understand RV-specific breakdowns and towing requirements."
+      },
+      towing: {
+        title: "Towing to Certified Dealer",
+        description: "When a unit can't be repaired roadside, our network prioritizes towing to the nearest RV Claims certified dealership — keeping repair revenue in the network."
+      },
+      tireBattery: {
+        title: "Flat Tire & Jump Start",
+        description: "Mobile tire change and battery jump-start services for RVs and tow vehicles. Fast response times with technicians equipped for large-vehicle service requirements."
+      },
+      lockout: {
+        title: "Lock-Out Service",
+        description: "Professional lock-out response for RV entry doors, compartments, and tow vehicles. Available across major highways and campground routes nationwide."
+      },
+      fuelDelivery: {
+        title: "Fuel Delivery",
+        description: "Emergency fuel delivery for diesel and gasoline RVs stranded on the road. Covers motorhomes and tow vehicles — no customer left without options."
+      },
+      tripInterruption: {
+        title: "Trip Interruption Support",
+        description: "Coordinate accommodation, rental vehicles, and alternate transportation when a breakdown disrupts travel plans. Full support from first call to resolution."
+      },
+      ctaTitle: "Add Roadside Assistance to Your Dealer Package",
+      ctaDescription: "Differentiate your dealership with a 24/7 safety net your customers will remember — and renew.",
+      cta: "Join Our Network",
+      ctaSecondary: "Talk to Our Team"
+    },
+
     // RV Coverage Page
     rvCoveragePage: {
       badge: "All 10 RV Types",
@@ -2482,6 +2554,78 @@ export const translations = {
       ctaHeading: "Ajoutez un nouveau flux de revenus à votre concessionnaire",
       ctaButton: "Parler à notre équipe",
       ctaSecondary: "Voir les tarifs"
+    },
+
+    // On-Site Repairs Page
+    onSiteRepairsPage: {
+      title: "Réparations VR sur place",
+      badge: "T3 2026",
+      subtitle: "Réparations expertes envoyées à l'emplacement de votre client",
+      description: "Élargissez l'offre de service de votre concessionnaire avec un service de dépêche de réparations sur place. Notre réseau de techniciens certifiés intervient où que se trouve le VR — terrain de camping, installation de stockage ou entrée du client — sans déplacer l'unité.",
+      dispatch: {
+        title: "Dépêche de techniciens",
+        description: "Des techniciens VR certifiés sont envoyés directement à l'emplacement de votre client. Rendez-vous planifiés avec mises à jour en temps réel pour les concessionnaires et les clients."
+      },
+      campground: {
+        title: "Réparations en camping et entreposage",
+        description: "Entretien des VR dans les terrains de camping, installations de stockage ou propriétés des clients. Sans remorquage, sans inconvénient — réparations effectuées sur place avec documentation professionnelle."
+      },
+      waterInfiltration: {
+        title: "Infiltration d'eau et joints",
+        description: "Diagnostiquer et réparer les joints de toit, joints de fenêtres, joints de glissières et autres points d'entrée d'eau avant que les dommages ne s'aggravent et que les réclamations deviennent plus complexes."
+      },
+      appliances: {
+        title: "Réparations d'appareils et systèmes",
+        description: "Diagnostic et réparation sur place des fournaises, chauffe-eau, réfrigérateurs, systèmes de climatisation, glissières et problèmes électriques — les appels de service les plus courants sans remorquage."
+      },
+      coordination: {
+        title: "Coordination des réparations",
+        description: "Documentation complète des réparations liée directement à votre compte concessionnaire. Commandes de pièces, registres de réparations et suivi de garantie gérés via la plateforme RV Claims."
+      },
+      dealerNetwork: {
+        title: "Participation au réseau de concessionnaires",
+        description: "Rejoignez le réseau de service RV Claims et générez des revenus à chaque réparation dépêchée. Étendez votre portée de service au-delà de votre emplacement physique sans frais supplémentaires."
+      },
+      ctaTitle: "Offrez des réparations sur place à vos clients",
+      ctaDescription: "Rejoignez notre réseau et commencez à générer des revenus de service depuis chaque emplacement client — pas seulement votre atelier.",
+      cta: "Rejoindre notre réseau",
+      ctaSecondary: "Parler à notre équipe"
+    },
+
+    // Roadside Assistance Page
+    roadsideAssistancePage: {
+      title: "Assistance routière VR",
+      badge: "T4 2026",
+      subtitle: "Assistance d'urgence routière 24/7 pour les propriétaires de VR",
+      description: "Offrez à vos clients la tranquillité d'esprit à chaque voyage avec une assistance routière soutenue par votre concessionnaire. Quand un VR tombe en panne sur la route, notre réseau de dépêche 24/7 connecte les clients en détresse à une aide certifiée — et achemine les récupérations vers votre concessionnaire.",
+      dispatch: {
+        title: "Dépêche d'urgence 24/7",
+        description: "Réponse d'urgence 24 heures sur 24 pour les propriétaires de VR en détresse. Appels gérés par des agents de dépêche formés qui comprennent les pannes et exigences de remorquage spécifiques aux VR."
+      },
+      towing: {
+        title: "Remorquage vers un concessionnaire certifié",
+        description: "Lorsqu'une unité ne peut pas être réparée sur place, notre réseau priorise le remorquage vers le concessionnaire RV Claims certifié le plus proche — gardant les revenus de réparation dans le réseau."
+      },
+      tireBattery: {
+        title: "Crevaison et démarrage de batterie",
+        description: "Services de changement de pneu mobile et démarrage de batterie pour les VR et véhicules tracteurs. Temps de réponse rapides avec des techniciens équipés pour les exigences des grands véhicules."
+      },
+      lockout: {
+        title: "Service de déverrouillage",
+        description: "Intervention professionnelle pour les portes d'entrée VR, compartiments et véhicules tracteurs verrouillés. Disponible sur les principales autoroutes et routes de terrains de camping à l'échelle nationale."
+      },
+      fuelDelivery: {
+        title: "Livraison de carburant",
+        description: "Livraison de carburant d'urgence pour les VR diesel et essence immobilisés sur la route. Couvre les autocaravanes et véhicules tracteurs — aucun client laissé sans options."
+      },
+      tripInterruption: {
+        title: "Soutien en cas d'interruption de voyage",
+        description: "Coordination d'hébergement, véhicules de location et transport alternatif lorsqu'une panne interrompt les plans de voyage. Soutien complet du premier appel à la résolution."
+      },
+      ctaTitle: "Ajoutez l'assistance routière à votre forfait concessionnaire",
+      ctaDescription: "Démarquez-vous avec un filet de sécurité 24/7 dont vos clients se souviendront — et qu'ils renouvelleront.",
+      cta: "Rejoindre notre réseau",
+      ctaSecondary: "Parler à notre équipe"
     },
 
     // RV Coverage Page

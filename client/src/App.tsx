@@ -27,6 +27,8 @@ import Pricing from "@/pages/pricing";
 import OperatorLogin from "@/pages/operator-login";
 import BidderLoginPage from "@/pages/bidder-login";
 import BookDemo from "@/pages/book-demo";
+import OnSiteRepairs from "@/pages/on-site-repairs";
+import RoadsideAssistance from "@/pages/roadside-assistance";
 import NotFound from "@/pages/not-found";
 import OperatorPortal from "./portals/OperatorPortal";
 import DealerPortal from "./portals/DealerPortal";
@@ -75,6 +77,8 @@ function Router() {
         <Route path="/operator" component={OperatorLogin} />
         <Route path="/bidder-login" component={BidderLoginPage} />
         <Route path="/book-demo" component={BookDemo} />
+        <Route path="/on-site-repairs" component={OnSiteRepairs} />
+        <Route path="/roadside-assistance" component={RoadsideAssistance} />
         <Route component={NotFound} />
       </Switch>
     </>
