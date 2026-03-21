@@ -297,10 +297,15 @@ export function Footer() {
             </div>
             
             <div className="flex items-center gap-2 order-2 sm:order-2" data-testid="text-footer-powered-by">
-              <div className="flex items-center gap-2 px-4 py-1.5 bg-gradient-to-r from-primary/5 to-primary/10 border border-primary/20 rounded-full">
+              <a
+                href="https://maxxstacks.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-4 py-1.5 bg-gradient-to-r from-primary/5 to-primary/10 border border-primary/20 rounded-full hover:border-primary/40 transition-colors"
+              >
                 <Zap className="w-3.5 h-3.5 text-primary" />
                 <span className="text-sm font-medium text-gray-700">{t('footer.developedWith')}</span>
-              </div>
+              </a>
             </div>
           </div>
         </div>

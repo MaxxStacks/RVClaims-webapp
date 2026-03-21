@@ -512,7 +512,7 @@ export const translations = {
       termsOfService: "Terms of Service",
       cookiePolicy: "Cookie Policy",
       compliance: "PIPEDA Compliance",
-      developedWith: "Powered by Dealer Suite 360",
+      developedWith: "Powered by Maxx Stacks MSIL",
       developedLocation: ""
     },
 
@@ -2188,7 +2188,7 @@ export const translations = {
       termsOfService: "Conditions d'utilisation",
       cookiePolicy: "Politique des cookies",
       compliance: "Conformité LPRPDE",
-      developedWith: "Propulsé par Dealer Suite 360",
+      developedWith: "Propulsé par Maxx Stacks MSIL",
       developedLocation: ""
     },
 
