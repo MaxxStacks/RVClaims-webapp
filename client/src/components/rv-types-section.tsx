@@ -1,14 +1,14 @@
 import { useLanguage } from "@/hooks/use-language";
-import classAIcon from "@assets/Class A_1756847838643.png";
-import classCIcon from "@assets/Class C_1756847838644.png";
-import destinationTrailerIcon from "@assets/Destination Trailer_1756847838644.png";
-import fifthWheelIcon from "@assets/Fifth Wheel_1756847838645.png";
-import popUpIcon from "@assets/Pop Up_1756847838645.png";
-import smallTrailerIcon from "@assets/Small Trailer_1756847838646.png";
-import toyHaulerIcon from "@assets/Toy Hauler_1756847838646.png";
-import travelTrailerIcon from "@assets/Travel Trailer_1756847838647.png";
-import truckCamperIcon from "@assets/Truck Camper_1756847838647.png";
-import vanCamperIcon from "@assets/Van Camper_1756847838648.png";
+import classAIcon from "@assets/Class A_1756847838643.webp";
+import classCIcon from "@assets/Class C_1756847838644.webp";
+import destinationTrailerIcon from "@assets/Destination Trailer_1756847838644.webp";
+import fifthWheelIcon from "@assets/Fifth Wheel_1756847838645.webp";
+import popUpIcon from "@assets/Pop Up_1756847838645.webp";
+import smallTrailerIcon from "@assets/Small Trailer_1756847838646.webp";
+import toyHaulerIcon from "@assets/Toy Hauler_1756847838646.webp";
+import travelTrailerIcon from "@assets/Travel Trailer_1756847838647.webp";
+import truckCamperIcon from "@assets/Truck Camper_1756847838647.webp";
+import vanCamperIcon from "@assets/Van Camper_1756847838648.webp";
 
 // Custom icon components with consistent styling
 const iconStyle = {

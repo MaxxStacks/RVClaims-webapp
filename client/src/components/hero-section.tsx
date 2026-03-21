@@ -78,10 +78,13 @@ export function HeroSection() {
             </div>
           </div>
           <div className="fade-in">
-            <img 
-              src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600" 
-              alt="Professional RV dealership and claims management services" 
+            <img
+              src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-4.0.3&auto=format&fit=crop&w=584&h=438&fm=webp&q=75"
+              alt="Professional RV dealership and claims management services"
               className="rounded-2xl shadow-2xl w-full h-auto"
+              width={584}
+              height={438}
+              fetchPriority="high"
               data-testid="img-hero"
             />
           </div>

@@ -64,10 +64,13 @@ export function FinancingSection() {
           </div>
           
           <div className="relative">
-            <img 
-              src="https://images.unsplash.com/photo-1554224154-26032ffc0d07?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600" 
-              alt="Financing solutions for RV dealerships" 
+            <img
+              src="https://images.unsplash.com/photo-1554224154-26032ffc0d07?ixlib=rb-4.0.3&auto=format&fit=crop&w=576&h=432&fm=webp&q=75"
+              alt="Financing solutions for RV dealerships"
               className="rounded-2xl shadow-2xl w-full h-auto"
+              width={576}
+              height={432}
+              loading="lazy"
               data-testid="img-financing"
             />
             <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent rounded-2xl"></div>

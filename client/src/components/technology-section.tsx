@@ -79,10 +79,13 @@ export function TechnologySection() {
           </div>
           
           <div className="relative">
-            <img 
-              src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600" 
-              alt="Professional business analytics and claims management dashboard" 
+            <img
+              src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=576&h=432&fm=webp&q=75"
+              alt="Professional business analytics and claims management dashboard"
               className="rounded-2xl shadow-2xl w-full h-auto"
+              width={576}
+              height={432}
+              loading="lazy"
               data-testid="img-technology"
             />
             <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent rounded-2xl"></div>
