@@ -132,9 +132,9 @@ export function RvTypesSection() {
               <div className="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
                 <type.icon />
               </div>
-              <h4 className="font-medium text-sm">
+              <p className="font-medium text-sm">
                 {type.title}
-              </h4>
+              </p>
             </div>
           ))}
         </div>

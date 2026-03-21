@@ -50,9 +50,9 @@ export function Footer() {
           </div>
 
           <div className="space-y-4">
-            <h4 className="font-semibold" data-testid="text-footer-services-title">
+            <h3 className="font-semibold" data-testid="text-footer-services-title">
               {t('footer.servicesTitle')}
-            </h4>
+            </h3>
             <ul className="space-y-2 text-sm text-gray-600">
               <li>
                 <Link href="/claims-processing" className="hover:text-primary transition-colors" data-testid="link-footer-processing">
@@ -137,9 +137,9 @@ export function Footer() {
           </div>
 
           <div className="space-y-4">
-            <h4 className="font-semibold" data-testid="text-footer-company-title">
+            <h3 className="font-semibold" data-testid="text-footer-company-title">
               {t('footer.companyTitle')}
-            </h4>
+            </h3>
             <ul className="space-y-2 text-sm text-gray-600">
               <li>
                 <Link href="/about" className="hover:text-primary transition-colors" data-testid="link-footer-about">
@@ -165,9 +165,9 @@ export function Footer() {
           </div>
 
           <div className="space-y-4">
-            <h4 className="font-semibold" data-testid="text-footer-resources-title">
+            <h3 className="font-semibold" data-testid="text-footer-resources-title">
               {t('footer.resourcesTitle')}
-            </h4>
+            </h3>
             <ul className="space-y-2 text-sm text-gray-600">
               <li>
                 <Link href="/contact" className="hover:text-primary transition-colors" data-testid="link-footer-claim-guides">
@@ -193,9 +193,9 @@ export function Footer() {
           </div>
 
           <div className="space-y-4">
-            <h4 className="font-semibold" data-testid="text-footer-support-title">
+            <h3 className="font-semibold" data-testid="text-footer-support-title">
               {t('footer.supportTitle')}
-            </h4>
+            </h3>
             <ul className="space-y-2 text-sm text-gray-600">
               <li>
                 <Link href="/contact" className="hover:text-primary transition-colors" data-testid="link-footer-help-center">

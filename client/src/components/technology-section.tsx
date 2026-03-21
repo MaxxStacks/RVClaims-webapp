@@ -66,9 +66,9 @@ export function TechnologySection() {
                     <Check className="text-primary" size={12} />
                   </div>
                   <div>
-                    <h4 className="font-semibold">
+                    <h3 className="font-semibold">
                       {feature.title}
-                    </h4>
+                    </h3>
                     <p className="text-muted-foreground text-sm">
                       {feature.description}
                     </p>
@@ -109,9 +109,9 @@ export function TechnologySection() {
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                   <feature.icon className="text-primary" size={24} />
                 </div>
-                <h4 className="text-lg font-semibold mb-2 text-foreground">
+                <h3 className="text-lg font-semibold mb-2 text-foreground">
                   {feature.title}
-                </h4>
+                </h3>
                 <p className="text-muted-foreground text-sm">
                   {feature.description}
                 </p>

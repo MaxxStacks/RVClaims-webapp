@@ -49,9 +49,9 @@ export function ExperienceSection() {
           {stats.map((stat, index) => (
             <div key={index} className="bg-card rounded-xl p-8 border border-border text-center hover-lift" data-testid={stat.testId}>
               <div className="text-4xl font-bold text-primary mb-2 stat-counter">{stat.value}</div>
-              <h4 className="font-semibold mb-2">
+              <p className="font-semibold mb-2">
                 {stat.title}
-              </h4>
+              </p>
               <p className="text-muted-foreground text-sm">
                 {stat.description}
               </p>

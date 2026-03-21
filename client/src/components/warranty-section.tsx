@@ -59,9 +59,9 @@ export function WarrantySection() {
                     <Check className="text-primary" size={12} />
                   </div>
                   <div>
-                    <h4 className="font-semibold">
+                    <h3 className="font-semibold">
                       {feature.title}
-                    </h4>
+                    </h3>
                     <p className="text-muted-foreground text-sm">
                       {feature.description}
                     </p>

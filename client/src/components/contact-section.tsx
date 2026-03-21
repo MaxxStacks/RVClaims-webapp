@@ -204,7 +204,7 @@ export function ContactSection() {
                   {t('contactSection.form.interestLabel')} *
                 </Label>
                 <Select value={formData.interest} onValueChange={(value) => handleChange('interest', value)} required>
-                  <SelectTrigger className="h-11" data-testid="select-interest">
+                  <SelectTrigger className="h-11" aria-label={t('contactSection.form.interestLabel')} data-testid="select-interest">
                     <SelectValue placeholder={t('contactSection.form.interestPlaceholder')} />
                   </SelectTrigger>
                   <SelectContent>
