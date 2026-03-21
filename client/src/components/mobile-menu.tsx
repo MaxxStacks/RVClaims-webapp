@@ -1,5 +1,5 @@
 import { useState, FormEvent } from "react";
-import { Menu, X, Building, Linkedin, Facebook, Youtube, Instagram, Twitter, ChevronRight, Search } from "lucide-react";
+import { Menu, X, Building, User, Gavel, Linkedin, Facebook, Youtube, Instagram, Twitter, ChevronRight, Search } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { useLanguage } from "@/hooks/use-language";
 import { LanguageToggle } from "@/components/language-toggle";
@@ -183,9 +183,9 @@ export function MobileMenu() {
           </div>
 
           {/* Menu Items */}
-          <div 
-            className="flex-1 px-6 py-4 space-y-1" 
-            style={{ 
+          <div
+            className="flex-1 overflow-y-auto px-6 py-4 space-y-1"
+            style={{
               backgroundColor: '#f8fafc'
             }}
           >
@@ -365,7 +365,7 @@ export function MobileMenu() {
           </div>
 
           {/* Login Section */}
-          <div className="p-4 border-t-2 border-primary/20" style={{ backgroundColor: '#f8fafc' }}>
+          <div className="px-4 pt-4 pb-2 border-t-2 border-primary/20 flex-shrink-0" style={{ backgroundColor: '#f8fafc' }}>
             <div className="bg-gradient-to-br from-primary/5 to-primary/10 rounded-xl p-4">
               <h3 className="text-sm font-bold text-primary uppercase tracking-widest mb-0.5 text-left">{t('mobileMenu.loginHeading')}</h3>
               <p className="text-xs text-muted-foreground mb-3 text-left">{t('mobileMenu.loginSubtext')}</p>
@@ -376,15 +376,33 @@ export function MobileMenu() {
                   className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-primary text-white rounded-lg font-semibold hover:bg-primary/90 transition-all duration-300 shadow-md hover:shadow-xl group"
                   data-testid="button-dealer-login"
                 >
-                  <Building className="group-hover:scale-110 transition-transform" size={20} />
+                  <Building className="group-hover:scale-110 transition-transform" size={18} />
                   <span>{t('mobileMenu.dealer')}</span>
+                </Link>
+                <Link
+                  href="/portal"
+                  onClick={closeMenu}
+                  className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-card text-foreground border border-border rounded-lg font-semibold hover:bg-primary/5 hover:border-primary/40 transition-all duration-300 group"
+                  data-testid="button-customer-portal"
+                >
+                  <User className="group-hover:scale-110 transition-transform" size={18} />
+                  <span>Customer Portal</span>
+                </Link>
+                <Link
+                  href="/bidder-login"
+                  onClick={closeMenu}
+                  className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-card text-foreground border border-border rounded-lg font-semibold hover:bg-primary/5 hover:border-primary/40 transition-all duration-300 group"
+                  data-testid="button-bidder-portal"
+                >
+                  <Gavel className="group-hover:scale-110 transition-transform" size={18} />
+                  <span>Bidder Portal</span>
                 </Link>
               </div>
             </div>
           </div>
 
           {/* Social Media Icons */}
-          <div className="px-6 py-3 border-t border-border" style={{ backgroundColor: '#ffffff' }}>
+          <div className="px-6 py-3 border-t border-border flex-shrink-0" style={{ backgroundColor: '#ffffff' }}>
             <div className="flex justify-center">
               <div className="flex gap-2">
                 <a
