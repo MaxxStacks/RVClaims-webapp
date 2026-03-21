@@ -14,6 +14,7 @@ _preload.rel = "preload";
 _preload.as = "image";
 _preload.type = "image/webp";
 _preload.href = toyHaulerUrl;
+_preload.setAttribute("fetchpriority", "high");
 document.head.appendChild(_preload);
 
 createRoot(document.getElementById("root")!).render(<App />);

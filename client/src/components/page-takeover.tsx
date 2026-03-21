@@ -182,8 +182,8 @@ export function SamplePromoContent() {
           src={toyHaulerImage}
           alt="Modern Toy Hauler RV"
           className="absolute inset-0 w-full h-full object-cover"
-          width={720}
-          height={924}
+          width={480}
+          height={616}
           fetchPriority="high"
           style={{
             imageRendering: 'crisp-edges',

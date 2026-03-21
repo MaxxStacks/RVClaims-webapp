@@ -7,13 +7,13 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const assetsDir = resolve(__dirname, '../attached_assets');
 
 const conversions = [
-  // Toy hauler hero — resize to 720×924 (fits 2× retina at 358×462 display)
+  // Toy hauler hero — resize to 480×616 (1.33× retina for ~358×460 display)
   {
     input: 'generated_images/Modern_luxury_toy_hauler_2050a416.png',
     output: 'generated_images/Modern_luxury_toy_hauler_2050a416.webp',
-    width: 720,
-    height: 924,
-    quality: 80,
+    width: 480,
+    height: 616,
+    quality: 75,
   },
   // EN logo — resize to 2× display size (341×72 display → 682×144 at 2×), quality 75
   {

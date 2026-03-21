@@ -48,6 +48,8 @@ export function Navigation() {
               <img
                 src={language === 'en' ? logoEN : logoFR}
                 alt="RV Claims Canada"
+                width={341}
+                height={72}
                 style={{ height: "72px", width: "auto" }}
                 data-testid="img-header-logo"
               />

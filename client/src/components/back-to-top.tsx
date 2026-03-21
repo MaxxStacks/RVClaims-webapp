@@ -6,21 +6,25 @@ export function BackToTop() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
+    let rafId: number;
     const toggleVisibility = () => {
-      // Calculate if user is near bottom of page
-      const scrollPosition = window.scrollY + window.innerHeight;
-      const pageHeight = document.documentElement.scrollHeight;
-      const nearBottom = pageHeight - scrollPosition < 200; // Show when within 200px of bottom
-
-      setIsVisible(nearBottom);
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        // Defer DOM geometry reads until after paint to avoid forced reflow
+        const scrollPosition = window.scrollY + window.innerHeight;
+        const pageHeight = document.documentElement.scrollHeight;
+        const nearBottom = pageHeight - scrollPosition < 200;
+        setIsVisible(nearBottom);
+      });
     };
 
-    window.addEventListener("scroll", toggleVisibility);
+    window.addEventListener("scroll", toggleVisibility, { passive: true });
     // Check on mount as well
     toggleVisibility();
 
     return () => {
       window.removeEventListener("scroll", toggleVisibility);
+      cancelAnimationFrame(rafId);
     };
   }, []);
 

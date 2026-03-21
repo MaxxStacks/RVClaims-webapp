@@ -1,3 +1,4 @@
+import { lazy, Suspense } from "react";
 import { Navigation } from "@/components/navigation";
 import { HeroSection } from "@/components/hero-section";
 import { MainServicesSection } from "@/components/main-services-section";
@@ -12,9 +13,10 @@ import { ExperienceSection } from "@/components/experience-section";
 import { PrivacyAssuranceSection } from "@/components/privacy-assurance-section";
 import { ConsumerServicesSection } from "@/components/consumer-services-section";
 import { PartsSection } from "@/components/parts-section";
-import { ContactSection } from "@/components/contact-section";
-import { LatestNewsSection } from "@/components/latest-news-section";
 import { Footer } from "@/components/footer";
+
+const ContactSection = lazy(() => import("@/components/contact-section").then(m => ({ default: m.ContactSection })));
+const LatestNewsSection = lazy(() => import("@/components/latest-news-section").then(m => ({ default: m.LatestNewsSection })));
 import { LanguageToggle } from "@/components/language-toggle";
 import { ChatbotWidget } from "@/components/chatbot-widget";
 import { CookieNotice } from "@/components/cookie-notice";
@@ -39,8 +41,10 @@ export default function Home() {
       <WarrantySection />
       <ConsumerServicesSection />
       <PartsSection />
-      <ContactSection />
-      <LatestNewsSection />
+      <Suspense fallback={null}>
+        <ContactSection />
+        <LatestNewsSection />
+      </Suspense>
       <Footer />
       <BackToTop />
       <ChatbotWidget />
