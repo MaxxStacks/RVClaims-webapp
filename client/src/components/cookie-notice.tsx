@@ -68,9 +68,9 @@ export function CookieNotice() {
         >
           {t('cookies.decline')}
         </Button>
-        <Link href="/privacy-policy">
-          <Button 
-            variant="ghost" 
+        <Link href="/privacy-policy" aria-label="Learn more about our privacy policy">
+          <Button
+            variant="ghost"
             size="default"
             className="w-full sm:w-auto"
             data-testid="button-cookie-learn-more"
