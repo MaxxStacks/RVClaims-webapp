@@ -23,6 +23,7 @@ export function Navigation() {
   const [location] = useLocation();
   const [servicesOpen, setServicesOpen] = useState(false);
   const [rvCoverageOpen, setRvCoverageOpen] = useState(false);
+  const [marketplaceOpen, setMarketplaceOpen] = useState(false);
 
   const rvTypes = [
     { icon: travelTrailerIcon, name: t('rvTypes.travelTrailer'), testId: 'travel-trailer' },
@@ -39,26 +40,45 @@ export function Navigation() {
 
   return (
     <nav className="bg-white/95 backdrop-blur-sm border-b border-border sticky top-0 z-50">
-      {/* Top Row - Logo and Network Button */}
+      {/* Top Row - Logo and Action Buttons */}
       <div className="border-b border-border/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-3">
             <Link href="/" className="flex items-center hover:opacity-90 transition-opacity" data-testid="link-logo">
-              <img 
-                src={language === 'en' ? logoEN : logoFR} 
-                alt="RV Claims Canada" 
+              <img
+                src={language === 'en' ? logoEN : logoFR}
+                alt="RV Claims Canada"
                 style={{ height: "72px", width: "auto" }}
                 data-testid="img-header-logo"
               />
             </Link>
-            <Link href="/signup">
-              <button
-                className="px-6 py-2.5 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-colors shadow-md hover:shadow-lg"
-                data-testid="button-sign-up"
+            <div className="flex items-center gap-3">
+              {/* Desktop-only: Dealer Login + Book a Demo */}
+              <Link
+                href="/dealer"
+                className="hidden lg:block text-sm text-muted-foreground hover:text-foreground transition-colors"
+                data-testid="link-dealer-login-top"
               >
-                {t('navigation.signUp')}
-              </button>
-            </Link>
+                {t('navigation.dealerLogin')}
+              </Link>
+              <Link href="/book-demo" className="hidden lg:block">
+                <button
+                  className="px-4 py-2 border border-primary text-primary text-sm font-semibold rounded-lg hover:bg-primary/10 transition-colors"
+                  data-testid="button-book-demo"
+                >
+                  {t('navigation.bookDemo')}
+                </button>
+              </Link>
+              {/* Always visible: Sign Up */}
+              <Link href="/signup">
+                <button
+                  className="px-6 py-2.5 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-colors shadow-md hover:shadow-lg"
+                  data-testid="button-sign-up"
+                >
+                  {t('navigation.signUp')}
+                </button>
+              </Link>
+            </div>
           </div>
         </div>
       </div>
@@ -68,8 +88,9 @@ export function Navigation() {
         <div className="flex justify-between items-center h-14">
           {/* Desktop Menu */}
           <div className="hidden lg:flex items-center space-x-6">
-            {/* Services Dropdown */}
-            <div 
+
+            {/* Services Dropdown — 3-column mega-menu */}
+            <div
               className="relative"
               onMouseEnter={() => setServicesOpen(true)}
               onMouseLeave={() => setServicesOpen(false)}
@@ -81,62 +102,108 @@ export function Navigation() {
                 {t('navigation.services')}
                 <ChevronDown size={16} className={`transition-transform ${servicesOpen ? 'rotate-180' : ''}`} />
               </button>
-              
+
               {servicesOpen && (
-                <div className="absolute top-full left-0 mt-1 w-80 bg-white border border-border rounded-lg shadow-xl py-3 z-50">
-                  <Link
-                    href="/claims-processing"
-                    className="block px-5 py-3 text-sm hover:bg-primary/10 hover:text-primary transition-colors"
-                    data-testid="link-claims-processing"
-                  >
-                    <div className="font-medium">{t('mainServices.claims.title')}</div>
-                    <div className="text-xs text-muted-foreground mt-1">A-Z warranty claims management</div>
-                  </Link>
-                  <Link
-                    href="/financing"
-                    className="block px-5 py-3 text-sm hover:bg-primary/10 hover:text-primary transition-colors"
-                    data-testid="link-financing-services"
-                  >
-                    <div className="font-medium flex items-center gap-2">
-                      {t('mainServices.financing.title')}
-                      <ServiceBadge quarter="Q2" />
+                <div className="absolute top-full left-0 mt-1 w-[680px] bg-white border border-border rounded-lg shadow-xl py-3 z-50">
+                  <div className="grid grid-cols-3">
+                    {/* Column 1: Core Claims */}
+                    <div>
+                      <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide px-5 pt-3 pb-1">
+                        Core Claims
+                      </div>
+                      <Link
+                        href="/claims-processing"
+                        className="block px-5 py-3 text-sm hover:bg-primary/10 hover:text-primary transition-colors"
+                        data-testid="link-claims-processing"
+                      >
+                        <div className="font-medium">{t('mainServices.claims.title')}</div>
+                        <div className="text-xs text-muted-foreground mt-1">A-Z warranty claims management</div>
+                      </Link>
+                      <Link
+                        href="/rv-types"
+                        className="block px-5 py-3 text-sm hover:bg-primary/10 hover:text-primary transition-colors"
+                        data-testid="link-rv-types"
+                      >
+                        <div className="font-medium">{t('navigation.rvCoverage')}</div>
+                        <div className="text-xs text-muted-foreground mt-1">10 RV types, all manufacturers</div>
+                      </Link>
                     </div>
-                    <div className="text-xs text-muted-foreground mt-1">Dealership financing support</div>
-                  </Link>
-                  <Link
-                    href="/warranty-extended-service"
-                    className="block px-5 py-3 text-sm hover:bg-primary/10 hover:text-primary transition-colors"
-                    data-testid="link-warranty-extended"
-                  >
-                    <div className="font-medium">{t('mainServices.warranty.title')}</div>
-                    <div className="text-xs text-muted-foreground mt-1">Protection packages</div>
-                  </Link>
-                  <Link
-                    href="/fi-services"
-                    className="block px-5 py-3 text-sm hover:bg-primary/10 hover:text-primary transition-colors"
-                    data-testid="link-fi-services"
-                  >
-                    <div className="font-medium flex items-center gap-2">
-                      {t('mainServices.fiServices.title')}
-                      <ServiceBadge quarter="Q2" />
+
+                    {/* Column 2: Financial Services */}
+                    <div>
+                      <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide px-5 pt-3 pb-1">
+                        Financial Services
+                      </div>
+                      <Link
+                        href="/financing"
+                        className="block px-5 py-3 text-sm hover:bg-primary/10 hover:text-primary transition-colors"
+                        data-testid="link-financing-services"
+                      >
+                        <div className="font-medium flex items-center gap-2">
+                          {t('mainServices.financing.title')}
+                          <ServiceBadge quarter="Q2" />
+                        </div>
+                        <div className="text-xs text-muted-foreground mt-1">Dealership financing support</div>
+                      </Link>
+                      <Link
+                        href="/fi-services"
+                        className="block px-5 py-3 text-sm hover:bg-primary/10 hover:text-primary transition-colors"
+                        data-testid="link-fi-services"
+                      >
+                        <div className="font-medium flex items-center gap-2">
+                          {t('mainServices.fiServices.title')}
+                          <ServiceBadge quarter="Q2" />
+                        </div>
+                        <div className="text-xs text-muted-foreground mt-1">Finance & Insurance solutions</div>
+                      </Link>
+                      <Link
+                        href="/warranty-plans"
+                        className="block px-5 py-3 text-sm hover:bg-primary/10 hover:text-primary transition-colors"
+                        data-testid="link-warranty-extended"
+                      >
+                        <div className="font-medium flex items-center gap-2">
+                          {t('mainServices.warranty.title')}
+                          <ServiceBadge quarter="Q2" />
+                        </div>
+                        <div className="text-xs text-muted-foreground mt-1">Protection packages</div>
+                      </Link>
                     </div>
-                    <div className="text-xs text-muted-foreground mt-1">Finance & Insurance solutions</div>
-                  </Link>
+
+                    {/* Column 3: Revenue Growth */}
+                    <div>
+                      <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide px-5 pt-3 pb-1">
+                        Revenue Growth
+                      </div>
+                      <Link
+                        href="/revenue-services"
+                        className="block px-5 py-3 text-sm hover:bg-primary/10 hover:text-primary transition-colors"
+                        data-testid="link-revenue-services"
+                      >
+                        <div className="font-medium flex items-center gap-2">
+                          {t('navigation.revenueServices')}
+                          <ServiceBadge quarter="Q3" />
+                        </div>
+                        <div className="text-xs text-muted-foreground mt-1">Marketing, parts & trade-in programs</div>
+                      </Link>
+                      <Link
+                        href="/technology"
+                        className="block px-5 py-3 text-sm hover:bg-primary/10 hover:text-primary transition-colors"
+                        data-testid="link-technology"
+                      >
+                        <div className="font-medium flex items-center gap-2">
+                          {t('navigation.technology')}
+                          <ServiceBadge quarter="Q3" />
+                        </div>
+                        <div className="text-xs text-muted-foreground mt-1">AI-powered dealership tools</div>
+                      </Link>
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
 
-            {/* Warranty & Extended Services */}
-            <Link 
-              href="/warranty-extended-service"
-              className={`transition-colors ${location === '/warranty-extended-services' ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
-              data-testid="link-warranty"
-            >
-              {t('navigation.warrantyExtended')}
-            </Link>
-
-            {/* RV Coverage Megamenu */}
-            <div 
+            {/* RV Coverage Megamenu — zero changes */}
+            <div
               className="relative"
               onMouseEnter={() => setRvCoverageOpen(true)}
               onMouseLeave={() => setRvCoverageOpen(false)}
@@ -148,7 +215,7 @@ export function Navigation() {
                 {t('navigation.rvCoverage')}
                 <ChevronDown size={16} className={`transition-transform ${rvCoverageOpen ? 'rotate-180' : ''}`} />
               </button>
-              
+
               {rvCoverageOpen && (
                 <div className="absolute top-full left-1/2 -translate-x-1/2 mt-1 w-[800px] bg-white border border-border rounded-lg shadow-xl p-6 z-50">
                   <div className="grid grid-cols-5 gap-6">
@@ -159,9 +226,9 @@ export function Navigation() {
                         className="flex flex-col items-center text-center p-3 rounded-lg hover:bg-primary/10 transition-colors group"
                         data-testid={`link-rv-${rv.testId}`}
                       >
-                        <img 
-                          src={rv.icon} 
-                          alt={rv.name} 
+                        <img
+                          src={rv.icon}
+                          alt={rv.name}
                           className="w-16 h-16 mb-2 object-contain group-hover:scale-110 transition-transform"
                         />
                         <span className="text-xs font-medium text-muted-foreground group-hover:text-primary">{rv.name}</span>
@@ -172,20 +239,56 @@ export function Navigation() {
               )}
             </div>
 
-            {/* Live Auctions */}
-            <div className="relative flex items-center gap-2">
-              <Link 
-                href="/live-auctions"
-                className={`transition-colors ${location === '/live-auctions' ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
-                data-testid="link-live-auctions"
+            {/* Marketplace Dropdown */}
+            <div
+              className="relative"
+              onMouseEnter={() => setMarketplaceOpen(true)}
+              onMouseLeave={() => setMarketplaceOpen(false)}
+            >
+              <button
+                className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors py-2"
+                data-testid="button-marketplace-dropdown"
               >
-                {t('navigation.liveAuctions')}
-              </Link>
-              <ServiceBadge quarter="Q3" />
+                {t('navigation.marketplace')}
+                <ChevronDown size={16} className={`transition-transform ${marketplaceOpen ? 'rotate-180' : ''}`} />
+              </button>
+
+              {marketplaceOpen && (
+                <div className="absolute top-full left-0 mt-1 w-80 bg-white border border-border rounded-lg shadow-xl py-3 z-50">
+                  <Link
+                    href="/network-marketplace"
+                    className="block px-5 py-3 text-sm hover:bg-primary/10 hover:text-primary transition-colors"
+                    data-testid="link-network-marketplace"
+                  >
+                    <div className="font-medium">{t('navigation.networkMarketplace')}</div>
+                    <div className="text-xs text-muted-foreground mt-1">Dealer-to-dealer inventory with escrow</div>
+                  </Link>
+                  <Link
+                    href="/live-auctions"
+                    className="block px-5 py-3 text-sm hover:bg-primary/10 hover:text-primary transition-colors"
+                    data-testid="link-live-auctions"
+                  >
+                    <div className="font-medium flex items-center gap-2">
+                      {t('navigation.liveAuctions')}
+                      <ServiceBadge quarter="Q3" />
+                    </div>
+                    <div className="text-xs text-muted-foreground mt-1">Monthly 48-hour public auctions</div>
+                  </Link>
+                </div>
+              )}
             </div>
 
+            {/* About */}
+            <Link
+              href="/about"
+              className={`transition-colors ${location === '/about' ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
+              data-testid="link-about"
+            >
+              {t('navigation.about')}
+            </Link>
+
             {/* Pricing */}
-            <Link 
+            <Link
               href="/pricing"
               className={`transition-colors ${location === '/pricing' ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
               data-testid="link-pricing"
@@ -197,14 +300,14 @@ export function Navigation() {
           {/* Right Side - Contact Button, Language Toggle and Hamburger */}
           <div className="flex items-center space-x-4">
             {/* Contact Button - Desktop Only */}
-            <Link 
+            <Link
               href="/contact"
               className="hidden lg:block bg-primary text-primary-foreground px-4 py-2 rounded-md hover:bg-primary/90 transition-colors"
               data-testid="button-contact"
             >
               {t('navigation.contact')}
             </Link>
-            
+
             <LanguageToggle />
             <MobileMenu />
           </div>

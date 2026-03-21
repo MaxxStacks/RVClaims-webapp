@@ -24,7 +24,11 @@ export const translations = {
       liveAuctionsLaunchDate: "Auctions Go Live Jan 16-18, 2026!",
       searchPlaceholder: "Search...",
       pricing: "Pricing",
-      signUp: "Sign Up"
+      signUp: "Sign Up",
+      bookDemo: "Book a Demo",
+      dealerLogin: "Dealer Login",
+      marketplace: "Marketplace",
+      networkMarketplace: "Network Marketplace"
     },
 
     // Notification Bar
@@ -1603,7 +1607,11 @@ export const translations = {
       liveAuctionsLaunchDate: "Enchères en ligne 16-18 jan 2026!",
       searchPlaceholder: "Rechercher...",
       pricing: "Tarification",
-      signUp: "S'inscrire"
+      signUp: "S'inscrire",
+      bookDemo: "Réserver un appel",
+      dealerLogin: "Connexion concessionnaire",
+      marketplace: "Place de marché",
+      networkMarketplace: "Place de marché réseau"
     },
 
     // Notification Bar
