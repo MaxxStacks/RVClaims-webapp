@@ -15,17 +15,21 @@ const conversions = [
     height: 924,
     quality: 80,
   },
-  // EN logo — convert as-is
+  // EN logo — resize to 2× display size (341×72 display → 682×144 at 2×), quality 75
   {
     input: 'Official_RVclaims_logo_en.png',
     output: 'Official_RVclaims_logo_en.webp',
-    quality: 90,
+    width: 512,
+    height: 108,
+    quality: 75,
   },
-  // FR logo — convert as-is
+  // FR logo — same
   {
     input: 'Official_RVclaims_logo_fr.png',
     output: 'Official_RVclaims_logo_fr.webp',
-    quality: 90,
+    width: 512,
+    height: 108,
+    quality: 75,
   },
   // 10 RV type icons — convert as-is (150×150 source, CSS scales to 90×90)
   { input: 'Class A_1756847838643.png',              output: 'Class A_1756847838643.webp',              quality: 85 },

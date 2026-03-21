@@ -18,6 +18,8 @@ export function Footer() {
                 <img
                   src={language === 'en' ? logoEN : logoFR}
                   alt="RV Claims"
+                  width={512}
+                  height={108}
                   style={{ height: "72px", width: "auto" }}
                   className="cursor-pointer"
                   data-testid="img-footer-logo"

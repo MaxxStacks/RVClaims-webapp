@@ -64,10 +64,13 @@ export function FIServicesSection() {
           </div>
           
           <div className="relative">
-            <img 
-              src="https://images.unsplash.com/photo-1556761175-b413da4baf72?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600" 
-              alt="F&I services and compliance" 
+            <img
+              src="https://images.unsplash.com/photo-1556761175-b413da4baf72?ixlib=rb-4.0.3&auto=format&fit=crop&w=576&h=432&fm=webp&q=75"
+              alt="F&I services and compliance"
               className="rounded-2xl shadow-2xl w-full h-auto"
+              width={576}
+              height={432}
+              loading="lazy"
               data-testid="img-fi"
             />
             <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent rounded-2xl"></div>

@@ -178,11 +178,14 @@ export function SamplePromoContent() {
 
       {/* Right Column - 40% (Image) - Hidden on mobile for better UX */}
       <div className="hidden md:block md:col-span-2 relative">
-        <img 
-          src={toyHaulerImage} 
-          alt="Modern Toy Hauler RV" 
+        <img
+          src={toyHaulerImage}
+          alt="Modern Toy Hauler RV"
           className="absolute inset-0 w-full h-full object-cover"
-          style={{ 
+          width={720}
+          height={924}
+          fetchPriority="high"
+          style={{
             imageRendering: 'crisp-edges',
             WebkitFontSmoothing: 'antialiased',
             MozOsxFontSmoothing: 'grayscale'

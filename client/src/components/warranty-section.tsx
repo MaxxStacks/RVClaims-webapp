@@ -29,10 +29,13 @@ export function WarrantySection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div className="relative order-2 lg:order-1">
-            <img 
-              src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600" 
-              alt="Warranty and extended service plans" 
+            <img
+              src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?ixlib=rb-4.0.3&auto=format&fit=crop&w=576&h=432&fm=webp&q=75"
+              alt="Warranty and extended service plans"
               className="rounded-2xl shadow-2xl w-full h-auto"
+              width={576}
+              height={432}
+              loading="lazy"
               data-testid="img-warranty"
             />
             <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent rounded-2xl"></div>
