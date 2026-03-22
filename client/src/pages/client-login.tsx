@@ -5,8 +5,8 @@ import { faGoogle, faLinkedinIn } from "@fortawesome/free-brands-svg-icons";
 import { useLanguage } from "@/hooks/use-language";
 import { useAuth } from "@/hooks/use-auth";
 import { Link, useLocation } from "wouter";
-import logoEN from "@assets/DS360_logo_en.webp";
-import logoFR from "@assets/DS360_logo_fr.webp";
+import logoEN from "@assets/DS360_logo_en.png";
+import logoFR from "@assets/DS360_logo_fr.png";
 
 type LoginStep = "options" | "email";
 

@@ -3,6 +3,7 @@
 // DO NOT modify layout structure. DO NOT add display:flex to .content.
 
 import { useState, useEffect } from 'react';
+import ds360Icon from '@assets/ds360_favicon.png';
 
 const AUCTION_START = new Date('2026-05-08T16:00:00Z');
 const AUCTION_END   = new Date('2026-05-09T16:00:00Z');
@@ -136,12 +137,7 @@ export default function BidderPortal() {
 {/* ════ SIDEBAR ════ */}
 <nav className="sidebar">
   <div className="sidebar-logo">
-    <svg width="36" height="36" viewBox="0 0 36 36">
-      <rect width="36" height="36" rx="8" fill="var(--brand)"/>
-      <path d="M10 24l4-8 4 8" stroke="white" strokeWidth="2" fill="none" strokeLinejoin="round"/>
-      <circle cx="26" cy="14" r="4" fill="none" stroke="white" strokeWidth="2"/>
-      <path d="M22 18l-4 6" stroke="white" strokeWidth="2"/>
-    </svg>
+    <img src={ds360Icon} width="36" height="36" style={{borderRadius:8}} alt="Dealer Suite 360" />
     <div className="sidebar-logo-text">
       <div className="sidebar-logo-name">Dealer Suite 360</div>
       <div className="sidebar-logo-sub">Public Auction Bidder</div>

@@ -2,8 +2,8 @@ import { useState } from "react";
 import { Mail, Eye, EyeOff, ArrowLeft, FileText, TrendingUp, Users, Building2 } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
 import { Link } from "wouter";
-import logoEN from "@assets/DS360_logo_en.webp";
-import logoFR from "@assets/DS360_logo_fr.webp";
+import logoEN from "@assets/DS360_logo_en.png";
+import logoFR from "@assets/DS360_logo_fr.png";
 
 export default function OperatorLogin() {
   const { language } = useLanguage();

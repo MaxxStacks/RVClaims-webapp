@@ -3,6 +3,7 @@
 // DO NOT modify layout structure. DO NOT add display:flex to .content.
 
 import { useState, useEffect } from 'react';
+import ds360Icon from '@assets/ds360_favicon.png';
 import { MobileBottomNav, OfflineBanner } from '../components/MobileBottomNav';
 import { OperatorMarketplacePages } from '../components/OperatorMarketplace';
 import { OperatorPublicAuctionPages } from '../components/PublicAuctionPages';
@@ -113,7 +114,7 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
   return (
     <>
 <nav className="sidebar">
-  <div className="sidebar-logo"><svg width="36" height="36" viewBox="0 0 36 36"><rect width="36" height="36" rx="8" fill="var(--brand)"/><path d="M9 25L18 11L27 25H9Z" fill="white" opacity="0.8"/></svg><div className="sidebar-logo-text"><div className="sidebar-logo-name">Dealer Suite 360</div><div className="sidebar-logo-sub">Command Centre</div></div><span className="sidebar-badge">Operator</span></div>
+  <div className="sidebar-logo"><img src={ds360Icon} width="36" height="36" style={{borderRadius:8}} alt="Dealer Suite 360" /><div className="sidebar-logo-text"><div className="sidebar-logo-name">Dealer Suite 360</div><div className="sidebar-logo-sub">Command Centre</div></div><span className="sidebar-badge">Operator</span></div>
   <div className="sidebar-nav">
     <div className="nav-section"><div className="nav-label">Overview</div>
       <div className={`nav-item ${isNavActive('dashboard') ? 'active' : ''}`} onClick={() => showPage('dashboard')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</div></div>
