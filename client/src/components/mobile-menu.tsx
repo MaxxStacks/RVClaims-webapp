@@ -1,4 +1,5 @@
 import { useState, FormEvent } from "react";
+import logoLight from "@assets/DS360_logo_en.png";
 import { Menu, X, Building, User, Gavel, Linkedin, Facebook, Youtube, Instagram, Twitter, ChevronRight, Search } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { useLanguage } from "@/hooks/use-language";
@@ -108,7 +109,7 @@ export function MobileMenu() {
             <div className="px-4 sm:px-6">
               <div className="flex justify-between items-center py-3">
                 <Link href="/" onClick={closeMenu} className="flex items-center hover:opacity-90 transition-opacity">
-                  <span className="text-lg font-bold text-primary tracking-tight">Dealer Suite 360</span>
+                  <img src={logoLight} alt="Dealer Suite 360" className="h-9 w-auto" />
                 </Link>
               </div>
             </div>

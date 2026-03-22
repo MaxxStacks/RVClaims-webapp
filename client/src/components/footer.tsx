@@ -2,6 +2,7 @@ import { Phone, Mail, MapPin, Heart, Linkedin, Facebook, Youtube, Instagram, Twi
 import { useLanguage } from "@/hooks/use-language";
 import { ServiceBadge } from "@/components/service-badge";
 import { Link } from "wouter";
+import logoLight from "@assets/DS360_logo_en.png";
 
 export function Footer() {
   const { t, language } = useLanguage();
@@ -13,7 +14,7 @@ export function Footer() {
           <div className="lg:col-span-2 space-y-4">
             <div className="mb-2" data-testid="div-footer-logo">
               <Link href="/">
-                <span className="text-xl font-bold text-primary tracking-tight cursor-pointer" data-testid="img-footer-logo">Dealer Suite 360</span>
+                <img src={logoLight} alt="Dealer Suite 360" className="h-12 w-auto cursor-pointer" data-testid="img-footer-logo" />
               </Link>
             </div>
             <p className="text-gray-600 text-sm" data-testid="text-footer-description">
