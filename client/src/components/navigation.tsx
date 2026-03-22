@@ -5,8 +5,6 @@ import { ServiceBadge } from "@/components/service-badge";
 import { Link, useLocation } from "wouter";
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
-import logoEN from "@assets/DS360_logo_en.png";
-import logoFR from "@assets/DS360_logo_fr.png";
 import travelTrailerIcon from "@assets/Travel Trailer_1756847838647.webp";
 import fifthWheelIcon from "@assets/Fifth Wheel_1756847838645.webp";
 import classCIcon from "@assets/Class C_1756847838644.webp";
@@ -45,14 +43,7 @@ export function Navigation() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-3">
             <Link href="/" className="flex items-center hover:opacity-90 transition-opacity" data-testid="link-logo">
-              <img
-                src={language === 'en' ? logoEN : logoFR}
-                alt="Dealer Suite 360"
-                width={341}
-                height={72}
-                style={{ height: "44px", width: "auto" }}
-                data-testid="img-header-logo"
-              />
+              <span className="text-xl font-bold text-primary tracking-tight" data-testid="img-header-logo">Dealer Suite 360</span>
             </Link>
             <div className="flex items-center gap-3">
               {/* Desktop-only: Dealer Login + Book a Demo */}

@@ -5,8 +5,6 @@ import { useLanguage } from "@/hooks/use-language";
 import { LanguageToggle } from "@/components/language-toggle";
 import { ServiceBadge } from "@/components/service-badge";
 import { useToast } from "@/hooks/use-toast";
-import logoEN from "@assets/DS360_logo_en.png";
-import logoFR from "@assets/DS360_logo_fr.png";
 
 export function MobileMenu() {
   const [isOpen, setIsOpen] = useState(false);
@@ -110,13 +108,7 @@ export function MobileMenu() {
             <div className="px-4 sm:px-6">
               <div className="flex justify-between items-center py-3">
                 <Link href="/" onClick={closeMenu} className="flex items-center hover:opacity-90 transition-opacity">
-                  <img
-                    src={language === 'en' ? logoEN : logoFR}
-                    alt="Dealer Suite 360"
-                    width={512}
-                    height={108}
-                    style={{ height: "40px", width: "auto" }}
-                  />
+                  <span className="text-lg font-bold text-primary tracking-tight">Dealer Suite 360</span>
                 </Link>
               </div>
             </div>

@@ -33,7 +33,7 @@ const config: CapacitorConfig = {
     // Status Bar — match app branding
     StatusBar: {
       style: 'DARK',         // Light text for dark brand header
-      backgroundColor: '#01b367',
+      backgroundColor: '#033280',
     },
 
     // Keyboard — auto-scroll when keyboard opens
@@ -46,7 +46,7 @@ const config: CapacitorConfig = {
     SplashScreen: {
       launchShowDuration: 2000,
       launchAutoHide: true,
-      backgroundColor: '#01b367',
+      backgroundColor: '#033280',
       showSpinner: true,
       spinnerColor: '#ffffff',
       androidSpinnerStyle: 'small',
@@ -56,7 +56,7 @@ const config: CapacitorConfig = {
     // Local Notifications (offline alerts)
     LocalNotifications: {
       smallIcon: 'ic_notification',
-      iconColor: '#01b367',
+      iconColor: '#033280',
     },
 
     // Haptics — tactile feedback on actions
@@ -82,7 +82,7 @@ const config: CapacitorConfig = {
 
   // Android-specific
   android: {
-    backgroundColor: '#01b367',
+    backgroundColor: '#033280',
     allowMixedContent: false,
     captureInput: true,
     webContentsDebuggingEnabled: false, // Set true for dev
