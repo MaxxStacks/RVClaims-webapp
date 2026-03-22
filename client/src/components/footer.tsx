@@ -22,8 +22,8 @@ export function Footer() {
             <div className="space-y-2 text-sm text-gray-600">
               <div className="flex items-center">
                 <Phone className="mr-2" size={14} />
-                <a href="tel:8882453204" className="hover:text-primary transition-colors">
-                  (888) 245-3204
+                <a href="tel:8884432204" className="hover:text-primary transition-colors">
+                  (888) 443-2204
                 </a>
               </div>
               <div className="flex items-center">

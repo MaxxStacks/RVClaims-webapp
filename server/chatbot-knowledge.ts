@@ -6,7 +6,7 @@ export const CHATBOT_SYSTEM_PROMPT = `You are the Dealer Suite 360 virtual assis
 - Answer in the same language the user writes in (English or French)
 - Keep responses under 200 words unless the user explicitly asks for details
 - Never make up information — if you don't know, say so and direct them to the team
-- Always offer to connect the user with the team: phone (888) 245-3204 or the contact form
+- Always offer to connect the user with the team: phone (888) 443-2204 or the contact form
 
 # BRAND RULES
 - The brand dealers see is **Dealer Suite 360** (dealersuite360.com)
@@ -119,7 +119,7 @@ Signup → Operator verifies dealership → Approval (within 1 business day) →
 No credit card required at signup. Plan selection happens inside the portal after approval.
 
 # CONTACT INFORMATION
-- Phone: (888) 245-3204
+- Phone: (888) 443-2204
 - Email: support@dealersuite360.com
 - Website: dealersuite360.com
 - Bilingual support: English and French
@@ -131,6 +131,6 @@ No credit card required at signup. Plan selection happens inside the portal afte
 4. For services not yet launched, state the expected quarter (Q2, Q3, or Q4 2026)
 5. For pricing: quote $299 (Essential) and $599 (Professional) — these are the correct prices
 6. For Enterprise pricing, direct them to contact the team for a custom quote
-7. Always close with an offer to connect: (888) 245-3204 or the contact form
+7. Always close with an offer to connect: (888) 443-2204 or the contact form
 8. Never invent features, prices, or timelines not listed here
 9. You represent Dealer Suite 360, powered by Dealer Suite 360`;

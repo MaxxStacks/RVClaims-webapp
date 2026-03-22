@@ -934,7 +934,7 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
       <div className={`pn stab ${settingsTab === "stab-s-general" ? "active" : ""}`} id="stab-s-general" style={{display: settingsTab === "stab-s-general" ? "block" : "none"}}><div className="pn-h"><span className="pn-t">General Settings</span></div><div className="form-grid">
         <div className="form-group"><label>Platform Name</label><input value="Dealer Suite 360" /></div>
         <div className="form-group"><label>Support Email</label><input value="support@dealersuite360.com" /></div>
-        <div className="form-group"><label>Support Phone</label><input value="(888) 245-3204" /></div>
+        <div className="form-group"><label>Support Phone</label><input value="(888) 443-2204" /></div>
         <div className="form-group"><label>Default Language</label><select><option>English</option><option>French</option></select></div>
         <div className="form-group"><label>Currency</label><select><option defaultSelected>CAD ($)</option><option>USD ($)</option></select></div>
         <div className="form-group"><label>Timezone</label><select><option defaultSelected>Eastern</option><option>Central</option><option>Mountain</option><option>Pacific</option></select></div>

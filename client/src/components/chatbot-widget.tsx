@@ -107,8 +107,8 @@ export function ChatbotWidget() {
       const errorMessage: Message = {
         role: 'assistant',
         content: language === 'fr'
-          ? "Désolé, une erreur s'est produite. Veuillez réessayer ou nous contacter au (888) 245-3204."
-          : "Sorry, an error occurred. Please try again or contact us at (888) 245-3204.",
+          ? "Désolé, une erreur s'est produite. Veuillez réessayer ou nous contacter au (888) 443-2204."
+          : "Sorry, an error occurred. Please try again or contact us at (888) 443-2204.",
         timestamp: new Date()
       };
 
@@ -402,12 +402,12 @@ export function ChatbotWidget() {
             
             <div className="flex gap-3 mt-2 justify-center">
               <a
-                href="tel:8882453204"
+                href="tel:8884432204"
                 className="text-xs text-gray-600 hover:text-primary flex items-center gap-1"
                 data-testid="link-chat-phone"
               >
                 <Phone size={12} />
-                (888) 245-3204
+                (888) 443-2204
               </a>
               <a
                 href="mailto:support@dealersuite360.com"

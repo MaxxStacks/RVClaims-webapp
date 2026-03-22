@@ -38,7 +38,7 @@ Perfect for large dealers (6+ technicians)
 
 We also offer add-ons: Recall Processing ($199/mo), Extended Warranty Management ($299/mo), Parts Ordering Integration ($149/mo), and more.
 
-Would you like to speak with our team? Call (888) 245-3204 or click Contact below.`,
+Would you like to speak with our team? Call (888) 443-2204 or click Contact below.`,
       fr: `Nous offrons trois plans tarifaires :
 
 **Plan Essentiel - 349$/mois**
@@ -67,7 +67,7 @@ Parfait pour les grands concessionnaires (6+ techniciens)
 
 Nous offrons aussi des modules complémentaires : Traitement des rappels (199$/mois), Gestion de garantie prolongée (299$/mois), Intégration de commande de pièces (149$/mois), et plus.
 
-Souhaitez-vous parler à notre équipe? Appelez le (888) 245-3204 ou cliquez sur Contact ci-dessous.`
+Souhaitez-vous parler à notre équipe? Appelez le (888) 443-2204 ou cliquez sur Contact ci-dessous.`
     }
   },
   {
@@ -96,7 +96,7 @@ Souhaitez-vous parler à notre équipe? Appelez le (888) 245-3204 ou cliquez sur
 - RV Marketplace (Q1 2026)
 - Live Auctions (Q3 2026)
 
-Ready to increase your claim revenue? Call (888) 245-3204 or request contact below.`,
+Ready to increase your claim revenue? Call (888) 443-2204 or request contact below.`,
       fr: `Dealer Suite 360 se spécialise dans le traitement de réclamations de garantie de A à Z pour les concessionnaires VR canadiens. **Nous aidons les concessionnaires à être PAYÉS par les fabricants pour le travail de garantie** - protégeant vos profits et maximisant vos revenus.
 
 **Nos Services Principaux:**
@@ -120,7 +120,7 @@ Ready to increase your claim revenue? Call (888) 245-3204 or request contact bel
 - Marché VR (T1 2026)
 - Enchères en direct (T3 2026)
 
-Prêt à augmenter vos revenus de réclamations? Appelez le (888) 245-3204 ou demandez un contact ci-dessous.`
+Prêt à augmenter vos revenus de réclamations? Appelez le (888) 443-2204 ou demandez un contact ci-dessous.`
     }
   },
   {
@@ -144,7 +144,7 @@ We help dealerships maximize warranty claim revenue through:
 
 **The Bottom Line:** We help you get paid by manufacturers for warranty work, so you're not left holding the bill. Our dealers see significant revenue increases within the first quarter.
 
-Want to see how much revenue you're leaving on the table? Call (888) 245-3204 for a free consultation.`,
+Want to see how much revenue you're leaving on the table? Call (888) 443-2204 for a free consultation.`,
       fr: `**Comment Dealer Suite 360 Augmente Vos Revenus:**
 
 Nous aidons les concessionnaires à maximiser les revenus de réclamations de garantie grâce à :
@@ -163,7 +163,7 @@ Nous aidons les concessionnaires à maximiser les revenus de réclamations de ga
 
 **L'Essentiel:** Nous vous aidons à être payé par les fabricants pour le travail de garantie, afin que vous ne restiez pas avec la facture. Nos concessionnaires voient des augmentations significatives de revenus dès le premier trimestre.
 
-Vous voulez voir combien de revenus vous laissez sur la table? Appelez le (888) 245-3204 pour une consultation gratuite.`
+Vous voulez voir combien de revenus vous laissez sur la table? Appelez le (888) 443-2204 pour une consultation gratuite.`
     }
   },
   {
@@ -179,7 +179,7 @@ Vous voulez voir combien de revenus vous laissez sur la table? Appelez le (888) 
 
 Our track record speaks for itself. When you work with Dealer Suite 360, you're working with proven experts who help you get paid by manufacturers for warranty work.
 
-Ready to improve your approval rate? Call (888) 245-3204 or request contact below.`,
+Ready to improve your approval rate? Call (888) 443-2204 or request contact below.`,
       fr: `**Statistiques de Dealer Suite 360:**
 
 - **99,1% de taux d'approbation** - Autorisation de réclamations leader de l'industrie
@@ -190,7 +190,7 @@ Ready to improve your approval rate? Call (888) 245-3204 or request contact belo
 
 Notre bilan parle de lui-même. Lorsque vous travaillez avec Dealer Suite 360, vous travaillez avec des experts éprouvés qui vous aident à être payé par les fabricants pour le travail de garantie.
 
-Prêt à améliorer votre taux d'approbation? Appelez le (888) 245-3204 ou demandez un contact ci-dessous.`
+Prêt à améliorer votre taux d'approbation? Appelez le (888) 443-2204 ou demandez un contact ci-dessous.`
     }
   },
   {
@@ -205,7 +205,7 @@ Our B2C consumer-facing marketplace will connect RV buyers with trusted Canadian
 - Financing options
 - Connect directly with dealers
 
-**Sign up for early access now!** Contact us at (888) 245-3204 or support@dealersuite360.com
+**Sign up for early access now!** Contact us at (888) 443-2204 or support@dealersuite360.com
 
 While you wait, learn how our Claims Processing service can increase your dealership revenue today.`,
       fr: `**Marché VR - Lancement T1 2026**
@@ -217,7 +217,7 @@ Notre marché B2C pour consommateurs connectera les acheteurs de VR avec des con
 - Options de financement
 - Connexion directe avec les concessionnaires
 
-**Inscrivez-vous dès maintenant pour un accès anticipé!** Contactez-nous au (888) 245-3204 ou support@dealersuite360.com
+**Inscrivez-vous dès maintenant pour un accès anticipé!** Contactez-nous au (888) 443-2204 ou support@dealersuite360.com
 
 En attendant, découvrez comment notre service de traitement des réclamations peut augmenter les revenus de votre concessionnaire dès aujourd'hui.`
     }
@@ -237,7 +237,7 @@ Our B2B dealer-to-dealer wholesale platform will revolutionize how Canadian RV d
 
 **First auction event: January 16-18, 2026**
 
-Interested in participating? Call (888) 245-3204 for more information.
+Interested in participating? Call (888) 443-2204 for more information.
 
 In the meantime, discover how our Claims Processing service (available now) can boost your dealership's bottom line.`,
       fr: `**Enchères en Direct - Lancement T3 2026 (16-18 janvier 2026)**
@@ -252,7 +252,7 @@ Notre plateforme B2B de gros entre concessionnaires révolutionnera la façon do
 
 **Premier événement d'enchères : 16-18 janvier 2026**
 
-Intéressé à participer? Appelez le (888) 245-3204 pour plus d'informations.
+Intéressé à participer? Appelez le (888) 443-2204 pour plus d'informations.
 
 En attendant, découvrez comment notre service de traitement des réclamations (disponible maintenant) peut améliorer les résultats de votre concessionnaire.`
     }
@@ -271,7 +271,7 @@ These services will complement our industry-leading Claims Processing service to
 
 **Available Now:** Our Claims Processing service with 99.1% approval rate is helping dealerships maximize warranty claim revenue today.
 
-Want to learn more or get started with Claims Processing? Call (888) 245-3204.`,
+Want to learn more or get started with Claims Processing? Call (888) 443-2204.`,
       fr: `**Solutions de Financement et Services F&I - Lancement T2 2026**
 
 Nous élargissons nos services pour inclure :
@@ -283,7 +283,7 @@ Ces services compléteront notre service de traitement des réclamations leader 
 
 **Disponible Maintenant:** Notre service de traitement des réclamations avec un taux d'approbation de 99,1% aide les concessionnaires à maximiser les revenus de réclamations de garantie dès aujourd'hui.
 
-Vous voulez en savoir plus ou commencer avec le traitement des réclamations? Appelez le (888) 245-3204.`
+Vous voulez en savoir plus ou commencer avec le traitement des réclamations? Appelez le (888) 443-2204.`
     }
   },
   {
@@ -291,22 +291,22 @@ Vous voulez en savoir plus ou commencer avec le traitement des réclamations? Ap
     response: {
       en: `**Contact Dealer Suite 360:**
 
-📞 **Phone:** (888) 245-3204
+📞 **Phone:** (888) 443-2204
 📧 **Email:** support@dealersuite360.com
 
 We offer bilingual support in English and French.
 
-**Ready to get started?** Click the "Contact" quick action below to request a consultation, or call us directly at (888) 245-3204.
+**Ready to get started?** Click the "Contact" quick action below to request a consultation, or call us directly at (888) 443-2204.
 
 Our team is ready to show you how we can help increase your warranty claim revenue with our 99.1% approval rate.`,
       fr: `**Contacter Dealer Suite 360:**
 
-📞 **Téléphone:** (888) 245-3204
+📞 **Téléphone:** (888) 443-2204
 📧 **Courriel:** support@dealersuite360.com
 
 Nous offrons un support bilingue en anglais et en français.
 
-**Prêt à commencer?** Cliquez sur l'action rapide "Contact" ci-dessous pour demander une consultation, ou appelez-nous directement au (888) 245-3204.
+**Prêt à commencer?** Cliquez sur l'action rapide "Contact" ci-dessous pour demander une consultation, ou appelez-nous directement au (888) 443-2204.
 
 Notre équipe est prête à vous montrer comment nous pouvons aider à augmenter vos revenus de réclamations de garantie avec notre taux d'approbation de 99,1%.`
     }
@@ -334,7 +334,7 @@ Notre équipe est prête à vous montrer comment nous pouvons aider à augmenter
 6. **Advanced Analytics** - $249/month
    Deep-dive reporting & business insights
 
-Add-ons can be combined with any plan. Call (888) 245-3204 to discuss which add-ons would benefit your dealership most.`,
+Add-ons can be combined with any plan. Call (888) 443-2204 to discuss which add-ons would benefit your dealership most.`,
       fr: `**Modules Complémentaires Disponibles (Tous les plans):**
 
 1. **Traitement des Rappels** - 199$/mois
@@ -355,7 +355,7 @@ Add-ons can be combined with any plan. Call (888) 245-3204 to discuss which add-
 6. **Analytiques Avancées** - 249$/mois
    Rapports approfondis et informations commerciales
 
-Les modules complémentaires peuvent être combinés avec n'importe quel plan. Appelez le (888) 245-3204 pour discuter des modules qui bénéficieraient le plus à votre concessionnaire.`
+Les modules complémentaires peuvent être combinés avec n'importe quel plan. Appelez le (888) 443-2204 pour discuter des modules qui bénéficieraient le plus à votre concessionnaire.`
     }
   },
   {
@@ -371,7 +371,7 @@ Ready to maximize your warranty claim revenue? Here's how to get started:
    - Enterprise (Custom) - Large dealers
 
 2. **Contact Us**
-   - Call: (888) 245-3204
+   - Call: (888) 443-2204
    - Email: support@dealersuite360.com
    - Or click "Contact" below
 
@@ -383,7 +383,7 @@ Ready to maximize your warranty claim revenue? Here's how to get started:
 
 **Save 20% with annual billing!**
 
-Ready to take the next step? Click Contact below or call (888) 245-3204 now.`,
+Ready to take the next step? Click Contact below or call (888) 443-2204 now.`,
       fr: `**Démarrer avec Dealer Suite 360:**
 
 Prêt à maximiser vos revenus de réclamations de garantie? Voici comment commencer :
@@ -394,7 +394,7 @@ Prêt à maximiser vos revenus de réclamations de garantie? Voici comment comme
    - Entreprise (Personnalisé) - Grands concessionnaires
 
 2. **Contactez-Nous**
-   - Téléphone: (888) 245-3204
+   - Téléphone: (888) 443-2204
    - Courriel: support@dealersuite360.com
    - Ou cliquez sur "Contact" ci-dessous
 
@@ -406,7 +406,7 @@ Prêt à maximiser vos revenus de réclamations de garantie? Voici comment comme
 
 **Économisez 20% avec la facturation annuelle!**
 
-Prêt à passer à l'étape suivante? Cliquez sur Contact ci-dessous ou appelez le (888) 245-3204 maintenant.`
+Prêt à passer à l'étape suivante? Cliquez sur Contact ci-dessous ou appelez le (888) 443-2204 maintenant.`
     }
   }
 ];
@@ -428,7 +428,7 @@ export const defaultResponse = {
 - "When does the RV Marketplace launch?"
 
 For specific questions or to speak with our team:
-📞 (888) 245-3204
+📞 (888) 443-2204
 📧 support@dealersuite360.com
 
 What would you like to know?`,
@@ -448,7 +448,7 @@ What would you like to know?`,
 - "Quand le Marché VR sera-t-il lancé?"
 
 Pour des questions spécifiques ou pour parler avec notre équipe:
-📞 (888) 245-3204
+📞 (888) 443-2204
 📧 support@dealersuite360.com
 
 Que souhaitez-vous savoir?`

@@ -61,19 +61,20 @@ export function DepartmentDirectory() {
               <h3 className="text-lg font-semibold text-primary mb-4 border-b border-border pb-2">
                 {group.title}
               </h3>
-              <div className="space-y-3">
+              <div className="space-y-2">
                 {group.departments.map((dept) => (
-                  <div key={dept.key} className="flex items-center justify-between p-3 rounded-lg hover:bg-muted/50 transition-colors">
-                    <span className="font-medium text-sm" data-testid={`text-department-name-${dept.key}`}>
+                  <div key={dept.key} className="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-muted/50 transition-colors">
+                    <span className="font-medium text-sm text-foreground" data-testid={`text-department-name-${dept.key}`}>
                       {t(`departmentDirectory.departments.${dept.key}`)}
                     </span>
                     <a
                       href={`mailto:${dept.email}`}
-                      className="flex items-center gap-2 text-primary hover:text-primary/80 text-sm font-medium transition-colors"
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-primary/8 border border-primary/20 text-primary hover:bg-primary hover:text-white text-xs font-semibold transition-all duration-200"
                       data-testid={`link-email-${dept.key}`}
+                      title={dept.email}
                     >
-                      <Mail className="w-4 h-4" />
-                      {dept.email}
+                      <Mail className="w-3.5 h-3.5" />
+                      Send Email
                     </a>
                   </div>
                 ))}
@@ -90,8 +91,8 @@ export function DepartmentDirectory() {
           <p className="text-sm text-muted-foreground mb-2">
             For urgent matters or general support, call our main line:
           </p>
-          <a href="tel:8882453204" className="text-lg font-bold text-primary hover:text-primary/80 transition-colors">
-            (888) 245-3204
+          <a href="tel:8884432204" className="text-lg font-bold text-primary hover:text-primary/80 transition-colors">
+            (888) 443-2204
           </a>
           <p className="text-xs text-muted-foreground mt-2">
             Available Monday-Friday, 8:00 AM - 6:00 PM EST
