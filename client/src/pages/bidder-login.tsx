@@ -82,10 +82,20 @@ export default function BidderLogin() {
   ];
 
   return (
+    <>
+    <style>{`
+      @media (max-width: 1023px) {
+        .blp-left { display: none !important; }
+        .blp-right { width: 100% !important; }
+        .blp-header { padding: 14px 24px !important; }
+        .blp-body { padding: 32px 24px !important; }
+        .blp-row { flex-direction: column !important; }
+      }
+    `}</style>
     <div style={{ fontFamily: "'Inter', -apple-system, sans-serif", minHeight: "100vh", display: "flex" }}>
 
       {/* ── LEFT PANEL ── */}
-      <div style={{
+      <div className="blp-left" style={{
         width: "45%", background: "linear-gradient(145deg, #061b48 0%, #08235d 35%, #0c2f75 100%)",
         color: "white", padding: "48px 56px", display: "flex", flexDirection: "column",
         justifyContent: "center", position: "relative", overflow: "hidden",
@@ -157,10 +167,10 @@ export default function BidderLogin() {
       </div>
 
       {/* ── RIGHT PANEL ── */}
-      <div style={{ width: "55%", background: "#fff", display: "flex", flexDirection: "column" }}>
+      <div className="blp-right" style={{ width: "55%", background: "#fff", display: "flex", flexDirection: "column" }}>
 
         {/* Header */}
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 48px", borderBottom: "1px solid #f0f0f0" }}>
+        <div className="blp-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 48px", borderBottom: "1px solid #f0f0f0" }}>
           <Link href="/">
             <img src={language === "en" ? logoEN : logoFR} alt="Dealer Suite 360" style={{ height: "72px", width: "auto" }} />
           </Link>
@@ -170,7 +180,7 @@ export default function BidderLogin() {
         </div>
 
         {/* Form area */}
-        <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "40px 48px" }}>
+        <div className="blp-body" style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "40px 48px" }}>
           <div style={{ width: "100%", maxWidth: "420px" }}>
 
             {/* ── REGISTER MODE ── */}
@@ -183,7 +193,7 @@ export default function BidderLogin() {
 
                 <form onSubmit={handleRegister}>
                   {/* First / Last name */}
-                  <div style={{ display: "flex", gap: "12px", marginBottom: "16px" }}>
+                  <div className="blp-row" style={{ display: "flex", gap: "12px", marginBottom: "16px" }}>
                     <div style={{ flex: 1 }}>
                       <label style={labelStyle}>First Name</label>
                       <input
@@ -210,7 +220,7 @@ export default function BidderLogin() {
                   </div>
 
                   {/* Phone + Province */}
-                  <div style={{ display: "flex", gap: "12px", marginBottom: "16px" }}>
+                  <div className="blp-row" style={{ display: "flex", gap: "12px", marginBottom: "16px" }}>
                     <div style={{ flex: 1 }}>
                       <label style={labelStyle}>Phone</label>
                       <input
@@ -231,7 +241,7 @@ export default function BidderLogin() {
                   </div>
 
                   {/* Password / Confirm */}
-                  <div style={{ display: "flex", gap: "12px", marginBottom: "20px" }}>
+                  <div className="blp-row" style={{ display: "flex", gap: "12px", marginBottom: "20px" }}>
                     <div style={{ flex: 1 }}>
                       <label style={labelStyle}>Password</label>
                       <div style={{ position: "relative" }}>
@@ -352,5 +362,6 @@ export default function BidderLogin() {
         </div>
       </div>
     </div>
+    </>
   );
 }

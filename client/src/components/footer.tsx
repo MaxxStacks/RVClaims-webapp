@@ -40,6 +40,7 @@ export function Footer() {
             </div>
           </div>
 
+          {/* Services */}
           <div className="space-y-4">
             <h3 className="font-semibold" data-testid="text-footer-services-title">
               {t('footer.servicesTitle')}
@@ -51,9 +52,9 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link 
-                  href="/financing" 
-                  className="hover:text-primary transition-colors inline-flex items-center gap-1 flex-wrap" 
+                <Link
+                  href="/financing"
+                  className="hover:text-primary transition-colors inline-flex items-center gap-1 flex-wrap"
                   data-testid="link-footer-financing"
                 >
                   {t('mainServices.financing.title')}
@@ -61,9 +62,9 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link 
-                  href="/fi-services" 
-                  className="hover:text-primary transition-colors inline-flex items-center gap-1 flex-wrap" 
+                <Link
+                  href="/fi-services"
+                  className="hover:text-primary transition-colors inline-flex items-center gap-1 flex-wrap"
                   data-testid="link-footer-fi-services"
                 >
                   {t('mainServices.fiServices.title')}
@@ -81,52 +82,19 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="hover:text-primary transition-colors" data-testid="link-footer-integration">
-                  {t('footer.integration')}
-                </Link>
-              </li>
-              <li>
-                <Link href="/contact" className="hover:text-primary transition-colors" data-testid="link-footer-consultation">
-                  {t('footer.consultation')}
-                </Link>
-              </li>
-              <li>
-                <Link href="/contact" className="hover:text-primary transition-colors" data-testid="link-footer-training">
-                  {t('footer.training')}
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  href="/network-marketplace" 
-                  className="text-primary font-semibold animate-pulse inline-flex items-center gap-1 flex-wrap hover:text-primary/80 transition-colors" 
-                  data-testid="link-footer-sign-up"
-                >
-                  Sign Up
-                  <ServiceBadge quarter="Q1" />
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  href="/live-auctions" 
-                  className="text-primary font-semibold inline-flex items-center gap-1 flex-wrap hover:text-primary/80 transition-colors" 
+                <Link
+                  href="/live-auctions"
+                  className="text-primary font-semibold inline-flex items-center gap-1 flex-wrap hover:text-primary/80 transition-colors"
                   data-testid="link-footer-live-auctions"
                 >
                   {t('navigation.liveAuctions')}
                   <ServiceBadge quarter="Q3" />
                 </Link>
               </li>
-              <li>
-                <Link 
-                  href="/pricing" 
-                  className="hover:text-primary transition-colors" 
-                  data-testid="link-footer-pricing"
-                >
-                  {t('navigation.pricing')}
-                </Link>
-              </li>
             </ul>
           </div>
 
+          {/* Company */}
           <div className="space-y-4">
             <h3 className="font-semibold" data-testid="text-footer-company-title">
               {t('footer.companyTitle')}
@@ -152,9 +120,25 @@ export function Footer() {
                   {t('footer.testimonials')}
                 </Link>
               </li>
+              <li>
+                <Link
+                  href="/network-marketplace"
+                  className="text-primary font-semibold animate-pulse inline-flex items-center gap-1 flex-wrap hover:text-primary/80 transition-colors"
+                  data-testid="link-footer-sign-up"
+                >
+                  Sign Up
+                  <ServiceBadge quarter="Q1" />
+                </Link>
+              </li>
+              <li>
+                <Link href="/pricing" className="hover:text-primary transition-colors" data-testid="link-footer-pricing">
+                  {t('navigation.pricing')}
+                </Link>
+              </li>
             </ul>
           </div>
 
+          {/* Resources */}
           <div className="space-y-4">
             <h3 className="font-semibold" data-testid="text-footer-resources-title">
               {t('footer.resourcesTitle')}
@@ -180,9 +164,15 @@ export function Footer() {
                   {t('footer.knowledgeBase')}
                 </Link>
               </li>
+              <li>
+                <Link href="/contact" className="hover:text-primary transition-colors" data-testid="link-footer-training">
+                  {t('footer.training')}
+                </Link>
+              </li>
             </ul>
           </div>
 
+          {/* Support */}
           <div className="space-y-4">
             <h3 className="font-semibold" data-testid="text-footer-support-title">
               {t('footer.supportTitle')}
@@ -206,6 +196,16 @@ export function Footer() {
               <li>
                 <Link href="/contact" className="hover:text-primary transition-colors" data-testid="link-footer-system-status">
                   {t('footer.systemStatus')}
+                </Link>
+              </li>
+              <li>
+                <Link href="/contact" className="hover:text-primary transition-colors" data-testid="link-footer-integration">
+                  {t('footer.integration')}
+                </Link>
+              </li>
+              <li>
+                <Link href="/contact" className="hover:text-primary transition-colors" data-testid="link-footer-consultation">
+                  {t('footer.consultation')}
                 </Link>
               </li>
             </ul>

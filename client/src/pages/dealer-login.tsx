@@ -49,9 +49,18 @@ export default function DealerLogin() {
   };
 
   return (
+    <>
+    <style>{`
+      @media (max-width: 1023px) {
+        .dlp-left { display: none !important; }
+        .dlp-right { width: 100% !important; }
+        .dlp-header { padding: 14px 24px !important; }
+        .dlp-body { padding: 32px 24px !important; }
+      }
+    `}</style>
     <div style={{ fontFamily: "'Inter', -apple-system, sans-serif", minHeight: "100vh", display: "flex" }}>
       {/* Left Panel */}
-      <div style={{
+      <div className="dlp-left" style={{
         width: "45%", background: "linear-gradient(145deg, #061b48 0%, #08235d 35%, #0c2f75 100%)",
         color: "white", padding: "48px 56px", display: "flex", flexDirection: "column", justifyContent: "center",
         position: "relative", overflow: "hidden",
@@ -116,9 +125,9 @@ export default function DealerLogin() {
       </div>
 
       {/* Right Panel */}
-      <div style={{ width: "55%", background: "#fff", display: "flex", flexDirection: "column" }}>
+      <div className="dlp-right" style={{ width: "55%", background: "#fff", display: "flex", flexDirection: "column" }}>
         {/* Header */}
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 48px", borderBottom: "1px solid #f0f0f0" }}>
+        <div className="dlp-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 48px", borderBottom: "1px solid #f0f0f0" }}>
           <Link href="/">
             <img src={language === "en" ? logoEN : logoFR} alt="Dealer Suite 360" style={{ height: "72px", width: "auto" }} />
           </Link>
@@ -126,7 +135,7 @@ export default function DealerLogin() {
         </div>
 
         {/* Login Area */}
-        <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "40px 48px" }}>
+        <div className="dlp-body" style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "40px 48px" }}>
           <div style={{ width: "100%", maxWidth: "400px" }}>
             {loginMethod === "options" ? (
               <>
@@ -232,5 +241,6 @@ export default function DealerLogin() {
         </div>
       </div>
     </div>
+    </>
   );
 }

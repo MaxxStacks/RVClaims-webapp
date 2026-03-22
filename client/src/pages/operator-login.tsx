@@ -45,9 +45,18 @@ export default function OperatorLogin() {
   };
 
   return (
+    <>
+    <style>{`
+      @media (max-width: 1023px) {
+        .olp-left { display: none !important; }
+        .olp-right { width: 100% !important; }
+        .olp-header { padding: 14px 24px !important; }
+        .olp-body { padding: 32px 24px !important; }
+      }
+    `}</style>
     <div style={{ fontFamily: "'Inter', -apple-system, sans-serif", minHeight: "100vh", display: "flex" }}>
       {/* Left Panel */}
-      <div style={{
+      <div className="olp-left" style={{
         width: "45%", background: "linear-gradient(145deg, #061b48 0%, #08235d 35%, #0c2f75 100%)",
         color: "white", padding: "48px 56px", display: "flex", flexDirection: "column", justifyContent: "center",
         position: "relative", overflow: "hidden",
@@ -107,9 +116,9 @@ export default function OperatorLogin() {
       </div>
 
       {/* Right Panel */}
-      <div style={{ width: "55%", background: "#fff", display: "flex", flexDirection: "column" }}>
+      <div className="olp-right" style={{ width: "55%", background: "#fff", display: "flex", flexDirection: "column" }}>
         {/* Header */}
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 48px", borderBottom: "1px solid #f0f0f0" }}>
+        <div className="olp-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 48px", borderBottom: "1px solid #f0f0f0" }}>
           <Link href="/">
             <img src={language === "en" ? logoEN : logoFR} alt="Dealer Suite 360" style={{ height: "72px", width: "auto" }} />
           </Link>
@@ -117,7 +126,7 @@ export default function OperatorLogin() {
         </div>
 
         {/* Login Area */}
-        <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "40px 48px" }}>
+        <div className="olp-body" style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "40px 48px" }}>
           <div style={{ width: "100%", maxWidth: "380px", textAlign: "center" }}>
             {!showForm ? (
               <>
@@ -204,5 +213,6 @@ export default function OperatorLogin() {
         </div>
       </div>
     </div>
+    </>
   );
 }
