@@ -50,7 +50,7 @@ export function Navigation() {
                 alt="Dealer Suite 360"
                 width={341}
                 height={72}
-                style={{ height: "72px", width: "auto" }}
+                style={{ height: "44px", width: "auto" }}
                 data-testid="img-header-logo"
               />
             </Link>

@@ -20,7 +20,7 @@ export function Footer() {
                   alt="Dealer Suite 360"
                   width={512}
                   height={108}
-                  style={{ height: "72px", width: "auto" }}
+                  style={{ height: "52px", width: "auto" }}
                   className="cursor-pointer"
                   data-testid="img-footer-logo"
                 />
