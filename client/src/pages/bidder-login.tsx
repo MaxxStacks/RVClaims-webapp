@@ -181,7 +181,7 @@ export default function BidderLogin() {
         {/* Header */}
         <div className="blp-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 48px", borderBottom: "1px solid #f0f0f0" }}>
           <Link href="/">
-            <img src={language === "en" ? logoEN : logoFR} alt="Dealer Suite 360" style={{ height: "72px", width: "auto" }} />
+            <img src={language === "en" ? logoEN : logoFR} alt="Dealer Suite 360" style={{ height: "43px", width: "auto" }} />
           </Link>
           <Link href="/live-auctions" style={{ fontSize: "13px", color: "#666", textDecoration: "none" }}>
             ← Back to Live Auctions

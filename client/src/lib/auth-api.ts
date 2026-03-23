@@ -125,7 +125,7 @@ export async function register(payload: RegisterPayload): Promise<AuthResponse> 
 export async function login(
   email: string,
   password: string,
-  portal?: "dealer" | "operator" | "customer" | "bidder"
+  portal?: "dealer" | "operator" | "client" | "bidder"
 ): Promise<AuthResponse> {
   const data = await apiFetch<AuthResponse>("/api/auth/login", {
     method: "POST",

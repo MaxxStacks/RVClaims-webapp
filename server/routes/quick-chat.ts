@@ -18,7 +18,7 @@ router.get("/:dealershipId/:customerId", requireAuth, async (req: Request, res: 
     const { dealershipId, customerId } = req.params;
 
     // Access check
-    if (req.user!.role === "customer" && req.user!.id !== customerId) {
+    if (req.user!.role === "client" && req.user!.id !== customerId) {
       return res.status(403).json({ success: false, message: "Access denied" });
     }
     if (DEALER_ROLES.includes(req.user!.role as any) && !canAccessDealership(dealershipId, req.user)) {
@@ -63,7 +63,7 @@ router.post("/", requireAuth, async (req: Request, res: Response) => {
     const senderId = req.user!.id;
 
     // Access check
-    if (req.user!.role === "customer" && req.user!.id !== customerId) {
+    if (req.user!.role === "client" && req.user!.id !== customerId) {
       return res.status(403).json({ success: false, message: "Access denied" });
     }
     if (DEALER_ROLES.includes(req.user!.role as any) && !canAccessDealership(dealershipId, req.user)) {

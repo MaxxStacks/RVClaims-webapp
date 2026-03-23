@@ -150,7 +150,7 @@ async function seed() {
     console.log("  ⏭️  Dealer staff already exists");
   }
 
-  // ==================== CUSTOMER ====================
+  // ==================== CLIENT ====================
   const [existingCustomer] = await db
     .select()
     .from(users)
@@ -158,21 +158,21 @@ async function seed() {
     .limit(1);
 
   if (!existingCustomer) {
-    const passwordHash = await hashPassword("Customer@2026!");
+    const passwordHash = await hashPassword("Client@2026!");
     await db.insert(users).values({
       email: "robert.martin@email.com",
       passwordHash,
       firstName: "Robert",
       lastName: "Martin",
       phone: "(819) 555-0456",
-      role: "customer",
+      role: "client",
       dealershipId,
       language: "en",
       isActive: true,
     });
-    console.log("  ✅ Customer created: robert.martin@email.com / Customer@2026!");
+    console.log("  ✅ Client created: robert.martin@email.com / Client@2026!");
   } else {
-    console.log("  ⏭️  Customer already exists");
+    console.log("  ⏭️  Client already exists");
   }
 
   // ==================== BIDDER ====================
@@ -250,7 +250,7 @@ async function seed() {
   console.log("  Operator Staff:  staff@dealersuite360.com   / Staff@2026!    → /operator");
   console.log("  Dealer Owner:    mike@smithsrv.ca           / Dealer@2026!   → /dealer");
   console.log("  Dealer Staff:    jen@smithsrv.ca            / Staff@2026!    → /dealer");
-  console.log("  Customer:        robert.martin@email.com    / Customer@2026! → /client");
+  console.log("  Client:          robert.martin@email.com    / Client@2026!   → /client");
   console.log("  Bidder:          bidder@email.com           / Bidder@2026!   → /bidder");
   console.log("");
 

@@ -39,7 +39,7 @@ router.post("/login", validateBody(loginSchema), async (req: Request, res: Respo
     if (portalType === "dealer" && !DEALER_ROLES.includes(user.role as any)) {
       return res.status(401).json({ success: false, message: "Invalid credentials" });
     }
-    if (portalType === "customer" && user.role !== "customer") {
+    if (portalType === "client" && user.role !== "client") {
       return res.status(401).json({ success: false, message: "Invalid credentials" });
     }
     if (portalType === "bidder" && user.role !== "bidder") {
@@ -75,7 +75,7 @@ router.post("/login", validateBody(loginSchema), async (req: Request, res: Respo
     // Determine redirect based on role
     let redirectTo = "/dealer/dashboard";
     if (OPERATOR_ROLES.includes(user.role as any)) redirectTo = "/operator/dashboard";
-    else if (user.role === "customer") redirectTo = "/client/dashboard";
+    else if (user.role === "client") redirectTo = "/client/dashboard";
     else if (user.role === "bidder") redirectTo = "/bidder/dashboard";
 
     res.json({
@@ -168,7 +168,7 @@ router.post("/register", validateBody(registerSchema), async (req: Request, res:
 
     let redirectTo = "/dealer/dashboard";
     if (OPERATOR_ROLES.includes(newUser.role as any)) redirectTo = "/operator/dashboard";
-    else if (newUser.role === "customer") redirectTo = "/client/dashboard";
+    else if (newUser.role === "client") redirectTo = "/client/dashboard";
     else if (newUser.role === "bidder") redirectTo = "/bidder/dashboard";
 
     res.status(201).json({

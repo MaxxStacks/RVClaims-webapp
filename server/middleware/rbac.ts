@@ -90,8 +90,8 @@ export function scopeToDealership(req: Request, res: Response, next: NextFunctio
   if (OPERATOR_ROLES.includes(req.user.role)) {
     // Operators can optionally filter by dealership via query param
     req.scopedDealershipId = (req.query.dealershipId as string) || null;
-  } else if (DEALER_ROLES.includes(req.user.role) || req.user.role === "customer") {
-    // Dealers and customers ALWAYS scoped to their dealership
+  } else if (DEALER_ROLES.includes(req.user.role) || req.user.role === "client") {
+    // Dealers and clients ALWAYS scoped to their dealership
     if (!req.user.dealershipId) {
       return res.status(403).json({ success: false, message: "No dealership assigned" });
     }

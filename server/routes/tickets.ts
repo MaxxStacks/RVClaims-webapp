@@ -21,7 +21,7 @@ router.get("/", requireAuth, scopeToDealership, async (req: Request, res: Respon
     if (req.query.category) conditions.push(eq(tickets.category, req.query.category as any));
 
     // Customers only see their own tickets
-    if (req.user!.role === "customer") {
+    if (req.user!.role === "client") {
       conditions.push(eq(tickets.customerId, req.user!.id));
     }
 
@@ -45,7 +45,7 @@ router.post("/", requireAuth, scopeToDealership, validateBody(insertTicketSchema
         ...req.body,
         ticketNumber,
         dealershipId,
-        customerId: req.user!.role === "customer" ? req.user!.id : req.body.customerId,
+        customerId: req.user!.role === "client" ? req.user!.id : req.body.customerId,
       })
       .returning();
 
@@ -63,7 +63,7 @@ router.get("/:id", requireAuth, async (req: Request, res: Response) => {
     if (!ticket) return res.status(404).json({ success: false, message: "Ticket not found" });
     if (!canAccessDealership(ticket.dealershipId, req.user)) {
       // Customers can only see their own
-      if (req.user!.role === "customer" && ticket.customerId !== req.user!.id) {
+      if (req.user!.role === "client" && ticket.customerId !== req.user!.id) {
         return res.status(403).json({ success: false, message: "Access denied" });
       }
     }
@@ -71,7 +71,7 @@ router.get("/:id", requireAuth, async (req: Request, res: Response) => {
     // Get messages — filter internal notes for customers
     let messages = await db.select().from(ticketMessages).where(eq(ticketMessages.ticketId, ticket.id)).orderBy(ticketMessages.createdAt);
 
-    if (req.user!.role === "customer") {
+    if (req.user!.role === "client") {
       messages = messages.filter((m) => !m.isInternal);
     }
 

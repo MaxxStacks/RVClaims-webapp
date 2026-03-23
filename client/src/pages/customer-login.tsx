@@ -21,7 +21,7 @@ export default function CustomerLogin() {
     setIsLoading(true);
     setError("");
     try {
-      const result = await login(email, password, "customer");
+      const result = await login(email, password, "client");
       if (result.success) {
         setLocation("/client/dashboard");
       } else {
@@ -98,7 +98,7 @@ export default function CustomerLogin() {
         {/* Header */}
         <div className="clp-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 48px", borderBottom: "1px solid #f0f0f0" }}>
           <Link href="/">
-            <img src={language === "en" ? logoEN : logoFR} alt="Dealer Suite 360" style={{ height: "72px", width: "auto" }} />
+            <img src={language === "en" ? logoEN : logoFR} alt="Dealer Suite 360" style={{ height: "43px", width: "auto" }} />
           </Link>
           <Link href="/" style={{ fontSize: "13px", color: "#666", textDecoration: "none" }}>← Back to site</Link>
         </div>
@@ -106,7 +106,7 @@ export default function CustomerLogin() {
         {/* Login Area */}
         <div className="clp-body" style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "40px 48px" }}>
           <div style={{ width: "100%", maxWidth: "400px" }}>
-            <div style={{ fontSize: "26px", fontWeight: 700, color: "#111", marginBottom: "4px" }}>Customer Sign In</div>
+            <div style={{ fontSize: "26px", fontWeight: 700, color: "#111", marginBottom: "4px" }}>Client Sign In</div>
             <p style={{ fontSize: "14px", color: "#888", marginBottom: "32px" }}>Access your RV owner portal</p>
 
             <form onSubmit={handleLogin}>

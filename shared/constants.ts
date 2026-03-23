@@ -1,16 +1,16 @@
 // shared/constants.ts — Role permissions, sequence generators, platform defaults
 
-export type UserRole = "operator_admin" | "operator_staff" | "dealer_owner" | "dealer_staff" | "customer" | "bidder";
+export type UserRole = "operator_admin" | "operator_staff" | "dealer_owner" | "dealer_staff" | "client" | "bidder";
 
 export const OPERATOR_ROLES: UserRole[] = ["operator_admin", "operator_staff"];
 export const DEALER_ROLES: UserRole[] = ["dealer_owner", "dealer_staff"];
-export const ALL_ROLES: UserRole[] = ["operator_admin", "operator_staff", "dealer_owner", "dealer_staff", "customer", "bidder"];
+export const ALL_ROLES: UserRole[] = ["operator_admin", "operator_staff", "dealer_owner", "dealer_staff", "client", "bidder"];
 
 // Permission matrix — what each role can access
 export const PERMISSIONS: Record<UserRole, {
   canAccessOperatorPortal: boolean;
   canAccessDealerPortal: boolean;
-  canAccessCustomerPortal: boolean;
+  canAccessClientPortal: boolean;
   canAccessBidderPortal: boolean;
   canManageBilling: boolean;
   canManageStaff: boolean;
@@ -24,7 +24,7 @@ export const PERMISSIONS: Record<UserRole, {
   operator_admin: {
     canAccessOperatorPortal: true,
     canAccessDealerPortal: false,
-    canAccessCustomerPortal: false,
+    canAccessClientPortal: false,
     canAccessBidderPortal: false,
     canManageBilling: true,
     canManageStaff: true,
@@ -38,7 +38,7 @@ export const PERMISSIONS: Record<UserRole, {
   operator_staff: {
     canAccessOperatorPortal: true,
     canAccessDealerPortal: false,
-    canAccessCustomerPortal: false,
+    canAccessClientPortal: false,
     canAccessBidderPortal: false,
     canManageBilling: false,
     canManageStaff: false,
@@ -52,7 +52,7 @@ export const PERMISSIONS: Record<UserRole, {
   dealer_owner: {
     canAccessOperatorPortal: false,
     canAccessDealerPortal: true,
-    canAccessCustomerPortal: false,
+    canAccessClientPortal: false,
     canAccessBidderPortal: false,
     canManageBilling: true,
     canManageStaff: true,
@@ -66,7 +66,7 @@ export const PERMISSIONS: Record<UserRole, {
   dealer_staff: {
     canAccessOperatorPortal: false,
     canAccessDealerPortal: true,
-    canAccessCustomerPortal: false,
+    canAccessClientPortal: false,
     canAccessBidderPortal: false,
     canManageBilling: false,
     canManageStaff: false,
@@ -77,10 +77,10 @@ export const PERMISSIONS: Record<UserRole, {
     canCreateInvoices: false,
     canViewFinancials: false,
   },
-  customer: {
+  client: {
     canAccessOperatorPortal: false,
     canAccessDealerPortal: false,
-    canAccessCustomerPortal: true,
+    canAccessClientPortal: true,
     canAccessBidderPortal: false,
     canManageBilling: false,
     canManageStaff: false,
@@ -94,7 +94,7 @@ export const PERMISSIONS: Record<UserRole, {
   bidder: {
     canAccessOperatorPortal: false,
     canAccessDealerPortal: false,
-    canAccessCustomerPortal: false,
+    canAccessClientPortal: false,
     canAccessBidderPortal: true,
     canManageBilling: false,
     canManageStaff: false,

@@ -71,7 +71,7 @@ const dealerTabs: NavTab[] = [
   },
 ];
 
-// === CUSTOMER TABS ===
+// === CLIENT TABS ===
 const customerTabs: NavTab[] = [
   {
     id: 'dashboard',
@@ -103,11 +103,11 @@ const customerTabs: NavTab[] = [
 const tabConfigs: Record<string, NavTab[]> = {
   operator: operatorTabs,
   dealer: dealerTabs,
-  customer: customerTabs,
+  client: customerTabs,
 };
 
 interface MobileBottomNavProps {
-  portalType: 'operator' | 'dealer' | 'customer';
+  portalType: 'operator' | 'dealer' | 'client';
   activePage: string;
   onNavigate: (pageId: string) => void;
   parents?: Record<string, string>;  // page parent map for highlighting

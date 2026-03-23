@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { Mail, Eye, EyeOff, ArrowLeft, FileText, TrendingUp, Users, Building2 } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
-import { Link } from "wouter";
+import { useAuth } from "@/hooks/use-auth";
+import { Link, useLocation } from "wouter";
 import logoEN from "@assets/DS360_logo_en.png";
 import logoFR from "@assets/DS360_logo_fr.png";
 
 export default function OperatorLogin() {
   const { language } = useLanguage();
+  const { login } = useAuth();
+  const [, setLocation] = useLocation();
   const [showForm, setShowForm] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,8 +22,12 @@ export default function OperatorLogin() {
     setIsLoading(true);
     setError("");
     try {
-      // TODO: Implement real auth — only accept operator_admin and operator_staff roles
-      console.log("Operator login:", { email, password });
+      const result = await login(email, password, "operator");
+      if (result.success) {
+        setLocation("/operator/dashboard");
+      } else {
+        setError(result.message || "Invalid credentials");
+      }
     } catch {
       setError("Invalid credentials");
     }
@@ -120,7 +127,7 @@ export default function OperatorLogin() {
         {/* Header */}
         <div className="olp-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 48px", borderBottom: "1px solid #f0f0f0" }}>
           <Link href="/">
-            <img src={language === "en" ? logoEN : logoFR} alt="Dealer Suite 360" style={{ height: "72px", width: "auto" }} />
+            <img src={language === "en" ? logoEN : logoFR} alt="Dealer Suite 360" style={{ height: "43px", width: "auto" }} />
           </Link>
           <Link href="/" style={{ fontSize: "13px", color: "#666", textDecoration: "none" }}>← Back to site</Link>
         </div>

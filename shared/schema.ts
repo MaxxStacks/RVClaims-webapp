@@ -9,8 +9,8 @@ import { z } from "zod";
 
 // ==================== ROLE & STATUS ENUMS ====================
 
-export const USER_ROLES = ["operator_admin", "operator_staff", "dealer_owner", "dealer_staff", "customer", "bidder"] as const;
-export const INVITE_ROLES = ["dealer_owner", "dealer_staff", "customer"] as const;
+export const USER_ROLES = ["operator_admin", "operator_staff", "dealer_owner", "dealer_staff", "client", "bidder"] as const;
+export const INVITE_ROLES = ["dealer_owner", "dealer_staff", "client"] as const;
 export const DEALERSHIP_PLANS = ["plan_a", "plan_b", "custom"] as const;
 export const DEALERSHIP_STATUSES = ["active", "suspended", "pending"] as const;
 export const RV_TYPES = ["travel_trailer", "fifth_wheel", "class_a", "class_c", "toy_hauler", "pop_up", "van_camper", "truck_camper"] as const;
@@ -33,7 +33,7 @@ export const WARRANTY_PLAN_STATUSES = ["active", "expiring", "expired", "cancell
 export const PARTS_ORDER_STATUSES = ["requested", "sourcing", "quoted", "ordered", "shipped", "delivered"] as const;
 export const PARTS_PRIORITIES = ["normal", "urgent"] as const;
 export const TICKET_CATEGORIES = ["claim_warranty", "billing", "parts_order", "general", "warranty_expiry", "fi_protection", "feedback"] as const;
-export const TICKET_STATUSES = ["open", "waiting_dealer", "waiting_customer", "action_needed", "resolved", "closed"] as const;
+export const TICKET_STATUSES = ["open", "waiting_dealer", "waiting_client", "action_needed", "resolved", "closed"] as const;
 export const NOTIFICATION_TYPES = ["claim_update", "invoice", "payment", "financing", "parts", "fi", "ticket", "system", "announcement"] as const;
 export const FEATURE_PRIORITIES = ["low", "medium", "high"] as const;
 export const FEATURE_STATUSES = ["backlog", "under_review", "planned", "in_progress", "completed"] as const;
@@ -570,7 +570,7 @@ export const notificationsRelations = relations(notifications, ({ one }) => ({
 export const loginSchema = z.object({
   email: z.string().email(),
   password: z.string().min(8),
-  portalType: z.enum(["operator", "dealer", "customer", "bidder"]).optional(),
+  portalType: z.enum(["operator", "dealer", "client", "bidder"]).optional(),
 });
 
 export const registerSchema = z.object({
