@@ -8,6 +8,8 @@ import ds360Icon from '@assets/ds360_favicon.png';
 import { MobileBottomNav, OfflineBanner } from '../components/MobileBottomNav';
 import { DealerMarketplacePages } from '../components/DealerMarketplace';
 import { DealerShowcasePages } from '../components/PublicAuctionPages';
+import { apiFetch } from '@/lib/api';
+import { wsClient } from '@/lib/websocket';
 
 export default function DealerPortal() {
   const [activePage, setActivePage] = useState('dashboard');
@@ -21,9 +23,37 @@ export default function DealerPortal() {
   const [dclTab, setDclTab] = useState('dcl-current');
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   // Show owner-only items to everyone when not yet authenticated (prototype mode)
   const isDealerOwner = !user || user.role === 'dealer_owner';
+
+  // ─── API data state ────────────────────────────────────────────────────────
+  const [dlrClaims, setDlrClaims] = useState<any[]>([]);
+  const [dlrUnits, setDlrUnits] = useState<any[]>([]);
+  const [dlrInvoices, setDlrInvoices] = useState<any[]>([]);
+  const [dlrStaff, setDlrStaff] = useState<any[]>([]);
+  const [dlrTickets, setDlrTickets] = useState<any[]>([]);
+  const [dlrNotifications, setDlrNotifications] = useState<any[]>([]);
+  const [dlrPartsOrders, setDlrPartsOrders] = useState<any[]>([]);
+  const [dataError, setDataError] = useState<string | null>(null);
+
+  // ─── Selected IDs ──────────────────────────────────────────────────────────
+  const [selectedClaimId, setSelectedClaimId] = useState<string | null>(null);
+  const [selectedUnitId, setSelectedUnitId] = useState<string | null>(null);
+  const [selectedTicketId, setSelectedTicketId] = useState<string | null>(null);
+
+  // ─── Add unit form ─────────────────────────────────────────────────────────
+  const [addUnitForm, setAddUnitForm] = useState({ vin: '', year: '', manufacturer: '', model: '', stockNumber: '' });
+  const [addUnitSaving, setAddUnitSaving] = useState(false);
+
+  // ─── Invite customer form ──────────────────────────────────────────────────
+  const [inviteEmail, setInviteEmail] = useState('');
+  const [inviteSaving, setInviteSaving] = useState(false);
+
+  // ─── Upload form ───────────────────────────────────────────────────────────
+  const [uploadUnitId, setUploadUnitId] = useState('');
+  const [uploadFiles, setUploadFiles] = useState<File[]>([]);
+  const [uploadSaving, setUploadSaving] = useState(false);
 
   const titles: Record<string, [string, string]> = {dashboard:['Dashboard','Smith\u0027s RV Centre'],upload:['Upload Photos','Push to Claim'],claims:['My Claims','14 total claims'],'claim-detail':['CLM-2026-0248','Warranty \u00b7 2024 Jayco Jay Flight'],units:['My Units','12 units'],'add-unit':['Add New Unit','Register unit'],'unit-detail':['2024 Jayco Jay Flight 264BH','VIN: 1UJBJ0BN8M1TJ4K1'],
 'svc-financing':['Financing','My financing requests'],'svc-financing-det':['FIN-0023','Daniel Tremblay'],'svc-financing-new':['Request Financing','Submit to lenders'],
@@ -36,6 +66,101 @@ staff:['Staff Management','Manage team access'],'add-staff':['Add Staff','Invite
   const parents: Record<string, string> = {'claim-detail':'claims','unit-detail':'units','add-unit':'units','invite-customer':'customers','add-staff':'staff','svc-financing-det':'svc-financing','svc-financing-new':'svc-financing','svc-fi-new':'svc-fi','svc-parts-new':'svc-parts','cust-ticket-detail':'cust-tickets','mkt-listing-view':'mkt-browse','mkt-post-unit':'mkt-my-listings','mkt-auction-room':'mkt-live-auctions','mkt-showcase-submit':'mkt-showcase'};
 
   useEffect(() => { if (theme === 'dark') document.documentElement.setAttribute('data-theme', 'dark'); }, []);
+
+  // ─── Data fetching keyed on activePage ─────────────────────────────────────
+  useEffect(() => {
+    setDataError(null);
+    const fetch = async () => {
+      try {
+        if (activePage === 'dashboard' || activePage === 'claims') {
+          const d = await apiFetch<any>('/api/claims');
+          setDlrClaims(d.claims || []);
+        }
+        if (activePage === 'dashboard' || activePage === 'units' || activePage === 'upload') {
+          const d = await apiFetch<any>('/api/units');
+          setDlrUnits(d.units || []);
+        }
+        if (activePage === 'invoices') {
+          const d = await apiFetch<any>('/api/invoices');
+          setDlrInvoices(d.invoices || []);
+        }
+        if (activePage === 'staff') {
+          const d = await apiFetch<any>('/api/users');
+          setDlrStaff(d.users || []);
+        }
+        if (activePage === 'cust-tickets') {
+          const d = await apiFetch<any>('/api/tickets');
+          setDlrTickets(d.tickets || []);
+        }
+        if (activePage === 'notifications') {
+          const d = await apiFetch<any>('/api/notifications');
+          setDlrNotifications(d.notifications || []);
+        }
+        if (activePage === 'svc-parts') {
+          const d = await apiFetch<any>('/api/parts-orders');
+          setDlrPartsOrders(d.partsOrders || []);
+        }
+      } catch (err: any) {
+        setDataError(err?.message || 'Failed to load data');
+      }
+    };
+    fetch();
+  }, [activePage, selectedClaimId, selectedUnitId]);
+
+  // ─── WebSocket ─────────────────────────────────────────────────────────────
+  useEffect(() => {
+    wsClient.connect();
+    const unsubClaim = wsClient.on('claim:updated', () => {
+      if (activePage === 'claims' || activePage === 'dashboard') {
+        apiFetch<any>('/api/claims').then(d => setDlrClaims(d.claims || [])).catch(() => {});
+      }
+    });
+    const unsubTicket = wsClient.on('ticket:message', () => {
+      if (activePage === 'cust-tickets' || activePage === 'cust-ticket-detail') {
+        apiFetch<any>('/api/tickets').then(d => setDlrTickets(d.tickets || [])).catch(() => {});
+      }
+    });
+    return () => { unsubClaim(); unsubTicket(); };
+  }, [activePage]);
+
+  // ─── Form handlers ─────────────────────────────────────────────────────────
+  const handleAddUnit = async () => {
+    if (!addUnitForm.vin) return;
+    setAddUnitSaving(true);
+    try {
+      await apiFetch('/api/units', {
+        method: 'POST',
+        body: JSON.stringify({
+          vin: addUnitForm.vin,
+          year: addUnitForm.year ? parseInt(addUnitForm.year) : undefined,
+          manufacturer: addUnitForm.manufacturer,
+          model: addUnitForm.model,
+          stockNumber: addUnitForm.stockNumber,
+        }),
+      });
+      setAddUnitForm({ vin: '', year: '', manufacturer: '', model: '', stockNumber: '' });
+      const d = await apiFetch<any>('/api/units');
+      setDlrUnits(d.units || []);
+      showPage('units');
+    } catch { /* ignore */ } finally { setAddUnitSaving(false); }
+  };
+
+  const handleInviteCustomer = async () => {
+    if (!inviteEmail) return;
+    setInviteSaving(true);
+    try {
+      await apiFetch('/api/users/invite', { method: 'POST', body: JSON.stringify({ email: inviteEmail, role: 'client' }) });
+      setInviteEmail('');
+      showPage('customers');
+    } catch { /* ignore */ } finally { setInviteSaving(false); }
+  };
+
+  const handleMarkNotificationRead = async (id: string) => {
+    try {
+      await apiFetch(`/api/notifications/${id}/read`, { method: 'PUT' });
+      setDlrNotifications(prev => prev.map(n => n.id === id ? { ...n, isRead: true } : n));
+    } catch { /* ignore */ }
+  };
 
   const showPage = (id: string) => {
     const ownerOnlyPages = ['invoices', 'staff', 'add-staff', 'branding'];
@@ -189,7 +314,7 @@ staff:['Staff Management','Manage team access'],'add-staff':['Add Staff','Invite
       <div className={`nav-item ${isNavActive('notifications') ? 'active' : ''}`} onClick={() => showPage('notifications')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>Notifications<span className="nb red">3</span></div>
       <div className={`nav-item ${isNavActive('dealer-changelog') ? 'active' : ''}`} onClick={() => showPage('dealer-changelog')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>What&apos;s New</div></div>
   </div>
-  <div className="sidebar-footer"><div className="user-info" style={{cursor: 'pointer'}} onClick={() => showPage('dealer-settings')}><div className="user-avatar" id="user-avatar">MS</div><div><div className="user-name">Mike Smith</div><div className="user-role">Smith's RV Centre</div></div></div></div>
+  <div className="sidebar-footer"><div className="user-info" style={{cursor: 'pointer'}} onClick={() => showPage('dealer-settings')}><div className="user-avatar" id="user-avatar">MS</div><div><div className="user-name">Mike Smith</div><div className="user-role">Smith's RV Centre</div></div></div><button onClick={async () => { await logout(); window.location.href = '/'; }} style={{width:'100%',marginTop:8,padding:'7px 12px',background:'none',border:'1px solid #e0e0e0',borderRadius:6,fontSize:12,color:'#888',cursor:'pointer',fontFamily:'inherit',textAlign:'left' as const,display:'flex',alignItems:'center',gap:6}}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sign Out</button></div>
 </nav>
 <div className={`main${sidebarCollapsed ? ' collapsed-main' : ''}`}>
 <header className="header"><div className="header-left"><button className="hbtn" onClick={() => setSidebarCollapsed(c => !c)} title="Toggle sidebar" style={{flexShrink:0}}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button><img src={ds360Icon} width="28" height="28" style={{borderRadius:6,flexShrink:0,marginRight:4}} alt="DS360" /><div><div className="header-title" id="page-title">{pageTitle}</div><div className="header-sub" id="page-sub">{pageSub}</div></div></div><div className="header-right"><div className="lang-toggle" id="lang-toggle"><button className={`lang-btn-opt ${lang === "en" ? "active" : ""}`} id="lang-en" onClick={() => handleSetLang('en')}>EN</button><button className={`lang-btn-opt ${lang === "fr" ? "active" : ""}`} id="lang-fr" onClick={() => handleSetLang('fr')}>FR</button></div><button className="theme-toggle" onClick={() => toggleTheme()} id="theme-btn" title="Toggle dark mode"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button><button className="hbtn" onClick={() => showPage('notifications')}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg><span className="ndot"></span></button></div></header>
@@ -217,9 +342,11 @@ staff:['Staff Management','Manage team access'],'add-staff':['Add Staff','Invite
   </div>
   <div style={{display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 20}}>
     <div className="pn"><div className="pn-h"><span className="pn-t">Recent Claims</span><span className="pn-a" onClick={() => showPage('claims')}>View all</span></div><div className="tw"><table><thead><tr><th>Claim #</th><th>Unit</th><th>Type</th><th>Status</th><th>Updated</th></tr></thead><tbody>
-      <tr><td><span className="cid" onClick={() => showPage('claim-detail')}>CLM-0248</span></td><td>2024 Jayco Jay Flight</td><td>Warranty</td><td><span className="bg submitted">Processing</span></td><td>2h ago</td></tr>
-      <tr><td><span className="cid" onClick={() => showPage('claim-detail')}>CLM-0243</span></td><td>2024 Jayco Eagle HT</td><td>DAF</td><td><span className="bg pay-recv">Paid</span></td><td>3 days ago</td></tr>
-      <tr><td><span className="cid">CLM-0237</span></td><td>2024 Jayco Jay Flight</td><td>Warranty</td><td><span className="bg completed">Completed</span></td><td>1 week</td></tr>
+      {dlrClaims.length === 0 ? (
+        <tr><td colSpan={5} style={{textAlign:'center',padding:24,color:'#888'}}>{dataError ? dataError : 'No claims yet'}</td></tr>
+      ) : dlrClaims.slice(0,3).map((c: any) => (
+        <tr key={c.id}><td><span className="cid" onClick={() => { setSelectedClaimId(c.id); showPage('claim-detail'); }}>{c.claimNumber}</span></td><td>{c.manufacturer} — {c.type}</td><td>{c.type}</td><td><span className={`bg ${c.status?.replace(/_/g,'-')}`}>{c.status}</span></td><td>{new Date(c.updatedAt).toLocaleDateString()}</td></tr>
+      ))}
     </tbody></table></div></div>
     <div className="pn"><div className="pn-h"><span className="pn-t">Notifications</span><span className="pn-a" onClick={() => showPage('notifications')}>View all</span></div><div className="act">
       <div className="act-i"><span className="act-dot new"></span><div><div className="act-t"><strong>CLM-0248</strong> is being processed</div><div className="act-tm">2 hours ago</div></div></div>
@@ -270,10 +397,11 @@ staff:['Staff Management','Manage team access'],'add-staff':['Add Staff','Invite
 <div className={`page ${activePage === 'claims' ? 'active' : ''}`} id="page-claims">
   <div className="pn"><div className="filter-bar"><input type="text" placeholder="Search claims..." /><select><option>All Statuses</option><option>Processing</option><option>Authorized</option><option>Parts Ordered</option><option>Completed</option><option>Paid</option><option>Denied</option></select><select><option>All Types</option><option>DAF</option><option>PDI</option><option>Warranty</option><option>Extended</option></select></div>
     <div className="tw"><table><thead><tr><th>Claim #</th><th>Unit</th><th>Mfr</th><th>Type</th><th>Status</th><th>Est. Value</th><th>Submitted</th><th>Action</th></tr></thead><tbody>
-      <tr><td><span className="cid" onClick={() => showPage('claim-detail')}>CLM-0248</span></td><td>2024 Jayco Jay Flight</td><td><span className="mfr">Jayco</span></td><td>Warranty</td><td><span className="bg submitted">Processing</span></td><td>$1,240</td><td>Mar 16</td><td><button className="btn btn-o btn-sm" onClick={() => showPage('claim-detail')}>View</button></td></tr>
-      <tr><td><span className="cid" onClick={() => showPage('claim-detail')}>CLM-0243</span></td><td>2024 Jayco Eagle HT</td><td><span className="mfr">Jayco</span></td><td>DAF</td><td><span className="bg pay-recv">Paid</span></td><td>$4,200</td><td>Feb 12</td><td><button className="btn btn-o btn-sm">View</button></td></tr>
-      <tr><td><span className="cid">CLM-0237</span></td><td>2024 Jayco Jay Flight</td><td><span className="mfr">Jayco</span></td><td>Warranty</td><td><span className="bg completed">Completed</span></td><td>$920</td><td>Jan 25</td><td><button className="btn btn-o btn-sm">View</button></td></tr>
-      <tr><td><span className="cid">CLM-0231</span></td><td>2024 Forest River Rockwood</td><td><span className="mfr">Forest River</span></td><td>PDI</td><td><span className="bg pay-recv">Paid</span></td><td>$1,680</td><td>Jan 18</td><td><button className="btn btn-o btn-sm">View</button></td></tr>
+      {dlrClaims.length === 0 ? (
+        <tr><td colSpan={8} style={{textAlign:'center',padding:24,color:'#888'}}>{dataError ? dataError : 'No claims found'}</td></tr>
+      ) : dlrClaims.map((c: any) => (
+        <tr key={c.id}><td><span className="cid" onClick={() => { setSelectedClaimId(c.id); showPage('claim-detail'); }}>{c.claimNumber}</span></td><td>{c.manufacturer}</td><td><span className="mfr">{c.manufacturer}</span></td><td>{c.type}</td><td><span className={`bg ${c.status?.replace(/_/g,'-')}`}>{c.status}</span></td><td>{c.estimatedAmount ? `$${parseFloat(c.estimatedAmount).toLocaleString()}` : '—'}</td><td>{c.submittedAt ? new Date(c.submittedAt).toLocaleDateString() : '—'}</td><td><button className="btn btn-o btn-sm" onClick={() => { setSelectedClaimId(c.id); showPage('claim-detail'); }}>View</button></td></tr>
+      ))}
     </tbody></table></div></div>
 </div>
 
@@ -317,9 +445,11 @@ staff:['Staff Management','Manage team access'],'add-staff':['Add Staff','Invite
 <div className={`page ${activePage === 'units' ? 'active' : ''}`} id="page-units">
   <div className="pn"><div className="filter-bar"><input type="text" placeholder="Search VIN, stock #..." /><select><option>All Statuses</option><option>On Lot</option><option>Delivered</option><option>In Service</option></select><div style={{marginLeft: 'auto'}}><button className="btn btn-p btn-sm" onClick={() => showPage('add-unit')}>+ Add Unit</button></div></div>
     <div className="tw"><table><thead><tr><th>VIN</th><th>Stock #</th><th>Year / Model</th><th>Customer</th><th>Claims</th><th>DAF</th><th>PDI</th><th>Status</th><th>Action</th></tr></thead><tbody>
-      <tr><td><span className="cid" onClick={() => showPage('unit-detail')}>1UJBJ0BN8M1TJ4K1</span></td><td>STK-0891</td><td>2024 Jayco Jay Flight 264BH</td><td>Robert Martin</td><td>3</td><td><span className="bg authorized">Done</span></td><td><span className="bg authorized">Done</span></td><td><span className="bg active">Delivered</span></td><td><button className="btn btn-o btn-sm" onClick={() => showPage('unit-detail')}>View</button></td></tr>
-      <tr><td><span className="cid" onClick={() => showPage('unit-detail')}>1UJCJ0BT4N1KQ8R2</span></td><td>STK-1155</td><td>2024 Jayco Eagle HT 312BHOK</td><td>Daniel Tremblay</td><td>1</td><td><span className="bg authorized">Done</span></td><td><span className="bg pending">Pending</span></td><td><span className="bg" style={{background: '#dbeafe', color: '#2563eb'}}>On Lot</span></td><td><button className="btn btn-o btn-sm" onClick={() => showPage('unit-detail')}>View</button></td></tr>
-      <tr><td><span className="cid" onClick={() => showPage('unit-detail')}>4X4FCKB21NE021N4</span></td><td>STK-0887</td><td>2024 Forest River Rockwood 2891BH</td><td>Marie Bouchard</td><td>1</td><td><span className="bg authorized">Done</span></td><td><span className="bg authorized">Done</span></td><td><span className="bg active">Delivered</span></td><td><button className="btn btn-o btn-sm" onClick={() => showPage('unit-detail')}>View</button></td></tr>
+      {dlrUnits.length === 0 ? (
+        <tr><td colSpan={9} style={{textAlign:'center',padding:24,color:'#888'}}>{dataError ? dataError : 'No units found'}</td></tr>
+      ) : dlrUnits.map((u: any) => (
+        <tr key={u.id}><td><span className="cid" onClick={() => { setSelectedUnitId(u.id); showPage('unit-detail'); }}>{u.vin}</span></td><td>{u.stockNumber || '—'}</td><td>{u.year} {u.manufacturer} {u.model}</td><td>{u.customerName || '—'}</td><td>—</td><td><span className={`bg ${u.dafCompleted ? 'authorized' : 'pending'}`}>{u.dafCompleted ? 'Done' : 'Pending'}</span></td><td><span className={`bg ${u.pdiCompleted ? 'authorized' : 'pending'}`}>{u.pdiCompleted ? 'Done' : 'Pending'}</span></td><td><span className="bg active">{u.status}</span></td><td><button className="btn btn-o btn-sm" onClick={() => { setSelectedUnitId(u.id); showPage('unit-detail'); }}>View</button></td></tr>
+      ))}
     </tbody></table></div></div>
 </div>
 
@@ -473,10 +603,22 @@ staff:['Staff Management','Manage team access'],'add-staff':['Add Staff','Invite
   <div className="pn"><div className="pn-h"><span className="pn-t">My Invoices</span></div>
     <div className="filter-bar"><input type="text" placeholder="Search..." /><select><option>All Statuses</option><option>Pending</option><option>Paid</option><option>Overdue</option></select></div>
     <div className="tw"><table><thead><tr><th>Invoice</th><th>Type</th><th>Description</th><th>Amount</th><th>Tax</th><th>Total</th><th>Status</th><th>Issued</th><th>Action</th></tr></thead><tbody>
-      <tr><td style={{fontWeight: 500}}>INV-0089</td><td>Claim Fee</td><td>10% on CLM-0248</td><td>$124</td><td>$16.12</td><td style={{fontWeight: 600}}>$140.12</td><td><span className="bg pending">Pending</span></td><td>Mar 16</td><td><button className="btn btn-s btn-sm">Pay Now</button></td></tr>
-      <tr><td style={{fontWeight: 500}}>INV-0085</td><td>Subscription</td><td>March 2026</td><td>$349</td><td>$45.37</td><td>$394.37</td><td><span className="bg pay-recv">Paid</span></td><td>Mar 1</td><td><button className="btn btn-o btn-sm">View</button></td></tr>
-      <tr><td style={{fontWeight: 500}}>INV-0082</td><td>Claim Fee</td><td>10% on CLM-0243</td><td>$420</td><td>$54.60</td><td>$474.60</td><td><span className="bg pay-recv">Paid</span></td><td>Feb 28</td><td><button className="btn btn-o btn-sm">View</button></td></tr>
-      <tr><td style={{fontWeight: 500}}>INV-0078</td><td>Subscription</td><td>February 2026</td><td>$349</td><td>$45.37</td><td>$394.37</td><td><span className="bg pay-recv">Paid</span></td><td>Feb 1</td><td><button className="btn btn-o btn-sm">View</button></td></tr>
+      {dlrInvoices.length === 0
+        ? <tr><td colSpan={9} style={{textAlign:'center',color:'#888',padding:20}}>{dataError ? dataError : 'No invoices found'}</td></tr>
+        : dlrInvoices.map((inv: any) => (
+          <tr key={inv.id}>
+            <td style={{fontWeight: 500}}>{inv.invoiceNumber || inv.id}</td>
+            <td>{inv.type || inv.invoiceType || '—'}</td>
+            <td>{inv.description || '—'}</td>
+            <td>{inv.amount ? `$${Number(inv.amount).toFixed(2)}` : '—'}</td>
+            <td>{inv.taxAmount ? `$${Number(inv.taxAmount).toFixed(2)}` : '—'}</td>
+            <td style={{fontWeight: 600}}>{inv.total ? `$${Number(inv.total).toFixed(2)}` : '—'}</td>
+            <td><span className={`bg ${inv.status === 'paid' ? 'pay-recv' : inv.status}`}>{inv.status}</span></td>
+            <td>{inv.issuedAt || inv.createdAt ? new Date(inv.issuedAt || inv.createdAt).toLocaleDateString('en-CA',{month:'short',day:'numeric'}) : '—'}</td>
+            <td>{inv.status === 'pending' || inv.status === 'overdue' ? <button className="btn btn-s btn-sm">Pay Now</button> : <button className="btn btn-o btn-sm">View</button>}</td>
+          </tr>
+        ))
+      }
     </tbody></table></div></div>
 </div>
 
@@ -517,10 +659,25 @@ staff:['Staff Management','Manage team access'],'add-staff':['Add Staff','Invite
       <select><option>All Customers</option><option>Robert Martin</option><option>Daniel Tremblay</option><option>Marie Bouchard</option><option>Lisa Wong</option></select>
     </div>
     <div className="tw"><table><thead><tr><th>Ticket</th><th>Customer</th><th>Subject</th><th>Category</th><th>Related</th><th>Status</th><th>Updated</th><th>Action</th></tr></thead><tbody>
-      <tr><td style={{fontWeight: 500, color: 'var(--brand)'}}><span className="cid" onClick={() => showPage('cust-ticket-detail')}>TKT-0042</span></td><td>Robert Martin</td><td style={{fontWeight: 500}}>Warranty claim — sidewall, roof, seal, hinge</td><td><span style={{fontSize: 11, color: '#888'}}>Claim</span></td><td style={{fontSize: 12, color: '#888'}}>CLM-0248</td><td><span className="bg submitted">Open</span></td><td>2h ago</td><td><button className="btn btn-p btn-sm" onClick={() => showPage('cust-ticket-detail')}>Reply</button></td></tr>
-      <tr><td style={{fontWeight: 500, color: 'var(--brand)'}}><span className="cid" onClick={() => showPage('cust-ticket-detail')}>TKT-0038</span></td><td>Robert Martin</td><td style={{fontWeight: 500}}>Parts order — sidewall panel</td><td><span style={{fontSize: 11, color: '#888'}}>Parts</span></td><td style={{fontSize: 12, color: '#888'}}>PO-0038</td><td><span className="bg pending">Waiting</span></td><td>2h ago</td><td><button className="btn btn-o btn-sm" onClick={() => showPage('cust-ticket-detail')}>View</button></td></tr>
-      <tr><td style={{fontWeight: 500, color: 'var(--brand)'}}><span className="cid" onClick={() => showPage('cust-ticket-detail')}>TKT-0035</span></td><td>Daniel Tremblay</td><td style={{fontWeight: 500}}>Warranty expiring — Jayco OEM</td><td><span style={{fontSize: 11, color: '#888'}}>Warranty</span></td><td>—</td><td><span className="bg" style={{background: '#fef3c7', color: '#d97706'}}>Action Needed</span></td><td>1 week</td><td><button className="btn btn-p btn-sm" onClick={() => showPage('cust-ticket-detail')}>Reply</button></td></tr>
-      <tr><td style={{fontWeight: 500, color: 'var(--brand)'}}>TKT-0029</td><td>Robert Martin</td><td>DAF claim completed</td><td><span style={{fontSize: 11, color: '#888'}}>Claim</span></td><td style={{fontSize: 12, color: '#888'}}>CLM-0237</td><td><span className="bg active">Resolved</span></td><td>Mar 8</td><td><button className="btn btn-o btn-sm">View</button></td></tr>
+      {dlrTickets.length === 0
+        ? <tr><td colSpan={8} style={{textAlign:'center',color:'#888',padding:20}}>{dataError ? dataError : 'No tickets found'}</td></tr>
+        : dlrTickets.map((t: any) => {
+          const isOpen = t.status === 'open';
+          const statusClass = isOpen ? 'submitted' : t.status === 'resolved' ? 'active' : t.status === 'closed' ? '' : 'pending';
+          return (
+            <tr key={t.id}>
+              <td style={{fontWeight: 500, color: 'var(--brand)'}}><span className="cid" onClick={() => { setSelectedTicketId(t.id); showPage('cust-ticket-detail'); }}>{t.ticketNumber || t.id}</span></td>
+              <td>{t.customerName || t.createdBy?.name || '—'}</td>
+              <td style={{fontWeight: 500}}>{t.subject}</td>
+              <td><span style={{fontSize: 11, color: '#888'}}>{t.category}</span></td>
+              <td style={{fontSize: 12, color: '#888'}}>{t.relatedClaimNumber || '—'}</td>
+              <td><span className={`bg ${statusClass}`}>{t.status}</span></td>
+              <td>{t.updatedAt ? new Date(t.updatedAt).toLocaleDateString('en-CA',{month:'short',day:'numeric'}) : '—'}</td>
+              <td>{isOpen ? <button className="btn btn-p btn-sm" onClick={() => { setSelectedTicketId(t.id); showPage('cust-ticket-detail'); }}>Reply</button> : <button className="btn btn-o btn-sm" onClick={() => { setSelectedTicketId(t.id); showPage('cust-ticket-detail'); }}>View</button>}</td>
+            </tr>
+          );
+        })
+      }
     </tbody></table></div>
   </div>
 </div>
@@ -561,9 +718,23 @@ staff:['Staff Management','Manage team access'],'add-staff':['Add Staff','Invite
 <div className={`page ${activePage === 'staff' ? 'active' : ''}`} id="page-staff">
   <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20}}><div style={{fontSize: 13, color: '#666'}}>Manage your dealership staff access. Staff can upload photos and track claims but cannot manage billing or settings.</div><button className="btn btn-p btn-sm" onClick={() => showPage('add-staff')}>+ Add Staff</button></div>
   <div className="pn"><div className="tw"><table><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Last Login</th><th>Action</th></tr></thead><tbody>
-    <tr><td style={{fontWeight: 500}}>Mike Smith</td><td>mike@smithsrv.ca</td><td><span className="bg" style={{background: '#eff6ff', color: 'var(--brand)'}}>Owner</span></td><td><span className="bg active">Active</span></td><td>Now</td><td><span style={{fontSize: 12, color: '#888'}}>You</span></td></tr>
-    <tr><td style={{fontWeight: 500}}>Lisa Patel</td><td>lisa@smithsrv.ca</td><td><span className="bg" style={{background: '#f0fdf4', color: '#16a34a'}}>Staff</span></td><td><span className="bg active">Active</span></td><td>Yesterday</td><td><button className="btn btn-o btn-sm">Edit</button> <button className="btn btn-o btn-sm" style={{color: '#dc2626', borderColor: '#fca5a5'}}>Remove</button></td></tr>
-    <tr><td style={{fontWeight: 500}}>Ryan Garcia</td><td>ryan@smithsrv.ca</td><td><span className="bg" style={{background: '#f0fdf4', color: '#16a34a'}}>Staff</span></td><td><span className="bg active">Active</span></td><td>3 days ago</td><td><button className="btn btn-o btn-sm">Edit</button> <button className="btn btn-o btn-sm" style={{color: '#dc2626', borderColor: '#fca5a5'}}>Remove</button></td></tr>
+    {dlrStaff.length === 0
+      ? <tr><td colSpan={6} style={{textAlign:'center',color:'#888',padding:20}}>{dataError ? dataError : 'No staff found'}</td></tr>
+      : dlrStaff.map((s: any) => {
+        const isOwner = s.role === 'dealer_owner';
+        const isCurrentUser = s.id === user?.id;
+        return (
+          <tr key={s.id}>
+            <td style={{fontWeight: 500}}>{s.name || `${s.firstName || ''} ${s.lastName || ''}`.trim() || '—'}</td>
+            <td>{s.email}</td>
+            <td><span className="bg" style={{background: isOwner ? '#eff6ff' : '#f0fdf4', color: isOwner ? 'var(--brand)' : '#16a34a'}}>{isOwner ? 'Owner' : 'Staff'}</span></td>
+            <td><span className={`bg ${s.status === 'active' ? 'active' : 'pending'}`}>{s.status || 'active'}</span></td>
+            <td>{s.lastLoginAt ? new Date(s.lastLoginAt).toLocaleDateString('en-CA',{month:'short',day:'numeric'}) : '—'}</td>
+            <td>{isCurrentUser ? <span style={{fontSize: 12, color: '#888'}}>You</span> : <><button className="btn btn-o btn-sm">Edit</button> <button className="btn btn-o btn-sm" style={{color: '#dc2626', borderColor: '#fca5a5'}}>Remove</button></>}</td>
+          </tr>
+        );
+      })
+    }
   </tbody></table></div></div>
 </div>
 

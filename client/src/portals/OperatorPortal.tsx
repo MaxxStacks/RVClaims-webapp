@@ -2,11 +2,14 @@
 // Layout: sidebar(position:fixed) + main(margin-left:240px) + content(block) + page(display:block)
 // DO NOT modify layout structure. DO NOT add display:flex to .content.
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import ds360Icon from '@assets/ds360_favicon.png';
 import { MobileBottomNav, OfflineBanner } from '../components/MobileBottomNav';
 import { OperatorMarketplacePages } from '../components/OperatorMarketplace';
 import { OperatorPublicAuctionPages } from '../components/PublicAuctionPages';
+import { apiFetch } from '@/lib/api';
+import { useAuth } from '@/hooks/use-auth';
+import { wsClient } from '@/lib/websocket';
 
 export default function OperatorPortal() {
   const [activePage, setActivePage] = useState('dashboard');
@@ -23,6 +26,37 @@ export default function OperatorPortal() {
   const toggleUnitEdit = () => setUnitEditMode(prev => !prev);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
+  // ─── Auth ──────────────────────────────────────────────────────────────────
+  const { user, logout } = useAuth();
+
+  // ─── API data state ────────────────────────────────────────────────────────
+  const [opClaims, setOpClaims] = useState<any[]>([]);
+  const [opDealers, setOpDealers] = useState<any[]>([]);
+  const [opUnits, setOpUnits] = useState<any[]>([]);
+  const [opBatches, setOpBatches] = useState<any[]>([]);
+  const [opInvoices, setOpInvoices] = useState<any[]>([]);
+  const [opUsers, setOpUsers] = useState<any[]>([]);
+  const [opNotifications, setOpNotifications] = useState<any[]>([]);
+  const [opProducts, setOpProducts] = useState<any[]>([]);
+  const [opFeatureRequests, setOpFeatureRequests] = useState<any[]>([]);
+  const [dataError, setDataError] = useState<string | null>(null);
+
+  // ─── Add-dealer form state ─────────────────────────────────────────────────
+  const [addDealerForm, setAddDealerForm] = useState({ name: '', contactName: '', email: '', phone: '', street: '', city: '', plan: 'plan_a' });
+  const [addDealerSaving, setAddDealerSaving] = useState(false);
+
+  // ─── Add-unit form state ───────────────────────────────────────────────────
+  const [addUnitForm, setAddUnitForm] = useState({ vin: '', year: '', manufacturer: '', model: '', stockNumber: '', dealershipId: '' });
+  const [addUnitSaving, setAddUnitSaving] = useState(false);
+
+  // ─── Selected IDs for detail pages ────────────────────────────────────────
+  const [selectedClaimId, setSelectedClaimId] = useState<string | null>(null);
+  const [selectedDealerId, setSelectedDealerId] = useState<string | null>(null);
+  const [selectedUnitId, setSelectedUnitId] = useState<string | null>(null);
+  const [selectedBatchId, setSelectedBatchId] = useState<string | null>(null);
+  const [selectedClaimDetail, setSelectedClaimDetail] = useState<any | null>(null);
+  const [selectedDealerDetail, setSelectedDealerDetail] = useState<any | null>(null);
+
   const titles: Record<string, [string, string]> = {dashboard:['Dashboard','Overview'],queue:['Processing Queue','12 photo batches'],'batch-review':['Photo Review','BATCH-0048'],claims:['All Claims','248 total'],'claim-detail':['Claim Detail','CLM-2026-0248'],stale:['Stale Claims','5 claims 36+ hours'],dealers:['Dealer Management','24 active'],
 'add-dealer':['Add New Dealer','Create dealership'],'dealer-detail':['Smith\u0027s RV Centre','Plan A \u00b7 $349/mo'],units:['Unit Inventory','74 units'],'add-unit':['Add New Unit','Register unit'],'unit-detail':['2024 Jayco Jay Flight 264BH','VIN: 1UJBJ0BN8M1TJ4K1'],frc:['FRC Codes','Manufacturer codes'],
 marketplace:['Service Marketplace','Manage services'],'svc-financing':['Financing Services','3 active'],'svc-financing-detail':['FIN-0023','Daniel Tremblay'],'svc-financing-new':['New Financing Request','Submit for dealer'],
@@ -35,6 +69,141 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
   const parents: Record<string, string> = {'dealer-detail':'dealers','claim-detail':'claims','batch-review':'queue','unit-detail':'units','add-dealer':'dealers','add-unit':'units','create-invoice':'billing','add-product':'products','edit-product':'products','add-feature-req':'changelog','svc-financing-detail':'svc-financing','svc-financing-new':'svc-financing','svc-fi-detail':'svc-fi','svc-fi-new':'svc-fi','svc-warranty-new':'svc-warranty','svc-parts-detail':'svc-parts','svc-parts-new':'svc-parts','mkt-member-detail':'mkt-members','mkt-member-signup':'mkt-members','mkt-listing-detail':'mkt-listings','mkt-transaction-detail':'mkt-transactions','mkt-auction-detail':'mkt-auctions','mkt-public-event-detail':'mkt-public-events'};
 
   useEffect(() => { if (theme === 'dark') document.documentElement.setAttribute('data-theme', 'dark'); }, []);
+
+  // ─── Data fetching keyed on activePage ─────────────────────────────────────
+  useEffect(() => {
+    setDataError(null);
+    const fetch = async () => {
+      try {
+        if (activePage === 'dashboard') {
+          const [cd, dd] = await Promise.all([
+            apiFetch<any>('/api/claims'),
+            apiFetch<any>('/api/dealerships'),
+          ]);
+          setOpClaims(cd.claims || []);
+          setOpDealers(dd.dealerships || []);
+        } else if (activePage === 'claims' || activePage === 'stale') {
+          const d = await apiFetch<any>('/api/claims');
+          setOpClaims(d.claims || []);
+        } else if (activePage === 'claim-detail' && selectedClaimId) {
+          const d = await apiFetch<any>(`/api/claims/${selectedClaimId}`);
+          setSelectedClaimDetail(d.claim || null);
+        } else if (activePage === 'dealers') {
+          const d = await apiFetch<any>('/api/dealerships');
+          setOpDealers(d.dealerships || []);
+        } else if (activePage === 'dealer-detail' && selectedDealerId) {
+          const d = await apiFetch<any>(`/api/dealerships/${selectedDealerId}`);
+          setSelectedDealerDetail(d.dealership || null);
+        } else if (activePage === 'units') {
+          const d = await apiFetch<any>('/api/units');
+          setOpUnits(d.units || []);
+        } else if (activePage === 'queue') {
+          const d = await apiFetch<any>('/api/batches?status=uploaded');
+          setOpBatches(d.batches || []);
+        } else if (activePage === 'billing') {
+          const d = await apiFetch<any>('/api/invoices');
+          setOpInvoices(d.invoices || []);
+        } else if (activePage === 'users') {
+          const d = await apiFetch<any>('/api/users');
+          setOpUsers(d.users || []);
+        } else if (activePage === 'notifications') {
+          const d = await apiFetch<any>('/api/notifications');
+          setOpNotifications(d.notifications || []);
+        } else if (activePage === 'products') {
+          const d = await apiFetch<any>('/api/products');
+          setOpProducts(d.products || []);
+        } else if (activePage === 'changelog') {
+          const d = await apiFetch<any>('/api/feature-requests');
+          setOpFeatureRequests(d.featureRequests || []);
+        }
+      } catch (err: any) {
+        setDataError(err?.message || 'Failed to load data');
+      }
+    };
+    fetch();
+  }, [activePage, selectedClaimId, selectedDealerId]);
+
+  // ─── WebSocket: live updates ────────────────────────────────────────────────
+  useEffect(() => {
+    wsClient.connect();
+    const unsubClaim = wsClient.on('claim:updated', () => {
+      if (activePage === 'claims' || activePage === 'dashboard') {
+        apiFetch<any>('/api/claims').then(d => setOpClaims(d.claims || [])).catch(() => {});
+      }
+    });
+    const unsubBatch = wsClient.on('batch:uploaded', () => {
+      if (activePage === 'queue') {
+        apiFetch<any>('/api/batches?status=uploaded').then(d => setOpBatches(d.batches || [])).catch(() => {});
+      }
+    });
+    return () => { unsubClaim(); unsubBatch(); };
+  }, [activePage]);
+
+  // ─── Form submit handlers ──────────────────────────────────────────────────
+  const handleCreateDealer = async () => {
+    if (!addDealerForm.name || !addDealerForm.email) return;
+    setAddDealerSaving(true);
+    try {
+      await apiFetch('/api/dealerships', {
+        method: 'POST',
+        body: JSON.stringify({
+          name: addDealerForm.name,
+          email: addDealerForm.email,
+          contactName: addDealerForm.contactName,
+          phone: addDealerForm.phone,
+          street: addDealerForm.street,
+          city: addDealerForm.city,
+          plan: addDealerForm.plan,
+          status: 'pending',
+        }),
+      });
+      setAddDealerForm({ name: '', contactName: '', email: '', phone: '', street: '', city: '', plan: 'plan_a' });
+      const d = await apiFetch<any>('/api/dealerships');
+      setOpDealers(d.dealerships || []);
+      showPage('dealers');
+    } catch { /* ignore */ } finally {
+      setAddDealerSaving(false);
+    }
+  };
+
+  const handleCreateUnit = async () => {
+    if (!addUnitForm.vin || !addUnitForm.dealershipId) return;
+    setAddUnitSaving(true);
+    try {
+      await apiFetch('/api/units', {
+        method: 'POST',
+        body: JSON.stringify({
+          vin: addUnitForm.vin,
+          year: addUnitForm.year ? parseInt(addUnitForm.year) : undefined,
+          manufacturer: addUnitForm.manufacturer,
+          model: addUnitForm.model,
+          stockNumber: addUnitForm.stockNumber,
+          dealershipId: addUnitForm.dealershipId,
+        }),
+      });
+      setAddUnitForm({ vin: '', year: '', manufacturer: '', model: '', stockNumber: '', dealershipId: '' });
+      const d = await apiFetch<any>('/api/units');
+      setOpUnits(d.units || []);
+      showPage('units');
+    } catch { /* ignore */ } finally {
+      setAddUnitSaving(false);
+    }
+  };
+
+  const handleApproveDealership = async (id: string) => {
+    try {
+      await apiFetch(`/api/dealerships/${id}`, { method: 'PUT', body: JSON.stringify({ status: 'active' }) });
+      const d = await apiFetch<any>('/api/dealerships');
+      setOpDealers(d.dealerships || []);
+    } catch { /* ignore */ }
+  };
+
+  const handleMarkNotificationRead = async (id: string) => {
+    try {
+      await apiFetch(`/api/notifications/${id}/read`, { method: 'PUT' });
+      setOpNotifications(prev => prev.map(n => n.id === id ? { ...n, isRead: true } : n));
+    } catch { /* ignore */ }
+  };
 
   const showPage = (id: string) => {
     setActivePage(id);
@@ -150,7 +319,7 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
       <div className={`nav-item ${isNavActive('settings') ? 'active' : ''}`} onClick={() => showPage('settings')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>Settings</div>
       <div className={`nav-item ${isNavActive('changelog') ? 'active' : ''}`} onClick={() => showPage('changelog')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Changelog</div></div>
   </div>
-  <div className="sidebar-footer"><div className="user-info" style={{cursor: 'pointer'}} onClick={() => showPage('settings')}><div className="user-avatar" id="op-user-avatar">JD</div><div><div className="user-name">Jonathan D.</div><div className="user-role">Operator Admin</div></div></div></div>
+  <div className="sidebar-footer"><div className="user-info" style={{cursor: 'pointer'}} onClick={() => showPage('settings')}><div className="user-avatar" id="op-user-avatar">JD</div><div><div className="user-name">Jonathan D.</div><div className="user-role">Operator Admin</div></div></div><button onClick={async () => { await logout(); window.location.href = '/'; }} style={{width:'100%',marginTop:8,padding:'7px 12px',background:'none',border:'1px solid #e0e0e0',borderRadius:6,fontSize:12,color:'#888',cursor:'pointer',fontFamily:'inherit',textAlign:'left' as const,display:'flex',alignItems:'center',gap:6}}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sign Out</button></div>
 </nav>
 <div className={`main${sidebarCollapsed ? ' collapsed-main' : ''}`}>
 <header className="header"><div className="header-left"><button className="hbtn" onClick={() => setSidebarCollapsed(c => !c)} title="Toggle sidebar" style={{flexShrink:0}}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button><img src={ds360Icon} width="28" height="28" style={{borderRadius:6,flexShrink:0,marginRight:4}} alt="DS360" /><div><div className="header-title" id="page-title">{pageTitle}</div><div className="header-sub" id="page-sub">{pageSub}</div></div></div><div className="header-right"><div className="lang-toggle" id="lang-toggle"><button className={`lang-btn-opt ${lang === "en" ? "active" : ""}`} id="lang-en" onClick={() => handleSetLang('en')}>EN</button><button className={`lang-btn-opt ${lang === "fr" ? "active" : ""}`} id="lang-fr" onClick={() => handleSetLang('fr')}>FR</button></div><button className="theme-toggle" onClick={() => toggleTheme()} id="theme-btn" title="Toggle dark mode"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button><button className="hbtn" title="Search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button><button className="hbtn" title="Notifications" onClick={() => showPage('notifications')}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg><span className="ndot"></span></button></div></header>
@@ -178,10 +347,11 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
   </div>
   <div className="pg pg-2">
     <div className="pn"><div className="pn-h"><span className="pn-t">Recent Claims</span><span className="pn-a" onClick={() => showPage('claims')}>View all</span></div><div className="tw"><table><thead><tr><th>Claim #</th><th>Dealer</th><th>Mfr</th><th>Type</th><th>Status</th><th>Submitted</th></tr></thead><tbody>
-      <tr><td><span className="cid" onClick={() => showPage('claim-detail')}>CLM-2026-0248</span></td><td>Smith's RV Centre</td><td><span className="mfr">Jayco</span></td><td>Warranty</td><td><span className="bg submitted">Submitted</span></td><td>2h ago</td></tr>
-      <tr><td><span className="cid" onClick={() => showPage('claim-detail')}>CLM-2026-0247</span></td><td>Atlantic RV</td><td><span className="mfr">Forest River</span></td><td>DAF</td><td><span className="bg authorized">Authorized</span></td><td>5h ago</td></tr>
-      <tr><td><span className="cid">CLM-2026-0246</span></td><td>Prairie Wind RV</td><td><span className="mfr">Heartland</span></td><td>PDI</td><td><span className="bg parts-o">Parts Ordered</span></td><td>Yesterday</td></tr>
-      <tr><td><span className="cid">CLM-2026-0245</span></td><td>West Coast Campers</td><td><span className="mfr">Keystone</span></td><td>Extended</td><td><span className="bg pay-req">Payment Req</span></td><td>2 days ago</td></tr>
+      {opClaims.length === 0 ? (
+        <tr><td colSpan={6} style={{textAlign:'center',padding:24,color:'#888'}}>{dataError ? dataError : 'No claims yet'}</td></tr>
+      ) : opClaims.slice(0,4).map((c: any) => (
+        <tr key={c.id}><td><span className="cid" onClick={() => { setSelectedClaimId(c.id); showPage('claim-detail'); }}>{c.claimNumber}</span></td><td>{c.dealershipId?.slice(0,8)}…</td><td><span className="mfr">{c.manufacturer}</span></td><td>{c.type}</td><td><span className={`bg ${c.status?.replace('_','-')}`}>{c.status}</span></td><td>{c.submittedAt ? new Date(c.submittedAt).toLocaleDateString() : new Date(c.createdAt).toLocaleDateString()}</td></tr>
+      ))}
     </tbody></table></div></div>
     <div className="pn"><div className="pn-h"><span className="pn-t">Activity</span></div><div className="act">
       <div className="act-i"><span className="act-dot new"></span><div><div className="act-t"><strong>Smith's RV</strong> uploaded 24 photos (Jayco warranty)</div><div className="act-tm">2 hours ago</div></div></div>
@@ -199,9 +369,11 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
   <div className="pn"><div className="pn-h"><span className="pn-t">Incoming Photo Batches</span><span style={{fontSize: 12, color: '#888'}}>12 awaiting</span></div>
     <div className="filter-bar"><input type="text" placeholder="Search by VIN or dealer..." /><select><option>All Manufacturers</option><option>Jayco</option><option>Forest River</option><option>Heartland</option><option>Keystone</option><option>Columbia NW</option></select><select><option>All Types</option><option>DAF</option><option>PDI</option><option>Warranty</option><option>Extended</option></select></div>
     <div className="tw"><table><thead><tr><th>Batch</th><th>Dealer</th><th>VIN</th><th>Mfr</th><th>Type</th><th>Photos</th><th>Dealer Notes</th><th>Uploaded</th><th>Action</th></tr></thead><tbody>
-      <tr><td style={{fontWeight: 500, color: 'var(--brand)'}}>BATCH-0048</td><td><span className="cid" onClick={() => showPage('dealer-detail')}>Smith's RV Centre</span></td><td><span className="vin">1UJBJ0BN8M1TJ4K1</span></td><td><span className="mfr">Jayco</span></td><td>Warranty</td><td><strong>24</strong></td><td style={{maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', color: '#666', fontSize: 12}}>Sidewall damage, roof leak, slide seal, cabinet hinge</td><td>2h ago</td><td><button className="btn btn-p btn-sm" onClick={() => showPage('batch-review')}>Review & Sort</button></td></tr>
-      <tr><td style={{fontWeight: 500, color: 'var(--brand)'}}>BATCH-0047</td><td>Maritime RV</td><td><span className="vin">4X4FCKB25NE012837</span></td><td><span className="mfr">Forest River</span></td><td>DAF</td><td><strong>36</strong></td><td style={{maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', color: '#666', fontSize: 12}}>Full DAF — multiple issues on arrival</td><td>3h ago</td><td><button className="btn btn-p btn-sm" onClick={() => showPage('batch-review')}>Review & Sort</button></td></tr>
-      <tr><td style={{fontWeight: 500, color: 'var(--brand)'}}>BATCH-0046</td><td>Ontario RV Depot</td><td><span className="vin">5ZT3H5R29NE087421</span></td><td><span className="mfr">Heartland</span></td><td>PDI</td><td><strong>18</strong></td><td style={{maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', color: '#666', fontSize: 12}}>Pre-delivery, water stain and loose awning</td><td>4h ago</td><td><button className="btn btn-p btn-sm" onClick={() => showPage('batch-review')}>Review & Sort</button></td></tr>
+      {opBatches.length === 0 ? (
+        <tr><td colSpan={9} style={{textAlign:'center',padding:24,color:'#888'}}>{dataError ? dataError : 'No batches in queue'}</td></tr>
+      ) : opBatches.map((b: any) => (
+        <tr key={b.id}><td style={{fontWeight:500,color:'var(--brand)'}}>{b.batchNumber}</td><td>{b.dealershipId?.slice(0,8)}…</td><td><span className="vin">{b.unitId?.slice(0,8)}…</span></td><td><span className="mfr">{b.claimType}</span></td><td>{b.claimType}</td><td><strong>{b.photoCount || 0}</strong></td><td style={{maxWidth:200,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',color:'#666',fontSize:12}}>{b.dealerNotes || '—'}</td><td>{new Date(b.createdAt).toLocaleDateString()}</td><td><button className="btn btn-p btn-sm" onClick={() => { setSelectedBatchId(b.id); showPage('batch-review'); }}>Review & Sort</button></td></tr>
+      ))}
     </tbody></table></div>
   </div>
 </div>
@@ -240,11 +412,11 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
 <div className={`page ${activePage === 'claims' ? 'active' : ''}`} id="page-claims">
   <div className="pn"><div className="filter-bar"><input type="text" placeholder="Search claims..." /><select><option>All Statuses</option><option>Submitted</option><option>Authorized</option><option>Denied</option><option>Parts Ordered</option><option>Completed</option><option>Payment Received</option></select><select><option>All Manufacturers</option><option>Jayco</option><option>Forest River</option><option>Heartland</option><option>Keystone</option><option>Columbia NW</option></select><select><option>All Dealers</option><option>Smith's RV Centre</option><option>Atlantic RV</option><option>Prairie Wind RV</option></select></div>
     <div className="tw"><table><thead><tr><th><input type="checkbox" /></th><th>Claim #</th><th>Dealer</th><th>VIN</th><th>Mfr</th><th>Type</th><th>Lines</th><th>Status</th><th>Amount</th><th>Updated</th></tr></thead><tbody>
-      <tr><td><input type="checkbox" /></td><td><span className="cid" onClick={() => showPage('claim-detail')}>CLM-2026-0248</span></td><td>Smith's RV</td><td><span className="vin">...4K1</span></td><td><span className="mfr">Jayco</span></td><td>Warranty</td><td>4</td><td><span className="bg submitted">Submitted</span></td><td>$1,240</td><td>2h ago</td></tr>
-      <tr><td><input type="checkbox" /></td><td><span className="cid" onClick={() => showPage('claim-detail')}>CLM-2026-0247</span></td><td>Atlantic RV</td><td><span className="vin">...9H3</span></td><td><span className="mfr">Forest River</span></td><td>DAF</td><td>3</td><td><span className="bg authorized">Authorized</span></td><td>$890</td><td>5h ago</td></tr>
-      <tr><td><input type="checkbox" /></td><td><span className="cid">CLM-2026-0246</span></td><td>Prairie Wind</td><td><span className="vin">...7L2</span></td><td><span className="mfr">Heartland</span></td><td>PDI</td><td>5</td><td><span className="bg parts-o">Parts Ordered</span></td><td>$2,100</td><td>Yesterday</td></tr>
-      <tr><td><input type="checkbox" /></td><td><span className="cid">CLM-2026-0244</span></td><td>Northern Trails</td><td><span className="vin">...6N8</span></td><td><span className="mfr">Columbia NW</span></td><td>Warranty</td><td>3</td><td><span className="bg denied">Denied</span></td><td>$780</td><td>2 days ago</td></tr>
-      <tr><td><input type="checkbox" /></td><td><span className="cid">CLM-2026-0243</span></td><td>Smith's RV</td><td><span className="vin">...7P3</span></td><td><span className="mfr">Jayco</span></td><td>DAF</td><td>7</td><td><span className="bg pay-recv">Paid</span></td><td>$4,200</td><td>3 days ago</td></tr>
+      {opClaims.length === 0 ? (
+        <tr><td colSpan={10} style={{textAlign:'center',padding:24,color:'#888'}}>{dataError ? dataError : 'No claims found'}</td></tr>
+      ) : opClaims.map((c: any) => (
+        <tr key={c.id}><td><input type="checkbox" /></td><td><span className="cid" onClick={() => { setSelectedClaimId(c.id); showPage('claim-detail'); }}>{c.claimNumber}</span></td><td>{c.dealershipId?.slice(0,8)}…</td><td><span className="vin">…{c.unitId?.slice(-4)}</span></td><td><span className="mfr">{c.manufacturer}</span></td><td>{c.type}</td><td>—</td><td><span className={`bg ${c.status?.replace(/_/g,'-')}`}>{c.status}</span></td><td>{c.estimatedAmount ? `$${parseFloat(c.estimatedAmount).toLocaleString()}` : '—'}</td><td>{new Date(c.updatedAt).toLocaleDateString()}</td></tr>
+      ))}
     </tbody></table></div></div>
 </div>
 
@@ -277,8 +449,25 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
 <div className={`page ${activePage === 'stale' ? 'active' : ''}`} id="page-stale">
   <div className="pn"><div style={{padding: '16px 20px', background: '#fffbeb', borderBottom: '1px solid #fef3c7', fontSize: 13, color: '#92400e'}}>Claims with no update in 36+ hours.</div>
     <div className="tw"><table><thead><tr><th>Claim #</th><th>Dealer</th><th>Mfr</th><th>Status</th><th>Last Updated</th><th>Stale For</th><th>Action</th></tr></thead><tbody>
-      <tr><td><span className="cid" onClick={() => showPage('claim-detail')}>CLM-2026-0238</span></td><td>BC Camper World</td><td><span className="mfr">Keystone</span></td><td><span className="bg submitted">Submitted</span></td><td>Mar 13</td><td style={{color: '#dc2626', fontWeight: 600}}>72h</td><td><button className="btn btn-p btn-sm">Follow Up</button></td></tr>
-      <tr><td><span className="cid">CLM-2026-0235</span></td><td>Prairie Wind</td><td><span className="mfr">Heartland</span></td><td><span className="bg parts-o">Parts Ordered</span></td><td>Mar 14</td><td style={{color: '#d97706', fontWeight: 600}}>55h</td><td><button className="btn btn-p btn-sm">Follow Up</button></td></tr>
+      {(() => {
+        const now = Date.now();
+        const staleClaims = opClaims.filter((c: any) => c.updatedAt && (now - new Date(c.updatedAt).getTime()) > 36 * 3600 * 1000);
+        if (staleClaims.length === 0) return <tr><td colSpan={7} style={{textAlign:'center',color:'#888',padding:20}}>No stale claims</td></tr>;
+        return staleClaims.map((c: any) => {
+          const staleHrs = Math.floor((now - new Date(c.updatedAt).getTime()) / 3600000);
+          return (
+            <tr key={c.id}>
+              <td><span className="cid" onClick={() => { setSelectedClaimId(c.id); showPage('claim-detail'); }}>{c.claimNumber}</span></td>
+              <td>{c.dealershipName || c.dealership?.name || '—'}</td>
+              <td><span className="mfr">{c.manufacturer}</span></td>
+              <td><span className={`bg ${c.status}`}>{c.status}</span></td>
+              <td>{new Date(c.updatedAt).toLocaleDateString('en-CA',{month:'short',day:'numeric'})}</td>
+              <td style={{color: staleHrs > 60 ? '#dc2626' : '#d97706', fontWeight: 600}}>{staleHrs}h</td>
+              <td><button className="btn btn-p btn-sm">Follow Up</button></td>
+            </tr>
+          );
+        });
+      })()}
     </tbody></table></div></div>
 </div>
 
@@ -286,10 +475,11 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
   <div className="tabs"><div className="tab active" onClick={(e) => switchTab(e)}>Active (24)</div><div className="tab" onClick={(e) => switchTab(e)}>Pending (3)</div><div className="tab" onClick={(e) => switchTab(e)}>Suspended (1)</div></div>
   <div className="pn" style={{borderTop: 'none', borderRadius: '0 0 8px 8px'}}><div className="filter-bar"><input type="text" placeholder="Search dealers..." /><select><option>All Plans</option><option>Plan A</option><option>Plan B</option></select><div style={{marginLeft: 'auto'}}><button className="btn btn-p btn-sm" onClick={() => showPage('add-dealer')}>+ Add Dealer</button></div></div>
     <div className="tw"><table><thead><tr><th>Dealership</th><th>Contact</th><th>Plan</th><th>Claims (MTD)</th><th>Revenue (MTD)</th><th>Services</th><th>Status</th><th>Action</th></tr></thead><tbody>
-      <tr><td style={{fontWeight: 500}}><span className="cid" onClick={() => showPage('dealer-detail')}>Smith's RV Centre</span></td><td>Mike Smith<br /><span style={{fontSize: 11, color: '#888'}}>mike@smithsrv.ca</span></td><td>Plan A · $349/mo</td><td>14</td><td>$4,200</td><td>2 active</td><td><span className="bg active">Active</span></td><td><button className="btn btn-o btn-sm" onClick={() => showPage('dealer-detail')}>Manage</button></td></tr>
-      <tr><td style={{fontWeight: 500}}><span className="cid" onClick={() => showPage('dealer-detail')}>Atlantic RV</span></td><td>Sarah Chen<br /><span style={{fontSize: 11, color: '#888'}}>sarah@atlanticrv.ca</span></td><td>Plan B · Wallet</td><td>8</td><td>$2,400</td><td>3 active</td><td><span className="bg active">Active</span></td><td><button className="btn btn-o btn-sm" onClick={() => showPage('dealer-detail')}>Manage</button></td></tr>
-      <tr><td style={{fontWeight: 500}}><span className="cid" onClick={() => showPage('dealer-detail')}>Prairie Wind RV</span></td><td>James Flett<br /><span style={{fontSize: 11, color: '#888'}}>james@prairiewind.ca</span></td><td>Plan A · $349/mo</td><td>11</td><td>$3,850</td><td>2 active</td><td><span className="bg active">Active</span></td><td><button className="btn btn-o btn-sm" onClick={() => showPage('dealer-detail')}>Manage</button></td></tr>
-      <tr><td style={{fontWeight: 500, color: '#d97706'}}>Maple Leaf RV ★</td><td>Tom Nguyen<br /><span style={{fontSize: 11, color: '#888'}}>tom@mapleleafrv.ca</span></td><td>—</td><td>—</td><td>—</td><td>—</td><td><span className="bg pending">Pending</span></td><td><button className="btn btn-s btn-sm">Approve</button></td></tr>
+      {opDealers.length === 0 ? (
+        <tr><td colSpan={8} style={{textAlign:'center',padding:24,color:'#888'}}>{dataError ? dataError : 'No dealers found'}</td></tr>
+      ) : opDealers.map((d: any) => (
+        <tr key={d.id}><td style={{fontWeight:500}}><span className="cid" onClick={() => { setSelectedDealerId(d.id); showPage('dealer-detail'); }}>{d.name}</span></td><td>{d.contactName || '—'}<br /><span style={{fontSize:11,color:'#888'}}>{d.contactEmail || d.email}</span></td><td>{d.plan === 'plan_b' ? 'Plan B · Wallet' : `Plan A · $${d.monthlyFee || 349}/mo`}</td><td>—</td><td>—</td><td>—</td><td><span className={`bg ${d.status}`}>{d.status}</span></td><td>{d.status === 'pending' ? <button className="btn btn-s btn-sm" onClick={() => handleApproveDealership(d.id)}>Approve</button> : <button className="btn btn-o btn-sm" onClick={() => { setSelectedDealerId(d.id); showPage('dealer-detail'); }}>Manage</button>}</td></tr>
+      ))}
     </tbody></table></div></div>
 </div>
 
@@ -298,21 +488,21 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
   <div className="detail-header"><button className="detail-back" onClick={() => showPage('dealers')}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6"/></svg></button><div className="detail-info"><div className="detail-title">Add New Dealer</div><div className="detail-meta">Create a new dealership account</div></div></div>
   <div className="pn"><div className="form-grid">
     <div className="form-group full" style={{borderBottom: '1px solid #f0f0f0', paddingBottom: 16}}><label style={{fontWeight: 600, fontSize: 13}}>Dealership Information</label></div>
-    <div className="form-group"><label>Dealership Name</label><input placeholder="Enter dealership name" /></div>
-    <div className="form-group"><label>Primary Contact</label><input placeholder="Full name" /></div>
-    <div className="form-group"><label>Email</label><input placeholder="dealer@example.com" /></div>
-    <div className="form-group"><label>Phone</label><input placeholder="(555) 000-0000" /></div>
-    <div className="form-group"><label>Address</label><input placeholder="Street address" /></div>
-    <div className="form-group"><label>City, Province</label><input placeholder="Toronto, ON" /></div>
+    <div className="form-group"><label>Dealership Name</label><input placeholder="Enter dealership name" value={addDealerForm.name} onChange={e => setAddDealerForm(f => ({...f, name: e.target.value}))} /></div>
+    <div className="form-group"><label>Primary Contact</label><input placeholder="Full name" value={addDealerForm.contactName} onChange={e => setAddDealerForm(f => ({...f, contactName: e.target.value}))} /></div>
+    <div className="form-group"><label>Email</label><input placeholder="dealer@example.com" value={addDealerForm.email} onChange={e => setAddDealerForm(f => ({...f, email: e.target.value}))} /></div>
+    <div className="form-group"><label>Phone</label><input placeholder="(555) 000-0000" value={addDealerForm.phone} onChange={e => setAddDealerForm(f => ({...f, phone: e.target.value}))} /></div>
+    <div className="form-group"><label>Address</label><input placeholder="Street address" value={addDealerForm.street} onChange={e => setAddDealerForm(f => ({...f, street: e.target.value}))} /></div>
+    <div className="form-group"><label>City, Province</label><input placeholder="Toronto, ON" value={addDealerForm.city} onChange={e => setAddDealerForm(f => ({...f, city: e.target.value}))} /></div>
     <div className="form-group full" style={{borderTop: '1px solid #f0f0f0', paddingTop: 16, borderBottom: '1px solid #f0f0f0', paddingBottom: 16}}><label style={{fontWeight: 600, fontSize: 13}}>Subscription</label></div>
-    <div className="form-group"><label>Plan</label><select><option>Plan A — Monthly ($349/mo)</option><option>Plan B — Pre-Funded Wallet</option><option>Custom</option></select></div>
+    <div className="form-group"><label>Plan</label><select value={addDealerForm.plan} onChange={e => setAddDealerForm(f => ({...f, plan: e.target.value}))}><option value="plan_a">Plan A — Monthly ($349/mo)</option><option value="plan_b">Plan B — Pre-Funded Wallet</option><option value="custom">Custom</option></select></div>
     <div className="form-group"><label>Claim Fee %</label><input value="10" type="number" /></div>
     <div className="form-group"><label>Min Fee</label><input value="$50.00" /></div>
     <div className="form-group"><label>Max Fee Cap</label><input value="$500.00" /></div>
     <div className="form-group"><label>DAF Fee</label><input value="$25.00" /></div>
     <div className="form-group"><label>PDI Fee</label><input value="$15.00" /></div>
     <div className="form-group full" style={{borderTop: '1px solid #f0f0f0', paddingTop: 16}}><label>Notes</label><textarea placeholder="Internal notes about this dealership..."></textarea></div>
-  </div><div className="btn-bar"><button className="btn btn-p" onClick={() => showPage('dealers')}>Create Dealer</button><button className="btn btn-o" onClick={() => showPage('dealers')}>Cancel</button></div></div>
+  </div><div className="btn-bar"><button className="btn btn-p" onClick={handleCreateDealer} disabled={addDealerSaving}>{addDealerSaving ? 'Saving…' : 'Create Dealer'}</button><button className="btn btn-o" onClick={() => showPage('dealers')}>Cancel</button></div></div>
 </div>
 
 
@@ -385,9 +575,11 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
 <div className={`page ${activePage === 'units' ? 'active' : ''}`} id="page-units">
   <div className="pn"><div className="filter-bar"><input type="text" placeholder="Search VIN, stock #, customer..." /><select><option>All Manufacturers</option><option>Jayco</option><option>Forest River</option><option>Heartland</option><option>Keystone</option><option>Columbia NW</option></select><select><option>All Dealers</option><option>Smith's RV</option><option>Atlantic RV</option></select><select><option>All Statuses</option><option>On Lot</option><option>Delivered</option><option>In Service</option></select><div style={{marginLeft: 'auto'}}><button className="btn btn-p btn-sm" onClick={() => showPage('add-unit')}>+ Add Unit</button></div></div>
     <div className="tw"><table><thead><tr><th>VIN</th><th>Stock #</th><th>Year</th><th>Make / Model</th><th>Dealer</th><th>Customer</th><th>Claims</th><th>DAF</th><th>PDI</th><th>Status</th></tr></thead><tbody>
-      <tr><td><span className="cid" onClick={() => showPage('unit-detail')}>1UJBJ0BN8M1TJ4K1</span></td><td>STK-0891</td><td>2024</td><td><span className="mfr">Jayco</span> Jay Flight 264BH</td><td>Smith's RV</td><td>Robert Martin</td><td>3</td><td><span className="bg authorized">Done</span></td><td><span className="bg authorized">Done</span></td><td><span className="bg active">Delivered</span></td></tr>
-      <tr><td><span className="cid" onClick={() => showPage('unit-detail')}>4X4TCKD25NE087293</span></td><td>STK-1204</td><td>2024</td><td><span className="mfr">Forest River</span> Rockwood 2891BH</td><td>Atlantic RV</td><td>Marie Bouchard</td><td>2</td><td><span className="bg authorized">Done</span></td><td><span className="bg pending">Pending</span></td><td><span className="bg" style={{background: '#dbeafe', color: '#2563eb'}}>On Lot</span></td></tr>
-      <tr><td><span className="cid" onClick={() => showPage('unit-detail')}>5ZT2H5R29NE154012</span></td><td>STK-0567</td><td>2025</td><td><span className="mfr">Heartland</span> Bighorn 3960LS</td><td>Prairie Wind</td><td>James Flett</td><td>1</td><td><span className="bg authorized">Done</span></td><td><span className="bg authorized">Done</span></td><td><span className="bg active">Delivered</span></td></tr>
+      {opUnits.length === 0 ? (
+        <tr><td colSpan={10} style={{textAlign:'center',padding:24,color:'#888'}}>{dataError ? dataError : 'No units found'}</td></tr>
+      ) : opUnits.map((u: any) => (
+        <tr key={u.id}><td><span className="cid" onClick={() => { setSelectedUnitId(u.id); showPage('unit-detail'); }}>{u.vin}</span></td><td>{u.stockNumber || '—'}</td><td>{u.year || '—'}</td><td><span className="mfr">{u.manufacturer}</span> {u.model}</td><td>{u.dealershipId?.slice(0,8)}…</td><td>{u.customerName || '—'}</td><td>—</td><td><span className={`bg ${u.dafCompleted ? 'authorized' : 'pending'}`}>{u.dafCompleted ? 'Done' : 'Pending'}</span></td><td><span className={`bg ${u.pdiCompleted ? 'authorized' : 'pending'}`}>{u.pdiCompleted ? 'Done' : 'Pending'}</span></td><td><span className="bg active">{u.status}</span></td></tr>
+      ))}
     </tbody></table></div></div>
 </div>
 
@@ -679,11 +871,22 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
   <div className="pn"><div className="pn-h"><span className="pn-t">All Invoices</span><span className="pn-a" onClick={() => showPage('create-invoice')}>+ Create Invoice</span></div>
     <div className="filter-bar"><input type="text" placeholder="Search invoices..." /><select><option>All Dealers</option><option>Smith's RV</option><option>Atlantic RV</option><option>Prairie Wind</option></select><select><option>All Statuses</option><option>Pending</option><option>Paid</option><option>Overdue</option></select><select><option>All Types</option><option>Subscription</option><option>Claim Fee</option><option>Service Add-on</option><option>DAF/PDI Fee</option></select></div>
     <div className="tw"><table><thead><tr><th>Invoice</th><th>Dealer</th><th>Type</th><th>Description</th><th>Amount</th><th>Tax</th><th>Total</th><th>Status</th><th>Issued</th></tr></thead><tbody>
-      <tr><td style={{fontWeight: 500}}>INV-0089</td><td>Smith's RV</td><td>Claim Fee</td><td>10% on CLM-0248</td><td>$124</td><td>$16.12</td><td>$140.12</td><td><span className="bg pending">Pending</span></td><td>Mar 16</td></tr>
-      <tr><td style={{fontWeight: 500}}>INV-0088</td><td>Atlantic RV</td><td>Subscription</td><td>March 2026</td><td>$349</td><td>$45.37</td><td>$394.37</td><td><span className="bg pay-recv">Paid</span></td><td>Mar 1</td></tr>
-      <tr><td style={{fontWeight: 500}}>INV-0087</td><td>Smith's RV</td><td>Subscription</td><td>March 2026</td><td>$349</td><td>$45.37</td><td>$394.37</td><td><span className="bg pay-recv">Paid</span></td><td>Mar 1</td></tr>
-      <tr><td style={{fontWeight: 500}}>INV-0086</td><td>Atlantic RV</td><td>Service Add-on</td><td>Financing Services — March</td><td>$199</td><td>$25.87</td><td>$224.87</td><td><span className="bg pay-recv">Paid</span></td><td>Mar 1</td></tr>
-      <tr><td style={{fontWeight: 500}}>INV-0085</td><td>Smith's RV</td><td>DAF Fee</td><td>DAF inspection VIN ...4K1</td><td>$25</td><td>$3.25</td><td>$28.25</td><td><span className="bg pay-recv">Paid</span></td><td>Jan 25</td></tr>
+      {opInvoices.length === 0
+        ? <tr><td colSpan={9} style={{textAlign:'center',color:'#888',padding:20}}>{dataError ? dataError : 'No invoices found'}</td></tr>
+        : opInvoices.map((inv: any) => (
+          <tr key={inv.id}>
+            <td style={{fontWeight: 500}}>{inv.invoiceNumber || inv.id}</td>
+            <td>{inv.dealershipName || inv.dealership?.name || '—'}</td>
+            <td>{inv.type || inv.invoiceType || '—'}</td>
+            <td>{inv.description || '—'}</td>
+            <td>{inv.amount ? `$${Number(inv.amount).toFixed(2)}` : '—'}</td>
+            <td>{inv.taxAmount ? `$${Number(inv.taxAmount).toFixed(2)}` : '—'}</td>
+            <td style={{fontWeight: 600}}>{inv.total ? `$${Number(inv.total).toFixed(2)}` : '—'}</td>
+            <td><span className={`bg ${inv.status === 'paid' ? 'pay-recv' : inv.status}`}>{inv.status}</span></td>
+            <td>{inv.issuedAt || inv.createdAt ? new Date(inv.issuedAt || inv.createdAt).toLocaleDateString('en-CA',{month:'short',day:'numeric'}) : '—'}</td>
+          </tr>
+        ))
+      }
     </tbody></table></div></div>
 </div>
 
@@ -829,10 +1032,23 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
   <div className="tabs"><div className="tab active" onClick={(e) => switchTab(e)}>Operator Staff (4)</div><div className="tab" onClick={(e) => switchTab(e)}>Dealer Users (38)</div></div>
   <div className="pn" style={{borderTop: 'none', borderRadius: '0 0 8px 8px'}}><div className="filter-bar"><input type="text" placeholder="Search users..." /><select><option>All Roles</option><option>Operator Admin</option><option>Operator Staff</option><option>Dealer Owner</option><option>Dealer Staff</option></select><div style={{marginLeft: 'auto'}}><button className="btn btn-p btn-sm">+ Add User</button></div></div>
     <div className="tw"><table><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Assigned Dealers</th><th>Status</th><th>Last Login</th><th>Action</th></tr></thead><tbody>
-      <tr><td style={{fontWeight: 500}}>Jonathan Delorme</td><td>jonathan@dealersuite360.com</td><td><span className="bg" style={{background: '#eff6ff', color: 'var(--brand)'}}>Operator Admin</span></td><td>All</td><td><span className="bg active">Active</span></td><td>Now</td><td><button className="btn btn-o btn-sm">Edit</button></td></tr>
-      <tr><td style={{fontWeight: 500}}>Marie Tremblay</td><td>marie@dealersuite360.com</td><td><span className="bg" style={{background: '#f0fdf4', color: '#16a34a'}}>Operator Staff</span></td><td>Smith's RV, Atlantic RV</td><td><span className="bg active">Active</span></td><td>1h ago</td><td><button className="btn btn-o btn-sm">Edit</button></td></tr>
-      <tr><td style={{fontWeight: 500}}>Alex Beaulieu</td><td>alex@dealersuite360.com</td><td><span className="bg" style={{background: '#f0fdf4', color: '#16a34a'}}>Operator Staff</span></td><td>Prairie Wind, West Coast</td><td><span className="bg active">Active</span></td><td>3h ago</td><td><button className="btn btn-o btn-sm">Edit</button></td></tr>
-      <tr><td style={{fontWeight: 500}}>Sophie Martin</td><td>sophie@dealersuite360.com</td><td><span className="bg" style={{background: '#f0fdf4', color: '#16a34a'}}>Operator Staff</span></td><td>BC Camper, Northern Trails</td><td><span className="bg active">Active</span></td><td>Yesterday</td><td><button className="btn btn-o btn-sm">Edit</button></td></tr>
+      {opUsers.length === 0
+        ? <tr><td colSpan={7} style={{textAlign:'center',color:'#888',padding:20}}>{dataError ? dataError : 'No users found'}</td></tr>
+        : opUsers.map((u: any) => {
+          const isAdmin = u.role === 'operator_admin';
+          return (
+            <tr key={u.id}>
+              <td style={{fontWeight: 500}}>{u.name || `${u.firstName || ''} ${u.lastName || ''}`.trim() || '—'}</td>
+              <td>{u.email}</td>
+              <td><span className="bg" style={{background: isAdmin ? '#eff6ff' : '#f0fdf4', color: isAdmin ? 'var(--brand)' : '#16a34a'}}>{u.role === 'operator_admin' ? 'Operator Admin' : u.role === 'operator_staff' ? 'Operator Staff' : u.role === 'dealer_owner' ? 'Dealer Owner' : 'Dealer Staff'}</span></td>
+              <td>{u.dealershipName || (u.role?.startsWith('operator') ? 'All' : '—')}</td>
+              <td><span className={`bg ${u.status === 'active' ? 'active' : 'pending'}`}>{u.status || 'active'}</span></td>
+              <td>{u.lastLoginAt ? new Date(u.lastLoginAt).toLocaleDateString('en-CA',{month:'short',day:'numeric'}) : '—'}</td>
+              <td><button className="btn btn-o btn-sm">Edit</button></td>
+            </tr>
+          );
+        })
+      }
     </tbody></table></div></div>
 </div>
 
@@ -841,10 +1057,23 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
   <div className="tabs"><div className="tab active" onClick={(e) => switchTab(e)}>Operator Staff (4)</div><div className="tab" onClick={(e) => switchTab(e)}>Dealer Users (38)</div></div>
   <div className="pn" style={{borderTop: 'none', borderRadius: '0 0 8px 8px'}}><div className="filter-bar"><input type="text" placeholder="Search users..." /><select><option>All Roles</option><option>Operator Admin</option><option>Operator Staff</option><option>Dealer Owner</option><option>Dealer Staff</option></select><div style={{marginLeft: 'auto'}}><button className="btn btn-p btn-sm">+ Add User</button></div></div>
     <div className="tw"><table><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Assigned Dealers</th><th>Status</th><th>Last Login</th><th>Action</th></tr></thead><tbody>
-      <tr><td style={{fontWeight: 500}}>Jonathan Delorme</td><td>jonathan@dealersuite360.com</td><td><span className="bg" style={{background: '#eff6ff', color: 'var(--brand)'}}>Operator Admin</span></td><td>All</td><td><span className="bg active">Active</span></td><td>Now</td><td><button className="btn btn-o btn-sm">Edit</button></td></tr>
-      <tr><td style={{fontWeight: 500}}>Marie Tremblay</td><td>marie@dealersuite360.com</td><td><span className="bg" style={{background: '#f0fdf4', color: '#16a34a'}}>Operator Staff</span></td><td>Smith's RV, Atlantic RV</td><td><span className="bg active">Active</span></td><td>1h ago</td><td><button className="btn btn-o btn-sm">Edit</button></td></tr>
-      <tr><td style={{fontWeight: 500}}>Alex Beaulieu</td><td>alex@dealersuite360.com</td><td><span className="bg" style={{background: '#f0fdf4', color: '#16a34a'}}>Operator Staff</span></td><td>Prairie Wind, West Coast</td><td><span className="bg active">Active</span></td><td>3h ago</td><td><button className="btn btn-o btn-sm">Edit</button></td></tr>
-      <tr><td style={{fontWeight: 500}}>Sophie Martin</td><td>sophie@dealersuite360.com</td><td><span className="bg" style={{background: '#f0fdf4', color: '#16a34a'}}>Operator Staff</span></td><td>BC Camper, Northern Trails</td><td><span className="bg active">Active</span></td><td>Yesterday</td><td><button className="btn btn-o btn-sm">Edit</button></td></tr>
+      {opUsers.length === 0
+        ? <tr><td colSpan={7} style={{textAlign:'center',color:'#888',padding:20}}>{dataError ? dataError : 'No users found'}</td></tr>
+        : opUsers.map((u: any) => {
+          const isAdmin = u.role === 'operator_admin';
+          return (
+            <tr key={u.id}>
+              <td style={{fontWeight: 500}}>{u.name || `${u.firstName || ''} ${u.lastName || ''}`.trim() || '—'}</td>
+              <td>{u.email}</td>
+              <td><span className="bg" style={{background: isAdmin ? '#eff6ff' : '#f0fdf4', color: isAdmin ? 'var(--brand)' : '#16a34a'}}>{u.role === 'operator_admin' ? 'Operator Admin' : u.role === 'operator_staff' ? 'Operator Staff' : u.role === 'dealer_owner' ? 'Dealer Owner' : 'Dealer Staff'}</span></td>
+              <td>{u.dealershipName || (u.role?.startsWith('operator') ? 'All' : '—')}</td>
+              <td><span className={`bg ${u.status === 'active' ? 'active' : 'pending'}`}>{u.status || 'active'}</span></td>
+              <td>{u.lastLoginAt ? new Date(u.lastLoginAt).toLocaleDateString('en-CA',{month:'short',day:'numeric'}) : '—'}</td>
+              <td><button className="btn btn-o btn-sm">Edit</button></td>
+            </tr>
+          );
+        })
+      }
     </tbody></table></div></div>
 </div>
 
@@ -854,15 +1083,21 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
   <div className="tabs"><div className="tab active" onClick={(e) => switchTab(e)}>Subscriptions (2)</div><div className="tab" onClick={(e) => switchTab(e)}>Claim Fees (3)</div><div className="tab" onClick={(e) => switchTab(e)}>Service Add-ons (3)</div><div className="tab" onClick={(e) => switchTab(e)}>Parts (4)</div><div className="tab" onClick={(e) => switchTab(e)}>All</div></div>
   <div className="pn" style={{borderTop: 'none', borderRadius: '0 0 8px 8px'}}>
     <div className="tw"><table><thead><tr><th>Name</th><th>Category</th><th>Price</th><th>Billing</th><th>Tax</th><th>Dealers</th><th>Status</th><th>Action</th></tr></thead><tbody>
-      <tr><td style={{fontWeight: 500}}>Plan A — Monthly Subscription</td><td><span className="mfr">Subscription</span></td><td>$349.00</td><td>Monthly</td><td>HST 13%</td><td>18</td><td><span className="bg active">Active</span></td><td><button className="btn btn-o btn-sm" onClick={() => showPage('edit-product')}>Edit</button></td></tr>
-      <tr><td style={{fontWeight: 500}}>Plan B — Pre-Funded Wallet</td><td><span className="mfr">Subscription</span></td><td>Variable</td><td>On deposit</td><td>HST 13%</td><td>6</td><td><span className="bg active">Active</span></td><td><button className="btn btn-o btn-sm" onClick={() => showPage('edit-product')}>Edit</button></td></tr>
-      <tr><td style={{fontWeight: 500}}>Claim Processing Fee</td><td><span className="mfr">Claim Fee</span></td><td>10%</td><td>Per claim</td><td>HST 13%</td><td>All</td><td><span className="bg active">Active</span></td><td><button className="btn btn-o btn-sm" onClick={() => showPage('edit-product')}>Edit</button></td></tr>
-      <tr><td style={{fontWeight: 500}}>DAF Inspection Fee</td><td><span className="mfr">Claim Fee</span></td><td>$25.00</td><td>Per unit</td><td>HST 13%</td><td>All</td><td><span className="bg active">Active</span></td><td><button className="btn btn-o btn-sm" onClick={() => showPage('edit-product')}>Edit</button></td></tr>
-      <tr><td style={{fontWeight: 500}}>PDI Processing Fee</td><td><span className="mfr">Claim Fee</span></td><td>$15.00</td><td>Per unit</td><td>HST 13%</td><td>All</td><td><span className="bg active">Active</span></td><td><button className="btn btn-o btn-sm" onClick={() => showPage('edit-product')}>Edit</button></td></tr>
-      <tr><td style={{fontWeight: 500}}>Financing Services</td><td><span className="mfr">Add-on</span></td><td>$199.00</td><td>Monthly</td><td>HST 13%</td><td>4</td><td><span className="bg active">Active</span></td><td><button className="btn btn-o btn-sm" onClick={() => showPage('edit-product')}>Edit</button></td></tr>
-      <tr><td style={{fontWeight: 500}}>F&I Services</td><td><span className="mfr">Add-on</span></td><td>$299.00</td><td>Monthly</td><td>HST 13%</td><td>3</td><td><span className="bg active">Active</span></td><td><button className="btn btn-o btn-sm" onClick={() => showPage('edit-product')}>Edit</button></td></tr>
-      <tr><td style={{fontWeight: 500}}>Sidewall Panel (2x3)</td><td><span className="mfr">Part</span></td><td>$285.00</td><td>Per unit</td><td>HST 13%</td><td>—</td><td><span className="bg active">Active</span></td><td><button className="btn btn-o btn-sm" onClick={() => showPage('edit-product')}>Edit</button></td></tr>
-      <tr><td style={{fontWeight: 500}}>Roof Vent (14x14)</td><td><span className="mfr">Part</span></td><td>$165.00</td><td>Per unit</td><td>HST 13%</td><td>—</td><td><span className="bg active">Active</span></td><td><button className="btn btn-o btn-sm" onClick={() => showPage('edit-product')}>Edit</button></td></tr>
+      {opProducts.length === 0
+        ? <tr><td colSpan={8} style={{textAlign:'center',color:'#888',padding:20}}>{dataError ? dataError : 'No products found'}</td></tr>
+        : opProducts.map((p: any) => (
+          <tr key={p.id}>
+            <td style={{fontWeight: 500}}>{p.name}</td>
+            <td><span className="mfr">{p.category || p.type || '—'}</span></td>
+            <td>{p.price != null ? (p.billingType === 'percentage' ? `${p.price}%` : `$${Number(p.price).toFixed(2)}`) : 'Variable'}</td>
+            <td>{p.billingCycle || p.billing || '—'}</td>
+            <td>{p.taxRate ? `HST ${p.taxRate}%` : 'HST 13%'}</td>
+            <td>{p.dealerCount ?? '—'}</td>
+            <td><span className={`bg ${p.status === 'active' ? 'active' : 'pending'}`}>{p.status || 'active'}</span></td>
+            <td><button className="btn btn-o btn-sm" onClick={() => showPage('edit-product')}>Edit</button></td>
+          </tr>
+        ))
+      }
     </tbody></table></div>
   </div>
 </div>

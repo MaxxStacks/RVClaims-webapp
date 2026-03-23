@@ -4,6 +4,9 @@
 
 import { useState, useEffect } from 'react';
 import ds360Icon from '@assets/ds360_favicon.png';
+import { apiFetch } from '@/lib/api';
+import { useAuth } from '@/hooks/use-auth';
+import { wsClient } from '@/lib/websocket';
 
 const AUCTION_START = new Date('2026-05-08T16:00:00Z');
 const AUCTION_END   = new Date('2026-05-09T16:00:00Z');
@@ -62,6 +65,16 @@ export default function BidderPortal() {
   const [postal, setPostal]         = useState('');
   const [profileSaved, setProfileSaved] = useState(false);
 
+  // ─── Auth ──────────────────────────────────────────────────────────────────
+  const { user, logout } = useAuth();
+
+  // ─── API data state ────────────────────────────────────────────────────────
+  const [upcomingAuctions, setUpcomingAuctions] = useState<any[]>([]);
+  const [myBids, setMyBids] = useState<any[]>([]);
+  const [wonUnits, setWonUnits] = useState<any[]>([]);
+  const [paymentMethods, setPaymentMethods] = useState<any[]>([]);
+  const [dataError, setDataError] = useState<string | null>(null);
+
   const titles: Record<string, [string, string]> = {
     'dashboard':    ['Dashboard',         'Auction account overview'],
     'profile':      ['My Profile',        'Personal information'],
@@ -78,6 +91,45 @@ export default function BidderPortal() {
   useEffect(() => {
     if (theme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
   }, []);
+
+  // ─── Data fetching keyed on activePage ─────────────────────────────────────
+  useEffect(() => {
+    setDataError(null);
+    const fetch = async () => {
+      try {
+        if (activePage === 'dashboard' || activePage === 'upcoming') {
+          const d = await apiFetch<any>('/api/public-auctions/upcoming');
+          setUpcomingAuctions(d.events || d.auctions || []);
+        }
+        if (activePage === 'dashboard' || activePage === 'my-bids') {
+          const d = await apiFetch<any>('/api/auctions/my-bids');
+          setMyBids(d.bids || []);
+        }
+        if (activePage === 'won-units') {
+          const d = await apiFetch<any>('/api/auctions/my-bids?won=true');
+          setWonUnits(d.bids || []);
+        }
+        if (activePage === 'payment') {
+          const d = await apiFetch<any>('/api/payments/methods');
+          setPaymentMethods(d.methods || []);
+        }
+      } catch (err: any) {
+        setDataError(err?.message || 'Failed to load data');
+      }
+    };
+    fetch();
+  }, [activePage]);
+
+  // ─── WebSocket: live auction bids ───────────────────────────────────────────
+  useEffect(() => {
+    wsClient.connect();
+    const unsubBid = wsClient.on<any>('auction:bid', (payload) => {
+      if (activePage === 'my-bids') {
+        setMyBids(prev => [payload, ...prev]);
+      }
+    });
+    return () => { unsubBid(); };
+  }, [activePage]);
 
   const showPage = (id: string) => {
     setActivePage(id);
@@ -204,6 +256,7 @@ export default function BidderPortal() {
         <div className="user-role">Public Bidder</div>
       </div>
     </div>
+    <button onClick={async () => { await logout(); window.location.href = '/'; }} style={{width:'100%',marginTop:8,padding:'7px 12px',background:'none',border:'1px solid #e0e0e0',borderRadius:6,fontSize:12,color:'#888',cursor:'pointer',fontFamily:'inherit',textAlign:'left' as const,display:'flex',alignItems:'center',gap:6}}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sign Out</button>
   </div>
 </nav>
 
@@ -635,22 +688,22 @@ export default function BidderPortal() {
     {/* History */}
     {bidsTab === 'history' && (
       <div className="tw"><table><thead><tr><th>Auction</th><th>Unit</th><th>Your Bid</th><th>Final Price</th><th>Result</th><th>Date</th></tr></thead><tbody>
-        <tr>
-          <td style={{fontWeight: 500, color: 'var(--brand)'}}>APR-2026</td>
-          <td>2023 Jayco Eagle HT 28.5RSTS</td>
-          <td style={{fontWeight: 600}}>$44,500</td>
-          <td>$46,200</td>
-          <td><span className="bg" style={{background: '#fef3c7', color: '#d97706'}}>Outbid</span></td>
-          <td>Apr 12</td>
-        </tr>
-        <tr>
-          <td style={{fontWeight: 500, color: 'var(--brand)'}}>MAR-2026</td>
-          <td>2024 Grand Design Imagine 2400BH</td>
-          <td style={{fontWeight: 600}}>$38,000</td>
-          <td>$38,000</td>
-          <td><span className="bg active">Won</span></td>
-          <td>Mar 8</td>
-        </tr>
+        {myBids.length === 0
+          ? <tr><td colSpan={6} style={{textAlign:'center',color:'#888',padding:20}}>No bid history</td></tr>
+          : myBids.map(b => {
+            const won = b.result === 'won' || b.won;
+            return (
+              <tr key={b.id}>
+                <td style={{fontWeight: 500, color: 'var(--brand)'}}>{b.auctionCode || b.auctionId}</td>
+                <td>{b.unitDescription || b.unit?.description || '—'}</td>
+                <td style={{fontWeight: 600}}>{b.bidAmount ? `$${Number(b.bidAmount).toLocaleString()}` : '—'}</td>
+                <td>{b.finalPrice ? `$${Number(b.finalPrice).toLocaleString()}` : '—'}</td>
+                <td>{won ? <span className="bg active">Won</span> : <span className="bg" style={{background: '#fef3c7', color: '#d97706'}}>Outbid</span>}</td>
+                <td>{b.bidDate ? new Date(b.bidDate).toLocaleDateString('en-CA',{month:'short',day:'numeric'}) : '—'}</td>
+              </tr>
+            );
+          })
+        }
       </tbody></table></div>
     )}
   </div>
@@ -662,61 +715,47 @@ export default function BidderPortal() {
 ════════════════════════════ */}
 <div className={`page ${activePage === 'won-units' ? 'active' : ''}`} id="page-won-units">
 
-  {/* Won unit card */}
-  <div className="pn" style={{marginBottom: 16}}>
-    <div style={{padding: '12px 20px', background: '#f0fdf4', borderBottom: '1px solid #bbf7d0', display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-      <div>
-        <span className="bg active" style={{marginRight: 8}}>Paid</span>
-        <span style={{fontSize: 14, fontWeight: 700}}>2024 Grand Design Imagine 2400BH</span>
-      </div>
-      <span style={{fontSize: 13, color: '#888'}}>MAR-2026</span>
-    </div>
-    <div style={{display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 0}}>
-      <div>
-        <div className="cd-row"><span className="cd-label">Auction</span><span className="cd-value">March 2026 Public Auction</span></div>
-        <div className="cd-row"><span className="cd-label">Winning Bid</span><span className="cd-value" style={{fontWeight: 700, color: 'var(--brand)'}}>$38,000</span></div>
-        <div className="cd-row"><span className="cd-label">$250 Hold</span><span className="cd-value" style={{color: '#22c55e'}}>Applied to purchase</span></div>
-        <div className="cd-row"><span className="cd-label">Balance Paid</span><span className="cd-value" style={{color: '#22c55e'}}>$37,750 · Completed</span></div>
-        <div className="cd-row"><span className="cd-label">Seller</span><span className="cd-value" style={{color: '#888'}}>Verified Dealer · Ontario</span></div>
-        <div className="cd-row"><span className="cd-label">Unit Transfer</span><span className="cd-value"><span className="bg active">Complete</span></span></div>
-      </div>
-      <div style={{padding: 16, borderLeft: '1px solid var(--border-light)', display: 'flex', flexDirection: 'column' as const, gap: 8}}>
-        <button className="btn btn-o btn-sm" style={{justifyContent: 'center'}}>View Documents</button>
-        <button className="btn btn-o btn-sm" style={{justifyContent: 'center'}}>Download Receipt</button>
-      </div>
-    </div>
-  </div>
-
-  {/* Payment due example */}
-  <div className="pn" style={{marginBottom: 16, borderColor: '#fde68a'}}>
-    <div style={{padding: '12px 20px', background: '#fffbeb', borderBottom: '1px solid #fde68a', display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-      <div>
-        <span className="bg pending" style={{marginRight: 8}}>Payment Due</span>
-        <span style={{fontSize: 14, fontWeight: 700}}>2023 Keystone Montana 3855BR (Example)</span>
-      </div>
-      <span style={{fontSize: 13, color: '#dc2626', fontWeight: 600}}>⏱ 48h 22m remaining</span>
-    </div>
-    <div style={{display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 0}}>
-      <div>
-        <div className="cd-row"><span className="cd-label">Winning Bid</span><span className="cd-value" style={{fontWeight: 700, color: 'var(--brand)'}}>$56,500</span></div>
-        <div className="cd-row"><span className="cd-label">$250 Hold</span><span className="cd-value">Will be applied</span></div>
-        <div className="cd-row"><span className="cd-label">Balance Due</span><span className="cd-value" style={{fontWeight: 700}}>$56,250</span></div>
-        <div className="cd-row"><span className="cd-label">Payment Window</span><span className="cd-value" style={{color: '#dc2626', fontWeight: 600}}>72 hours from auction close</span></div>
-      </div>
-      <div style={{padding: 16, borderLeft: '1px solid var(--border-light)', display: 'flex', flexDirection: 'column' as const, gap: 8}}>
-        <button className="btn btn-s btn-sm" style={{justifyContent: 'center'}}>Complete Payment</button>
-        <button className="btn btn-o btn-sm" style={{justifyContent: 'center'}} onClick={() => alert('Financing application will be available when connected to lender API.')}>Apply for Financing</button>
-      </div>
-    </div>
-    <div style={{padding: '10px 20px', background: '#fff7ed', borderTop: '1px solid #fed7aa', fontSize: 12, color: '#9a3412'}}>
-      ⚠ If payment is not received within 72 hours, the unit will be offered to the second-highest bidder and your $250 hold will be forfeited.
-    </div>
-  </div>
-
-  {/* Empty state hint */}
-  <div className="pn" style={{padding: '24px 20px', textAlign: 'center', color: 'var(--text-muted)', fontSize: 13}}>
-    All won units from past auctions will appear here with payment status and documentation.
-  </div>
+  {wonUnits.length === 0
+    ? <div className="pn" style={{padding: '40px 20px', textAlign: 'center', color: 'var(--text-muted)', fontSize: 13}}>No won units yet. All won units from past auctions will appear here with payment status and documentation.</div>
+    : wonUnits.map(w => {
+      const isPaid = w.paymentStatus === 'paid' || w.paid;
+      const isDue  = !isPaid;
+      return (
+        <div key={w.id} className="pn" style={{marginBottom: 16, borderColor: isPaid ? undefined : '#fde68a'}}>
+          <div style={{padding: '12px 20px', background: isPaid ? '#f0fdf4' : '#fffbeb', borderBottom: `1px solid ${isPaid ? '#bbf7d0' : '#fde68a'}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+            <div>
+              <span className={`bg ${isPaid ? 'active' : 'pending'}`} style={{marginRight: 8}}>{isPaid ? 'Paid' : 'Payment Due'}</span>
+              <span style={{fontSize: 14, fontWeight: 700}}>{w.unitDescription || w.unit?.description || '—'}</span>
+            </div>
+            <span style={{fontSize: 13, color: isPaid ? '#888' : '#dc2626', fontWeight: isDue ? 600 : undefined}}>{w.auctionCode || w.auctionId}</span>
+          </div>
+          <div style={{display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 0}}>
+            <div>
+              <div className="cd-row"><span className="cd-label">Auction</span><span className="cd-value">{w.auctionName || w.auctionCode || '—'}</span></div>
+              <div className="cd-row"><span className="cd-label">Winning Bid</span><span className="cd-value" style={{fontWeight: 700, color: 'var(--brand)'}}>{w.bidAmount ? `$${Number(w.bidAmount).toLocaleString()}` : '—'}</span></div>
+              <div className="cd-row"><span className="cd-label">$250 Hold</span><span className="cd-value" style={{color: isPaid ? '#22c55e' : undefined}}>{isPaid ? 'Applied to purchase' : 'Will be applied'}</span></div>
+              {isPaid && <div className="cd-row"><span className="cd-label">Unit Transfer</span><span className="cd-value"><span className="bg active">Complete</span></span></div>}
+              {isDue && <div className="cd-row"><span className="cd-label">Payment Window</span><span className="cd-value" style={{color: '#dc2626', fontWeight: 600}}>72 hours from auction close</span></div>}
+            </div>
+            <div style={{padding: 16, borderLeft: '1px solid var(--border-light)', display: 'flex', flexDirection: 'column' as const, gap: 8}}>
+              {isPaid ? (
+                <>
+                  <button className="btn btn-o btn-sm" style={{justifyContent: 'center'}}>View Documents</button>
+                  <button className="btn btn-o btn-sm" style={{justifyContent: 'center'}}>Download Receipt</button>
+                </>
+              ) : (
+                <>
+                  <button className="btn btn-s btn-sm" style={{justifyContent: 'center'}} onClick={async () => { try { await apiFetch('/api/payments/pay-invoice', { method: 'POST', body: JSON.stringify({ bidId: w.id }) }); } catch { alert('Payment failed. Please try again.'); } }}>Complete Payment</button>
+                  <button className="btn btn-o btn-sm" style={{justifyContent: 'center'}} onClick={() => alert('Financing application will be available when connected to lender API.')}>Apply for Financing</button>
+                </>
+              )}
+            </div>
+          </div>
+          {isDue && <div style={{padding: '10px 20px', background: '#fff7ed', borderTop: '1px solid #fed7aa', fontSize: 12, color: '#9a3412'}}>⚠ If payment is not received within 72 hours, the unit will be offered to the second-highest bidder and your $250 hold will be forfeited.</div>}
+        </div>
+      );
+    })
+  }
 </div>
 
 

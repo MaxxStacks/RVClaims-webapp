@@ -5,6 +5,9 @@
 import { useState, useEffect } from 'react';
 import ds360Icon from '@assets/ds360_favicon.png';
 import { MobileBottomNav, OfflineBanner } from '../components/MobileBottomNav';
+import { apiFetch } from '@/lib/api';
+import { useAuth } from '@/hooks/use-auth';
+import { wsClient } from '@/lib/websocket';
 
 export default function CustomerPortal() {
   const [activePage, setActivePage] = useState('dashboard');
@@ -16,11 +19,98 @@ export default function CustomerPortal() {
   const [custSettingsTab, setCustSettingsTab] = useState('cs-profile');
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
+  // ─── Auth ──────────────────────────────────────────────────────────────────
+  const { user, logout } = useAuth();
+
+  // ─── API data state ────────────────────────────────────────────────────────
+  const [custClaims, setCustClaims] = useState<any[]>([]);
+  const [custUnit, setCustUnit] = useState<any | null>(null);
+  const [custTickets, setCustTickets] = useState<any[]>([]);
+  const [custPartsOrders, setCustPartsOrders] = useState<any[]>([]);
+  const [dataError, setDataError] = useState<string | null>(null);
+
+  // ─── Selected IDs ──────────────────────────────────────────────────────────
+  const [selectedClaimId, setSelectedClaimId] = useState<string | null>(null);
+  const [selectedTicketId, setSelectedTicketId] = useState<string | null>(null);
+
+  // ─── New ticket form ───────────────────────────────────────────────────────
+  const [ticketForm, setTicketForm] = useState({ subject: '', category: 'general', description: '' });
+  const [ticketSaving, setTicketSaving] = useState(false);
+
+  // ─── Chat ──────────────────────────────────────────────────────────────────
+  const [chatMessage, setChatMessage] = useState('');
+  const [chatMessages, setChatMessages] = useState<any[]>([]);
+
   const titles: Record<string, [string, string]> = {dashboard:['Dashboard','Welcome back, Robert'],'my-unit':['My Unit','2024 Jayco Jay Flight 264BH'],warranty:['Warranty \u0026 Coverage','Active coverage details'],documents:['Documents','Warranty certs, inspection reports'],claims:['Claim Status','Track your claims'],'claim-detail':['CLM-0248','Warranty claim in progress'],'report-issue':['Report an Issue','Upload photos and describe the problem'],parts:['Parts Orders','Track parts for your claims'],'fi-products':['Protection Plans','Available products for your RV'],roadside:['Roadside Assistance','Coming soon'],tickets:['Support Tickets','Track conversations with dealer'],'ticket-detail':['TKT-0042','Warranty claim ticket'],'new-ticket':['New Ticket','Create a support ticket'],'quick-chat':['Quick Chat','Quick questions with Smith\u0027s RV Centre'],settings:['Settings','Your profile and preferences']};
 
   const parents: Record<string, string> = {'claim-detail':'claims','ticket-detail':'tickets','new-ticket':'tickets'};
 
   useEffect(() => { if (theme === 'dark') document.documentElement.setAttribute('data-theme', 'dark'); }, []);
+
+  // ─── Data fetching ─────────────────────────────────────────────────────────
+  useEffect(() => {
+    setDataError(null);
+    const fetch = async () => {
+      try {
+        if (activePage === 'dashboard' || activePage === 'claims') {
+          const d = await apiFetch<any>('/api/claims');
+          setCustClaims(d.claims || []);
+        }
+        if (activePage === 'dashboard' || activePage === 'my-unit' || activePage === 'warranty') {
+          const d = await apiFetch<any>('/api/units');
+          setCustUnit((d.units || [])[0] || null);
+        }
+        if (activePage === 'tickets' || activePage === 'ticket-detail') {
+          const d = await apiFetch<any>('/api/tickets');
+          setCustTickets(d.tickets || []);
+        }
+        if (activePage === 'parts') {
+          const d = await apiFetch<any>('/api/parts-orders');
+          setCustPartsOrders(d.partsOrders || []);
+        }
+      } catch (err: any) {
+        setDataError(err?.message || 'Failed to load data');
+      }
+    };
+    fetch();
+  }, [activePage]);
+
+  // ─── WebSocket ─────────────────────────────────────────────────────────────
+  useEffect(() => {
+    wsClient.connect();
+    const unsubTicket = wsClient.on<any>('ticket:message', (payload) => {
+      if (activePage === 'ticket-detail' || activePage === 'quick-chat') {
+        setChatMessages(prev => [...prev, payload]);
+      }
+    });
+    return () => { unsubTicket(); };
+  }, [activePage]);
+
+  // ─── Form handlers ─────────────────────────────────────────────────────────
+  const handleSubmitTicket = async () => {
+    if (!ticketForm.subject || !ticketForm.description) return;
+    setTicketSaving(true);
+    try {
+      await apiFetch('/api/tickets', {
+        method: 'POST',
+        body: JSON.stringify({ subject: ticketForm.subject, category: ticketForm.category, description: ticketForm.description }),
+      });
+      setTicketForm({ subject: '', category: 'general', description: '' });
+      const d = await apiFetch<any>('/api/tickets');
+      setCustTickets(d.tickets || []);
+      showPage('tickets');
+    } catch { /* ignore */ } finally { setTicketSaving(false); }
+  };
+
+  const handleSendChat = async () => {
+    if (!chatMessage.trim() || !selectedTicketId) return;
+    try {
+      const msg = chatMessage;
+      setChatMessage('');
+      await apiFetch(`/api/tickets/${selectedTicketId}/messages`, { method: 'POST', body: JSON.stringify({ content: msg }) });
+      setChatMessages(prev => [...prev, { content: msg, sender: 'client', createdAt: new Date().toISOString() }]);
+    } catch { /* ignore */ }
+  };
 
   const showPage = (id: string) => {
     setActivePage(id);
@@ -84,7 +174,7 @@ export default function CustomerPortal() {
       <div className={`nav-item ${isNavActive('quick-chat') ? 'active' : ''}`} onClick={() => showPage('quick-chat')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Quick Chat</div>
       <div className={`nav-item ${isNavActive('settings') ? 'active' : ''}`} onClick={() => showPage('settings')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09"/></svg>Settings</div></div>
   </div>
-  <div className="sidebar-footer"><div className="user-info" onClick={() => showPage('settings')}><div className="user-avatar" id="cust-avatar">RM</div><div><div className="user-name">Robert Martin</div><div className="user-role">Client</div></div></div></div>
+  <div className="sidebar-footer"><div className="user-info" onClick={() => showPage('settings')}><div className="user-avatar" id="cust-avatar">RM</div><div><div className="user-name">Robert Martin</div><div className="user-role">Client</div></div></div><button onClick={async () => { await logout(); window.location.href = '/'; }} style={{width:'100%',marginTop:8,padding:'7px 12px',background:'none',border:'1px solid #e0e0e0',borderRadius:6,fontSize:12,color:'#888',cursor:'pointer',fontFamily:'inherit',textAlign:'left' as const,display:'flex',alignItems:'center',gap:6}}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sign Out</button></div>
 </nav>
 <div className={`main${sidebarCollapsed ? ' collapsed-main' : ''}`}>
 <header className="header"><div className="header-left"><button className="hbtn" onClick={() => setSidebarCollapsed(c => !c)} title="Toggle sidebar" style={{flexShrink:0}}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button><img src={ds360Icon} width="28" height="28" style={{borderRadius:6,flexShrink:0,marginRight:4}} alt="DS360" /><div><div className="header-title" id="page-title">{pageTitle}</div><div className="header-sub" id="page-sub">{pageSub}</div></div></div><div className="header-right"><div className="lang-toggle" id="lang-toggle"><button className={`lang-btn-opt ${lang === "en" ? "active" : ""}`} id="lang-en" onClick={() => handleSetLang('en')}>EN</button><button className={`lang-btn-opt ${lang === "fr" ? "active" : ""}`} id="lang-fr" onClick={() => handleSetLang('fr')}>FR</button></div><button className="theme-toggle" onClick={() => toggleTheme()} id="theme-btn" title="Toggle dark mode"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button><button className="hbtn" onClick={() => showPage('tickets')}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><span className="ndot"></span></button></div></header>
@@ -212,9 +302,20 @@ export default function CustomerPortal() {
 <div className={`page ${activePage === 'claims' ? 'active' : ''}`} id="page-claims">
   <div className="pn"><div className="pn-h"><span className="pn-t">My Claims</span></div>
     <div className="tw"><table><thead><tr><th>Claim</th><th>Type</th><th>Issues</th><th>Status</th><th>Est. Value</th><th>Submitted</th><th>Action</th></tr></thead><tbody>
-      <tr><td style={{fontWeight: 500}}><span className="cid" onClick={() => showPage('claim-detail')}>CLM-0248</span></td><td>Warranty</td><td>4 items</td><td><span className="bg submitted">Processing</span></td><td>$1,240</td><td>Mar 16</td><td><button className="btn btn-o btn-sm" onClick={() => showPage('claim-detail')}>Track</button></td></tr>
-      <tr><td style={{fontWeight: 500}}>CLM-0237</td><td>DAF</td><td>7 items</td><td><span className="bg pay-recv">Paid</span></td><td>$4,200</td><td>Feb 12</td><td><button className="btn btn-o btn-sm">View</button></td></tr>
-      <tr><td style={{fontWeight: 500}}>CLM-0225</td><td>PDI</td><td>3 items</td><td><span className="bg pay-recv">Paid</span></td><td>$920</td><td>Jan 25</td><td><button className="btn btn-o btn-sm">View</button></td></tr>
+      {custClaims.length === 0
+        ? <tr><td colSpan={7} style={{textAlign:'center',color:'#888',padding:20}}>No claims found</td></tr>
+        : custClaims.map(c => (
+          <tr key={c.id}>
+            <td style={{fontWeight: 500}}><span className="cid" onClick={() => { setSelectedClaimId(c.id); showPage('claim-detail'); }}>{c.claimNumber}</span></td>
+            <td>{c.type}</td>
+            <td>—</td>
+            <td><span className={`bg ${c.status}`}>{c.status}</span></td>
+            <td>{c.estimatedAmount ? `$${c.estimatedAmount}` : '—'}</td>
+            <td>{c.submittedAt ? new Date(c.submittedAt).toLocaleDateString('en-CA',{month:'short',day:'numeric'}) : '—'}</td>
+            <td><button className="btn btn-o btn-sm" onClick={() => { setSelectedClaimId(c.id); showPage('claim-detail'); }}>Track</button></td>
+          </tr>
+        ))
+      }
     </tbody></table></div>
   </div>
 </div>
@@ -266,9 +367,18 @@ export default function CustomerPortal() {
 <div className={`page ${activePage === 'parts' ? 'active' : ''}`} id="page-parts">
   <div className="pn"><div className="pn-h"><span className="pn-t">Parts Orders</span><span style={{fontSize: 12, color: '#888'}}>Parts related to your claims</span></div>
     <div className="tw"><table><thead><tr><th>Order</th><th>Items</th><th>Related Claim</th><th>Status</th><th>ETA</th></tr></thead><tbody>
-      <tr><td style={{fontWeight: 500}}>PO-0038</td><td>Sidewall panel, adhesive, sealant</td><td>CLM-0248</td><td><span className="bg pending">Sourcing</span></td><td>—</td></tr>
-      <tr><td style={{fontWeight: 500}}>PO-0034</td><td>Slide seal, slide motor</td><td>CLM-0237</td><td><span className="bg shipped">Shipped</span></td><td>Mar 18</td></tr>
-      <tr><td style={{fontWeight: 500}}>PO-0031</td><td>Hinge set, screws</td><td>CLM-0237</td><td><span className="bg active">Delivered</span></td><td>—</td></tr>
+      {custPartsOrders.length === 0
+        ? <tr><td colSpan={5} style={{textAlign:'center',color:'#888',padding:20}}>No parts orders</td></tr>
+        : custPartsOrders.map(p => (
+          <tr key={p.id}>
+            <td style={{fontWeight: 500}}>{p.orderNumber || p.id}</td>
+            <td>{p.partName || p.description || '—'}</td>
+            <td>{p.claimNumber || '—'}</td>
+            <td><span className={`bg ${p.status || 'pending'}`}>{p.status || 'Pending'}</span></td>
+            <td>{p.estimatedDelivery ? new Date(p.estimatedDelivery).toLocaleDateString('en-CA',{month:'short',day:'numeric'}) : '—'}</td>
+          </tr>
+        ))
+      }
     </tbody></table></div>
   </div>
 </div>
@@ -312,11 +422,23 @@ export default function CustomerPortal() {
       <select><option>All Categories</option><option>Claim / Warranty</option><option>Billing</option><option>Parts Order</option><option>General</option><option>Warranty Expiry</option><option>Protection Plans</option><option>Feedback</option></select>
     </div>
     <div className="tw"><table><thead><tr><th>Ticket</th><th>Subject</th><th>Category</th><th>Related</th><th>Status</th><th>Last Update</th><th>Action</th></tr></thead><tbody>
-      <tr><td style={{fontWeight: 500, color: 'var(--brand)'}}><span className="cid" onClick={() => showPage('ticket-detail')}>TKT-0042</span></td><td style={{fontWeight: 500}}>Warranty claim — sidewall, roof leak, seal, hinge</td><td><span style={{fontSize: 11, color: '#888'}}>Claim / Warranty</span></td><td><span className="cid" onClick={() => showPage('claim-detail')} style={{fontSize: 12}}>CLM-0248</span></td><td><span className="bg submitted">Open</span></td><td>2h ago</td><td><button className="btn btn-o btn-sm" onClick={() => showPage('ticket-detail')}>View</button></td></tr>
-      <tr><td style={{fontWeight: 500, color: 'var(--brand)'}}><span className="cid" onClick={() => showPage('ticket-detail')}>TKT-0038</span></td><td style={{fontWeight: 500}}>Parts order — sidewall panel, adhesive, sealant</td><td><span style={{fontSize: 11, color: '#888'}}>Parts Order</span></td><td><span style={{fontSize: 12, color: '#888'}}>PO-0038</span></td><td><span className="bg pending">Waiting on Dealer</span></td><td>2h ago</td><td><button className="btn btn-o btn-sm" onClick={() => showPage('ticket-detail')}>View</button></td></tr>
-      <tr><td style={{fontWeight: 500, color: 'var(--brand)'}}><span className="cid" onClick={() => showPage('ticket-detail')}>TKT-0035</span></td><td style={{fontWeight: 500}}>Warranty expiring soon — Jayco OEM</td><td><span style={{fontSize: 11, color: '#888'}}>Warranty Expiry</span></td><td>—</td><td><span className="bg" style={{background: '#fef3c7', color: '#d97706'}}>Action Needed</span></td><td>1 week ago</td><td><button className="btn btn-o btn-sm" onClick={() => showPage('ticket-detail')}>View</button></td></tr>
-      <tr><td style={{fontWeight: 500, color: 'var(--brand)'}}>TKT-0029</td><td style={{fontWeight: 500}}>DAF claim completed — CLM-0237</td><td><span style={{fontSize: 11, color: '#888'}}>Claim / Warranty</span></td><td><span style={{fontSize: 12, color: '#888'}}>CLM-0237</span></td><td><span className="bg active">Resolved</span></td><td>Mar 8</td><td><button className="btn btn-o btn-sm">View</button></td></tr>
-      <tr><td style={{fontWeight: 500, color: 'var(--brand)'}}>TKT-0015</td><td style={{fontWeight: 500}}>Welcome — portal setup confirmation</td><td><span style={{fontSize: 11, color: '#888'}}>General</span></td><td>—</td><td><span className="bg" style={{background: '#f3f4f6', color: '#6b7280'}}>Closed</span></td><td>Feb 10</td><td><button className="btn btn-o btn-sm">View</button></td></tr>
+      {custTickets.length === 0
+        ? <tr><td colSpan={7} style={{textAlign:'center',color:'#888',padding:20}}>No tickets found</td></tr>
+        : custTickets.map(t => {
+          const statusClass = t.status === 'open' ? 'submitted' : t.status === 'resolved' ? 'active' : t.status === 'closed' ? '' : 'pending';
+          return (
+            <tr key={t.id}>
+              <td style={{fontWeight: 500, color: 'var(--brand)'}}><span className="cid" onClick={() => { setSelectedTicketId(t.id); showPage('ticket-detail'); }}>{t.ticketNumber || t.id}</span></td>
+              <td style={{fontWeight: 500}}>{t.subject}</td>
+              <td><span style={{fontSize: 11, color: '#888'}}>{t.category}</span></td>
+              <td><span style={{fontSize: 12, color: '#888'}}>{t.relatedClaimNumber || '—'}</span></td>
+              <td><span className={`bg ${statusClass}`}>{t.status}</span></td>
+              <td>{t.updatedAt ? new Date(t.updatedAt).toLocaleDateString('en-CA',{month:'short',day:'numeric'}) : '—'}</td>
+              <td><button className="btn btn-o btn-sm" onClick={() => { setSelectedTicketId(t.id); showPage('ticket-detail'); }}>View</button></td>
+            </tr>
+          );
+        })
+      }
     </tbody></table></div>
   </div>
 </div>
