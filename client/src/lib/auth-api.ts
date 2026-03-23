@@ -125,11 +125,11 @@ export async function register(payload: RegisterPayload): Promise<AuthResponse> 
 export async function login(
   email: string,
   password: string,
-  portal?: "dealer" | "operator"
+  portal?: "dealer" | "operator" | "customer" | "bidder"
 ): Promise<AuthResponse> {
   const data = await apiFetch<AuthResponse>("/api/auth/login", {
     method: "POST",
-    body: JSON.stringify({ email, password, ...(portal ? { portal } : {}) }),
+    body: JSON.stringify({ email, password, ...(portal ? { portalType: portal } : {}) }),
     skipAuth: true,
   });
   if (data.success && data.accessToken) {

@@ -27,6 +27,7 @@ const LiveAuctions = lazy(() => import("@/pages/live-auctions"));
 const Pricing = lazy(() => import("@/pages/pricing"));
 const OperatorLogin = lazy(() => import("@/pages/operator-login"));
 const BidderLoginPage = lazy(() => import("@/pages/bidder-login"));
+const CustomerLogin = lazy(() => import("@/pages/customer-login"));
 const BookDemo = lazy(() => import("@/pages/book-demo"));
 const OnSiteRepairs = lazy(() => import("@/pages/on-site-repairs"));
 const RoadsideAssistance = lazy(() => import("@/pages/roadside-assistance"));
@@ -78,7 +79,9 @@ function Router() {
         <Route path="/live-auctions" component={LiveAuctions} />
         <Route path="/pricing" component={Pricing} />
         <Route path="/operator" component={OperatorLogin} />
-        <Route path="/bidder-login" component={BidderLoginPage} />
+        <Route path="/client" component={CustomerLogin} />
+        <Route path="/bidder" component={BidderLoginPage} />
+        <Route path="/bidder-login">{() => <Redirect to="/bidder" />}</Route>
         <Route path="/book-demo" component={BookDemo} />
         <Route path="/on-site-repairs" component={OnSiteRepairs} />
         <Route path="/roadside-assistance" component={RoadsideAssistance} />
@@ -95,13 +98,11 @@ function Router() {
 function App() {
   const [location] = useLocation();
   // Portal sub-paths are isolated from the marketing layout.
-  // /operator and /dealer (exact) still serve login pages.
-  // /client (base) serves CustomerPortal — no separate customer login page.
+  // /operator, /dealer, /client, /bidder (exact) serve login pages in the marketing Switch.
+  // Only sub-paths (/:rest*) trigger portal mode.
   const isPortal = location.startsWith('/operator/') ||
                    location.startsWith('/dealer/') ||
-                   location === '/client' ||
                    location.startsWith('/client/') ||
-                   location === '/bidder' ||
                    location.startsWith('/bidder/');
 
   // portal.css sets body{display:flex;background:...} globally.
@@ -126,11 +127,7 @@ function App() {
             <Switch>
               <Route path="/operator/:rest*" component={OperatorPortal} />
               <Route path="/dealer/:rest*" component={DealerPortal} />
-              <Route path="/client" component={CustomerPortal} />
               <Route path="/client/:rest*" component={CustomerPortal} />
-              <Route path="/portal">{() => <Redirect to="/client" />}</Route>
-              <Route path="/portal/:rest*">{() => <Redirect to="/client" />}</Route>
-              <Route path="/bidder" component={BidderPortal} />
               <Route path="/bidder/:rest*" component={BidderPortal} />
             </Switch>
           </Suspense>

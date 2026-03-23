@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
-import { Link } from "wouter";
+import { useAuth } from "@/hooks/use-auth";
+import { Link, useLocation } from "wouter";
 import logoEN from "@assets/DS360_logo_en.png";
 import logoFR from "@assets/DS360_logo_fr.png";
 
 export default function BidderLogin() {
   const { language } = useLanguage();
+  const { login } = useAuth();
+  const [, setLocation] = useLocation();
   const [mode, setMode] = useState<"register" | "login">("register");
 
   // Register fields
@@ -67,11 +70,17 @@ export default function BidderLogin() {
       return;
     }
     setIsLoading(true);
-    // TODO: real API call
-    setTimeout(() => {
-      setIsLoading(false);
-      window.location.href = "/bidder";
-    }, 800);
+    try {
+      const result = await login(loginEmail, loginPassword, "bidder");
+      if (result.success) {
+        setLocation("/bidder/dashboard");
+      } else {
+        setError(result.message || "Invalid email or password");
+      }
+    } catch {
+      setError("Invalid email or password");
+    }
+    setIsLoading(false);
   };
 
   const features = [

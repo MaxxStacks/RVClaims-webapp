@@ -570,7 +570,7 @@ export const notificationsRelations = relations(notifications, ({ one }) => ({
 export const loginSchema = z.object({
   email: z.string().email(),
   password: z.string().min(8),
-  portalType: z.enum(["operator", "dealer"]).optional(),
+  portalType: z.enum(["operator", "dealer", "customer", "bidder"]).optional(),
 });
 
 export const registerSchema = z.object({
