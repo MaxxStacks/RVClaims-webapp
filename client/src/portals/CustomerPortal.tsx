@@ -64,7 +64,7 @@ export default function CustomerPortal() {
   return (
     <>
 <nav className={`sidebar${sidebarCollapsed ? ' collapsed' : ''}`}>
-  <div className="sidebar-logo"><svg width="36" height="36" viewBox="0 0 36 36"><rect width="36" height="36" rx="8" fill="var(--brand)"/><path d="M9 25L18 11L27 25H9Z" fill="white" opacity="0.8"/></svg><div className="sidebar-logo-text"><div className="sidebar-logo-name">Smith's RV Centre</div><div className="sidebar-logo-sub">Client Portal</div></div><span className="sidebar-badge">Client</span></div>
+  <div className="sidebar-logo"><img src={ds360Icon} width="36" height="36" style={{borderRadius:8}} alt="DS360" /><div className="sidebar-logo-text"><div className="sidebar-logo-name">Smith's RV Centre</div><div className="sidebar-logo-sub">Client Portal</div></div><span className="sidebar-badge">Client</span></div>
   <div className="sidebar-nav">
     <div className="nav-section"><div className="nav-label">Overview</div>
       <div className={`nav-item ${isNavActive('dashboard') ? 'active' : ''}`} onClick={() => showPage('dashboard')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</div></div>
