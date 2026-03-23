@@ -571,6 +571,7 @@ export const loginSchema = z.object({
   email: z.string().email(),
   password: z.string().min(8),
   portalType: z.enum(["operator", "dealer", "client", "bidder"]).optional(),
+  rememberMe: z.boolean().optional(),
 });
 
 export const registerSchema = z.object({

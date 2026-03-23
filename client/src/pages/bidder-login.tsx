@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, ArrowLeft, CheckCircle2 } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
 import { useAuth } from "@/hooks/use-auth";
+import { forgotPassword } from "@/lib/auth-api";
 import { Link, useLocation } from "wouter";
 import logoEN from "@assets/DS360_logo_en.png";
 import logoFR from "@assets/DS360_logo_fr.png";
@@ -11,6 +12,7 @@ export default function BidderLogin() {
   const { login } = useAuth();
   const [, setLocation] = useLocation();
   const [mode, setMode] = useState<"register" | "login">("register");
+  const [loginView, setLoginView] = useState<"form" | "forgot" | "forgot-sent">("form");
 
   // Register fields
   const [firstName, setFirstName]       = useState("");
@@ -24,9 +26,12 @@ export default function BidderLogin() {
   const [showConfPass, setShowConfPass] = useState(false);
 
   // Login fields
-  const [loginEmail, setLoginEmail]     = useState("");
+  const [loginEmail, setLoginEmail]     = useState(() => localStorage.getItem("ds360_bidder_email") || "");
   const [loginPassword, setLoginPassword] = useState("");
   const [showLoginPass, setShowLoginPass] = useState(false);
+  const [rememberMe, setRememberMe]     = useState(() => localStorage.getItem("ds360_bidder_remember") === "true");
+  const [forgotEmail, setForgotEmail]   = useState("");
+  const [forgotLoading, setForgotLoading] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError]         = useState("");
@@ -69,9 +74,16 @@ export default function BidderLogin() {
       setError("Please enter your email and password.");
       return;
     }
+    if (rememberMe) {
+      localStorage.setItem("ds360_bidder_remember", "true");
+      localStorage.setItem("ds360_bidder_email", loginEmail);
+    } else {
+      localStorage.removeItem("ds360_bidder_remember");
+      localStorage.removeItem("ds360_bidder_email");
+    }
     setIsLoading(true);
     try {
-      const result = await login(loginEmail, loginPassword, "bidder");
+      const result = await login(loginEmail, loginPassword, "bidder", rememberMe);
       if (result.success) {
         setLocation("/bidder/dashboard");
       } else {
@@ -81,6 +93,18 @@ export default function BidderLogin() {
       setError("Invalid email or password");
     }
     setIsLoading(false);
+  };
+
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setForgotLoading(true);
+    try {
+      await forgotPassword(forgotEmail);
+    } catch {
+      // Always show sent view to avoid email enumeration
+    }
+    setForgotLoading(false);
+    setLoginView("forgot-sent");
   };
 
   const features = [
@@ -304,7 +328,7 @@ export default function BidderLogin() {
             )}
 
             {/* ── LOGIN MODE ── */}
-            {mode === "login" && (
+            {mode === "login" && loginView === "form" && (
               <>
                 <div style={{ fontSize: "26px", fontWeight: 700, color: "#111", marginBottom: "4px" }}>Welcome Back</div>
                 <p style={{ fontSize: "14px", color: "#888", marginBottom: "28px" }}>
@@ -314,25 +338,28 @@ export default function BidderLogin() {
                 <form onSubmit={handleLogin}>
                   <div style={{ marginBottom: "16px" }}>
                     <label style={labelStyle}>Email Address</label>
-                    <input
-                      type="email" placeholder="jane@example.com" style={inputStyle} required
-                      value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)}
-                    />
+                    <input type="email" placeholder="jane@example.com" style={inputStyle} required value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} />
                   </div>
 
-                  <div style={{ marginBottom: "20px" }}>
-                    <label style={labelStyle}>Password</label>
+                  <div style={{ marginBottom: "16px" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
+                      <label style={labelStyle}>Password</label>
+                      <button type="button" onClick={() => { setForgotEmail(loginEmail); setLoginView("forgot"); setError(""); }} style={{ background: "none", border: "none", cursor: "pointer", fontSize: "12px", color: "#08235d", fontFamily: "inherit", padding: 0 }}>
+                        Forgot password?
+                      </button>
+                    </div>
                     <div style={{ position: "relative" }}>
-                      <input
-                        type={showLoginPass ? "text" : "password"} placeholder="Enter your password"
-                        style={{ ...inputStyle, paddingRight: "40px" }} required
-                        value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)}
-                      />
+                      <input type={showLoginPass ? "text" : "password"} placeholder="Enter your password" style={{ ...inputStyle, paddingRight: "40px" }} required value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} />
                       <button type="button" onClick={() => setShowLoginPass(!showLoginPass)} style={{ position: "absolute", right: "12px", top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", color: "#999", padding: 0 }}>
                         {showLoginPass ? <EyeOff size={16} /> : <Eye size={16} />}
                       </button>
                     </div>
                   </div>
+
+                  <label style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "16px", cursor: "pointer" }}>
+                    <input type="checkbox" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} style={{ width: "15px", height: "15px", accentColor: "#08235d" }} />
+                    <span style={{ fontSize: "13px", color: "#555" }}>Remember this device for 30 days</span>
+                  </label>
 
                   {error && (
                     <div style={{ background: "#fef2f2", border: "1px solid #fecaca", color: "#dc2626", padding: "12px 16px", borderRadius: "8px", fontSize: "14px", marginBottom: "16px" }}>
@@ -340,11 +367,7 @@ export default function BidderLogin() {
                     </div>
                   )}
 
-                  <button type="submit" disabled={isLoading} style={{
-                    width: "100%", padding: "14px", background: "#08235d", color: "white", border: "none",
-                    borderRadius: "8px", fontSize: "14px", fontWeight: 600, fontFamily: "inherit",
-                    cursor: isLoading ? "not-allowed" : "pointer", opacity: isLoading ? 0.6 : 1,
-                  }}>
+                  <button type="submit" disabled={isLoading} style={{ width: "100%", padding: "14px", background: "#08235d", color: "white", border: "none", borderRadius: "8px", fontSize: "14px", fontWeight: 600, fontFamily: "inherit", cursor: isLoading ? "not-allowed" : "pointer", opacity: isLoading ? 0.6 : 1 }}>
                     {isLoading ? "Signing in..." : "Sign In →"}
                   </button>
 
@@ -355,6 +378,42 @@ export default function BidderLogin() {
                     </button>
                   </p>
                 </form>
+              </>
+            )}
+
+            {mode === "login" && loginView === "forgot" && (
+              <>
+                <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "24px" }}>
+                  <button onClick={() => { setLoginView("form"); setError(""); }} style={{ padding: "8px", borderRadius: "6px", border: "none", background: "none", cursor: "pointer", color: "#888" }}>
+                    <ArrowLeft size={20} />
+                  </button>
+                  <div style={{ fontSize: "20px", fontWeight: 700, color: "#08235d" }}>Reset Password</div>
+                </div>
+                <p style={{ fontSize: "14px", color: "#888", marginBottom: "24px" }}>Enter your email and we'll send you a reset link.</p>
+                <form onSubmit={handleForgotPassword}>
+                  <div style={{ marginBottom: "16px" }}>
+                    <label style={labelStyle}>Email Address</label>
+                    <input type="email" value={forgotEmail} onChange={(e) => setForgotEmail(e.target.value)} placeholder="jane@example.com" style={inputStyle} required />
+                  </div>
+                  <button type="submit" disabled={forgotLoading} style={{ width: "100%", padding: "14px", background: "#08235d", color: "white", border: "none", borderRadius: "8px", fontSize: "14px", fontWeight: 600, fontFamily: "inherit", cursor: "pointer", opacity: forgotLoading ? 0.5 : 1 }}>
+                    {forgotLoading ? "Sending..." : "Send Reset Link"}
+                  </button>
+                </form>
+              </>
+            )}
+
+            {mode === "login" && loginView === "forgot-sent" && (
+              <>
+                <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "12px" }}>
+                  <CheckCircle2 size={28} style={{ color: "#22c55e", flexShrink: 0 }} />
+                  <div style={{ fontSize: "20px", fontWeight: 700, color: "#111" }}>Check your email</div>
+                </div>
+                <p style={{ fontSize: "14px", color: "#666", lineHeight: 1.6, marginBottom: "24px" }}>
+                  If an account exists for <strong>{forgotEmail}</strong>, a reset link has been sent. Check your inbox and spam folder.
+                </p>
+                <button onClick={() => setLoginView("form")} style={{ width: "100%", padding: "13px", background: "none", color: "#08235d", border: "1px solid #e0e0e0", borderRadius: "8px", fontSize: "14px", fontWeight: 500, fontFamily: "inherit", cursor: "pointer" }}>
+                  Back to Sign In
+                </button>
               </>
             )}
 

@@ -33,6 +33,7 @@ const OnSiteRepairs = lazy(() => import("@/pages/on-site-repairs"));
 const RoadsideAssistance = lazy(() => import("@/pages/roadside-assistance"));
 const NewsPage = lazy(() => import("@/pages/news"));
 const NewsArticlePage = lazy(() => import("@/pages/news-article"));
+const ResetPassword = lazy(() => import("@/pages/reset-password"));
 const NotFound = lazy(() => import("@/pages/not-found"));
 const OperatorPortal = lazy(() => import("./portals/OperatorPortal"));
 const DealerPortal = lazy(() => import("./portals/DealerPortal"));
@@ -89,6 +90,7 @@ function Router() {
         <Route path="/news/:id" component={NewsArticlePage} />
         <Route path="/actualites" component={NewsPage} />
         <Route path="/actualites/:id" component={NewsArticlePage} />
+        <Route path="/reset-password" component={ResetPassword} />
         <Route component={NotFound} />
       </Switch>
     </>

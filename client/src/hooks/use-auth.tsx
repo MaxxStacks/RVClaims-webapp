@@ -21,7 +21,7 @@ interface AuthContextValue {
   user: PublicUser | null;
   isLoading: boolean;
   isAuthenticated: boolean;
-  login: (email: string, password: string, portal?: "dealer" | "operator" | "client" | "bidder") => Promise<{ success: boolean; message?: string }>;
+  login: (email: string, password: string, portal?: "dealer" | "operator" | "client" | "bidder", rememberMe?: boolean) => Promise<{ success: boolean; message?: string }>;
   register: (payload: RegisterPayload) => Promise<{ success: boolean; message?: string }>;
   logout: () => Promise<void>;
   hasRole: (...roles: UserRole[]) => boolean;
@@ -53,8 +53,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const login = useCallback(
-    async (email: string, password: string, portal?: "dealer" | "operator" | "client" | "bidder") => {
-      const res = await apiLogin(email, password, portal);
+    async (email: string, password: string, portal?: "dealer" | "operator" | "client" | "bidder", rememberMe?: boolean) => {
+      const res = await apiLogin(email, password, portal, rememberMe);
       if (res.success && res.user) {
         setUser(res.user);
         return { success: true };

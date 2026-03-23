@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Mail, Eye, EyeOff, ArrowLeft, FileText, TrendingUp, Users, Building2 } from "lucide-react";
+import { Mail, Eye, EyeOff, ArrowLeft, FileText, TrendingUp, Users, Building2, CheckCircle2 } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
 import { useAuth } from "@/hooks/use-auth";
+import { forgotPassword } from "@/lib/auth-api";
 import { Link, useLocation } from "wouter";
 import logoEN from "@assets/DS360_logo_en.png";
 import logoFR from "@assets/DS360_logo_fr.png";
@@ -11,18 +12,29 @@ export default function OperatorLogin() {
   const { login } = useAuth();
   const [, setLocation] = useLocation();
   const [showForm, setShowForm] = useState(false);
-  const [email, setEmail] = useState("");
+  const [loginView, setLoginView] = useState<"form" | "forgot" | "forgot-sent">("form");
+  const [email, setEmail] = useState(() => localStorage.getItem("ds360_op_email") || "");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [rememberMe, setRememberMe] = useState(() => localStorage.getItem("ds360_op_remember") === "true");
+  const [forgotEmail, setForgotEmail] = useState("");
+  const [forgotLoading, setForgotLoading] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError("");
+    if (rememberMe) {
+      localStorage.setItem("ds360_op_remember", "true");
+      localStorage.setItem("ds360_op_email", email);
+    } else {
+      localStorage.removeItem("ds360_op_remember");
+      localStorage.removeItem("ds360_op_email");
+    }
     try {
-      const result = await login(email, password, "operator");
+      const result = await login(email, password, "operator", rememberMe);
       if (result.success) {
         setLocation("/operator/dashboard");
       } else {
@@ -32,6 +44,18 @@ export default function OperatorLogin() {
       setError("Invalid credentials");
     }
     setIsLoading(false);
+  };
+
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setForgotLoading(true);
+    try {
+      await forgotPassword(forgotEmail);
+    } catch {
+      // Always show sent view to avoid email enumeration
+    }
+    setForgotLoading(false);
+    setLoginView("forgot-sent");
   };
 
   const stats = [
@@ -162,50 +186,93 @@ export default function OperatorLogin() {
               </>
             ) : (
               <div style={{ textAlign: "left" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "24px" }}>
-                  <button onClick={() => { setShowForm(false); setError(""); }} style={{
-                    padding: "8px", borderRadius: "6px", border: "none", background: "none",
-                    cursor: "pointer", color: "#888",
-                  }}>
-                    <ArrowLeft size={20} />
-                  </button>
-                  <div style={{ fontSize: "20px", fontWeight: 700, color: "#08235d" }}>Operator Sign In</div>
-                </div>
-
-                <form onSubmit={handleLogin}>
-                  <div style={{ marginBottom: "16px" }}>
-                    <label style={{ display: "block", fontSize: "13px", fontWeight: 500, color: "#333", marginBottom: "6px" }}>Email Address</label>
-                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@dealersuite360.com" style={inputStyle} required />
-                  </div>
-
-                  <div style={{ marginBottom: "16px" }}>
-                    <label style={{ display: "block", fontSize: "13px", fontWeight: 500, color: "#333", marginBottom: "6px" }}>Password</label>
-                    <div style={{ position: "relative" }}>
-                      <input type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Enter your password" style={{ ...inputStyle, paddingRight: "40px" }} required />
-                      <button type="button" onClick={() => setShowPassword(!showPassword)} style={{ position: "absolute", right: "12px", top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", color: "#999", padding: 0 }}>
-                        {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                {loginView === "form" && (
+                  <>
+                    <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "24px" }}>
+                      <button onClick={() => { setShowForm(false); setError(""); }} style={{ padding: "8px", borderRadius: "6px", border: "none", background: "none", cursor: "pointer", color: "#888" }}>
+                        <ArrowLeft size={20} />
                       </button>
+                      <div style={{ fontSize: "20px", fontWeight: 700, color: "#08235d" }}>Operator Sign In</div>
                     </div>
-                  </div>
 
-                  {error && (
-                    <div style={{ background: "#fef2f2", border: "1px solid #fecaca", color: "#dc2626", padding: "12px 16px", borderRadius: "8px", fontSize: "14px", marginBottom: "16px" }}>
-                      {error}
+                    <form onSubmit={handleLogin}>
+                      <div style={{ marginBottom: "16px" }}>
+                        <label style={{ display: "block", fontSize: "13px", fontWeight: 500, color: "#333", marginBottom: "6px" }}>Email Address</label>
+                        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@dealersuite360.com" style={inputStyle} required />
+                      </div>
+
+                      <div style={{ marginBottom: "16px" }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
+                          <label style={{ fontSize: "13px", fontWeight: 500, color: "#333" }}>Password</label>
+                          <button type="button" onClick={() => { setForgotEmail(email); setLoginView("forgot"); setError(""); }} style={{ background: "none", border: "none", cursor: "pointer", fontSize: "12px", color: "#08235d", fontFamily: "inherit", padding: 0 }}>
+                            Forgot password?
+                          </button>
+                        </div>
+                        <div style={{ position: "relative" }}>
+                          <input type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Enter your password" style={{ ...inputStyle, paddingRight: "40px" }} required />
+                          <button type="button" onClick={() => setShowPassword(!showPassword)} style={{ position: "absolute", right: "12px", top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", color: "#999", padding: 0 }}>
+                            {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                          </button>
+                        </div>
+                      </div>
+
+                      <label style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "16px", cursor: "pointer" }}>
+                        <input type="checkbox" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} style={{ width: "15px", height: "15px", accentColor: "#08235d" }} />
+                        <span style={{ fontSize: "13px", color: "#555" }}>Remember this device for 30 days</span>
+                      </label>
+
+                      {error && (
+                        <div style={{ background: "#fef2f2", border: "1px solid #fecaca", color: "#dc2626", padding: "12px 16px", borderRadius: "8px", fontSize: "14px", marginBottom: "16px" }}>
+                          {error}
+                        </div>
+                      )}
+
+                      <button type="submit" disabled={isLoading} style={{ width: "100%", padding: "14px", background: "#08235d", color: "white", border: "none", borderRadius: "8px", fontSize: "14px", fontWeight: 600, fontFamily: "inherit", cursor: "pointer", opacity: isLoading ? 0.5 : 1 }}>
+                        {isLoading ? "Signing in..." : "Sign In"}
+                      </button>
+                    </form>
+
+                    <div style={{ marginTop: "16px", padding: "16px", background: "#f8f8f8", borderRadius: "8px", textAlign: "center" }}>
+                      <p style={{ fontSize: "12px", color: "#999" }}>Unauthorized access attempts are logged and monitored.</p>
                     </div>
-                  )}
+                  </>
+                )}
 
-                  <button type="submit" disabled={isLoading} style={{
-                    width: "100%", padding: "14px", background: "#08235d", color: "white", border: "none",
-                    borderRadius: "8px", fontSize: "14px", fontWeight: 600, fontFamily: "inherit",
-                    cursor: "pointer", opacity: isLoading ? 0.5 : 1,
-                  }}>
-                    {isLoading ? "Signing in..." : "Sign In"}
-                  </button>
-                </form>
+                {loginView === "forgot" && (
+                  <>
+                    <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "24px" }}>
+                      <button onClick={() => { setLoginView("form"); setError(""); }} style={{ padding: "8px", borderRadius: "6px", border: "none", background: "none", cursor: "pointer", color: "#888" }}>
+                        <ArrowLeft size={20} />
+                      </button>
+                      <div style={{ fontSize: "20px", fontWeight: 700, color: "#08235d" }}>Reset Password</div>
+                    </div>
+                    <p style={{ fontSize: "14px", color: "#888", marginBottom: "24px" }}>Enter your email and we'll send you a reset link.</p>
+                    <form onSubmit={handleForgotPassword}>
+                      <div style={{ marginBottom: "16px" }}>
+                        <label style={{ display: "block", fontSize: "13px", fontWeight: 500, color: "#333", marginBottom: "6px" }}>Email Address</label>
+                        <input type="email" value={forgotEmail} onChange={(e) => setForgotEmail(e.target.value)} placeholder="you@dealersuite360.com" style={inputStyle} required />
+                      </div>
+                      <button type="submit" disabled={forgotLoading} style={{ width: "100%", padding: "14px", background: "#08235d", color: "white", border: "none", borderRadius: "8px", fontSize: "14px", fontWeight: 600, fontFamily: "inherit", cursor: "pointer", opacity: forgotLoading ? 0.5 : 1 }}>
+                        {forgotLoading ? "Sending..." : "Send Reset Link"}
+                      </button>
+                    </form>
+                  </>
+                )}
 
-                <div style={{ marginTop: "16px", padding: "16px", background: "#f8f8f8", borderRadius: "8px", textAlign: "center" }}>
-                  <p style={{ fontSize: "12px", color: "#999" }}>Unauthorized access attempts are logged and monitored.</p>
-                </div>
+                {loginView === "forgot-sent" && (
+                  <>
+                    <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "12px" }}>
+                      <CheckCircle2 size={28} style={{ color: "#22c55e", flexShrink: 0 }} />
+                      <div style={{ fontSize: "20px", fontWeight: 700, color: "#111" }}>Check your email</div>
+                    </div>
+                    <p style={{ fontSize: "14px", color: "#666", lineHeight: 1.6, marginBottom: "24px" }}>
+                      If an account exists for <strong>{forgotEmail}</strong>, a reset link has been sent.
+                    </p>
+                    <button onClick={() => setLoginView("form")} style={{ width: "100%", padding: "13px", background: "none", color: "#08235d", border: "1px solid #e0e0e0", borderRadius: "8px", fontSize: "14px", fontWeight: 500, fontFamily: "inherit", cursor: "pointer" }}>
+                      Back to Sign In
+                    </button>
+                  </>
+                )}
               </div>
             )}
           </div>

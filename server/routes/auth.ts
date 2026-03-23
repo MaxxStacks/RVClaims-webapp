@@ -15,7 +15,7 @@ const router = Router();
 // ==================== POST /api/auth/login ====================
 router.post("/login", validateBody(loginSchema), async (req: Request, res: Response) => {
   try {
-    const { email, password, portalType } = req.body;
+    const { email, password, portalType, rememberMe } = req.body;
 
     let user: typeof users.$inferSelect | undefined;
     try {
@@ -63,12 +63,13 @@ router.post("/login", validateBody(loginSchema), async (req: Request, res: Respo
     const accessToken = await generateAccessToken(user.id, user.role as any, user.dealershipId || undefined);
     const refreshToken = await generateRefreshToken(user.id, user.role as any, user.dealershipId || undefined);
 
-    // Create session
+    // Create session — extend to 30 days when "remember this device" is checked
+    const sessionDuration = rememberMe ? 30 * 24 * 60 * 60 * 1000 : 7 * 24 * 60 * 60 * 1000;
     const sessionId = generateSessionId();
     await db.insert(sessions).values({
       id: sessionId,
       userId: user.id,
-      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
+      expiresAt: new Date(Date.now() + sessionDuration),
       userAgent: req.headers["user-agent"] || null,
       ipAddress: req.ip || null,
     });
@@ -85,12 +86,12 @@ router.post("/login", validateBody(loginSchema), async (req: Request, res: Respo
       ipAddress: req.ip || null,
     });
 
-    // Store refresh token in httpOnly cookie so page reloads restore the session
+    // Store refresh token in httpOnly cookie — 30 days if "remember this device", else 7 days
     res.cookie("ds360_refresh", refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      maxAge: sessionDuration,
       path: "/",
     });
 
