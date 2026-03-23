@@ -80,7 +80,7 @@ router.get("/subscription-status", requireAuth, async (req: Request, res: Respon
 // ==================== INVOICE PAYMENT ====================
 
 // POST /api/payments/pay-invoice
-router.post("/pay-invoice", requireAuth, async (req: Request, res: Response) => {
+router.post("/pay-invoice", requireAuth, requireRole("dealer_owner"), async (req: Request, res: Response) => {
   try {
     const { invoiceId } = req.body;
     if (!invoiceId) return res.status(400).json({ success: false, message: "Invoice ID required" });
@@ -115,7 +115,7 @@ router.post("/setup-intent", requireAuth, requireRole("dealer_owner"), async (re
 });
 
 // GET /api/payments/methods — list saved payment methods
-router.get("/methods", requireAuth, async (req: Request, res: Response) => {
+router.get("/methods", requireAuth, requireRole("dealer_owner"), async (req: Request, res: Response) => {
   try {
     const dealershipId = req.user!.dealershipId;
     if (!dealershipId) return res.json({ success: true, methods: [] });

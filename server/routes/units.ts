@@ -117,6 +117,12 @@ router.get("/:id/claims", requireAuth, async (req: Request, res: Response) => {
 // ==================== GET /api/units/:id/photos ====================
 router.get("/:id/photos", requireAuth, async (req: Request, res: Response) => {
   try {
+    const [unit] = await db.select().from(units).where(eq(units.id, req.params.id)).limit(1);
+    if (!unit) return res.status(404).json({ success: false, message: "Unit not found" });
+    if (!canAccessDealership(unit.dealershipId, req.user)) {
+      return res.status(403).json({ success: false, message: "Access denied" });
+    }
+
     const category = req.query.category as string | undefined;
     const conditions = [eq(photos.unitId, req.params.id)];
     if (category) conditions.push(eq(photos.category, category as any));
@@ -132,6 +138,12 @@ router.get("/:id/photos", requireAuth, async (req: Request, res: Response) => {
 // ==================== GET /api/units/:id/documents ====================
 router.get("/:id/documents", requireAuth, async (req: Request, res: Response) => {
   try {
+    const [unit] = await db.select().from(units).where(eq(units.id, req.params.id)).limit(1);
+    if (!unit) return res.status(404).json({ success: false, message: "Unit not found" });
+    if (!canAccessDealership(unit.dealershipId, req.user)) {
+      return res.status(403).json({ success: false, message: "Access denied" });
+    }
+
     const unitDocs = await db.select().from(documents).where(eq(documents.unitId, req.params.id)).orderBy(desc(documents.createdAt));
     res.json({ success: true, documents: unitDocs });
   } catch (error) {

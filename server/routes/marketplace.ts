@@ -11,6 +11,8 @@ import {
 } from "@shared/schema-marketplace";
 import { eq, and, or, gte, lte, like, desc, asc, sql, ne } from "drizzle-orm";
 import { authorizeHold, releaseHold, captureHold, chargeCommission, createMembershipSubscription } from "../lib/stripe-escrow";
+import { requireAuth } from "../middleware/auth";
+import { requireOperator } from "../middleware/rbac";
 
 const router = Router();
 
@@ -41,7 +43,7 @@ router.post("/signup", async (req: Request, res: Response) => {
 });
 
 // POST /api/marketplace/membership/pay — Pay annual membership fee
-router.post("/membership/pay", async (req: Request, res: Response) => {
+router.post("/membership/pay", requireAuth, async (req: Request, res: Response) => {
   try {
     const { memberId, paymentMethodId } = req.body;
     if (!memberId || !paymentMethodId) return res.status(400).json({ error: "memberId and paymentMethodId required" });
@@ -54,7 +56,7 @@ router.post("/membership/pay", async (req: Request, res: Response) => {
 });
 
 // GET /api/marketplace/members — List all members (operator only)
-router.get("/members", async (req: Request, res: Response) => {
+router.get("/members", requireAuth, requireOperator, async (req: Request, res: Response) => {
   try {
     const { status } = req.query;
     const conditions = [];
@@ -71,7 +73,7 @@ router.get("/members", async (req: Request, res: Response) => {
 });
 
 // PATCH /api/marketplace/members/:id/verify — Approve or reject a member (operator only)
-router.patch("/members/:id/verify", async (req: Request, res: Response) => {
+router.patch("/members/:id/verify", requireAuth, requireOperator, async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { status, rejectionReason, verificationNotes } = req.body;
@@ -97,7 +99,7 @@ router.patch("/members/:id/verify", async (req: Request, res: Response) => {
 });
 
 // GET /api/marketplace/members/:id — Get member details
-router.get("/members/:id", async (req: Request, res: Response) => {
+router.get("/members/:id", requireAuth, async (req: Request, res: Response) => {
   try {
     const [member] = await db.select().from(marketplaceMembers)
       .where(eq(marketplaceMembers.id, req.params.id)).limit(1);
@@ -111,7 +113,7 @@ router.get("/members/:id", async (req: Request, res: Response) => {
 // ==================== LISTINGS ====================
 
 // POST /api/marketplace/listings — Create a new listing
-router.post("/listings", async (req: Request, res: Response) => {
+router.post("/listings", requireAuth, async (req: Request, res: Response) => {
   try {
     const data = insertListingSchema.parse(req.body);
 
@@ -134,7 +136,7 @@ router.post("/listings", async (req: Request, res: Response) => {
 });
 
 // PATCH /api/marketplace/listings/:id — Update a listing
-router.patch("/listings/:id", async (req: Request, res: Response) => {
+router.patch("/listings/:id", requireAuth, async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const updates = req.body;
@@ -160,7 +162,7 @@ router.patch("/listings/:id", async (req: Request, res: Response) => {
 });
 
 // PATCH /api/marketplace/listings/:id/publish — Publish a draft listing
-router.patch("/listings/:id/publish", async (req: Request, res: Response) => {
+router.patch("/listings/:id/publish", requireAuth, async (req: Request, res: Response) => {
   try {
     const [listing] = await db.select().from(marketplaceListings)
       .where(eq(marketplaceListings.id, req.params.id)).limit(1);
@@ -184,7 +186,7 @@ router.patch("/listings/:id/publish", async (req: Request, res: Response) => {
 });
 
 // GET /api/marketplace/listings — Search & filter listings (all approved members can access)
-router.get("/listings", async (req: Request, res: Response) => {
+router.get("/listings", requireAuth, async (req: Request, res: Response) => {
   try {
     const {
       search, rvType, manufacturer, condition,
@@ -269,7 +271,7 @@ router.get("/listings", async (req: Request, res: Response) => {
 });
 
 // GET /api/marketplace/listings/:id — Get listing detail (no seller info)
-router.get("/listings/:id", async (req: Request, res: Response) => {
+router.get("/listings/:id", requireAuth, async (req: Request, res: Response) => {
   try {
     const [listing] = await db.select().from(marketplaceListings)
       .where(eq(marketplaceListings.id, req.params.id)).limit(1);
@@ -295,7 +297,7 @@ router.get("/listings/:id", async (req: Request, res: Response) => {
 });
 
 // GET /api/marketplace/my-listings — Get seller's own listings
-router.get("/my-listings", async (req: Request, res: Response) => {
+router.get("/my-listings", requireAuth, async (req: Request, res: Response) => {
   try {
     const { memberId } = req.query;
     if (!memberId) return res.status(400).json({ error: "memberId required" });
@@ -311,7 +313,7 @@ router.get("/my-listings", async (req: Request, res: Response) => {
 });
 
 // DELETE /api/marketplace/listings/:id — Withdraw a listing
-router.delete("/listings/:id", async (req: Request, res: Response) => {
+router.delete("/listings/:id", requireAuth, async (req: Request, res: Response) => {
   try {
     const [updated] = await db.update(marketplaceListings).set({
       status: "withdrawn",
@@ -327,7 +329,7 @@ router.delete("/listings/:id", async (req: Request, res: Response) => {
 // ==================== PHOTOS ====================
 
 // POST /api/marketplace/listings/:id/photos — Add photos to listing
-router.post("/listings/:id/photos", async (req: Request, res: Response) => {
+router.post("/listings/:id/photos", requireAuth, async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { photos } = req.body;  // Array of { url, caption, sortOrder, isPrimary }
@@ -352,7 +354,7 @@ router.post("/listings/:id/photos", async (req: Request, res: Response) => {
 // ==================== WATCHLIST ====================
 
 // POST /api/marketplace/watchlist — Add to watchlist
-router.post("/watchlist", async (req: Request, res: Response) => {
+router.post("/watchlist", requireAuth, async (req: Request, res: Response) => {
   try {
     const { memberId, listingId } = req.body;
     const [entry] = await db.insert(marketplaceWatchlist).values({ memberId, listingId }).returning();
@@ -368,7 +370,7 @@ router.post("/watchlist", async (req: Request, res: Response) => {
 });
 
 // DELETE /api/marketplace/watchlist/:listingId — Remove from watchlist
-router.delete("/watchlist/:listingId", async (req: Request, res: Response) => {
+router.delete("/watchlist/:listingId", requireAuth, async (req: Request, res: Response) => {
   try {
     const { memberId } = req.query;
     await db.delete(marketplaceWatchlist).where(
@@ -384,7 +386,7 @@ router.delete("/watchlist/:listingId", async (req: Request, res: Response) => {
 });
 
 // GET /api/marketplace/watchlist — Get my watchlist
-router.get("/watchlist", async (req: Request, res: Response) => {
+router.get("/watchlist", requireAuth, async (req: Request, res: Response) => {
   try {
     const { memberId } = req.query;
     const items = await db.select({
@@ -406,7 +408,7 @@ router.get("/watchlist", async (req: Request, res: Response) => {
 // ==================== INQUIRIES & OFFERS ====================
 
 // POST /api/marketplace/inquiries — Submit inquiry or offer (goes through Dealer Suite 360)
-router.post("/inquiries", async (req: Request, res: Response) => {
+router.post("/inquiries", requireAuth, async (req: Request, res: Response) => {
   try {
     const { listingId, buyerId, type, message, offerAmount } = req.body;
 
@@ -434,7 +436,7 @@ router.post("/inquiries", async (req: Request, res: Response) => {
 });
 
 // GET /api/marketplace/inquiries — List inquiries (operator sees all, member sees own)
-router.get("/inquiries", async (req: Request, res: Response) => {
+router.get("/inquiries", requireAuth, async (req: Request, res: Response) => {
   try {
     const { listingId, buyerId, status } = req.query;
     const conditions = [];
@@ -453,7 +455,7 @@ router.get("/inquiries", async (req: Request, res: Response) => {
 });
 
 // PATCH /api/marketplace/inquiries/:id — Respond to inquiry (operator)
-router.patch("/inquiries/:id", async (req: Request, res: Response) => {
+router.patch("/inquiries/:id", requireAuth, requireOperator, async (req: Request, res: Response) => {
   try {
     const { status, operatorNotes } = req.body;
     const [updated] = await db.update(marketplaceInquiries).set({
@@ -473,7 +475,7 @@ router.patch("/inquiries/:id", async (req: Request, res: Response) => {
 // ==================== HOLDS / ESCROW ====================
 
 // POST /api/marketplace/holds — Place $500 hold on a listing
-router.post("/holds", async (req: Request, res: Response) => {
+router.post("/holds", requireAuth, async (req: Request, res: Response) => {
   try {
     const data = placeHoldSchema.parse(req.body);
     const memberId = req.body.memberId;
@@ -487,7 +489,7 @@ router.post("/holds", async (req: Request, res: Response) => {
 });
 
 // POST /api/marketplace/holds/:id/release — Release a hold (cancel)
-router.post("/holds/:id/release", async (req: Request, res: Response) => {
+router.post("/holds/:id/release", requireAuth, requireOperator, async (req: Request, res: Response) => {
   try {
     const result = await releaseHold(req.params.id, req.body.reason);
     res.json(result);
@@ -497,7 +499,7 @@ router.post("/holds/:id/release", async (req: Request, res: Response) => {
 });
 
 // POST /api/marketplace/holds/:id/capture — Capture deposit (sale completing)
-router.post("/holds/:id/capture", async (req: Request, res: Response) => {
+router.post("/holds/:id/capture", requireAuth, requireOperator, async (req: Request, res: Response) => {
   try {
     const result = await captureHold(req.params.id);
     res.json(result);
@@ -509,7 +511,7 @@ router.post("/holds/:id/capture", async (req: Request, res: Response) => {
 // ==================== TRANSACTIONS ====================
 
 // POST /api/marketplace/transactions — Create transaction (operator initiates when deal agreed)
-router.post("/transactions", async (req: Request, res: Response) => {
+router.post("/transactions", requireAuth, requireOperator, async (req: Request, res: Response) => {
   try {
     const { listingId, sellerId, buyerId, holdId, salePrice, auctionId } = req.body;
 
@@ -537,7 +539,7 @@ router.post("/transactions", async (req: Request, res: Response) => {
 });
 
 // PATCH /api/marketplace/transactions/:id — Update transaction status
-router.patch("/transactions/:id", async (req: Request, res: Response) => {
+router.patch("/transactions/:id", requireAuth, requireOperator, async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { status, operatorNotes, cancelReason } = req.body;
@@ -579,7 +581,7 @@ router.patch("/transactions/:id", async (req: Request, res: Response) => {
 });
 
 // POST /api/marketplace/transactions/:id/commission — Charge $250 commission
-router.post("/transactions/:id/commission", async (req: Request, res: Response) => {
+router.post("/transactions/:id/commission", requireAuth, requireOperator, async (req: Request, res: Response) => {
   try {
     const result = await chargeCommission(req.params.id);
     res.json(result);
@@ -589,7 +591,7 @@ router.post("/transactions/:id/commission", async (req: Request, res: Response) 
 });
 
 // GET /api/marketplace/transactions — List transactions
-router.get("/transactions", async (req: Request, res: Response) => {
+router.get("/transactions", requireAuth, async (req: Request, res: Response) => {
   try {
     const { sellerId, buyerId, status } = req.query;
     const conditions = [];

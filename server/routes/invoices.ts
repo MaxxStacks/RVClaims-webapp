@@ -16,6 +16,11 @@ const router = Router();
 // ==================== GET /api/invoices ====================
 router.get("/", requireAuth, scopeToDealership, async (req: Request, res: Response) => {
   try {
+    // Clients have no access to financial/invoice data
+    if (req.user!.role === "client") {
+      return res.status(403).json({ success: false, message: "Insufficient permissions" });
+    }
+
     const conditions = [];
     if (req.scopedDealershipId) conditions.push(eq(invoices.dealershipId, req.scopedDealershipId));
     if (req.query.status) conditions.push(eq(invoices.status, req.query.status as any));
@@ -83,6 +88,10 @@ router.post("/", requireAuth, requireRole("operator_admin"), validateBody(create
 // ==================== GET /api/invoices/:id ====================
 router.get("/:id", requireAuth, async (req: Request, res: Response) => {
   try {
+    if (req.user!.role === "client") {
+      return res.status(403).json({ success: false, message: "Insufficient permissions" });
+    }
+
     const [invoice] = await db.select().from(invoices).where(eq(invoices.id, req.params.id)).limit(1);
     if (!invoice) return res.status(404).json({ success: false, message: "Invoice not found" });
     if (!canAccessDealership(invoice.dealershipId, req.user)) return res.status(403).json({ success: false, message: "Access denied" });

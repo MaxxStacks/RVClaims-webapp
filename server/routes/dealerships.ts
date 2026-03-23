@@ -71,6 +71,11 @@ router.put("/:id", requireAuth, async (req: Request, res: Response) => {
       return res.status(403).json({ success: false, message: "Access denied" });
     }
 
+    // Only dealer_owner and operators can edit dealership info — not staff or clients
+    if (req.user!.role === "dealer_staff" || req.user!.role === "client") {
+      return res.status(403).json({ success: false, message: "Insufficient permissions" });
+    }
+
     // Dealer owners can update their own info, operators can update anything
     const allowedFields = req.user!.role === "operator_admin"
       ? req.body  // operators can update everything including plan, fees, notes, status
@@ -112,6 +117,11 @@ router.put("/:id/branding", requireAuth, async (req: Request, res: Response) => 
   try {
     if (!canAccessDealership(req.params.id, req.user)) {
       return res.status(403).json({ success: false, message: "Access denied" });
+    }
+
+    // Only dealer_owner and operators can update branding
+    if (req.user!.role === "dealer_staff" || req.user!.role === "client") {
+      return res.status(403).json({ success: false, message: "Insufficient permissions" });
     }
 
     const { logoUrl, primaryColor, accentColor, customDomain, welcomeMessage } = req.body;

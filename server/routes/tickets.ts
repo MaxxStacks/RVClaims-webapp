@@ -61,11 +61,14 @@ router.get("/:id", requireAuth, async (req: Request, res: Response) => {
   try {
     const [ticket] = await db.select().from(tickets).where(eq(tickets.id, req.params.id)).limit(1);
     if (!ticket) return res.status(404).json({ success: false, message: "Ticket not found" });
-    if (!canAccessDealership(ticket.dealershipId, req.user)) {
-      // Customers can only see their own
-      if (req.user!.role === "client" && ticket.customerId !== req.user!.id) {
+
+    // Clients can only see their own tickets
+    if (req.user!.role === "client") {
+      if (ticket.customerId !== req.user!.id) {
         return res.status(403).json({ success: false, message: "Access denied" });
       }
+    } else if (!canAccessDealership(ticket.dealershipId, req.user)) {
+      return res.status(403).json({ success: false, message: "Access denied" });
     }
 
     // Get messages — filter internal notes for customers
@@ -87,6 +90,15 @@ router.post("/:id/messages", requireAuth, async (req: Request, res: Response) =>
   try {
     const [ticket] = await db.select().from(tickets).where(eq(tickets.id, req.params.id)).limit(1);
     if (!ticket) return res.status(404).json({ success: false, message: "Ticket not found" });
+
+    // Verify access: clients can only message their own tickets; others must be in the same dealership
+    if (req.user!.role === "client") {
+      if (ticket.customerId !== req.user!.id) {
+        return res.status(403).json({ success: false, message: "Access denied" });
+      }
+    } else if (!canAccessDealership(ticket.dealershipId, req.user)) {
+      return res.status(403).json({ success: false, message: "Access denied" });
+    }
 
     const [message] = await db
       .insert(ticketMessages)
@@ -122,12 +134,22 @@ router.post("/:id/messages", requireAuth, async (req: Request, res: Response) =>
 // ==================== PUT /api/tickets/:id/status ====================
 router.put("/:id/status", requireAuth, async (req: Request, res: Response) => {
   try {
+    // Only operators and dealers can change ticket status — clients cannot
+    if (req.user!.role === "client") {
+      return res.status(403).json({ success: false, message: "Insufficient permissions" });
+    }
+
+    const [ticket] = await db.select().from(tickets).where(eq(tickets.id, req.params.id)).limit(1);
+    if (!ticket) return res.status(404).json({ success: false, message: "Ticket not found" });
+    if (!canAccessDealership(ticket.dealershipId, req.user)) {
+      return res.status(403).json({ success: false, message: "Access denied" });
+    }
+
     const { status } = req.body;
     const updateData: any = { status, updatedAt: new Date() };
     if (status === "resolved" || status === "closed") updateData.resolvedAt = new Date();
 
-    const [updated] = await db.update(tickets).set(updateData).where(eq(tickets.id, req.params.id)).returning();
-    if (!updated) return res.status(404).json({ success: false, message: "Ticket not found" });
+    const [updated] = await db.update(tickets).set(updateData).where(eq(tickets.id, ticket.id)).returning();
     res.json({ success: true, ticket: updated });
   } catch (error) {
     console.error("Update ticket status error:", error);

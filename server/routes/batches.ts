@@ -39,6 +39,11 @@ router.get("/", requireAuth, scopeToDealership, async (req: Request, res: Respon
 // ==================== POST /api/batches ====================
 router.post("/", requireAuth, scopeToDealership, async (req: Request, res: Response) => {
   try {
+    // Only dealers and operators can submit photo batches — not clients
+    if (req.user!.role === "client") {
+      return res.status(403).json({ success: false, message: "Insufficient permissions" });
+    }
+
     const dealershipId = req.scopedDealershipId || req.body.dealershipId;
     if (!dealershipId) {
       return res.status(400).json({ success: false, message: "Dealership ID required" });

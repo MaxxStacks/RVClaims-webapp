@@ -50,7 +50,16 @@ router.put("/settings/:key", requireAuth, requireRole("operator_admin"), async (
 // GET /api/feature-requests
 router.get("/feature-requests", requireAuth, async (req: Request, res: Response) => {
   try {
-    const items = await db.select().from(featureRequests).orderBy(desc(featureRequests.createdAt));
+    let items;
+    if (OPERATOR_ROLES.includes(req.user!.role as any)) {
+      // Operators see all requests
+      items = await db.select().from(featureRequests).orderBy(desc(featureRequests.createdAt));
+    } else {
+      // Dealers and clients see only their own dealership's requests
+      items = await db.select().from(featureRequests)
+        .where(eq(featureRequests.dealershipId, req.user!.dealershipId!))
+        .orderBy(desc(featureRequests.createdAt));
+    }
     res.json({ success: true, featureRequests: items });
   } catch (error) {
     console.error("List feature requests error:", error);

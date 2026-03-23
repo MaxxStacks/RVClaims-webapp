@@ -163,6 +163,14 @@ router.delete("/:id", requireAuth, async (req: Request, res: Response) => {
       return res.status(400).json({ success: false, message: "Cannot deactivate your own account" });
     }
 
+    // Dealer owners can only deactivate users within their own dealership
+    if (isDealerOwner) {
+      const [target] = await db.select({ dealershipId: users.dealershipId }).from(users).where(eq(users.id, req.params.id)).limit(1);
+      if (!target || target.dealershipId !== req.user!.dealershipId) {
+        return res.status(403).json({ success: false, message: "Access denied" });
+      }
+    }
+
     const [deactivated] = await db
       .update(users)
       .set({ isActive: false, updatedAt: new Date() })
@@ -180,7 +188,7 @@ router.delete("/:id", requireAuth, async (req: Request, res: Response) => {
 // ==================== POST /api/users/invite ====================
 const inviteSchema = z.object({
   email: z.string().email(),
-  role: z.enum(["dealer_owner", "dealer_staff", "customer"]),
+  role: z.enum(["dealer_owner", "dealer_staff", "client"]),
   dealershipId: z.string().uuid().optional(),
   unitId: z.string().uuid().optional(),
 });
