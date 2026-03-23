@@ -96,11 +96,11 @@ function App() {
   const [location] = useLocation();
   // Portal sub-paths are isolated from the marketing layout.
   // /operator and /dealer (exact) still serve login pages.
-  // /portal (base) serves CustomerPortal — no separate customer login page.
+  // /client (base) serves CustomerPortal — no separate customer login page.
   const isPortal = location.startsWith('/operator/') ||
                    location.startsWith('/dealer/') ||
-                   location === '/portal' ||
-                   location.startsWith('/portal/') ||
+                   location === '/client' ||
+                   location.startsWith('/client/') ||
                    location === '/bidder' ||
                    location.startsWith('/bidder/');
 
@@ -121,16 +121,20 @@ function App() {
   if (isPortal) {
     return (
       <QueryClientProvider client={queryClient}>
-        <Suspense fallback={null}>
-          <Switch>
-            <Route path="/operator/:rest*" component={OperatorPortal} />
-            <Route path="/dealer/:rest*" component={DealerPortal} />
-            <Route path="/portal" component={CustomerPortal} />
-            <Route path="/portal/:rest*" component={CustomerPortal} />
-            <Route path="/bidder" component={BidderPortal} />
-            <Route path="/bidder/:rest*" component={BidderPortal} />
-          </Switch>
-        </Suspense>
+        <AuthProvider>
+          <Suspense fallback={null}>
+            <Switch>
+              <Route path="/operator/:rest*" component={OperatorPortal} />
+              <Route path="/dealer/:rest*" component={DealerPortal} />
+              <Route path="/client" component={CustomerPortal} />
+              <Route path="/client/:rest*" component={CustomerPortal} />
+              <Route path="/portal">{() => <Redirect to="/client" />}</Route>
+              <Route path="/portal/:rest*">{() => <Redirect to="/client" />}</Route>
+              <Route path="/bidder" component={BidderPortal} />
+              <Route path="/bidder/:rest*" component={BidderPortal} />
+            </Switch>
+          </Suspense>
+        </AuthProvider>
       </QueryClientProvider>
     );
   }

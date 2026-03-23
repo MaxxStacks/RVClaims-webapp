@@ -9,7 +9,7 @@ import { z } from "zod";
 
 // ==================== ROLE & STATUS ENUMS ====================
 
-export const USER_ROLES = ["operator_admin", "operator_staff", "dealer_owner", "dealer_staff", "customer"] as const;
+export const USER_ROLES = ["operator_admin", "operator_staff", "dealer_owner", "dealer_staff", "customer", "bidder"] as const;
 export const INVITE_ROLES = ["dealer_owner", "dealer_staff", "customer"] as const;
 export const DEALERSHIP_PLANS = ["plan_a", "plan_b", "custom"] as const;
 export const DEALERSHIP_STATUSES = ["active", "suspended", "pending"] as const;

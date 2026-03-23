@@ -3,12 +3,15 @@ import { Mail, Eye, EyeOff, ArrowLeft } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle, faLinkedinIn } from "@fortawesome/free-brands-svg-icons";
 import { useLanguage } from "@/hooks/use-language";
-import { Link } from "wouter";
+import { useAuth } from "@/hooks/use-auth";
+import { Link, useLocation } from "wouter";
 import logoEN from "@assets/DS360_logo_en.png";
 import logoFR from "@assets/DS360_logo_fr.png";
 
 export default function DealerLogin() {
   const { language } = useLanguage();
+  const { login } = useAuth();
+  const [, setLocation] = useLocation();
   const [loginMethod, setLoginMethod] = useState<"options" | "email">("options");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -26,8 +29,12 @@ export default function DealerLogin() {
     setIsLoading(true);
     setError("");
     try {
-      // TODO: Implement real auth
-      console.log("Dealer login:", { email, password });
+      const result = await login(email, password, "dealer");
+      if (result.success) {
+        setLocation("/dealer/dashboard");
+      } else {
+        setError(result.message || "Invalid email or password");
+      }
     } catch {
       setError("Invalid email or password");
     }

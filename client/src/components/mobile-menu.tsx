@@ -388,7 +388,7 @@ export function MobileMenu() {
                   <span>{t('mobileMenu.dealer')}</span>
                 </Link>
                 <Link
-                  href="/portal"
+                  href="/client"
                   onClick={closeMenu}
                   className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-card text-foreground border border-border rounded-lg font-semibold hover:bg-primary/5 hover:border-primary/40 transition-all duration-300 group"
                   data-testid="button-customer-portal"
@@ -397,7 +397,7 @@ export function MobileMenu() {
                   <span>Customer Portal</span>
                 </Link>
                 <Link
-                  href="/bidder-login"
+                  href="/bidder"
                   onClick={closeMenu}
                   className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-card text-foreground border border-border rounded-lg font-semibold hover:bg-primary/5 hover:border-primary/40 transition-all duration-300 group"
                   data-testid="button-bidder-portal"

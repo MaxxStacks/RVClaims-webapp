@@ -69,7 +69,7 @@ router.post("/login", validateBody(loginSchema), async (req: Request, res: Respo
     // Determine redirect based on role
     let redirectTo = "/dealer";
     if (OPERATOR_ROLES.includes(user.role as any)) redirectTo = "/operator";
-    else if (user.role === "customer") redirectTo = "/portal";
+    else if (user.role === "customer") redirectTo = "/client";
 
     res.json({
       success: true,
@@ -161,7 +161,7 @@ router.post("/register", validateBody(registerSchema), async (req: Request, res:
 
     let redirectTo = "/dealer";
     if (OPERATOR_ROLES.includes(newUser.role as any)) redirectTo = "/operator";
-    else if (newUser.role === "customer") redirectTo = "/portal";
+    else if (newUser.role === "customer") redirectTo = "/client";
 
     res.status(201).json({
       success: true,

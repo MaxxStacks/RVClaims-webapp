@@ -233,7 +233,7 @@ export async function sendTicketNotificationEmail(
   data: { firstName: string; ticketNumber: string; subject: string; message: string; isDealer: boolean; lang?: "en" | "fr" }
 ): Promise<boolean> {
   const { firstName, ticketNumber, subject: ticketSubject, message, isDealer, lang = "en" } = data;
-  const url = isDealer ? `${PLATFORM_URL}/dealer` : `${PLATFORM_URL}/portal`;
+  const url = isDealer ? `${PLATFORM_URL}/dealer` : `${PLATFORM_URL}/client`;
 
   const emailSubject = lang === "fr"
     ? `Nouveau message — Ticket ${ticketNumber}`

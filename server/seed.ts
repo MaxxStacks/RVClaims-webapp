@@ -125,6 +125,31 @@ async function seed() {
     console.log("  ⏭️  Dealer owner already exists");
   }
 
+  // ==================== DEALER STAFF ====================
+  const [existingDealerStaff] = await db
+    .select()
+    .from(users)
+    .where(eq(users.email, "jen@smithsrv.ca"))
+    .limit(1);
+
+  if (!existingDealerStaff) {
+    const passwordHash = await hashPassword("Staff@2026!");
+    await db.insert(users).values({
+      email: "jen@smithsrv.ca",
+      passwordHash,
+      firstName: "Jen",
+      lastName: "L.",
+      phone: "(613) 555-0124",
+      role: "dealer_staff",
+      dealershipId,
+      language: "en",
+      isActive: true,
+    });
+    console.log("  ✅ Dealer staff created: jen@smithsrv.ca / Staff@2026!");
+  } else {
+    console.log("  ⏭️  Dealer staff already exists");
+  }
+
   // ==================== CUSTOMER ====================
   const [existingCustomer] = await db
     .select()
@@ -148,6 +173,29 @@ async function seed() {
     console.log("  ✅ Customer created: robert.martin@email.com / Customer@2026!");
   } else {
     console.log("  ⏭️  Customer already exists");
+  }
+
+  // ==================== BIDDER ====================
+  const [existingBidder] = await db
+    .select()
+    .from(users)
+    .where(eq(users.email, "bidder@email.com"))
+    .limit(1);
+
+  if (!existingBidder) {
+    const passwordHash = await hashPassword("Bidder@2026!");
+    await db.insert(users).values({
+      email: "bidder@email.com",
+      passwordHash,
+      firstName: "Alex",
+      lastName: "B.",
+      role: "bidder",
+      language: "en",
+      isActive: true,
+    });
+    console.log("  ✅ Bidder created: bidder@email.com / Bidder@2026!");
+  } else {
+    console.log("  ⏭️  Bidder already exists");
   }
 
   // ==================== PRODUCTS & SERVICES ====================
@@ -198,10 +246,12 @@ async function seed() {
 
   console.log("\n🎉 Seed complete!\n");
   console.log("Login credentials:");
-  console.log("  Operator Admin:  admin@dealersuite360.com     / Admin@2026!");
-  console.log("  Operator Staff:  staff@dealersuite360.com     / Staff@2026!");
-  console.log("  Dealer Owner:    mike@smithsrv.ca      / Dealer@2026!");
-  console.log("  Customer:        robert.martin@email.com / Customer@2026!");
+  console.log("  Operator Admin:  admin@dealersuite360.com   / Admin@2026!    → /operator");
+  console.log("  Operator Staff:  staff@dealersuite360.com   / Staff@2026!    → /operator");
+  console.log("  Dealer Owner:    mike@smithsrv.ca           / Dealer@2026!   → /dealer");
+  console.log("  Dealer Staff:    jen@smithsrv.ca            / Staff@2026!    → /dealer");
+  console.log("  Customer:        robert.martin@email.com    / Customer@2026! → /client");
+  console.log("  Bidder:          bidder@email.com           / Bidder@2026!   → /bidder");
   console.log("");
 
   process.exit(0);

@@ -1,16 +1,17 @@
 // shared/constants.ts — Role permissions, sequence generators, platform defaults
 
-export type UserRole = "operator_admin" | "operator_staff" | "dealer_owner" | "dealer_staff" | "customer";
+export type UserRole = "operator_admin" | "operator_staff" | "dealer_owner" | "dealer_staff" | "customer" | "bidder";
 
 export const OPERATOR_ROLES: UserRole[] = ["operator_admin", "operator_staff"];
 export const DEALER_ROLES: UserRole[] = ["dealer_owner", "dealer_staff"];
-export const ALL_ROLES: UserRole[] = ["operator_admin", "operator_staff", "dealer_owner", "dealer_staff", "customer"];
+export const ALL_ROLES: UserRole[] = ["operator_admin", "operator_staff", "dealer_owner", "dealer_staff", "customer", "bidder"];
 
 // Permission matrix — what each role can access
 export const PERMISSIONS: Record<UserRole, {
   canAccessOperatorPortal: boolean;
   canAccessDealerPortal: boolean;
   canAccessCustomerPortal: boolean;
+  canAccessBidderPortal: boolean;
   canManageBilling: boolean;
   canManageStaff: boolean;
   canManagePlatformSettings: boolean;
@@ -24,6 +25,7 @@ export const PERMISSIONS: Record<UserRole, {
     canAccessOperatorPortal: true,
     canAccessDealerPortal: false,
     canAccessCustomerPortal: false,
+    canAccessBidderPortal: false,
     canManageBilling: true,
     canManageStaff: true,
     canManagePlatformSettings: true,
@@ -37,6 +39,7 @@ export const PERMISSIONS: Record<UserRole, {
     canAccessOperatorPortal: true,
     canAccessDealerPortal: false,
     canAccessCustomerPortal: false,
+    canAccessBidderPortal: false,
     canManageBilling: false,
     canManageStaff: false,
     canManagePlatformSettings: false,
@@ -50,6 +53,7 @@ export const PERMISSIONS: Record<UserRole, {
     canAccessOperatorPortal: false,
     canAccessDealerPortal: true,
     canAccessCustomerPortal: false,
+    canAccessBidderPortal: false,
     canManageBilling: true,
     canManageStaff: true,
     canManagePlatformSettings: false,
@@ -63,6 +67,7 @@ export const PERMISSIONS: Record<UserRole, {
     canAccessOperatorPortal: false,
     canAccessDealerPortal: true,
     canAccessCustomerPortal: false,
+    canAccessBidderPortal: false,
     canManageBilling: false,
     canManageStaff: false,
     canManagePlatformSettings: false,
@@ -76,6 +81,21 @@ export const PERMISSIONS: Record<UserRole, {
     canAccessOperatorPortal: false,
     canAccessDealerPortal: false,
     canAccessCustomerPortal: true,
+    canAccessBidderPortal: false,
+    canManageBilling: false,
+    canManageStaff: false,
+    canManagePlatformSettings: false,
+    canViewAllDealers: false,
+    canProcessClaims: false,
+    canManageFrcCodes: false,
+    canCreateInvoices: false,
+    canViewFinancials: false,
+  },
+  bidder: {
+    canAccessOperatorPortal: false,
+    canAccessDealerPortal: false,
+    canAccessCustomerPortal: false,
+    canAccessBidderPortal: true,
     canManageBilling: false,
     canManageStaff: false,
     canManagePlatformSettings: false,
