@@ -48,6 +48,7 @@ export default function BidderPortal() {
 
   // ID verification state
   const [idUploaded, setIdUploaded]   = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [addrUploaded, setAddrUploaded] = useState(false);
 
   // Profile form
@@ -135,12 +136,11 @@ export default function BidderPortal() {
   return (
     <>
 {/* ════ SIDEBAR ════ */}
-<nav className="sidebar">
+<nav className={`sidebar${sidebarCollapsed ? ' collapsed' : ''}`}>
   <div className="sidebar-logo">
-    <img src={ds360Icon} width="36" height="36" style={{borderRadius:8}} alt="Dealer Suite 360" />
+    <img src={ds360Icon} width="36" height="36" style={{borderRadius:8}} alt="DS360" />
     <div className="sidebar-logo-text">
-      <div className="sidebar-logo-name">Dealer Suite 360</div>
-      <div className="sidebar-logo-sub">Public Auction Bidder</div>
+      <div className="sidebar-logo-sub" style={{fontSize:12,fontWeight:600}}>Bidder Portal</div>
     </div>
     <span className="sidebar-badge">Bidder</span>
   </div>
@@ -208,9 +208,11 @@ export default function BidderPortal() {
 </nav>
 
 {/* ════ MAIN ════ */}
-<div className="main">
+<div className={`main${sidebarCollapsed ? ' collapsed-main' : ''}`}>
 <header className="header">
   <div className="header-left">
+    <button className="hbtn" onClick={() => setSidebarCollapsed(c => !c)} title="Toggle sidebar" style={{flexShrink:0}}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    <img src={ds360Icon} width="28" height="28" style={{borderRadius:6,flexShrink:0,marginRight:4}} alt="DS360" />
     <div>
       <div className="header-title">{pageTitle}</div>
       <div className="header-sub">{pageSub}</div>
