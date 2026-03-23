@@ -30,6 +30,29 @@ import { sendWaitlistNotification, sendContactFormNotification, sendBookingNotif
 import { findBestResponse } from "../chatbot-responses";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // ==================== HEALTH CHECK ====================
+  app.get("/api/health", async (_req, res) => {
+    const checks: Record<string, string> = {};
+    checks.server = "ok";
+    checks.database_url = process.env.DATABASE_URL ? "set" : "MISSING";
+    checks.jwt_secret = process.env.JWT_SECRET ? "set" : "using_fallback";
+
+    if (process.env.DATABASE_URL) {
+      try {
+        const { db } = await import("../db");
+        await (db as any).execute("SELECT 1");
+        checks.database_connection = "ok";
+      } catch (e: any) {
+        checks.database_connection = `error: ${e.message}`;
+      }
+    } else {
+      checks.database_connection = "skipped (no DATABASE_URL)";
+    }
+
+    const allOk = checks.database_url === "set" && checks.database_connection === "ok";
+    res.status(allOk ? 200 : 503).json({ status: allOk ? "ok" : "degraded", checks });
+  });
+
   // ==================== STRIPE WEBHOOK (raw body — must be before express.json parses it) ====================
   app.use("/api/payments/webhook", express.raw({ type: "application/json" }));
 
