@@ -75,7 +75,7 @@ export default function BidderLogin() {
   };
 
   const features = [
-    "No dealer license required — open to all Canadians",
+    "No dealer license required — open to all registered bidders",
     "$250 hold placed on first bid — refunded automatically if you lose",
     "Dealer Suite 360 acts as escrow for every transaction",
     "Financing available for auction winners",
@@ -106,7 +106,7 @@ export default function BidderLogin() {
 
         <div style={{ position: "relative", zIndex: 1 }}>
           <div style={{ fontSize: "38px", fontWeight: 700, lineHeight: 1.15, letterSpacing: "-0.5px", marginBottom: "16px" }}>
-            Bid on Real Canadian<br />RV Inventory.
+            Bid on Real RV Inventory<br />at Wholesale Prices.
           </div>
           <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.7)", lineHeight: 1.6, marginBottom: "40px", maxWidth: "380px" }}>
             Monthly public auction. Verified dealerships. Dealer Suite 360 handles all transactions — so you buy with confidence.

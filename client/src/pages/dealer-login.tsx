@@ -94,7 +94,7 @@ export default function DealerLogin() {
             From <strong style={{ color: "rgba(255,255,255,0.75)", fontWeight: 500 }}>warranty claims</strong> and{" "}
             <strong style={{ color: "rgba(255,255,255,0.75)", fontWeight: 500 }}>F&I products</strong> to{" "}
             <strong style={{ color: "rgba(255,255,255,0.75)", fontWeight: 500 }}>live auctions</strong> and{" "}
-            <strong style={{ color: "rgba(255,255,255,0.75)", fontWeight: 500 }}>dealer marketplace</strong> — we're building the operating system for Canadian RV dealerships.
+            <strong style={{ color: "rgba(255,255,255,0.75)", fontWeight: 500 }}>dealer marketplace</strong> — we're building the operating system for RV dealerships.
           </p>
 
           <a href="/services" style={{

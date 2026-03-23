@@ -156,7 +156,7 @@ export function DealerShowcasePages({ activePage, showPage }: DealerProps) {
         <div className="pn-h"><span className="pn-t">Showcase Membership — $299/year</span><span style={{fontSize: 12, color: '#888'}}>Add-on to marketplace</span></div>
         <div style={{padding: 20, fontSize: 13, lineHeight: '2'}}>
           <div>✓ List units in the monthly public auction (24-hour event)</div>
-          <div>✓ Your units shown to verified public buyers across Canada</div>
+          <div>✓ Your units shown to verified public buyers across North America</div>
           <div>✓ Dealer Suite 360 handles all bidder verification + credit card holds</div>
           <div>✓ Set reserve prices + optional Buy Now pricing</div>
           <div>✓ Real-time bidding with auto-extend protection</div>

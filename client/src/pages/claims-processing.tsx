@@ -43,17 +43,17 @@ export default function ClaimsProcessing() {
       "@type": "Organization",
       "name": "Dealer Suite 360"
     },
-    "description": "Complete end-to-end warranty claims processing for Canadian RV dealerships — DAF, PDI, Warranty, Extended Warranty, and Insurance claims.",
+    "description": "Complete end-to-end warranty claims processing for RV dealerships — DAF, PDI, Warranty, Extended Warranty, and Insurance claims.",
     "serviceType": "Warranty Claims Processing",
-    "areaServed": "Canada",
+    "areaServed": "North America",
     "url": "https://dealersuite360.com/claims-processing"
   };
 
   return (
     <PageLayout
       seoTitle="RV Warranty Claims Processing | DAF, PDI, Warranty & More | Dealer Suite 360"
-      seoDescription="Expert A-Z warranty claims processing for Canadian RV dealers. DAF, PDI, Warranty, Extended Warranty, and Insurance claims handled by our team using patent-pending AI technology."
-      seoKeywords="RV warranty claims processing, DAF claims, PDI claims, warranty claims, extended warranty claims, insurance claims, Canadian RV dealers, FRC codes"
+      seoDescription="Expert A-Z warranty claims processing for RV dealers. DAF, PDI, Warranty, Extended Warranty, and Insurance claims handled by our team using patent-pending AI technology."
+      seoKeywords="RV warranty claims processing, DAF claims, PDI claims, warranty claims, extended warranty claims, insurance claims, RV dealers, FRC codes"
       canonical="/claims-processing"
       schema={schema}
     >

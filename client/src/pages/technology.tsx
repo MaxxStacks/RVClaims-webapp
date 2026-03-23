@@ -34,7 +34,7 @@ export default function Technology() {
     "@type": "SoftwareApplication",
     "name": "Dealer Suite 360",
     "applicationCategory": "BusinessApplication",
-    "description": "Patent-pending AI-powered dealership operating system for Canadian RV dealers. Includes FRC code lookup, photo quality AI, claim readiness scoring, and denial prediction.",
+    "description": "Patent-pending AI-powered dealership operating system for RV dealers. Includes FRC code lookup, photo quality AI, claim readiness scoring, and denial prediction.",
     "operatingSystem": "Web",
     "url": "https://dealersuite360.com/technology"
   };

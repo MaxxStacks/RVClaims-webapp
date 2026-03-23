@@ -20,7 +20,7 @@ export default function Financing() {
     <PageLayout
       seoTitle={t('financingPage.title')}
       seoDescription={t('financingPage.description')}
-      seoKeywords="RV financing, dealership financing, loan approvals, Canadian lenders, financing integration"
+      seoKeywords="RV financing, dealership financing, loan approvals, leading lenders, financing integration"
       canonical="/financing"
     >
       <PageHero

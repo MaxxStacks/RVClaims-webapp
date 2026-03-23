@@ -38,15 +38,15 @@ export default function About() {
     "@context": "https://schema.org",
     "@type": "AboutPage",
     "name": "About Dealer Suite 360",
-    "description": "Dealer Suite 360 is Canada's dealership operating system — combining AI-powered claims processing with financing, F&I, marketplace, and revenue growth services.",
+    "description": "Dealer Suite 360 is the all-in-one dealership operating system — combining AI-powered claims processing with financing, F&I, marketplace, and revenue growth services.",
     "url": "https://dealersuite360.com/about"
   };
 
   return (
     <PageLayout
-      seoTitle="About Dealer Suite 360 | Canada's Dealership Operating System"
-      seoDescription="Dealer Suite 360 is the all-in-one platform for Canadian RV dealerships. 15+ years of claims expertise, patent-pending AI technology, bilingual service across Canada."
-      seoKeywords="about Dealer Suite 360, Canadian RV dealers, warranty claims platform, dealer operating system, Dealer Suite 360"
+      seoTitle="About Dealer Suite 360 | The Dealership Operating System"
+      seoDescription="Dealer Suite 360 is the all-in-one platform for RV dealerships. 15+ years of claims expertise, patent-pending AI technology, bilingual service across North America."
+      seoKeywords="about Dealer Suite 360, RV dealers, warranty claims platform, dealer operating system, Dealer Suite 360"
       canonical="/about"
       schema={schema}
     >

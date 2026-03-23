@@ -69,7 +69,7 @@ export interface ExtractedDocumentData {
 
 // ==================== SCAN DOCUMENT ====================
 
-const SYSTEM_PROMPT = `You are a document analysis AI for Dealer Suite 360, a warranty claims processing platform for Canadian RV dealerships.
+const SYSTEM_PROMPT = `You are a document analysis AI for Dealer Suite 360, a warranty claims processing platform for RV dealerships.
 
 Your job: Extract structured data from uploaded documents (warranty certificates, invoices, inspection reports, manufacturer correspondence, etc.)
 

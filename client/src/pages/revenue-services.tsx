@@ -29,14 +29,14 @@ export default function RevenueServices() {
       "@type": "Organization",
       "name": "Dealer Suite 360"
     },
-    "description": "Five outsourced revenue growth services for Canadian RV dealerships: F&I, digital marketing, parts management, service support, CRM, and trade-in programs.",
+    "description": "Five outsourced revenue growth services for RV dealerships: F&I, digital marketing, parts management, service support, CRM, and trade-in programs.",
     "url": "https://dealersuite360.com/revenue-services"
   };
 
   return (
     <PageLayout
       seoTitle="RV Dealership Revenue Services | F&I, Marketing, Parts & More | Dealer Suite 360"
-      seoDescription="Five proven revenue growth services for Canadian RV dealerships — F&I outsourcing, digital marketing, parts management, service support, CRM, and trade-in programs. Launching Q3 2026."
+      seoDescription="Five proven revenue growth services for RV dealerships — F&I outsourcing, digital marketing, parts management, service support, CRM, and trade-in programs. Launching Q3 2026."
       seoKeywords="RV dealership revenue services, F&I outsourcing, digital marketing RV dealers, parts management, service department support, CRM, trade-in programs"
       canonical="/revenue-services"
       schema={schema}

@@ -25,8 +25,8 @@ export const newsArticles: NewsArticle[] = [
     image: '',
     en: {
       title: 'DealerSuite 360 Secures $1.1 Million in Private Funding to Reshape the North American RV Industry',
-      summary: 'DealerSuite 360 has secured $1.1 million in private funding to accelerate product development, expand the engineering team, and drive North American market expansion — starting with Canada.',
-      content: `<p>DealerSuite 360, the all-in-one dealership operating platform purpose-built for the RV industry, today announced the close of $1.1 million in private funding. The capital will be deployed over the next 18 months to accelerate product development, grow the engineering team, and fund an aggressive North American expansion strategy beginning in Canada, with the United States to follow.</p>
+      summary: 'DealerSuite 360 has secured $1.1 million in private funding to accelerate product development, expand the engineering team, and drive North American market expansion.',
+      content: `<p>DealerSuite 360, the all-in-one dealership operating platform purpose-built for the RV industry, today announced the close of $1.1 million in private funding. The capital will be deployed over the next 18 months to accelerate product development, grow the engineering team, and fund an aggressive North American expansion strategy across North America.</p>
 
 <p>The investment marks a defining moment for a platform that was born out of a simple but frustrating truth: RV dealerships have been underserved by technology for decades. Fragmented tools, manual processes, and a complete absence of AI-powered intelligence have left dealers managing complex operations — warranty claims, financing, F&I, customer portals — across a patchwork of disconnected software and spreadsheets.</p>
 
@@ -34,7 +34,7 @@ export const newsArticles: NewsArticle[] = [
 
 <p>The funding validates both the scale of the market opportunity and the team's capacity to execute. With approximately 7,400 RV dealerships operating across North America and a combined industry revenue approaching $56 billion, the addressable market is substantial — and the competitive landscape remains wide open. No existing platform combines AI-powered operations, outsourced claims processing, and a full dealership service ecosystem in a single subscription.</p>
 
-<p>The capital will be allocated across four priorities: continued development of core platform modules, expansion of the AI intelligence layer, infrastructure to support the dealer network at scale, and a go-to-market effort targeting Canadian dealerships in the 2026 operating season.</p>
+<p>The capital will be allocated across four priorities: continued development of core platform modules, expansion of the AI intelligence layer, infrastructure to support the dealer network at scale, and a go-to-market effort targeting verified dealerships in the 2026 operating season.</p>
 
 <p>Critically, DealerSuite 360 is not starting from zero. The platform is already in active beta with its first dealer partner, with the dealersuite360.com claims processing module live and processing real transactions. That operational foundation — combined with new capital — positions the company to move fast.</p>
 
@@ -44,8 +44,8 @@ export const newsArticles: NewsArticle[] = [
     },
     fr: {
       title: "DealerSuite 360 obtient 1,1 million de dollars en financement privé pour transformer l\u2019industrie du VR en Amérique du Nord",
-      summary: 'DealerSuite 360 a sécurisé un financement privé de 1,1 million de dollars pour accélérer le développement de ses produits, agrandir son équipe d\'ingénierie et piloter son expansion en Amérique du Nord — en commençant par le Canada.',
-      content: `<p>DealerSuite 360, la plateforme opérationnelle tout-en-un conçue spécifiquement pour l'industrie du VR, annonce aujourd'hui la clôture d'un financement privé de 1,1 million de dollars. Ce capital sera déployé sur les 18 prochains mois afin d'accélérer le développement des produits, d'agrandir l'équipe d'ingénierie et de financer une stratégie d'expansion agressive en Amérique du Nord, débutant au Canada et s'étendant ensuite aux États-Unis.</p>
+      summary: 'DealerSuite 360 a sécurisé un financement privé de 1,1 million de dollars pour accélérer le développement de ses produits, agrandir son équipe d\'ingénierie et piloter son expansion en Amérique du Nord.',
+      content: `<p>DealerSuite 360, la plateforme opérationnelle tout-en-un conçue spécifiquement pour l'industrie du VR, annonce aujourd'hui la clôture d'un financement privé de 1,1 million de dollars. Ce capital sera déployé sur les 18 prochains mois afin d'accélérer le développement des produits, d'agrandir l'équipe d'ingénierie et de financer une stratégie d'expansion agressive en Amérique du Nord, à travers l'Amérique du Nord.</p>
 
 <p>Cet investissement marque un moment décisif pour une plateforme née d'une réalité simple mais frustrante : les concessionnaires de VR ont été mal desservis par la technologie pendant des décennies. Des outils fragmentés, des processus manuels et l'absence totale d'intelligence artificielle ont contraint les concessionnaires à gérer des opérations complexes — réclamations de garantie, financement, F&A, portails clients — à travers un patchwork de logiciels déconnectés et de feuilles de calcul.</p>
 
@@ -94,7 +94,7 @@ export const newsArticles: NewsArticle[] = [
 
 <h3>Modern Architecture. No Retrofitting.</h3>
 
-<p>The platform is built on React 18, TypeScript, Node.js, and PostgreSQL — with AI deeply embedded throughout, not bolted on as an afterthought. We're currently in beta in Canada, with the US market expansion under the DealerSuite 360 brand planned for Q3 2026.</p>
+<p>The platform is built on React 18, TypeScript, Node.js, and PostgreSQL — with AI deeply embedded throughout, not bolted on as an afterthought. We're currently in beta, with the US market expansion under the DealerSuite 360 brand planned for Q3 2026.</p>
 
 <p>Sign-ups are open at dealersuite360.com. Dealers who join before April 30, 2026 receive a 5% discount on claim fees, parts, and services for the season.</p>`,
     },
@@ -127,7 +127,7 @@ export const newsArticles: NewsArticle[] = [
 
 <h3>Architecture moderne. Sans adaptation forcée.</h3>
 
-<p>La plateforme est construite sur React 18, TypeScript, Node.js et PostgreSQL — avec l'IA profondément intégrée tout au long, et non ajoutée en tant qu'accessoire. Nous sommes actuellement en bêta au Canada, avec l'expansion sur le marché américain sous la marque DealerSuite 360 prévue pour le troisième trimestre 2026.</p>`,
+<p>La plateforme est construite sur React 18, TypeScript, Node.js et PostgreSQL — avec l'IA profondément intégrée tout au long, et non ajoutée en tant qu'accessoire. Nous sommes actuellement en bêta, avec l'expansion sur le marché américain sous la marque DealerSuite 360 prévue pour le troisième trimestre 2026.</p>`,
     },
   },
   {
@@ -198,7 +198,7 @@ export const newsArticles: NewsArticle[] = [
     en: {
       title: 'Warranty Claims Management, Reimagined for the RV Industry',
       summary: 'Dealer Suite 360 was the first module built and battle-tested — now fully integrated into DealerSuite 360. It handles the complete claim lifecycle across all major manufacturers with per-line FRC tracking, photo documentation, and role-based access.',
-      content: `<p>Before there was DealerSuite 360, there was Dealer Suite 360 — a warranty claims processing service built out of direct experience with the frustrations Canadian RV dealers face every day. Too many manufacturers. Too many portals. Too many denials from claims that could have been approved with better preparation. Dealer Suite 360 was built to fix that. Now, it's the foundational module inside DealerSuite 360.</p>
+      content: `<p>Before there was DealerSuite 360, there was Dealer Suite 360 — a warranty claims processing service built out of direct experience with the frustrations RV dealers face every day. Too many manufacturers. Too many portals. Too many denials from claims that could have been approved with better preparation. Dealer Suite 360 was built to fix that. Now, it's the foundational module inside DealerSuite 360.</p>
 
 <h3>What It Handles</h3>
 

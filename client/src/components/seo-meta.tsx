@@ -26,7 +26,7 @@ const organizationSchema = {
     "@type": "ImageObject",
     "url": `${BASE_URL}/attached_assets/DS360_logo_en.png`
   },
-  "description": "Dealer Suite 360 is the all-in-one dealership operating system for Canadian RV dealers — AI-powered warranty claims processing, F&I, financing, parts management, dealer-to-dealer marketplace, and live auctions. Powered by Dealer Suite 360.",
+  "description": "Dealer Suite 360 is the all-in-one dealership operating system for RV dealers — AI-powered warranty claims processing, F&I, financing, parts management, dealer-to-dealer marketplace, and live auctions. Powered by Dealer Suite 360.",
   "address": {
     "@type": "PostalAddress",
     "addressCountry": "CA",
@@ -56,7 +56,7 @@ const organizationSchema = {
     "F&I services for RV dealerships",
     "RV financing solutions",
     "Dealer Suite 360",
-    "Canadian RV dealership platform"
+    "RV dealership platform"
   ]
 };
 
@@ -66,7 +66,7 @@ const websiteSchema = {
   "@id": `${BASE_URL}/#website`,
   "url": BASE_URL,
   "name": BRAND,
-  "description": "The all-in-one operating system for Canadian RV dealerships",
+  "description": "The all-in-one operating system for RV dealerships",
   "publisher": { "@id": `${BASE_URL}/#organization` },
   "inLanguage": ["en-CA", "fr-CA"],
   "potentialAction": {
@@ -125,7 +125,7 @@ export function SeoMeta({ title, description, keywords, canonical, ogType = "web
       <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
       <meta name="language" content={language === 'fr' ? 'fr-CA' : 'en-CA'} />
       <meta name="geo.region" content="CA" />
-      <meta name="geo.placename" content="Canada" />
+      
       <link rel="canonical" href={currentUrl} />
       <link rel="alternate" hrefLang="en-CA" href={currentUrl} />
       <link rel="alternate" hrefLang="fr-CA" href={altUrl} />

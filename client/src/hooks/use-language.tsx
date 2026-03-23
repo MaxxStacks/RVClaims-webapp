@@ -17,7 +17,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
       return saved as Language;
     }
     
-    // Auto-detect browser language for Canadian market
+    // Auto-detect browser language for North American market
     const detectBrowserLanguage = (): Language => {
       const browserLang = navigator.language || navigator.languages?.[0] || 'en';
       const langCode = browserLang.toLowerCase();

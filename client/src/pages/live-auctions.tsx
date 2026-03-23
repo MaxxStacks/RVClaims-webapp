@@ -55,11 +55,11 @@ const MOCK_UNITS = [
 ];
 
 const FAQ = [
-  { q: 'Who can bid?', a: 'Any adult Canadian resident. Create a free account, add a credit card, and you\'re ready to bid. No dealer license required.' },
+  { q: 'Who can bid?', a: 'Any registered adult bidder. Create a free account, add a credit card, and you\'re ready to bid. No dealer license required.' },
   { q: 'What is the $250 hold?', a: 'When you place your first bid, Dealer Suite 360 places a $250 authorization hold on your card. This hold is released automatically if you lose the auction. If you win, the $250 is applied toward your purchase price.' },
   { q: 'How does payment work if I win?', a: 'You have 72 hours to arrange full payment through Dealer Suite 360. Financing is available. If payment is not received in 72 hours, the unit goes to the second-highest bidder and your $250 hold is forfeited.' },
-  { q: 'Is financing available?', a: 'Yes. Dealer Suite 360 partners with Canadian lenders. Apply during or after the auction. Pre-approval is recommended before bidding on high-value units.' },
-  { q: 'Who are the sellers?', a: 'All units are listed by verified Canadian RV dealerships. Dealer identities are hidden during the auction. You deal exclusively through Dealer Suite 360 as escrow.' },
+  { q: 'Is financing available?', a: 'Yes. Dealer Suite 360 partners with leading lenders. Apply during or after the auction. Pre-approval is recommended before bidding on high-value units.' },
+  { q: 'Who are the sellers?', a: 'All units are listed by verified RV dealerships. Dealer identities are hidden during the auction. You deal exclusively through Dealer Suite 360 as escrow.' },
   { q: 'What happens if the reserve is not met?', a: 'If the winning bid is below the seller\'s reserve price, the unit is not sold and all holds are released.' },
   { q: 'How often are public auctions held?', a: 'Once per month, running for 48 hours. Sign up for notifications to be alerted when the next event is announced.' },
 ];
@@ -178,7 +178,7 @@ export default function LiveAuctions() {
     <div className="min-h-screen bg-white overflow-x-hidden">
       <SeoMeta
         title="Public Auction — Dealer Suite 360"
-        description="Bid on Canadian RV dealership units in the Dealer Suite 360 monthly public auction. No dealer license required. $250 refundable hold. Dealer Suite 360 acts as escrow."
+        description="Bid on RV dealership units in the Dealer Suite 360 monthly public auction. No dealer license required. $250 refundable hold. Dealer Suite 360 acts as escrow."
       />
       <NotificationBar />
       <Navigation />
@@ -209,7 +209,7 @@ export default function LiveAuctions() {
                 Dealer Suite 360 Public Auction
               </h1>
               <p className="text-xl text-white/80 mb-3 max-w-2xl mx-auto">
-                Shop real Canadian RV dealership inventory at auction prices.
+                Shop real RV dealership inventory at auction prices.
                 No dealer license required.
               </p>
               <p className="text-white/60 text-sm mb-12">
@@ -258,7 +258,7 @@ export default function LiveAuctions() {
               <div className="text-center mb-12">
                 <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">How It Works</h2>
                 <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-                  Dealer Suite 360 connects the public directly with verified Canadian dealerships — once a month, for 48 hours.
+                  Dealer Suite 360 connects the public directly with verified verified dealerships — once a month, for 48 hours.
                 </p>
               </div>
               <div className="grid md:grid-cols-3 gap-8">
@@ -312,7 +312,7 @@ export default function LiveAuctions() {
                       { icon: <Shield className="w-5 h-5 text-primary" />, text: 'All transactions go through Dealer Suite 360 — you never deal directly with the seller.' },
                       { icon: <Banknote className="w-5 h-5 text-primary" />, text: '$250 hold is placed when you bid. Refunded automatically if you lose. Applied to purchase if you win.' },
                       { icon: <Clock className="w-5 h-5 text-primary" />, text: '72-hour payment window after winning. If you cannot pay, the unit goes to the second-highest bidder.' },
-                      { icon: <Users className="w-5 h-5 text-primary" />, text: 'All units are from verified Canadian RV dealerships. Seller identities are revealed only after payment.' },
+                      { icon: <Users className="w-5 h-5 text-primary" />, text: 'All units are from verified RV dealerships. Seller identities are revealed only after payment.' },
                       { icon: <CheckCircle className="w-5 h-5 text-primary" />, text: 'Financing available through Dealer Suite 360 lending partners. Pre-approval recommended for bids over $40,000.' },
                     ].map((item, i) => (
                       <div key={i} className="flex items-start gap-3">
@@ -327,7 +327,7 @@ export default function LiveAuctions() {
                   <div className="space-y-3 text-sm text-gray-700">
                     {[
                       ['Auction Window', '48 hours — May 8 at 12 PM EDT to May 10 at 12 PM EDT'],
-                      ['Who Can Bid', 'Any adult Canadian resident'],
+                      ['Who Can Bid', 'Any registered adult bidder'],
                       ['Bid Hold', '$250 per auction (not per unit)'],
                       ['Hold Refund', 'Automatic within 5 business days if you lose'],
                       ['Payment Window', '72 hours from auction close'],
@@ -412,7 +412,7 @@ export default function LiveAuctions() {
                     <span className="text-white/60 text-sm">May 8, 2026 Public Auction</span>
                   </div>
                   <h1 className="text-3xl md:text-4xl font-bold mb-1">Dealer Suite 360 Public Auction</h1>
-                  <p className="text-white/70 text-sm">{MOCK_UNITS.length} units · All from verified Canadian dealers · Dealer Suite 360 escrow</p>
+                  <p className="text-white/70 text-sm">{MOCK_UNITS.length} units · All from verified verified dealers · Dealer Suite 360 escrow</p>
                 </div>
                 <div className="flex flex-col items-center bg-white/10 border border-white/20 rounded-2xl px-8 py-4">
                   <span className="text-white/70 text-xs uppercase tracking-widest mb-1">Closes In</span>

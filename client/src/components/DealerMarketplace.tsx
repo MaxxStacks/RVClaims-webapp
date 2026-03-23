@@ -67,7 +67,7 @@ export function DealerMarketplacePages({ activePage, showPage }: Props) {
       <div className="pn" style={{marginBottom: 20}}>
         <div className="pn-h"><span className="pn-t">Marketplace Membership — $499/year</span></div>
         <div style={{padding: 20, fontSize: 13, lineHeight: '2'}}>
-          <div>✓ Browse all listed units from verified Canadian dealers</div>
+          <div>✓ Browse all listed units from verified verified dealers</div>
           <div>✓ List your own units for sale (seller identity hidden)</div>
           <div>✓ Participate in scheduled live auctions</div>
           <div>✓ Place $500 refundable holds to secure units</div>
@@ -123,7 +123,7 @@ export function DealerMarketplacePages({ activePage, showPage }: Props) {
 {/* ============ BROWSE MARKETPLACE ============ */}
 <div className={`page ${activePage === 'mkt-browse' ? 'active' : ''}`} id="page-mkt-browse">
   <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20}}>
-    <div><div style={{fontSize: 16, fontWeight: 700, marginBottom: 4}}>Dealer Marketplace</div><div style={{fontSize: 13, color: '#888'}}>Browse units from verified dealers across Canada. All transactions go through Dealer Suite 360.</div></div>
+    <div><div style={{fontSize: 16, fontWeight: 700, marginBottom: 4}}>Dealer Marketplace</div><div style={{fontSize: 13, color: '#888'}}>Browse units from verified dealers across North America. All transactions go through Dealer Suite 360.</div></div>
     <button className="btn btn-p btn-sm" onClick={() => showPage('mkt-post-unit')}>+ List a Unit for Sale</button>
   </div>
 

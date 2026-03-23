@@ -61,7 +61,7 @@ export const translations = {
     // Hero Section
     hero: {
       badge: "Industry Leading Claims Management",
-      title: "A-Z Claims Processing for Canadian",
+      title: "A-Z Claims Processing for RV Dealers",
       titleHighlight: "RV Dealers",
       description: "15 years of professional claims management expertise with North America's leading manufacturers. Our patent-pending technology boosts dealership revenue through optimized claim processing.",
       ctaPrimary: "Get Started Today",
@@ -189,7 +189,7 @@ export const translations = {
         description: "Rapid claim processing reduces downtime and improves cash flow"
       },
       manufacturersTitle: "We Process Claims for North America's Leading Manufacturers",
-      manufacturersSubtitle: "Proven expertise with industry-leading RV brands, delivering consistent results and maximum approvals for dealerships across Canada."
+      manufacturersSubtitle: "Proven expertise with industry-leading RV brands, delivering consistent results and maximum approvals for dealerships across North America."
     },
 
     // Department Directory Section
@@ -226,7 +226,7 @@ export const translations = {
     upsellServices: {
       badge: "Revenue Growth Services",
       title: "Maximize Dealership Revenue with Expert Services",
-      description: "Beyond warranty claims, we offer comprehensive outsourced services that Canadian RV dealers use to boost sales, improve operations, and increase profitability.",
+      description: "Beyond warranty claims, we offer comprehensive outsourced services that RV dealers use to boost sales, improve operations, and increase profitability.",
       services: {
         finance: {
           title: "Finance & Insurance (F&I) Services",
@@ -279,7 +279,7 @@ export const translations = {
       },
       cta: {
         title: "Ready to Expand Your Revenue Streams?",
-        description: "Join successful Canadian RV dealers who've partnered with us for comprehensive business growth beyond warranty claims.",
+        description: "Join successful RV dealers who've partnered with us for comprehensive business growth beyond warranty claims.",
         contactButton: "Discuss Services",
         callButton: "Call (888) 443-2204"
       }
@@ -332,7 +332,7 @@ export const translations = {
       description: "Boost unit sales and close more deals with our integrated financing services designed exclusively for RV dealerships. We streamline lender communications, automate approval processes, and increase customer satisfaction with transparent, fast, and compliant financing solutions.",
       dealerIntegration: {
         title: "Dealer Financing Integration",
-        description: "Connect with leading Canadian lenders for faster approvals and improved deal structures."
+        description: "Connect with leading leading lenders for faster approvals and improved deal structures."
       },
       approvalOptimization: {
         title: "Approval Optimization",
@@ -348,7 +348,7 @@ export const translations = {
       },
       bilingualSupport: {
         title: "Bilingual Financing Support",
-        description: "Fully compliant bilingual documentation and support for all Canadian provinces."
+        description: "Fully compliant bilingual documentation and support for all provinces and states."
       },
       quote: "Increase deal closure rates and simplify financing — all while maintaining full compliance and control.",
       cta: "Get Financing Support",
@@ -447,7 +447,7 @@ export const translations = {
       location: {
         title: "Headquarters",
         address: "Toronto, Ontario, Canada",
-        coverage: "Serving all Canadian provinces"
+        coverage: "Serving all provinces and states"
       },
       development: {
         title: "Development Office",
@@ -475,7 +475,7 @@ export const translations = {
 
     // Footer
     footer: {
-      description: "Professional claims management for Canadian RV dealers. 15 years of expertise with patent-pending technology.",
+      description: "Professional claims management for RV dealers. 15 years of expertise with patent-pending technology.",
       servicesTitle: "Services",
       processing: "A-Z Claims Processing",
       optimization: "Revenue Optimization", 
@@ -567,18 +567,18 @@ export const translations = {
     aboutPage: {
       badge: "15 Years of Excellence",
       title: "Leading Dealership Operations Platform",
-      description: "Professional claims processing expertise with a proven track record of maximizing dealership revenue across Canada.",
+      description: "Professional claims processing expertise with a proven track record of maximizing dealership revenue across North America.",
       storyTitle: "Our Story",
-      storyDescription: "Founded with a mission to revolutionize RV warranty claims processing for Canadian dealers.",
+      storyDescription: "Founded with a mission to revolutionize RV warranty claims processing for verified dealers.",
       experienceTitle: "Industry Leadership",
-      experienceDescription: "15 years of dedicated service to the Canadian RV industry, building relationships with top manufacturers and developing cutting-edge technology solutions.",
+      experienceDescription: "15 years of dedicated service to the RV industry, building relationships with top manufacturers and developing cutting-edge technology solutions.",
       yearsExperience: "Years Experience",
       approvalRate: "Approval Rate",
       revenueIncrease: "Avg Revenue Increase",
       locationTitle: "Our Locations",
       headquarters: "Headquarters",
       development: "Development Office",
-      missionBadge: "Canada's Dealership Operating System",
+      missionBadge: "The Dealership Operating System",
       missionTitle: "We're Not a Claims Company. We're the Platform Your Dealership Runs On.",
       missionBody: "Dealer Suite 360 was founded by people who spent 15 years inside RV dealerships, watching warranty revenue disappear into manual paperwork, denied claims, and fragmented vendor relationships. We built the platform we wished existed.",
       platformTitle: "One Subscription. Every Service.",
@@ -593,14 +593,14 @@ export const translations = {
       pillar4Body: "Dealer-to-dealer inventory marketplace and monthly public live auctions. Launching Q3–Q4 2026.",
       pillar5Title: "Consumer Direct",
       pillar5Body: "Roadside assistance, extended warranty, and RV protection packages sold directly to RV owners. Launching Q4 2026.",
-      whyTitle: "Why Canadian Dealers Choose Dealer Suite 360",
-      why1: "15+ years of RV claims expertise — not auto, not generic. RV-specific, Canada-focused.",
+      whyTitle: "Why Dealers Choose Dealer Suite 360",
+      why1: "15+ years of RV claims expertise — not auto, not generic. RV-specific, dealer-focused.",
       why2: "AI-powered platform with patent-pending FRC code matching and photo quality scoring",
-      why3: "Fully bilingual — every service operates in English and French across all Canadian provinces",
-      why4: "Canada-first — built for Canadian manufacturers, regulations, and PIPEDA compliance",
+      why3: "Fully bilingual — every service operates in English and French across all provinces and states",
+      why4: "dealer-first — built for Canadian manufacturers, regulations, and PIPEDA compliance",
       why5: "Two-sided SaaS platform — our network and AI get stronger with every dealer who joins",
       why6: "Modular — start with claims today, add new revenue modules as they launch",
-      founderQuote: "We built Dealer Suite 360 because we saw how much money Canadian dealers were leaving on the table every month. Bad photos. Wrong FRC codes. Incomplete paperwork. One expert team with the right technology fixes all of that — and then some.",
+      founderQuote: "We built Dealer Suite 360 because we saw how much money verified dealers were leaving on the table every month. Bad photos. Wrong FRC codes. Incomplete paperwork. One expert team with the right technology fixes all of that — and then some.",
       founderAttribution: "Founder, Dealer Suite 360",
       teamTitle: "Expert Team. Real Results.",
       teamBody: "Our operator team is made up of RV industry veterans with deep expertise in manufacturer warranty systems, F&I compliance, and dealership operations. When you subscribe to Dealer Suite 360, you get a full service team working as an extension of your dealership.",
@@ -621,7 +621,7 @@ export const translations = {
     servicesPage: {
       badge: "The Complete Dealership Platform",
       title: "Every Service Your Dealership Needs",
-      description: "Dealer Suite 360 is the single platform Canadian RV dealers need to run their entire operation — from warranty claims to financing, F&I, parts, marketplace, and live auctions.",
+      description: "Dealer Suite 360 is the single platform RV dealers need to run their entire operation — from warranty claims to financing, F&I, parts, marketplace, and live auctions.",
       introHeading: "One Platform. 16+ Services. Zero Complexity.",
       introBody: "Think of Dealer Suite 360 the way dealers think of Shopify for e-commerce — one subscription gives your dealership access to every service you need. Start with claims processing today and activate new revenue modules as your business grows.",
       cat1Badge: "Module 1 — Live Now",
@@ -653,12 +653,12 @@ export const translations = {
       integF4: "Bilingual support — English and French across all communications",
       cat2Badge: "Q2 2026",
       cat2Title: "Financial Services",
-      cat2Description: "Outsource your entire finance operation or pick the modules you need. Built for Canadian compliance with bilingual documentation support.",
+      cat2Description: "Outsource your entire finance operation or pick the modules you need. Built for compliance with bilingual documentation support.",
       finTitle: "Financing Services",
       finDescription: "Streamline lender communications, automate approvals, and close more deals faster with our integrated RV financing solution.",
       finF1: "Multi-lender integration with real-time approval tracking",
       finF2: "Automated credit application submission and status updates",
-      finF3: "Bilingual compliance documentation for Canadian regulations",
+      finF3: "Bilingual compliance documentation for all regulations",
       fiTitle: "F&I Outsourcing",
       fiDescription: "A complete outsourced F&I operation — loan origination, GAP insurance, extended warranty sales, and AI-powered product presentations handled by our certified team.",
       fiF1: "Full loan origination and GAP insurance management",
@@ -686,7 +686,7 @@ export const translations = {
       cat4Title: "Marketplace & Auctions",
       cat4Description: "Two channels to move inventory faster — a 24/7 dealer-to-dealer marketplace and monthly public live auctions open to verified bidders.",
       mktplaceTitle: "Network Marketplace",
-      mktplaceDescription: "A verified dealer-to-dealer RV inventory platform available 24/7. List units that aren't moving at your location and connect with dealers across Canada who have active demand.",
+      mktplaceDescription: "A verified dealer-to-dealer RV inventory platform available 24/7. List units that aren't moving at your location and connect with dealers across North America who have active demand.",
       mktplaceF1: "Subscription required — verified dealers only",
       mktplaceF2: "Dealer Suite 360 acts as escrow on all transactions",
       mktplaceF3: "Flat $250 commission per unit sold — no percentage fees",
@@ -701,7 +701,7 @@ export const translations = {
       cat5Title: "Consumer Direct Services",
       cat5Description: "Services sold directly to RV owners — giving your customers access to protection, roadside coverage, and extended warranty plans through your dealership.",
       roadsideTitle: "Roadside Assistance",
-      roadsideDescription: "24/7 emergency towing and roadside support for RV owners across Canada.",
+      roadsideDescription: "24/7 emergency towing and roadside support for RV owners across North America.",
       extWTitle: "Extended Warranty",
       extWDescription: "Direct-purchase protection plans for customers who want coverage beyond the manufacturer warranty.",
       protTitle: "RV Protection Packages",
@@ -719,9 +719,9 @@ export const translations = {
       faq1Q: "Do I need to subscribe to all services, or can I start with just claims?",
       faq1A: "You can start with claims processing alone — it's Module 1 and available right now. Additional service modules activate as they launch, and you choose which ones to add based on your dealership's needs.",
       faq2Q: "Which RV manufacturers does Dealer Suite 360 support for warranty claims?",
-      faq2A: "We currently support Jayco, Forest River, Heartland, Columbia NW, Keystone, and Midwest Auto — covering the majority of Canadian RV inventory. Additional manufacturers are added regularly.",
+      faq2A: "We currently support Jayco, Forest River, Heartland, Columbia NW, Keystone, and Midwest Auto — covering the majority of RV inventory. Additional manufacturers are added regularly.",
       faq3Q: "Is Dealer Suite 360 available in French?",
-      faq3A: "Yes. The entire platform — dealer portal, operator communications, and all documentation — is fully bilingual in English and French to serve dealerships across all Canadian provinces.",
+      faq3A: "Yes. The entire platform — dealer portal, operator communications, and all documentation — is fully bilingual in English and French to serve dealerships across all provinces and states.",
       faq4Q: "What is the difference between the Network Marketplace and Live Auctions?",
       faq4A: "The Network Marketplace is a private, subscription-only platform for verified RV dealers to buy and sell inventory 24/7 at negotiated prices. Live Auctions are monthly 48-hour public events open to the general public with competitive bidding.",
       faq5Q: "How does the escrow service work on the Network Marketplace?",
@@ -731,7 +731,7 @@ export const translations = {
       faq7Q: "When are the Financial Services and Revenue Growth modules launching?",
       faq7A: "Financial Services (Financing, F&I, Warranty Plans) are scheduled for Q2 2026. Revenue Growth Services (Marketing, Parts, Service Support, CRM, Trade-In) are scheduled for Q3 2026. All subscribers will be notified before each module launches.",
       ctaHeading: "Ready to Run Your Entire Dealership From One Platform?",
-      ctaDescription: "Join Canadian RV dealers already using Dealer Suite 360 to process claims faster, reduce denials, and unlock new revenue streams.",
+      ctaDescription: "Join RV dealers already using Dealer Suite 360 to process claims faster, reduce denials, and unlock new revenue streams.",
       ctaButton: "Get Started — Create Your Account",
       ctaSecondary: "View Pricing",
       processing: {
@@ -756,7 +756,7 @@ export const translations = {
     claimsPage: {
       badge: "Module 1 — Live Now",
       title: "Expert A-Z Claims Processing",
-      description: "We handle every step of the warranty claims process for Canadian RV dealers — from identifying the claim to receiving payment from the manufacturer.",
+      description: "We handle every step of the warranty claims process for RV dealers — from identifying the claim to receiving payment from the manufacturer.",
       daf: {
         title: "DAF Claims",
         description: "The Dealer Authorization Form is completed when a unit first arrives from the manufacturer. Our team documents all transit damage, ensures proper photo documentation, and submits the DAF to maximize recovery on every unit received."
@@ -866,7 +866,7 @@ export const translations = {
     revenueServicesPage: {
       badge: "Q3 2026",
       title: "Five Revenue Channels. One Platform.",
-      description: "Beyond claims processing, Dealer Suite 360 delivers five proven revenue growth services for Canadian dealerships — each fully outsourced so your team can focus on selling.",
+      description: "Beyond claims processing, Dealer Suite 360 delivers five proven revenue growth services for verified dealerships — each fully outsourced so your team can focus on selling.",
       finance: {
         title: "Finance & Insurance (F&I)",
         description: "Outsource your entire F&I operation to our certified specialists — higher approvals, better products, full compliance.",
@@ -996,10 +996,10 @@ export const translations = {
     rvCoveragePage: {
       badge: "All 10 RV Types",
       title: "Every RV Type. Expert Claims Processing.",
-      description: "Our team processes warranty claims for all 10 RV types across all Canadian provinces — from compact pop-ups to full-size Class A motorhomes.",
+      description: "Our team processes warranty claims for all 10 RV types across all provinces and states — from compact pop-ups to full-size Class A motorhomes.",
       travelTrailers: {
         title: "Travel Trailers",
-        description: "The most popular RV type in Canada. We process all travel trailer warranty claims including structural defects, slide-out systems, appliances, plumbing, and electrical issues across all supported manufacturers."
+        description: "The most popular RV type in North America. We process all travel trailer warranty claims including structural defects, slide-out systems, appliances, plumbing, and electrical issues across all supported manufacturers."
       },
       fifthWheels: {
         title: "Fifth Wheels",
@@ -1062,9 +1062,9 @@ export const translations = {
       s1Title: "1. About This Policy",
       s1Body: "Dealer Suite 360 (Dealer Suite 360) is committed to protecting the privacy of all individuals whose personal information we collect, use, and disclose. This Privacy Policy explains how we handle personal information in accordance with the Personal Information Protection and Electronic Documents Act (PIPEDA) and applicable provincial privacy legislation.",
       s2Title: "2. Information We Collect",
-      s2Body: "We collect personal information necessary to provide our services to Canadian RV dealerships and their customers. This includes: contact information (name, email, phone number, mailing address); business information (dealership name, business address, licence number); financial information (banking details for payment processing, billing history); technical information (IP address, browser type, device identifiers); usage data (pages visited, features used, claim activity within the portal); and vehicle information (VIN numbers, unit specifications, warranty records) provided in connection with claims processing.",
+      s2Body: "We collect personal information necessary to provide our services to RV dealerships and their customers. This includes: contact information (name, email, phone number, mailing address); business information (dealership name, business address, licence number); financial information (banking details for payment processing, billing history); technical information (IP address, browser type, device identifiers); usage data (pages visited, features used, claim activity within the portal); and vehicle information (VIN numbers, unit specifications, warranty records) provided in connection with claims processing.",
       s3Title: "3. How We Use Your Information",
-      s3Body: "We use personal information to: deliver our claims processing, financing, F&I, marketplace, and auction services; communicate with you about your account, claims status, and platform updates; process payments and manage billing; comply with legal obligations under Canadian law; improve our platform and services based on usage patterns; send relevant service communications and, with consent, marketing materials. We do not use personal information for automated decision-making that produces legal or similarly significant effects without human review.",
+      s3Body: "We use personal information to: deliver our claims processing, financing, F&I, marketplace, and auction services; communicate with you about your account, claims status, and platform updates; process payments and manage billing; comply with legal obligations under applicable law; improve our platform and services based on usage patterns; send relevant service communications and, with consent, marketing materials. We do not use personal information for automated decision-making that produces legal or similarly significant effects without human review.",
       s4Title: "4. How We Share Your Information",
       s4Body: "We do not sell personal information. We do not share dealership data with other dealers. We share information only as follows: with service providers who assist us in delivering our platform (payment processors, cloud hosting, email delivery) under strict confidentiality obligations; with manufacturers where required to submit warranty claims on your behalf; with regulators and law enforcement as required by applicable law; with your explicit consent in all other circumstances.",
       s5Title: "5. Data Security",
@@ -1074,7 +1074,7 @@ export const translations = {
       s7Title: "7. Cookies and Tracking",
       s7Body: "Our website uses cookies and similar technologies to: enable essential site functionality; analyze traffic and usage patterns (analytics cookies); remember your language and display preferences. You may control cookie settings through your browser. Declining non-essential cookies will not affect your access to core platform features. We honour your cookie preferences as set through our consent banner.",
       s8Title: "8. Data Retention",
-      s8Body: "We retain personal information for as long as necessary to fulfill the purposes for which it was collected, comply with legal and regulatory requirements, and resolve any disputes. Dealer account data is retained for a minimum of seven years following account closure to satisfy Canadian tax and regulatory retention obligations. You may request deletion of your personal information subject to these legal retention requirements.",
+      s8Body: "We retain personal information for as long as necessary to fulfill the purposes for which it was collected, comply with legal and regulatory requirements, and resolve any disputes. Dealer account data is retained for a minimum of seven years following account closure to satisfy applicable tax and regulatory retention obligations. You may request deletion of your personal information subject to these legal retention requirements.",
       s9Title: "9. Changes to This Policy",
       s9Body: "We may update this Privacy Policy from time to time to reflect changes in our practices or applicable law. Material changes will be communicated to registered dealers by email at least 30 days before they take effect. The effective date at the top of this policy reflects the date of the most recent revision.",
       s10Title: "10. Contact Our Privacy Officer",
@@ -1084,7 +1084,7 @@ export const translations = {
     // Privacy Assurance Section
     privacyAssurance: {
       title: "Absolute Client Confidentiality Guaranteed",
-      description: "Despite serving multiple dealerships across Canada, we operate under strict non-disclosure protocols. Your sensitive business information, financial data, and operational details are never shared, discussed, or disclosed to any third party - including other clients.",
+      description: "Despite serving multiple dealerships across North America, we operate under strict non-disclosure protocols. Your sensitive business information, financial data, and operational details are never shared, discussed, or disclosed to any third party - including other clients.",
       features: {
         encryption: "Bank-Grade Encryption",
         agreements: "Iron-Clad NDAs",
@@ -1108,7 +1108,7 @@ export const translations = {
     partsSection: {
       badge: "RV Parts & Components",
       title: "Quality Parts for Claims & Direct Purchase",
-      description: "We provide genuine OEM and aftermarket parts for warranty claims processing and offer direct purchase options for dealerships across Canada.",
+      description: "We provide genuine OEM and aftermarket parts for warranty claims processing and offer direct purchase options for dealerships across North America.",
       features: {
         claimsParts: {
           title: "Claims Parts Supply",
@@ -1123,8 +1123,8 @@ export const translations = {
           description: "Access to genuine manufacturer parts and certified aftermarket components for all major RV brands."
         },
         fastShipping: {
-          title: "Fast Canada-Wide Shipping",
-          description: "Quick delivery across Canada with tracking, ensuring minimal downtime for your customers."
+          title: "Fast North America-Wide Shipping",
+          description: "Quick delivery across North America with tracking, ensuring minimal downtime for your customers."
         }
       },
       cta: {
@@ -1158,7 +1158,7 @@ export const translations = {
       services: {
         roadside: {
           title: "24/7 Roadside Assistance",
-          description: "Complete roadside assistance coverage for your RV anywhere in Canada and the US.",
+          description: "Complete roadside assistance coverage for your RV anywhere in North America.",
           feature1: "24/7 emergency roadside assistance",
           feature2: "Towing up to 100 miles to nearest service center",
           feature3: "Emergency fuel delivery and flat tire service",
@@ -1202,8 +1202,8 @@ export const translations = {
     networkMarketplace: {
       badge: "Q3–Q4 2026",
       title: "The Dealer-to-Dealer RV Network Marketplace",
-      subtitle: "A 24/7 verified marketplace where Canadian RV dealers buy and sell inventory directly — with Dealer Suite 360 acting as escrow on every transaction.",
-      heroBody: "Stop losing money on aged inventory. The Dealer Suite 360 Network Marketplace connects you with verified dealers across Canada who need what you have — and have what you need.",
+      subtitle: "A 24/7 verified marketplace where RV dealers buy and sell inventory directly — with Dealer Suite 360 acting as escrow on every transaction.",
+      heroBody: "Stop losing money on aged inventory. The Dealer Suite 360 Network Marketplace connects you with verified dealers across North America who need what you have — and have what you need.",
       purpose: {
         title: "How the Marketplace Works",
         description: "Three simple steps to move your inventory to the right dealer",
@@ -1211,7 +1211,7 @@ export const translations = {
           "List units that aren't moving at your location — visible 24/7 to all subscribed dealers",
           "Verified buyers contact you through the platform — your identity is protected until you accept",
           "Dealer Suite 360 holds funds in escrow until transfer is confirmed — flat $250 commission per sale",
-          "Subscription-required for all buyers and sellers — verified Canadian RV dealerships only"
+          "Subscription-required for all buyers and sellers — verified RV dealerships only"
         ]
       },
       sellingPerks: {
@@ -1229,7 +1229,7 @@ export const translations = {
       buyingPerks: {
         title: "Why Dealers List Here",
         items: [
-          { title: "Move Aged Inventory", desc: "Units sitting 90+ days cost you money. List them here and reach dealers across Canada with active demand." },
+          { title: "Move Aged Inventory", desc: "Units sitting 90+ days cost you money. List them here and reach dealers across North America with active demand." },
           { title: "Access Wholesale Inventory", desc: "Find specific models, configurations, or brands your customers are requesting — at dealer-to-dealer pricing." },
           { title: "No Auction Pressure", desc: "Unlike auctions, marketplace listings allow negotiated pricing and direct buyer-seller communication." },
           { title: "Financing Available", desc: "Buyers can access Dealer Suite 360 financing partners for inventory purchases on the marketplace." },
@@ -1368,7 +1368,7 @@ export const translations = {
     // Pricing Page
     pricingPage: {
       title: "Simple, Transparent Pricing",
-      description: "Two plans for Canadian RV dealerships. Both include full A-Z claims processing powered by our patent-pending AI platform.",
+      description: "Two plans for RV dealerships. Both include full A-Z claims processing powered by our patent-pending AI platform.",
       billingToggle: {
         monthly: "Monthly",
         annual: "Annual",
@@ -1381,7 +1381,7 @@ export const translations = {
       plans: {
         starter: {
           name: "Plan A — Core",
-          description: "The complete claims processing subscription for Canadian RV dealerships",
+          description: "The complete claims processing subscription for RV dealerships",
           features: [
             "Full A-Z claims processing: DAF, PDI, Warranty, Extended, Insurance",
             "AI FRC code lookup and photo quality scoring",
@@ -1525,7 +1525,7 @@ export const translations = {
     // Dealer Login Page
     dealerLoginPage: {
       headline: "Your Dealership. Every Service.",
-      subheadline: "Claims processing, parts, auctions, F&I, marketplace, roadside and more — the complete platform built for Canadian RV dealers.",
+      subheadline: "Claims processing, parts, auctions, F&I, marketplace, roadside and more — the complete platform built for RV dealers.",
       features: [
         { text: "DAF, PDI, Warranty & Extended claims processing" },
         { text: "FRC code management across all manufacturers" },
@@ -1865,7 +1865,7 @@ export const translations = {
         description: "Le traitement rapide des réclamations réduit les temps d'arrêt et améliore la trésorerie"
       },
       manufacturersTitle: "Nous traitons les réclamations pour les principaux fabricants d'Amérique du Nord",
-      manufacturersSubtitle: "Expertise éprouvée avec les marques de VR leaders de l'industrie, offrant des résultats cohérents et des approbations maximales pour les concessionnaires à travers le Canada."
+      manufacturersSubtitle: "Expertise éprouvée avec les marques de VR leaders de l'industrie, offrant des résultats cohérents et des approbations maximales pour les concessionnaires à travers l'Amérique du Nord."
     },
 
     // Department Directory Section
@@ -2243,9 +2243,9 @@ export const translations = {
     aboutPage: {
       badge: "15 ans d'excellence",
       title: "Leader en gestion de réclamations VR",
-      description: "Expertise professionnelle en traitement de réclamations avec un historique prouvé de maximisation des revenus des concessionnaires à travers le Canada.",
+      description: "Expertise professionnelle en traitement de réclamations avec un historique prouvé de maximisation des revenus des concessionnaires à travers l'Amérique du Nord.",
       storyTitle: "Notre histoire",
-      storyDescription: "Fondé avec pour mission de révolutionner le traitement des réclamations de garantie VR pour les concessionnaires canadiens.",
+      storyDescription: "Fondé avec pour mission de révolutionner le traitement des réclamations de garantie VR pour les concessionnaires.",
       experienceTitle: "Leadership de l'industrie",
       experienceDescription: "15 ans de service dédié à l'industrie canadienne du VR, bâtissant des relations avec les principaux fabricants et développant des solutions technologiques de pointe.",
       yearsExperience: "Années d'expérience",
@@ -2254,7 +2254,7 @@ export const translations = {
       locationTitle: "Nos emplacements",
       headquarters: "Siège social",
       development: "Bureau de développement",
-      missionBadge: "Le système d'exploitation des concessionnaires du Canada",
+      missionBadge: "Le système d'exploitation des concessionnaires d'Amérique du Nord",
       missionTitle: "Nous ne sommes pas une entreprise de réclamations. Nous sommes la plateforme sur laquelle tourne votre concessionnaire.",
       missionBody: "Dealer Suite 360 a été fondé par des gens qui ont passé 15 ans dans des concessions VR, à regarder les revenus de garantie disparaître dans des paperasses manuelles, des réclamations refusées et des relations fragmentées. Nous avons construit la plateforme que nous aurions voulu avoir.",
       platformTitle: "Un abonnement. Tous les services.",
@@ -2269,14 +2269,14 @@ export const translations = {
       pillar4Body: "Marché d'inventaire entre concessionnaires et enchères publiques mensuelles en direct. Lancement T3–T4 2026.",
       pillar5Title: "Direct aux consommateurs",
       pillar5Body: "Assistance routière, garantie prolongée et forfaits de protection vendus directement aux propriétaires de VR. Lancement T4 2026.",
-      whyTitle: "Pourquoi les concessionnaires canadiens choisissent Dealer Suite 360",
-      why1: "Plus de 15 ans d'expertise en réclamations VR — pas auto, pas générique. Spécifique VR, centré Canada.",
+      whyTitle: "Pourquoi les concessionnaires choisissent Dealer Suite 360",
+      why1: "Plus de 15 ans d'expertise en réclamations VR — pas auto, pas générique. Spécifique VR, centré Amérique du Nord.",
       why2: "Plateforme propulsée par l'IA avec correspondance FRC brevetée en instance et évaluation qualité photos",
       why3: "Entièrement bilingue — chaque service en anglais et en français dans toutes les provinces canadiennes",
       why4: "Canada d'abord — conçu pour les fabricants canadiens, réglementations et conformité LPRPDE",
       why5: "Plateforme SaaS bilatérale — notre réseau et notre IA se renforcent avec chaque concessionnaire",
       why6: "Modulaire — commencez avec les réclamations aujourd'hui, ajoutez des modules au fil des lancements",
-      founderQuote: "Nous avons construit Dealer Suite 360 parce que nous avons vu combien d'argent les concessionnaires canadiens laissaient sur la table chaque mois. Mauvaises photos. Mauvais codes FRC. Paperasse incomplète. Une équipe experte avec la bonne technologie règle tout ça — et bien plus encore.",
+      founderQuote: "Nous avons construit Dealer Suite 360 parce que nous avons vu combien d'argent les concessionnaires laissaient sur la table chaque mois. Mauvaises photos. Mauvais codes FRC. Paperasse incomplète. Une équipe experte avec la bonne technologie règle tout ça — et bien plus encore.",
       founderAttribution: "Fondateur, Dealer Suite 360",
       teamTitle: "Équipe experte. Résultats réels.",
       teamBody: "Notre équipe opérateur est composée de vétérans de l'industrie VR avec une expertise approfondie dans les systèmes de garantie fabricant, la conformité F&I et les opérations des concessionnaires.",
@@ -2362,7 +2362,7 @@ export const translations = {
       cat4Title: "Marché et enchères",
       cat4Description: "Deux canaux pour déplacer l'inventaire plus rapidement — un marché entre concessionnaires disponible 24/7 et des enchères publiques mensuelles.",
       mktplaceTitle: "Marché en réseau",
-      mktplaceDescription: "Une plateforme d'inventaire VR vérifiée entre concessionnaires disponible 24/7. Listez les unités qui ne bougent pas et connectez-vous avec des concessionnaires partout au Canada.",
+      mktplaceDescription: "Une plateforme d'inventaire VR vérifiée entre concessionnaires disponible 24/7. Listez les unités qui ne bougent pas et connectez-vous avec des concessionnaires partout en Amérique du Nord.",
       mktplaceF1: "Abonnement requis — concessionnaires vérifiés seulement",
       mktplaceF2: "Dealer Suite 360 agit comme entiercement sur toutes les transactions",
       mktplaceF3: "Commission fixe de 250 $ par unité vendue — pas de frais en pourcentage",
@@ -2377,7 +2377,7 @@ export const translations = {
       cat5Title: "Services directs aux consommateurs",
       cat5Description: "Services vendus directement aux propriétaires de VR — donnant à vos clients accès à la protection, à l'assistance routière et aux plans de garantie prolongée.",
       roadsideTitle: "Assistance routière",
-      roadsideDescription: "Remorquage d'urgence et assistance routière 24/7 pour les propriétaires de VR partout au Canada.",
+      roadsideDescription: "Remorquage d'urgence et assistance routière 24/7 pour les propriétaires de VR partout en Amérique du Nord.",
       extWTitle: "Garantie prolongée",
       extWDescription: "Plans de protection à achat direct pour les clients qui souhaitent une couverture au-delà de la garantie du fabricant.",
       protTitle: "Forfaits de protection VR",
@@ -2542,7 +2542,7 @@ export const translations = {
     revenueServicesPage: {
       badge: "T3 2026",
       title: "Cinq canaux de revenus. Une plateforme.",
-      description: "Au-delà du traitement des réclamations, Dealer Suite 360 offre cinq services éprouvés de croissance des revenus pour les concessionnaires canadiens — chacun entièrement externalisé.",
+      description: "Au-delà du traitement des réclamations, Dealer Suite 360 offre cinq services éprouvés de croissance des revenus pour les concessionnaires — chacun entièrement externalisé.",
       finance: {
         title: "Finance et assurance (F&I)",
         description: "Externalisez l'ensemble de vos opérations F&I à nos spécialistes certifiés — meilleures approbations, meilleurs produits, conformité complète.",
@@ -2675,7 +2675,7 @@ export const translations = {
       description: "Notre équipe traite les réclamations de garantie pour les 10 types de VR dans toutes les provinces canadiennes — des pop-up compacts aux autocaravanes Classe A.",
       travelTrailers: {
         title: "Roulottes de voyage",
-        description: "Le type de VR le plus populaire au Canada. Nous traitons toutes les réclamations de garantie de roulottes de voyage incluant défauts structurels, systèmes de glissières, appareils, plomberie et problèmes électriques."
+        description: "Le type de VR le plus populaire en Amérique du Nord. Nous traitons toutes les réclamations de garantie de roulottes de voyage incluant défauts structurels, systèmes de glissières, appareils, plomberie et problèmes électriques."
       },
       fifthWheels: {
         title: "Sellettes d'attelage (5e roue)",
@@ -2760,7 +2760,7 @@ export const translations = {
     // Privacy Assurance Section
     privacyAssurance: {
       title: "Confidentialité Client Absolue Garantie",
-      description: "Malgré le service à plusieurs concessionnaires à travers le Canada, nous opérons sous des protocoles stricts de non-divulgation. Vos informations commerciales sensibles, données financières et détails opérationnels ne sont jamais partagés, discutés ou divulgués à des tiers - incluant d'autres clients.",
+      description: "Malgré le service à plusieurs concessionnaires à travers l'Amérique du Nord, nous opérons sous des protocoles stricts de non-divulgation. Vos informations commerciales sensibles, données financières et détails opérationnels ne sont jamais partagés, discutés ou divulgués à des tiers - incluant d'autres clients.",
       features: {
         encryption: "Chiffrement Bancaire",
         agreements: "Ententes de Non-Divulgation",
@@ -2784,7 +2784,7 @@ export const translations = {
     partsSection: {
       badge: "Pièces et composants VR",
       title: "Pièces de qualité pour réclamations et achat direct",
-      description: "Nous fournissons des pièces d'origine et de rechange pour le traitement des réclamations de garantie et offrons des options d'achat direct pour les concessionnaires à travers le Canada.",
+      description: "Nous fournissons des pièces d'origine et de rechange pour le traitement des réclamations de garantie et offrons des options d'achat direct pour les concessionnaires à travers l'Amérique du Nord.",
       features: {
         claimsParts: {
           title: "Fourniture de pièces pour réclamations",
@@ -2799,8 +2799,8 @@ export const translations = {
           description: "Accès aux pièces d'origine du fabricant et composants de rechange certifiés pour toutes les grandes marques de VR."
         },
         fastShipping: {
-          title: "Livraison rapide partout au Canada",
-          description: "Livraison rapide à travers le Canada avec suivi, assurant un temps d'arrêt minimal pour vos clients."
+          title: "Livraison rapide partout en Amérique du Nord",
+          description: "Livraison rapide à travers l'Amérique du Nord avec suivi, assurant un temps d'arrêt minimal pour vos clients."
         }
       },
       cta: {
@@ -2834,7 +2834,7 @@ export const translations = {
       services: {
         roadside: {
           title: "Assistance routière 24h/7j",
-          description: "Couverture complète d'assistance routière pour votre VR partout au Canada et aux États-Unis.",
+          description: "Couverture complète d'assistance routière pour votre VR partout en Amérique du Nord et aux États-Unis.",
           feature1: "Assistance routière d'urgence 24h/7j",
           feature2: "Remorquage jusqu'à 100 miles vers le centre de service le plus proche",
           feature3: "Livraison de carburant d'urgence et service de pneu crevé",
@@ -2879,7 +2879,7 @@ export const translations = {
       badge: "T3–T4 2026",
       title: "Le marché VR en réseau entre concessionnaires",
       subtitle: "Un marché vérifié 24h/7j où les concessionnaires VR canadiens achètent et vendent des inventaires directement — Dealer Suite 360 agissant comme entiercement sur chaque transaction.",
-      heroBody: "Cessez de perdre de l'argent sur l'inventaire vieillissant. Le Marché en réseau Dealer Suite 360 vous connecte avec des concessionnaires vérifiés partout au Canada qui ont besoin de ce que vous avez — et ont ce dont vous avez besoin.",
+      heroBody: "Cessez de perdre de l'argent sur l'inventaire vieillissant. Le Marché en réseau Dealer Suite 360 vous connecte avec des concessionnaires vérifiés partout en Amérique du Nord qui ont besoin de ce que vous avez — et ont ce dont vous avez besoin.",
       purpose: {
         title: "Comment fonctionne le marché",
         description: "Trois étapes simples pour déplacer votre inventaire vers le bon concessionnaire",
@@ -2905,7 +2905,7 @@ export const translations = {
       buyingPerks: {
         title: "Pourquoi les concessionnaires listent ici",
         items: [
-          { title: "Déplacer l'inventaire vieillissant", desc: "Les unités qui stagnent depuis 90+ jours vous coûtent de l'argent. Listez-les ici et rejoignez des concessionnaires partout au Canada." },
+          { title: "Déplacer l'inventaire vieillissant", desc: "Les unités qui stagnent depuis 90+ jours vous coûtent de l'argent. Listez-les ici et rejoignez des concessionnaires partout en Amérique du Nord." },
           { title: "Accéder à l'inventaire en gros", desc: "Trouvez des modèles, configurations ou marques spécifiques que vos clients demandent — à des prix entre concessionnaires." },
           { title: "Pas de pression d'enchères", desc: "Contrairement aux enchères, les annonces permettent une tarification négociée et une communication directe acheteur-vendeur." },
           { title: "Financement disponible", desc: "Les acheteurs peuvent accéder aux partenaires financiers de Dealer Suite 360 pour les achats d'inventaire sur le marché." },

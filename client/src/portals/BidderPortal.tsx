@@ -287,7 +287,7 @@ export default function BidderPortal() {
             ))}
           </div>
           <div style={{fontSize: 12, color: '#888', lineHeight: '1.5', marginBottom: 12}}>
-            6 dealer units · 24-hour window · Open to all registered Canadian residents
+            6 dealer units · 24-hour window · Open to all registered registered bidders
           </div>
           <div style={{display: 'flex', gap: 8}}>
             <button className="btn btn-p btn-sm" onClick={() => window.location.href = '/live-auctions'}>View Auction Page</button>
@@ -563,7 +563,7 @@ export default function BidderPortal() {
     <div style={{padding: 24}}>
       <div style={{fontSize: 11, opacity: 0.7, letterSpacing: 1, textTransform: 'uppercase', marginBottom: 6}}>Next Public Auction</div>
       <div style={{fontSize: 22, fontWeight: 700, marginBottom: 4}}>May 8, 2026 · 12:00 PM EDT</div>
-      <div style={{fontSize: 13, opacity: 0.7, marginBottom: 20}}>24-hour window · Open to all registered Canadians · Dealer Suite 360 escrow</div>
+      <div style={{fontSize: 13, opacity: 0.7, marginBottom: 20}}>24-hour window · Open to all registered bidders · Dealer Suite 360 escrow</div>
 
       {/* Countdown */}
       <div style={{display: 'flex', gap: 12, marginBottom: 20}}>

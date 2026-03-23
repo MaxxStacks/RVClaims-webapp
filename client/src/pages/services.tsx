@@ -19,8 +19,8 @@ const faqSchema = {
   "@type": "FAQPage",
   mainEntity: [
     { "@type": "Question", name: "Do I need to subscribe to all services, or can I start with just claims?", acceptedAnswer: { "@type": "Answer", text: "You can start with claims processing alone — it's Module 1 and available right now. Additional service modules activate as they launch, and you choose which ones to add based on your dealership's needs." } },
-    { "@type": "Question", name: "Which RV manufacturers does Dealer Suite 360 support for warranty claims?", acceptedAnswer: { "@type": "Answer", text: "We currently support Jayco, Forest River, Heartland, Columbia NW, Keystone, and Midwest Auto — covering the majority of Canadian RV inventory. Additional manufacturers are added regularly." } },
-    { "@type": "Question", name: "Is Dealer Suite 360 available in French?", acceptedAnswer: { "@type": "Answer", text: "Yes. The entire platform — dealer portal, operator communications, and all documentation — is fully bilingual in English and French to serve dealerships across all Canadian provinces." } },
+    { "@type": "Question", name: "Which RV manufacturers does Dealer Suite 360 support for warranty claims?", acceptedAnswer: { "@type": "Answer", text: "We currently support Jayco, Forest River, Heartland, Columbia NW, Keystone, and Midwest Auto — covering the majority of RV inventory. Additional manufacturers are added regularly." } },
+    { "@type": "Question", name: "Is Dealer Suite 360 available in French?", acceptedAnswer: { "@type": "Answer", text: "Yes. The entire platform — dealer portal, operator communications, and all documentation — is fully bilingual in English and French to serve dealerships across all provinces and states." } },
     { "@type": "Question", name: "What is the difference between the Network Marketplace and Live Auctions?", acceptedAnswer: { "@type": "Answer", text: "The Network Marketplace is a private, subscription-only platform for verified RV dealers to buy and sell inventory 24/7 at negotiated prices. Live Auctions are monthly 48-hour public events open to the general public with competitive bidding." } },
     { "@type": "Question", name: "How does the escrow service work on the Network Marketplace?", acceptedAnswer: { "@type": "Answer", text: "Dealer Suite 360 acts as a neutral escrow agent on every marketplace transaction. Funds are held securely until both parties confirm the transfer is complete. A flat $250 commission is charged per completed sale." } },
     { "@type": "Question", name: "What happens to my $250 deposit if I don't win a Live Auction bid?", acceptedAnswer: { "@type": "Answer", text: "If you do not win the bid, the full $250 deposit is returned to your original payment method. If you win, the $250 is applied directly toward the purchase price of the unit." } },
@@ -33,8 +33,8 @@ const serviceSchema = {
   "@type": "Service",
   "name": "Dealer Suite 360 — Dealership Operating System",
   "provider": { "@type": "Organization", "name": "Dealer Suite 360", "url": "https://dealersuite360.com" },
-  "areaServed": { "@type": "Country", "name": "Canada" },
-  "description": "16+ services for Canadian RV dealerships including AI-powered warranty claims processing, F&I outsourcing, financing, parts management, dealer-to-dealer marketplace, and monthly live auctions.",
+  "areaServed": { "@type": "Place", "name": "North America" },
+  "description": "16+ services for RV dealerships including AI-powered warranty claims processing, F&I outsourcing, financing, parts management, dealer-to-dealer marketplace, and monthly live auctions.",
   "hasOfferCatalog": {
     "@type": "OfferCatalog",
     "name": "Dealer Suite 360 Services",
@@ -124,8 +124,8 @@ export default function Services() {
   return (
     <PageLayout
       seoTitle="RV Dealer Services | Claims, F&I, Financing, Marketplace & More"
-      seoDescription="Dealer Suite 360 provides 16+ services for Canadian RV dealerships — AI-powered warranty claims processing, F&I outsourcing, financing, parts management, dealer-to-dealer marketplace, and monthly live auctions."
-      seoKeywords="RV dealer services Canada, RV warranty claims processing, F&I outsourcing RV, RV financing Canada, dealer-to-dealer marketplace, live RV auctions Canada, Canadian RV dealership platform, Dealer Suite 360"
+      seoDescription="Dealer Suite 360 provides 16+ services for RV dealerships — AI-powered warranty claims processing, F&I outsourcing, financing, parts management, dealer-to-dealer marketplace, and monthly live auctions."
+      seoKeywords="RV dealer services, RV warranty claims processing, F&I outsourcing RV, RV financing, dealer-to-dealer marketplace, live RV auctions, RV dealership platform, Dealer Suite 360"
       canonical="/services"
       schema={[faqSchema, serviceSchema]}
     >

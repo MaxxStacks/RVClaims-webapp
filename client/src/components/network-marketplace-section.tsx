@@ -98,7 +98,7 @@ export function NetworkMarketplaceSection() {
                 <Network className="h-8 w-8 text-primary" />
               </div>
               <h3 className="font-bold text-xl mb-3 text-center">Nationwide Network</h3>
-              <p className="text-sm text-muted-foreground text-center">Connect with verified dealers across Canada</p>
+              <p className="text-sm text-muted-foreground text-center">Connect with verified dealers across North America</p>
             </div>
           </div>
 

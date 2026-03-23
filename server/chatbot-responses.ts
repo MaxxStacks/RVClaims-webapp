@@ -73,7 +73,7 @@ Souhaitez-vous parler à notre équipe? Appelez le (888) 443-2204 ou cliquez sur
   {
     keywords: ['service', 'what do you do', 'help', 'offer', 'provide', 'qu\'est-ce que', 'services', 'offrez'],
     response: {
-      en: `Dealer Suite 360 specializes in A-Z warranty claims processing for Canadian RV dealerships. **We help dealers get PAID by manufacturers for warranty work** - protecting your bottom line and maximizing revenue.
+      en: `Dealer Suite 360 specializes in A-Z warranty claims processing for RV dealerships. **We help dealers get PAID by manufacturers for warranty work** - protecting your bottom line and maximizing revenue.
 
 **Our Core Services:**
 - Complete warranty claims management (PDI, In-Service, Goodwill)
@@ -175,7 +175,7 @@ Vous voulez voir combien de revenus vous laissez sur la table? Appelez le (888) 
 - **500+ claims processed monthly** - High-volume expertise
 - **15 years of experience** - Deep industry knowledge
 - **Works with all major North American RV manufacturers**
-- **Specialized in the Canadian RV dealership market**
+- **Specialized in the RV dealership market**
 
 Our track record speaks for itself. When you work with Dealer Suite 360, you're working with proven experts who help you get paid by manufacturers for warranty work.
 
@@ -198,7 +198,7 @@ Prêt à améliorer votre taux d'approbation? Appelez le (888) 443-2204 ou deman
     response: {
       en: `**RV Marketplace - Launching Q1 2026**
 
-Our B2C consumer-facing marketplace will connect RV buyers with trusted Canadian dealerships:
+Our B2C consumer-facing marketplace will connect RV buyers with trusted verified dealerships:
 
 - Browse inventory from multiple dealerships
 - Transparent pricing
@@ -227,7 +227,7 @@ En attendant, découvrez comment notre service de traitement des réclamations p
     response: {
       en: `**Live Auctions - Launching Q3 2026 (January 16-18, 2026)**
 
-Our B2B dealer-to-dealer wholesale platform will revolutionize how Canadian RV dealers trade units:
+Our B2B dealer-to-dealer wholesale platform will revolutionize how RV dealers trade units:
 
 - Competitive bidding system
 - Trade units between dealerships
@@ -412,7 +412,7 @@ Prêt à passer à l'étape suivante? Cliquez sur Contact ci-dessous ou appelez 
 ];
 
 export const defaultResponse = {
-  en: `I'm here to help you learn about Dealer Suite 360's services for Canadian RV dealerships.
+  en: `I'm here to help you learn about Dealer Suite 360's services for RV dealerships.
 
 **I can tell you about:**
 - Our pricing plans and packages

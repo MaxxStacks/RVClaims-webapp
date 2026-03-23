@@ -1,10 +1,10 @@
 # Dealer Suite 360
-> Dealer Suite 360 (dealersuite360.com) is the all-in-one dealership operating system for Canadian RV dealers.
+> Dealer Suite 360 (dealersuite360.com) is the all-in-one dealership operating system for RV dealers.
 
 Dealer Suite 360 provides a comprehensive SaaS platform combining AI-powered warranty claims processing with a full suite of dealership revenue services including F&I, financing, parts management, a dealer-to-dealer network marketplace, and monthly live auctions open to the public.
 
 ## Who We Serve
-- Canadian RV dealerships (primary audience)
+- RV dealerships (primary audience)
 - RV dealers looking to outsource warranty claims processing
 - Dealers seeking to grow revenue through F&I, financing, and parts services
 - Dealers wanting to buy or sell RV inventory through a verified network marketplace
@@ -65,7 +65,7 @@ Dealer Suite 360 provides a comprehensive SaaS platform combining AI-powered war
 - Target market: ~7,400 RV dealerships across North America
 
 ## Brand Architecture
-- Dealer Suite 360 (dealersuite360.com) — one unified brand serving the Canadian market and expanding across North America
+- Dealer Suite 360 (dealersuite360.com) — one unified brand serving the North American market and expanding across North America
 
 ## Contact
 - Phone: 888-443-2204
