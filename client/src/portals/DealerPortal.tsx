@@ -4,6 +4,7 @@
 
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/use-auth';
+import ds360Icon from '@assets/ds360_favicon.png';
 import { MobileBottomNav, OfflineBanner } from '../components/MobileBottomNav';
 import { DealerMarketplacePages } from '../components/DealerMarketplace';
 import { DealerShowcasePages } from '../components/PublicAuctionPages';
@@ -18,6 +19,7 @@ export default function DealerPortal() {
   const [unitTab, setUnitTab] = useState('u-info');
   const [dSettingsTab, setDSettingsTab] = useState('ds-profile');
   const [dclTab, setDclTab] = useState('dcl-current');
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   const { user } = useAuth();
   // Show owner-only items to everyone when not yet authenticated (prototype mode)
@@ -153,7 +155,7 @@ staff:['Staff Management','Manage team access'],'add-staff':['Add Staff','Invite
 
   return (
     <>
-<nav className="sidebar">
+<nav className={`sidebar${sidebarCollapsed ? ' collapsed' : ''}`}>
   <div className="sidebar-logo" id="sidebar-header"><svg id="sidebar-logo-svg" width="36" height="36" viewBox="0 0 36 36"><rect width="36" height="36" rx="8" fill="var(--brand)"/><path d="M9 25L18 11L27 25H9Z" fill="white" opacity="0.8"/></svg><div className="sidebar-logo-text"><div className="sidebar-logo-name" id="sidebar-name">Smith's RV Centre</div><div className="sidebar-logo-sub">Dealership Portal</div></div><span className="sidebar-badge">Dealer</span></div>
   <div className="sidebar-nav">
     <div className="nav-section"><div className="nav-label">Overview</div>
@@ -189,8 +191,8 @@ staff:['Staff Management','Manage team access'],'add-staff':['Add Staff','Invite
   </div>
   <div className="sidebar-footer"><div className="user-info" style={{cursor: 'pointer'}} onClick={() => showPage('dealer-settings')}><div className="user-avatar" id="user-avatar">MS</div><div><div className="user-name">Mike Smith</div><div className="user-role">Smith's RV Centre</div></div></div></div>
 </nav>
-<div className="main">
-<header className="header"><div className="header-left"><div><div className="header-title" id="page-title">{pageTitle}</div><div className="header-sub" id="page-sub">{pageSub}</div></div></div><div style={{fontSize: 14, fontWeight: 600, color: 'var(--brand)', marginLeft: 'auto', marginRight: 16}} id="header-dealer-name">Smith's RV Centre</div><div className="header-right"><div className="lang-toggle" id="lang-toggle"><button className={`lang-btn-opt ${lang === "en" ? "active" : ""}`} id="lang-en" onClick={() => handleSetLang('en')}>EN</button><button className={`lang-btn-opt ${lang === "fr" ? "active" : ""}`} id="lang-fr" onClick={() => handleSetLang('fr')}>FR</button></div><button className="theme-toggle" onClick={() => toggleTheme()} id="theme-btn" title="Toggle dark mode"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button><button className="hbtn" onClick={() => showPage('notifications')}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg><span className="ndot"></span></button></div></header>
+<div className={`main${sidebarCollapsed ? ' collapsed-main' : ''}`}>
+<header className="header"><div className="header-left"><button className="hbtn" onClick={() => setSidebarCollapsed(c => !c)} title="Toggle sidebar" style={{flexShrink:0}}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button><img src={ds360Icon} width="28" height="28" style={{borderRadius:6,flexShrink:0,marginRight:4}} alt="DS360" /><div><div className="header-title" id="page-title">{pageTitle}</div><div className="header-sub" id="page-sub">{pageSub}</div></div></div><div className="header-right"><div className="lang-toggle" id="lang-toggle"><button className={`lang-btn-opt ${lang === "en" ? "active" : ""}`} id="lang-en" onClick={() => handleSetLang('en')}>EN</button><button className={`lang-btn-opt ${lang === "fr" ? "active" : ""}`} id="lang-fr" onClick={() => handleSetLang('fr')}>FR</button></div><button className="theme-toggle" onClick={() => toggleTheme()} id="theme-btn" title="Toggle dark mode"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button><button className="hbtn" onClick={() => showPage('notifications')}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg><span className="ndot"></span></button></div></header>
 <div className="content">
 
 

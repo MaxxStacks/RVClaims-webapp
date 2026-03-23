@@ -3,6 +3,7 @@
 // DO NOT modify layout structure. DO NOT add display:flex to .content.
 
 import { useState, useEffect } from 'react';
+import ds360Icon from '@assets/ds360_favicon.png';
 import { MobileBottomNav, OfflineBanner } from '../components/MobileBottomNav';
 
 export default function CustomerPortal() {
@@ -13,6 +14,7 @@ export default function CustomerPortal() {
   const [lang, setLang] = useState(() => localStorage.getItem('ds360-lang') || (navigator.language.startsWith('fr') ? 'fr' : 'en'));
 
   const [custSettingsTab, setCustSettingsTab] = useState('cs-profile');
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   const titles: Record<string, [string, string]> = {dashboard:['Dashboard','Welcome back, Robert'],'my-unit':['My Unit','2024 Jayco Jay Flight 264BH'],warranty:['Warranty \u0026 Coverage','Active coverage details'],documents:['Documents','Warranty certs, inspection reports'],claims:['Claim Status','Track your claims'],'claim-detail':['CLM-0248','Warranty claim in progress'],'report-issue':['Report an Issue','Upload photos and describe the problem'],parts:['Parts Orders','Track parts for your claims'],'fi-products':['Protection Plans','Available products for your RV'],roadside:['Roadside Assistance','Coming soon'],tickets:['Support Tickets','Track conversations with dealer'],'ticket-detail':['TKT-0042','Warranty claim ticket'],'new-ticket':['New Ticket','Create a support ticket'],'quick-chat':['Quick Chat','Quick questions with Smith\u0027s RV Centre'],settings:['Settings','Your profile and preferences']};
 
@@ -61,7 +63,7 @@ export default function CustomerPortal() {
 
   return (
     <>
-<nav className="sidebar">
+<nav className={`sidebar${sidebarCollapsed ? ' collapsed' : ''}`}>
   <div className="sidebar-logo"><svg width="36" height="36" viewBox="0 0 36 36"><rect width="36" height="36" rx="8" fill="var(--brand)"/><path d="M9 25L18 11L27 25H9Z" fill="white" opacity="0.8"/></svg><div className="sidebar-logo-text"><div className="sidebar-logo-name">Smith's RV Centre</div><div className="sidebar-logo-sub">Client Portal</div></div><span className="sidebar-badge">Client</span></div>
   <div className="sidebar-nav">
     <div className="nav-section"><div className="nav-label">Overview</div>
@@ -84,8 +86,8 @@ export default function CustomerPortal() {
   </div>
   <div className="sidebar-footer"><div className="user-info" onClick={() => showPage('settings')}><div className="user-avatar" id="cust-avatar">RM</div><div><div className="user-name">Robert Martin</div><div className="user-role">Client</div></div></div></div>
 </nav>
-<div className="main">
-<header className="header"><div className="header-left"><div><div className="header-title" id="page-title">{pageTitle}</div><div className="header-sub" id="page-sub">{pageSub}</div></div></div><div className="header-right"><div className="lang-toggle" id="lang-toggle"><button className={`lang-btn-opt ${lang === "en" ? "active" : ""}`} id="lang-en" onClick={() => handleSetLang('en')}>EN</button><button className={`lang-btn-opt ${lang === "fr" ? "active" : ""}`} id="lang-fr" onClick={() => handleSetLang('fr')}>FR</button></div><button className="theme-toggle" onClick={() => toggleTheme()} id="theme-btn" title="Toggle dark mode"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button><button className="hbtn" onClick={() => showPage('tickets')}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><span className="ndot"></span></button></div></header>
+<div className={`main${sidebarCollapsed ? ' collapsed-main' : ''}`}>
+<header className="header"><div className="header-left"><button className="hbtn" onClick={() => setSidebarCollapsed(c => !c)} title="Toggle sidebar" style={{flexShrink:0}}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button><img src={ds360Icon} width="28" height="28" style={{borderRadius:6,flexShrink:0,marginRight:4}} alt="DS360" /><div><div className="header-title" id="page-title">{pageTitle}</div><div className="header-sub" id="page-sub">{pageSub}</div></div></div><div className="header-right"><div className="lang-toggle" id="lang-toggle"><button className={`lang-btn-opt ${lang === "en" ? "active" : ""}`} id="lang-en" onClick={() => handleSetLang('en')}>EN</button><button className={`lang-btn-opt ${lang === "fr" ? "active" : ""}`} id="lang-fr" onClick={() => handleSetLang('fr')}>FR</button></div><button className="theme-toggle" onClick={() => toggleTheme()} id="theme-btn" title="Toggle dark mode"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button><button className="hbtn" onClick={() => showPage('tickets')}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><span className="ndot"></span></button></div></header>
 <div className="content">
 
 
