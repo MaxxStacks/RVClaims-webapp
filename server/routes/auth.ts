@@ -17,11 +17,24 @@ router.post("/login", validateBody(loginSchema), async (req: Request, res: Respo
   try {
     const { email, password, portalType } = req.body;
 
-    const [user] = await db
-      .select()
-      .from(users)
-      .where(eq(users.email, email.toLowerCase()))
-      .limit(1);
+    let user: typeof users.$inferSelect | undefined;
+    try {
+      const [found] = await db
+        .select()
+        .from(users)
+        .where(eq(users.email, email.toLowerCase()))
+        .limit(1);
+      user = found;
+    } catch (dbErr: any) {
+      const msg = dbErr?.message || "";
+      if (msg.includes("DATABASE_URL") || msg.includes("connect")) {
+        return res.status(503).json({ success: false, message: "Database not configured. Add DATABASE_URL to your environment and run db:push." });
+      }
+      if (msg.includes("does not exist") || msg.includes("relation")) {
+        return res.status(503).json({ success: false, message: "Database schema not set up. Run: npm run db:push && npx tsx server/seed.ts" });
+      }
+      throw dbErr;
+    }
 
     if (!user || !user.isActive) {
       return res.status(401).json({ success: false, message: "Invalid credentials" });
@@ -72,6 +85,15 @@ router.post("/login", validateBody(loginSchema), async (req: Request, res: Respo
       ipAddress: req.ip || null,
     });
 
+    // Store refresh token in httpOnly cookie so page reloads restore the session
+    res.cookie("ds360_refresh", refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      path: "/",
+    });
+
     // Determine redirect based on role
     let redirectTo = "/dealer/dashboard";
     if (OPERATOR_ROLES.includes(user.role as any)) redirectTo = "/operator/dashboard";
@@ -81,7 +103,6 @@ router.post("/login", validateBody(loginSchema), async (req: Request, res: Respo
     res.json({
       success: true,
       accessToken,
-      refreshToken,
       user: {
         id: user.id,
         email: user.email,
@@ -194,14 +215,16 @@ router.post("/register", validateBody(registerSchema), async (req: Request, res:
 // ==================== POST /api/auth/refresh ====================
 router.post("/refresh", async (req: Request, res: Response) => {
   try {
-    const { refreshToken } = req.body;
+    // Read refresh token from httpOnly cookie (set at login) or body (legacy)
+    const refreshToken = req.cookies?.ds360_refresh || req.body?.refreshToken;
 
     if (!refreshToken) {
-      return res.status(400).json({ success: false, message: "Refresh token required" });
+      return res.status(401).json({ success: false, message: "No session" });
     }
 
     const payload = await verifyToken(refreshToken);
     if (!payload || payload.type !== TOKEN_TYPES.REFRESH) {
+      res.clearCookie("ds360_refresh", { path: "/" });
       return res.status(401).json({ success: false, message: "Invalid refresh token" });
     }
 
@@ -213,13 +236,27 @@ router.post("/refresh", async (req: Request, res: Response) => {
       .limit(1);
 
     if (!user || !user.isActive) {
+      res.clearCookie("ds360_refresh", { path: "/" });
       return res.status(401).json({ success: false, message: "Account not found or deactivated" });
     }
 
     // Generate new access token
     const accessToken = await generateAccessToken(user.id, user.role as any, user.dealershipId || undefined);
 
-    res.json({ success: true, accessToken });
+    res.json({
+      success: true,
+      accessToken,
+      user: {
+        id: user.id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        role: user.role,
+        dealershipId: user.dealershipId,
+        language: user.language,
+        avatarUrl: user.avatarUrl,
+      },
+    });
   } catch (error) {
     console.error("Refresh error:", error);
     res.status(500).json({ success: false, message: "Internal server error" });
@@ -321,6 +358,7 @@ router.post("/logout", requireAuth, async (req: Request, res: Response) => {
     // Delete all sessions for this user
     await db.delete(sessions).where(eq(sessions.userId, req.user!.id));
 
+    res.clearCookie("ds360_refresh", { path: "/" });
     res.json({ success: true, message: "Logged out" });
   } catch (error) {
     console.error("Logout error:", error);

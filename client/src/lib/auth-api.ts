@@ -147,6 +147,7 @@ export async function refreshSession(): Promise<AuthResponse> {
   const data = await apiFetch<AuthResponse>("/api/auth/refresh", {
     method: "POST",
     skipAuth: true,
+    // No body needed — refresh token is sent automatically via httpOnly cookie
   });
   if (data.success && data.accessToken) {
     _accessToken = data.accessToken;
