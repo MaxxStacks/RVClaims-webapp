@@ -2,7 +2,7 @@ import { Phone, Mail, MapPin, Heart, Linkedin, Facebook, Youtube, Instagram, Twi
 import { useLanguage } from "@/hooks/use-language";
 import { ServiceBadge } from "@/components/service-badge";
 import { Link } from "wouter";
-import logoLight from "@assets/DS360_logo_en.png";
+import logoLight from "@assets/DS360_logo_light.png";
 
 export function Footer() {
   const { t, language } = useLanguage();

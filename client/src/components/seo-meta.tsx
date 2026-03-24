@@ -24,7 +24,7 @@ const organizationSchema = {
   "url": BASE_URL,
   "logo": {
     "@type": "ImageObject",
-    "url": `${BASE_URL}/attached_assets/DS360_logo_en.png`
+    "url": `${BASE_URL}/attached_assets/DS360_logo_light.png`
   },
   "description": "Dealer Suite 360 is the all-in-one dealership operating system for RV dealers — AI-powered warranty claims processing, F&I, financing, parts management, dealer-to-dealer marketplace, and live auctions. Powered by Dealer Suite 360.",
   "address": {

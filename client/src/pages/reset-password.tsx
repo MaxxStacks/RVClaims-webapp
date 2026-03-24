@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Eye, EyeOff, CheckCircle2 } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { resetPassword } from "@/lib/auth-api";
-import logoEN from "@assets/DS360_logo_en.png";
+import logoEN from "@assets/DS360_logo_light.png";
 
 export default function ResetPassword() {
   const [, setLocation] = useLocation();

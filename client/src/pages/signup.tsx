@@ -2,8 +2,8 @@ import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
 import { Link } from "wouter";
-import logoEN from "@assets/DS360_logo_en.png";
-import logoFR from "@assets/DS360_logo_fr.png";
+import logoEN from "@assets/DS360_logo_light.png";
+import logoFR from "@assets/DS360_logo_light.png";
 
 export default function Signup() {
   const { language } = useLanguage();

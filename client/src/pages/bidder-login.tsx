@@ -4,8 +4,8 @@ import { useLanguage } from "@/hooks/use-language";
 import { useAuth } from "@/hooks/use-auth";
 import { forgotPassword } from "@/lib/auth-api";
 import { Link, useLocation } from "wouter";
-import logoEN from "@assets/DS360_logo_en.png";
-import logoFR from "@assets/DS360_logo_fr.png";
+import logoEN from "@assets/DS360_logo_light.png";
+import logoFR from "@assets/DS360_logo_light.png";
 
 export default function BidderLogin() {
   const { language } = useLanguage();

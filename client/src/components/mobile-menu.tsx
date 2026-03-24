@@ -1,5 +1,5 @@
 import { useState, FormEvent } from "react";
-import logoLight from "@assets/DS360_logo_en.png";
+import logoLight from "@assets/DS360_logo_light.png";
 import { Menu, X, Building, User, Gavel, Linkedin, Facebook, Youtube, Instagram, Twitter, ChevronRight, Search } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { useLanguage } from "@/hooks/use-language";

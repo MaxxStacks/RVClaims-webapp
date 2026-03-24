@@ -5,7 +5,7 @@ import { ServiceBadge } from "@/components/service-badge";
 import { Link, useLocation } from "wouter";
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
-import logoLight from "@assets/DS360_logo_en.png";
+import logoLight from "@assets/DS360_logo_light.png";
 import travelTrailerIcon from "@assets/Travel Trailer_1756847838647.webp";
 import fifthWheelIcon from "@assets/Fifth Wheel_1756847838645.webp";
 import classCIcon from "@assets/Class C_1756847838644.webp";
