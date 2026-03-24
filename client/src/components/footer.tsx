@@ -8,13 +8,13 @@ export function Footer() {
   const { t, language } = useLanguage();
 
   return (
-    <footer className="bg-gray-50 text-gray-900 pt-16 pb-4">
+    <footer className="bg-gray-50 text-gray-900 pt-8 pb-4">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 mb-12">
           <div className="lg:col-span-2 space-y-4">
             <div className="mb-2" data-testid="div-footer-logo">
               <Link href="/">
-                <img src={logoLight} alt="Dealer Suite 360" className="h-12 w-auto cursor-pointer" data-testid="img-footer-logo" />
+                <img src={logoLight} alt="Dealer Suite 360" className="h-[72px] w-auto cursor-pointer" data-testid="img-footer-logo" />
               </Link>
             </div>
             <p className="text-gray-600 text-sm" data-testid="text-footer-description">

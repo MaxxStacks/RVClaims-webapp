@@ -60,7 +60,7 @@ export default function ResetPassword() {
       <div style={{ width: "100%", maxWidth: "440px", background: "#fff", borderRadius: "12px", boxShadow: "0 2px 16px rgba(0,0,0,0.08)", padding: "40px 40px 32px" }}>
         <div style={{ marginBottom: "28px" }}>
           <Link href="/">
-            <img src={logoEN} alt="Dealer Suite 360" style={{ height: "36px", width: "auto", marginBottom: "24px" }} />
+            <img src={logoEN} alt="Dealer Suite 360" style={{ height: "54px", width: "auto", marginBottom: "24px" }} />
           </Link>
           {done ? (
             <>

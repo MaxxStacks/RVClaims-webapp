@@ -192,7 +192,7 @@ export default function BidderPortal() {
 {/* ════ SIDEBAR ════ */}
 <nav className={`sidebar${sidebarCollapsed ? ' collapsed' : ''}`}>
   <div className="sidebar-logo">
-    <img src={theme === 'dark' ? ds360LogoDark : ds360LogoLight} height="30" style={{width:'auto',maxWidth:144,objectFit:'contain',borderRadius:0,flexShrink:0}} alt="Dealer Suite 360" />
+    <img src={ds360Icon} width="36" height="36" style={{borderRadius:8}} alt="DS360" />
     <div className="sidebar-logo-text">
       <div className="sidebar-logo-sub" style={{fontSize:12,fontWeight:600}}>Bidder Portal</div>
     </div>

@@ -107,9 +107,9 @@ export function MobileMenu() {
           {/* Logo Row - Mobile Only */}
           <div className="md:hidden border-b border-border/50" style={{ backgroundColor: '#ffffff' }}>
             <div className="px-4 sm:px-6">
-              <div className="flex justify-between items-center py-3">
+              <div className="flex justify-between items-center py-1">
                 <Link href="/" onClick={closeMenu} className="flex items-center hover:opacity-90 transition-opacity">
-                  <img src={logoLight} alt="Dealer Suite 360" className="h-9 w-auto" />
+                  <img src={logoLight} alt="Dealer Suite 360" className="h-[54px] w-auto" />
                 </Link>
               </div>
             </div>

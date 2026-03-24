@@ -283,7 +283,7 @@ staff:['Staff Management','Manage team access'],'add-staff':['Add Staff','Invite
   return (
     <>
 <nav className={`sidebar${sidebarCollapsed ? ' collapsed' : ''}`}>
-  <div className="sidebar-logo" id="sidebar-header"><img src={theme === 'dark' ? ds360LogoDark : ds360LogoLight} id="sidebar-logo-svg" height="30" style={{width:'auto',maxWidth:144,objectFit:'contain',borderRadius:0,flexShrink:0}} alt="Dealer Suite 360" /><div className="sidebar-logo-text"><div className="sidebar-logo-name" id="sidebar-name">Smith's RV Centre</div><div className="sidebar-logo-sub">Dealership Portal</div></div><span className="sidebar-badge">Dealer</span></div>
+  <div className="sidebar-logo" id="sidebar-header"><img src={ds360Icon} id="sidebar-logo-svg" width="36" height="36" style={{borderRadius:8}} alt="DS360" /><div className="sidebar-logo-text"><div className="sidebar-logo-name" id="sidebar-name">Smith's RV Centre</div><div className="sidebar-logo-sub">Dealership Portal</div></div><span className="sidebar-badge">Dealer</span></div>
   <div className="sidebar-nav">
     <div className="nav-section"><div className="nav-label">Overview</div>
       <div className={`nav-item ${isNavActive('dashboard') ? 'active' : ''}`} onClick={() => showPage('dashboard')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</div></div>
