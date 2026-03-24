@@ -18,10 +18,10 @@ export default function OperatorPortal() {
   const [theme, setTheme] = useState(() => localStorage.getItem('ds360-theme') || '');
   const [lang, setLang] = useState(() => localStorage.getItem('ds360-lang') || (navigator.language.startsWith('fr') ? 'fr' : 'en'));
 
-  const [dealerTab, setDealerTab] = useState('d-batches');
-  const [unitTab, setUnitTab] = useState('u-specs');
-  const [settingsTab, setSettingsTab] = useState('s-profile');
-  const [clTab, setClTab] = useState('cl-current');
+  const [dealerTab, setDealerTab] = useState('dtab-d-batches');
+  const [unitTab, setUnitTab] = useState('utab-u-specs');
+  const [settingsTab, setSettingsTab] = useState('stab-s-profile');
+  const [clTab, setClTab] = useState('cltab-cl-current');
   const [unitEditMode, setUnitEditMode] = useState(false);
   const toggleUnitEdit = () => setUnitEditMode(prev => !prev);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -40,6 +40,25 @@ export default function OperatorPortal() {
   const [opProducts, setOpProducts] = useState<any[]>([]);
   const [opFeatureRequests, setOpFeatureRequests] = useState<any[]>([]);
   const [dataError, setDataError] = useState<string | null>(null);
+
+  // ─── Notifications compose form ────────────────────────────────────────────
+  const [notifForm, setNotifForm] = useState({ recipients: 'all', type: 'general', title: '', message: '', priority: 'normal', delivery: 'push', schedule: 'immediate' });
+  const [notifSending, setNotifSending] = useState(false);
+
+  // ─── Filter state ──────────────────────────────────────────────────────────
+  const [queueSearch, setQueueSearch] = useState('');
+  const [queueMfr, setQueueMfr] = useState('');
+  const [queueType, setQueueType] = useState('');
+  const [claimsSearch, setClaimsSearch] = useState('');
+  const [claimsStatus, setClaimsStatus] = useState('');
+  const [claimsMfr, setClaimsMfr] = useState('');
+  const [claimsDealer, setClaimsDealer] = useState('');
+  const [dealersSearch, setDealersSearch] = useState('');
+  const [dealersPlan, setDealersPlan] = useState('');
+  const [unitsSearch, setUnitsSearch] = useState('');
+  const [unitsMfr, setUnitsMfr] = useState('');
+  const [unitsDealer, setUnitsDealer] = useState('');
+  const [unitsStatus, setUnitsStatus] = useState('');
 
   // ─── Add-dealer form state ─────────────────────────────────────────────────
   const [addDealerForm, setAddDealerForm] = useState({ name: '', contactName: '', email: '', phone: '', street: '', city: '', plan: 'plan_a' });
@@ -205,6 +224,79 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
     } catch { /* ignore */ }
   };
 
+  const handleMarkAllNotificationsRead = async () => {
+    try {
+      await Promise.all(
+        opNotifications.filter(n => !n.isRead).map(n => apiFetch(`/api/notifications/${n.id}/read`, { method: 'PUT' }))
+      );
+      setOpNotifications(prev => prev.map(n => ({ ...n, isRead: true })));
+    } catch { /* ignore */ }
+  };
+
+  const handleSendNotification = async () => {
+    if (!notifForm.title || !notifForm.message) return;
+    setNotifSending(true);
+    try {
+      await apiFetch('/api/notifications', {
+        method: 'POST',
+        body: JSON.stringify({
+          recipients: notifForm.recipients,
+          type: notifForm.type,
+          title: notifForm.title,
+          message: notifForm.message,
+          priority: notifForm.priority,
+          delivery: notifForm.delivery,
+        }),
+      });
+      setNotifForm({ recipients: 'all', type: 'general', title: '', message: '', priority: 'normal', delivery: 'push', schedule: 'immediate' });
+    } catch { /* ignore */ } finally {
+      setNotifSending(false);
+    }
+  };
+
+  const handleFollowUp = async (claimId: string, claimNumber: string) => {
+    try {
+      await apiFetch('/api/notifications', {
+        method: 'POST',
+        body: JSON.stringify({ message: `Follow-up requested on claim ${claimNumber}`, claimId, type: 'follow_up' }),
+      });
+    } catch { /* ignore */ }
+  };
+
+  // ─── Filtered arrays ───────────────────────────────────────────────────────
+  const filteredBatches = opBatches.filter(b => {
+    const s = queueSearch.toLowerCase();
+    if (s && !b.batchNumber?.toLowerCase().includes(s) && !b.unitId?.toLowerCase().includes(s) && !b.dealershipId?.toLowerCase().includes(s)) return false;
+    if (queueMfr && b.manufacturer !== queueMfr) return false;
+    if (queueType && b.claimType !== queueType) return false;
+    return true;
+  });
+
+  const filteredClaims = opClaims.filter(c => {
+    const s = claimsSearch.toLowerCase();
+    if (s && !c.claimNumber?.toLowerCase().includes(s) && !c.unitId?.toLowerCase().includes(s)) return false;
+    if (claimsStatus && c.status !== claimsStatus) return false;
+    if (claimsMfr && c.manufacturer !== claimsMfr) return false;
+    if (claimsDealer && c.dealershipId !== claimsDealer) return false;
+    return true;
+  });
+
+  const filteredDealers = opDealers.filter(d => {
+    const s = dealersSearch.toLowerCase();
+    if (s && !d.name?.toLowerCase().includes(s) && !d.contactName?.toLowerCase().includes(s) && !d.email?.toLowerCase().includes(s)) return false;
+    if (dealersPlan && d.plan !== dealersPlan) return false;
+    return true;
+  });
+
+  const filteredUnits = opUnits.filter(u => {
+    const s = unitsSearch.toLowerCase();
+    if (s && !u.vin?.toLowerCase().includes(s) && !u.stockNumber?.toLowerCase().includes(s) && !u.customerName?.toLowerCase().includes(s)) return false;
+    if (unitsMfr && u.manufacturer !== unitsMfr) return false;
+    if (unitsDealer && u.dealershipId !== unitsDealer) return false;
+    if (unitsStatus && u.status !== unitsStatus) return false;
+    return true;
+  });
+
   const showPage = (id: string) => {
     setActivePage(id);
     if (titles[id]) { setPageTitle(titles[id][0]); setPageSub(titles[id][1]); }
@@ -367,11 +459,11 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
 <div className={`page ${activePage === 'queue' ? 'active' : ''}`} id="page-queue">
   <div style={{padding: '14px 0 20px', fontSize: 13, color: '#666', display: 'flex', alignItems: 'center', gap: 8}}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>Dealers upload photos in bulk. You review, sort into issues, assign FRC codes, and build the claim.</div>
   <div className="pn"><div className="pn-h"><span className="pn-t">Incoming Photo Batches</span><span style={{fontSize: 12, color: '#888'}}>12 awaiting</span></div>
-    <div className="filter-bar"><input type="text" placeholder="Search by VIN or dealer..." /><select><option>All Manufacturers</option><option>Jayco</option><option>Forest River</option><option>Heartland</option><option>Keystone</option><option>Columbia NW</option></select><select><option>All Types</option><option>DAF</option><option>PDI</option><option>Warranty</option><option>Extended</option></select></div>
+    <div className="filter-bar"><input type="text" placeholder="Search by VIN or dealer..." value={queueSearch} onChange={e => setQueueSearch(e.target.value)} /><select value={queueMfr} onChange={e => setQueueMfr(e.target.value)}><option value="">All Manufacturers</option><option>Jayco</option><option>Forest River</option><option>Heartland</option><option>Keystone</option><option>Columbia NW</option></select><select value={queueType} onChange={e => setQueueType(e.target.value)}><option value="">All Types</option><option>DAF</option><option>PDI</option><option>Warranty</option><option>Extended</option></select></div>
     <div className="tw"><table><thead><tr><th>Batch</th><th>Dealer</th><th>VIN</th><th>Mfr</th><th>Type</th><th>Photos</th><th>Dealer Notes</th><th>Uploaded</th><th>Action</th></tr></thead><tbody>
-      {opBatches.length === 0 ? (
-        <tr><td colSpan={9} style={{textAlign:'center',padding:24,color:'#888'}}>{dataError ? dataError : 'No batches in queue'}</td></tr>
-      ) : opBatches.map((b: any) => (
+      {filteredBatches.length === 0 ? (
+        <tr><td colSpan={9} style={{textAlign:'center',padding:24,color:'#888'}}>{dataError ? dataError : opBatches.length === 0 ? 'No batches in queue' : 'No results match your filters'}</td></tr>
+      ) : filteredBatches.map((b: any) => (
         <tr key={b.id}><td style={{fontWeight:500,color:'var(--brand)'}}>{b.batchNumber}</td><td>{b.dealershipId?.slice(0,8)}…</td><td><span className="vin">{b.unitId?.slice(0,8)}…</span></td><td><span className="mfr">{b.claimType}</span></td><td>{b.claimType}</td><td><strong>{b.photoCount || 0}</strong></td><td style={{maxWidth:200,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',color:'#666',fontSize:12}}>{b.dealerNotes || '—'}</td><td>{new Date(b.createdAt).toLocaleDateString()}</td><td><button className="btn btn-p btn-sm" onClick={() => { setSelectedBatchId(b.id); showPage('batch-review'); }}>Review & Sort</button></td></tr>
       ))}
     </tbody></table></div>
@@ -410,11 +502,11 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
 </div>
 
 <div className={`page ${activePage === 'claims' ? 'active' : ''}`} id="page-claims">
-  <div className="pn"><div className="filter-bar"><input type="text" placeholder="Search claims..." /><select><option>All Statuses</option><option>Submitted</option><option>Authorized</option><option>Denied</option><option>Parts Ordered</option><option>Completed</option><option>Payment Received</option></select><select><option>All Manufacturers</option><option>Jayco</option><option>Forest River</option><option>Heartland</option><option>Keystone</option><option>Columbia NW</option></select><select><option>All Dealers</option><option>Smith's RV Centre</option><option>Atlantic RV</option><option>Prairie Wind RV</option></select></div>
+  <div className="pn"><div className="filter-bar"><input type="text" placeholder="Search claims..." value={claimsSearch} onChange={e => setClaimsSearch(e.target.value)} /><select value={claimsStatus} onChange={e => setClaimsStatus(e.target.value)}><option value="">All Statuses</option><option value="submitted">Submitted</option><option value="authorized">Authorized</option><option value="denied">Denied</option><option value="parts_ordered">Parts Ordered</option><option value="completed">Completed</option><option value="payment_received">Payment Received</option></select><select value={claimsMfr} onChange={e => setClaimsMfr(e.target.value)}><option value="">All Manufacturers</option><option>Jayco</option><option>Forest River</option><option>Heartland</option><option>Keystone</option><option>Columbia NW</option></select><select value={claimsDealer} onChange={e => setClaimsDealer(e.target.value)}><option value="">All Dealers</option>{opDealers.map(d => <option key={d.id} value={d.id}>{d.name}</option>)}</select></div>
     <div className="tw"><table><thead><tr><th><input type="checkbox" /></th><th>Claim #</th><th>Dealer</th><th>VIN</th><th>Mfr</th><th>Type</th><th>Lines</th><th>Status</th><th>Amount</th><th>Updated</th></tr></thead><tbody>
-      {opClaims.length === 0 ? (
-        <tr><td colSpan={10} style={{textAlign:'center',padding:24,color:'#888'}}>{dataError ? dataError : 'No claims found'}</td></tr>
-      ) : opClaims.map((c: any) => (
+      {filteredClaims.length === 0 ? (
+        <tr><td colSpan={10} style={{textAlign:'center',padding:24,color:'#888'}}>{dataError ? dataError : opClaims.length === 0 ? 'No claims found' : 'No results match your filters'}</td></tr>
+      ) : filteredClaims.map((c: any) => (
         <tr key={c.id}><td><input type="checkbox" /></td><td><span className="cid" onClick={() => { setSelectedClaimId(c.id); showPage('claim-detail'); }}>{c.claimNumber}</span></td><td>{c.dealershipId?.slice(0,8)}…</td><td><span className="vin">…{c.unitId?.slice(-4)}</span></td><td><span className="mfr">{c.manufacturer}</span></td><td>{c.type}</td><td>—</td><td><span className={`bg ${c.status?.replace(/_/g,'-')}`}>{c.status}</span></td><td>{c.estimatedAmount ? `$${parseFloat(c.estimatedAmount).toLocaleString()}` : '—'}</td><td>{new Date(c.updatedAt).toLocaleDateString()}</td></tr>
       ))}
     </tbody></table></div></div>
@@ -463,7 +555,7 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
               <td><span className={`bg ${c.status}`}>{c.status}</span></td>
               <td>{new Date(c.updatedAt).toLocaleDateString('en-CA',{month:'short',day:'numeric'})}</td>
               <td style={{color: staleHrs > 60 ? '#dc2626' : '#d97706', fontWeight: 600}}>{staleHrs}h</td>
-              <td><button className="btn btn-p btn-sm">Follow Up</button></td>
+              <td><button className="btn btn-p btn-sm" onClick={() => handleFollowUp(c.id, c.claimNumber)}>Follow Up</button></td>
             </tr>
           );
         });
@@ -473,11 +565,11 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
 
 <div className={`page ${activePage === 'dealers' ? 'active' : ''}`} id="page-dealers">
   <div className="tabs"><div className="tab active" onClick={(e) => switchTab(e)}>Active (24)</div><div className="tab" onClick={(e) => switchTab(e)}>Pending (3)</div><div className="tab" onClick={(e) => switchTab(e)}>Suspended (1)</div></div>
-  <div className="pn" style={{borderTop: 'none', borderRadius: '0 0 8px 8px'}}><div className="filter-bar"><input type="text" placeholder="Search dealers..." /><select><option>All Plans</option><option>Plan A</option><option>Plan B</option></select><div style={{marginLeft: 'auto'}}><button className="btn btn-p btn-sm" onClick={() => showPage('add-dealer')}>+ Add Dealer</button></div></div>
+  <div className="pn" style={{borderTop: 'none', borderRadius: '0 0 8px 8px'}}><div className="filter-bar"><input type="text" placeholder="Search dealers..." value={dealersSearch} onChange={e => setDealersSearch(e.target.value)} /><select value={dealersPlan} onChange={e => setDealersPlan(e.target.value)}><option value="">All Plans</option><option value="plan_a">Plan A</option><option value="plan_b">Plan B</option></select><div style={{marginLeft: 'auto'}}><button className="btn btn-p btn-sm" onClick={() => showPage('add-dealer')}>+ Add Dealer</button></div></div>
     <div className="tw"><table><thead><tr><th>Dealership</th><th>Contact</th><th>Plan</th><th>Claims (MTD)</th><th>Revenue (MTD)</th><th>Services</th><th>Status</th><th>Action</th></tr></thead><tbody>
-      {opDealers.length === 0 ? (
-        <tr><td colSpan={8} style={{textAlign:'center',padding:24,color:'#888'}}>{dataError ? dataError : 'No dealers found'}</td></tr>
-      ) : opDealers.map((d: any) => (
+      {filteredDealers.length === 0 ? (
+        <tr><td colSpan={8} style={{textAlign:'center',padding:24,color:'#888'}}>{dataError ? dataError : opDealers.length === 0 ? 'No dealers found' : 'No results match your filters'}</td></tr>
+      ) : filteredDealers.map((d: any) => (
         <tr key={d.id}><td style={{fontWeight:500}}><span className="cid" onClick={() => { setSelectedDealerId(d.id); showPage('dealer-detail'); }}>{d.name}</span></td><td>{d.contactName || '—'}<br /><span style={{fontSize:11,color:'#888'}}>{d.contactEmail || d.email}</span></td><td>{d.plan === 'plan_b' ? 'Plan B · Wallet' : `Plan A · $${d.monthlyFee || 349}/mo`}</td><td>—</td><td>—</td><td>—</td><td><span className={`bg ${d.status}`}>{d.status}</span></td><td>{d.status === 'pending' ? <button className="btn btn-s btn-sm" onClick={() => handleApproveDealership(d.id)}>Approve</button> : <button className="btn btn-o btn-sm" onClick={() => { setSelectedDealerId(d.id); showPage('dealer-detail'); }}>Manage</button>}</td></tr>
       ))}
     </tbody></table></div></div>
@@ -517,15 +609,15 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
     <div className="sc"><div className="sc-l" style={{marginBottom: 8}}>Services</div><div className="sc-v" style={{color: '#2563eb'}}>2</div></div>
   </div>
   <div className="tabs" id="dealer-tabs">
-    <div className="tab active" onClick={() => setDealerTab('d-batches')}>Photo Batches</div>
-    <div className="tab" onClick={() => setDealerTab('d-claims')}>Claims</div>
-    <div className="tab" onClick={() => setDealerTab('d-units')}>Units</div>
-    <div className="tab" onClick={() => setDealerTab('d-sub')}>Subscription & Fees</div>
-    <div className="tab" onClick={() => setDealerTab('d-services')}>Active Services</div>
-    <div className="tab" onClick={() => setDealerTab('d-invoices')}>Invoices</div>
-    <div className="tab" onClick={() => setDealerTab('d-staff')}>Staff</div>
-    <div className="tab" onClick={() => setDealerTab('d-info')}>Info</div>
-    <div className="tab" onClick={() => setDealerTab('d-assign')}>Assignment</div>
+    <div className="tab active" onClick={() => setDealerTab('dtab-d-batches')}>Photo Batches</div>
+    <div className="tab" onClick={() => setDealerTab('dtab-d-claims')}>Claims</div>
+    <div className="tab" onClick={() => setDealerTab('dtab-d-units')}>Units</div>
+    <div className="tab" onClick={() => setDealerTab('dtab-d-sub')}>Subscription & Fees</div>
+    <div className="tab" onClick={() => setDealerTab('dtab-d-services')}>Active Services</div>
+    <div className="tab" onClick={() => setDealerTab('dtab-d-invoices')}>Invoices</div>
+    <div className="tab" onClick={() => setDealerTab('dtab-d-staff')}>Staff</div>
+    <div className="tab" onClick={() => setDealerTab('dtab-d-info')}>Info</div>
+    <div className="tab" onClick={() => setDealerTab('dtab-d-assign')}>Assignment</div>
   </div>
   <div className={`pn dtab ${dealerTab === "dtab-d-batches" ? "active" : ""}`} id="dtab-d-batches" style={{display: dealerTab === "dtab-d-batches" ? "block" : "none"}}><div className="tw"><table><thead><tr><th>Batch</th><th>VIN</th><th>Mfr</th><th>Type</th><th>Photos</th><th>Notes</th><th>Uploaded</th><th>Action</th></tr></thead><tbody><tr><td style={{fontWeight: 500, color: 'var(--brand)'}}>BATCH-0048</td><td><span className="vin">...4K1</span></td><td><span className="mfr">Jayco</span></td><td>Warranty</td><td><strong>24</strong></td><td style={{fontSize: 12, color: '#666'}}>Sidewall, roof, seal, hinge</td><td>2h ago</td><td><button className="btn btn-p btn-sm" onClick={() => showPage('batch-review')}>Review</button></td></tr><tr><td style={{fontWeight: 500, color: 'var(--brand)'}}>BATCH-0044</td><td><span className="vin">...4823</span></td><td><span className="mfr">Columbia NW</span></td><td>Extended</td><td><strong>20</strong></td><td style={{fontSize: 12, color: '#666'}}>Flooring, plumbing, countertop</td><td>6h ago</td><td><button className="btn btn-p btn-sm" onClick={() => showPage('batch-review')}>Review</button></td></tr></tbody></table></div></div>
   <div className={`pn dtab ${dealerTab === "dtab-d-claims" ? "active" : ""}`} id="dtab-d-claims" style={{display: dealerTab === "dtab-d-claims" ? "block" : "none"}}><div className="tw"><table><thead><tr><th>Claim #</th><th>VIN</th><th>Type</th><th>Status</th><th>Amount</th><th>Updated</th></tr></thead><tbody><tr><td><span className="cid" onClick={() => showPage('claim-detail')}>CLM-0248</span></td><td><span className="vin">...4K1</span></td><td>Warranty</td><td><span className="bg submitted">Submitted</span></td><td>$1,240</td><td>2h ago</td></tr><tr><td><span className="cid">CLM-0243</span></td><td><span className="vin">...7P3</span></td><td>DAF</td><td><span className="bg pay-recv">Paid</span></td><td>$4,200</td><td>3 days</td></tr><tr><td><span className="cid">CLM-0237</span></td><td><span className="vin">...8R2</span></td><td>Warranty</td><td><span className="bg completed">Completed</span></td><td>$920</td><td>1 week</td></tr></tbody></table></div></div>
@@ -573,11 +665,11 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
 </div>
 
 <div className={`page ${activePage === 'units' ? 'active' : ''}`} id="page-units">
-  <div className="pn"><div className="filter-bar"><input type="text" placeholder="Search VIN, stock #, customer..." /><select><option>All Manufacturers</option><option>Jayco</option><option>Forest River</option><option>Heartland</option><option>Keystone</option><option>Columbia NW</option></select><select><option>All Dealers</option><option>Smith's RV</option><option>Atlantic RV</option></select><select><option>All Statuses</option><option>On Lot</option><option>Delivered</option><option>In Service</option></select><div style={{marginLeft: 'auto'}}><button className="btn btn-p btn-sm" onClick={() => showPage('add-unit')}>+ Add Unit</button></div></div>
+  <div className="pn"><div className="filter-bar"><input type="text" placeholder="Search VIN, stock #, customer..." value={unitsSearch} onChange={e => setUnitsSearch(e.target.value)} /><select value={unitsMfr} onChange={e => setUnitsMfr(e.target.value)}><option value="">All Manufacturers</option><option>Jayco</option><option>Forest River</option><option>Heartland</option><option>Keystone</option><option>Columbia NW</option></select><select value={unitsDealer} onChange={e => setUnitsDealer(e.target.value)}><option value="">All Dealers</option>{opDealers.map(d => <option key={d.id} value={d.id}>{d.name}</option>)}</select><select value={unitsStatus} onChange={e => setUnitsStatus(e.target.value)}><option value="">All Statuses</option><option value="on_lot">On Lot</option><option value="delivered">Delivered</option><option value="in_service">In Service</option></select><div style={{marginLeft: 'auto'}}><button className="btn btn-p btn-sm" onClick={() => showPage('add-unit')}>+ Add Unit</button></div></div>
     <div className="tw"><table><thead><tr><th>VIN</th><th>Stock #</th><th>Year</th><th>Make / Model</th><th>Dealer</th><th>Customer</th><th>Claims</th><th>DAF</th><th>PDI</th><th>Status</th></tr></thead><tbody>
-      {opUnits.length === 0 ? (
-        <tr><td colSpan={10} style={{textAlign:'center',padding:24,color:'#888'}}>{dataError ? dataError : 'No units found'}</td></tr>
-      ) : opUnits.map((u: any) => (
+      {filteredUnits.length === 0 ? (
+        <tr><td colSpan={10} style={{textAlign:'center',padding:24,color:'#888'}}>{dataError ? dataError : opUnits.length === 0 ? 'No units found' : 'No results match your filters'}</td></tr>
+      ) : filteredUnits.map((u: any) => (
         <tr key={u.id}><td><span className="cid" onClick={() => { setSelectedUnitId(u.id); showPage('unit-detail'); }}>{u.vin}</span></td><td>{u.stockNumber || '—'}</td><td>{u.year || '—'}</td><td><span className="mfr">{u.manufacturer}</span> {u.model}</td><td>{u.dealershipId?.slice(0,8)}…</td><td>{u.customerName || '—'}</td><td>—</td><td><span className={`bg ${u.dafCompleted ? 'authorized' : 'pending'}`}>{u.dafCompleted ? 'Done' : 'Pending'}</span></td><td><span className={`bg ${u.pdiCompleted ? 'authorized' : 'pending'}`}>{u.pdiCompleted ? 'Done' : 'Pending'}</span></td><td><span className="bg active">{u.status}</span></td></tr>
       ))}
     </tbody></table></div></div>
@@ -603,7 +695,7 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
 <div className={`page ${activePage === 'unit-detail' ? 'active' : ''}`} id="page-unit-detail">
   <div className="detail-header"><button className="detail-back" onClick={() => showPage('units')}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6"/></svg></button><div className="detail-info"><div className="detail-title">2024 Jayco Jay Flight 264BH</div><div className="detail-meta">VIN: 1UJBJ0BN8M1TJ4K1 · STK-0891 · Smith's RV Centre</div></div><span className="bg active" style={{fontSize: 13, padding: '6px 16px'}}>Delivered</span><button className="btn btn-o btn-sm" id="edit-unit-btn" onClick={() => toggleUnitEdit()}>Edit Unit</button></div>
   <div style={{display: 'grid', gridTemplateColumns: 'repeat(5,1fr)', gap: 16, marginBottom: 20}}><div className="sc"><div className="sc-l" style={{marginBottom: 8}}>Claims</div><div className="sc-v">3</div></div><div className="sc"><div className="sc-l" style={{marginBottom: 8}}>Claimed</div><div className="sc-v">$6,360</div></div><div className="sc"><div className="sc-l" style={{marginBottom: 8}}>Approved</div><div className="sc-v" style={{color: '#22c55e'}}>$5,920</div></div><div className="sc"><div className="sc-l" style={{marginBottom: 8}}>Paid</div><div className="sc-v" style={{color: '#2563eb'}}>$4,760</div></div><div className="sc"><div className="sc-l" style={{marginBottom: 8}}>Approval</div><div className="sc-v" style={{color: '#22c55e'}}>93%</div></div></div>
-  <div className="tabs" id="unit-tabs"><div className="tab active" onClick={() => setUnitTab('u-specs')}>Specs</div><div className="tab" onClick={() => setUnitTab('u-claims')}>Claims</div><div className="tab" onClick={() => setUnitTab('u-photos')}>Photos</div><div className="tab" onClick={() => setUnitTab('u-fin')}>Financials</div><div className="tab" onClick={() => setUnitTab('u-time')}>Timeline</div></div>
+  <div className="tabs" id="unit-tabs"><div className="tab active" onClick={() => setUnitTab('utab-u-specs')}>Specs</div><div className="tab" onClick={() => setUnitTab('utab-u-claims')}>Claims</div><div className="tab" onClick={() => setUnitTab('utab-u-photos')}>Photos</div><div className="tab" onClick={() => setUnitTab('utab-u-fin')}>Financials</div><div className="tab" onClick={() => setUnitTab('utab-u-time')}>Timeline</div></div>
   <div className={`pn utab ${unitTab === "utab-u-specs" ? "active" : ""}`} id="utab-u-specs" style={{display: unitTab === "utab-u-specs" ? "block" : "none"}}>
     
     <div style={{padding: '16px 20px', borderBottom: '1px solid #f0f0f0', display: 'flex', gap: 16, alignItems: 'center'}}>
@@ -1010,14 +1102,14 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
   <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20}}>
     <div className="pn"><div className="pn-h"><span className="pn-t">Compose Notification</span></div>
       <div className="form-grid">
-        <div className="form-group full"><label>Recipients</label><select><option>All Dealers</option><option>All Active Dealers</option><option>Smith's RV Centre</option><option>Atlantic RV</option><option>Prairie Wind RV</option><option>Plan A Dealers</option><option>Plan B Dealers</option></select></div>
-        <div className="form-group full"><label>Type</label><select><option>General Announcement</option><option>Service Update</option><option>Billing Reminder</option><option>New Feature</option><option>Maintenance Notice</option><option>Urgent Alert</option></select></div>
-        <div className="form-group full"><label>Title</label><input placeholder="Notification title..." /></div>
-        <div className="form-group full"><label>Message</label><textarea placeholder="Write your message..." style={{minHeight: 120}}></textarea></div>
-        <div className="form-group"><label>Priority</label><select><option>Normal</option><option>High</option><option>Urgent</option></select></div>
-        <div className="form-group"><label>Delivery</label><select><option>Push to Dashboard</option><option>Push + Email</option><option>Email Only</option></select></div>
-        <div className="form-group full"><label>Schedule</label><select><option>Send Immediately</option><option>Schedule for Later</option></select></div>
-      </div><div className="btn-bar"><button className="btn btn-p">Send Notification</button><button className="btn btn-o">Save Draft</button></div></div>
+        <div className="form-group full"><label>Recipients</label><select value={notifForm.recipients} onChange={e => setNotifForm(f => ({...f, recipients: e.target.value}))}><option value="all">All Dealers</option><option value="active">All Active Dealers</option><option value="plan_a">Plan A Dealers</option><option value="plan_b">Plan B Dealers</option>{opDealers.map(d => <option key={d.id} value={d.id}>{d.name}</option>)}</select></div>
+        <div className="form-group full"><label>Type</label><select value={notifForm.type} onChange={e => setNotifForm(f => ({...f, type: e.target.value}))}><option value="general">General Announcement</option><option value="service">Service Update</option><option value="billing">Billing Reminder</option><option value="feature">New Feature</option><option value="maintenance">Maintenance Notice</option><option value="urgent">Urgent Alert</option></select></div>
+        <div className="form-group full"><label>Title</label><input placeholder="Notification title..." value={notifForm.title} onChange={e => setNotifForm(f => ({...f, title: e.target.value}))} /></div>
+        <div className="form-group full"><label>Message</label><textarea placeholder="Write your message..." style={{minHeight: 120}} value={notifForm.message} onChange={e => setNotifForm(f => ({...f, message: e.target.value}))}></textarea></div>
+        <div className="form-group"><label>Priority</label><select value={notifForm.priority} onChange={e => setNotifForm(f => ({...f, priority: e.target.value}))}><option value="normal">Normal</option><option value="high">High</option><option value="urgent">Urgent</option></select></div>
+        <div className="form-group"><label>Delivery</label><select value={notifForm.delivery} onChange={e => setNotifForm(f => ({...f, delivery: e.target.value}))}><option value="push">Push to Dashboard</option><option value="push_email">Push + Email</option><option value="email">Email Only</option></select></div>
+        <div className="form-group full"><label>Schedule</label><select value={notifForm.schedule} onChange={e => setNotifForm(f => ({...f, schedule: e.target.value}))}><option value="immediate">Send Immediately</option><option value="scheduled">Schedule for Later</option></select></div>
+      </div><div className="btn-bar"><button className="btn btn-p" onClick={handleSendNotification} disabled={notifSending}>{notifSending ? 'Sending…' : 'Send Notification'}</button><button className="btn btn-o">Save Draft</button></div></div>
     <div className="pn"><div className="pn-h"><span className="pn-t">Sent History</span></div><div className="act">
       <div className="act-i"><span className="act-dot new"></span><div><div className="act-t"><strong>New: Photo Batch Upload</strong></div><div style={{fontSize: 12, color: '#555', marginTop: 2}}>Upload all photos at once for DAF, PDI, Warranty.</div><div className="act-tm">All Dealers · Mar 15 · Push + Email</div></div></div>
       <div className="act-i"><span className="act-dot pt"></span><div><div className="act-t"><strong>Billing: March Invoices</strong></div><div style={{fontSize: 12, color: '#555', marginTop: 2}}>March subscription invoices generated.</div><div className="act-tm">All Active · Mar 1 · Push + Email</div></div></div>
@@ -1025,31 +1117,6 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
       <div className="act-i"><span className="act-dot pay"></span><div><div className="act-t"><strong>Warranty Plans Available</strong></div><div style={{fontSize: 12, color: '#555', marginTop: 2}}>Extended warranty plans now sold through the platform.</div><div className="act-tm">All Active · Feb 15 · Push + Email</div></div></div>
     </div></div>
   </div>
-</div>
-
-
-<div className={`page ${activePage === 'users' ? 'active' : ''}`} id="page-users">
-  <div className="tabs"><div className="tab active" onClick={(e) => switchTab(e)}>Operator Staff (4)</div><div className="tab" onClick={(e) => switchTab(e)}>Dealer Users (38)</div></div>
-  <div className="pn" style={{borderTop: 'none', borderRadius: '0 0 8px 8px'}}><div className="filter-bar"><input type="text" placeholder="Search users..." /><select><option>All Roles</option><option>Operator Admin</option><option>Operator Staff</option><option>Dealer Owner</option><option>Dealer Staff</option></select><div style={{marginLeft: 'auto'}}><button className="btn btn-p btn-sm">+ Add User</button></div></div>
-    <div className="tw"><table><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Assigned Dealers</th><th>Status</th><th>Last Login</th><th>Action</th></tr></thead><tbody>
-      {opUsers.length === 0
-        ? <tr><td colSpan={7} style={{textAlign:'center',color:'#888',padding:20}}>{dataError ? dataError : 'No users found'}</td></tr>
-        : opUsers.map((u: any) => {
-          const isAdmin = u.role === 'operator_admin';
-          return (
-            <tr key={u.id}>
-              <td style={{fontWeight: 500}}>{u.name || `${u.firstName || ''} ${u.lastName || ''}`.trim() || '—'}</td>
-              <td>{u.email}</td>
-              <td><span className="bg" style={{background: isAdmin ? '#eff6ff' : '#f0fdf4', color: isAdmin ? 'var(--brand)' : '#16a34a'}}>{u.role === 'operator_admin' ? 'Operator Admin' : u.role === 'operator_staff' ? 'Operator Staff' : u.role === 'dealer_owner' ? 'Dealer Owner' : 'Dealer Staff'}</span></td>
-              <td>{u.dealershipName || (u.role?.startsWith('operator') ? 'All' : '—')}</td>
-              <td><span className={`bg ${u.status === 'active' ? 'active' : 'pending'}`}>{u.status || 'active'}</span></td>
-              <td>{u.lastLoginAt ? new Date(u.lastLoginAt).toLocaleDateString('en-CA',{month:'short',day:'numeric'}) : '—'}</td>
-              <td><button className="btn btn-o btn-sm">Edit</button></td>
-            </tr>
-          );
-        })
-      }
-    </tbody></table></div></div>
 </div>
 
 
@@ -1136,13 +1203,13 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
 <div className={`page ${activePage === 'settings' ? 'active' : ''}`} id="page-settings">
   <div style={{display: 'grid', gridTemplateColumns: '200px 1fr', gap: 24}}>
     <div>
-      <div className="settings-link active" onClick={() => setSettingsTab('s-profile')}>My Profile</div>
-      <div className="settings-link" onClick={() => setSettingsTab('s-general')}>General</div>
-      <div className="settings-link" onClick={() => setSettingsTab('s-fees')}>Claim Fee Defaults</div>
-      <div className="settings-link" onClick={() => setSettingsTab('s-billing')}>Billing Configuration</div>
-      <div className="settings-link" onClick={() => setSettingsTab('s-notif')}>Notifications</div>
-      <div className="settings-link" onClick={() => setSettingsTab('s-integrations')}>Integrations</div>
-      <div className="settings-link" onClick={() => setSettingsTab('s-security')}>Security</div>
+      <div className="settings-link active" onClick={() => setSettingsTab('stab-s-profile')}>My Profile</div>
+      <div className="settings-link" onClick={() => setSettingsTab('stab-s-general')}>General</div>
+      <div className="settings-link" onClick={() => setSettingsTab('stab-s-fees')}>Claim Fee Defaults</div>
+      <div className="settings-link" onClick={() => setSettingsTab('stab-s-billing')}>Billing Configuration</div>
+      <div className="settings-link" onClick={() => setSettingsTab('stab-s-notif')}>Notifications</div>
+      <div className="settings-link" onClick={() => setSettingsTab('stab-s-integrations')}>Integrations</div>
+      <div className="settings-link" onClick={() => setSettingsTab('stab-s-security')}>Security</div>
     </div>
     <div>
       
@@ -1266,7 +1333,7 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
 
 
 <div className={`page ${activePage === 'changelog' ? 'active' : ''}`} id="page-changelog">
-  <div className="tabs" id="cl-tabs"><div className="tab active" onClick={() => setClTab('cl-current')}>Current Release</div><div className="tab" onClick={() => setClTab('cl-past')}>Past Updates</div><div className="tab" onClick={() => setClTab('cl-upcoming')}>Upcoming</div><div className="tab" onClick={() => setClTab('cl-requests')}>Feature Requests</div></div>
+  <div className="tabs" id="cl-tabs"><div className="tab active" onClick={() => setClTab('cltab-cl-current')}>Current Release</div><div className="tab" onClick={() => setClTab('cltab-cl-past')}>Past Updates</div><div className="tab" onClick={() => setClTab('cltab-cl-upcoming')}>Upcoming</div><div className="tab" onClick={() => setClTab('cltab-cl-requests')}>Feature Requests</div></div>
 
   
   <div className={`pn cltab ${clTab === "cltab-cl-current" ? "active" : ""}`} id="cltab-cl-current" style={{display: clTab === "cltab-cl-current" ? "block" : "none"}}>
