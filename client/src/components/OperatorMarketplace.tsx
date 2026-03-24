@@ -22,6 +22,46 @@ export function OperatorMarketplacePages({ activePage, showPage }: Props) {
   const [auctionTab, setAuctionTab] = useState<'live'|'completed'|'cancelled'>('live');
   const [memberSearch, setMemberSearch] = useState('');
   const [listingSearch, setListingSearch] = useState('');
+  const [listingMfr, setListingMfr] = useState('');
+  const [listingType, setListingType] = useState('');
+  const [listingStatus, setListingStatus] = useState('');
+
+  const listingsData = [
+    { id: 'MKT-0284', unit: '2024 Grand Design Imagine 2800BH', specs: "28' · 3 slides · 2 bunks", seller: "Smith's RV", price: '$42,900', inquiries: 3, views: 48, status: 'Active', listed: 'Mar 10', mfr: 'Grand Design', type: 'Travel Trailer' },
+    { id: 'MKT-0281', unit: '2023 Keystone Cougar 29BHS', specs: "33' · 2 slides · 2 bunks", seller: 'Atlantic RV', price: '$38,500', inquiries: 5, views: 73, status: 'On Hold', listed: 'Mar 8', mfr: 'Keystone', type: 'Travel Trailer' },
+    { id: 'MKT-0276', unit: '2024 Forest River Rockwood 2891BH', specs: "32' · 3 slides · 1 bunk", seller: 'Prairie Wind', price: '$45,200', inquiries: 2, views: 51, status: 'Active', listed: 'Mar 5', mfr: 'Forest River', type: 'Travel Trailer' },
+    { id: 'MKT-0270', unit: '2023 Jayco Eagle HT 28.5RSTS', specs: "34' · 3 slides · 0 bunks", seller: 'West Coast', price: '$51,800', inquiries: 1, views: 92, status: 'Sold', listed: 'Feb 28', mfr: 'Jayco', type: 'Fifth Wheel' },
+    { id: 'MKT-0265', unit: '2024 Coachmen Catalina 263BHSCK', specs: "28' · 1 slide · 2 bunks", seller: "Smith's RV", price: '$35,900', inquiries: 4, views: 68, status: 'Sold', listed: 'Feb 22', mfr: 'Coachmen', type: 'Travel Trailer' },
+    { id: 'MKT-0260', unit: '2025 Heartland Bighorn 3375SS', specs: "38' · 4 slides · 0 bunks", seller: 'Ontario RV', price: '$72,500', inquiries: 2, views: 41, status: 'Active', listed: 'Feb 18', mfr: 'Heartland', type: 'Fifth Wheel' },
+  ];
+
+  const activeMembersData = [
+    { name: "Smith's RV Centre", contact: 'Mike Smith', email: 'mike@smithsrv.ca', province: 'Ontario', verified: 'Jan 12', listings: 8, purchases: 3, renewal: 'Jan 10, 2027', status: 'Active', plan: 'Network Marketplace + Live Auctions' },
+    { name: 'Atlantic RV', contact: 'Sarah Chen', email: 'sarah@atlanticrv.ca', province: 'Nova Scotia', verified: 'Jan 18', listings: 12, purchases: 5, renewal: 'Jan 15, 2027', status: 'Active', plan: 'Network Marketplace' },
+    { name: 'Prairie Wind RV', contact: 'James Flett', email: 'james@prairiewind.ca', province: 'Manitoba', verified: 'Feb 3', listings: 6, purchases: 2, renewal: 'Feb 1, 2027', status: 'Active', plan: 'Network Marketplace + Live Auctions' },
+    { name: 'Ontario RV Depot', contact: 'Marc Leblanc', email: 'marc@onrvdepot.ca', province: 'Ontario', verified: 'Feb 20', listings: 10, purchases: 4, renewal: 'Feb 18, 2027', status: 'Active', plan: 'Network Marketplace' },
+    { name: 'West Coast Campers', contact: 'Dan Rivera', email: 'dan@westcoast.ca', province: 'BC', verified: 'Feb 15', listings: 4, purchases: 1, renewal: 'Feb 12, 2027', status: 'Active', plan: 'Live Auctions' },
+  ];
+
+  const pendingMembersData = [
+    { name: 'Lakeside RV Sales', contact: 'Tom Nguyen', email: 'tom@lakesiderv.ca', province: 'Ontario', applied: 'Mar 14', license: 'OMVIC-2024-88431' },
+    { name: 'Northern Trails', contact: 'Lisa Park', email: 'lisa@northerntrails.ca', province: 'Alberta', applied: 'Mar 15', license: 'AMVIC-2023-44210' },
+    { name: 'Maritime RV', contact: 'Paul Doucet', email: 'paul@maritimerv.ca', province: 'New Brunswick', applied: 'Mar 16', license: 'NB-DLR-2024-771' },
+    { name: 'Quebec Plein Air', contact: 'J-F Roy', email: 'jf@qcpleinair.ca', province: 'Quebec', applied: 'Mar 17', license: 'OPC-2024-55892' },
+  ];
+
+  const ms = memberSearch.toLowerCase();
+  const filteredActiveMembers = activeMembersData.filter(m => !ms || m.name.toLowerCase().includes(ms) || m.contact.toLowerCase().includes(ms) || m.province.toLowerCase().includes(ms) || m.plan.toLowerCase().includes(ms));
+  const filteredPendingMembers = pendingMembersData.filter(m => !ms || m.name.toLowerCase().includes(ms) || m.contact.toLowerCase().includes(ms) || m.province.toLowerCase().includes(ms));
+
+  const filteredListings = listingsData.filter(l => {
+    const s = listingSearch.toLowerCase();
+    if (s && !l.unit.toLowerCase().includes(s) && !l.id.toLowerCase().includes(s) && !l.seller.toLowerCase().includes(s) && !l.specs.toLowerCase().includes(s)) return false;
+    if (listingMfr && l.mfr !== listingMfr) return false;
+    if (listingType && l.type !== listingType) return false;
+    if (listingStatus && l.status !== listingStatus) return false;
+    return true;
+  });
 
   return (
     <>
@@ -50,12 +90,20 @@ export function OperatorMarketplacePages({ activePage, showPage }: Props) {
     {/* === ACTIVE PANEL === */}
     <div style={{display: memberTab === 'active' || memberTab === 'all' ? 'block' : 'none'}}>
       {memberTab === 'all' && <div style={{padding: '10px 20px', background: '#f0fdf4', borderBottom: '1px solid #bbf7d0', fontSize: 12, fontWeight: 600, color: '#166534'}}>Active Members</div>}
-      <div className="tw"><table><thead><tr><th>Dealership</th><th>Contact</th><th>Province</th><th>Verified</th><th>Listings</th><th>Purchases</th><th>Renewal</th><th>Status</th><th>Action</th></tr></thead><tbody>
-        <tr><td style={{fontWeight: 500}}><span className="cid" onClick={() => showPage('mkt-member-detail')}>Smith's RV Centre</span></td><td>Mike Smith<br /><span style={{fontSize: 11, color: '#888'}}>mike@smithsrv.ca</span></td><td>Ontario</td><td>Jan 12</td><td>8</td><td>3</td><td>Jan 10, 2027</td><td><span className="bg active">Active</span></td><td><button className="btn btn-o btn-sm" onClick={() => showPage('mkt-member-detail')}>Manage</button></td></tr>
-        <tr><td style={{fontWeight: 500}}>Atlantic RV</td><td>Sarah Chen<br /><span style={{fontSize: 11, color: '#888'}}>sarah@atlanticrv.ca</span></td><td>Nova Scotia</td><td>Jan 18</td><td>12</td><td>5</td><td>Jan 15, 2027</td><td><span className="bg active">Active</span></td><td><button className="btn btn-o btn-sm">Manage</button></td></tr>
-        <tr><td style={{fontWeight: 500}}>Prairie Wind RV</td><td>James Flett<br /><span style={{fontSize: 11, color: '#888'}}>james@prairiewind.ca</span></td><td>Manitoba</td><td>Feb 3</td><td>6</td><td>2</td><td>Feb 1, 2027</td><td><span className="bg active">Active</span></td><td><button className="btn btn-o btn-sm">Manage</button></td></tr>
-        <tr><td style={{fontWeight: 500}}>Ontario RV Depot</td><td>Marc Leblanc<br /><span style={{fontSize: 11, color: '#888'}}>marc@onrvdepot.ca</span></td><td>Ontario</td><td>Feb 20</td><td>10</td><td>4</td><td>Feb 18, 2027</td><td><span className="bg active">Active</span></td><td><button className="btn btn-o btn-sm">Manage</button></td></tr>
-        <tr><td style={{fontWeight: 500}}>West Coast Campers</td><td>Dan Rivera<br /><span style={{fontSize: 11, color: '#888'}}>dan@westcoast.ca</span></td><td>BC</td><td>Feb 15</td><td>4</td><td>1</td><td>Feb 12, 2027</td><td><span className="bg active">Active</span></td><td><button className="btn btn-o btn-sm">Manage</button></td></tr>
+      <div className="tw"><table><thead><tr><th>Dealership</th><th>Contact</th><th>Province</th><th>Plan</th><th>Verified</th><th>Listings</th><th>Purchases</th><th>Renewal</th><th>Status</th><th>Action</th></tr></thead><tbody>
+        {filteredActiveMembers.length === 0 ? (
+          <tr><td colSpan={10} style={{textAlign:'center',color:'#888',padding:16}}>No results</td></tr>
+        ) : filteredActiveMembers.map(m => (
+          <tr key={m.name}>
+            <td style={{fontWeight: 500}}><span className="cid" onClick={() => showPage('mkt-member-detail')}>{m.name}</span></td>
+            <td>{m.contact}<br /><span style={{fontSize: 11, color: '#888'}}>{m.email}</span></td>
+            <td>{m.province}</td>
+            <td style={{fontSize: 11, color: '#555'}}>{m.plan}</td>
+            <td>{m.verified}</td><td>{m.listings}</td><td>{m.purchases}</td><td>{m.renewal}</td>
+            <td><span className="bg active">Active</span></td>
+            <td><button className="btn btn-o btn-sm" onClick={() => showPage('mkt-member-detail')}>Manage</button></td>
+          </tr>
+        ))}
       </tbody></table></div>
     </div>
 
@@ -63,10 +111,17 @@ export function OperatorMarketplacePages({ activePage, showPage }: Props) {
     <div style={{display: memberTab === 'pending' || memberTab === 'all' ? 'block' : 'none'}}>
       {memberTab === 'all' && <div style={{padding: '10px 20px', background: '#fffbeb', borderBottom: '1px solid #fef3c7', fontSize: 12, fontWeight: 600, color: '#92400e'}}>Pending Verification</div>}
       <div className="tw"><table><thead><tr><th>Dealership</th><th>Contact</th><th>Province</th><th>Applied</th><th>License #</th><th>Status</th><th>Action</th></tr></thead><tbody>
-        <tr><td style={{fontWeight: 500, color: '#d97706'}}>Lakeside RV Sales ★</td><td>Tom Nguyen<br /><span style={{fontSize: 11, color: '#888'}}>tom@lakesiderv.ca</span></td><td>Ontario</td><td>Mar 14</td><td>OMVIC-2024-88431</td><td><span className="bg pending">Pending</span></td><td><button className="btn btn-s btn-sm" onClick={() => showPage('mkt-member-detail')}>Verify</button></td></tr>
-        <tr><td style={{fontWeight: 500, color: '#d97706'}}>Northern Trails ★</td><td>Lisa Park<br /><span style={{fontSize: 11, color: '#888'}}>lisa@northerntrails.ca</span></td><td>Alberta</td><td>Mar 15</td><td>AMVIC-2023-44210</td><td><span className="bg pending">Pending</span></td><td><button className="btn btn-s btn-sm">Verify</button></td></tr>
-        <tr><td style={{fontWeight: 500, color: '#d97706'}}>Maritime RV ★</td><td>Paul Doucet<br /><span style={{fontSize: 11, color: '#888'}}>paul@maritimerv.ca</span></td><td>New Brunswick</td><td>Mar 16</td><td>NB-DLR-2024-771</td><td><span className="bg pending">Pending</span></td><td><button className="btn btn-s btn-sm">Verify</button></td></tr>
-        <tr><td style={{fontWeight: 500, color: '#d97706'}}>Quebec Plein Air ★</td><td>J-F Roy<br /><span style={{fontSize: 11, color: '#888'}}>jf@qcpleinair.ca</span></td><td>Quebec</td><td>Mar 17</td><td>OPC-2024-55892</td><td><span className="bg pending">Pending</span></td><td><button className="btn btn-s btn-sm">Verify</button></td></tr>
+        {filteredPendingMembers.length === 0 ? (
+          <tr><td colSpan={7} style={{textAlign:'center',color:'#888',padding:16}}>No results</td></tr>
+        ) : filteredPendingMembers.map(m => (
+          <tr key={m.name}>
+            <td style={{fontWeight: 500, color: '#d97706'}}>{m.name} ★</td>
+            <td>{m.contact}<br /><span style={{fontSize: 11, color: '#888'}}>{m.email}</span></td>
+            <td>{m.province}</td><td>{m.applied}</td><td>{m.license}</td>
+            <td><span className="bg pending">Pending</span></td>
+            <td><button className="btn btn-s btn-sm" onClick={() => showPage('mkt-member-detail')}>Verify</button></td>
+          </tr>
+        ))}
       </tbody></table></div>
     </div>
 
@@ -159,17 +214,27 @@ export function OperatorMarketplacePages({ activePage, showPage }: Props) {
   <div className="pn">
     <div className="filter-bar">
       <input type="text" placeholder="Search VIN, model, specs..." value={listingSearch} onChange={(e) => setListingSearch(e.target.value)} />
-      <select><option>All Manufacturers</option><option>Jayco</option><option>Forest River</option><option>Heartland</option><option>Keystone</option><option>Grand Design</option><option>Coachmen</option></select>
-      <select><option>All Types</option><option>Travel Trailer</option><option>Fifth Wheel</option><option>Class A</option><option>Class C</option><option>Toy Hauler</option></select>
-      <select><option>All Statuses</option><option>Active</option><option>On Hold</option><option>Pending Review</option><option>Sold</option><option>Withdrawn</option></select>
+      <select value={listingMfr} onChange={e => setListingMfr(e.target.value)}><option value="">All Manufacturers</option><option>Jayco</option><option>Forest River</option><option>Heartland</option><option>Keystone</option><option>Grand Design</option><option>Coachmen</option></select>
+      <select value={listingType} onChange={e => setListingType(e.target.value)}><option value="">All Types</option><option>Travel Trailer</option><option>Fifth Wheel</option><option>Class A</option><option>Class C</option><option>Toy Hauler</option></select>
+      <select value={listingStatus} onChange={e => setListingStatus(e.target.value)}><option value="">All Statuses</option><option>Active</option><option>On Hold</option><option>Pending Review</option><option>Sold</option><option>Withdrawn</option></select>
     </div>
     <div className="tw"><table><thead><tr><th>Listing</th><th>Unit</th><th>Specs</th><th>Seller</th><th>Price</th><th>Inquiries</th><th>Views</th><th>Status</th><th>Listed</th><th>Action</th></tr></thead><tbody>
-      <tr><td style={{fontWeight: 500, color: 'var(--brand)'}}><span className="cid" onClick={() => showPage('mkt-listing-detail')}>MKT-0284</span></td><td>2024 Grand Design Imagine 2800BH</td><td style={{fontSize: 12, color: '#666'}}>28' · 3 slides · 2 bunks</td><td style={{fontSize: 12, color: '#888'}}>Smith's RV</td><td style={{fontWeight: 600}}>$42,900</td><td>3</td><td>48</td><td><span className="bg active">Active</span></td><td>Mar 10</td><td><button className="btn btn-o btn-sm" onClick={() => showPage('mkt-listing-detail')}>View</button></td></tr>
-      <tr><td style={{fontWeight: 500, color: 'var(--brand)'}}>MKT-0281</td><td>2023 Keystone Cougar 29BHS</td><td style={{fontSize: 12, color: '#666'}}>33' · 2 slides · 2 bunks</td><td style={{fontSize: 12, color: '#888'}}>Atlantic RV</td><td style={{fontWeight: 600}}>$38,500</td><td>5</td><td>73</td><td><span className="bg" style={{background: '#fef3c7', color: '#d97706'}}>On Hold</span></td><td>Mar 8</td><td><button className="btn btn-o btn-sm">View</button></td></tr>
-      <tr><td style={{fontWeight: 500, color: 'var(--brand)'}}>MKT-0276</td><td>2024 Forest River Rockwood 2891BH</td><td style={{fontSize: 12, color: '#666'}}>32' · 3 slides · 1 bunk</td><td style={{fontSize: 12, color: '#888'}}>Prairie Wind</td><td style={{fontWeight: 600}}>$45,200</td><td>2</td><td>51</td><td><span className="bg active">Active</span></td><td>Mar 5</td><td><button className="btn btn-o btn-sm">View</button></td></tr>
-      <tr><td style={{fontWeight: 500, color: 'var(--brand)'}}>MKT-0270</td><td>2023 Jayco Eagle HT 28.5RSTS</td><td style={{fontSize: 12, color: '#666'}}>34' · 3 slides · 0 bunks</td><td style={{fontSize: 12, color: '#888'}}>West Coast</td><td style={{fontWeight: 600}}>$51,800</td><td>1</td><td>92</td><td><span className="bg pay-recv">Sold</span></td><td>Feb 28</td><td><button className="btn btn-o btn-sm">View</button></td></tr>
-      <tr><td style={{fontWeight: 500, color: 'var(--brand)'}}>MKT-0265</td><td>2024 Coachmen Catalina 263BHSCK</td><td style={{fontSize: 12, color: '#666'}}>28' · 1 slide · 2 bunks</td><td style={{fontSize: 12, color: '#888'}}>Smith's RV</td><td style={{fontWeight: 600}}>$35,900</td><td>4</td><td>68</td><td><span className="bg pay-recv">Sold</span></td><td>Feb 22</td><td><button className="btn btn-o btn-sm">View</button></td></tr>
-      <tr><td style={{fontWeight: 500, color: 'var(--brand)'}}>MKT-0260</td><td>2025 Heartland Bighorn 3375SS</td><td style={{fontSize: 12, color: '#666'}}>38' · 4 slides · 0 bunks</td><td style={{fontSize: 12, color: '#888'}}>Ontario RV</td><td style={{fontWeight: 600}}>$72,500</td><td>2</td><td>41</td><td><span className="bg active">Active</span></td><td>Feb 18</td><td><button className="btn btn-o btn-sm">View</button></td></tr>
+      {filteredListings.length === 0 ? (
+        <tr><td colSpan={10} style={{textAlign:'center',color:'#888',padding:20}}>No results match your filters</td></tr>
+      ) : filteredListings.map(l => (
+        <tr key={l.id}>
+          <td style={{fontWeight: 500, color: 'var(--brand)'}}><span className="cid" onClick={() => showPage('mkt-listing-detail')}>{l.id}</span></td>
+          <td>{l.unit}</td>
+          <td style={{fontSize: 12, color: '#666'}}>{l.specs}</td>
+          <td style={{fontSize: 12, color: '#888'}}>{l.seller}</td>
+          <td style={{fontWeight: 600}}>{l.price}</td>
+          <td>{l.inquiries}</td>
+          <td>{l.views}</td>
+          <td><span className={`bg ${l.status === 'Active' ? 'active' : l.status === 'Sold' ? 'pay-recv' : ''}`} style={l.status === 'On Hold' ? {background:'#fef3c7',color:'#d97706'} : {}}>{l.status}</span></td>
+          <td>{l.listed}</td>
+          <td><button className="btn btn-o btn-sm" onClick={() => showPage('mkt-listing-detail')}>View</button></td>
+        </tr>
+      ))}
     </tbody></table></div>
   </div>
 </div>

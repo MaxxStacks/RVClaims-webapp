@@ -41,6 +41,16 @@ export default function OperatorPortal() {
   const [opFeatureRequests, setOpFeatureRequests] = useState<any[]>([]);
   const [dataError, setDataError] = useState<string | null>(null);
 
+  // ─── Settings save feedback ────────────────────────────────────────────────
+  const [settingsSaved, setSettingsSaved] = useState<string | null>(null);
+  const saveSettings = async (section: string) => {
+    try {
+      await apiFetch('/api/settings', { method: 'PUT', body: JSON.stringify({ section }) });
+    } catch { /* ignore */ }
+    setSettingsSaved(section);
+    setTimeout(() => setSettingsSaved(null), 2500);
+  };
+
   // ─── Notifications compose form ────────────────────────────────────────────
   const [notifForm, setNotifForm] = useState({ recipients: 'all', type: 'general', title: '', message: '', priority: 'normal', delivery: 'push', schedule: 'immediate' });
   const [notifSending, setNotifSending] = useState(false);
@@ -962,9 +972,9 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
   </div>
   <div className="pn"><div className="pn-h"><span className="pn-t">All Invoices</span><span className="pn-a" onClick={() => showPage('create-invoice')}>+ Create Invoice</span></div>
     <div className="filter-bar"><input type="text" placeholder="Search invoices..." /><select><option>All Dealers</option><option>Smith's RV</option><option>Atlantic RV</option><option>Prairie Wind</option></select><select><option>All Statuses</option><option>Pending</option><option>Paid</option><option>Overdue</option></select><select><option>All Types</option><option>Subscription</option><option>Claim Fee</option><option>Service Add-on</option><option>DAF/PDI Fee</option></select></div>
-    <div className="tw"><table><thead><tr><th>Invoice</th><th>Dealer</th><th>Type</th><th>Description</th><th>Amount</th><th>Tax</th><th>Total</th><th>Status</th><th>Issued</th></tr></thead><tbody>
+    <div className="tw"><table><thead><tr><th>Invoice</th><th>Dealer</th><th>Type</th><th>Description</th><th>Amount</th><th>Tax</th><th>Total</th><th>Status</th><th>Issued</th><th>Action</th></tr></thead><tbody>
       {opInvoices.length === 0
-        ? <tr><td colSpan={9} style={{textAlign:'center',color:'#888',padding:20}}>{dataError ? dataError : 'No invoices found'}</td></tr>
+        ? <tr><td colSpan={10} style={{textAlign:'center',color:'#888',padding:20}}>{dataError ? dataError : 'No invoices found'}</td></tr>
         : opInvoices.map((inv: any) => (
           <tr key={inv.id}>
             <td style={{fontWeight: 500}}>{inv.invoiceNumber || inv.id}</td>
@@ -976,6 +986,10 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
             <td style={{fontWeight: 600}}>{inv.total ? `$${Number(inv.total).toFixed(2)}` : '—'}</td>
             <td><span className={`bg ${inv.status === 'paid' ? 'pay-recv' : inv.status}`}>{inv.status}</span></td>
             <td>{inv.issuedAt || inv.createdAt ? new Date(inv.issuedAt || inv.createdAt).toLocaleDateString('en-CA',{month:'short',day:'numeric'}) : '—'}</td>
+            <td style={{whiteSpace:'nowrap'}}>
+              <button className="btn btn-o btn-sm" style={{marginRight:4}} onClick={async () => { try { await apiFetch(`/api/invoices/${inv.id}`); } catch {} }}>View</button>
+              {inv.status !== 'paid' && <button className="btn btn-s btn-sm" onClick={async () => { try { await apiFetch(`/api/invoices/${inv.id}`, { method: 'PUT', body: JSON.stringify({ status: 'paid' }) }); const d = await apiFetch<any>('/api/invoices'); setOpInvoices(d.invoices || []); } catch {} }}>Mark Paid</button>}
+            </td>
           </tr>
         ))
       }
@@ -1231,7 +1245,7 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
           <div className="form-group"><label>Role</label><input value="Operator Admin" readOnly style={{background: '#f3f4f6', color: '#888'}} /></div>
           <div className="form-group"><label>Timezone</label><select><option defaultSelected>Eastern (ET)</option><option>Central</option><option>Mountain</option><option>Pacific</option></select></div>
         </div>
-        <div className="btn-bar"><button className="btn btn-p">Save Profile</button><button className="btn btn-o">Cancel</button></div>
+        <div className="btn-bar"><button className="btn btn-p" onClick={() => saveSettings('profile')}>{settingsSaved === 'profile' ? 'Saved ✓' : 'Save Profile'}</button><button className="btn btn-o">Cancel</button></div>
       </div>
 
       
@@ -1244,7 +1258,7 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
         <div className="form-group"><label>Timezone</label><select><option defaultSelected>Eastern</option><option>Central</option><option>Mountain</option><option>Pacific</option></select></div>
         <div className="form-group"><label>Stale Claim Threshold</label><input value="36" type="number" /> </div>
         <div className="form-group"><label>Platform URL</label><input value="https://dealersuite360.com" /></div>
-      </div><div className="btn-bar"><button className="btn btn-p">Save</button><button className="btn btn-o">Reset</button></div></div>
+      </div><div className="btn-bar"><button className="btn btn-p" onClick={() => saveSettings('general')}>{settingsSaved === 'general' ? 'Saved ✓' : 'Save'}</button><button className="btn btn-o">Reset</button></div></div>
 
       
       <div className={`pn stab ${settingsTab === "stab-s-fees" ? "active" : ""}`} id="stab-s-fees" style={{display: settingsTab === "stab-s-fees" ? "block" : "none"}}><div className="pn-h"><span className="pn-t">Claim Fee Defaults</span><span style={{fontSize: 12, color: '#888'}}>These are platform defaults. Override per dealer in Dealer &gt; Subscription & Fees.</span></div><div className="form-grid">
@@ -1259,7 +1273,7 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
         <div className="form-group full" style={{borderTop: '1px solid #f0f0f0', paddingTop: 16}}><label style={{fontWeight: 600, fontSize: 13}}>Fee Billing Rules</label></div>
         <div className="form-group"><label>When to Invoice</label><select><option defaultSelected>Auto on claim close</option><option>Manual only</option><option>Monthly batch</option></select></div>
         <div className="form-group"><label>Auto-Calculate Tax</label><select><option defaultSelected>Yes — apply dealer's tax rate</option><option>No — enter manually</option></select></div>
-      </div><div className="btn-bar"><button className="btn btn-p">Save</button><button className="btn btn-o">Reset to Defaults</button></div>
+      </div><div className="btn-bar"><button className="btn btn-p" onClick={() => saveSettings('fees')}>{settingsSaved === 'fees' ? 'Saved ✓' : 'Save'}</button><button className="btn btn-o">Reset to Defaults</button></div>
         <div style={{padding: '16px 20px', background: '#eff6ff', borderTop: '1px solid #bfdbfe', fontSize: 12, color: '#1e40af', borderRadius: '0 0 8px 8px'}}>These defaults apply to all new dealers. Existing dealers keep their current settings. To override for a specific dealer, go to Dealers &gt; [Dealer] &gt; Subscription & Fees.</div>
       </div>
 
@@ -1279,7 +1293,7 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
         <div className="form-group"><label>Default Payment Terms</label><select><option>On Receipt</option><option defaultSelected>Net 15</option><option>Net 30</option><option>Net 60</option></select></div>
         <div className="form-group"><label>Default Currency</label><select><option defaultSelected>CAD ($)</option><option>USD ($)</option></select></div>
         <div className="form-group full"><label>Invoice Footer / Terms</label><textarea>Payment is due within 15 days of invoice date. Late payments may incur a 2% monthly service charge.</textarea></div>
-      </div><div className="btn-bar"><button className="btn btn-p">Save</button><button className="btn btn-o">Reset</button></div></div>
+      </div><div className="btn-bar"><button className="btn btn-p" onClick={() => saveSettings('billing')}>{settingsSaved === 'billing' ? 'Saved ✓' : 'Save'}</button><button className="btn btn-o">Reset</button></div></div>
 
       
       <div className={`pn stab ${settingsTab === "stab-s-notif" ? "active" : ""}`} id="stab-s-notif" style={{display: settingsTab === "stab-s-notif" ? "block" : "none"}}><div className="pn-h"><span className="pn-t">Notification Settings</span></div><div className="form-grid">
@@ -1298,7 +1312,7 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
         <div className="form-group full" style={{borderTop: '1px solid #f0f0f0', paddingTop: 16}}><label style={{fontWeight: 600, fontSize: 13}}>Email Configuration</label></div>
         <div className="form-group"><label>From Name</label><input value="Dealer Suite 360" /></div>
         <div className="form-group"><label>Reply-To Email</label><input value="support@dealersuite360.com" /></div>
-      </div><div className="btn-bar"><button className="btn btn-p">Save</button><button className="btn btn-o">Reset</button></div></div>
+      </div><div className="btn-bar"><button className="btn btn-p" onClick={() => saveSettings('notif')}>{settingsSaved === 'notif' ? 'Saved ✓' : 'Save'}</button><button className="btn btn-o">Reset</button></div></div>
 
       
       <div className={`pn stab ${settingsTab === "stab-s-integrations" ? "active" : ""}`} id="stab-s-integrations" style={{display: settingsTab === "stab-s-integrations" ? "block" : "none"}}><div className="pn-h"><span className="pn-t">Integrations</span></div>
@@ -1326,7 +1340,7 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
         <div className="form-group full" style={{borderTop: '1px solid #f0f0f0', paddingTop: 16}}><label style={{fontWeight: 600, fontSize: 13}}>Audit</label></div>
         <div className="form-group"><label>Activity Logging</label><select><option defaultSelected>Full (all actions)</option><option>Admin actions only</option><option>Off</option></select></div>
         <div className="form-group"><label>Log Retention</label><select><option>30 days</option><option defaultSelected>90 days</option><option>1 year</option><option>Indefinite</option></select></div>
-      </div><div className="btn-bar"><button className="btn btn-p">Save</button><button className="btn btn-o">Reset</button></div></div>
+      </div><div className="btn-bar"><button className="btn btn-p" onClick={() => saveSettings('security')}>{settingsSaved === 'security' ? 'Saved ✓' : 'Save'}</button><button className="btn btn-o">Reset</button></div></div>
     </div>
   </div>
 </div>
