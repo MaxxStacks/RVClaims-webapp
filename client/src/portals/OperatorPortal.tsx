@@ -43,6 +43,8 @@ export default function OperatorPortal() {
 
   // ─── Settings save feedback ────────────────────────────────────────────────
   const [settingsSaved, setSettingsSaved] = useState<string | null>(null);
+  const [featureReqForm, setFeatureReqForm] = useState({ title: '', requestedBy: 'Internal', priority: 'medium', targetVersion: 'v2.2', description: '' });
+  const [featureReqSaving, setFeatureReqSaving] = useState(false);
   const saveSettings = async (section: string) => {
     try {
       await apiFetch('/api/settings', { method: 'PUT', body: JSON.stringify({ section }) });
@@ -69,6 +71,8 @@ export default function OperatorPortal() {
   const [unitsMfr, setUnitsMfr] = useState('');
   const [unitsDealer, setUnitsDealer] = useState('');
   const [unitsStatus, setUnitsStatus] = useState('');
+  const [usersSearch, setUsersSearch] = useState('');
+  const [usersRole, setUsersRole] = useState('');
 
   // ─── Add-dealer form state ─────────────────────────────────────────────────
   const [addDealerForm, setAddDealerForm] = useState({ name: '', contactName: '', email: '', phone: '', street: '', city: '', plan: 'plan_a' });
@@ -306,6 +310,47 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
     if (unitsStatus && u.status !== unitsStatus) return false;
     return true;
   });
+
+  const filteredUsers = opUsers.filter(u => {
+    const s = usersSearch.toLowerCase();
+    if (s && !u.email?.toLowerCase().includes(s) && !(u.name || `${u.firstName || ''} ${u.lastName || ''}`).toLowerCase().includes(s)) return false;
+    if (usersRole && u.role !== usersRole) return false;
+    return true;
+  });
+
+  const handleSubmitFeatureRequest = async () => {
+    if (!featureReqForm.title) return;
+    setFeatureReqSaving(true);
+    try {
+      await apiFetch('/api/feature-requests', {
+        method: 'POST',
+        body: JSON.stringify(featureReqForm),
+      });
+      const d = await apiFetch<any>('/api/feature-requests');
+      setOpFeatureRequests(d.featureRequests || []);
+      setFeatureReqForm({ title: '', requestedBy: 'Internal', priority: 'medium', targetVersion: 'v2.2', description: '' });
+      showPage('changelog');
+    } catch { /* ignore */ } finally {
+      setFeatureReqSaving(false);
+    }
+  };
+
+  const handleDeactivateUser = async (id: string) => {
+    if (!confirm('Deactivate this user?')) return;
+    try {
+      await apiFetch(`/api/users/${id}`, { method: 'PUT', body: JSON.stringify({ status: 'inactive' }) });
+      const d = await apiFetch<any>('/api/users');
+      setOpUsers(d.users || []);
+    } catch { /* ignore */ }
+  };
+
+  const handleInviteUser = async (email: string, role: string) => {
+    try {
+      await apiFetch('/api/users/invite', { method: 'POST', body: JSON.stringify({ email, role }) });
+      const d = await apiFetch<any>('/api/users');
+      setOpUsers(d.users || []);
+    } catch { /* ignore */ }
+  };
 
   const showPage = (id: string) => {
     setActivePage(id);
@@ -1136,11 +1181,11 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
 
 <div className={`page ${activePage === 'users' ? 'active' : ''}`} id="page-users">
   <div className="tabs"><div className="tab active" onClick={(e) => switchTab(e)}>Operator Staff (4)</div><div className="tab" onClick={(e) => switchTab(e)}>Dealer Users (38)</div></div>
-  <div className="pn" style={{borderTop: 'none', borderRadius: '0 0 8px 8px'}}><div className="filter-bar"><input type="text" placeholder="Search users..." /><select><option>All Roles</option><option>Operator Admin</option><option>Operator Staff</option><option>Dealer Owner</option><option>Dealer Staff</option></select><div style={{marginLeft: 'auto'}}><button className="btn btn-p btn-sm">+ Add User</button></div></div>
+  <div className="pn" style={{borderTop: 'none', borderRadius: '0 0 8px 8px'}}><div className="filter-bar"><input type="text" placeholder="Search users..." value={usersSearch} onChange={e => setUsersSearch(e.target.value)} /><select value={usersRole} onChange={e => setUsersRole(e.target.value)}><option value="">All Roles</option><option value="operator_admin">Operator Admin</option><option value="operator_staff">Operator Staff</option><option value="dealer_owner">Dealer Owner</option><option value="dealer_staff">Dealer Staff</option></select><div style={{marginLeft: 'auto'}}><button className="btn btn-p btn-sm" onClick={() => { const email = prompt('Email to invite:'); const role = prompt('Role (operator_staff, dealer_owner, dealer_staff):'); if (email && role) handleInviteUser(email, role); }}>+ Invite User</button></div></div>
     <div className="tw"><table><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Assigned Dealers</th><th>Status</th><th>Last Login</th><th>Action</th></tr></thead><tbody>
-      {opUsers.length === 0
-        ? <tr><td colSpan={7} style={{textAlign:'center',color:'#888',padding:20}}>{dataError ? dataError : 'No users found'}</td></tr>
-        : opUsers.map((u: any) => {
+      {filteredUsers.length === 0
+        ? <tr><td colSpan={7} style={{textAlign:'center',color:'#888',padding:20}}>{dataError ? dataError : opUsers.length === 0 ? 'No users found' : 'No results match your filters'}</td></tr>
+        : filteredUsers.map((u: any) => {
           const isAdmin = u.role === 'operator_admin';
           return (
             <tr key={u.id}>
@@ -1150,7 +1195,10 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
               <td>{u.dealershipName || (u.role?.startsWith('operator') ? 'All' : '—')}</td>
               <td><span className={`bg ${u.status === 'active' ? 'active' : 'pending'}`}>{u.status || 'active'}</span></td>
               <td>{u.lastLoginAt ? new Date(u.lastLoginAt).toLocaleDateString('en-CA',{month:'short',day:'numeric'}) : '—'}</td>
-              <td><button className="btn btn-o btn-sm">Edit</button></td>
+              <td style={{whiteSpace:'nowrap'}}>
+                <button className="btn btn-o btn-sm" style={{marginRight:4}}>Edit</button>
+                {u.status !== 'inactive' && <button className="btn btn-d btn-sm" onClick={() => handleDeactivateUser(u.id)}>Deactivate</button>}
+              </td>
             </tr>
           );
         })
@@ -1478,12 +1526,21 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
       <button className="btn btn-p btn-sm" onClick={() => showPage('add-feature-req')}>+ Add Request</button>
     </div>
     <div className="tw"><table><thead><tr><th>Request</th><th>Requested By</th><th>Priority</th><th>Status</th><th>Target</th></tr></thead><tbody>
-      <tr><td style={{fontWeight: 500}}>Bulk photo drag-and-drop with progress bar</td><td>Smith's RV Centre</td><td><span style={{color: '#dc2626', fontWeight: 600, fontSize: 12}}>High</span></td><td><span className="bg pending">Under Review</span></td><td>v2.1</td></tr>
-      <tr><td style={{fontWeight: 500}}>SMS notifications for claim updates</td><td>Internal</td><td><span style={{color: '#d97706', fontWeight: 600, fontSize: 12}}>Medium</span></td><td><span className="bg submitted">Planned</span></td><td>v2.2</td></tr>
-      <tr><td style={{fontWeight: 500}}>Customer self-service warranty renewal</td><td>Atlantic RV</td><td><span style={{color: '#d97706', fontWeight: 600, fontSize: 12}}>Medium</span></td><td><span className="bg pending">Under Review</span></td><td>v3.0</td></tr>
-      <tr><td style={{fontWeight: 500}}>Operator dashboard mobile view</td><td>Internal</td><td><span style={{color: '#22c55e', fontWeight: 600, fontSize: 12}}>Low</span></td><td><span className="bg draft">Backlog</span></td><td>v2.3</td></tr>
-      <tr><td style={{fontWeight: 500}}>Multi-language customer portal (FR)</td><td>Prairie Wind RV</td><td><span style={{color: '#d97706', fontWeight: 600, fontSize: 12}}>Medium</span></td><td><span className="bg draft">Backlog</span></td><td>v3.0</td></tr>
-      <tr><td style={{fontWeight: 500}}>Automated claim fee invoicing on close</td><td>Internal</td><td><span style={{color: '#dc2626', fontWeight: 600, fontSize: 12}}>High</span></td><td><span className="bg submitted">Planned</span></td><td>v2.2</td></tr>
+      {opFeatureRequests.length === 0
+        ? <tr><td colSpan={5} style={{textAlign:'center',color:'#888',padding:20}}>No feature requests yet</td></tr>
+        : opFeatureRequests.map((fr: any) => {
+          const priColor = fr.priority === 'high' ? '#dc2626' : fr.priority === 'low' ? '#22c55e' : '#d97706';
+          return (
+            <tr key={fr.id}>
+              <td style={{fontWeight: 500}}>{fr.title}</td>
+              <td>{fr.requestedBy || 'Internal'}</td>
+              <td><span style={{color: priColor, fontWeight: 600, fontSize: 12}}>{fr.priority ? fr.priority.charAt(0).toUpperCase() + fr.priority.slice(1) : 'Medium'}</span></td>
+              <td><span className={`bg ${fr.status === 'planned' ? 'submitted' : fr.status === 'backlog' ? 'draft' : 'pending'}`}>{fr.status === 'planned' ? 'Planned' : fr.status === 'backlog' ? 'Backlog' : 'Under Review'}</span></td>
+              <td>{fr.targetVersion || '—'}</td>
+            </tr>
+          );
+        })
+      }
     </tbody></table></div>
   </div>
 </div>
@@ -1492,12 +1549,12 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
 <div className={`page ${activePage === 'add-feature-req' ? 'active' : ''}`} id="page-add-feature-req">
   <div className="detail-header"><button className="detail-back" onClick={() => showPage('changelog')}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6"/></svg></button><div className="detail-info"><div className="detail-title">Add Feature Request</div><div className="detail-meta">Log a new feature request from a dealer or internal team</div></div></div>
   <div className="pn"><div className="form-grid">
-    <div className="form-group"><label>Feature Title</label><input placeholder="Brief description of the feature..." /></div>
-    <div className="form-group"><label>Requested By</label><select><option>Internal</option><option>Smith's RV Centre</option><option>Atlantic RV</option><option>Prairie Wind RV</option></select></div>
-    <div className="form-group"><label>Priority</label><select><option>High</option><option defaultSelected>Medium</option><option>Low</option></select></div>
-    <div className="form-group"><label>Target Version</label><select><option>v2.1</option><option defaultSelected>v2.2</option><option>v2.3</option><option>v3.0</option><option>Backlog</option></select></div>
-    <div className="form-group full"><label>Description</label><textarea placeholder="Detailed description of the feature, use case, and why it matters..."></textarea></div>
-  </div><div className="btn-bar"><button className="btn btn-p" onClick={() => showPage('changelog')}>Submit Request</button><button className="btn btn-o" onClick={() => showPage('changelog')}>Cancel</button></div></div>
+    <div className="form-group"><label>Feature Title</label><input placeholder="Brief description of the feature..." value={featureReqForm.title} onChange={e => setFeatureReqForm(f => ({...f, title: e.target.value}))} /></div>
+    <div className="form-group"><label>Requested By</label><select value={featureReqForm.requestedBy} onChange={e => setFeatureReqForm(f => ({...f, requestedBy: e.target.value}))}><option>Internal</option><option>Smith's RV Centre</option><option>Atlantic RV</option><option>Prairie Wind RV</option>{opDealers.map(d => <option key={d.id}>{d.name}</option>)}</select></div>
+    <div className="form-group"><label>Priority</label><select value={featureReqForm.priority} onChange={e => setFeatureReqForm(f => ({...f, priority: e.target.value}))}><option value="high">High</option><option value="medium">Medium</option><option value="low">Low</option></select></div>
+    <div className="form-group"><label>Target Version</label><select value={featureReqForm.targetVersion} onChange={e => setFeatureReqForm(f => ({...f, targetVersion: e.target.value}))}><option>v2.1</option><option>v2.2</option><option>v2.3</option><option>v3.0</option><option>Backlog</option></select></div>
+    <div className="form-group full"><label>Description</label><textarea placeholder="Detailed description of the feature, use case, and why it matters..." value={featureReqForm.description} onChange={e => setFeatureReqForm(f => ({...f, description: e.target.value}))}></textarea></div>
+  </div><div className="btn-bar"><button className="btn btn-p" onClick={handleSubmitFeatureRequest} disabled={featureReqSaving}>{featureReqSaving ? 'Submitting…' : 'Submit Request'}</button><button className="btn btn-o" onClick={() => showPage('changelog')}>Cancel</button></div></div>
 </div>
 
 <OperatorMarketplacePages activePage={activePage} showPage={showPage} />
