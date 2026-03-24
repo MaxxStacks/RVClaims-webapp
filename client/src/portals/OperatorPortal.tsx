@@ -39,6 +39,7 @@ export default function OperatorPortal() {
   const [opNotifications, setOpNotifications] = useState<any[]>([]);
   const [opProducts, setOpProducts] = useState<any[]>([]);
   const [opFeatureRequests, setOpFeatureRequests] = useState<any[]>([]);
+  const [opFrcCodes, setOpFrcCodes] = useState<any[]>([]);
   const [dataError, setDataError] = useState<string | null>(null);
 
   // ─── Settings save feedback ────────────────────────────────────────────────
@@ -73,6 +74,84 @@ export default function OperatorPortal() {
   const [unitsStatus, setUnitsStatus] = useState('');
   const [usersSearch, setUsersSearch] = useState('');
   const [usersRole, setUsersRole] = useState('');
+
+  // ─── FRC state ─────────────────────────────────────────────────────────────
+  const [frcMfr, setFrcMfr] = useState('Jayco');
+  const [frcSearch, setFrcSearch] = useState('');
+  const [frcCategory, setFrcCategory] = useState('');
+  const [showAddFrc, setShowAddFrc] = useState(false);
+  const [addFrcForm, setAddFrcForm] = useState({ code: '', description: '', category: 'Structural', hours: '' });
+  const [addFrcSaving, setAddFrcSaving] = useState(false);
+
+  const frcMockData: Record<string, any[]> = {
+    'Jayco': [
+      { code: 'JC-WAR-1042', description: 'Delamination, Sidewall', category: 'Structural', hours: 2.5, used: 8 },
+      { code: 'JC-WAR-2018', description: 'Water Leak, Roof Vent', category: 'Plumbing', hours: 1.5, used: 12 },
+      { code: 'JC-WAR-3055', description: 'Slide-Out Seal, Replace', category: 'Exterior', hours: 1.0, used: 6 },
+      { code: 'JC-WAR-4012', description: 'Cabinet Door, Hinge', category: 'Interior', hours: 0.5, used: 15 },
+      { code: 'JC-WAR-5001', description: 'Furnace, No Ignition', category: 'HVAC', hours: 2.0, used: 4 },
+    ],
+    'Forest River': [
+      { code: 'FR-WAR-1001', description: 'Roof Seam, Re-seal', category: 'Structural', hours: 2.0, used: 10 },
+      { code: 'FR-WAR-2005', description: 'Shower Drain Leak', category: 'Plumbing', hours: 1.0, used: 7 },
+      { code: 'FR-WAR-3012', description: 'Awning, Retract Failure', category: 'Exterior', hours: 1.5, used: 5 },
+      { code: 'FR-WAR-4008', description: 'Slide-Out Motor Replace', category: 'Electrical', hours: 3.0, used: 3 },
+    ],
+    'Heartland': [
+      { code: 'HL-WAR-1010', description: 'Floor Delamination', category: 'Structural', hours: 3.0, used: 4 },
+      { code: 'HL-WAR-2002', description: 'City Water Inlet Leak', category: 'Plumbing', hours: 0.5, used: 9 },
+      { code: 'HL-WAR-3001', description: 'Slide-Out Topper Tear', category: 'Exterior', hours: 1.0, used: 6 },
+      { code: 'HL-WAR-4001', description: 'A/C Compressor Fail', category: 'HVAC', hours: 2.5, used: 2 },
+    ],
+    'Keystone': [
+      { code: 'KS-WAR-1005', description: 'Sidewall Puncture Repair', category: 'Structural', hours: 2.0, used: 5 },
+      { code: 'KS-WAR-2010', description: 'Toilet Valve Replace', category: 'Plumbing', hours: 0.5, used: 11 },
+      { code: 'KS-WAR-3008', description: 'Entry Door Latch', category: 'Exterior', hours: 0.5, used: 8 },
+      { code: 'KS-WAR-4003', description: 'Leveling Jack, Manual', category: 'Electrical', hours: 1.5, used: 3 },
+    ],
+    'Columbia NW': [
+      { code: 'CN-WAR-1001', description: 'Wall Seam Separation', category: 'Structural', hours: 2.5, used: 2 },
+      { code: 'CN-WAR-2001', description: 'Fresh Tank Fitting Leak', category: 'Plumbing', hours: 1.0, used: 4 },
+      { code: 'CN-WAR-3001', description: 'Slide-Out Wiper Seal', category: 'Exterior', hours: 0.5, used: 3 },
+    ],
+  };
+  const frcApiForMfr = opFrcCodes.filter((c: any) => c.manufacturer === frcMfr);
+  const frcBase = frcApiForMfr.length > 0 ? frcApiForMfr : (frcMockData[frcMfr] || []);
+  const filteredFrcCodes = frcBase.filter((c: any) => {
+    const s = frcSearch.toLowerCase();
+    if (s && !c.code.toLowerCase().includes(s) && !c.description.toLowerCase().includes(s)) return false;
+    if (frcCategory && c.category !== frcCategory) return false;
+    return true;
+  });
+
+  const handleAddFrcCode = async () => {
+    if (!addFrcForm.code || !addFrcForm.description) return;
+    setAddFrcSaving(true);
+    try {
+      const newCode = await apiFetch<any>('/api/frc-codes', {
+        method: 'POST',
+        body: JSON.stringify({ ...addFrcForm, manufacturer: frcMfr, hours: parseFloat(addFrcForm.hours) || 0 }),
+      });
+      setOpFrcCodes(prev => [...prev, newCode.frcCode || newCode]);
+      setAddFrcForm({ code: '', description: '', category: 'Structural', hours: '' });
+      setShowAddFrc(false);
+    } catch { /* ignore */ } finally {
+      setAddFrcSaving(false);
+    }
+  };
+
+  const handleFrcCsvUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('manufacturer', frcMfr);
+    try {
+      const d = await apiFetch<any>('/api/frc-codes/import', { method: 'POST', body: formData });
+      if (d.frcCodes) setOpFrcCodes(prev => [...prev.filter((c: any) => c.manufacturer !== frcMfr), ...d.frcCodes]);
+    } catch { /* ignore */ }
+    e.target.value = '';
+  };
 
   // ─── Add-dealer form state ─────────────────────────────────────────────────
   const [addDealerForm, setAddDealerForm] = useState({ name: '', contactName: '', email: '', phone: '', street: '', city: '', plan: 'plan_a' });
@@ -145,6 +224,9 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
         } else if (activePage === 'products') {
           const d = await apiFetch<any>('/api/products');
           setOpProducts(d.products || []);
+        } else if (activePage === 'frc') {
+          const d = await apiFetch<any>('/api/frc-codes');
+          setOpFrcCodes(d.frcCodes || []);
         } else if (activePage === 'changelog') {
           const d = await apiFetch<any>('/api/feature-requests');
           setOpFeatureRequests(d.featureRequests || []);
@@ -773,15 +855,60 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
 
 
 <div className={`page ${activePage === 'frc' ? 'active' : ''}`} id="page-frc">
-  <div className="tabs"><div className="tab active" onClick={(e) => switchTab(e)}>Jayco</div><div className="tab" onClick={(e) => switchTab(e)}>Forest River</div><div className="tab" onClick={(e) => switchTab(e)}>Heartland</div><div className="tab" onClick={(e) => switchTab(e)}>Keystone</div><div className="tab" onClick={(e) => switchTab(e)}>Columbia NW</div></div>
-  <div className="pn" style={{borderTop: 'none', borderRadius: '0 0 8px 8px'}}><div className="filter-bar"><input type="text" placeholder="Search FRC codes..." /><select><option>All Categories</option><option>Structural</option><option>Plumbing</option><option>Electrical</option><option>HVAC</option><option>Interior</option><option>Exterior</option></select></div>
-    <div className="tw"><table><thead><tr><th>Code</th><th>Description</th><th>Category</th><th>Hours</th><th>Used (30d)</th></tr></thead><tbody>
-      <tr><td style={{fontWeight: 600, color: 'var(--brand)'}}>JC-WAR-1042</td><td>Delamination, Sidewall</td><td>Structural</td><td>2.5</td><td>8</td></tr>
-      <tr><td style={{fontWeight: 600, color: 'var(--brand)'}}>JC-WAR-2018</td><td>Water Leak, Roof Vent</td><td>Plumbing</td><td>1.5</td><td>12</td></tr>
-      <tr><td style={{fontWeight: 600, color: 'var(--brand)'}}>JC-WAR-3055</td><td>Slide-Out Seal, Replace</td><td>Exterior</td><td>1.0</td><td>6</td></tr>
-      <tr><td style={{fontWeight: 600, color: 'var(--brand)'}}>JC-WAR-4012</td><td>Cabinet Door, Hinge</td><td>Interior</td><td>0.5</td><td>15</td></tr>
-      <tr><td style={{fontWeight: 600, color: 'var(--brand)'}}>JC-WAR-5001</td><td>Furnace, No Ignition</td><td>HVAC</td><td>2.0</td><td>4</td></tr>
-    </tbody></table></div></div>
+  <div style={{display:'flex',alignItems:'center',gap:0}}>
+    <div className="tabs" style={{flex:1,borderBottom:'none'}}>
+      {['Jayco','Forest River','Heartland','Keystone','Columbia NW'].map(m => (
+        <div key={m} className={`tab ${frcMfr === m ? 'active' : ''}`} onClick={() => setFrcMfr(m)}>{m}</div>
+      ))}
+    </div>
+    <div style={{display:'flex',gap:8,paddingRight:20}}>
+      <label className="btn btn-o btn-sm" style={{cursor:'pointer'}}>
+        Upload CSV<input type="file" accept=".csv" style={{display:'none'}} onChange={handleFrcCsvUpload} />
+      </label>
+      <button className="btn btn-p btn-sm" onClick={() => setShowAddFrc(v => !v)}>+ Add FRC Code</button>
+    </div>
+  </div>
+  <div className="pn" style={{borderTop:'none',borderRadius:'0 0 8px 8px'}}>
+    <div className="filter-bar">
+      <input type="text" placeholder="Search FRC codes..." value={frcSearch} onChange={e => setFrcSearch(e.target.value)} />
+      <select value={frcCategory} onChange={e => setFrcCategory(e.target.value)}>
+        <option value="">All Categories</option>
+        <option>Structural</option><option>Plumbing</option><option>Electrical</option>
+        <option>HVAC</option><option>Interior</option><option>Exterior</option>
+      </select>
+      <span style={{marginLeft:'auto',fontSize:12,color:'#888'}}>{filteredFrcCodes.length} code{filteredFrcCodes.length !== 1 ? 's' : ''} for {frcMfr}</span>
+    </div>
+    {showAddFrc && (
+      <div style={{padding:'16px 20px',borderBottom:'1px solid #f0f0f0',background:'#fafafa'}}>
+        <div style={{fontSize:13,fontWeight:600,marginBottom:12}}>Add FRC Code — {frcMfr}</div>
+        <div style={{display:'grid',gridTemplateColumns:'1fr 2fr 1fr 1fr',gap:12,marginBottom:12}}>
+          <div className="form-group"><label>FRC Code</label><input placeholder="e.g. JC-WAR-9999" value={addFrcForm.code} onChange={e => setAddFrcForm(f => ({...f, code: e.target.value}))} /></div>
+          <div className="form-group"><label>Description</label><input placeholder="Short description" value={addFrcForm.description} onChange={e => setAddFrcForm(f => ({...f, description: e.target.value}))} /></div>
+          <div className="form-group"><label>Category</label><select value={addFrcForm.category} onChange={e => setAddFrcForm(f => ({...f, category: e.target.value}))}><option>Structural</option><option>Plumbing</option><option>Electrical</option><option>HVAC</option><option>Interior</option><option>Exterior</option></select></div>
+          <div className="form-group"><label>Labor Hours</label><input type="number" step="0.5" placeholder="1.5" value={addFrcForm.hours} onChange={e => setAddFrcForm(f => ({...f, hours: e.target.value}))} /></div>
+        </div>
+        <div style={{display:'flex',gap:8}}>
+          <button className="btn btn-p btn-sm" disabled={addFrcSaving} onClick={handleAddFrcCode}>{addFrcSaving ? 'Saving...' : 'Save Code'}</button>
+          <button className="btn btn-o btn-sm" onClick={() => setShowAddFrc(false)}>Cancel</button>
+        </div>
+      </div>
+    )}
+    <div className="tw"><table><thead><tr><th>Code</th><th>Description</th><th>Category</th><th>Hours</th><th>Used (30d)</th><th>Action</th></tr></thead><tbody>
+      {filteredFrcCodes.map((c: any, i: number) => (
+        <tr key={i}>
+          <td style={{fontWeight:600,color:'var(--brand)'}}>{c.code}</td>
+          <td>{c.description}</td>
+          <td>{c.category}</td>
+          <td>{c.hours}</td>
+          <td>{c.used ?? '—'}</td>
+          <td><button className="btn btn-o btn-sm">Edit</button></td>
+        </tr>
+      ))}
+      {filteredFrcCodes.length === 0 && (
+        <tr><td colSpan={6} style={{textAlign:'center',padding:32,color:'#888'}}>No FRC codes found. Upload a CSV or add codes manually.</td></tr>
+      )}
+    </tbody></table></div>
+  </div>
 </div>
 
 <div className={`page ${activePage === 'svc-financing' ? 'active' : ''}`} id="page-svc-financing">
