@@ -1,5 +1,5 @@
-# RV Claims Canada — The Dealership Operating System
-# Powered by Dealer Suite 360
+# Dealer Suite 360 — The Dealership Operating System
+# dealersuite360.com
 
 ---
 
@@ -7,7 +7,7 @@
 
 1. **DESIGN IS LOCKED.** The visual identity is approved and final. Do not change colors, typography, spacing, component patterns, card styles, shadows, borders, or navigation structure. When building new pages or components, copy the exact styling patterns from existing ones. Same Tailwind classes, same component library, same design language.
 
-2. **THIS IS A FULL-SERVICE DEALERSHIP PLATFORM.** RVClaims.ca offers 16+ services across 5 categories. Claims processing is MODULE ONE — it is not the whole product. Every page, every piece of copy, every user flow must reflect the complete ecosystem. If you are writing content for any page and you only mention claims, you are wrong. Start over.
+2. **THIS IS A FULL-SERVICE DEALERSHIP PLATFORM.** Dealer Suite 360 offers 16+ services across 5 categories. Claims processing is MODULE ONE — it is not the whole product. Every page, every piece of copy, every user flow must reflect the complete ecosystem. If you are writing content for any page and you only mention claims, you are wrong. Start over.
 
 3. **BILINGUAL IS MANDATORY.** All UI text goes through the i18n system at `client/src/lib/i18n.ts`. English and French. No hardcoded strings in components. No exceptions.
 
@@ -17,16 +17,16 @@
 
 ## THE BIG PICTURE — What This Platform Is
 
-RVClaims.ca is a **comprehensive service platform for Canadian RV dealerships**. It is the single subscription a dealer needs to run their entire operation — from warranty claims to financing, F&I, parts, marketing, and beyond. The technology is powered by **Dealer Suite 360**, which will also serve the US market under its own brand.
+**Dealer Suite 360** (dealersuite360.com) is a **comprehensive service platform for RV dealerships across North America**. It is the single subscription a dealer needs to run their entire operation — from warranty claims to financing, F&I, parts, marketing, and beyond.
 
-Think of it like this: Shopify is to e-commerce what RVClaims/DealerSuite360 aims to be to RV dealerships. One platform. Every service. AI-powered.
+Think of it like this: Shopify is to e-commerce what Dealer Suite 360 aims to be to RV dealerships. One platform. Every service. AI-powered.
 
 ### Brand Architecture
-- **RVClaims.ca** = the brand dealers see, subscribe to, and interact with (Canadian market)
-- **DealerSuite360** = the technology brand powering everything (North American expansion, US market)
-- On the site: **"Powered by Dealer Suite 360"** in footers only
-- Dealers are joining **RV Claims** — they NEVER "join Dealer Suite 360"
-- Same codebase serves both brands with different theming
+- **Dealer Suite 360 / dealersuite360.com** = the PRIMARY platform brand (North America)
+- **RVClaims.ca** = white-label deployment of the same platform for the Canadian market
+- Dealers in Canada see RVClaims.ca branding; dealers in the US see Dealer Suite 360 branding
+- The codebase powers both — different theming, same product
+- "Powered by Dealer Suite 360" appears in RVClaims.ca footers
 
 ### Business Model
 - **Two-sided SaaS platform**: Dealers (clients) subscribe → Operator (SaaS owner + team) delivers services
@@ -38,7 +38,7 @@ Think of it like this: Shopify is to e-commerce what RVClaims/DealerSuite360 aim
 - **No one in North America** offers an AI-powered, RV-specific, two-sided SaaS platform combining outsourced claims processing with a full dealership service suite
 - DMS incumbents (IDS-Astra, EverLogic, Lightspeed, DealerRock, Motility) run dealership operations but don't process claims for dealers and have no AI
 - Claims outsourcers (TBF/Jupiter, WPC) offer the service model but are manual, automotive-focused, with no SaaS platform
-- RVClaims sits in the gap: AI-powered platform + human expertise + full service ecosystem
+- Dealer Suite 360 sits in the gap: AI-powered platform + human expertise + full service ecosystem
 - TAM: ~7,400 RV dealerships across North America, ~$56B combined industry revenue
 - Moderate projection: 200 dealers by Year 3 = $4.2M annual revenue from claims alone; full modules push toward $25-50M+ by Year 5
 
@@ -89,19 +89,19 @@ Sold directly to RV owners, bypassing dealerships:
 
 ## PAGE ROLES — What Each Page Must Communicate
 
-### Public Marketing Site (rvclaims.ca)
+### Public Marketing Site (dealersuite360.com / rvclaims.ca)
 The homepage has 16 sections showcasing the FULL service ecosystem:
 NotificationBar → Navigation → HeroSection → MainServicesSection (4 pillars) → ClaimsSection (5 claim types) → RvTypesSection (10 types) → TechnologySection (AI platform) → FinancingSection → ExperienceSection (15 years, stats) → FIServicesSection → SupportingServicesSection (parts, tech, marketing, consignment) → PrivacyAssuranceSection → WarrantySection → ConsumerServicesSection (roadside, ext warranty, protection) → PartsSection → ContactSection → Footer
 
 Additional pages: /about, /services, /claims-processing, /financing, /warranty-extended-service, /fi-services, /rv-coverage, /technology, /revenue-services, /network-marketplace, /live-auctions, /pricing, /contact, /privacy-policy
 
 ### Sign Up Page
-- Dealers are creating an account with **RV Claims** (not Dealer Suite 360)
+- Dealers are creating an account with **Dealer Suite 360** (or RVClaims.ca on the Canadian white-label)
 - Left panel MUST showcase the FULL platform — all 16+ services, not just claims
 - Form captures: personal info + dealership info
 - NO subscription/plan selection on this page — that happens inside the panel after operator approval
 - Onboarding flow: Signup → Operator verifies dealership → Approval (within 1 business day) → First login → Onboarding wizard → Plan selection → Payment → Workspace activated
-- "Powered by Dealer Suite 360" in footer only
+- "Powered by Dealer Suite 360" in RVClaims.ca footer only
 
 ### Dealer Login (/client-login)
 - For **Dealer Owner** and **Dealer Staff** roles
