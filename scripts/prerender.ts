@@ -46,8 +46,19 @@ const CONFIG = {
     { path: '/privacy-policy',      file: 'privacy-policy.html' },
     { path: '/signup',              file: 'signup.html' },
     { path: '/rv-types',            file: 'rv-types.html' },
+    { path: '/blog',               file: 'blog/index.html' },
   ],
 };
+
+async function fetchBlogSlugs(baseUrl: string): Promise<string[]> {
+  try {
+    const res = await fetch(`${baseUrl}/api/blog?limit=100`);
+    const data = await res.json();
+    return (data.posts || []).map((p: any) => p.slug as string);
+  } catch {
+    return [];
+  }
+}
 
 async function prerender() {
   console.log('─────────────────────────────────────────');
@@ -59,6 +70,15 @@ async function prerender() {
   console.log('─────────────────────────────────────────\n');
 
   fs.mkdirSync(CONFIG.outputDir, { recursive: true });
+
+  // Append blog post routes dynamically
+  const blogSlugs = await fetchBlogSlugs(CONFIG.baseUrl);
+  if (blogSlugs.length > 0) {
+    console.log(`  Blog posts: ${blogSlugs.length} to prerender`);
+    for (const slug of blogSlugs) {
+      CONFIG.routes.push({ path: `/blog/${slug}`, file: `blog/${slug}.html` });
+    }
+  }
 
   const browser = await puppeteer.launch({
     headless: true,

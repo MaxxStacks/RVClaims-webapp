@@ -178,9 +178,9 @@ marketplace:['Service Marketplace','Manage services'],'svc-financing':['Financin
 'svc-warranty':['Warranty Plans','14 active'],'svc-warranty-new':['Add Warranty Plan','Register or sell'],
 'svc-parts':['Parts \u0026 Accessories','8 orders'],'svc-parts-detail':['PO-0038','Smith\u0027s RV'],'svc-parts-new':['New Parts Order','Request parts'],
 'mkt-members':['Marketplace Members','28 dealers'],'mkt-member-detail':['Member Detail','Dealer verification'],'mkt-member-signup':['New Application','Review & approve'],'mkt-listings':['All Listings','142 active'],'mkt-listing-detail':['Listing Detail','Unit details'],'mkt-transactions':['Transactions','Escrow & commissions'],'mkt-transaction-detail':['Transaction Detail','Escrow tracking'],'mkt-auctions':['Live Auctions','Manage auctions'],'mkt-auction-detail':['Auction Detail','Bidding & settlement'],'mkt-public-events':['Public Auction Events','Monthly public sales'],'mkt-public-event-detail':['Event Detail','Manage showcase'],
-billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u0026 Services','Billable items'],'add-product':['Add Product / Service','Create item'],'edit-product':['Edit Product / Service','Modify item'],'create-invoice':['Create Invoice','New invoice'],reports:['Revenue Reports','Analytics'],notifications:['Notifications','Compose'],users:['Users \u0026 Roles','Manage users'],settings:['Settings','Platform config'],changelog:['Changelog','Version history \u0026 roadmap'],'add-feature-req':['Feature Request','Submit new request']};
+billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u0026 Services','Billable items'],'add-product':['Add Product / Service','Create item'],'edit-product':['Edit Product / Service','Modify item'],'create-invoice':['Create Invoice','New invoice'],reports:['Revenue Reports','Analytics'],notifications:['Notifications','Compose'],users:['Users \u0026 Roles','Manage users'],settings:['Settings','Platform config'],changelog:['Changelog','Version history \u0026 roadmap'],'add-feature-req':['Feature Request','Submit new request'],'blog':['Blog Management','Content & publishing'],'blog-drafts':['Blog Drafts','Review AI drafts'],'blog-queue':['Content Queue','Scheduled generation'],'blog-published':['Published Posts','Live content']};
 
-  const parents: Record<string, string> = {'dealer-detail':'dealers','claim-detail':'claims','batch-review':'queue','unit-detail':'units','add-dealer':'dealers','add-unit':'units','create-invoice':'billing','add-product':'products','edit-product':'products','add-feature-req':'changelog','svc-financing-detail':'svc-financing','svc-financing-new':'svc-financing','svc-fi-detail':'svc-fi','svc-fi-new':'svc-fi','svc-warranty-new':'svc-warranty','svc-parts-detail':'svc-parts','svc-parts-new':'svc-parts','mkt-member-detail':'mkt-members','mkt-member-signup':'mkt-members','mkt-listing-detail':'mkt-listings','mkt-transaction-detail':'mkt-transactions','mkt-auction-detail':'mkt-auctions','mkt-public-event-detail':'mkt-public-events'};
+  const parents: Record<string, string> = {'dealer-detail':'dealers','claim-detail':'claims','batch-review':'queue','unit-detail':'units','add-dealer':'dealers','add-unit':'units','create-invoice':'billing','add-product':'products','edit-product':'products','add-feature-req':'changelog','blog-drafts':'blog','blog-queue':'blog','blog-published':'blog','svc-financing-detail':'svc-financing','svc-financing-new':'svc-financing','svc-fi-detail':'svc-fi','svc-fi-new':'svc-fi','svc-warranty-new':'svc-warranty','svc-parts-detail':'svc-parts','svc-parts-new':'svc-parts','mkt-member-detail':'mkt-members','mkt-member-signup':'mkt-members','mkt-listing-detail':'mkt-listings','mkt-transaction-detail':'mkt-transactions','mkt-auction-detail':'mkt-auctions','mkt-public-event-detail':'mkt-public-events'};
 
   useEffect(() => { if (theme === 'dark') document.documentElement.setAttribute('data-theme', 'dark'); }, []);
 
@@ -548,7 +548,8 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
       <div className={`nav-item ${isNavActive('notifications') ? 'active' : ''}`} onClick={() => showPage('notifications')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>Notifications</div>
       <div className={`nav-item ${isNavActive('users') ? 'active' : ''}`} onClick={() => showPage('users')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Users & Roles</div>
       <div className={`nav-item ${isNavActive('settings') ? 'active' : ''}`} onClick={() => showPage('settings')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>Settings</div>
-      <div className={`nav-item ${isNavActive('changelog') ? 'active' : ''}`} onClick={() => showPage('changelog')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Changelog</div></div>
+      <div className={`nav-item ${isNavActive('changelog') ? 'active' : ''}`} onClick={() => showPage('changelog')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Changelog</div>
+      <div className={`nav-item ${isNavActive('blog') ? 'active' : ''}`} onClick={() => showPage('blog')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>Blog</div></div>
   </div>
   <div className="sidebar-footer"><div className="user-info" style={{cursor: 'pointer'}} onClick={() => showPage('settings')}><div className="user-avatar" id="op-user-avatar">JD</div><div><div className="user-name">Jonathan D.</div><div className="user-role">Operator Admin</div></div></div><button onClick={async () => { await logout(); window.location.href = '/'; }} style={{width:'100%',marginTop:8,padding:'7px 12px',background:'none',border:'1px solid #e0e0e0',borderRadius:6,fontSize:12,color:'#888',cursor:'pointer',fontFamily:'inherit',textAlign:'left' as const,display:'flex',alignItems:'center',gap:6}}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sign Out</button></div>
 </nav>
@@ -1688,6 +1689,55 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
 
 <OperatorMarketplacePages activePage={activePage} showPage={showPage} />
 <OperatorPublicAuctionPages activePage={activePage} showPage={showPage} />
+
+{/* ─── BLOG MANAGEMENT ─── */}
+<div className={`page ${activePage === 'blog' ? 'active' : ''}`} id="page-blog">
+  <div className="page-header"><h2>Blog Management</h2><p>AI-generated content pipeline and publishing control</p></div>
+  <div className="stats-row">
+    <div className="stat-card"><div className="stat-val" id="blog-stat-published">—</div><div className="stat-label">Published Posts</div></div>
+    <div className="stat-card"><div className="stat-val" id="blog-stat-review">—</div><div className="stat-label">Awaiting Review</div></div>
+    <div className="stat-card"><div className="stat-val" id="blog-stat-queued">—</div><div className="stat-label">Queued Topics</div></div>
+    <div className="stat-card"><div className="stat-val" id="blog-stat-views">—</div><div className="stat-label">Total Views</div></div>
+  </div>
+  <div className="tab-bar">
+    <button className="tab-btn active" onClick={e => { (e.currentTarget as HTMLElement).closest('.tab-bar')?.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); e.currentTarget.classList.add('active'); showPage('blog-queue'); }}>Content Queue</button>
+    <button className="tab-btn" onClick={e => { (e.currentTarget as HTMLElement).closest('.tab-bar')?.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); e.currentTarget.classList.add('active'); showPage('blog-drafts'); }}>Drafts / Review</button>
+    <button className="tab-btn" onClick={e => { (e.currentTarget as HTMLElement).closest('.tab-bar')?.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); e.currentTarget.classList.add('active'); showPage('blog-published'); }}>Published</button>
+  </div>
+</div>
+
+<div className={`page ${activePage === 'blog-queue' ? 'active' : ''}`} id="page-blog-queue">
+  <div className="detail-header"><button className="detail-back" onClick={() => showPage('blog')}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6"/></svg></button><div className="detail-info"><div className="detail-title">Content Queue</div><div className="detail-meta">Topics scheduled for AI generation</div></div></div>
+  <div className="pn">
+    <table style={{width:'100%'}}><thead><tr>
+      <th>Topic</th><th>Keyword</th><th>Category</th><th>Scheduled</th><th>Status</th><th>Action</th>
+    </tr></thead><tbody>
+      <tr><td colSpan={6} style={{textAlign:'center',padding:'32px 16px',color:'#bbb',fontSize:13}}>Loading content queue… Connect to API to view scheduled topics.</td></tr>
+    </tbody></table>
+  </div>
+</div>
+
+<div className={`page ${activePage === 'blog-drafts' ? 'active' : ''}`} id="page-blog-drafts">
+  <div className="detail-header"><button className="detail-back" onClick={() => showPage('blog')}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6"/></svg></button><div className="detail-info"><div className="detail-title">Drafts / Review</div><div className="detail-meta">AI-generated posts awaiting approval</div></div></div>
+  <div className="pn">
+    <table style={{width:'100%'}}><thead><tr>
+      <th>Title</th><th>Category</th><th>Words</th><th>Read Time</th><th>Created</th><th>Actions</th>
+    </tr></thead><tbody>
+      <tr><td colSpan={6} style={{textAlign:'center',padding:'32px 16px',color:'#bbb',fontSize:13}}>No drafts pending review. New AI-generated drafts appear here after each generation run.</td></tr>
+    </tbody></table>
+  </div>
+</div>
+
+<div className={`page ${activePage === 'blog-published' ? 'active' : ''}`} id="page-blog-published">
+  <div className="detail-header"><button className="detail-back" onClick={() => showPage('blog')}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6"/></svg></button><div className="detail-info"><div className="detail-title">Published Posts</div><div className="detail-meta">Live on /blog — visible to search engines</div></div></div>
+  <div className="pn">
+    <table style={{width:'100%'}}><thead><tr>
+      <th>Title</th><th>Category</th><th>Published</th><th>Views</th><th>Actions</th>
+    </tr></thead><tbody>
+      <tr><td colSpan={5} style={{textAlign:'center',padding:'32px 16px',color:'#bbb',fontSize:13}}>No published posts yet. Approve a draft to publish it live.</td></tr>
+    </tbody></table>
+  </div>
+</div>
 
 
 

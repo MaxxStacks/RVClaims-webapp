@@ -84,6 +84,7 @@ const ROUTE_MAP: Record<string, string> = {
   '/privacy-policy':      'privacy-policy.html',
   '/signup':              'signup.html',
   '/rv-types':            'rv-types.html',
+  '/blog':               'blog/index.html',
 };
 
 function isCrawler(userAgent: string | undefined): boolean {
@@ -102,7 +103,15 @@ export function crawlerMiddleware(prerenderedDir?: string) {
     }
 
     const urlPath = req.path.replace(/\/+$/, '') || '/';
-    const fileName = ROUTE_MAP[urlPath];
+    let fileName = ROUTE_MAP[urlPath];
+
+    // Handle dynamic /blog/:slug routes
+    if (!fileName && urlPath.startsWith('/blog/')) {
+      const slug = urlPath.replace('/blog/', '');
+      if (slug && /^[a-z0-9-]+$/.test(slug)) {
+        fileName = `blog/${slug}.html`;
+      }
+    }
 
     if (!fileName) {
       // Portal routes (/operator, /dealer, /portal, /bidder) fall through intentionally

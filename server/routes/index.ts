@@ -21,6 +21,7 @@ import marketplaceRoutes from './marketplace';
 import auctionRoutes from './auctions';
 import membershipRoutes from './membership';
 import publicAuctionRoutes from './public-auctions';
+import blogRoutes from './blog';
 
 // Import existing routes for backward compat
 import { storage } from "../storage";
@@ -76,6 +77,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.use('/api/auctions', auctionRoutes);
   app.use('/api/membership', membershipRoutes);
   app.use('/api/public-auctions', publicAuctionRoutes);
+  app.use('/api/blog', blogRoutes);
 
   // ==================== EXISTING ROUTES (backward compat) ====================
 

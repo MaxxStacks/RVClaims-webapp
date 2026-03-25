@@ -8,6 +8,7 @@ import path from "path";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import { registerRoutes } from "./routes/index";
+import { initBlogCron } from "./blog/cron";
 import { setupVite, serveStatic, log } from "./vite";
 
 const app = express();
@@ -82,6 +83,7 @@ app.use((req, res, next) => {
   const server = await registerRoutes(app);
 
   initWebSocket(server);
+  initBlogCron();
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
     const status = err.status || err.statusCode || 500;

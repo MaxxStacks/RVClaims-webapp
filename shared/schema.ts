@@ -2,7 +2,7 @@
 // 22 tables · Drizzle ORM · Neon PostgreSQL
 
 import { sql } from "drizzle-orm";
-import { pgTable, text, varchar, timestamp, boolean, integer, decimal, uuid, jsonb, date, index } from "drizzle-orm/pg-core";
+import { pgTable, text, varchar, timestamp, boolean, integer, decimal, uuid, jsonb, date, index, serial } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
@@ -695,6 +695,71 @@ export const bookings = pgTable("bookings", {
 export const insertBookingSchema = createInsertSchema(bookings).omit({ id: true, createdAt: true, status: true });
 export type InsertBooking = z.infer<typeof insertBookingSchema>;
 export type Booking = typeof bookings.$inferSelect;
+
+// ==================== 25. BLOG POSTS ====================
+
+export const blogPosts = pgTable('blog_posts', {
+  id: serial('id').primaryKey(),
+  title: varchar('title', { length: 255 }).notNull(),
+  slug: varchar('slug', { length: 255 }).notNull().unique(),
+  excerpt: text('excerpt').notNull(),
+  content: text('content').notNull(),
+  coverImageUrl: varchar('cover_image_url', { length: 500 }),
+  metaTitle: varchar('meta_title', { length: 70 }),
+  metaDescription: varchar('meta_description', { length: 160 }),
+  metaKeywords: varchar('meta_keywords', { length: 500 }),
+  canonicalUrl: varchar('canonical_url', { length: 500 }),
+  category: varchar('category', { length: 100 }).notNull(),
+  tags: text('tags').array(),
+  targetKeyword: varchar('target_keyword', { length: 200 }),
+  status: varchar('status', { length: 20 }).notNull().default('draft'),
+  publishedAt: timestamp('published_at'),
+  scheduledFor: timestamp('scheduled_for'),
+  generatedBy: varchar('generated_by', { length: 50 }).default('anthropic'),
+  promptTemplate: varchar('prompt_template', { length: 100 }),
+  generationModel: varchar('generation_model', { length: 50 }).default('claude-sonnet-4-20250514'),
+  wordCount: integer('word_count'),
+  readTimeMinutes: integer('read_time_minutes'),
+  viewCount: integer('view_count').default(0),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+});
+
+// ==================== 26. BLOG CATEGORIES ====================
+
+export const blogCategories = pgTable('blog_categories', {
+  id: serial('id').primaryKey(),
+  name: varchar('name', { length: 100 }).notNull().unique(),
+  slug: varchar('slug', { length: 100 }).notNull().unique(),
+  description: text('description'),
+  sortOrder: integer('sort_order').default(0),
+});
+
+// ==================== 27. CONTENT QUEUE ====================
+
+export const contentQueue = pgTable('content_queue', {
+  id: serial('id').primaryKey(),
+  title: varchar('title', { length: 255 }).notNull(),
+  targetKeyword: varchar('target_keyword', { length: 200 }).notNull(),
+  category: varchar('category', { length: 100 }).notNull(),
+  promptTemplate: varchar('prompt_template', { length: 100 }).notNull(),
+  customContext: text('custom_context'),
+  scheduledGeneration: timestamp('scheduled_generation').notNull(),
+  status: varchar('status', { length: 20 }).notNull().default('queued'),
+  generatedPostId: integer('generated_post_id').references(() => blogPosts.id),
+  errorMessage: text('error_message'),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+});
+
+export const insertBlogPostSchema = createInsertSchema(blogPosts).omit({ id: true, createdAt: true, updatedAt: true });
+export const insertBlogCategorySchema = createInsertSchema(blogCategories).omit({ id: true });
+export const insertContentQueueSchema = createInsertSchema(contentQueue).omit({ id: true, createdAt: true, updatedAt: true });
+
+export type BlogPost = typeof blogPosts.$inferSelect;
+export type InsertBlogPost = z.infer<typeof insertBlogPostSchema>;
+export type BlogCategory = typeof blogCategories.$inferSelect;
+export type ContentQueueItem = typeof contentQueue.$inferSelect;
 
 // Re-export UserRole for client-side consumers that import from @shared/schema
 export type { UserRole } from "./constants";
