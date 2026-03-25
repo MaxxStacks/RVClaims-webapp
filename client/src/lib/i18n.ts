@@ -11,6 +11,7 @@ export const translations = {
       contact: "Contact",
       warrantyExtended: "Warranty & Extended Services",
       findDealer: "Find a Dealer",
+      ownerServices: "Owner Services",
       mainServices: "Main Services",
       supportingServices: "Supporting Services",
       parts: "Parts & Components",
@@ -1138,7 +1139,7 @@ export const translations = {
     mobileMenu: {
       loginHeading: "Login",
       loginSubtext: "Access your account",
-      dealer: "Dealer",
+      dealer: "Dealer Portal",
       client: "Client"
     },
 
@@ -1687,6 +1688,7 @@ export const translations = {
       contact: "Contact",
       warrantyExtended: "Garantie et services étendus",
       findDealer: "Trouver un concessionnaire",
+      ownerServices: "Services aux propriétaires",
       mainServices: "Services principaux",
       supportingServices: "Services de soutien",
       parts: "Pièces et composants",
@@ -2814,7 +2816,7 @@ export const translations = {
     mobileMenu: {
       loginHeading: "Connexion",
       loginSubtext: "Accédez à votre compte",
-      dealer: "Concessionnaire",
+      dealer: "Portail concessionnaire",
       client: "Client"
     },
 

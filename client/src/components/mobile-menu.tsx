@@ -255,7 +255,7 @@ export function MobileMenu() {
                 style={{ color: '#1e293b' }}
                 data-testid="button-find-dealer"
               >
-                <span>{t('navigation.findDealer')}</span>
+                <span>{t('navigation.ownerServices')}</span>
                 <ChevronRight size={16} className={`transition-transform ${expandedMenu === 'findDealer' ? 'rotate-90' : ''}`} />
               </button>
               {expandedMenu === 'findDealer' && (
