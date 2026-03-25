@@ -4,6 +4,7 @@ import { Router } from 'express';
 import { db } from '../db';
 import { blogPosts, contentQueue } from '@shared/schema';
 import { eq, desc, and, sql } from 'drizzle-orm';
+import { requireAuth, requireRole } from '../middleware/requireAuth';
 
 const router = Router();
 
@@ -59,7 +60,7 @@ router.get('/', async (req, res) => {
 
 // GET /api/blog/admin/drafts — All posts (operator only)
 // NOTE: placed before /:slug to avoid route conflict
-router.get('/admin/drafts', async (req, res) => {
+router.get('/admin/drafts', requireAuth, requireRole('operator_admin', 'operator_staff'), async (req, res) => {
   try {
     const status = req.query.status as string;
     const conditions = status ? [eq(blogPosts.status, status)] : [];
@@ -77,7 +78,7 @@ router.get('/admin/drafts', async (req, res) => {
 });
 
 // GET /api/blog/admin/queue — Content queue (operator only)
-router.get('/admin/queue', async (req, res) => {
+router.get('/admin/queue', requireAuth, requireRole('operator_admin', 'operator_staff'), async (req, res) => {
   try {
     const queue = await db
       .select()
@@ -91,7 +92,7 @@ router.get('/admin/queue', async (req, res) => {
 });
 
 // POST /api/blog/admin/queue — Add topic to queue
-router.post('/admin/queue', async (req, res) => {
+router.post('/admin/queue', requireAuth, requireRole('operator_admin', 'operator_staff'), async (req, res) => {
   try {
     const { title, targetKeyword, category, promptTemplate, customContext, scheduledGeneration } = req.body;
 
@@ -115,7 +116,7 @@ router.post('/admin/queue', async (req, res) => {
 });
 
 // POST /api/blog/admin/generate-now/:id — Trigger immediate generation
-router.post('/admin/generate-now/:id', async (req, res) => {
+router.post('/admin/generate-now/:id', requireAuth, requireRole('operator_admin', 'operator_staff'), async (req, res) => {
   try {
     const { processContentQueue } = await import('../blog/generate-post');
 
@@ -132,7 +133,7 @@ router.post('/admin/generate-now/:id', async (req, res) => {
 });
 
 // PUT /api/blog/admin/:id — Update post
-router.put('/admin/:id', async (req, res) => {
+router.put('/admin/:id', requireAuth, requireRole('operator_admin', 'operator_staff'), async (req, res) => {
   try {
     const id = parseInt(req.params.id);
     const updates = { ...req.body };
@@ -157,8 +158,8 @@ router.put('/admin/:id', async (req, res) => {
   }
 });
 
-// POST /api/blog/admin/:id/approve — Approve for publishing
-router.post('/admin/:id/approve', async (req, res) => {
+// POST /api/blog/admin/:id/approve — Approve for publishing (operator_admin only)
+router.post('/admin/:id/approve', requireAuth, requireRole('operator_admin'), async (req, res) => {
   try {
     const id = parseInt(req.params.id);
     const { scheduledFor } = req.body;
@@ -180,8 +181,8 @@ router.post('/admin/:id/approve', async (req, res) => {
   }
 });
 
-// POST /api/blog/admin/:id/archive — Archive post
-router.post('/admin/:id/archive', async (req, res) => {
+// POST /api/blog/admin/:id/archive — Archive post (operator_admin only)
+router.post('/admin/:id/archive', requireAuth, requireRole('operator_admin'), async (req, res) => {
   try {
     const id = parseInt(req.params.id);
 

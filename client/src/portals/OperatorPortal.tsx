@@ -1761,7 +1761,7 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
               <td><span className="mfr">{q.targetKeyword}</span></td>
               <td>{q.category}</td>
               <td>{q.scheduledGeneration ? new Date(q.scheduledGeneration).toLocaleDateString('en-CA',{month:'short',day:'numeric',year:'numeric'}) : '—'}</td>
-              <td><span className="bg" style={{background: q.status==='generated'?'#f0fdf4':q.status==='generating'?'#eff6ff':q.status==='failed'?'#fef2f2':'#fefce8', color: q.status==='generated'?'#16a34a':q.status==='generating'?'var(--brand)':q.status==='failed'?'#dc2626':'#92400e'}}>{q.status}</span></td>
+              <td><span className="bg" style={{background: q.status==='generated'?'#f0fdf4':q.status==='generating'?'#eff6ff':q.status==='failed'?'#fef2f2':'#fefce8', color: q.status==='generated'?'#16a34a':q.status==='generating'?'var(--brand)':q.status==='failed'?'#dc2626':'#92400e'}}>{q.status}</span>{q.status==='failed' && q.errorMessage && <div style={{fontSize:11,color:'#dc2626',marginTop:4,maxWidth:220,wordBreak:'break-word'}}>{q.errorMessage}</div>}</td>
               <td style={{whiteSpace:'nowrap'}}><button className="btn btn-p btn-sm" onClick={() => handleBlogGenerateNow(q.id)} disabled={q.status==='generating'}>Generate Now</button></td>
             </tr>
           ))

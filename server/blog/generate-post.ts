@@ -48,7 +48,7 @@ Respond ONLY with valid JSON in this exact structure (no markdown, no backticks,
 }`;
 
   const response = await anthropic.messages.create({
-    model: 'claude-sonnet-4-20250514',
+    model: 'claude-sonnet-4-6',
     max_tokens: 4096,
     system: template.systemPrompt,
     messages: [{ role: 'user', content: userPrompt }],
@@ -110,7 +110,7 @@ export async function processContentQueue(): Promise<void> {
           status: 'review',
           generatedBy: 'anthropic',
           promptTemplate: item.promptTemplate,
-          generationModel: 'claude-sonnet-4-20250514',
+          generationModel: 'claude-sonnet-4-6',
           wordCount: result.wordCount,
           readTimeMinutes: result.readTimeMinutes,
           createdAt: now,
