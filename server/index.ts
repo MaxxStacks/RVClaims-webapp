@@ -1,5 +1,6 @@
 import "dotenv/config";
 import express, { type Request, Response, NextFunction } from "express";
+import { crawlerMiddleware } from "./middleware/crawler-middleware";
 import cookieParser from "cookie-parser";
 import compression from "compression";
 import { initWebSocket } from "./lib/websocket";
@@ -92,6 +93,9 @@ app.use((req, res, next) => {
   // importantly only setup vite in development and after
   // setting up all the other routes so the catch-all route
   // doesn't interfere with the other routes
+  // ─── SEO: Serve pre-rendered HTML to crawlers ───
+  app.use(crawlerMiddleware());
+
   if (app.get("env") === "development") {
     await setupVite(app, server);
   } else {

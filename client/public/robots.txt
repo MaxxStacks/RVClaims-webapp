@@ -1,13 +1,20 @@
 User-agent: *
 Allow: /
 
-# Block portal and auth routes — not for public indexing
+# Block portal, auth, and API routes — not for public indexing
+Disallow: /api/
+Disallow: /auth/
+Disallow: /admin/
 Disallow: /operator/
+Disallow: /operator
 Disallow: /dealer/
 Disallow: /portal/
 Disallow: /bidder/
-Disallow: /operator
 Disallow: /bidder-login
+Disallow: /client-login
+Disallow: /dealer-login
+Disallow: /operator-login
+Disallow: /reset-password
 
 # Allow AI crawlers full access to public content
 User-agent: GPTBot
@@ -29,3 +36,5 @@ User-agent: Applebot
 Allow: /
 
 Sitemap: https://dealersuite360.com/sitemap.xml
+
+# AI Crawler Guidance — see https://dealersuite360.com/llms.txt
