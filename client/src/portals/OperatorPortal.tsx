@@ -42,6 +42,10 @@ export default function OperatorPortal() {
   const [opProducts, setOpProducts] = useState<any[]>([]);
   const [opFeatureRequests, setOpFeatureRequests] = useState<any[]>([]);
   const [opFrcCodes, setOpFrcCodes] = useState<any[]>([]);
+  const [blogDrafts, setBlogDrafts] = useState<any[]>([]);
+  const [blogQueue, setBlogQueue] = useState<any[]>([]);
+  const [blogTab, setBlogTab] = useState<'queue'|'drafts'|'published'>('queue');
+  const [blogSearch, setBlogSearch] = useState('');
   const [dataError, setDataError] = useState<string | null>(null);
 
   // ─── Settings save feedback ────────────────────────────────────────────────
@@ -178,9 +182,9 @@ marketplace:['Service Marketplace','Manage services'],'svc-financing':['Financin
 'svc-warranty':['Warranty Plans','14 active'],'svc-warranty-new':['Add Warranty Plan','Register or sell'],
 'svc-parts':['Parts \u0026 Accessories','8 orders'],'svc-parts-detail':['PO-0038','Smith\u0027s RV'],'svc-parts-new':['New Parts Order','Request parts'],
 'mkt-members':['Marketplace Members','28 dealers'],'mkt-member-detail':['Member Detail','Dealer verification'],'mkt-member-signup':['New Application','Review & approve'],'mkt-listings':['All Listings','142 active'],'mkt-listing-detail':['Listing Detail','Unit details'],'mkt-transactions':['Transactions','Escrow & commissions'],'mkt-transaction-detail':['Transaction Detail','Escrow tracking'],'mkt-auctions':['Live Auctions','Manage auctions'],'mkt-auction-detail':['Auction Detail','Bidding & settlement'],'mkt-public-events':['Public Auction Events','Monthly public sales'],'mkt-public-event-detail':['Event Detail','Manage showcase'],
-billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u0026 Services','Billable items'],'add-product':['Add Product / Service','Create item'],'edit-product':['Edit Product / Service','Modify item'],'create-invoice':['Create Invoice','New invoice'],reports:['Revenue Reports','Analytics'],notifications:['Notifications','Compose'],users:['Users \u0026 Roles','Manage users'],settings:['Settings','Platform config'],changelog:['Changelog','Version history \u0026 roadmap'],'add-feature-req':['Feature Request','Submit new request'],'blog':['Blog Management','Content & publishing'],'blog-drafts':['Blog Drafts','Review AI drafts'],'blog-queue':['Content Queue','Scheduled generation'],'blog-published':['Published Posts','Live content']};
+billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u0026 Services','Billable items'],'add-product':['Add Product / Service','Create item'],'edit-product':['Edit Product / Service','Modify item'],'create-invoice':['Create Invoice','New invoice'],reports:['Revenue Reports','Analytics'],notifications:['Notifications','Compose'],users:['Users \u0026 Roles','Manage users'],settings:['Settings','Platform config'],changelog:['Changelog','Version history \u0026 roadmap'],'add-feature-req':['Feature Request','Submit new request'],'blog':['Blog Management','AI content pipeline']};
 
-  const parents: Record<string, string> = {'dealer-detail':'dealers','claim-detail':'claims','batch-review':'queue','unit-detail':'units','add-dealer':'dealers','add-unit':'units','create-invoice':'billing','add-product':'products','edit-product':'products','add-feature-req':'changelog','blog-drafts':'blog','blog-queue':'blog','blog-published':'blog','svc-financing-detail':'svc-financing','svc-financing-new':'svc-financing','svc-fi-detail':'svc-fi','svc-fi-new':'svc-fi','svc-warranty-new':'svc-warranty','svc-parts-detail':'svc-parts','svc-parts-new':'svc-parts','mkt-member-detail':'mkt-members','mkt-member-signup':'mkt-members','mkt-listing-detail':'mkt-listings','mkt-transaction-detail':'mkt-transactions','mkt-auction-detail':'mkt-auctions','mkt-public-event-detail':'mkt-public-events'};
+  const parents: Record<string, string> = {'dealer-detail':'dealers','claim-detail':'claims','batch-review':'queue','unit-detail':'units','add-dealer':'dealers','add-unit':'units','create-invoice':'billing','add-product':'products','edit-product':'products','add-feature-req':'changelog','svc-financing-detail':'svc-financing','svc-financing-new':'svc-financing','svc-fi-detail':'svc-fi','svc-fi-new':'svc-fi','svc-warranty-new':'svc-warranty','svc-parts-detail':'svc-parts','svc-parts-new':'svc-parts','mkt-member-detail':'mkt-members','mkt-member-signup':'mkt-members','mkt-listing-detail':'mkt-listings','mkt-transaction-detail':'mkt-transactions','mkt-auction-detail':'mkt-auctions','mkt-public-event-detail':'mkt-public-events'};
 
   useEffect(() => { if (theme === 'dark') document.documentElement.setAttribute('data-theme', 'dark'); }, []);
 
@@ -232,6 +236,13 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
         } else if (activePage === 'changelog') {
           const d = await apiFetch<any>('/api/feature-requests');
           setOpFeatureRequests(d.featureRequests || []);
+        } else if (activePage === 'blog') {
+          const [draftsData, queueData] = await Promise.all([
+            apiFetch<any>('/api/blog/admin/drafts'),
+            apiFetch<any>('/api/blog/admin/queue'),
+          ]);
+          setBlogDrafts(Array.isArray(draftsData) ? draftsData : []);
+          setBlogQueue(Array.isArray(queueData) ? queueData : []);
         }
       } catch (err: any) {
         setDataError(err?.message || 'Failed to load data');
@@ -402,6 +413,14 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
     return true;
   });
 
+  const blogPublishedPosts = blogDrafts.filter((p: any) => p.status === 'published');
+  const blogReviewPosts = blogDrafts.filter((p: any) => p.status === 'review' || p.status === 'draft');
+  const blogTotalViews = blogDrafts.reduce((sum: number, p: any) => sum + (p.viewCount || 0), 0);
+  const blogSearchLow = blogSearch.toLowerCase();
+  const filteredBlogQueue = blogQueue.filter((q: any) => !blogSearch || q.title?.toLowerCase().includes(blogSearchLow) || q.targetKeyword?.toLowerCase().includes(blogSearchLow));
+  const filteredBlogDrafts = blogReviewPosts.filter((p: any) => !blogSearch || p.title?.toLowerCase().includes(blogSearchLow));
+  const filteredBlogPublished = blogPublishedPosts.filter((p: any) => !blogSearch || p.title?.toLowerCase().includes(blogSearchLow));
+
   const handleSubmitFeatureRequest = async () => {
     if (!featureReqForm.title) return;
     setFeatureReqSaving(true);
@@ -433,6 +452,31 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
       await apiFetch('/api/users/invite', { method: 'POST', body: JSON.stringify({ email, role }) });
       const d = await apiFetch<any>('/api/users');
       setOpUsers(d.users || []);
+    } catch { /* ignore */ }
+  };
+
+  const handleBlogApprove = async (id: number) => {
+    try {
+      await apiFetch(`/api/blog/admin/${id}/approve`, { method: 'POST' });
+      const data = await apiFetch<any>('/api/blog/admin/drafts');
+      setBlogDrafts(Array.isArray(data) ? data : []);
+    } catch { /* ignore */ }
+  };
+
+  const handleBlogArchive = async (id: number) => {
+    if (!confirm('Archive this post? It will be removed from the public blog.')) return;
+    try {
+      await apiFetch(`/api/blog/admin/${id}/archive`, { method: 'POST' });
+      const data = await apiFetch<any>('/api/blog/admin/drafts');
+      setBlogDrafts(Array.isArray(data) ? data : []);
+    } catch { /* ignore */ }
+  };
+
+  const handleBlogGenerateNow = async (id: number) => {
+    try {
+      await apiFetch(`/api/blog/admin/generate-now/${id}`, { method: 'POST' });
+      const data = await apiFetch<any>('/api/blog/admin/queue');
+      setBlogQueue(Array.isArray(data) ? data : []);
     } catch { /* ignore */ }
   };
 
@@ -1692,51 +1736,89 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
 
 {/* ─── BLOG MANAGEMENT ─── */}
 <div className={`page ${activePage === 'blog' ? 'active' : ''}`} id="page-blog">
-  <div className="page-header"><h2>Blog Management</h2><p>AI-generated content pipeline and publishing control</p></div>
-  <div className="stats-row">
-    <div className="stat-card"><div className="stat-val" id="blog-stat-published">—</div><div className="stat-label">Published Posts</div></div>
-    <div className="stat-card"><div className="stat-val" id="blog-stat-review">—</div><div className="stat-label">Awaiting Review</div></div>
-    <div className="stat-card"><div className="stat-val" id="blog-stat-queued">—</div><div className="stat-label">Queued Topics</div></div>
-    <div className="stat-card"><div className="stat-val" id="blog-stat-views">—</div><div className="stat-label">Total Views</div></div>
+  <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:16,marginBottom:20}}>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Published Posts</div><div className="sc-v" style={{color:'#22c55e'}}>{blogPublishedPosts.length}</div></div>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Awaiting Review</div><div className="sc-v" style={{color:'#f59e0b'}}>{blogReviewPosts.length}</div></div>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Queued Topics</div><div className="sc-v">{blogQueue.length}</div></div>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Total Views</div><div className="sc-v">{blogTotalViews.toLocaleString()}</div></div>
   </div>
-  <div className="tab-bar">
-    <button className="tab-btn active" onClick={e => { (e.currentTarget as HTMLElement).closest('.tab-bar')?.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); e.currentTarget.classList.add('active'); showPage('blog-queue'); }}>Content Queue</button>
-    <button className="tab-btn" onClick={e => { (e.currentTarget as HTMLElement).closest('.tab-bar')?.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); e.currentTarget.classList.add('active'); showPage('blog-drafts'); }}>Drafts / Review</button>
-    <button className="tab-btn" onClick={e => { (e.currentTarget as HTMLElement).closest('.tab-bar')?.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); e.currentTarget.classList.add('active'); showPage('blog-published'); }}>Published</button>
+  <div className="tabs">
+    <div className={`tab ${blogTab === 'queue' ? 'active' : ''}`} onClick={() => { setBlogTab('queue'); setBlogSearch(''); }}>Content Queue ({blogQueue.length})</div>
+    <div className={`tab ${blogTab === 'drafts' ? 'active' : ''}`} onClick={() => { setBlogTab('drafts'); setBlogSearch(''); }}>Drafts / Review ({blogReviewPosts.length})</div>
+    <div className={`tab ${blogTab === 'published' ? 'active' : ''}`} onClick={() => { setBlogTab('published'); setBlogSearch(''); }}>Published ({blogPublishedPosts.length})</div>
   </div>
-</div>
 
-<div className={`page ${activePage === 'blog-queue' ? 'active' : ''}`} id="page-blog-queue">
-  <div className="detail-header"><button className="detail-back" onClick={() => showPage('blog')}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6"/></svg></button><div className="detail-info"><div className="detail-title">Content Queue</div><div className="detail-meta">Topics scheduled for AI generation</div></div></div>
-  <div className="pn">
-    <table style={{width:'100%'}}><thead><tr>
-      <th>Topic</th><th>Keyword</th><th>Category</th><th>Scheduled</th><th>Status</th><th>Action</th>
-    </tr></thead><tbody>
-      <tr><td colSpan={6} style={{textAlign:'center',padding:'32px 16px',color:'#bbb',fontSize:13}}>Loading content queue… Connect to API to view scheduled topics.</td></tr>
-    </tbody></table>
-  </div>
-</div>
+  {blogTab === 'queue' && (
+    <div className="pn" style={{borderTop:'none',borderRadius:'0 0 8px 8px'}}>
+      <div className="pn-h"><span className="pn-t">Content Queue</span><span className="pn-a" onClick={() => { const t = prompt('Topic title:'); const k = prompt('Target keyword:'); const c = prompt('Category (Warranty Guides, Inspections, Dealership Operations, Industry, Guides):') || 'Warranty Guides'; const p = prompt('Prompt template (manufacturer-warranty-guide, dealership-operations, pdi-inspection, industry-trends, how-to):') || 'manufacturer-warranty-guide'; if (t && k) apiFetch('/api/blog/admin/queue', { method: 'POST', body: JSON.stringify({ title: t, targetKeyword: k, category: c, promptTemplate: p, scheduledGeneration: new Date().toISOString() }) }).then(() => apiFetch<any>('/api/blog/admin/queue').then(d => setBlogQueue(Array.isArray(d) ? d : []))); }}>+ Add Topic</span></div>
+      <div className="filter-bar"><input type="text" placeholder="Search topics..." value={blogSearch} onChange={e => setBlogSearch(e.target.value)} /></div>
+      <div className="tw"><table><thead><tr><th>Topic</th><th>Target Keyword</th><th>Category</th><th>Scheduled</th><th>Status</th><th>Action</th></tr></thead><tbody>
+        {filteredBlogQueue.length === 0
+          ? <tr><td colSpan={6} style={{textAlign:'center',color:'#888',padding:20}}>{dataError ? dataError : blogQueue.length === 0 ? 'No topics queued. Add a topic to get started.' : 'No results match your search'}</td></tr>
+          : filteredBlogQueue.map((q: any) => (
+            <tr key={q.id}>
+              <td style={{fontWeight:500,maxWidth:260,whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>{q.title}</td>
+              <td><span className="mfr">{q.targetKeyword}</span></td>
+              <td>{q.category}</td>
+              <td>{q.scheduledGeneration ? new Date(q.scheduledGeneration).toLocaleDateString('en-CA',{month:'short',day:'numeric',year:'numeric'}) : '—'}</td>
+              <td><span className="bg" style={{background: q.status==='generated'?'#f0fdf4':q.status==='generating'?'#eff6ff':q.status==='failed'?'#fef2f2':'#fefce8', color: q.status==='generated'?'#16a34a':q.status==='generating'?'var(--brand)':q.status==='failed'?'#dc2626':'#92400e'}}>{q.status}</span></td>
+              <td style={{whiteSpace:'nowrap'}}><button className="btn btn-p btn-sm" onClick={() => handleBlogGenerateNow(q.id)} disabled={q.status==='generating'}>Generate Now</button></td>
+            </tr>
+          ))
+        }
+      </tbody></table></div>
+    </div>
+  )}
 
-<div className={`page ${activePage === 'blog-drafts' ? 'active' : ''}`} id="page-blog-drafts">
-  <div className="detail-header"><button className="detail-back" onClick={() => showPage('blog')}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6"/></svg></button><div className="detail-info"><div className="detail-title">Drafts / Review</div><div className="detail-meta">AI-generated posts awaiting approval</div></div></div>
-  <div className="pn">
-    <table style={{width:'100%'}}><thead><tr>
-      <th>Title</th><th>Category</th><th>Words</th><th>Read Time</th><th>Created</th><th>Actions</th>
-    </tr></thead><tbody>
-      <tr><td colSpan={6} style={{textAlign:'center',padding:'32px 16px',color:'#bbb',fontSize:13}}>No drafts pending review. New AI-generated drafts appear here after each generation run.</td></tr>
-    </tbody></table>
-  </div>
-</div>
+  {blogTab === 'drafts' && (
+    <div className="pn" style={{borderTop:'none',borderRadius:'0 0 8px 8px'}}>
+      <div className="pn-h"><span className="pn-t">Drafts / Review</span></div>
+      <div className="filter-bar"><input type="text" placeholder="Search drafts..." value={blogSearch} onChange={e => setBlogSearch(e.target.value)} /></div>
+      <div className="tw"><table><thead><tr><th>Title</th><th>Category</th><th>Template</th><th>Words</th><th>Read Time</th><th>Created</th><th>Actions</th></tr></thead><tbody>
+        {filteredBlogDrafts.length === 0
+          ? <tr><td colSpan={7} style={{textAlign:'center',color:'#888',padding:20}}>{dataError ? dataError : 'No drafts pending review. AI-generated drafts appear here after each Mon/Wed/Fri generation run.'}</td></tr>
+          : filteredBlogDrafts.map((p: any) => (
+            <tr key={p.id}>
+              <td style={{fontWeight:500,maxWidth:280,whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>{p.title}</td>
+              <td>{p.category}</td>
+              <td><span className="mfr">{p.promptTemplate || '—'}</span></td>
+              <td>{p.wordCount ? p.wordCount.toLocaleString() : '—'}</td>
+              <td>{p.readTimeMinutes ? `${p.readTimeMinutes} min` : '—'}</td>
+              <td>{p.createdAt ? new Date(p.createdAt).toLocaleDateString('en-CA',{month:'short',day:'numeric'}) : '—'}</td>
+              <td style={{whiteSpace:'nowrap'}}>
+                <button className="btn btn-s btn-sm" style={{marginRight:4}} onClick={() => handleBlogApprove(p.id)}>Approve & Publish</button>
+                <button className="btn btn-d btn-sm" onClick={() => handleBlogArchive(p.id)}>Archive</button>
+              </td>
+            </tr>
+          ))
+        }
+      </tbody></table></div>
+    </div>
+  )}
 
-<div className={`page ${activePage === 'blog-published' ? 'active' : ''}`} id="page-blog-published">
-  <div className="detail-header"><button className="detail-back" onClick={() => showPage('blog')}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6"/></svg></button><div className="detail-info"><div className="detail-title">Published Posts</div><div className="detail-meta">Live on /blog — visible to search engines</div></div></div>
-  <div className="pn">
-    <table style={{width:'100%'}}><thead><tr>
-      <th>Title</th><th>Category</th><th>Published</th><th>Views</th><th>Actions</th>
-    </tr></thead><tbody>
-      <tr><td colSpan={5} style={{textAlign:'center',padding:'32px 16px',color:'#bbb',fontSize:13}}>No published posts yet. Approve a draft to publish it live.</td></tr>
-    </tbody></table>
-  </div>
+  {blogTab === 'published' && (
+    <div className="pn" style={{borderTop:'none',borderRadius:'0 0 8px 8px'}}>
+      <div className="pn-h"><span className="pn-t">Published Posts</span></div>
+      <div className="filter-bar"><input type="text" placeholder="Search published..." value={blogSearch} onChange={e => setBlogSearch(e.target.value)} /></div>
+      <div className="tw"><table><thead><tr><th>Title</th><th>Category</th><th>Published</th><th>Views</th><th>Actions</th></tr></thead><tbody>
+        {filteredBlogPublished.length === 0
+          ? <tr><td colSpan={5} style={{textAlign:'center',color:'#888',padding:20}}>{dataError ? dataError : 'No published posts yet. Approve a draft to publish it live.'}</td></tr>
+          : filteredBlogPublished.map((p: any) => (
+            <tr key={p.id}>
+              <td style={{fontWeight:500,maxWidth:320,whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>{p.title}</td>
+              <td>{p.category}</td>
+              <td>{p.publishedAt ? new Date(p.publishedAt).toLocaleDateString('en-CA',{month:'short',day:'numeric',year:'numeric'}) : '—'}</td>
+              <td>{(p.viewCount || 0).toLocaleString()}</td>
+              <td style={{whiteSpace:'nowrap'}}>
+                <button className="btn btn-o btn-sm" style={{marginRight:4}} onClick={() => window.open(`/blog/${p.slug}`, '_blank')}>View</button>
+                <button className="btn btn-d btn-sm" onClick={() => handleBlogArchive(p.id)}>Archive</button>
+              </td>
+            </tr>
+          ))
+        }
+      </tbody></table></div>
+    </div>
+  )}
 </div>
 
 
