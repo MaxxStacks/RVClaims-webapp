@@ -1059,7 +1059,7 @@ export const translations = {
     privacyPolicyPage: {
       title: "Privacy Policy",
       description: "Dealer Suite 360's commitment to protecting your personal and business information under PIPEDA.",
-      effective: "Effective Date: January 1, 2026",
+      effective: "Effective Date: March 2026",
       s1Title: "1. About This Policy",
       s1Body: "Dealer Suite 360 (Dealer Suite 360) is committed to protecting the privacy of all individuals whose personal information we collect, use, and disclose. This Privacy Policy explains how we handle personal information in accordance with the Personal Information Protection and Electronic Documents Act (PIPEDA) and applicable provincial privacy legislation.",
       s2Title: "2. Information We Collect",
@@ -2736,7 +2736,7 @@ export const translations = {
     privacyPolicyPage: {
       title: "Politique de confidentialité",
       description: "L'engagement de Dealer Suite 360 à protéger vos informations personnelles et commerciales en vertu de la LPRPDE.",
-      effective: "Date d'entrée en vigueur : 1er janvier 2026",
+      effective: "Date d'entrée en vigueur : mars 2026",
       s1Title: "1. À propos de cette politique",
       s1Body: "Dealer Suite 360 (Dealer Suite 360) s'engage à protéger la confidentialité de toutes les personnes dont nous collectons, utilisons et divulguons les renseignements personnels. Cette politique explique comment nous traitons les renseignements personnels conformément à la Loi sur la protection des renseignements personnels et les documents électroniques (LPRPDE) et à la législation provinciale applicable.",
       s2Title: "2. Renseignements que nous collectons",

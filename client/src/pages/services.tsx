@@ -333,6 +333,40 @@ export default function Services() {
         </div>
       </section>
 
+      {/* Comparison Table */}
+      <section className="py-20 bg-muted/30">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Why Dealers Switch to DealerSuite360</h2>
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse">
+              <thead>
+                <tr className="border-b-2 border-border">
+                  <th className="text-left p-4 text-sm font-semibold text-muted-foreground uppercase tracking-wide w-1/3">Feature</th>
+                  <th className="text-center p-4 text-sm font-semibold text-muted-foreground uppercase tracking-wide">Traditional Methods</th>
+                  <th className="text-center p-4 text-sm font-semibold text-primary uppercase tracking-wide bg-primary/5 rounded-t-lg">DealerSuite360</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { feature: "Claims Processing", traditional: "Manual / Paper", ds360: "AI-Assisted" },
+                  { feature: "Processing Time", traditional: "Weeks", ds360: "Days" },
+                  { feature: "Manufacturer Expertise", traditional: "Generalist", ds360: "Specialized" },
+                  { feature: "Platform Access", traditional: "Phone / Email", ds360: "Real-Time Portal" },
+                  { feature: "Bilingual Support", traditional: "No", ds360: "Yes" },
+                  { feature: "Revenue Optimization", traditional: "None", ds360: "Built-In" },
+                ].map((row, i) => (
+                  <tr key={row.feature} className={`border-b border-border ${i % 2 === 0 ? "bg-background" : "bg-transparent"}`}>
+                    <td className="p-4 font-medium text-foreground">{row.feature}</td>
+                    <td className="p-4 text-center text-muted-foreground">{row.traditional}</td>
+                    <td className="p-4 text-center font-semibold text-primary bg-primary/5">{row.ds360}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
       {/* FAQ */}
       <section className="py-20 bg-white" id="faq">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -357,7 +391,7 @@ export default function Services() {
             {t('servicesPage.ctaDescription')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/signup">
+            <Link href="/sign-up">
               <Button size="lg" className="w-full sm:w-auto">
                 {t('servicesPage.ctaButton')}
               </Button>

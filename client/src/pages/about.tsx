@@ -65,7 +65,7 @@ export default function About() {
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <Button size="lg" asChild>
-                <Link href="/signup">{t('aboutPage.ctaButton')}</Link>
+                <Link href="/sign-up">{t('aboutPage.ctaButton')}</Link>
               </Button>
               <Button size="lg" variant="outline" asChild>
                 <Link href="/pricing">{t('aboutPage.ctaSecondary')}</Link>
@@ -153,6 +153,43 @@ export default function About() {
               <div className="bg-card rounded-xl p-6 border border-border text-center">
                 <p className="font-semibold">{t('aboutPage.development')}</p>
                 <p className="text-muted-foreground text-sm mt-1">Montreal, Quebec, Canada</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Our Vision */}
+      <section className="py-20 bg-muted/30">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-2 gap-16 items-center">
+            <div>
+              <div className="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-6">
+                <Globe className="w-7 h-7 text-primary" />
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold mb-6">Our Vision</h2>
+              <p className="text-lg text-muted-foreground leading-relaxed mb-6">
+                Growing beyond RV claims — DealerSuite360 is building the complete operating system for every dealership type across North America. From RV to powersports to marine, the platform that starts with claims becomes the platform that runs everything.
+              </p>
+              <p className="text-muted-foreground leading-relaxed">
+                Our roadmap extends the same AI-powered claims expertise, bilingual support, and integrated financial services to every segment of the recreational vehicle industry. One platform. Every dealer. Every market.
+              </p>
+            </div>
+            <div className="bg-card rounded-2xl p-10 border border-border">
+              <div className="space-y-6">
+                {[
+                  { label: "Now", text: "RV dealerships — warranty claims, F&I, financing, marketplace" },
+                  { label: "2027", text: "Powersports dealers — ATV, motorcycle, snowmobile coverage" },
+                  { label: "2028", text: "Marine dealers — boat and personal watercraft integration" },
+                  { label: "Beyond", text: "The universal dealership operating system for North America" },
+                ].map((item) => (
+                  <div key={item.label} className="flex items-start gap-4">
+                    <div className="min-w-[56px] px-2 py-1 bg-primary/10 rounded text-xs font-bold text-primary text-center">
+                      {item.label}
+                    </div>
+                    <p className="text-foreground text-sm leading-relaxed pt-1">{item.text}</p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>

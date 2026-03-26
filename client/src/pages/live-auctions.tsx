@@ -163,14 +163,11 @@ export default function LiveAuctions() {
   const [auctionState] = useState<AuctionState>(getAuctionState(now));
   const [userState]    = useState<UserState>('guest');
   const [openFaq, setOpenFaq] = useState<number | null>(null);
-  const [devMode, setDevMode] = useState(false);
-
   // Countdown to appropriate target
   const countdownTarget = auctionState === 'pre' ? AUCTION_START : AUCTION_END;
   const countdown = useCountdown(countdownTarget);
 
-  // In dev mode, allow toggling state
-  const displayState: AuctionState = devMode ? 'live' : auctionState;
+  const displayState: AuctionState = auctionState;
 
   const goToBidderPortal = () => navigate('/bidder-login');
 
@@ -179,19 +176,10 @@ export default function LiveAuctions() {
       <SeoMeta
         title="Public Auction — Dealer Suite 360"
         description="Bid on RV dealership units in the Dealer Suite 360 monthly public auction. No dealer license required. $250 refundable hold. Dealer Suite 360 acts as escrow."
+        canonical="/live-auctions"
       />
       <NotificationBar />
       <Navigation />
-
-      {/* ── DEV TOGGLE (remove in prod) ── */}
-      <div className="fixed bottom-4 right-4 z-50">
-        <button
-          onClick={() => setDevMode(!devMode)}
-          className="text-xs bg-gray-800 text-gray-200 px-3 py-1.5 rounded-full opacity-50 hover:opacity-100 transition-opacity"
-        >
-          [Dev] {devMode ? 'Showing: LIVE' : `Showing: ${auctionState.toUpperCase()}`}
-        </button>
-      </div>
 
       {/* ════════════════════════════════════════════════════
           PRE-AUCTION GATE
@@ -240,7 +228,7 @@ export default function LiveAuctions() {
                   size="lg"
                   variant="outline"
                   className="border-white/40 text-white hover:bg-white/10 text-base px-8"
-                  onClick={() => {}}
+                  onClick={() => navigate('/sign-up')}
                 >
                   <Eye className="mr-2 h-4 w-4" />
                   Get Notified
@@ -478,7 +466,7 @@ export default function LiveAuctions() {
               Sign up for notifications to be the first to know.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-primary hover:bg-primary/90 text-white" onClick={() => {}}>
+              <Button size="lg" className="bg-primary hover:bg-primary/90 text-white" onClick={() => navigate('/sign-up')}>
                 Get Notified for Next Auction
               </Button>
               <Button size="lg" variant="outline" onClick={() => window.location.href = '/network-marketplace'}>

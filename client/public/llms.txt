@@ -1,48 +1,49 @@
 # Dealer Suite 360
-> Dealer Suite 360 (dealersuite360.com) is the all-in-one dealership operating system for RV dealers.
+> Dealer Suite 360 (dealersuite360.com) is the all-in-one dealership operating system for RV dealers across North America.
 
-Dealer Suite 360 provides a comprehensive SaaS platform combining AI-powered warranty claims processing with a full suite of dealership revenue services including F&I, financing, parts management, a dealer-to-dealer network marketplace, and monthly live auctions open to the public.
+Dealer Suite 360 provides a comprehensive SaaS platform combining AI-powered warranty claims processing with a full suite of dealership revenue services including F&I, financing, parts management, digital marketing, consignment, on-site repairs, roadside assistance, a dealer-to-dealer network marketplace, and monthly live auctions open to the public.
 
 ## Who We Serve
-- RV dealerships (primary audience)
-- RV dealers looking to outsource warranty claims processing
-- Dealers seeking to grow revenue through F&I, financing, and parts services
+- RV dealerships (primary audience) — dealers looking to outsource warranty claims processing
+- Dealers seeking to grow revenue through F&I, financing, parts, and marketing services
 - Dealers wanting to buy or sell RV inventory through a verified network marketplace
 - General public looking to purchase RVs at wholesale prices through live auctions
+- RV owners seeking extended warranty, roadside assistance, and protection plans
 
 ## Core Services
 
 ### Claims Processing (Live — Module 1)
 - A-Z Warranty Claims Processing: DAF (Dealer Authorization Form), PDI (Pre-Delivery Inspection), Warranty, Extended Warranty, Insurance
 - Supported manufacturers: Jayco, Forest River, Heartland, Columbia NW, Keystone, Midwest Auto
-- Covers all RV types: Travel Trailer, Fifth Wheel, Class A, Class C, Van Camper, Small Trailer, Pop Up, Toy Hauler, Truck Camper, Destination Trailer
+- Covers all 10 RV types: Travel Trailer, Fifth Wheel, Class A, Class C, Van Camper, Small Trailer, Pop Up, Toy Hauler, Truck Camper, Destination Trailer
 - AI-powered FRC code lookup, photo quality scoring, and claim readiness scoring
 - Patent-pending technology platform
 
 ### Financial Services (Q2 2026)
 - Financing Services: lender integration, approval optimization, bilingual compliance
-- F&I (Finance & Insurance) Outsourcing: loan origination, GAP insurance, extended warranty sales
-- Warranty & Extended Service Plans: OEM and aftermarket plan management
+- F&I (Finance & Insurance) Outsourcing: loan origination, GAP insurance, extended warranty sales, AI F&I Presenter (video avatar technology)
+- Warranty & Extended Service Plans: OEM and aftermarket plan management, three plan tiers (Basic, Plus, Premium)
 
 ### Revenue Growth Services (Q3 2026)
-- Digital Marketing & Lead Generation
-- Parts & Accessories Management
-- Service Department Support
-- Customer Experience Technology
-- Trade-In & Consignment Programs
+- Digital Marketing & Lead Generation: SEO, PPC, social media campaigns, CRM integration
+- Parts & Accessories Management: inventory optimization, sourcing network, installation services
+- On-Site Repairs: technician dispatched to dealership, service call + hourly billing
+- Consignment & Trade-In Programs: professional appraisal, revenue share model
+- Revenue Optimization: labor and parts revenue maximization
 
 ### Marketplace & Auctions (Q3–Q4 2026)
 - Network Marketplace: dealer-to-dealer RV inventory listings, 24/7 access, $250 flat commission per unit sold, Dealer Suite 360 acts as escrow
 - Live Auctions: monthly public auctions running 48 hours, bidder account required, $250 refundable deposit per unit bid (deducted from purchase price if won, returned if lost)
 
 ### Consumer Direct Services (Q4 2026)
-- Roadside Assistance
-- Extended Warranty
-- RV Protection Packages
+- Roadside Assistance: 24/7 emergency towing and roadside support, available as dealer add-on for customers
+- Extended Warranty: direct-purchase protection plans for RV owners
+- RV Protection Packages: paint, fabric, and interior protection plans
 
 ## Pricing
-- Plan A: $349/month — core claims processing subscription
-- Plan B: $749/month — professional tier with expanded services
+- Plan A (Starter): $299/month — core claims processing subscription
+- Plan B (Professional): $599/month — full-service tier with expanded modules
+- Plan C (Enterprise): custom pricing for multi-location dealer groups
 - Marketplace Membership: $499/year
 - Live Auction Access: $99/month or $899/year
 - Network Marketplace Commission: $250 flat fee per completed unit sale
@@ -51,41 +52,97 @@ Dealer Suite 360 provides a comprehensive SaaS platform combining AI-powered war
 
 ## Technology
 - AI-powered FRC Lookup Engine for manufacturer-specific repair codes
-- Photo Quality Gatekeeper for claim photo analysis
+- Photo Quality Gatekeeper for claim photo analysis (operator side)
 - Claim Readiness Score (0–100% confidence before submission)
-- Document Scanner with OCR for correspondence
+- Document Scanner with OCR for correspondence auto-population
 - Denial Prediction engine based on historical claim patterns
-- Invoice Matcher for parts to claim lines
-- AI F&I Presenter (Tavus/D-ID video avatar)
-- Bilingual platform: English and French (Canadian)
+- Invoice Matcher for parts-to-claim-line reconciliation
+- AI F&I Presenter (Tavus/D-ID video avatar for remote product presentations)
+- Bilingual platform: English and French (Canadian market)
+- Three-portal system: Operator Portal, Dealer Portal, Customer Portal
 
 ## Business Model
 - Two-sided SaaS platform: dealers subscribe, operator team delivers services
-- Revenue: monthly subscriptions + per-claim fees + marketplace commissions + auction fees + F&I referral fees + financing origination fees
-- Target market: ~7,400 RV dealerships across North America
+- Revenue: monthly subscriptions + per-claim fees + marketplace commissions + auction fees + F&I referral fees + financing origination fees + marketing retainers
+- Target market: ~7,400 RV dealerships across North America (~$56B combined industry revenue)
 
 ## Brand Architecture
-- Dealer Suite 360 (dealersuite360.com) — one unified brand serving the North American market and expanding across North America
+- Dealer Suite 360 (dealersuite360.com) — primary platform brand serving North America
+- RVClaims.ca — white-label deployment for the Canadian market (powered by Dealer Suite 360)
 
 ## Contact
 - Phone: 888-443-2204
+- Email: support@dealersuite360.com
 - Website: https://dealersuite360.com
 - Location: Toronto, Ontario, Canada
 - Languages: English, French
 
 ## Pages
-- / — Home
-- /about — About Dealer Suite 360
-- /services — Full service ecosystem
-- /claims-processing — Claims processing detail (DAF, PDI, Warranty, Extended Warranty, Insurance)
-- /technology — Platform technology and AI features
-- /revenue-services — Dealer revenue growth services
-- /rv-types — RV types covered
-- /financing — Financing services
-- /warranty-plans — Warranty and extended service plans
-- /fi-services — F&I outsourcing services
-- /network-marketplace — Dealer-to-dealer RV marketplace
-- /live-auctions — Monthly public live auctions
-- /pricing — Full pricing
-- /contact — Contact and support
-- /signup — Dealer registration
+
+### Core Pages
+- / — Home: full platform overview with all 16 sections
+- /about — About Dealer Suite 360: company story, team, mission
+- /services — Full service ecosystem: all 16+ services across 5 categories
+- /pricing — Subscription plans, per-claim fees, marketplace pricing
+- /sign-up — Dealer registration and access request form
+- /contact — Contact, support, and demo booking
+- /book-demo — Schedule a live product demonstration
+
+### Claims & Coverage
+- /claims-processing — A-Z warranty claims processing (DAF, PDI, Warranty, Extended Warranty, Insurance)
+- /rv-types — All 10 RV types covered with manufacturer support details
+
+### Financial Services (Q2 2026)
+- /financing — Dealership financing support and lender integration
+- /fi-services — F&I outsourcing with AI F&I Presenter technology
+- /warranty-plans — OEM and aftermarket warranty plan management
+
+### Revenue Growth Services (Q3 2026)
+- /revenue-services — Revenue growth services overview
+- /revenue-optimization — Labor and parts revenue maximization
+- /marketing-services — Digital marketing, SEO, PPC, social media
+- /parts-components — Parts and accessories management
+- /consignment-services — Trade-in and consignment programs
+- /on-site-repairs — Mobile technician dispatch service
+- /technology — AI platform and technology features
+
+### Consumer Direct Services (Q4 2026)
+- /roadside-assistance — 24/7 emergency towing and roadside support
+- /extended-warranty — Direct extended warranty for RV owners
+- /protection-plans — Paint, fabric, and interior protection
+
+### Marketplace & Auctions
+- /marketplace — Marketplace hub: Network Marketplace + Live Auctions
+- /network-marketplace — Dealer-to-dealer RV inventory marketplace
+- /live-auctions — Monthly 48-hour public auctions at wholesale pricing
+
+### Dealer Directory
+- /dealers — Verified RV dealer directory with listings and claims history
+
+### Resources
+- /claim-guides — Step-by-step guides for DAF, PDI, Warranty, Extended Warranty, Insurance claims
+- /industry-reports — RV industry market data, claim trends, and revenue benchmarks
+- /webinars — Live and on-demand training webinars for dealers
+- /knowledge-base — Searchable articles on claims, FRC codes, and platform features
+- /dealer-training — Structured onboarding and certification programs
+- /news — Industry news, platform updates, and RV market insights
+- /blog — Educational blog: warranty tips, claim strategies, dealership management
+
+### Support
+- /help-center — Searchable help articles and how-to guides
+- /documentation — Technical documentation and API reference
+- /api-access — Developer API access and integration documentation
+- /system-status — Real-time platform uptime and incident reports
+- /dealer-integration — DMS integration guides (IDS-Astra, EverLogic, Lightspeed)
+- /expert-consultation — One-on-one sessions with claims and platform specialists
+
+### Company
+- /careers — Open positions and company culture
+- /partnerships — Manufacturer, lender, and technology partner programs
+- /testimonials — Dealer success stories and case studies
+
+### Legal
+- /privacy-policy — Privacy policy (PIPEDA compliant, updated March 2026)
+- /terms-of-service — Platform terms of service
+- /cookie-policy — Cookie use policy
+- /pipeda-compliance — PIPEDA compliance statement for Canadian dealers

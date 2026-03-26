@@ -3,7 +3,7 @@ import { useLanguage } from "@/hooks/use-language";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "wouter";
-import { Zap, Camera, BarChart3, FileText, FileSearch, Receipt, Monitor, MessageSquare, Users, Building2, User, Gavel } from "lucide-react";
+import { Zap, Camera, BarChart3, FileText, FileSearch, Receipt, Monitor, MessageSquare, Users, Building2, User, Gavel, CheckCircle, Smartphone } from "lucide-react";
 
 const aiIcons = [Zap, Camera, BarChart3, FileSearch, FileText, Receipt, Monitor, MessageSquare];
 const portalIcons = [Building2, Users, User, Gavel];
@@ -120,6 +120,82 @@ export default function Technology() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Security Section */}
+      <section className="py-20 bg-muted/30">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">Enterprise-Grade Security</h2>
+              <p className="text-muted-foreground mb-6">Your dealership data is protected with bank-level security and Canadian compliance standards.</p>
+              <ul className="space-y-3">
+                {[
+                  'Data Encryption — 256-bit AES at rest and TLS in transit',
+                  'PIPEDA Compliance — Full alignment with Canadian federal privacy law',
+                  'Role-Based Access Control — Four distinct permission tiers',
+                  'Multi-Tenant Data Isolation — Absolute separation between dealer accounts',
+                  'JWT Authentication — 15-minute access tokens with 7-day refresh rotation',
+                  'SOC 2 Ready Infrastructure — Hosted on certified Canadian cloud providers',
+                ].map((item, i) => (
+                  <li key={i} className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                    <span className="text-sm text-muted-foreground leading-relaxed">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              {[
+                { stat: '256-bit', label: 'AES Encryption', sub: 'Bank-level protection' },
+                { stat: 'PIPEDA', label: 'Compliant', sub: 'Canadian privacy law' },
+                { stat: '99.9%', label: 'Uptime SLA', sub: 'Mission-critical reliability' },
+                { stat: 'Zero', label: 'Data Breaches', sub: 'Since platform launch' },
+              ].map((card, i) => (
+                <div key={i} className="bg-card rounded-xl p-6 border border-border text-center hover:border-primary/40 hover:shadow-lg transition-all duration-300">
+                  <div className="text-2xl font-bold text-primary mb-1">{card.stat}</div>
+                  <div className="font-semibold text-sm mb-1">{card.label}</div>
+                  <div className="text-xs text-muted-foreground">{card.sub}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Mobile Section */}
+      <section className="py-20 bg-background">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="order-2 lg:order-1">
+              <div className="bg-card rounded-2xl border border-border h-72 flex items-center justify-center">
+                <div className="text-center text-muted-foreground">
+                  <Smartphone className="w-12 h-12 mx-auto mb-3 text-primary/40" />
+                  <p className="text-sm">Mobile App Preview</p>
+                  <p className="text-xs mt-1">iOS &amp; Android — Coming Q3 2026</p>
+                </div>
+              </div>
+            </div>
+            <div className="order-1 lg:order-2">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">Built for the Shop Floor</h2>
+              <p className="text-muted-foreground mb-6">Process claims, upload photos, and track units right from your phone — on the lot or in the service bay.</p>
+              <ul className="space-y-3">
+                {[
+                  'VIN barcode scanner — Instantly pull up any unit by scanning the plate',
+                  'Push-to-claim photo workflow — Capture and attach photos without leaving the bay',
+                  'Real-time claim status notifications — Know the moment a line is approved or denied',
+                  'Offline mode — Keep working in poor connectivity areas; syncs when reconnected',
+                  'Bilingual interface (EN/FR) — Full French support for Quebec dealerships',
+                ].map((item, i) => (
+                  <li key={i} className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                    <span className="text-sm text-muted-foreground leading-relaxed">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
       </section>

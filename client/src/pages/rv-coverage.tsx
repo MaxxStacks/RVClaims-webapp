@@ -75,17 +75,19 @@ export default function RvCoverage() {
       {/* Manufacturers */}
       <section className="py-16 bg-muted/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-2xl md:text-3xl font-bold mb-4">Supported Manufacturers</h2>
-          <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">
-            We process warranty claims across all 10 RV types for these manufacturers. Additional manufacturers are added regularly.
+          <h2 className="text-2xl md:text-3xl font-bold mb-4">Supporting North America's Leading RV Manufacturers</h2>
+          <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
+            Currently integrated with Jayco, Forest River, Heartland, Columbia NW, Keystone, and Midwest Auto — with new manufacturer partnerships added regularly. If your manufacturer isn't listed yet, contact us to discuss integration.
           </p>
           <div className="flex flex-wrap gap-3 justify-center mb-8">
             {['Jayco', 'Forest River', 'Heartland', 'Columbia NW', 'Keystone', 'Midwest Auto'].map((mfr) => (
-              <Badge key={mfr} variant="outline" className="px-4 py-2 text-sm border-primary/30">
-                {mfr}
-              </Badge>
+              <span key={mfr} className="px-4 py-2 bg-card border border-border rounded-lg text-sm font-medium">{mfr}</span>
             ))}
+            <span className="px-4 py-2 bg-primary/10 border border-primary/30 rounded-lg text-sm font-medium text-primary">+ More Coming</span>
           </div>
+          <Link href="/contact">
+            <Button variant="outline">Ask About Your Manufacturer</Button>
+          </Link>
         </div>
       </section>
 
