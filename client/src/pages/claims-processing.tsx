@@ -71,7 +71,7 @@ export default function ClaimsProcessing() {
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
             <Button size="lg" asChild>
-              <Link href="/signup">{t('claimsPage.ctaButton')}</Link>
+              <Link href="/sign-up">{t('claimsPage.ctaButton')}</Link>
             </Button>
             <Button size="lg" variant="outline" asChild>
               <Link href="/contact">{t('claimsPage.ctaSecondary')}</Link>
@@ -199,7 +199,7 @@ export default function ClaimsProcessing() {
           <h2 className="text-3xl md:text-4xl font-bold mb-4">{t('claimsPage.ctaHeading')}</h2>
           <div className="flex flex-wrap gap-4 justify-center mt-8">
             <Button size="lg" variant="secondary" asChild>
-              <Link href="/signup">{t('claimsPage.ctaButton')}</Link>
+              <Link href="/sign-up">{t('claimsPage.ctaButton')}</Link>
             </Button>
             <Button size="lg" variant="outline" className="bg-transparent border-white text-white hover:bg-white hover:text-primary" asChild>
               <Link href="/contact">{t('claimsPage.ctaSecondary')}</Link>

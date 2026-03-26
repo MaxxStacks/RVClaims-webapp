@@ -64,7 +64,7 @@ export function Navigation() {
                 </button>
               </Link>
               {/* Always visible: Sign Up */}
-              <Link href="/signup">
+              <Link href="/sign-up">
                 <button
                   className="px-6 py-2.5 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-colors shadow-md hover:shadow-lg"
                   data-testid="button-sign-up"
@@ -89,13 +89,22 @@ export function Navigation() {
               onMouseEnter={() => setServicesOpen(true)}
               onMouseLeave={() => setServicesOpen(false)}
             >
-              <button
-                className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors py-2"
-                data-testid="button-services-dropdown"
-              >
-                {t('navigation.services')}
-                <ChevronDown size={16} className={`transition-transform ${servicesOpen ? 'rotate-180' : ''}`} />
-              </button>
+              <div className="flex items-center gap-0.5">
+                <Link
+                  href="/services"
+                  className={`text-muted-foreground hover:text-foreground transition-colors py-2 ${location === '/services' ? 'text-foreground' : ''}`}
+                  data-testid="link-services-nav"
+                >
+                  {t('navigation.services')}
+                </Link>
+                <button
+                  className="flex items-center text-muted-foreground hover:text-foreground transition-colors py-2 px-1"
+                  data-testid="button-services-dropdown"
+                  onClick={() => setServicesOpen(!servicesOpen)}
+                >
+                  <ChevronDown size={16} className={`transition-transform ${servicesOpen ? 'rotate-180' : ''}`} />
+                </button>
+              </div>
 
               {servicesOpen && (
                 <div className="absolute top-full left-0 mt-1 w-[900px] bg-white border border-border rounded-lg shadow-xl py-3 z-50">
@@ -261,13 +270,22 @@ export function Navigation() {
               onMouseEnter={() => setMarketplaceOpen(true)}
               onMouseLeave={() => setMarketplaceOpen(false)}
             >
-              <button
-                className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors py-2"
-                data-testid="button-marketplace-dropdown"
-              >
-                {t('navigation.marketplace')}
-                <ChevronDown size={16} className={`transition-transform ${marketplaceOpen ? 'rotate-180' : ''}`} />
-              </button>
+              <div className="flex items-center gap-0.5">
+                <Link
+                  href="/marketplace"
+                  className={`text-muted-foreground hover:text-foreground transition-colors py-2 ${location === '/marketplace' ? 'text-foreground' : ''}`}
+                  data-testid="link-marketplace-nav"
+                >
+                  {t('navigation.marketplace')}
+                </Link>
+                <button
+                  className="flex items-center text-muted-foreground hover:text-foreground transition-colors py-2 px-1"
+                  data-testid="button-marketplace-dropdown"
+                  onClick={() => setMarketplaceOpen(!marketplaceOpen)}
+                >
+                  <ChevronDown size={16} className={`transition-transform ${marketplaceOpen ? 'rotate-180' : ''}`} />
+                </button>
+              </div>
 
               {marketplaceOpen && (
                 <div className="absolute top-full left-0 mt-1 w-80 bg-white border border-border rounded-lg shadow-xl py-3 z-50">

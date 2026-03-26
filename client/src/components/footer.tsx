@@ -106,23 +106,23 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="hover:text-primary transition-colors" data-testid="link-footer-careers">
+                <Link href="/careers" className="hover:text-primary transition-colors" data-testid="link-footer-careers">
                   {t('footer.careers')}
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="hover:text-primary transition-colors" data-testid="link-footer-partnerships">
+                <Link href="/partnerships" className="hover:text-primary transition-colors" data-testid="link-footer-partnerships">
                   {t('footer.partnerships')}
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="hover:text-primary transition-colors" data-testid="link-footer-testimonials">
+                <Link href="/testimonials" className="hover:text-primary transition-colors" data-testid="link-footer-testimonials">
                   {t('footer.testimonials')}
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/network-marketplace"
+                  href="/sign-up"
                   className="text-primary font-semibold animate-pulse inline-flex items-center gap-1 flex-wrap hover:text-primary/80 transition-colors"
                   data-testid="link-footer-sign-up"
                 >
@@ -145,27 +145,27 @@ export function Footer() {
             </h3>
             <ul className="space-y-2 text-sm text-gray-600">
               <li>
-                <Link href="/contact" className="hover:text-primary transition-colors" data-testid="link-footer-claim-guides">
+                <Link href="/claim-guides" className="hover:text-primary transition-colors" data-testid="link-footer-claim-guides">
                   {t('footer.claimGuides')}
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="hover:text-primary transition-colors" data-testid="link-footer-industry-reports">
+                <Link href="/industry-reports" className="hover:text-primary transition-colors" data-testid="link-footer-industry-reports">
                   {t('footer.industryReports')}
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="hover:text-primary transition-colors" data-testid="link-footer-webinars">
+                <Link href="/webinars" className="hover:text-primary transition-colors" data-testid="link-footer-webinars">
                   {t('footer.webinars')}
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="hover:text-primary transition-colors" data-testid="link-footer-knowledge-base">
+                <Link href="/knowledge-base" className="hover:text-primary transition-colors" data-testid="link-footer-knowledge-base">
                   {t('footer.knowledgeBase')}
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="hover:text-primary transition-colors" data-testid="link-footer-training">
+                <Link href="/dealer-training" className="hover:text-primary transition-colors" data-testid="link-footer-training">
                   {t('footer.training')}
                 </Link>
               </li>
@@ -179,32 +179,32 @@ export function Footer() {
             </h3>
             <ul className="space-y-2 text-sm text-gray-600">
               <li>
-                <Link href="/contact" className="hover:text-primary transition-colors" data-testid="link-footer-help-center">
+                <Link href="/help-center" className="hover:text-primary transition-colors" data-testid="link-footer-help-center">
                   {t('footer.helpCenter')}
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="hover:text-primary transition-colors" data-testid="link-footer-documentation">
+                <Link href="/documentation" className="hover:text-primary transition-colors" data-testid="link-footer-documentation">
                   {t('footer.documentation')}
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="hover:text-primary transition-colors" data-testid="link-footer-api-access">
+                <Link href="/api-access" className="hover:text-primary transition-colors" data-testid="link-footer-api-access">
                   {t('footer.apiAccess')}
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="hover:text-primary transition-colors" data-testid="link-footer-system-status">
+                <Link href="/system-status" className="hover:text-primary transition-colors" data-testid="link-footer-system-status">
                   {t('footer.systemStatus')}
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="hover:text-primary transition-colors" data-testid="link-footer-integration">
+                <Link href="/dealer-integration" className="hover:text-primary transition-colors" data-testid="link-footer-integration">
                   {t('footer.integration')}
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="hover:text-primary transition-colors" data-testid="link-footer-consultation">
+                <Link href="/expert-consultation" className="hover:text-primary transition-colors" data-testid="link-footer-consultation">
                   {t('footer.consultation')}
                 </Link>
               </li>
@@ -221,13 +221,13 @@ export function Footer() {
               <Link href="/privacy-policy" className="hover:text-primary transition-colors" data-testid="link-footer-privacy">
                 {t('footer.privacyPolicy')}
               </Link>
-              <Link href="/contact" className="hover:text-primary transition-colors" data-testid="link-footer-terms">
+              <Link href="/terms-of-service" className="hover:text-primary transition-colors" data-testid="link-footer-terms">
                 {t('footer.termsOfService')}
               </Link>
-              <Link href="/contact" className="hover:text-primary transition-colors" data-testid="link-footer-cookies">
+              <Link href="/cookie-policy" className="hover:text-primary transition-colors" data-testid="link-footer-cookies">
                 {t('footer.cookiePolicy')}
               </Link>
-              <Link href="/contact" className="hover:text-primary transition-colors" data-testid="link-footer-compliance">
+              <Link href="/pipeda-compliance" className="hover:text-primary transition-colors" data-testid="link-footer-compliance">
                 {t('footer.compliance')}
               </Link>
             </div>

@@ -40,6 +40,31 @@ const DealersPage = lazy(() => import("@/pages/dealers"));
 const DealerListingPage = lazy(() => import("@/pages/dealer-listing"));
 const DealerClaimPage = lazy(() => import("@/pages/dealer-claim"));
 const DealerDashboardPage = lazy(() => import("@/pages/dealer-dashboard"));
+const SignUpRequest = lazy(() => import("@/pages/sign-up"));
+const Marketplace = lazy(() => import("@/pages/marketplace"));
+const TermsOfService = lazy(() => import("@/pages/terms-of-service"));
+const CookiePolicy = lazy(() => import("@/pages/cookie-policy"));
+const PipedaCompliance = lazy(() => import("@/pages/pipeda-compliance"));
+const Careers = lazy(() => import("@/pages/careers"));
+const Partnerships = lazy(() => import("@/pages/partnerships"));
+const Testimonials = lazy(() => import("@/pages/testimonials"));
+const RevenueOptimization = lazy(() => import("@/pages/revenue-optimization"));
+const PartsComponents = lazy(() => import("@/pages/parts-components"));
+const MarketingServices = lazy(() => import("@/pages/marketing-services"));
+const ConsignmentServices = lazy(() => import("@/pages/consignment-services"));
+const ExtendedWarranty = lazy(() => import("@/pages/extended-warranty"));
+const ProtectionPlans = lazy(() => import("@/pages/protection-plans"));
+const ClaimGuides = lazy(() => import("@/pages/claim-guides"));
+const IndustryReports = lazy(() => import("@/pages/industry-reports"));
+const Webinars = lazy(() => import("@/pages/webinars"));
+const KnowledgeBase = lazy(() => import("@/pages/knowledge-base"));
+const DealerTraining = lazy(() => import("@/pages/dealer-training"));
+const HelpCenter = lazy(() => import("@/pages/help-center"));
+const Documentation = lazy(() => import("@/pages/documentation"));
+const ApiAccess = lazy(() => import("@/pages/api-access"));
+const SystemStatus = lazy(() => import("@/pages/system-status"));
+const DealerIntegration = lazy(() => import("@/pages/dealer-integration"));
+const ExpertConsultation = lazy(() => import("@/pages/expert-consultation"));
 const NotFound = lazy(() => import("@/pages/not-found"));
 const OperatorPortal = lazy(() => import("./portals/OperatorPortal"));
 const DealerPortal = lazy(() => import("./portals/DealerPortal"));
@@ -103,6 +128,32 @@ function Router() {
         <Route path="/dealers/claim/:slug" component={DealerClaimPage} />
         <Route path="/dealers" component={DealersPage} />
         <Route path="/dealer-dashboard" component={DealerDashboardPage} />
+        {/* New pages from site revamp */}
+        <Route path="/sign-up" component={SignUpRequest} />
+        <Route path="/marketplace" component={Marketplace} />
+        <Route path="/terms-of-service" component={TermsOfService} />
+        <Route path="/cookie-policy" component={CookiePolicy} />
+        <Route path="/pipeda-compliance" component={PipedaCompliance} />
+        <Route path="/careers" component={Careers} />
+        <Route path="/partnerships" component={Partnerships} />
+        <Route path="/testimonials" component={Testimonials} />
+        <Route path="/revenue-optimization" component={RevenueOptimization} />
+        <Route path="/parts-components" component={PartsComponents} />
+        <Route path="/marketing-services" component={MarketingServices} />
+        <Route path="/consignment-services" component={ConsignmentServices} />
+        <Route path="/extended-warranty" component={ExtendedWarranty} />
+        <Route path="/protection-plans" component={ProtectionPlans} />
+        <Route path="/claim-guides" component={ClaimGuides} />
+        <Route path="/industry-reports" component={IndustryReports} />
+        <Route path="/webinars" component={Webinars} />
+        <Route path="/knowledge-base" component={KnowledgeBase} />
+        <Route path="/dealer-training" component={DealerTraining} />
+        <Route path="/help-center" component={HelpCenter} />
+        <Route path="/documentation" component={Documentation} />
+        <Route path="/api-access" component={ApiAccess} />
+        <Route path="/system-status" component={SystemStatus} />
+        <Route path="/dealer-integration" component={DealerIntegration} />
+        <Route path="/expert-consultation" component={ExpertConsultation} />
         <Route component={NotFound} />
       </Switch>
     </>
