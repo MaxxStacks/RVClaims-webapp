@@ -353,6 +353,91 @@ router.post("/reset-password", validateBody(resetPasswordSchema), async (req: Re
   }
 });
 
+// ==================== POST /api/auth/register-bidder (self-registration) ====================
+router.post("/register-bidder", async (req: Request, res: Response) => {
+  try {
+    const { email, password, firstName, lastName, phone, province } = req.body;
+
+    if (!email || !password || !firstName || !lastName || !province) {
+      return res.status(400).json({ success: false, message: "All required fields must be provided" });
+    }
+    if (password.length < 8) {
+      return res.status(400).json({ success: false, message: "Password must be at least 8 characters" });
+    }
+
+    // Check for existing account
+    const [existing] = await db
+      .select({ id: users.id })
+      .from(users)
+      .where(eq(users.email, email.toLowerCase()))
+      .limit(1);
+
+    if (existing) {
+      return res.status(409).json({ success: false, message: "An account with this email already exists" });
+    }
+
+    const passwordHash = await hashPassword(password);
+    const [newUser] = await db
+      .insert(users)
+      .values({
+        email: email.toLowerCase(),
+        passwordHash,
+        firstName,
+        lastName,
+        phone: phone || null,
+        role: "bidder",
+        language: province.startsWith("QC") ? "fr" : "en",
+      })
+      .returning();
+
+    const accessToken = await generateAccessToken(newUser.id, "bidder");
+    const refreshToken = await generateRefreshToken(newUser.id, "bidder");
+
+    const sessionId = generateSessionId();
+    await db.insert(sessions).values({
+      id: sessionId,
+      userId: newUser.id,
+      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+      userAgent: req.headers["user-agent"] || null,
+      ipAddress: req.ip || null,
+    });
+
+    await db.insert(auditLog).values({
+      userId: newUser.id,
+      action: "user.registered",
+      entityType: "user",
+      entityId: newUser.id,
+      metadata: { role: "bidder", selfRegistered: true },
+      ipAddress: req.ip || null,
+    });
+
+    res.cookie("ds360_refresh", refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      path: "/",
+    });
+
+    res.status(201).json({
+      success: true,
+      accessToken,
+      user: {
+        id: newUser.id,
+        email: newUser.email,
+        firstName: newUser.firstName,
+        lastName: newUser.lastName,
+        role: newUser.role,
+        dealershipId: null,
+      },
+      redirectTo: "/bidder/dashboard",
+    });
+  } catch (error) {
+    console.error("Bidder register error:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+});
+
 // ==================== POST /api/auth/logout ====================
 router.post("/logout", requireAuth, async (req: Request, res: Response) => {
   try {

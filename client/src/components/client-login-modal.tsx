@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle, faLinkedinIn } from "@fortawesome/free-brands-svg-icons";
 import { useLanguage } from "@/hooks/use-language";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useAuth } from "@/hooks/use-auth";
 import loginModalLogoImage from "@assets/Industrial Trapton Logo Design (1) (1)_1756859327359.png";
 
 interface ClientLoginModalProps {
@@ -14,11 +15,14 @@ interface ClientLoginModalProps {
 export function ClientLoginModal({ isOpen, onClose }: ClientLoginModalProps) {
   const { t } = useLanguage();
   const isMobile = useIsMobile();
+  const { login } = useAuth();
   const [loginMethod, setLoginMethod] = useState<'options' | 'email' | 'phone'>('options');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
 
   // Disable body scroll when modal is open
   useEffect(() => {
@@ -36,20 +40,31 @@ export function ClientLoginModal({ isOpen, onClose }: ClientLoginModalProps) {
   if (!isOpen) return null;
 
   const handleSocialLogin = (provider: string) => {
-    // TODO: Integrate with actual OAuth providers
-    console.log(`Login with ${provider}`);
+    // OAuth not yet implemented — redirect to the full dealer login page
+    window.location.href = '/dealer';
   };
 
-  const handleEmailLogin = (e: React.FormEvent) => {
+  const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implement email login
-    console.log('Email login:', { email, password });
+    setError('');
+    setIsLoading(true);
+    try {
+      const result = await login(email, password, 'dealer');
+      if (result.success) {
+        window.location.href = '/dealer/dashboard';
+      } else {
+        setError(result.message || 'Invalid email or password');
+      }
+    } catch {
+      setError('Invalid email or password');
+    }
+    setIsLoading(false);
   };
 
   const handlePhoneLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implement phone login
-    console.log('Phone login:', { phone, password });
+    // Phone login not yet implemented — redirect to email login
+    setLoginMethod('email');
   };
 
   const renderLoginOptions = () => (
@@ -187,12 +202,19 @@ export function ClientLoginModal({ isOpen, onClose }: ClientLoginModalProps) {
           </div>
         </div>
 
+        {error && (
+          <div className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
+            {error}
+          </div>
+        )}
+
         <button
           type="submit"
-          className="w-full px-4 py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-colors"
+          disabled={isLoading}
+          className="w-full px-4 py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-colors disabled:opacity-50"
           data-testid="button-submit-email-login"
         >
-          Sign In
+          {isLoading ? 'Signing in...' : 'Sign In'}
         </button>
       </form>
     </div>

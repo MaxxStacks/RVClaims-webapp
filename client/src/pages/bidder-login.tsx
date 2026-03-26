@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Eye, EyeOff, ArrowLeft, CheckCircle2 } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
 import { useAuth } from "@/hooks/use-auth";
-import { forgotPassword } from "@/lib/auth-api";
+import { forgotPassword, registerBidder } from "@/lib/auth-api";
 import { Link, useLocation } from "wouter";
 import logoEN from "@assets/DS360_logo_light.png";
 import logoFR from "@assets/DS360_logo_light.png";
@@ -60,11 +60,17 @@ export default function BidderLogin() {
       return;
     }
     setIsLoading(true);
-    // TODO: real API call
-    setTimeout(() => {
-      setIsLoading(false);
-      window.location.href = "/bidder";
-    }, 800);
+    try {
+      const result = await registerBidder({ email: regEmail, password: regPassword, firstName, lastName, phone: phone || undefined, province });
+      if (result.success) {
+        setLocation("/bidder/dashboard");
+      } else {
+        setError(result.message || "Registration failed. Please try again.");
+      }
+    } catch {
+      setError("Registration failed. Please try again.");
+    }
+    setIsLoading(false);
   };
 
   const handleLogin = async (e: React.FormEvent) => {

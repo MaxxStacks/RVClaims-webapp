@@ -110,6 +110,27 @@ export interface AuthResponse {
   errors?: unknown[];
 }
 
+export interface RegisterBidderPayload {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  phone?: string;
+  province: string;
+}
+
+export async function registerBidder(payload: RegisterBidderPayload): Promise<AuthResponse> {
+  const data = await apiFetch<AuthResponse>("/api/auth/register-bidder", {
+    method: "POST",
+    body: JSON.stringify(payload),
+    skipAuth: true,
+  });
+  if (data.success && data.accessToken) {
+    _accessToken = data.accessToken;
+  }
+  return data;
+}
+
 export async function register(payload: RegisterPayload): Promise<AuthResponse> {
   const data = await apiFetch<AuthResponse>("/api/auth/register", {
     method: "POST",
