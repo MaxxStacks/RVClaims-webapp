@@ -47,6 +47,7 @@ const CONFIG = {
     { path: '/signup',              file: 'signup.html' },
     { path: '/rv-types',            file: 'rv-types.html' },
     { path: '/blog',               file: 'blog/index.html' },
+    { path: '/dealers',            file: 'dealers/index.html' },
   ],
 };
 
@@ -78,6 +79,21 @@ async function prerender() {
     for (const slug of blogSlugs) {
       CONFIG.routes.push({ path: `/blog/${slug}`, file: `blog/${slug}.html` });
     }
+  }
+
+  // Append dealer listing routes dynamically
+  try {
+    const dealersRes = await fetch(`${CONFIG.baseUrl}/api/dealers?limit=500`);
+    const dealersData = await dealersRes.json();
+    const dealerSlugs: string[] = (dealersData.dealers || []).map((d: any) => d.slug as string).filter(Boolean);
+    if (dealerSlugs.length > 0) {
+      console.log(`  Dealer listings: ${dealerSlugs.length} to prerender`);
+      for (const slug of dealerSlugs) {
+        CONFIG.routes.push({ path: `/dealers/listing/${slug}`, file: `dealers/${slug}.html` });
+      }
+    }
+  } catch {
+    // no dealers yet — skip silently
   }
 
   const browser = await puppeteer.launch({

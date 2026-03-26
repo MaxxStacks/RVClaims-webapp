@@ -761,6 +761,186 @@ export type InsertBlogPost = z.infer<typeof insertBlogPostSchema>;
 export type BlogCategory = typeof blogCategories.$inferSelect;
 export type ContentQueueItem = typeof contentQueue.$inferSelect;
 
+// ==================== 28. DEALER LISTINGS ====================
+
+export const dealerListings = pgTable('dealer_listings', {
+  id: serial('id').primaryKey(),
+  name: varchar('name', { length: 255 }).notNull(),
+  slug: varchar('slug', { length: 300 }).notNull().unique(),
+  email: varchar('email', { length: 255 }),
+  phone: varchar('phone', { length: 30 }),
+  website: varchar('website', { length: 500 }),
+  address: varchar('address', { length: 500 }),
+  city: varchar('city', { length: 100 }),
+  stateProvince: varchar('state_province', { length: 100 }),
+  postalCode: varchar('postal_code', { length: 20 }),
+  country: varchar('country', { length: 2 }).notNull().default('CA'),
+  latitude: decimal('latitude', { precision: 10, scale: 7 }),
+  longitude: decimal('longitude', { precision: 10, scale: 7 }),
+  description: text('description'),
+  brandsCarried: text('brands_carried').array(),
+  servicesOffered: text('services_offered').array(),
+  dealerType: varchar('dealer_type', { length: 50 }).default('rv'),
+  numberOfLocations: integer('number_of_locations').default(1),
+  estimatedUnitVolume: varchar('estimated_unit_volume', { length: 50 }),
+  yearEstablished: integer('year_established'),
+  businessHours: jsonb('business_hours'),
+  logoUrl: varchar('logo_url', { length: 500 }),
+  coverImageUrl: varchar('cover_image_url', { length: 500 }),
+  galleryImages: text('gallery_images').array(),
+  listingStatus: varchar('listing_status', { length: 20 }).notNull().default('active'),
+  isVerified: boolean('is_verified').notNull().default(false),
+  isClaimed: boolean('is_claimed').notNull().default(false),
+  claimedAt: timestamp('claimed_at'),
+  claimedByUserId: integer('claimed_by_user_id'),
+  listingTier: varchar('listing_tier', { length: 20 }).notNull().default('basic'),
+  premiumExpiresAt: timestamp('premium_expires_at'),
+  metaTitle: varchar('meta_title', { length: 70 }),
+  metaDescription: varchar('meta_description', { length: 160 }),
+  pageViews: integer('page_views').notNull().default(0),
+  searchAppearances: integer('search_appearances').notNull().default(0),
+  contactClicks: integer('contact_clicks').notNull().default(0),
+  websiteClicks: integer('website_clicks').notNull().default(0),
+  dataSource: varchar('data_source', { length: 100 }),
+  externalId: varchar('external_id', { length: 255 }),
+  dataQuality: varchar('data_quality', { length: 20 }).default('imported'),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+}, (table) => [
+  index('idx_dealer_listings_country').on(table.country),
+  index('idx_dealer_listings_province').on(table.stateProvince),
+  index('idx_dealer_listings_city').on(table.city),
+  index('idx_dealer_listings_slug').on(table.slug),
+  index('idx_dealer_listings_claimed').on(table.isClaimed),
+  index('idx_dealer_listings_status').on(table.listingStatus),
+]);
+
+// ==================== 29. CRM PIPELINE ====================
+
+export const crmPipeline = pgTable('crm_pipeline', {
+  id: serial('id').primaryKey(),
+  dealerListingId: integer('dealer_listing_id').references(() => dealerListings.id).notNull(),
+  stage: varchar('stage', { length: 30 }).notNull().default('prospect'),
+  assignedTo: varchar('assigned_to', { length: 255 }),
+  nextFollowUp: timestamp('next_follow_up'),
+  followUpNote: text('follow_up_note'),
+  estimatedValue: decimal('estimated_value', { precision: 10, scale: 2 }),
+  lostReason: varchar('lost_reason', { length: 255 }),
+  leadSource: varchar('lead_source', { length: 50 }).default('imported'),
+  stageChangedAt: timestamp('stage_changed_at').defaultNow(),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+});
+
+// ==================== 30. CRM ACTIVITIES ====================
+
+export const crmActivities = pgTable('crm_activities', {
+  id: serial('id').primaryKey(),
+  dealerListingId: integer('dealer_listing_id').references(() => dealerListings.id).notNull(),
+  activityType: varchar('activity_type', { length: 30 }).notNull(),
+  title: varchar('title', { length: 255 }).notNull(),
+  description: text('description'),
+  createdBy: varchar('created_by', { length: 255 }),
+  metadata: jsonb('metadata'),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+});
+
+// ==================== 31. CRM TAGS ====================
+
+export const crmTags = pgTable('crm_tags', {
+  id: serial('id').primaryKey(),
+  name: varchar('name', { length: 100 }).notNull().unique(),
+  color: varchar('color', { length: 7 }).default('#4f8cff'),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+});
+
+export const crmDealerTags = pgTable('crm_dealer_tags', {
+  id: serial('id').primaryKey(),
+  dealerListingId: integer('dealer_listing_id').references(() => dealerListings.id).notNull(),
+  tagId: integer('tag_id').references(() => crmTags.id).notNull(),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+});
+
+// ==================== 32. CRM ATTACHMENTS ====================
+
+export const crmAttachments = pgTable('crm_attachments', {
+  id: serial('id').primaryKey(),
+  dealerListingId: integer('dealer_listing_id').references(() => dealerListings.id).notNull(),
+  fileName: varchar('file_name', { length: 255 }).notNull(),
+  fileUrl: varchar('file_url', { length: 500 }).notNull(),
+  fileType: varchar('file_type', { length: 50 }),
+  fileSizeBytes: integer('file_size_bytes'),
+  uploadedBy: varchar('uploaded_by', { length: 255 }),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+});
+
+// ==================== 33. DEALER REVIEWS ====================
+
+export const dealerReviews = pgTable('dealer_reviews', {
+  id: serial('id').primaryKey(),
+  dealerListingId: integer('dealer_listing_id').references(() => dealerListings.id).notNull(),
+  reviewerName: varchar('reviewer_name', { length: 100 }).notNull(),
+  reviewerEmail: varchar('reviewer_email', { length: 255 }),
+  rating: integer('rating').notNull(),
+  title: varchar('title', { length: 200 }),
+  body: text('body'),
+  status: varchar('status', { length: 20 }).notNull().default('pending'),
+  dealerResponse: text('dealer_response'),
+  dealerRespondedAt: timestamp('dealer_responded_at'),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+});
+
+// ==================== 34. DEALER MESSAGES ====================
+
+export const dealerMessages = pgTable('dealer_messages', {
+  id: serial('id').primaryKey(),
+  dealerListingId: integer('dealer_listing_id').references(() => dealerListings.id).notNull(),
+  senderName: varchar('sender_name', { length: 100 }).notNull(),
+  senderEmail: varchar('sender_email', { length: 255 }).notNull(),
+  senderPhone: varchar('sender_phone', { length: 30 }),
+  messageType: varchar('message_type', { length: 20 }).notNull().default('general'),
+  subject: varchar('subject', { length: 255 }),
+  body: text('body').notNull(),
+  interestedBrand: varchar('interested_brand', { length: 100 }),
+  interestedModel: varchar('interested_model', { length: 200 }),
+  status: varchar('status', { length: 20 }).notNull().default('unread'),
+  dealerReply: text('dealer_reply'),
+  dealerRepliedAt: timestamp('dealer_replied_at'),
+  isRead: boolean('is_read').notNull().default(false),
+  readAt: timestamp('read_at'),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+});
+
+// ==================== 35. QUOTE REQUESTS ====================
+
+export const quoteRequests = pgTable('quote_requests', {
+  id: serial('id').primaryKey(),
+  dealerListingId: integer('dealer_listing_id').references(() => dealerListings.id).notNull(),
+  dealerMessageId: integer('dealer_message_id').references(() => dealerMessages.id),
+  customerName: varchar('customer_name', { length: 100 }).notNull(),
+  customerEmail: varchar('customer_email', { length: 255 }).notNull(),
+  customerPhone: varchar('customer_phone', { length: 30 }),
+  requestType: varchar('request_type', { length: 30 }).notNull(),
+  brand: varchar('brand', { length: 100 }),
+  model: varchar('model', { length: 200 }),
+  yearRange: varchar('year_range', { length: 20 }),
+  budgetRange: varchar('budget_range', { length: 50 }),
+  additionalNotes: text('additional_notes'),
+  preferredContactMethod: varchar('preferred_contact_method', { length: 20 }).default('email'),
+  status: varchar('status', { length: 20 }).notNull().default('new'),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+});
+
+export type DealerListing = typeof dealerListings.$inferSelect;
+export type CrmPipelineEntry = typeof crmPipeline.$inferSelect;
+export type CrmActivity = typeof crmActivities.$inferSelect;
+export type CrmTag = typeof crmTags.$inferSelect;
+export type DealerReview = typeof dealerReviews.$inferSelect;
+export type DealerMessage = typeof dealerMessages.$inferSelect;
+export type QuoteRequest = typeof quoteRequests.$inferSelect;
+
 // Re-export UserRole for client-side consumers that import from @shared/schema
 export type { UserRole } from "./constants";
 

@@ -48,6 +48,27 @@ export default function OperatorPortal() {
   const [blogSearch, setBlogSearch] = useState('');
   const [dataError, setDataError] = useState<string | null>(null);
 
+  // ─── CRM state ─────────────────────────────────────────────────────────────
+  const [crmDealers, setCrmDealers] = useState<any[]>([]);
+  const [crmPipelineData, setCrmPipelineData] = useState<Record<string, any[]>>({});
+  const [crmActivities, setCrmActivities] = useState<any[]>([]);
+  const [crmTags, setCrmTags] = useState<any[]>([]);
+  const [crmDashboard, setCrmDashboard] = useState<any>(null);
+  const [crmSearch, setCrmSearch] = useState('');
+  const [crmStageFilter, setCrmStageFilter] = useState('');
+  const [crmCountryFilter, setCrmCountryFilter] = useState('');
+  const [crmView, setCrmView] = useState<'list'|'kanban'>('list');
+  const [crmDetailId, setCrmDetailId] = useState<number | null>(null);
+  const [crmDetailDealer, setCrmDetailDealer] = useState<any | null>(null);
+  const [crmDetailTab, setCrmDetailTab] = useState('overview');
+  const [crmNewTag, setCrmNewTag] = useState('');
+  const [crmNewTagColor, setCrmNewTagColor] = useState('#3b82f6');
+  const [crmActivityForm, setCrmActivityForm] = useState({ type: 'note', summary: '' });
+  const [crmActivitySaving, setCrmActivitySaving] = useState(false);
+  const [crmTagSaving, setCrmTagSaving] = useState(false);
+  const [crmImportFile, setCrmImportFile] = useState<File | null>(null);
+  const [crmImportStatus, setCrmImportStatus] = useState<string | null>(null);
+
   // ─── Settings save feedback ────────────────────────────────────────────────
   const [settingsSaved, setSettingsSaved] = useState<string | null>(null);
   const [featureReqForm, setFeatureReqForm] = useState({ title: '', requestedBy: 'Internal', priority: 'medium', targetVersion: 'v2.2', description: '' });
@@ -182,9 +203,9 @@ marketplace:['Service Marketplace','Manage services'],'svc-financing':['Financin
 'svc-warranty':['Warranty Plans','14 active'],'svc-warranty-new':['Add Warranty Plan','Register or sell'],
 'svc-parts':['Parts \u0026 Accessories','8 orders'],'svc-parts-detail':['PO-0038','Smith\u0027s RV'],'svc-parts-new':['New Parts Order','Request parts'],
 'mkt-members':['Marketplace Members','28 dealers'],'mkt-member-detail':['Member Detail','Dealer verification'],'mkt-member-signup':['New Application','Review & approve'],'mkt-listings':['All Listings','142 active'],'mkt-listing-detail':['Listing Detail','Unit details'],'mkt-transactions':['Transactions','Escrow & commissions'],'mkt-transaction-detail':['Transaction Detail','Escrow tracking'],'mkt-auctions':['Live Auctions','Manage auctions'],'mkt-auction-detail':['Auction Detail','Bidding & settlement'],'mkt-public-events':['Public Auction Events','Monthly public sales'],'mkt-public-event-detail':['Event Detail','Manage showcase'],
-billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u0026 Services','Billable items'],'add-product':['Add Product / Service','Create item'],'edit-product':['Edit Product / Service','Modify item'],'create-invoice':['Create Invoice','New invoice'],reports:['Revenue Reports','Analytics'],notifications:['Notifications','Compose'],users:['Users \u0026 Roles','Manage users'],settings:['Settings','Platform config'],changelog:['Changelog','Version history \u0026 roadmap'],'add-feature-req':['Feature Request','Submit new request'],'blog':['Blog Management','AI content pipeline']};
+billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u0026 Services','Billable items'],'add-product':['Add Product / Service','Create item'],'edit-product':['Edit Product / Service','Modify item'],'create-invoice':['Create Invoice','New invoice'],reports:['Revenue Reports','Analytics'],notifications:['Notifications','Compose'],users:['Users \u0026 Roles','Manage users'],settings:['Settings','Platform config'],changelog:['Changelog','Version history \u0026 roadmap'],'add-feature-req':['Feature Request','Submit new request'],'blog':['Blog Management','AI content pipeline'],'crm':['Dealer CRM','Pipeline & market intelligence'],'crm-kanban':['Pipeline Kanban','Drag & drop stage management'],'crm-dealer':['Dealer CRM Record','Full 360° view']};
 
-  const parents: Record<string, string> = {'dealer-detail':'dealers','claim-detail':'claims','batch-review':'queue','unit-detail':'units','add-dealer':'dealers','add-unit':'units','create-invoice':'billing','add-product':'products','edit-product':'products','add-feature-req':'changelog','svc-financing-detail':'svc-financing','svc-financing-new':'svc-financing','svc-fi-detail':'svc-fi','svc-fi-new':'svc-fi','svc-warranty-new':'svc-warranty','svc-parts-detail':'svc-parts','svc-parts-new':'svc-parts','mkt-member-detail':'mkt-members','mkt-member-signup':'mkt-members','mkt-listing-detail':'mkt-listings','mkt-transaction-detail':'mkt-transactions','mkt-auction-detail':'mkt-auctions','mkt-public-event-detail':'mkt-public-events'};
+  const parents: Record<string, string> = {'dealer-detail':'dealers','claim-detail':'claims','batch-review':'queue','unit-detail':'units','add-dealer':'dealers','add-unit':'units','create-invoice':'billing','add-product':'products','edit-product':'products','add-feature-req':'changelog','svc-financing-detail':'svc-financing','svc-financing-new':'svc-financing','svc-fi-detail':'svc-fi','svc-fi-new':'svc-fi','svc-warranty-new':'svc-warranty','svc-parts-detail':'svc-parts','svc-parts-new':'svc-parts','mkt-member-detail':'mkt-members','mkt-member-signup':'mkt-members','mkt-listing-detail':'mkt-listings','mkt-transaction-detail':'mkt-transactions','mkt-auction-detail':'mkt-auctions','mkt-public-event-detail':'mkt-public-events','crm-kanban':'crm','crm-dealer':'crm'};
 
   useEffect(() => { if (theme === 'dark') document.documentElement.setAttribute('data-theme', 'dark'); }, []);
 
@@ -243,13 +264,30 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
           ]);
           setBlogDrafts(Array.isArray(draftsData) ? draftsData : []);
           setBlogQueue(Array.isArray(queueData) ? queueData : []);
+        } else if (activePage === 'crm') {
+          const [dashData, dealersData, tagsData] = await Promise.all([
+            apiFetch<any>('/api/crm/dashboard'),
+            apiFetch<any>('/api/crm/dealers'),
+            apiFetch<any>('/api/crm/tags'),
+          ]);
+          setCrmDashboard(dashData);
+          setCrmDealers(dealersData.dealers || []);
+          setCrmTags(tagsData.tags || []);
+        } else if (activePage === 'crm-kanban') {
+          const d = await apiFetch<any>('/api/crm/pipeline');
+          setCrmPipelineData(d.stages || {});
+        } else if (activePage === 'crm-dealer' && crmDetailId) {
+          const d = await apiFetch<any>(`/api/crm/dealers/${crmDetailId}`);
+          setCrmDetailDealer(d.dealer || null);
+          const acts = await apiFetch<any>(`/api/crm/activities/${crmDetailId}`);
+          setCrmActivities(acts.activities || []);
         }
       } catch (err: any) {
         setDataError(err?.message || 'Failed to load data');
       }
     };
     fetch();
-  }, [activePage, selectedClaimId, selectedDealerId]);
+  }, [activePage, selectedClaimId, selectedDealerId, crmDetailId]);
 
   // ─── WebSocket: live updates ────────────────────────────────────────────────
   useEffect(() => {
@@ -588,6 +626,8 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
       <div className={`nav-item ${isNavActive('billing') ? 'active' : ''}`} onClick={() => showPage('billing')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>Billing & Invoices</div>
       <div className={`nav-item ${isNavActive('products') ? 'active' : ''}`} onClick={() => showPage('products')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>Products & Services</div>
       <div className={`nav-item ${isNavActive('reports') ? 'active' : ''}`} onClick={() => showPage('reports')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Revenue Reports</div></div>
+    <div className="nav-section"><div className="nav-label">CRM</div>
+      <div className={`nav-item ${isNavActive('crm') ? 'active' : ''}`} onClick={() => showPage('crm')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Dealer Directory</div></div>
     <div className="nav-section"><div className="nav-label">System</div>
       <div className={`nav-item ${isNavActive('notifications') ? 'active' : ''}`} onClick={() => showPage('notifications')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>Notifications</div>
       <div className={`nav-item ${isNavActive('users') ? 'active' : ''}`} onClick={() => showPage('users')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Users & Roles</div>
@@ -1822,6 +1862,324 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
 </div>
 
 
+
+
+{/* ─── DEALER CRM ─── */}
+<div className={`page ${activePage === 'crm' ? 'active' : ''}`} id="page-crm">
+  <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:16,marginBottom:20}}>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Total Listings</div><div className="sc-v">{crmDashboard?.totalListings ?? '—'}</div></div>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Claimed</div><div className="sc-v" style={{color:'#22c55e'}}>{crmDashboard?.claimed ?? '—'}</div></div>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Verified (DS360)</div><div className="sc-v" style={{color:'#3b82f6'}}>{crmDashboard?.verified ?? '—'}</div></div>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Follow-ups Today</div><div className="sc-v" style={{color:'#f59e0b'}}>{crmDashboard?.followUpsToday ?? '—'}</div></div>
+  </div>
+  <div className="tabs">
+    <div className={`tab ${crmView === 'list' ? 'active' : ''}`} onClick={() => setCrmView('list')}>Dealer List</div>
+    <div className={`tab ${crmView === 'kanban' ? 'active' : ''}`} onClick={() => { setCrmView('kanban'); showPage('crm-kanban'); }}>Pipeline Kanban</div>
+  </div>
+  <div className="pn" style={{borderTop:'none',borderRadius:'0 0 8px 8px'}}>
+    <div className="pn-h"><span className="pn-t">All Dealer Listings</span>
+      <div style={{display:'flex',gap:8}}>
+        <button className="btn btn-o btn-sm" onClick={async () => {
+          try {
+            const res = await apiFetch('/api/crm/export', { method: 'POST' });
+            const blob = res instanceof Response ? await res.blob() : new Blob([JSON.stringify(res)],{type:'text/csv'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a'); a.href=url; a.download='dealers.csv'; a.click();
+          } catch {}
+        }}>Export CSV</button>
+        <label className="btn btn-o btn-sm" style={{cursor:'pointer'}}>
+          Import CSV<input type="file" accept=".csv" style={{display:'none'}} onChange={async e => {
+            const f = e.target.files?.[0]; if (!f) return;
+            setCrmImportStatus('Importing…');
+            const fd = new FormData(); fd.append('file', f);
+            try {
+              const d = await apiFetch<any>('/api/crm/import', { method: 'POST', body: fd });
+              setCrmImportStatus(`Imported ${d.imported}, skipped ${d.skipped}`);
+              const dd = await apiFetch<any>('/api/crm/dealers');
+              setCrmDealers(dd.dealers || []);
+            } catch { setCrmImportStatus('Import failed'); }
+            e.target.value='';
+          }} />
+        </label>
+      </div>
+    </div>
+    {crmImportStatus && <div style={{padding:'8px 20px',fontSize:12,color:'#555',borderBottom:'1px solid #f0f0f0'}}>{crmImportStatus}</div>}
+    <div className="filter-bar">
+      <input type="text" placeholder="Search dealers…" value={crmSearch} onChange={e => setCrmSearch(e.target.value)} />
+      <select value={crmStageFilter} onChange={e => setCrmStageFilter(e.target.value)}>
+        <option value="">All Stages</option>
+        {['prospect','claimed_page','contacted','demo_scheduled','demo_done','negotiating','onboarded','active_customer','lost','not_interested'].map(s => <option key={s} value={s}>{s.replace(/_/g,' ')}</option>)}
+      </select>
+      <select value={crmCountryFilter} onChange={e => setCrmCountryFilter(e.target.value)}>
+        <option value="">All Countries</option><option value="CA">Canada</option><option value="US">United States</option>
+      </select>
+    </div>
+    <div className="tw"><table><thead><tr><th>Dealer</th><th>City</th><th>Province/State</th><th>Country</th><th>Stage</th><th>Claimed</th><th>Views</th><th>Action</th></tr></thead><tbody>
+      {(() => {
+        const sl = crmSearch.toLowerCase();
+        const filtered = crmDealers.filter((d:any) => {
+          if (sl && !d.name?.toLowerCase().includes(sl) && !d.city?.toLowerCase().includes(sl)) return false;
+          if (crmStageFilter && d.pipelineStage !== crmStageFilter) return false;
+          if (crmCountryFilter && d.country !== crmCountryFilter) return false;
+          return true;
+        });
+        if (filtered.length === 0) return <tr><td colSpan={8} style={{textAlign:'center',color:'#888',padding:20}}>{dataError ? dataError : crmDealers.length === 0 ? 'No listings yet. Import a CSV to get started.' : 'No results match your filters'}</td></tr>;
+        return filtered.map((d:any) => (
+          <tr key={d.id}>
+            <td style={{fontWeight:500}}>{d.name}</td>
+            <td>{d.city || '—'}</td>
+            <td>{d.stateProvince || '—'}</td>
+            <td><span className={`bg ${d.country === 'CA' ? 'submitted' : 'pending'}`}>{d.country || '—'}</span></td>
+            <td><span className="bg draft" style={{textTransform:'capitalize'}}>{(d.pipelineStage || 'prospect').replace(/_/g,' ')}</span></td>
+            <td>{d.isClaimed ? <span className="bg pay-recv">Yes</span> : <span style={{color:'#aaa'}}>No</span>}</td>
+            <td>{d.pageViews ?? 0}</td>
+            <td><button className="btn btn-p btn-sm" onClick={() => { setCrmDetailId(d.id); setCrmDetailTab('overview'); showPage('crm-dealer'); }}>Open</button></td>
+          </tr>
+        ));
+      })()}
+    </tbody></table></div>
+  </div>
+</div>
+
+{/* ─── CRM KANBAN ─── */}
+<div className={`page ${activePage === 'crm-kanban' ? 'active' : ''}`} id="page-crm-kanban">
+  <div className="detail-header"><button className="detail-back" onClick={() => showPage('crm')}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6"/></svg></button><div className="detail-info"><div className="detail-title">Pipeline Kanban</div><div className="detail-meta">Drag dealers between stages to update pipeline</div></div></div>
+  <div style={{display:'flex',gap:12,overflowX:'auto',paddingBottom:16}}>
+    {['prospect','claimed_page','contacted','demo_scheduled','demo_done','negotiating','onboarded','active_customer'].map(stage => {
+      const dealers = (crmPipelineData[stage] || []);
+      const stageLabel = stage.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
+      return (
+        <div key={stage} style={{minWidth:200,background:'#f8fafc',borderRadius:10,padding:'12px 10px',border:'1px solid #e5e7eb',flexShrink:0}}
+          onDragOver={e => e.preventDefault()}
+          onDrop={async e => {
+            e.preventDefault();
+            const dealerId = e.dataTransfer.getData('dealerId');
+            if (!dealerId) return;
+            try {
+              await apiFetch(`/api/crm/pipeline/${dealerId}/stage`, { method: 'PUT', body: JSON.stringify({ stage }) });
+              const d = await apiFetch<any>('/api/crm/pipeline');
+              setCrmPipelineData(d.stages || {});
+            } catch {}
+          }}>
+          <div style={{fontSize:11,fontWeight:700,color:'#555',textTransform:'uppercase',letterSpacing:1,marginBottom:10,display:'flex',justifyContent:'space-between'}}>
+            <span>{stageLabel}</span><span style={{background:'#e5e7eb',borderRadius:10,padding:'1px 7px',fontWeight:600}}>{dealers.length}</span>
+          </div>
+          {dealers.map((d:any) => (
+            <div key={d.id} draggable
+              onDragStart={e => e.dataTransfer.setData('dealerId', String(d.dealerId || d.id))}
+              style={{background:'#fff',borderRadius:8,padding:'10px 12px',marginBottom:8,border:'1px solid #e5e7eb',cursor:'grab',fontSize:13}}
+              onClick={() => { setCrmDetailId(d.id || d.dealerId); setCrmDetailTab('overview'); showPage('crm-dealer'); }}>
+              <div style={{fontWeight:600,marginBottom:2}}>{d.name || d.dealerName}</div>
+              <div style={{fontSize:11,color:'#888'}}>{d.city}{d.stateProvince ? `, ${d.stateProvince}` : ''} · {d.country}</div>
+              {d.isClaimed && <div style={{marginTop:4,fontSize:10,color:'#22c55e',fontWeight:600}}>● Claimed</div>}
+            </div>
+          ))}
+          {dealers.length === 0 && <div style={{fontSize:12,color:'#bbb',textAlign:'center',padding:'20px 0'}}>Drop here</div>}
+        </div>
+      );
+    })}
+  </div>
+</div>
+
+{/* ─── CRM DEALER DETAIL ─── */}
+<div className={`page ${activePage === 'crm-dealer' ? 'active' : ''}`} id="page-crm-dealer">
+  <div className="detail-header">
+    <button className="detail-back" onClick={() => showPage('crm')}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <div className="detail-info">
+      <div className="detail-title">{crmDetailDealer?.name || 'Dealer Record'}</div>
+      <div className="detail-meta">{crmDetailDealer?.city}{crmDetailDealer?.stateProvince ? `, ${crmDetailDealer.stateProvince}` : ''} · {crmDetailDealer?.country} · {(crmDetailDealer?.pipelineStage || 'prospect').replace(/_/g,' ')}</div>
+    </div>
+    <a href={`/dealers/listing/${crmDetailDealer?.slug}`} target="_blank" rel="noreferrer" className="btn btn-o btn-sm">View Public Listing</a>
+  </div>
+
+  {crmDetailDealer && (
+    <>
+      <div className="tabs">
+        {[['overview','Overview'],['activity','Activity Log'],['tags','Tags'],['reviews','Reviews'],['messages','Messages']].map(([id,label]) => (
+          <div key={id} className={`tab ${crmDetailTab === id ? 'active' : ''}`} onClick={() => setCrmDetailTab(id)}>{label}</div>
+        ))}
+      </div>
+
+      {crmDetailTab === 'overview' && (
+        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:16,marginTop:16}}>
+          <div className="pn">
+            <div className="pn-h"><span className="pn-t">Dealer Info</span></div>
+            <div style={{padding:'16px 20px',fontSize:13}}>
+              {[['Name',crmDetailDealer.name],['City',crmDetailDealer.city],['Province/State',crmDetailDealer.stateProvince],['Country',crmDetailDealer.country],['Phone',crmDetailDealer.phone],['Website',crmDetailDealer.website],['Email',crmDetailDealer.email],['Claimed',crmDetailDealer.isClaimed ? 'Yes' : 'No'],['Verified',crmDetailDealer.isVerified ? 'Yes' : 'No'],['Page Views',crmDetailDealer.pageViews ?? 0],['Contact Clicks',crmDetailDealer.contactClicks ?? 0]].map(([k,v]) => (
+                <div key={k} style={{display:'flex',justifyContent:'space-between',padding:'6px 0',borderBottom:'1px solid #f5f5f5'}}>
+                  <span style={{color:'#888'}}>{k}</span>
+                  <span style={{fontWeight:500,maxWidth:220,textAlign:'right'}}>{v || '—'}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div style={{display:'flex',flexDirection:'column',gap:16}}>
+            <div className="pn">
+              <div className="pn-h"><span className="pn-t">Pipeline Stage</span></div>
+              <div style={{padding:'16px 20px',fontSize:13}}>
+                <select value={crmDetailDealer.pipelineStage || 'prospect'} style={{width:'100%',padding:'8px 10px',border:'1px solid #e0e0e0',borderRadius:6,fontSize:13,fontFamily:'inherit',marginBottom:10}}
+                  onChange={async e => {
+                    try {
+                      await apiFetch(`/api/crm/pipeline/${crmDetailDealer.id}/stage`, { method: 'PUT', body: JSON.stringify({ stage: e.target.value }) });
+                      const d = await apiFetch<any>(`/api/crm/dealers/${crmDetailDealer.id}`);
+                      setCrmDetailDealer(d.dealer || null);
+                    } catch {}
+                  }}>
+                  {['prospect','claimed_page','contacted','demo_scheduled','demo_done','negotiating','onboarded','active_customer','lost','not_interested'].map(s => (
+                    <option key={s} value={s}>{s.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase())}</option>
+                  ))}
+                </select>
+                <div style={{fontSize:12,color:'#888'}}>Changing stage auto-logs a CRM activity.</div>
+              </div>
+            </div>
+            <div className="pn">
+              <div className="pn-h"><span className="pn-t">Quick Stats</span></div>
+              <div style={{padding:'16px 20px',display:'grid',gridTemplateColumns:'1fr 1fr',gap:12}}>
+                {[['Reviews',crmDetailDealer.reviewCount ?? 0],['Avg Rating',crmDetailDealer.avgRating ? `${Number(crmDetailDealer.avgRating).toFixed(1)} ★` : '—'],['Messages',crmDetailDealer.messages?.length ?? 0],['Page Views',crmDetailDealer.pageViews ?? 0]].map(([k,v]) => (
+                  <div key={k} style={{textAlign:'center',padding:'10px 0',background:'#f8fafc',borderRadius:8}}>
+                    <div style={{fontSize:20,fontWeight:700,color:'var(--brand)'}}>{v}</div>
+                    <div style={{fontSize:11,color:'#888'}}>{k}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {crmDetailTab === 'activity' && (
+        <div style={{marginTop:16}}>
+          <div className="pn" style={{marginBottom:16}}>
+            <div className="pn-h"><span className="pn-t">Log Activity</span></div>
+            <div style={{padding:'16px 20px',display:'grid',gridTemplateColumns:'1fr 2fr auto',gap:10,alignItems:'end'}}>
+              <select value={crmActivityForm.type} onChange={e => setCrmActivityForm(f => ({...f, type: e.target.value}))} style={{padding:'8px 10px',border:'1px solid #e0e0e0',borderRadius:6,fontSize:13,fontFamily:'inherit'}}>
+                <option value="note">Note</option><option value="call">Call</option><option value="email">Email</option><option value="demo">Demo</option><option value="follow_up">Follow-up</option>
+              </select>
+              <input placeholder="Summary…" value={crmActivityForm.summary} onChange={e => setCrmActivityForm(f => ({...f, summary: e.target.value}))} style={{padding:'8px 10px',border:'1px solid #e0e0e0',borderRadius:6,fontSize:13,fontFamily:'inherit'}} />
+              <button className="btn btn-p btn-sm" disabled={crmActivitySaving || !crmActivityForm.summary} onClick={async () => {
+                setCrmActivitySaving(true);
+                try {
+                  await apiFetch('/api/crm/activities', { method: 'POST', body: JSON.stringify({ dealerId: crmDetailDealer.id, type: crmActivityForm.type, summary: crmActivityForm.summary }) });
+                  const d = await apiFetch<any>(`/api/crm/activities/${crmDetailDealer.id}`);
+                  setCrmActivities(d.activities || []);
+                  setCrmActivityForm({ type: 'note', summary: '' });
+                } catch {} finally { setCrmActivitySaving(false); }
+              }}>{crmActivitySaving ? '…' : 'Log'}</button>
+            </div>
+          </div>
+          <div className="pn">
+            <div className="tw"><table><thead><tr><th>Type</th><th>Summary</th><th>By</th><th>Date</th></tr></thead><tbody>
+              {crmActivities.length === 0
+                ? <tr><td colSpan={4} style={{textAlign:'center',color:'#888',padding:20}}>No activity yet</td></tr>
+                : crmActivities.map((a:any) => (
+                  <tr key={a.id}>
+                    <td><span className="bg submitted" style={{textTransform:'capitalize'}}>{a.activityType?.replace(/_/g,' ') || a.type}</span></td>
+                    <td style={{maxWidth:340}}>{a.summary}</td>
+                    <td>{a.createdByName || a.createdBy || '—'}</td>
+                    <td>{a.createdAt ? new Date(a.createdAt).toLocaleDateString('en-CA',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}) : '—'}</td>
+                  </tr>
+                ))
+              }
+            </tbody></table></div>
+          </div>
+        </div>
+      )}
+
+      {crmDetailTab === 'tags' && (
+        <div style={{marginTop:16,display:'grid',gridTemplateColumns:'1fr 1fr',gap:16}}>
+          <div className="pn">
+            <div className="pn-h"><span className="pn-t">Assigned Tags</span></div>
+            <div style={{padding:'16px 20px',display:'flex',flexWrap:'wrap',gap:8}}>
+              {(crmDetailDealer.tags || []).length === 0 && <span style={{fontSize:13,color:'#aaa'}}>No tags assigned</span>}
+              {(crmDetailDealer.tags || []).map((t:any) => (
+                <span key={t.id} style={{display:'inline-flex',alignItems:'center',gap:6,background:t.color || '#e0e7ff',borderRadius:20,padding:'4px 10px',fontSize:12,fontWeight:500}}>
+                  {t.name}
+                  <button style={{background:'none',border:'none',cursor:'pointer',color:'#666',lineHeight:1}} onClick={async () => {
+                    try {
+                      await apiFetch(`/api/crm/dealers/${crmDetailDealer.id}/tags/${t.id}`, { method: 'DELETE' });
+                      const d = await apiFetch<any>(`/api/crm/dealers/${crmDetailDealer.id}`); setCrmDetailDealer(d.dealer || null);
+                    } catch {}
+                  }}>×</button>
+                </span>
+              ))}
+            </div>
+          </div>
+          <div className="pn">
+            <div className="pn-h"><span className="pn-t">All Tags</span>
+              <div style={{display:'flex',gap:6}}>
+                <input placeholder="New tag…" value={crmNewTag} onChange={e => setCrmNewTag(e.target.value)} style={{padding:'4px 8px',border:'1px solid #e0e0e0',borderRadius:6,fontSize:12,fontFamily:'inherit',width:100}} />
+                <input type="color" value={crmNewTagColor} onChange={e => setCrmNewTagColor(e.target.value)} style={{width:28,height:28,border:'none',cursor:'pointer',borderRadius:4}} />
+                <button className="btn btn-p btn-sm" disabled={crmTagSaving || !crmNewTag} onClick={async () => {
+                  setCrmTagSaving(true);
+                  try {
+                    await apiFetch('/api/crm/tags', { method: 'POST', body: JSON.stringify({ name: crmNewTag, color: crmNewTagColor }) });
+                    const d = await apiFetch<any>('/api/crm/tags'); setCrmTags(d.tags || []);
+                    setCrmNewTag('');
+                  } catch {} finally { setCrmTagSaving(false); }
+                }}>Add</button>
+              </div>
+            </div>
+            <div style={{padding:'16px 20px',display:'flex',flexWrap:'wrap',gap:8}}>
+              {crmTags.map((t:any) => (
+                <span key={t.id} style={{display:'inline-flex',alignItems:'center',gap:6,background:t.color || '#e0e7ff',borderRadius:20,padding:'4px 10px',fontSize:12,fontWeight:500,cursor:'pointer'}}
+                  onClick={async () => {
+                    try {
+                      await apiFetch(`/api/crm/dealers/${crmDetailDealer.id}/tags`, { method: 'POST', body: JSON.stringify({ tagId: t.id }) });
+                      const d = await apiFetch<any>(`/api/crm/dealers/${crmDetailDealer.id}`); setCrmDetailDealer(d.dealer || null);
+                    } catch {}
+                  }}>+ {t.name}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {crmDetailTab === 'reviews' && (
+        <div className="pn" style={{marginTop:16}}>
+          <div className="pn-h"><span className="pn-t">Customer Reviews</span></div>
+          <div className="tw"><table><thead><tr><th>Author</th><th>Rating</th><th>Title</th><th>Status</th><th>Date</th><th>Action</th></tr></thead><tbody>
+            {(crmDetailDealer.reviews || []).length === 0
+              ? <tr><td colSpan={6} style={{textAlign:'center',color:'#888',padding:20}}>No reviews</td></tr>
+              : (crmDetailDealer.reviews || []).map((r:any) => (
+                <tr key={r.id}>
+                  <td>{r.authorName}</td>
+                  <td>{'★'.repeat(r.rating)}{'☆'.repeat(5-r.rating)}</td>
+                  <td style={{maxWidth:240}}>{r.title || '—'}</td>
+                  <td><span className={`bg ${r.status === 'approved' ? 'pay-recv' : r.status === 'pending' ? 'pending' : 'denied'}`}>{r.status}</span></td>
+                  <td>{r.createdAt ? new Date(r.createdAt).toLocaleDateString() : '—'}</td>
+                  <td style={{whiteSpace:'nowrap'}}>
+                    {r.status !== 'approved' && <button className="btn btn-s btn-sm" style={{marginRight:4}} onClick={async () => { try { await apiFetch(`/api/crm/reviews/${r.id}/moderate`, { method: 'POST', body: JSON.stringify({ action: 'approve' }) }); const d = await apiFetch<any>(`/api/crm/dealers/${crmDetailDealer.id}`); setCrmDetailDealer(d.dealer || null); } catch {} }}>Approve</button>}
+                    <button className="btn btn-d btn-sm" onClick={async () => { try { await apiFetch(`/api/crm/reviews/${r.id}/moderate`, { method: 'POST', body: JSON.stringify({ action: 'remove' }) }); const d = await apiFetch<any>(`/api/crm/dealers/${crmDetailDealer.id}`); setCrmDetailDealer(d.dealer || null); } catch {} }}>Remove</button>
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody></table></div>
+        </div>
+      )}
+
+      {crmDetailTab === 'messages' && (
+        <div className="pn" style={{marginTop:16}}>
+          <div className="pn-h"><span className="pn-t">Messages & Quote Requests</span></div>
+          <div className="tw"><table><thead><tr><th>From</th><th>Email</th><th>Subject</th><th>Date</th></tr></thead><tbody>
+            {(crmDetailDealer.messages || []).length === 0
+              ? <tr><td colSpan={4} style={{textAlign:'center',color:'#888',padding:20}}>No messages</td></tr>
+              : (crmDetailDealer.messages || []).map((m:any) => (
+                <tr key={m.id}>
+                  <td>{m.senderName}</td>
+                  <td><a href={`mailto:${m.senderEmail}`} style={{color:'var(--brand)'}}>{m.senderEmail}</a></td>
+                  <td style={{maxWidth:280}}>{m.subject || m.body?.slice(0,60)+'…'}</td>
+                  <td>{m.createdAt ? new Date(m.createdAt).toLocaleDateString() : '—'}</td>
+                </tr>
+              ))
+            }
+          </tbody></table></div>
+        </div>
+      )}
+    </>
+  )}
+  {!crmDetailDealer && <div style={{textAlign:'center',padding:40,color:'#888'}}>Loading…</div>}
+</div>
 
 
 </div>

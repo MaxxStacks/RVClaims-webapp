@@ -85,6 +85,7 @@ const ROUTE_MAP: Record<string, string> = {
   '/signup':              'signup.html',
   '/rv-types':            'rv-types.html',
   '/blog':               'blog/index.html',
+  '/dealers':            'dealers/index.html',
 };
 
 function isCrawler(userAgent: string | undefined): boolean {
@@ -110,6 +111,14 @@ export function crawlerMiddleware(prerenderedDir?: string) {
       const slug = urlPath.replace('/blog/', '');
       if (slug && /^[a-z0-9-]+$/.test(slug)) {
         fileName = `blog/${slug}.html`;
+      }
+    }
+
+    // Handle dynamic /dealers/listing/:slug routes
+    if (!fileName && urlPath.startsWith('/dealers/listing/')) {
+      const slug = urlPath.replace('/dealers/listing/', '');
+      if (slug && /^[a-z0-9-]+$/.test(slug)) {
+        fileName = `dealers/${slug}.html`;
       }
     }
 

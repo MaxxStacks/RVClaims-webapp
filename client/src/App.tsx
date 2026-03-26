@@ -36,6 +36,10 @@ const NewsArticlePage = lazy(() => import("@/pages/news-article"));
 const ResetPassword = lazy(() => import("@/pages/reset-password"));
 const BlogPage = lazy(() => import("@/pages/blog"));
 const BlogPostPage = lazy(() => import("@/pages/blog-post"));
+const DealersPage = lazy(() => import("@/pages/dealers"));
+const DealerListingPage = lazy(() => import("@/pages/dealer-listing"));
+const DealerClaimPage = lazy(() => import("@/pages/dealer-claim"));
+const DealerDashboardPage = lazy(() => import("@/pages/dealer-dashboard"));
 const NotFound = lazy(() => import("@/pages/not-found"));
 const OperatorPortal = lazy(() => import("./portals/OperatorPortal"));
 const DealerPortal = lazy(() => import("./portals/DealerPortal"));
@@ -95,6 +99,10 @@ function Router() {
         <Route path="/reset-password" component={ResetPassword} />
         <Route path="/blog/:slug" component={BlogPostPage} />
         <Route path="/blog" component={BlogPage} />
+        <Route path="/dealers/listing/:slug" component={DealerListingPage} />
+        <Route path="/dealers/claim/:slug" component={DealerClaimPage} />
+        <Route path="/dealers" component={DealersPage} />
+        <Route path="/dealer-dashboard" component={DealerDashboardPage} />
         <Route component={NotFound} />
       </Switch>
     </>
