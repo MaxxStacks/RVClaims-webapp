@@ -117,20 +117,26 @@ export default function ClaimsProcessing() {
         </div>
       </section>
 
-      {/* Process Steps */}
+      {/* Claim Lifecycle Timeline */}
       <section className="py-20 bg-muted/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-14">
             <h2 className="text-3xl md:text-4xl font-bold">{t('claimsPage.processTitle')}</h2>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {processSteps.map((step, i) => (
-              <div key={i} className="bg-card rounded-xl p-8 border border-border relative">
-                <div className="text-4xl font-bold text-primary/15 mb-4">{step.num}</div>
-                <h3 className="text-lg font-semibold mb-3">{step.title}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">{step.body}</p>
-              </div>
-            ))}
+          <div className="relative">
+            {/* Horizontal connecting line — desktop only */}
+            <div className="hidden lg:block absolute top-6 left-0 right-0 h-0.5 bg-primary/30 mx-[40px]" />
+            <div className="grid lg:grid-cols-6 gap-4">
+              {processSteps.map((step, i) => (
+                <div key={i} className="flex flex-col items-center text-center relative">
+                  <div className="w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center font-bold text-sm mb-3 z-10 relative">
+                    {i + 1}
+                  </div>
+                  <h4 className="font-semibold text-sm mb-1">{step.title}</h4>
+                  <p className="text-xs text-muted-foreground leading-relaxed">{step.body}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -149,6 +155,45 @@ export default function ClaimsProcessing() {
               </Badge>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Before & After Comparison Table */}
+      <section className="py-20 bg-background">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold">Claims Processing: Before vs. After</h2>
+            <p className="text-muted-foreground mt-4 max-w-2xl mx-auto">See how RV dealers transform their claims workflow when they switch to DealerSuite360.</p>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse">
+              <thead>
+                <tr className="border-b-2 border-border">
+                  <th className="text-left p-4 text-sm font-semibold text-muted-foreground uppercase tracking-wide">Metric</th>
+                  <th className="text-center p-4 text-sm font-semibold text-muted-foreground uppercase tracking-wide">Without DealerSuite360</th>
+                  <th className="text-center p-4 text-sm font-semibold text-primary uppercase tracking-wide bg-primary/5 rounded-t-lg">With DealerSuite360</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { metric: "Time spent on claims per week", before: "12–18 hours", after: "2–3 hours" },
+                  { metric: "Average claim approval rate", before: "68–74%", after: "90–96%" },
+                  { metric: "FRC code accuracy", before: "Manual / inconsistent", after: "AI-assisted lookup" },
+                  { metric: "Photo quality issues", before: "Discovered after denial", after: "Flagged before submission" },
+                  { metric: "Denial rate", before: "22–30%", after: "4–8%" },
+                  { metric: "Time to first payout", before: "6–10 weeks", after: "2–4 weeks" },
+                  { metric: "Billing & reconciliation", before: "Manual spreadsheets", after: "Automated platform" },
+                ].map((row, i) => (
+                  <tr key={row.metric} className={`border-b border-border ${i % 2 === 0 ? "bg-background" : "bg-muted/20"}`}>
+                    <td className="p-4 font-medium text-foreground text-sm">{row.metric}</td>
+                    <td className="p-4 text-center text-muted-foreground text-sm">{row.before}</td>
+                    <td className="p-4 text-center font-semibold text-primary bg-primary/5 text-sm">{row.after}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="text-xs text-muted-foreground text-center mt-4">* Representative figures based on platform data. Results vary by dealership volume and manufacturer.</p>
         </div>
       </section>
 

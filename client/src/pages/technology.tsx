@@ -1,15 +1,17 @@
+import { useState } from "react";
 import { PageLayout } from "@/components/page-layout";
 import { useLanguage } from "@/hooks/use-language";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "wouter";
-import { Zap, Camera, BarChart3, FileText, FileSearch, Receipt, Monitor, MessageSquare, Users, Building2, User, Gavel, CheckCircle, Smartphone } from "lucide-react";
+import { Zap, Camera, BarChart3, FileText, FileSearch, Receipt, Monitor, MessageSquare, Users, Building2, User, Gavel, CheckCircle, Smartphone, ChevronDown } from "lucide-react";
 
 const aiIcons = [Zap, Camera, BarChart3, FileSearch, FileText, Receipt, Monitor, MessageSquare];
 const portalIcons = [Building2, Users, User, Gavel];
 
 export default function Technology() {
   const { t } = useLanguage();
+  const [activeTab, setActiveTab] = useState(0);
 
   const aiComponents = [
     { icon: aiIcons[0], title: t('technologyPage.ai1Title'), body: t('technologyPage.ai1Body') },
@@ -70,22 +72,87 @@ export default function Technology() {
         </div>
       </section>
 
-      {/* 8 AI Modules */}
+      {/* 8 AI Modules — Tabbed */}
       <section className="py-20 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-14">
+          <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold">{t('technologyPage.aiTitle')}</h2>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {aiComponents.map(({ icon: Icon, title, body }, i) => (
-              <div key={i} className="bg-card rounded-xl p-6 border border-border hover:border-primary/40 hover:shadow-lg transition-all duration-300">
-                <div className="w-11 h-11 bg-primary/10 rounded-xl flex items-center justify-center mb-4">
-                  <Icon className="w-5 h-5 text-primary" />
-                </div>
-                <h3 className="font-semibold mb-2">{title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{body}</p>
-              </div>
+
+          {/* Tab Buttons — Desktop */}
+          <div className="hidden md:flex flex-wrap gap-2 justify-center mb-8">
+            {aiComponents.map((comp, i) => (
+              <button
+                key={i}
+                onClick={() => setActiveTab(i)}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  activeTab === i
+                    ? 'bg-primary text-white'
+                    : 'bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground'
+                }`}
+              >
+                {comp.title}
+              </button>
             ))}
+          </div>
+
+          {/* Active Tab Content — Desktop */}
+          <div className="hidden md:grid grid-cols-2 gap-12 items-center">
+            <div>
+              {(() => {
+                const ActiveIcon = aiComponents[activeTab].icon;
+                return (
+                  <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-6">
+                    <ActiveIcon className="w-7 h-7 text-primary" />
+                  </div>
+                );
+              })()}
+              <h3 className="text-2xl font-bold mb-4">{aiComponents[activeTab].title}</h3>
+              <p className="text-muted-foreground leading-relaxed text-lg">{aiComponents[activeTab].body}</p>
+            </div>
+            <div className="bg-muted/30 rounded-2xl border border-border h-72 flex items-center justify-center">
+              {(() => {
+                const PreviewIcon = aiComponents[activeTab].icon;
+                return (
+                  <div className="text-center text-muted-foreground">
+                    <PreviewIcon className="w-16 h-16 mx-auto mb-3 text-primary/30" />
+                    <p className="text-sm font-medium mt-3">Platform Feature</p>
+                    <p className="text-xs mt-1">Patent-Pending Technology</p>
+                  </div>
+                );
+              })()}
+            </div>
+          </div>
+
+          {/* Mobile Accordion */}
+          <div className="md:hidden space-y-3">
+            {aiComponents.map((comp, i) => {
+              const AccordionIcon = comp.icon;
+              return (
+                <div key={i} className="border border-border rounded-xl overflow-hidden">
+                  <button
+                    onClick={() => setActiveTab(activeTab === i ? -1 : i)}
+                    className="w-full flex items-center justify-between p-4 bg-card text-left hover:bg-muted/40 transition-colors"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
+                        <AccordionIcon className="w-4 h-4 text-primary" />
+                      </div>
+                      <span className="font-semibold">{comp.title}</span>
+                    </div>
+                    <ChevronDown
+                      className={`text-muted-foreground transition-transform duration-200 ${activeTab === i ? 'rotate-180' : ''}`}
+                      size={16}
+                    />
+                  </button>
+                  {activeTab === i && (
+                    <div className="px-4 pb-4 pt-2 bg-card text-muted-foreground text-sm leading-relaxed">
+                      {comp.body}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
