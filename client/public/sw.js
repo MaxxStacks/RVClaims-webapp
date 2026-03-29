@@ -34,7 +34,9 @@ self.addEventListener("activate", (event) => {
       );
     })
   );
-  self.clients.claim();
+  // NOTE: clients.claim() intentionally omitted — claiming existing clients
+  // mid-load interrupts in-flight asset requests and causes broken images.
+  // The SW takes control on the next navigation instead.
 });
 
 // ==================== FETCH ====================
@@ -81,6 +83,8 @@ self.addEventListener("fetch", (event) => {
     url.pathname.endsWith(".css") ||
     url.pathname.endsWith(".png") ||
     url.pathname.endsWith(".jpg") ||
+    url.pathname.endsWith(".webp") ||
+    url.pathname.endsWith(".gif") ||
     url.pathname.endsWith(".svg") ||
     url.pathname.endsWith(".woff2")
   ) {
@@ -100,6 +104,9 @@ self.addEventListener("fetch", (event) => {
   }
 
   // HTML pages: network-first for fresh content
+  // Only fall back to app shell for actual HTML navigation requests —
+  // never serve HTML as a fallback for other resource types (images, fonts, etc.)
+  const isNavigation = request.mode === "navigate";
   event.respondWith(
     fetch(request)
       .then((response) => {
@@ -111,8 +118,10 @@ self.addEventListener("fetch", (event) => {
       })
       .catch(() => {
         return caches.match(request).then((cached) => {
-          // If no cached version, serve the main app shell
-          return cached || caches.match("/");
+          if (cached) return cached;
+          // Only serve the app shell for HTML navigation; let other resources fail naturally
+          if (isNavigation) return caches.match("/");
+          return new Response(null, { status: 503, statusText: "Service Unavailable" });
         });
       })
   );

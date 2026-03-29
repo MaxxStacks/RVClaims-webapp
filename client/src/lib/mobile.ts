@@ -76,6 +76,10 @@ window.addEventListener("resize", () => {
 // ==================== PWA REGISTRATION ====================
 
 export function registerServiceWorker(): void {
+  // Skip SW in development — skipWaiting()+clients.claim() interrupts Vite's
+  // in-flight asset requests, causing images to appear broken until hard refresh.
+  if (import.meta.env.DEV) return;
+
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
       navigator.serviceWorker
