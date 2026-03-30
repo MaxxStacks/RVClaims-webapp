@@ -778,6 +778,7 @@ export const translations = {
         title: "Insurance Claims",
         description: "Collision, weather, theft, and liability claims require different documentation standards. Our team coordinates with insurance adjusters and manufacturers to ensure complete, compliant submissions every time."
       },
+      typesTitle: "Five Claim Types. One Expert Team.",
       processTitle: "How Our Claims Process Works",
       step1Title: "Claim Identified & Created",
       step1Body: "Your team creates a claim in the dealer portal by VIN. We handle DAF upon unit arrival, PDI before delivery, and warranty or insurance claims as they're reported.",
@@ -2455,6 +2456,7 @@ export const translations = {
         title: "Réclamations d'assurance",
         description: "Les réclamations de collision, météo, vol et responsabilité civile nécessitent des normes de documentation différentes. Notre équipe coordonne avec les experts en sinistres pour des soumissions complètes et conformes."
       },
+      typesTitle: "Cinq types de réclamations. Une équipe d'experts.",
       processTitle: "Comment fonctionne notre processus de réclamations",
       step1Title: "Réclamation identifiée et créée",
       step1Body: "Votre équipe crée une réclamation dans le portail par NIV. Nous gérons le DAF à l'arrivée, le PDI avant livraison, et les réclamations de garantie ou d'assurance au fur et à mesure.",
