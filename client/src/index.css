@@ -226,20 +226,20 @@ html, body {
   }
 }
 
-/* Scrolling notification animation - mobile safe */
+/* Scrolling notification animation - seamless marquee */
 @keyframes scroll {
   0% {
-    transform: translateX(100%);
+    transform: translateX(0);
   }
   100% {
-    transform: translateX(-100%);
+    transform: translateX(-50%);
   }
 }
 
 .animate-scroll {
-  animation: scroll 60s linear infinite;
-  /* Ensure animation stays within container */
+  animation: scroll 30s linear infinite;
   will-change: transform;
-  contain: layout;
+  transform: translateZ(0);
+  display: flex;
 }
 

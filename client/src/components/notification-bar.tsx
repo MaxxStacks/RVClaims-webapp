@@ -5,29 +5,31 @@ import { Link } from "wouter";
 export function NotificationBar() {
   const { t } = useLanguage();
   
+  const item = (ariaHidden: boolean, withLink: boolean) => (
+    <span className="text-sm font-medium px-8 inline-flex items-center shrink-0" aria-hidden={ariaHidden || undefined}>
+      <Zap className="w-4 h-4 mr-2 text-white animate-pulse" fill="white" />
+      {t('notificationBar.message')}{' '}
+      {withLink
+        ? <Link href="/contact" className="ml-1 underline hover:text-gray-200 transition-colors" data-testid="link-learn-more" aria-label="Learn more about our 2026 season special offer">{t('notificationBar.learnMore')}</Link>
+        : <span className="ml-1 underline">{t('notificationBar.learnMore')}</span>
+      }
+      <Zap className="w-4 h-4 ml-2 text-white animate-pulse" fill="white" />
+    </span>
+  );
+
   return (
     <div className="bg-primary text-white py-2 overflow-hidden relative z-50 w-full" data-testid="notification-bar">
-      <div className="whitespace-nowrap animate-scroll w-full">
-        <span className="text-sm font-medium px-4 inline-flex items-center">
-          <Zap className="w-4 h-4 mr-2 text-white animate-pulse" fill="white" />
-          {t('notificationBar.message')} <Link href="/contact" className="ml-1 underline hover:text-gray-200 transition-colors" data-testid="link-learn-more" aria-label="Learn more about our 2026 season special offer">{t('notificationBar.learnMore')}</Link>
-          <Zap className="w-4 h-4 ml-2 text-white animate-pulse" fill="white" />
-        </span>
-        <span className="text-sm font-medium px-4 inline-flex items-center" aria-hidden="true">
-          <Zap className="w-4 h-4 mr-2 text-white animate-pulse" fill="white" />
-          {t('notificationBar.message')} <span className="ml-1 underline">{t('notificationBar.learnMore')}</span>
-          <Zap className="w-4 h-4 ml-2 text-white animate-pulse" fill="white" />
-        </span>
-        <span className="text-sm font-medium px-4 inline-flex items-center" aria-hidden="true">
-          <Zap className="w-4 h-4 mr-2 text-white animate-pulse" fill="white" />
-          {t('notificationBar.message')} <span className="ml-1 underline">{t('notificationBar.learnMore')}</span>
-          <Zap className="w-4 h-4 ml-2 text-white animate-pulse" fill="white" />
-        </span>
-        <span className="text-sm font-medium px-4 inline-flex items-center" aria-hidden="true">
-          <Zap className="w-4 h-4 mr-2 text-white animate-pulse" fill="white" />
-          {t('notificationBar.message')} <span className="ml-1 underline">{t('notificationBar.learnMore')}</span>
-          <Zap className="w-4 h-4 ml-2 text-white animate-pulse" fill="white" />
-        </span>
+      <div className="animate-scroll whitespace-nowrap">
+        {/* First set */}
+        {item(false, true)}
+        {item(true, false)}
+        {item(true, false)}
+        {item(true, false)}
+        {/* Duplicate set — seamless loop */}
+        {item(true, false)}
+        {item(true, false)}
+        {item(true, false)}
+        {item(true, false)}
       </div>
     </div>
   );
