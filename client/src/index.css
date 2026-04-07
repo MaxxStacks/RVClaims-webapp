@@ -226,18 +226,11 @@ html, body {
   }
 }
 
-/* Scrolling notification animation - seamless marquee */
-@keyframes marquee {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
-}
-
+/* Notification bar ticker — driven by requestAnimationFrame in JS */
 .animate-scroll {
   display: flex;
   flex-wrap: nowrap;
   width: max-content;
-  animation: marquee 40s linear infinite;
   will-change: transform;
-  backface-visibility: hidden;
 }
 
