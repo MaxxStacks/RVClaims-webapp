@@ -227,19 +227,17 @@ html, body {
 }
 
 /* Scrolling notification animation - seamless marquee */
-@keyframes scroll {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
 }
 
 .animate-scroll {
-  animation: scroll 30s linear infinite;
-  will-change: transform;
-  transform: translateZ(0);
   display: flex;
+  flex-wrap: nowrap;
+  width: max-content;
+  animation: marquee 40s linear infinite;
+  will-change: transform;
+  backface-visibility: hidden;
 }
 

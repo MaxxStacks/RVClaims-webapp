@@ -19,13 +19,17 @@ export function NotificationBar() {
 
   return (
     <div className="bg-primary text-white py-2 overflow-hidden relative z-50 w-full" data-testid="notification-bar">
-      <div className="animate-scroll whitespace-nowrap">
-        {/* First set */}
+      <div className="animate-scroll">
+        {/* First set — 6 items */}
         {item(false, true)}
         {item(true, false)}
         {item(true, false)}
         {item(true, false)}
-        {/* Duplicate set — seamless loop */}
+        {item(true, false)}
+        {item(true, false)}
+        {/* Exact duplicate — seamless loop */}
+        {item(true, false)}
+        {item(true, false)}
         {item(true, false)}
         {item(true, false)}
         {item(true, false)}
