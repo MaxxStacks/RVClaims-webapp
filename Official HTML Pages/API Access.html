@@ -1,0 +1,311 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>API Access — Build on DS360 | DealerSuite360</title>
+<meta name="description" content="DS360 API access for technology partners, enterprise dealers, and custom integrations. RESTful API with JSON responses, authentication, and comprehensive endpoint documentation."/>
+<meta name="keywords" content="DS360 API, dealer software API, RV dealer integration API, DMS integration, dealer API access"/>
+<meta property="og:title" content="API Access — Build on DS360 | DealerSuite360"/>
+<meta property="og:description" content="DS360 API access for technology partners, enterprise dealers, and custom integrations. RESTful API with JSON responses, authentication, and comprehensive endpoint documentation."/>
+<meta property="og:type" content="website"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="API Access — Build on DS360 | DealerSuite360"/>
+<meta name="twitter:description" content="DS360 API access for technology partners, enterprise dealers, and custom integrations. RESTful API with JSON responses, authentication, and comprehensive endpoint documentation."/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"API Access — Build on DS360","description":"DS360 API access for technology partners, enterprise dealers, and custom integrations. RESTful API with JSON responses, authentication, and comprehensive endpoint documentation.","provider":{"@type":"Organization","name":"DealerSuite360","url":"https://dealersuite360.com"}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/><style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--primary:hsl(217,95%,26%);--primary-light:hsl(217,95%,36%);--primary-5:hsl(217,95%,26%/0.05);--primary-10:hsl(217,95%,26%/0.10);--primary-20:hsl(217,95%,26%/0.20);--fg:hsl(240,10%,3.9%);--muted:hsl(215.4,16.3%,46.9%);--bg:white;--border:hsl(214.3,31.8%,91.4%);--gray-50:hsl(210,40%,97.5%);--green:#0cb22c;--font:'Inter',-apple-system,BlinkMacSystemFont,sans-serif}
+body{font-family:var(--font);color:var(--fg);background:var(--bg);-webkit-font-smoothing:antialiased;line-height:1.6;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+
+/* ═══ NAV ═══ */
+.nav{position:sticky;top:0;z-index:100;background:white;border-bottom:1px solid var(--border);height:64px;display:flex;align-items:center;padding:0 1rem}
+.nav-inner{max-width:1280px;margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between;padding:0 1rem}
+.nav-logo{font-weight:700;font-size:1.1rem;color:var(--primary);display:flex;align-items:center;gap:.5rem}
+.nav-logo svg{flex-shrink:0}
+.nav-logo .b{font-weight:600;font-size:.55rem;background:var(--primary);color:white;padding:2px 5px;border-radius:3px;text-transform:uppercase;letter-spacing:.5px}
+.nav-links{display:flex;gap:2rem;font-size:.88rem;font-weight:500;color:var(--muted);align-items:center}
+.nav-links a:hover{color:var(--primary)}
+@media(max-width:768px){.nav-links{display:none}}
+
+/* ═══ BUTTONS ═══ */
+.btn{display:inline-flex;align-items:center;gap:.5rem;padding:.75rem 1.5rem;border-radius:.5rem;font-weight:600;font-size:.88rem;transition:all .2s;cursor:pointer;border:none;font-family:var(--font)}
+.btn-primary{background:var(--primary);color:white}.btn-primary:hover{background:var(--primary-light)}
+.btn-green{background:var(--green);color:white}.btn-green:hover{opacity:.9}
+.btn-white{background:white;color:var(--primary);border:1px solid var(--border)}.btn-white:hover{border-color:var(--primary)}
+.btn-outline{background:transparent;color:var(--primary);border:1.5px solid var(--primary)}.btn-outline:hover{background:var(--primary-5)}
+.btn-lg{padding:1rem 2rem;font-size:.95rem}
+
+/* ═══ LAYOUT ═══ */
+.wrap{max-width:1280px;margin:0 auto;padding:0 2rem}
+@media(max-width:640px){.wrap{padding:0 1rem}}
+
+/* ═══ HERO (page-level, centered) ═══ */
+.phero{background:linear-gradient(to bottom right,var(--primary-5),white,var(--primary-5));padding:5rem 0 4rem;text-align:center}
+@media(min-width:1024px){.phero{padding:7rem 0 5rem}}
+.phero-center{max-width:48rem;margin:0 auto}
+.phero h1{font-size:clamp(2rem,5vw,3.25rem);font-weight:800;color:var(--fg);line-height:1.12;margin-bottom:1.25rem}
+.phero p{font-size:1.1rem;color:var(--muted);line-height:1.75;max-width:36rem;margin:0 auto}
+.badge{display:inline-block;font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:var(--primary);background:var(--primary-10);padding:.375rem 1rem;border-radius:9999px;margin-bottom:1.25rem}
+.gradient{background:linear-gradient(135deg,var(--primary),var(--primary-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+/* ═══ STATS BAR ═══ */
+.stats-bar{background:var(--primary);padding:2rem 0}
+.stats-bar-inner{display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;text-align:center;color:white}
+@media(max-width:768px){.stats-bar-inner{grid-template-columns:repeat(2,1fr)}}
+.stat-num{font-size:1.75rem;font-weight:800;margin-bottom:.25rem}
+.stat-label{font-size:.78rem;opacity:.8;text-transform:uppercase;letter-spacing:.5px}
+
+/* ═══ SECTIONS ═══ */
+.sec-w{padding:5rem 0}.sec-g{padding:5rem 0;background:var(--gray-50)}
+.sec-head{text-align:center;margin-bottom:3rem}
+.sec-head h2{font-size:clamp(1.5rem,3.5vw,2.25rem);font-weight:700;margin-bottom:.75rem}
+.sec-head p{font-size:1rem;color:var(--muted);max-width:36rem;margin:0 auto;line-height:1.7}
+
+/* ═══ GRID ═══ */
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:2rem}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem}
+@media(max-width:768px){.grid-2,.grid-3{grid-template-columns:1fr}}
+
+/* ═══ SPLIT LAYOUT ═══ */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+@media(max-width:768px){.split{grid-template-columns:1fr;gap:2rem}}
+.split-text h2{font-size:1.75rem;font-weight:700;margin-bottom:1rem;line-height:1.2}
+.split-text p{font-size:.95rem;color:var(--muted);line-height:1.7;margin-bottom:1.5rem}
+.split-visual{background:var(--primary-5);border:1px solid var(--border);border-radius:1rem;padding:2.5rem;min-height:300px;display:flex;flex-direction:column;justify-content:center}
+
+/* ═══ CARDS ═══ */
+.card{background:white;border:1px solid var(--border);border-radius:.75rem;padding:2rem;transition:all .25s}
+.card:hover{border-color:var(--primary-20);box-shadow:0 4px 24px hsl(217 95% 26%/.06)}
+.card h3{font-size:1.1rem;font-weight:700;margin-bottom:.5rem}
+.card p{font-size:.88rem;color:var(--muted);line-height:1.65}
+.card-icon{width:2.5rem;height:2.5rem;border-radius:.625rem;background:var(--primary-10);display:flex;align-items:center;justify-content:center;margin-bottom:1rem}
+.card-icon svg{width:1.25rem;height:1.25rem;color:var(--primary)}
+
+/* ═══ LINK CARDS ═══ */
+.link-card{display:flex;align-items:center;justify-content:space-between;padding:1.5rem 2rem;background:white;border:1px solid var(--border);border-radius:.75rem;transition:all .25s;cursor:pointer}
+.link-card:hover{border-color:var(--primary);background:var(--primary-5)}
+.link-card h4{font-size:1rem;font-weight:600;margin-bottom:.25rem}
+.link-card p{font-size:.82rem;color:var(--muted)}
+.link-arrow{font-size:1.25rem;color:var(--primary);font-weight:700;transition:transform .2s}
+.link-card:hover .link-arrow{transform:translateX(4px)}
+
+/* ═══ DYK BOX ═══ */
+.dyk{background:linear-gradient(135deg,hsl(217,95%,26%/.03),hsl(140,60%,40%/.03));border:1px solid var(--border);border-radius:.75rem;padding:2rem 2.5rem;margin-top:3rem}
+.dyk-label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--green);margin-bottom:.5rem}
+.dyk h3{font-size:1.1rem;font-weight:700;margin-bottom:.5rem}
+.dyk p{font-size:.88rem;color:var(--muted);line-height:1.7}
+
+/* ═══ FAQ ═══ */
+.faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;max-width:64rem;margin:0 auto}
+@media(max-width:768px){.faq-grid{grid-template-columns:1fr}}
+.faq-card{background:white;border:1px solid var(--border);border-radius:.75rem;overflow:hidden;cursor:pointer;transition:all .25s}
+.faq-card:hover{border-color:var(--primary-20)}
+.faq-q{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;font-size:.92rem;font-weight:600;line-height:1.4;gap:1rem}
+.faq-icon{width:1.75rem;height:1.75rem;border-radius:.5rem;background:var(--primary-10);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .3s;font-size:.88rem;color:var(--primary);font-weight:700}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.faq-a-inner{padding:0 1.5rem 1.25rem;font-size:.85rem;color:var(--muted);line-height:1.7}
+.faq-card.open{border-color:var(--primary)}
+.faq-card.open .faq-icon{background:var(--primary);color:white;transform:rotate(45deg)}
+.faq-card.open .faq-a{max-height:300px}
+
+/* ═══ CONNECTED PAGES ═══ */
+.connected{padding:4rem 0}
+.connected h2{text-align:center;font-size:1.5rem;font-weight:700;margin-bottom:2rem}
+.connected-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+@media(max-width:768px){.connected-grid{grid-template-columns:1fr}}
+
+/* ═══ BOTTOM CTA ═══ */
+.bcta{background:linear-gradient(135deg,var(--primary),hsl(217,95%,28%));text-align:center;padding:5rem 0}
+.bcta h2{font-size:1.875rem;font-weight:700;color:white;margin-bottom:1rem}
+@media(min-width:1024px){.bcta h2{font-size:2.25rem}}
+.bcta p{color:hsl(217 20% 75%);font-size:1.05rem;max-width:36rem;margin:0 auto 2rem;line-height:1.7}
+.bcta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+
+/* ═══ NAVY CARD ═══ */
+.navy-card{background:linear-gradient(135deg,var(--primary),hsl(217,95%,20%));border-radius:1rem;padding:3rem;color:white}
+.navy-card h3{font-size:1.25rem;font-weight:700;margin-bottom:1rem}
+.navy-card p{font-size:.88rem;line-height:1.7;opacity:.85;margin-bottom:.5rem}
+.navy-card ul{list-style:none;display:flex;flex-direction:column;gap:.5rem}
+.navy-card li{font-size:.85rem;padding-left:1.25rem;position:relative;opacity:.85}
+.navy-card li::before{content:"→";position:absolute;left:0;color:hsl(140,60%,55%)}
+
+/* ═══ STATEMENT ═══ */
+.statement{padding:4rem 0;text-align:center;max-width:48rem;margin:0 auto}
+.statement blockquote{font-size:1.35rem;font-weight:600;line-height:1.5;color:var(--fg);font-style:italic;position:relative;padding:0 2rem}
+.statement blockquote::before{content:"\201C";font-size:4rem;color:var(--primary-20);position:absolute;left:-.5rem;top:-.75rem;font-family:Georgia,serif}
+
+/* ═══ CHECKLIST ═══ */
+.checklist{display:flex;flex-direction:column;gap:1rem;max-width:48rem;margin:0 auto}
+.check{display:flex;align-items:flex-start;gap:.75rem}
+.check-dot{width:1.5rem;height:1.5rem;border-radius:50%;background:var(--primary-10);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.125rem}
+.check-dot svg{width:.75rem;height:.75rem}
+.check-info h3{font-weight:600;font-size:.95rem}.check-info p{font-size:.85rem;color:var(--muted)}
+
+/* ═══ STATUS TABLE ═══ */
+.status-grid{max-width:48rem;margin:0 auto;border:1px solid var(--border);border-radius:.75rem;overflow:hidden}
+.status-row{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;border-bottom:1px solid var(--border)}
+.status-row:last-child{border-bottom:none}.status-row:nth-child(even){background:var(--gray-50)}
+.status-name{font-size:.92rem;font-weight:600}
+.status-badge{font-size:.75rem;font-weight:600;padding:.25rem .75rem;border-radius:9999px}
+.status-up{background:hsl(140,60%,92%);color:hsl(140,60%,28%)}
+
+/* ═══ TOC SIDEBAR ═══ */
+.toc-layout{display:grid;grid-template-columns:240px 1fr;gap:3rem;align-items:flex-start}
+@media(max-width:768px){.toc-layout{grid-template-columns:1fr}.toc-sidebar{display:none}}
+.toc-sidebar{position:sticky;top:80px}
+.toc-sidebar a{display:block;font-size:.82rem;padding:.5rem 0;color:var(--muted);border-left:2px solid transparent;padding-left:1rem;transition:all .2s}
+.toc-sidebar a:hover{color:var(--primary);border-left-color:var(--primary)}
+
+/* ═══ CONTENT SECTIONS ═══ */
+.content-section{margin-bottom:3rem}
+.content-section h2{font-size:1.5rem;font-weight:700;margin-bottom:1rem;padding-bottom:.75rem;border-bottom:1px solid var(--border)}
+.content-section h3{font-size:1.1rem;font-weight:600;margin:1.5rem 0 .75rem}
+.content-section p{font-size:.92rem;color:var(--muted);line-height:1.75;margin-bottom:1rem}
+.content-section ul{list-style:none;display:flex;flex-direction:column;gap:.5rem;margin-bottom:1.5rem}
+.content-section li{font-size:.88rem;color:var(--muted);padding-left:1.25rem;position:relative;line-height:1.6}
+.content-section li::before{content:"→";position:absolute;left:0;color:var(--primary)}
+
+/* ═══ SEARCH BAR ═══ */
+.search-bar{max-width:36rem;margin:2rem auto 0;position:relative}
+.search-bar input{width:100%;padding:1rem 1.5rem 1rem 3rem;border:1.5px solid var(--border);border-radius:.75rem;font-size:.95rem;font-family:var(--font);outline:none;transition:border-color .2s}
+.search-bar input:focus{border-color:var(--primary)}
+.search-bar svg{position:absolute;left:1rem;top:50%;transform:translateY(-50%);width:1.25rem;height:1.25rem;color:var(--muted)}
+
+/* ═══ TIMELINE ═══ */
+.timeline{display:flex;flex-direction:column;gap:0;max-width:48rem;margin:0 auto;position:relative}
+.timeline::before{content:"";position:absolute;left:1.1rem;top:1.5rem;bottom:1.5rem;width:2px;background:var(--border)}
+.tl-item{display:flex;gap:1.5rem;padding:1.5rem 0;position:relative}
+.tl-dot{width:2.25rem;height:2.25rem;border-radius:50%;background:var(--primary-10);border:2px solid var(--primary);display:flex;align-items:center;justify-content:center;flex-shrink:0;z-index:1;font-size:.75rem;font-weight:700;color:var(--primary)}
+.tl-content h3{font-size:1rem;font-weight:600;margin-bottom:.25rem}
+.tl-content p{font-size:.85rem;color:var(--muted);line-height:1.6}
+
+/* ═══ PROCESS STEPS ═══ */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;counter-reset:step}
+@media(max-width:768px){.steps{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.steps{grid-template-columns:1fr}}
+.step{text-align:center;padding:2rem 1.5rem;background:white;border:1px solid var(--border);border-radius:.75rem;position:relative;counter-increment:step}
+.step::before{content:counter(step);display:flex;align-items:center;justify-content:center;width:2.5rem;height:2.5rem;border-radius:50%;background:var(--primary);color:white;font-weight:700;font-size:1rem;margin:0 auto 1rem}
+.step h3{font-size:.95rem;font-weight:600;margin-bottom:.5rem}
+.step p{font-size:.82rem;color:var(--muted);line-height:1.6}
+
+/* ═══ FOOTER ═══ */
+.footer{background:var(--gray-50);border-top:1px solid var(--border);padding:2rem 0;text-align:center;font-size:.8rem;color:var(--muted)}
+.footer a{color:var(--primary)}
+
+/* ═══ ANIMATIONS ═══ */
+.anim{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}.anim.v{opacity:1;transform:translateY(0)}
+</style></head><body><nav class="nav"><div class="nav-inner"><div class="nav-logo"><svg width="28" height="28" viewBox="0 0 32 32" fill="none"><path d="M16 2L4 8v16l12 6 12-6V8L16 2z" fill="hsl(217,95%,26%)"/><path d="M16 6l8 4v12l-8 4-8-4V10l8-4z" fill="hsl(217,95%,36%)"/><path d="M16 10v12l-4-2V12l4-2z" fill="white" opacity=".6"/></svg>Dealer Suite<span class="b">360</span></div><div class="nav-links"><a href="/services">Services</a><a href="/products/fi-services">Products</a><a href="/marketplace">Marketplace</a><a href="/technology">Technology</a><a href="/pricing">Pricing</a><a href="/contact" class="btn btn-primary" style="padding:.5rem 1.25rem;font-size:.82rem">Get Started</a></div></div></nav>
+<section class="phero"><div class="wrap"><div class="phero-center">
+  <div class="badge">Developer Platform</div>
+  <h1>Build on <span class="gradient">DS360</span></h1>
+  <p>Access the DS360 API to integrate dealer operations into your existing systems. Sync claims data, pull reports, manage units, and automate workflows with our RESTful API.</p>
+  <div style="margin-top:2rem"><a href="/contact" class="btn btn-primary btn-lg">Request API Access &rarr;</a></div>
+</div></div></section>
+
+<section class="stats-bar"><div class="wrap"><div class="stats-bar-inner">
+  <div><div class="stat-num">REST</div><div class="stat-label">API Architecture</div></div>
+  <div><div class="stat-num">JSON</div><div class="stat-label">Response Format</div></div>
+  <div><div class="stat-num">99.9%</div><div class="stat-label">API Uptime</div></div>
+  <div><div class="stat-num">Docs</div><div class="stat-label">Full Reference</div></div>
+</div></div></section>
+
+<section class="sec-w"><div class="wrap">
+  <div class="sec-head"><h2>What You Can Build</h2><p>The DS360 API gives you programmatic access to core platform data and operations.</p></div>
+  <div class="grid-3 anim">
+    <div class="card">
+      <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg></div>
+      <h3>DMS Integration</h3>
+      <p>Sync unit data, customer records, and claim statuses between DS360 and your existing dealership management system. Eliminate double-entry and keep systems in sync.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg></div>
+      <h3>Custom Reporting</h3>
+      <p>Pull claim data, revenue metrics, and operational KPIs into your own business intelligence tools. Build dashboards that combine DS360 data with your other systems.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+      <h3>Workflow Automation</h3>
+      <p>Trigger actions based on claim status changes, new unit additions, or customer events. Automate notifications, status updates, and cross-system workflows.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
+      <h3>Partner Integrations</h3>
+      <p>Insurance providers, parts suppliers, and service networks can integrate directly with DS360 to streamline transactions and data sharing with dealer partners.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+      <h3>Accounting Sync</h3>
+      <p>Export invoice data, payment records, and claim financials to QuickBooks, Sage, Xero, or your preferred accounting platform via structured API responses.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg></div>
+      <h3>Notification Webhooks</h3>
+      <p>Receive real-time webhooks when claims change status, parts arrive, invoices are generated, or customers take action in their portal.</p>
+    </div>
+  </div>
+</div></section>
+
+<section class="sec-g"><div class="wrap">
+  <div class="split anim">
+    <div class="split-text">
+      <div class="badge">Getting Started</div>
+      <h2>How to Get API Access</h2>
+      <p>API access is available to enterprise dealers and approved technology partners. The process is straightforward and typically takes 2-3 business days.</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:0">
+      <div class="steps" style="grid-template-columns:1fr;gap:0">
+        <div class="step" style="text-align:left;padding:1.5rem 2rem 1.5rem 4.5rem"><h3>Request Access</h3><p>Submit an API access request via the contact form. Include your use case and integration requirements.</p></div>
+        <div class="step" style="text-align:left;padding:1.5rem 2rem 1.5rem 4.5rem"><h3>Review &amp; Approval</h3><p>Our team reviews your request and schedules a brief technical call to understand your integration needs.</p></div>
+        <div class="step" style="text-align:left;padding:1.5rem 2rem 1.5rem 4.5rem"><h3>Receive Credentials</h3><p>Get your API key, client ID, and access to the full API documentation with sandbox environment.</p></div>
+        <div class="step" style="text-align:left;padding:1.5rem 2rem 1.5rem 4.5rem"><h3>Build &amp; Launch</h3><p>Build your integration with sandbox testing, then move to production when ready. Our team supports you through launch.</p></div>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<section class="sec-w"><div class="wrap">
+  <div class="split anim">
+    <div class="navy-card">
+      <h3>API Capabilities</h3>
+      <ul>
+        <li>Units — create, read, update unit records by VIN</li>
+        <li>Claims — submit, track, and manage claim lifecycle</li>
+        <li>FRC Lines — add, modify, and query failure repair codes</li>
+        <li>Customers — manage customer records and portal access</li>
+        <li>Invoices — generate, update, and export claim invoices</li>
+        <li>Parts — track parts orders linked to claims</li>
+        <li>Reports — pull aggregated operational data</li>
+        <li>Webhooks — subscribe to real-time event notifications</li>
+      </ul>
+    </div>
+    <div class="split-text">
+      <h2>Enterprise-Grade Infrastructure</h2>
+      <p>The DS360 API runs on the same infrastructure that powers the platform — hosted on Railway with Neon PostgreSQL, delivering 99.9% uptime with automatic scaling.</p>
+      <p>Authentication uses industry-standard API keys with optional OAuth 2.0 for partner integrations. All data is encrypted in transit and at rest.</p>
+      <p>Rate limits are generous for typical integrations and can be increased for high-volume enterprise use cases.</p>
+    </div>
+  </div>
+</div></section>
+
+<section class="sec-g"><div class="wrap">
+  <div class="sec-head"><h2>Frequently Asked Questions</h2></div>
+  <div class="faq-grid">
+    <div class="faq-card"><div class="faq-q">Is API access included in all plans?<div class="faq-icon">+</div></div><div class="faq-a"><div class="faq-a-inner">API access is available on Enterprise plans and for approved technology partners. Standard and Professional plans use the platform UI. Contact us to discuss API access for your specific needs.</div></div></div>
+    <div class="faq-card"><div class="faq-q">Is there a sandbox environment?<div class="faq-icon">+</div></div><div class="faq-a"><div class="faq-a-inner">Yes. Every API client receives sandbox credentials with test data. You can build and test your integration fully before connecting to production.</div></div></div>
+    <div class="faq-card"><div class="faq-q">What are the rate limits?<div class="faq-icon">+</div></div><div class="faq-a"><div class="faq-a-inner">Standard API access includes 1,000 requests per minute. Enterprise integrations can request higher limits based on their use case.</div></div></div>
+    <div class="faq-card"><div class="faq-q">Do you support webhooks?<div class="faq-icon">+</div></div><div class="faq-a"><div class="faq-a-inner">Yes. You can subscribe to webhooks for claim status changes, new units, customer actions, invoice generation, and more. Webhooks use standard HTTPS POST with JSON payloads.</div></div></div>
+  </div>
+</div></section>
+
+<section class="connected"><div class="wrap">
+  <h2>Related Resources</h2>
+  <div class="connected-grid">
+    <a href="/documentation" class="link-card"><div><h4>Documentation</h4><p>Full platform and API technical reference</p></div><span class="link-arrow">&rarr;</span></a>
+    <a href="/dealer-integration" class="link-card"><div><h4>Dealer Integration</h4><p>Connect DS360 with existing dealer systems</p></div><span class="link-arrow">&rarr;</span></a>
+    <a href="/partnerships" class="link-card"><div><h4>Partnerships</h4><p>Technology partner program details</p></div><span class="link-arrow">&rarr;</span></a>
+  </div>
+</div></section>
+
+<section class="bcta"><div class="wrap">
+  <h2>Ready to Integrate?</h2>
+  <p>Submit your API access request and our team will get back to you within 2-3 business days.</p>
+  <div class="bcta-btns"><a href="/contact" class="btn btn-lg btn-green">Request API Access &rarr;</a><a href="/documentation" class="btn btn-lg btn-white">View Documentation</a></div>
+</div></section>
+<footer class="footer"><div class="wrap">&copy; 2026 DealerSuite360. All rights reserved. Patent Pending Technology. <a href="/privacy">Privacy Policy</a> &middot; <a href="/terms-of-service">Terms of Service</a> &middot; <a href="/cookie-policy">Cookie Policy</a></div></footer><script>document.querySelectorAll('.faq-card').forEach(c=>{c.querySelector('.faq-q').addEventListener('click',()=>{c.classList.toggle('open')})})</script><script>const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('v');obs.unobserve(e.target)}})},{threshold:.1});document.querySelectorAll('.anim').forEach(el=>obs.observe(el))</script></body></html>

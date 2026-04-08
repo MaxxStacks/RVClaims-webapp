@@ -65,6 +65,20 @@ const ApiAccess = lazy(() => import("@/pages/api-access"));
 const SystemStatus = lazy(() => import("@/pages/system-status"));
 const DealerIntegration = lazy(() => import("@/pages/dealer-integration"));
 const ExpertConsultation = lazy(() => import("@/pages/expert-consultation"));
+const DealerExchange = lazy(() => import("@/pages/dealer-exchange"));
+const GapInsurance = lazy(() => import("@/pages/gap-insurance"));
+const AppearanceProtection = lazy(() => import("@/pages/appearance-protection"));
+const TireWheel = lazy(() => import("@/pages/tire-wheel"));
+const RoadsideTravelProtection = lazy(() => import("@/pages/roadside-travel-protection"));
+const SpecialtyProtection = lazy(() => import("@/pages/specialty-protection"));
+const TechnologyPlatform = lazy(() => import("@/pages/technology-platform"));
+const FreeDealerAnalysis = lazy(() => import("@/pages/free-dealer-analysis"));
+const BidderPortalPage = lazy(() => import("@/pages/bidder-portal"));
+const DealerPortalPage = lazy(() => import("@/pages/dealer-portal-page"));
+const ClientPortalPage = lazy(() => import("@/pages/client-portal-page"));
+const MobileApp = lazy(() => import("@/pages/mobile-app"));
+const TechFlow = lazy(() => import("@/pages/services/techflow"));
+const AiFiPresenter = lazy(() => import("@/pages/ai-fi-presenter"));
 const NotFound = lazy(() => import("@/pages/not-found"));
 const OperatorPortal = lazy(() => import("./portals/OperatorPortal"));
 const DealerPortal = lazy(() => import("./portals/DealerPortal"));
@@ -154,6 +168,27 @@ function Router() {
         <Route path="/system-status" component={SystemStatus} />
         <Route path="/dealer-integration" component={DealerIntegration} />
         <Route path="/expert-consultation" component={ExpertConsultation} />
+        {/* New pages from CC-PAGE-CONVERSION-SPEC */}
+        <Route path="/dealer-exchange" component={DealerExchange} />
+        <Route path="/gap-insurance" component={GapInsurance} />
+        <Route path="/products/gap-insurance">{() => <Redirect to="/gap-insurance" />}</Route>
+        <Route path="/appearance-protection" component={AppearanceProtection} />
+        <Route path="/products/appearance-protection">{() => <Redirect to="/appearance-protection" />}</Route>
+        <Route path="/tire-wheel" component={TireWheel} />
+        <Route path="/products/tire-wheel-protection">{() => <Redirect to="/tire-wheel" />}</Route>
+        <Route path="/roadside-travel-protection" component={RoadsideTravelProtection} />
+        <Route path="/products/roadside-travel-protection">{() => <Redirect to="/roadside-travel-protection" />}</Route>
+        <Route path="/specialty-protection" component={SpecialtyProtection} />
+        <Route path="/products/specialty-protection">{() => <Redirect to="/specialty-protection" />}</Route>
+        <Route path="/technology-platform" component={TechnologyPlatform} />
+        <Route path="/free-dealer-analysis" component={FreeDealerAnalysis} />
+        <Route path="/bidder-portal" component={BidderPortalPage} />
+        <Route path="/dealer-portal" component={DealerPortalPage} />
+        <Route path="/client-portal" component={ClientPortalPage} />
+        <Route path="/mobile-app" component={MobileApp} />
+        <Route path="/services/techflow" component={TechFlow} />
+        <Route path="/ai-fi-presenter" component={AiFiPresenter} />
+        <Route path="/privacy">{() => <Redirect to="/privacy-policy" />}</Route>
         <Route component={NotFound} />
       </Switch>
     </>

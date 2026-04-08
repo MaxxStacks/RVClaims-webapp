@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Live Auctions — Monthly Public RV Sales Events | DealerSuite360</title>
+<meta name="description" content="DS360 Live Auctions — monthly public sales events that expand your buyer pool beyond the dealer network. One-click push from Dealer Exchange. $299/yr add-on. Stripe escrow on every bid."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--primary:hsl(217,95%,26%);--primary-light:hsl(217,95%,36%);--primary-5:hsl(217,95%,26%/0.05);--primary-10:hsl(217,95%,26%/0.10);--primary-20:hsl(217,95%,26%/0.20);--primary-40:hsl(217,95%,26%/0.40);--fg:hsl(240,10%,3.9%);--muted:hsl(215.4,16.3%,46.9%);--bg:white;--card:white;--border:hsl(214.3,31.8%,91.4%);--gray-50:hsl(210,40%,97.5%);--green:#0cb22c;--green-h:#0a9624;--font:'Inter',-apple-system,BlinkMacSystemFont,sans-serif}
+body{font-family:var(--font);color:var(--fg);background:var(--bg);-webkit-font-smoothing:antialiased;line-height:1.6;overflow-x:hidden}
+img{max-width:100%;height:auto;display:block}a{color:inherit;text-decoration:none}
+.nav{position:sticky;top:0;z-index:100;background:white;border-bottom:1px solid var(--border);height:64px;display:flex;align-items:center;padding:0 1rem}.nav-inner{max-width:1280px;margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between;padding:0 1rem}.nav-logo{font-weight:700;font-size:1.1rem;color:var(--primary);display:flex;align-items:center;gap:.5rem}.nav-logo .b{font-weight:600;font-size:.55rem;background:var(--primary);color:white;padding:2px 5px;border-radius:3px}.nav-links{display:flex;gap:2rem;font-size:.88rem;font-weight:500;color:var(--muted)}.nav-links a:hover{color:var(--primary)}@media(max-width:768px){.nav-links{display:none}}
+.wrap{max-width:1280px;margin:0 auto;padding:0 1rem}@media(min-width:640px){.wrap{padding:0 1.5rem}}@media(min-width:1024px){.wrap{padding:0 2rem}}
+.sec-w{padding:5rem 0;background:white}.sec-g{padding:5rem 0;background:var(--gray-50)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;font-family:var(--font);font-size:.88rem;font-weight:600;padding:.75rem 1.5rem;border-radius:.5rem;border:none;cursor:pointer;transition:all .2s}.btn-lg{padding:.85rem 2rem;font-size:.95rem}.btn-primary{background:var(--primary);color:white;box-shadow:0 10px 15px -3px rgba(0,0,0,.1)}.btn-primary:hover{background:hsl(217,95%,23%)}.btn-outline{background:transparent;color:var(--fg);border:1px solid var(--border)}.btn-outline:hover{background:var(--gray-50)}.btn-green{background:var(--green);color:white}.btn-green:hover{background:var(--green-h)}.btn-white{background:white;color:var(--primary)}.btn-white:hover{background:#f5f5f5}
+.badge{display:inline-flex;align-items:center;padding:.25rem .75rem;border-radius:9999px;font-size:.75rem;font-weight:500;background:var(--primary-10);color:var(--primary);border:1px solid var(--primary-20)}
+.sec-head{text-align:center;margin-bottom:4rem;display:flex;flex-direction:column;align-items:center;gap:1rem}.sec-head h2{font-size:clamp(1.75rem,4vw,2.25rem);font-weight:700}.sec-head p{font-size:1.05rem;color:var(--muted);max-width:48rem;line-height:1.7}
+.phero{background:linear-gradient(to bottom right,var(--primary-5),var(--bg),var(--primary-10));background-image:radial-gradient(circle at 25px 25px,rgba(30,58,138,.1) 2px,transparent 0),radial-gradient(circle at 75px 75px,rgba(30,58,138,.05) 2px,transparent 0);background-size:100px 100px;padding:5rem 0}@media(min-width:1024px){.phero{padding:6rem 0}}
+.phero-grid{display:grid;grid-template-columns:1fr;gap:3rem;align-items:center}@media(min-width:1024px){.phero-grid{grid-template-columns:1fr 1fr}}
+.phero-text{display:flex;flex-direction:column;gap:1.75rem}.phero h1{font-size:clamp(2rem,4.5vw,3.25rem);font-weight:700;line-height:1.15}.phero h1 .gradient{display:block;background:linear-gradient(135deg,var(--primary),var(--primary-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.phero-desc{font-size:1.1rem;color:var(--muted);line-height:1.7}.phero-btns{display:flex;gap:1rem;flex-wrap:wrap}
+.phero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;padding-top:2rem;border-top:1px solid var(--border)}.phero-stat{text-align:center}.phero-stat-val{font-size:1.5rem;font-weight:700;color:var(--primary)}.phero-stat-label{font-size:.8rem;color:var(--muted)}.phero-img{border-radius:1rem;box-shadow:0 25px 50px -12px rgba(0,0,0,.25);overflow:hidden}
+.metric-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-radius:.75rem;overflow:hidden;border:1px solid var(--border)}@media(max-width:640px){.metric-bar{grid-template-columns:repeat(2,1fr)}}.metric-item{text-align:center;padding:1.75rem 1rem;background:white;border-right:1px solid var(--border)}.metric-item:last-child{border-right:none}@media(max-width:640px){.metric-item:nth-child(2){border-right:none}.metric-item:nth-child(3),.metric-item:nth-child(4){border-top:1px solid var(--border)}}.metric-num{font-size:clamp(1.5rem,3.5vw,2.25rem);font-weight:800;color:var(--primary);line-height:1}.metric-label{font-size:.78rem;color:var(--muted);margin-top:.5rem}
+.split{display:grid;grid-template-columns:1fr;gap:4rem;align-items:center}@media(min-width:1024px){.split{grid-template-columns:1fr 1fr}}.split-rev{direction:rtl}.split-rev>*{direction:ltr}.split-text{display:flex;flex-direction:column;gap:1.5rem}.split-text h2{font-size:clamp(1.75rem,4vw,2.25rem);font-weight:700}.split-text>p{font-size:1.05rem;color:var(--muted);line-height:1.7}.split-img{position:relative;border-radius:1rem;overflow:hidden;box-shadow:0 25px 50px -12px rgba(0,0,0,.25)}.split-img img{width:100%;height:auto}.split-img .overlay{position:absolute;inset:0;background:linear-gradient(to top right,var(--primary-20),transparent)}
+.checks{display:flex;flex-direction:column;gap:1rem}.check{display:flex;align-items:flex-start;gap:.75rem}.check-dot{width:1.5rem;height:1.5rem;border-radius:50%;background:var(--primary-10);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.125rem}.check-dot svg{width:.75rem;height:.75rem}.check-info h3{font-weight:600;font-size:.95rem}.check-info p{font-size:.85rem;color:var(--muted)}
+.bst{text-align:center;padding:2rem;max-width:48rem;margin:0 auto}.bst-line{width:3rem;height:3px;background:var(--primary);margin:0 auto 1.5rem;border-radius:2px}.bst p{font-size:clamp(1.15rem,3vw,1.4rem);font-weight:600;color:var(--fg);line-height:1.5;font-style:italic}
+.dyk{position:relative;max-width:52rem;margin:0 auto;background:linear-gradient(135deg,hsl(217 95% 26%/.03),hsl(217 95% 26%/.08));border:1px solid var(--primary-20);border-radius:.75rem;padding:2.5rem 2.5rem 2.5rem 5.5rem;overflow:hidden}.dyk::before{content:'?';position:absolute;left:-1rem;top:50%;transform:translateY(-50%);font-size:8rem;font-weight:800;color:var(--primary-10);line-height:1;pointer-events:none}.dyk-tag{display:inline-flex;align-items:center;gap:.4rem;font-size:.72rem;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.75rem}.dyk>p{font-size:1.1rem;color:var(--fg);line-height:1.7}.dyk>p strong{color:var(--primary);font-weight:700}@media(max-width:768px){.dyk{padding:2rem 1.5rem}.dyk::before{display:none}}
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:2rem}@media(max-width:768px){.grid-2{grid-template-columns:1fr}}
+.stat-card{background:var(--card);border-radius:.75rem;padding:2rem;border:1px solid var(--border);text-align:center;transition:transform .3s,box-shadow .3s}.stat-card:hover{transform:translateY(-5px);box-shadow:0 20px 25px -5px rgba(0,0,0,.1)}.stat-val{font-size:2.25rem;font-weight:700;color:var(--primary);margin-bottom:.5rem}.stat-title{font-weight:600;margin-bottom:.5rem;font-size:.95rem}.stat-desc{font-size:.85rem;color:var(--muted)}
+.link-card{display:flex;align-items:center;justify-content:space-between;background:white;border:1px solid var(--border);border-radius:.75rem;padding:1.25rem 1.5rem;transition:all .25s}.link-card:hover{border-color:var(--primary);transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.05)}.link-card h4{font-size:.95rem;font-weight:600;margin-bottom:.2rem}.link-card p{font-size:.8rem;color:var(--muted)}.link-arrow{font-size:1.15rem;color:var(--primary);transition:transform .2s;flex-shrink:0;margin-left:1rem}.link-card:hover .link-arrow{transform:translateX(4px)}
+.faq-layout{display:grid;grid-template-columns:1fr;gap:3rem;align-items:flex-start}@media(min-width:1024px){.faq-layout{grid-template-columns:1fr 1.4fr;gap:4rem}}.faq-left{position:sticky;top:5rem}@media(max-width:1023px){.faq-left{position:static}}.faq-right{display:flex;flex-direction:column;gap:.75rem}.faq-card{background:var(--card);border:1px solid var(--border);border-radius:.75rem;overflow:hidden;transition:border-color .2s}.faq-card.open{border-color:var(--primary-40)}.faq-q{width:100%;display:flex;justify-content:space-between;align-items:center;padding:1.25rem 1.5rem;background:0;border:0;font-family:var(--font);font-size:.92rem;font-weight:600;color:var(--fg);cursor:pointer;text-align:left;gap:1rem;line-height:1.4}.faq-q:hover{color:var(--primary)}.faq-icon{width:2rem;height:2rem;border-radius:.5rem;background:var(--primary-10);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}.faq-icon svg{color:var(--primary);transition:transform .2s}.faq-card.open .faq-icon{background:var(--primary)}.faq-card.open .faq-icon svg{color:white;transform:rotate(45deg)}.faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease}.faq-card.open .faq-a{max-height:500px}.faq-a p{padding:0 1.5rem 1.25rem;font-size:.9rem;color:var(--muted);line-height:1.8}
+.bcta{background:linear-gradient(135deg,hsl(217,95%,18%),hsl(217,95%,28%));text-align:center;padding:5rem 0}.bcta h2{font-size:clamp(1.75rem,4vw,2.25rem);font-weight:700;color:white;margin-bottom:1rem}.bcta p{color:hsl(217,20%,75%);font-size:1.05rem;max-width:36rem;margin:0 auto 2rem;line-height:1.7}.bcta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.footer{background:var(--gray-50);border-top:1px solid var(--border);padding:2rem 0;text-align:center;font-size:.8rem;color:var(--muted)}.anim{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}.anim.v{opacity:1;transform:translateY(0)}
+
+/* Horizontal numbered steps */
+.h-steps{max-width:52rem;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:1.25rem}
+@media(max-width:768px){.h-steps{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.h-steps{grid-template-columns:1fr}}
+.h-step{background:white;border:1px solid var(--border);border-radius:.75rem;padding:1.5rem;text-align:center;transition:all .25s}
+.h-step:hover{border-color:var(--primary-20);box-shadow:0 8px 20px rgba(0,0,0,.05);transform:translateY(-3px)}
+.h-step-num{width:2.25rem;height:2.25rem;background:var(--primary);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.82rem;font-weight:800;margin:0 auto .75rem}
+.h-step:last-child .h-step-num{background:var(--green)}
+.h-step h4{font-size:.88rem;font-weight:700;margin-bottom:.3rem}
+.h-step p{font-size:.78rem;color:var(--muted);line-height:1.5}
+
+/* Requirements */
+.req-grid{max-width:48rem;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
+@media(max-width:640px){.req-grid{grid-template-columns:1fr}}
+.req-card{background:white;border:1px solid var(--border);border-radius:.75rem;padding:1.75rem;display:flex;align-items:flex-start;gap:1rem;transition:all .25s}
+.req-card:hover{border-color:var(--primary-20);box-shadow:0 6px 16px rgba(0,0,0,.04)}
+.req-icon{width:2.5rem;height:2.5rem;background:var(--primary-10);border-radius:.5rem;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.req-icon svg{width:1.15rem;height:1.15rem;color:var(--primary)}
+.req-text h4{font-size:.92rem;font-weight:700;margin-bottom:.2rem}
+.req-text p{font-size:.82rem;color:var(--muted);line-height:1.5}
+</style>
+</head>
+<body>
+
+<nav class="nav"><div class="nav-inner"><div class="nav-logo"><svg width="28" height="28" viewBox="0 0 32 32" fill="none"><path d="M16 2L4 8v16l12 6 12-6V8L16 2z" fill="hsl(217,95%,26%)"/><path d="M16 6l8 4v12l-8 4-8-4V10l8-4z" fill="hsl(217,95%,36%)"/><path d="M16 10v12l-4-2V12l4-2z" fill="white" opacity=".6"/></svg>Dealer Suite<span class="b">360</span></div><div class="nav-links"><a href="/services">Services</a><a href="/products/fi-services">Products</a><a href="/marketplace" style="color:var(--primary);font-weight:600">Marketplace</a><a href="/technology">Technology</a><a href="/pricing">Pricing</a><a href="/contact" class="btn btn-primary" style="padding:.5rem 1.25rem;font-size:.82rem">Get Started</a></div></div></nav>
+
+<!-- 1. HERO -->
+<section class="phero">
+  <div class="wrap">
+    <div class="phero-grid">
+      <div class="phero-text">
+        <div><a href="/marketplace" style="font-size:.82rem;color:var(--muted)">&larr; Marketplace</a></div>
+        <div><div class="badge">DS360 Marketplace &middot; Channel 2</div></div>
+        <h1>Your Buyer Pool Just Got<span class="gradient">a Lot Bigger.</span></h1>
+        <p class="phero-desc">Live Auctions expand your reach beyond the DS360 dealer network to the general public. Once per month, units listed in the Dealer Exchange can be pushed to a public auction event with one click — putting your inventory in front of tens of thousands of potential buyers who would never see it otherwise.</p>
+        <div class="phero-btns"><a href="/contact" class="btn btn-lg btn-primary">Add Live Auctions</a><a href="#how-it-works" class="btn btn-lg btn-outline">How It Works</a></div>
+        <div class="phero-stats">
+          <div class="phero-stat"><div class="phero-stat-val">Monthly</div><div class="phero-stat-label">Auction Events</div></div>
+          <div class="phero-stat"><div class="phero-stat-val">$299</div><div class="phero-stat-label">/Year Add-On</div></div>
+          <div class="phero-stat"><div class="phero-stat-val">1-Click</div><div class="phero-stat-label">Push from Exchange</div></div>
+        </div>
+      </div>
+      <div class="phero-img"><img src="https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&auto=format&fit=crop&w=584&h=438&fm=webp&q=75" alt="Live Auctions" width="584" height="438"/></div>
+    </div>
+  </div>
+</section>
+
+<!-- 2. METRIC BAR -->
+<section class="sec-g" style="padding:2.5rem 0">
+  <div class="wrap"><div class="metric-bar">
+    <div class="metric-item"><div class="metric-num">Public</div><div class="metric-label">Open to All Buyers</div></div>
+    <div class="metric-item"><div class="metric-num">1/Month</div><div class="metric-label">Auction Frequency</div></div>
+    <div class="metric-item"><div class="metric-num">1 Click</div><div class="metric-label">Push from Exchange</div></div>
+    <div class="metric-item"><div class="metric-num">Stripe</div><div class="metric-label">Escrow Protected</div></div>
+  </div></div>
+</section>
+
+<!-- 3. WHY PUBLIC -->
+<section class="sec-w">
+  <div class="wrap">
+    <div class="split anim">
+      <div class="split-text">
+        <div class="badge">Beyond the Network</div>
+        <h2>The Dealer Network Is Good. The Public Is Bigger.</h2>
+        <p>The Dealer Exchange connects you to every DS360 dealer — but sometimes the buyer is not a dealer. It is a first-time RV buyer scrolling for deals. A retiree looking for a specific model. A family upgrading from a pop-up to a Class C. These buyers do not have access to the dealer network. Live Auctions put your inventory in front of them.</p>
+        <div class="checks">
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Retail Buyers</h3><p>Consumers who are actively shopping for an RV — not dealers</p></div></div>
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Competitive Bidding</h3><p>Multiple bidders on the same unit can drive the sale price above your minimum</p></div></div>
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Monthly Sales Event</h3><p>Creates urgency — buyers know the next auction is 4 weeks away if they miss this one</p></div></div>
+        </div>
+      </div>
+      <div class="split-img">
+        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=576&h=432&fm=webp&q=75" alt="Public auctions" width="576" height="432" loading="lazy"/>
+        <div class="overlay"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. STATEMENT -->
+<section class="sec-g" style="padding:3.5rem 0">
+  <div class="wrap"><div class="bst"><div class="bst-line"></div><p>"A unit that did not sell in the dealer network for 60 days can find a buyer in a single afternoon at a public auction."</p></div></div>
+</section>
+
+<!-- 5. HOW IT WORKS -->
+<section class="sec-w" id="how-it-works">
+  <div class="wrap">
+    <div class="sec-head"><div class="badge">The Process</div><h2>From Exchange Listing to Public Auction — One Click</h2><p>If a unit is already listed in the Dealer Exchange, pushing it to the public auction takes one click. No relisting, no new photos, no duplicate data entry.</p></div>
+    <div class="h-steps anim">
+      <div class="h-step"><div class="h-step-num">1</div><h4>List in Exchange</h4><p>Unit is already listed in the Dealer Exchange with photos, specs, and pricing.</p></div>
+      <div class="h-step"><div class="h-step-num">2</div><h4>Push to Auction</h4><p>One click from your dealer portal pushes the listing to the next monthly public auction event.</p></div>
+      <div class="h-step"><div class="h-step-num">3</div><h4>Bidders Compete</h4><p>Public buyers browse, place bids, and manage deposits through the DS360 Bidder Portal.</p></div>
+      <div class="h-step"><div class="h-step-num">4</div><h4>Sale Closes</h4><p>Winning bid confirmed. Stripe escrow secures the transaction. DS360 facilitates the close and delivery.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. BIDDER PORTAL -->
+<section class="sec-g">
+  <div class="wrap">
+    <div class="split split-rev anim">
+      <div class="split-text">
+        <div class="badge">Buyer Experience</div>
+        <h2>The DS360 Bidder Portal</h2>
+        <p>Public buyers access the auction through a dedicated Bidder Portal — a clean, professional interface where they browse available units, view photos and specs, place bids, manage their deposits, and complete purchases through Stripe escrow. The experience reflects on your dealership — and it is built to convert browsers into buyers.</p>
+        <div class="checks">
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Browse &amp; Filter</h3><p>Search by type, year, brand, price range — find the right unit fast</p></div></div>
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Place &amp; Track Bids</h3><p>Real-time bidding with notifications on outbids and auction close</p></div></div>
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Secure Purchase</h3><p>Winning bidders complete the transaction through Stripe — deposit, balance, and delivery all managed through DS360</p></div></div>
+        </div>
+      </div>
+      <div class="split-img">
+        <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?ixlib=rb-4.0.3&auto=format&fit=crop&w=576&h=432&fm=webp&q=75" alt="Bidder Portal" width="576" height="432" loading="lazy"/>
+        <div class="overlay"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7. REQUIREMENTS -->
+<section class="sec-w">
+  <div class="wrap">
+    <div class="sec-head"><div class="badge">Requirements</div><h2>What You Need to Participate</h2></div>
+    <div class="req-grid anim">
+      <div class="req-card">
+        <div class="req-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <div class="req-text"><h4>Active Marketplace Membership</h4><p>$499/year Dealer Exchange membership must be active — Live Auctions is an add-on, not standalone</p></div>
+      </div>
+      <div class="req-card">
+        <div class="req-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+        <div class="req-text"><h4>$299/Year Add-On</h4><p>Annual subscription unlocks the ability to push any listing to the monthly public auction</p></div>
+      </div>
+      <div class="req-card">
+        <div class="req-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+        <div class="req-text"><h4>Listings in the Exchange</h4><p>Units must be listed in the Dealer Exchange first — the auction pulls from your existing listings</p></div>
+      </div>
+      <div class="req-card">
+        <div class="req-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg></div>
+        <div class="req-text"><h4>Verified Dealer Status</h4><p>Manual verification is part of the base membership — verified dealers can access Live Auctions immediately</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 8. DYK -->
+<section class="sec-g">
+  <div class="wrap">
+    <div class="dyk anim">
+      <div class="dyk-tag">Did You Know?</div>
+      <p>Public RV auctions consistently generate <strong>buyer pools 10x to 50x larger</strong> than private dealer networks. A unit that attracted zero dealer interest over 60 days can receive multiple bids within the first hour of a public auction — because the buyer it needed was never a dealer. It was a consumer.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 9. CONNECTED -->
+<section class="sec-w">
+  <div class="wrap">
+    <div class="grid-2 anim">
+      <a href="/marketplace" class="link-card"><div><h4>Marketplace Overview</h4><p>All three channels in one view</p></div><span class="link-arrow">&rarr;</span></a>
+      <a href="/marketplace/dealer-exchange" class="link-card"><div><h4>Dealer Exchange</h4><p>The base membership — required for Live Auctions</p></div><span class="link-arrow">&rarr;</span></a>
+      <a href="/marketplace/consignment" class="link-card"><div><h4>Consignment Services</h4><p>Client-sourced units with premium auction placement option</p></div><span class="link-arrow">&rarr;</span></a>
+      <a href="/pricing" class="link-card"><div><h4>Full Pricing</h4><p>All DS360 services and products</p></div><span class="link-arrow">&rarr;</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- 10. FAQ -->
+<section class="sec-g">
+  <div class="wrap">
+    <div class="faq-layout anim">
+      <div class="faq-left">
+        <div class="badge">FAQ</div>
+        <h2 style="font-size:clamp(1.5rem,3.5vw,2rem);font-weight:700;margin-top:.75rem;line-height:1.2">Live Auctions<br/>Questions</h2>
+        <p style="font-size:1rem;color:var(--muted);line-height:1.7;margin-top:1rem">How monthly public auctions work.</p>
+        <a href="/contact" class="btn btn-primary" style="width:fit-content;margin-top:1.5rem">Add Live Auctions &rarr;</a>
+      </div>
+      <div class="faq-right">
+        <div class="faq-card"><button class="faq-q"><span>When do auctions run?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faq-a"><p>Live Auctions run once per month on a set date — approximately every 4 weeks. The auction calendar is published in advance through the dealer portal. Listings can be pushed to the upcoming auction at any time before the listing deadline.</p></div></div>
+        <div class="faq-card"><button class="faq-q"><span>Can I set a reserve price?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faq-a"><p>Yes. Every listing in the public auction can have a reserve price — the minimum bid required for the sale to proceed. If bidding does not reach the reserve, the unit is not sold and returns to the Dealer Exchange for the next month's auction or continued network listing.</p></div></div>
+        <div class="faq-card"><button class="faq-q"><span>Do I need to relist for each auction?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faq-a"><p>No. Once a unit is listed in the Dealer Exchange, pushing it to the public auction is a single click. If it does not sell, you can push it again the following month — same listing, same photos, same data. No duplicate work.</p></div></div>
+        <div class="faq-card"><button class="faq-q"><span>Can consignment units be in Live Auctions?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faq-a"><p>Yes. Clients who list through Consignment Services can add the $199 premium placement add-on to feature their unit in the monthly Live Auction. This gives client-consigned units the same public exposure as dealer-listed inventory.</p></div></div>
+        <div class="faq-card"><button class="faq-q"><span>How are public buyers verified?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faq-a"><p>Public bidders register through the DS360 Bidder Portal with identity verification. A deposit is required before bidding is enabled. Stripe escrow holds funds throughout the transaction. DS360 manages buyer verification to protect dealers from non-serious or fraudulent bidders.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 11. BOTTOM CTA -->
+<section class="bcta">
+  <div class="wrap">
+    <h2>Put Your Inventory in Front of Every Buyer — Not Just Dealers.</h2>
+    <p>$299/year. Monthly public auctions. One-click push from the Dealer Exchange. Tens of thousands of potential buyers.</p>
+    <div class="bcta-btns"><a href="/contact" class="btn btn-lg btn-green">Add Live Auctions &rarr;</a><a href="/marketplace/dealer-exchange" class="btn btn-lg btn-white">Join the Exchange First</a></div>
+  </div>
+</section>
+
+<footer class="footer"><div class="wrap">&copy; 2026 Dealer Suite 360. All rights reserved. Patent Pending Technology.</div></footer>
+
+<script>
+document.querySelectorAll('.faq-q').forEach(b=>{b.addEventListener('click',()=>{const i=b.closest('.faq-card');const o=i.classList.contains('open');document.querySelectorAll('.faq-card').forEach(x=>x.classList.remove('open'));if(!o)i.classList.add('open')})});
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('v');obs.unobserve(x.target)}})},{threshold:.08});
+document.querySelectorAll('.anim').forEach(e=>obs.observe(e));
+</script>
+</body>
+</html>

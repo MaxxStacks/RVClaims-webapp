@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Revenue Optimization — Where Your Dealership Is Losing Money | DealerSuite360</title>
+<meta name="description" content="Claims leakage, missed F&I presentations, unbilled labor, and untapped marketplace revenue — DS360 shows you the gaps and closes them."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--primary:hsl(217,95%,26%);--primary-light:hsl(217,95%,36%);--primary-5:hsl(217,95%,26%/0.05);--primary-10:hsl(217,95%,26%/0.10);--primary-20:hsl(217,95%,26%/0.20);--primary-40:hsl(217,95%,26%/0.40);--fg:hsl(240,10%,3.9%);--muted:hsl(215.4,16.3%,46.9%);--bg:white;--card:white;--border:hsl(214.3,31.8%,91.4%);--gray-50:hsl(210,40%,97.5%);--green:#0cb22c;--green-h:#0a9624;--font:'Inter',-apple-system,BlinkMacSystemFont,sans-serif}
+body{font-family:var(--font);color:var(--fg);background:var(--bg);-webkit-font-smoothing:antialiased;line-height:1.6;overflow-x:hidden}
+img{max-width:100%;height:auto;display:block}a{color:inherit;text-decoration:none}
+.nav{position:sticky;top:0;z-index:100;background:white;border-bottom:1px solid var(--border);height:64px;display:flex;align-items:center;padding:0 1rem}.nav-inner{max-width:1280px;margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between;padding:0 1rem}.nav-logo{font-weight:700;font-size:1.1rem;color:var(--primary);display:flex;align-items:center;gap:.5rem}.nav-logo .b{font-weight:600;font-size:.55rem;background:var(--primary);color:white;padding:2px 5px;border-radius:3px}.nav-links{display:flex;gap:2rem;font-size:.88rem;font-weight:500;color:var(--muted)}.nav-links a:hover{color:var(--primary)}@media(max-width:768px){.nav-links{display:none}}
+.wrap{max-width:1280px;margin:0 auto;padding:0 1rem}@media(min-width:640px){.wrap{padding:0 1.5rem}}@media(min-width:1024px){.wrap{padding:0 2rem}}
+.sec-w{padding:5rem 0;background:white}.sec-g{padding:5rem 0;background:var(--gray-50)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;font-family:var(--font);font-size:.88rem;font-weight:600;padding:.75rem 1.5rem;border-radius:.5rem;border:none;cursor:pointer;transition:all .2s}.btn-lg{padding:.85rem 2rem;font-size:.95rem}.btn-primary{background:var(--primary);color:white;box-shadow:0 10px 15px -3px rgba(0,0,0,.1)}.btn-primary:hover{background:hsl(217,95%,23%)}.btn-outline{background:transparent;color:var(--fg);border:1px solid var(--border)}.btn-outline:hover{background:var(--gray-50)}.btn-green{background:var(--green);color:white}.btn-green:hover{background:var(--green-h)}.btn-white{background:white;color:var(--primary)}.btn-white:hover{background:#f5f5f5}
+.badge{display:inline-flex;align-items:center;padding:.25rem .75rem;border-radius:9999px;font-size:.75rem;font-weight:500;background:var(--primary-10);color:var(--primary);border:1px solid var(--primary-20)}
+.sec-head{text-align:center;margin-bottom:4rem;display:flex;flex-direction:column;align-items:center;gap:1rem}.sec-head h2{font-size:clamp(1.75rem,4vw,2.25rem);font-weight:700}.sec-head p{font-size:1.05rem;color:var(--muted);max-width:48rem;line-height:1.7}
+.phero{background:linear-gradient(to bottom right,var(--primary-5),var(--bg),var(--primary-10));background-image:radial-gradient(circle at 25px 25px,rgba(30,58,138,.1) 2px,transparent 0),radial-gradient(circle at 75px 75px,rgba(30,58,138,.05) 2px,transparent 0);background-size:100px 100px;padding:5rem 0}@media(min-width:1024px){.phero{padding:6rem 0}}
+.phero-grid{display:grid;grid-template-columns:1fr;gap:3rem;align-items:center}@media(min-width:1024px){.phero-grid{grid-template-columns:1fr 1fr}}
+.phero-text{display:flex;flex-direction:column;gap:1.75rem}.phero h1{font-size:clamp(2rem,4.5vw,3.25rem);font-weight:700;line-height:1.15}.phero h1 .gradient{display:block;background:linear-gradient(135deg,var(--primary),var(--primary-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.phero-desc{font-size:1.1rem;color:var(--muted);line-height:1.7}.phero-btns{display:flex;gap:1rem;flex-wrap:wrap}
+.phero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;padding-top:2rem;border-top:1px solid var(--border)}.phero-stat{text-align:center}.phero-stat-val{font-size:1.5rem;font-weight:700;color:var(--primary)}.phero-stat-label{font-size:.8rem;color:var(--muted)}.phero-img{border-radius:1rem;box-shadow:0 25px 50px -12px rgba(0,0,0,.25);overflow:hidden}
+.metric-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-radius:.75rem;overflow:hidden;border:1px solid var(--border)}@media(max-width:640px){.metric-bar{grid-template-columns:repeat(2,1fr)}}.metric-item{text-align:center;padding:1.75rem 1rem;background:white;border-right:1px solid var(--border)}.metric-item:last-child{border-right:none}@media(max-width:640px){.metric-item:nth-child(2){border-right:none}.metric-item:nth-child(3),.metric-item:nth-child(4){border-top:1px solid var(--border)}}.metric-num{font-size:clamp(1.5rem,3.5vw,2.25rem);font-weight:800;color:var(--primary);line-height:1}.metric-label{font-size:.78rem;color:var(--muted);margin-top:.5rem}
+.split{display:grid;grid-template-columns:1fr;gap:4rem;align-items:center}@media(min-width:1024px){.split{grid-template-columns:1fr 1fr}}.split-rev{direction:rtl}.split-rev>*{direction:ltr}.split-text{display:flex;flex-direction:column;gap:1.5rem}.split-text h2{font-size:clamp(1.75rem,4vw,2.25rem);font-weight:700}.split-text>p{font-size:1.05rem;color:var(--muted);line-height:1.7}.split-img{position:relative;border-radius:1rem;overflow:hidden;box-shadow:0 25px 50px -12px rgba(0,0,0,.25)}.split-img img{width:100%;height:auto}.split-img .overlay{position:absolute;inset:0;background:linear-gradient(to top right,var(--primary-20),transparent)}
+.checks{display:flex;flex-direction:column;gap:1rem}.check{display:flex;align-items:flex-start;gap:.75rem}.check-dot{width:1.5rem;height:1.5rem;border-radius:50%;background:var(--primary-10);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.125rem}.check-dot svg{width:.75rem;height:.75rem}.check-info h3{font-weight:600;font-size:.95rem}.check-info p{font-size:.85rem;color:var(--muted)}
+.bst{text-align:center;padding:2rem;max-width:48rem;margin:0 auto}.bst-line{width:3rem;height:3px;background:var(--primary);margin:0 auto 1.5rem;border-radius:2px}.bst p{font-size:clamp(1.15rem,3vw,1.4rem);font-weight:600;color:var(--fg);line-height:1.5;font-style:italic}
+.dyk{position:relative;max-width:52rem;margin:0 auto;background:linear-gradient(135deg,hsl(217 95% 26%/.03),hsl(217 95% 26%/.08));border:1px solid var(--primary-20);border-radius:.75rem;padding:2.5rem 2.5rem 2.5rem 5.5rem;overflow:hidden}.dyk::before{content:'?';position:absolute;left:-1rem;top:50%;transform:translateY(-50%);font-size:8rem;font-weight:800;color:var(--primary-10);line-height:1;pointer-events:none}.dyk-tag{display:inline-flex;align-items:center;gap:.4rem;font-size:.72rem;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.75rem}.dyk>p{font-size:1.1rem;color:var(--fg);line-height:1.7}.dyk>p strong{color:var(--primary);font-weight:700}@media(max-width:768px){.dyk{padding:2rem 1.5rem}.dyk::before{display:none}}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem}@media(max-width:768px){.grid-3{grid-template-columns:1fr}}.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:2rem}@media(max-width:768px){.grid-2{grid-template-columns:1fr}}
+.stat-card{background:var(--card);border-radius:.75rem;padding:2rem;border:1px solid var(--border);text-align:center;transition:transform .3s,box-shadow .3s}.stat-card:hover{transform:translateY(-5px);box-shadow:0 20px 25px -5px rgba(0,0,0,.1)}.stat-val{font-size:2.25rem;font-weight:700;color:var(--primary);margin-bottom:.5rem}.stat-title{font-weight:600;margin-bottom:.5rem;font-size:.95rem}.stat-desc{font-size:.85rem;color:var(--muted)}
+.bcs{max-width:56rem;margin:0 auto;border:1px solid var(--border);border-radius:.75rem;padding:1.25rem 1.75rem;display:flex;align-items:center;gap:1rem;background:white;transition:all .25s}.bcs:hover{border-color:var(--primary-20);box-shadow:0 4px 12px rgba(0,0,0,.04)}.bcs-dot{width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0}.bcs-text{flex:1;font-size:.88rem;color:var(--muted)}.bcs-text strong{color:var(--fg)}.bcs a{color:var(--primary);font-weight:600;font-size:.85rem;white-space:nowrap;flex-shrink:0}
+.link-card{display:flex;align-items:center;justify-content:space-between;background:white;border:1px solid var(--border);border-radius:.75rem;padding:1.25rem 1.5rem;transition:all .25s}.link-card:hover{border-color:var(--primary);transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.05)}.link-card h4{font-size:.95rem;font-weight:600;margin-bottom:.2rem}.link-card p{font-size:.8rem;color:var(--muted)}.link-arrow{font-size:1.15rem;color:var(--primary);transition:transform .2s;flex-shrink:0;margin-left:1rem}.link-card:hover .link-arrow{transform:translateX(4px)}
+.faq-layout{display:grid;grid-template-columns:1fr;gap:3rem;align-items:flex-start}@media(min-width:1024px){.faq-layout{grid-template-columns:1fr 1.4fr;gap:4rem}}.faq-left{position:sticky;top:5rem}@media(max-width:1023px){.faq-left{position:static}}.faq-right{display:flex;flex-direction:column;gap:.75rem}.faq-card{background:var(--card);border:1px solid var(--border);border-radius:.75rem;overflow:hidden;transition:border-color .2s}.faq-card.open{border-color:var(--primary-40)}.faq-q{width:100%;display:flex;justify-content:space-between;align-items:center;padding:1.25rem 1.5rem;background:0;border:0;font-family:var(--font);font-size:.92rem;font-weight:600;color:var(--fg);cursor:pointer;text-align:left;gap:1rem;line-height:1.4}.faq-q:hover{color:var(--primary)}.faq-icon{width:2rem;height:2rem;border-radius:.5rem;background:var(--primary-10);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}.faq-icon svg{color:var(--primary);transition:transform .2s}.faq-card.open .faq-icon{background:var(--primary)}.faq-card.open .faq-icon svg{color:white;transform:rotate(45deg)}.faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease}.faq-card.open .faq-a{max-height:400px}.faq-a p{padding:0 1.5rem 1.25rem;font-size:.9rem;color:var(--muted);line-height:1.8}
+.bcta{background:linear-gradient(135deg,hsl(217,95%,18%),hsl(217,95%,28%));text-align:center;padding:5rem 0}.bcta h2{font-size:clamp(1.75rem,4vw,2.25rem);font-weight:700;color:white;margin-bottom:1rem}.bcta p{color:hsl(217,20%,75%);font-size:1.05rem;max-width:36rem;margin:0 auto 2rem;line-height:1.7}.bcta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.footer{background:var(--gray-50);border-top:1px solid var(--border);padding:2rem 0;text-align:center;font-size:.8rem;color:var(--muted)}.anim{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}.anim.v{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<nav class="nav"><div class="nav-inner"><div class="nav-logo"><svg width="28" height="28" viewBox="0 0 32 32" fill="none"><path d="M16 2L4 8v16l12 6 12-6V8L16 2z" fill="hsl(217,95%,26%)"/><path d="M16 6l8 4v12l-8 4-8-4V10l8-4z" fill="hsl(217,95%,36%)"/><path d="M16 10v12l-4-2V12l4-2z" fill="white" opacity=".6"/></svg>Dealer Suite<span class="b">360</span></div><div class="nav-links"><a href="/services">Services</a><a href="/products/fi-services">Products</a><a href="/marketplace">Marketplace</a><a href="/technology">Technology</a><a href="/pricing">Pricing</a><a href="/contact" class="btn btn-primary" style="padding:.5rem 1.25rem;font-size:.82rem">Get Started</a></div></div></nav>
+
+<!-- 1. HERO -->
+<section class="phero">
+  <div class="wrap">
+    <div class="phero-grid">
+      <div class="phero-text">
+        <div><div class="badge">Revenue Optimization</div></div>
+        <h1>You're Making Money.<span class="gradient">You're Also Losing It.</span></h1>
+        <p class="phero-desc">Every RV dealership has revenue leaks — claims that expire before submission, F&I products that are never presented, technician hours that are never billed, and inventory that sits when it should sell. DS360 finds these gaps and closes them. This page shows you the four places your dealership is most likely losing money — and exactly how DS360 stops it.</p>
+        <div class="phero-btns"><a href="/contact" class="btn btn-lg btn-primary">Book a Revenue Walkthrough</a><a href="/revenue/services" class="btn btn-lg btn-outline">View Revenue Services</a></div>
+        <div class="phero-stats">
+          <div class="phero-stat"><div class="phero-stat-val">4</div><div class="phero-stat-label">Revenue Gaps Identified</div></div>
+          <div class="phero-stat"><div class="phero-stat-val">$50-150K</div><div class="phero-stat-label">Avg Annual Leakage</div></div>
+          <div class="phero-stat"><div class="phero-stat-val">DS360</div><div class="phero-stat-label">Closes Every Gap</div></div>
+        </div>
+      </div>
+      <div class="phero-img"><img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=584&h=438&fm=webp&q=75" alt="Revenue optimization" width="584" height="438"/></div>
+    </div>
+  </div>
+</section>
+
+<!-- 2. METRIC BAR -->
+<section class="sec-g" style="padding:2.5rem 0">
+  <div class="wrap"><div class="metric-bar">
+    <div class="metric-item"><div class="metric-num">97%</div><div class="metric-label">Claim Approval Rate</div></div>
+    <div class="metric-item"><div class="metric-num">100%</div><div class="metric-label">F&I Presentation Rate</div></div>
+    <div class="metric-item"><div class="metric-num">$2.7K</div><div class="metric-label">Monthly Labor Recovery</div></div>
+    <div class="metric-item"><div class="metric-num">3</div><div class="metric-label">Marketplace Channels</div></div>
+  </div></div>
+</section>
+
+<!-- 3. GAP 1: CLAIMS -->
+<section class="sec-w">
+  <div class="wrap">
+    <div class="split anim">
+      <div class="split-text">
+        <div class="badge">Gap 1 — Claims Leakage</div>
+        <h2>Every Expired Claim Is Revenue You Earned but Never Collected</h2>
+        <p>Manufacturer deadlines pass without submission. FRC codes are missed — labor lines that should be billed are left off the claim. Photos are rejected because they do not meet manufacturer standards. Descriptions are weak and trigger denials. Every expired or denied claim is money your dealership earned through the repair but never received through the payout.</p>
+        <div class="checks">
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Deadline Alerts Before Expiration</h3><p>DS360 tracks every claim deadline and fires alerts before manufacturer cutoffs pass</p></div></div>
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>AI-Powered FRC Recognition</h3><p>Every billable Flat Rate Code is captured — no missed labor lines</p></div></div>
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Photo Optimization &amp; Fail-Proof Descriptions</h3><p>97% approval rate — submissions built to pass manufacturer review on the first attempt</p></div></div>
+        </div>
+        <a href="/services/claims-processing" class="btn btn-primary" style="width:fit-content">Claims Processing &rarr;</a>
+      </div>
+      <div class="split-img">
+        <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?ixlib=rb-4.0.3&auto=format&fit=crop&w=576&h=432&fm=webp&q=75" alt="Claims leakage" width="576" height="432" loading="lazy"/>
+        <div class="overlay"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. STATEMENT -->
+<section class="sec-g" style="padding:3.5rem 0">
+  <div class="wrap"><div class="bst"><div class="bst-line"></div><p>"The most expensive revenue loss is the one you don't know about — because it never showed up as a line item on any report."</p></div></div>
+</section>
+
+<!-- 5. GAP 2: F&I PRESENTATION -->
+<section class="sec-w">
+  <div class="wrap">
+    <div class="split split-rev anim">
+      <div class="split-text">
+        <div class="badge">Gap 2 — F&I Presentation Gap</div>
+        <h2>The Revenue Lost to Products That Were Never Presented</h2>
+        <p>Your F&I manager is inconsistent, unavailable after hours, and costs $136,500 per year in salary, commission, and benefits. Some clients get a thorough presentation. Others get a checkbox. Clients who come in on evenings, weekends, and holidays get nothing. The revenue lost to presentations that never happen is completely invisible — because nobody tracks what a client would have bought if someone had asked.</p>
+        <div class="checks">
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>AI F&I Presenter — 100% Presentation Rate</h3><p>Every credit-approved client sees every product — by name, with personalized pricing, 24/7</p></div></div>
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>$0 Commission — Flat Monthly Fee</h3><p>Replaces $136,500/yr in F&I staff expenses with a flat subscription</p></div></div>
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Same Quality Every Time</h3><p>No bad days, no rushed presentations, no sick days — consistent product delivery</p></div></div>
+        </div>
+        <a href="/services/ai-fi-presenter" class="btn btn-primary" style="width:fit-content">AI F&I Presenter &rarr;</a>
+      </div>
+      <div class="split-img">
+        <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&auto=format&fit=crop&w=576&h=432&fm=webp&q=75" alt="F&I gap" width="576" height="432" loading="lazy"/>
+        <div class="overlay"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. TECHFLOW CROSS-SELL -->
+<section class="sec-g" style="padding:2.5rem 0">
+  <div class="wrap"><div class="bcs"><div class="bcs-dot"></div><div class="bcs-text"><strong>TechFlow</strong> recovers an average of $2,700/month in unbilled labor — hours that were worked but never invoiced against the claim.</div><a href="/services/techflow">Learn More &rarr;</a></div></div>
+</section>
+
+<!-- 7. GAP 3: OPERATIONAL MARGIN -->
+<section class="sec-g">
+  <div class="wrap">
+    <div class="split anim">
+      <div class="split-text">
+        <div class="badge">Gap 3 — Unbilled Labor</div>
+        <h2>Your Technicians Are Working. Your Invoices Don't Reflect It.</h2>
+        <p>A technician completes a warranty repair. The hours are not logged against the claim. The invoice goes out short. Nobody notices because the work was done — it just was never billed. The average dealership loses 12 to 18 labor hours per month this way. At standard rates, that is $1,500 to $2,700 per month in revenue your dealership performed the work for but never collected.</p>
+        <div class="checks">
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Auto Work Orders from Claims</h3><p>TechFlow generates work orders the moment a claim is approved — no sticky notes, no verbal handoffs</p></div></div>
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Labor Hours Sync to Invoice</h3><p>Every hour the technician works is tracked and auto-populated on the claim invoice</p></div></div>
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>AI Document Scanner</h3><p>Reads VINs, extracts data from uploaded documents, and auto-populates fields — zero manual entry</p></div></div>
+        </div>
+        <a href="/services/techflow" class="btn btn-primary" style="width:fit-content">TechFlow &rarr;</a>
+      </div>
+      <div class="split-img">
+        <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-4.0.3&auto=format&fit=crop&w=576&h=432&fm=webp&q=75" alt="Unbilled labor" width="576" height="432" loading="lazy"/>
+        <div class="overlay"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 8. DYK -->
+<section class="sec-w">
+  <div class="wrap">
+    <div class="dyk anim">
+      <div class="dyk-tag">Did You Know?</div>
+      <p>When you add up expired claims, missed F&I presentations, unbilled labor hours, and unsold aging inventory — <strong>the average RV dealership is leaving $50,000 to $150,000 per year on the table</strong> in revenue that was earned but never collected. DS360 does not create new revenue out of thin air. It recovers the revenue you are already losing.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 9. GAP 4: MARKETPLACE -->
+<section class="sec-g">
+  <div class="wrap">
+    <div class="split split-rev anim">
+      <div class="split-text">
+        <div class="badge">Gap 4 — Untapped Inventory Channels</div>
+        <h2>Inventory That Sits on Your Lot When It Should Be Moving</h2>
+        <p>A unit is not selling locally — it ages on your lot costing you floor plan interest every month. A walk-in client wants a specific model you do not have — the sale walks out the door. A client wants to consign their trade-in — you have no system for it. Three revenue opportunities that evaporate because the channels do not exist.</p>
+        <div class="checks">
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Dealer Exchange — $499/yr</h3><p>Offload aged inventory to the DS360 dealer network. Source units for immediate delivery when a walk-in needs something specific.</p></div></div>
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Live Auctions — $299/yr Add-On</h3><p>Monthly public events that expand your buyer pool beyond the dealer network</p></div></div>
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Consignment — $299 Per Listing</h3><p>Access client-sourced inventory. Buy outright, offer exchange credit, or sell for a finder's fee.</p></div></div>
+        </div>
+        <a href="/marketplace" class="btn btn-primary" style="width:fit-content">Marketplace &rarr;</a>
+      </div>
+      <div class="split-img">
+        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=576&h=432&fm=webp&q=75" alt="Marketplace" width="576" height="432" loading="lazy"/>
+        <div class="overlay"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 10. STATS -->
+<section class="sec-w">
+  <div class="wrap">
+    <div class="grid-3 anim">
+      <div class="stat-card"><div class="stat-val">$2.7K</div><div class="stat-title">Monthly Labor Recovery</div><p class="stat-desc">Average unbilled labor recovered when TechFlow connects claims to service</p></div>
+      <div class="stat-card"><div class="stat-val">97%</div><div class="stat-title">Claim Approval Rate</div><p class="stat-desc">DS360's optimized submissions versus the industry average</p></div>
+      <div class="stat-card"><div class="stat-val">100%</div><div class="stat-title">F&I Presentation Rate</div><p class="stat-desc">AI F&I Presenter ensures every client sees every product</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 11. CONNECTED -->
+<section class="sec-g">
+  <div class="wrap">
+    <div class="sec-head"><h2>The Tools That Close These Gaps</h2><p>Revenue Optimization identifies the leaks. These are the tools that fix them.</p></div>
+    <div class="grid-2 anim">
+      <a href="/revenue/services" class="link-card"><div><h4>Revenue Services</h4><p>Every DS360 tool that generates or recovers revenue</p></div><span class="link-arrow">&rarr;</span></a>
+      <a href="/services/claims-processing" class="link-card"><div><h4>Claims Processing</h4><p>A-Z lifecycle tracking — the core revenue recovery tool</p></div><span class="link-arrow">&rarr;</span></a>
+      <a href="/services/ai-fi-presenter" class="link-card"><div><h4>AI F&I Presenter</h4><p>100% presentation rate — the F&I gap closer</p></div><span class="link-arrow">&rarr;</span></a>
+      <a href="/services/techflow" class="link-card"><div><h4>TechFlow</h4><p>Zero unbilled labor — the operational margin recovery tool</p></div><span class="link-arrow">&rarr;</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- 12. FAQ -->
+<section class="sec-w">
+  <div class="wrap">
+    <div class="faq-layout anim">
+      <div class="faq-left">
+        <div class="badge">FAQ</div>
+        <h2 style="font-size:clamp(1.5rem,3.5vw,2rem);font-weight:700;margin-top:.75rem;line-height:1.2">Revenue<br/>Optimization</h2>
+        <p style="font-size:1rem;color:var(--muted);line-height:1.7;margin-top:1rem">How DS360 finds and closes your revenue gaps.</p>
+        <a href="/contact" class="btn btn-primary" style="width:fit-content;margin-top:1.5rem">Book a Walkthrough &rarr;</a>
+      </div>
+      <div class="faq-right">
+        <div class="faq-card"><button class="faq-q"><span>How do I know how much I'm losing?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faq-a"><p>Book a revenue walkthrough. DS360 can assess your current claims volume, F&I attachment rates, labor tracking practices, and inventory turnover to estimate where revenue is leaking. Most dealers are surprised by the number.</p></div></div>
+        <div class="faq-card"><button class="faq-q"><span>Is this about cutting costs or increasing revenue?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faq-a"><p>Increasing revenue. DS360 Revenue Optimization is not about reducing headcount or cutting expenses. It is about recovering revenue that already exists but is not being captured — expired claims, unbilled labor, missed product sales, and untapped inventory channels.</p></div></div>
+        <div class="faq-card"><button class="faq-q"><span>How quickly will I see results?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faq-a"><p>Claims recovery is immediate — optimized submissions on day one. TechFlow labor recovery starts within the first month. F&I product revenue starts the day you begin presenting. Marketplace revenue builds as your listings gain exposure in the network.</p></div></div>
+        <div class="faq-card"><button class="faq-q"><span>What is the difference between this and Revenue Services?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faq-a"><p>Revenue Services is the guide to the tools — "here is what makes money." Revenue Optimization is the diagnostic — "here is where you are losing money." One is the solution set. The other is the problem map. Together, they give you the complete revenue picture.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 13. BOTTOM CTA -->
+<section class="bcta">
+  <div class="wrap">
+    <h2>Find Out What You're Leaving on the Table.</h2>
+    <p>Book a revenue walkthrough and see exactly where your dealership is losing money — and which DS360 tools recover it.</p>
+    <div class="bcta-btns"><a href="/contact" class="btn btn-lg btn-green">Book a Walkthrough &rarr;</a><a href="/revenue/services" class="btn btn-lg btn-white">Revenue Services</a></div>
+  </div>
+</section>
+
+<footer class="footer"><div class="wrap">&copy; 2026 Dealer Suite 360. All rights reserved. Patent Pending Technology.</div></footer>
+
+<script>
+document.querySelectorAll('.faq-q').forEach(b=>{b.addEventListener('click',()=>{const i=b.closest('.faq-card');const o=i.classList.contains('open');document.querySelectorAll('.faq-card').forEach(x=>x.classList.remove('open'));if(!o)i.classList.add('open')})});
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('v');obs.unobserve(x.target)}})},{threshold:.08});
+document.querySelectorAll('.anim').forEach(e=>obs.observe(e));
+</script>
+</body>
+</html>

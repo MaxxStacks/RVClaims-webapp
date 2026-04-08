@@ -1,0 +1,44 @@
+Read CC-PAGE-CONVERSION-SPEC.md in the project root. This is the specification for converting all HTML page templates to React TSX components and overhauling all navigation menus.
+
+BEFORE YOU WRITE ANY CODE:
+1. Read the ENTIRE spec document top to bottom.
+2. Read the existing codebase — specifically the Header/Navbar component, Footer component, router configuration, global CSS, and at least 3 existing page components to understand the patterns.
+3. Read client/src/index.css for the design system.
+4. Identify the layout wrapper that provides header and footer to all pages.
+
+THEN execute in the order specified in the spec:
+- Phase 1: Global setup (CTA CSS, menu updates)
+- Phase 2: Replace existing pages
+- Phase 3-7: Add new pages in batches
+- Phase 8: Verify and push
+
+For EACH page you convert:
+1. Extract only the body content from the HTML (between nav and footer)
+2. Convert to JSX (className, self-closing tags, entities)
+3. Replace the bottom CTA with the assigned Hybrid per the alternation table
+4. Wire FAQ accordion as React state
+5. Wire scroll animations via useEffect + IntersectionObserver
+6. Register the route
+
+CRITICAL REMINDERS:
+- Every "Did You Know?" section: the "?" must be #033280 (brand navy), NOT black. Wrap in a span with color:#033280 if needed.
+- Use the EXISTING site header and footer. Do NOT duplicate nav/footer from HTML templates.
+- Alternate CTA Hybrid 1 and Hybrid 2 per the table in the spec. Do NOT use the old navy gradient bcta.
+- Every interactive element must work. No empty handlers. No href="#".
+- The monolithic file structure must not be restructured.
+- Primary color is #033280 / hsl(217,95%,26%). Green is #0cb22c.
+
+After ALL work is complete and npm run build succeeds with zero errors:
+git add -A
+git commit -m "Complete page conversion: 53 TSX pages, menu overhaul, CTA alternation
+
+- Converted all HTML templates to React TSX components
+- Updated desktop mega menu with Services/Products/Marketplace dropdowns
+- Updated desktop and mobile hamburger menus with full site map
+- Updated footer with 4-column link grid and copyright bar
+- Added CTA Hybrid 1 and Hybrid 2 alternating across all pages
+- Registered all new routes
+- All pages use existing site header/footer
+- All interactive elements functional
+- SEO meta tags, JSON-LD, and canonical URLs on every page"
+git push origin main

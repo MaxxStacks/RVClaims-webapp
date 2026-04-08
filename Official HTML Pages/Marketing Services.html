@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Marketing Services — RV Dealer Digital Marketing | DealerSuite360</title>
+<meta name="description" content="Full-service digital marketing built for the RV industry — SEO, PPC, social media, email, remarketing, and lead generation with ROI tracking built into the DS360 platform."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --primary:hsl(217,95%,26%);--primary-light:hsl(217,95%,36%);
+  --primary-5:hsl(217,95%,26%/0.05);--primary-10:hsl(217,95%,26%/0.10);--primary-20:hsl(217,95%,26%/0.20);--primary-40:hsl(217,95%,26%/0.40);
+  --fg:hsl(240,10%,3.9%);--muted:hsl(215.4,16.3%,46.9%);
+  --bg:white;--card:white;--border:hsl(214.3,31.8%,91.4%);
+  --gray-50:hsl(210,40%,97.5%);
+  --green:#0cb22c;--green-h:#0a9624;
+  --font:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+}
+body{font-family:var(--font);color:var(--fg);background:var(--bg);-webkit-font-smoothing:antialiased;line-height:1.6;overflow-x:hidden}
+img{max-width:100%;height:auto;display:block}a{color:inherit;text-decoration:none}
+
+.nav{position:sticky;top:0;z-index:100;background:white;border-bottom:1px solid var(--border);height:64px;display:flex;align-items:center;padding:0 1rem}
+.nav-inner{max-width:1280px;margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between;padding:0 1rem}
+.nav-logo{font-weight:700;font-size:1.1rem;color:var(--primary);display:flex;align-items:center;gap:.5rem}
+.nav-logo .b{font-weight:600;font-size:.55rem;background:var(--primary);color:white;padding:2px 5px;border-radius:3px}
+.nav-links{display:flex;gap:2rem;font-size:.88rem;font-weight:500;color:var(--muted)}
+.nav-links a:hover{color:var(--primary)}@media(max-width:768px){.nav-links{display:none}}
+
+.wrap{max-width:1280px;margin:0 auto;padding:0 1rem}
+@media(min-width:640px){.wrap{padding:0 1.5rem}}@media(min-width:1024px){.wrap{padding:0 2rem}}
+
+.sec-w{padding:5rem 0;background:white}.sec-g{padding:5rem 0;background:var(--gray-50)}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;font-family:var(--font);font-size:.88rem;font-weight:600;padding:.75rem 1.5rem;border-radius:.5rem;border:none;cursor:pointer;transition:all .2s}
+.btn-lg{padding:.85rem 2rem;font-size:.95rem}
+.btn-primary{background:var(--primary);color:white;box-shadow:0 10px 15px -3px rgba(0,0,0,.1)}.btn-primary:hover{background:hsl(217,95%,23%)}
+.btn-outline{background:transparent;color:var(--fg);border:1px solid var(--border)}.btn-outline:hover{background:var(--gray-50)}
+.btn-green{background:var(--green);color:white}.btn-green:hover{background:var(--green-h)}
+.btn-white{background:white;color:var(--primary)}.btn-white:hover{background:#f5f5f5}
+.badge{display:inline-flex;align-items:center;padding:.25rem .75rem;border-radius:9999px;font-size:.75rem;font-weight:500;background:var(--primary-10);color:var(--primary);border:1px solid var(--primary-20)}
+
+.sec-head{text-align:center;margin-bottom:4rem;display:flex;flex-direction:column;align-items:center;gap:1rem}
+.sec-head h2{font-size:clamp(1.75rem,4vw,2.25rem);font-weight:700}
+.sec-head p{font-size:1.05rem;color:var(--muted);max-width:48rem;line-height:1.7}
+
+/* Hero */
+.phero{background:linear-gradient(to bottom right,var(--primary-5),var(--bg),var(--primary-10));background-image:radial-gradient(circle at 25px 25px,rgba(30,58,138,.1) 2px,transparent 0),radial-gradient(circle at 75px 75px,rgba(30,58,138,.05) 2px,transparent 0);background-size:100px 100px;padding:5rem 0}
+@media(min-width:1024px){.phero{padding:6rem 0}}
+.phero-grid{display:grid;grid-template-columns:1fr;gap:3rem;align-items:center}
+@media(min-width:1024px){.phero-grid{grid-template-columns:1fr 1fr}}
+.phero-text{display:flex;flex-direction:column;gap:1.75rem}
+.phero h1{font-size:clamp(2rem,4.5vw,3.25rem);font-weight:700;line-height:1.15}
+.phero h1 .gradient{display:block;background:linear-gradient(135deg,var(--primary),var(--primary-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.phero-desc{font-size:1.1rem;color:var(--muted);line-height:1.7}
+.phero-btns{display:flex;gap:1rem;flex-wrap:wrap}
+.phero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;padding-top:2rem;border-top:1px solid var(--border)}
+.phero-stat{text-align:center}.phero-stat-val{font-size:1.5rem;font-weight:700;color:var(--primary)}.phero-stat-label{font-size:.8rem;color:var(--muted)}
+.phero-img{border-radius:1rem;box-shadow:0 25px 50px -12px rgba(0,0,0,.25);overflow:hidden}
+
+/* Metric bar */
+.metric-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-radius:.75rem;overflow:hidden;border:1px solid var(--border)}
+@media(max-width:640px){.metric-bar{grid-template-columns:repeat(2,1fr)}}
+.metric-item{text-align:center;padding:1.75rem 1rem;background:white;border-right:1px solid var(--border)}
+.metric-item:last-child{border-right:none}
+@media(max-width:640px){.metric-item:nth-child(2){border-right:none}.metric-item:nth-child(3),.metric-item:nth-child(4){border-top:1px solid var(--border)}}
+.metric-num{font-size:clamp(1.5rem,3.5vw,2.25rem);font-weight:800;color:var(--primary);line-height:1}
+.metric-label{font-size:.78rem;color:var(--muted);margin-top:.5rem}
+
+/* Split */
+.split{display:grid;grid-template-columns:1fr;gap:4rem;align-items:center}
+@media(min-width:1024px){.split{grid-template-columns:1fr 1fr}}
+.split-rev{direction:rtl}.split-rev>*{direction:ltr}
+.split-text{display:flex;flex-direction:column;gap:1.5rem}
+.split-text h2{font-size:clamp(1.75rem,4vw,2.25rem);font-weight:700}
+.split-text>p{font-size:1.05rem;color:var(--muted);line-height:1.7}
+.split-img{position:relative;border-radius:1rem;overflow:hidden;box-shadow:0 25px 50px -12px rgba(0,0,0,.25)}
+.split-img img{width:100%;height:auto}
+.split-img .overlay{position:absolute;inset:0;background:linear-gradient(to top right,var(--primary-20),transparent)}
+
+/* Checks */
+.checks{display:flex;flex-direction:column;gap:1rem}
+.check{display:flex;align-items:flex-start;gap:.75rem}
+.check-dot{width:1.5rem;height:1.5rem;border-radius:50%;background:var(--primary-10);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.125rem}
+.check-dot svg{width:.75rem;height:.75rem}
+.check-info h3{font-weight:600;font-size:.95rem}.check-info p{font-size:.85rem;color:var(--muted)}
+
+/* Service channels */
+.channels{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;max-width:60rem;margin:0 auto}
+@media(max-width:768px){.channels{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.channels{grid-template-columns:1fr}}
+.channel{background:var(--card);border:1px solid var(--border);border-radius:.75rem;padding:1.75rem;transition:all .25s;display:flex;flex-direction:column}
+.channel:hover{border-color:var(--primary-20);box-shadow:0 8px 20px rgba(0,0,0,.05);transform:translateY(-3px)}
+.channel-icon{width:2.75rem;height:2.75rem;background:var(--primary-10);border-radius:.75rem;display:flex;align-items:center;justify-content:center;margin-bottom:1rem}
+.channel-icon svg{width:1.35rem;height:1.35rem;color:var(--primary)}
+.channel h4{font-size:.95rem;font-weight:700;margin-bottom:.35rem}
+.channel p{font-size:.82rem;color:var(--muted);line-height:1.55}
+
+/* Statement */
+.bst{text-align:center;padding:2rem;max-width:48rem;margin:0 auto}
+.bst-line{width:3rem;height:3px;background:var(--primary);margin:0 auto 1.5rem;border-radius:2px}
+.bst p{font-size:clamp(1.15rem,3vw,1.4rem);font-weight:600;color:var(--fg);line-height:1.5;font-style:italic}
+
+/* DYK */
+.dyk{position:relative;max-width:52rem;margin:0 auto;background:linear-gradient(135deg,hsl(217 95% 26%/.03),hsl(217 95% 26%/.08));border:1px solid var(--primary-20);border-radius:.75rem;padding:2.5rem 2.5rem 2.5rem 5.5rem;overflow:hidden}
+.dyk::before{content:'?';position:absolute;left:-1rem;top:50%;transform:translateY(-50%);font-size:8rem;font-weight:800;color:var(--primary-10);line-height:1;pointer-events:none}
+.dyk-tag{display:inline-flex;align-items:center;gap:.4rem;font-size:.72rem;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.75rem}
+.dyk>p{font-size:1.1rem;color:var(--fg);line-height:1.7}
+.dyk>p strong{color:var(--primary);font-weight:700}
+@media(max-width:768px){.dyk{padding:2rem 1.5rem}.dyk::before{display:none}}
+
+/* Stats */
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem}@media(max-width:768px){.grid-3{grid-template-columns:1fr}}
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:2rem}@media(max-width:768px){.grid-2{grid-template-columns:1fr}}
+.stat-card{background:var(--card);border-radius:.75rem;padding:2rem;border:1px solid var(--border);text-align:center;transition:transform .3s,box-shadow .3s}
+.stat-card:hover{transform:translateY(-5px);box-shadow:0 20px 25px -5px rgba(0,0,0,.1)}
+.stat-val{font-size:2.25rem;font-weight:700;color:var(--primary);margin-bottom:.5rem}.stat-title{font-weight:600;margin-bottom:.5rem;font-size:.95rem}.stat-desc{font-size:.85rem;color:var(--muted)}
+
+/* Cross-sell */
+.bcs{max-width:56rem;margin:0 auto;border:1px solid var(--border);border-radius:.75rem;padding:1.25rem 1.75rem;display:flex;align-items:center;gap:1rem;background:white;transition:all .25s}
+.bcs:hover{border-color:var(--primary-20);box-shadow:0 4px 12px rgba(0,0,0,.04)}
+.bcs-dot{width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0}
+.bcs-text{flex:1;font-size:.88rem;color:var(--muted)}.bcs-text strong{color:var(--fg)}
+.bcs a{color:var(--primary);font-weight:600;font-size:.85rem;white-space:nowrap;flex-shrink:0}
+
+/* Link cards */
+.link-card{display:flex;align-items:center;justify-content:space-between;background:white;border:1px solid var(--border);border-radius:.75rem;padding:1.25rem 1.5rem;transition:all .25s}
+.link-card:hover{border-color:var(--primary);transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.05)}
+.link-card h4{font-size:.95rem;font-weight:600;margin-bottom:.2rem}.link-card p{font-size:.8rem;color:var(--muted)}
+.link-arrow{font-size:1.15rem;color:var(--primary);transition:transform .2s;flex-shrink:0;margin-left:1rem}
+.link-card:hover .link-arrow{transform:translateX(4px)}
+
+/* FAQ */
+.faq-layout{display:grid;grid-template-columns:1fr;gap:3rem;align-items:flex-start}
+@media(min-width:1024px){.faq-layout{grid-template-columns:1fr 1.4fr;gap:4rem}}
+.faq-left{position:sticky;top:5rem}@media(max-width:1023px){.faq-left{position:static}}
+.faq-right{display:flex;flex-direction:column;gap:.75rem}
+.faq-card{background:var(--card);border:1px solid var(--border);border-radius:.75rem;overflow:hidden;transition:border-color .2s}.faq-card.open{border-color:var(--primary-40)}
+.faq-q{width:100%;display:flex;justify-content:space-between;align-items:center;padding:1.25rem 1.5rem;background:0;border:0;font-family:var(--font);font-size:.92rem;font-weight:600;color:var(--fg);cursor:pointer;text-align:left;gap:1rem;line-height:1.4}.faq-q:hover{color:var(--primary)}
+.faq-icon{width:2rem;height:2rem;border-radius:.5rem;background:var(--primary-10);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
+.faq-icon svg{color:var(--primary);transition:transform .2s}
+.faq-card.open .faq-icon{background:var(--primary)}.faq-card.open .faq-icon svg{color:white;transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease}.faq-card.open .faq-a{max-height:400px}
+.faq-a p{padding:0 1.5rem 1.25rem;font-size:.9rem;color:var(--muted);line-height:1.8}
+
+.bcta{background:linear-gradient(135deg,hsl(217,95%,18%),hsl(217,95%,28%));text-align:center;padding:5rem 0}
+.bcta h2{font-size:clamp(1.75rem,4vw,2.25rem);font-weight:700;color:white;margin-bottom:1rem}
+.bcta p{color:hsl(217,20%,75%);font-size:1.05rem;max-width:36rem;margin:0 auto 2rem;line-height:1.7}
+.bcta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+
+.footer{background:var(--gray-50);border-top:1px solid var(--border);padding:2rem 0;text-align:center;font-size:.8rem;color:var(--muted)}
+.anim{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}.anim.v{opacity:1;transform:translateY(0)}
+
+/* Targeting windows */
+.target-section{max-width:56rem;margin:0 auto}
+.target-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:.75rem;margin-bottom:2rem}
+@media(max-width:768px){.target-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:480px){.target-grid{grid-template-columns:repeat(2,1fr)}}
+.target-win{background:var(--card);border:2px solid var(--border);border-radius:.75rem;padding:1.25rem .75rem;text-align:center;transition:all .25s;cursor:default}
+.target-win:hover{border-color:var(--primary);box-shadow:0 8px 20px rgba(3,50,128,.08);transform:translateY(-3px)}
+.target-win-num{font-size:1.75rem;font-weight:900;color:var(--primary);line-height:1}
+.target-win-unit{font-size:.7rem;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:.05em;margin-top:.15rem}
+.target-win-label{font-size:.72rem;color:var(--muted);margin-top:.5rem;line-height:1.4}
+.target-win:last-child{border-color:var(--green)}
+.target-win:last-child .target-win-num{color:var(--green)}
+.target-win:last-child .target-win-unit{color:var(--green)}
+
+.target-methods{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
+@media(max-width:640px){.target-methods{grid-template-columns:1fr}}
+.target-method{background:var(--card);border:1px solid var(--border);border-radius:.75rem;padding:1.75rem;border-left:4px solid var(--primary);transition:all .25s}
+.target-method:hover{box-shadow:0 8px 20px rgba(0,0,0,.05);transform:translateY(-2px);border-left-color:var(--green)}
+.target-method h4{font-size:.95rem;font-weight:700;margin-bottom:.35rem}
+.target-method p{font-size:.82rem;color:var(--muted);line-height:1.6}
+
+</style>
+</head>
+<body>
+
+<nav class="nav"><div class="nav-inner"><div class="nav-logo"><svg width="28" height="28" viewBox="0 0 32 32" fill="none"><path d="M16 2L4 8v16l12 6 12-6V8L16 2z" fill="hsl(217,95%,26%)"/><path d="M16 6l8 4v12l-8 4-8-4V10l8-4z" fill="hsl(217,95%,36%)"/><path d="M16 10v12l-4-2V12l4-2z" fill="white" opacity=".6"/></svg>Dealer Suite<span class="b">360</span></div><div class="nav-links"><a href="/services">Services</a><a href="/products/fi-services">Products</a><a href="/marketplace">Marketplace</a><a href="/technology">Technology</a><a href="/pricing">Pricing</a><a href="/contact" class="btn btn-primary" style="padding:.5rem 1.25rem;font-size:.82rem">Get Started</a></div></div></nav>
+
+<!-- 1. HERO -->
+<section class="phero">
+  <div class="wrap">
+    <div class="phero-grid">
+      <div class="phero-text">
+        <div><a href="/services" style="font-size:.82rem;color:var(--muted)">&larr; All Services</a></div>
+        <div><div class="badge">DS360 Premium Service</div></div>
+        <h1>Marketing Built by People Who<span class="gradient">Actually Know the RV Industry</span></h1>
+        <p class="phero-desc">Most marketing agencies learn your industry on your dime. DS360 Marketing is built by a team with over 20 years of hands-on RV industry experience — they know your buyers, your seasonality, your co-op programs, and what actually drives lot traffic. Full-service digital marketing with ROI tracking built directly into the DS360 platform.</p>
+        <div class="phero-btns"><a href="/contact" class="btn btn-lg btn-primary">Get a Marketing Assessment</a><a href="#channels" class="btn btn-lg btn-outline">View Channels</a></div>
+        <div class="phero-stats">
+          <div class="phero-stat"><div class="phero-stat-val">2-3x</div><div class="phero-stat-label">More Off-Season Leads</div></div>
+          <div class="phero-stat"><div class="phero-stat-val">Click</div><div class="phero-stat-label">to Close Tracking</div></div>
+          <div class="phero-stat"><div class="phero-stat-val">$0</div><div class="phero-stat-label">Wasted on Learning Curves</div></div>
+        </div>
+      </div>
+      <div class="phero-img"><img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=584&h=438&fm=webp&q=75" alt="Marketing analytics" width="584" height="438"/></div>
+    </div>
+  </div>
+</section>
+
+<!-- 2. METRIC BAR -->
+<section class="sec-g" style="padding:2.5rem 0">
+  <div class="wrap"><div class="metric-bar">
+    <div class="metric-item"><div class="metric-num">20+</div><div class="metric-label">Years in RV</div></div>
+    <div class="metric-item"><div class="metric-num">6</div><div class="metric-label">Marketing Channels</div></div>
+    <div class="metric-item"><div class="metric-num">DS360</div><div class="metric-label">ROI Tracking Built In</div></div>
+    <div class="metric-item"><div class="metric-num">Co-op</div><div class="metric-label">Program Compatible</div></div>
+  </div></div>
+</section>
+
+<!-- 3. THE PROBLEM -->
+<section class="sec-w">
+  <div class="wrap">
+    <div class="split anim">
+      <div class="split-text">
+        <div class="badge">The Problem</div>
+        <h2>Generic Agencies Don't Understand Your Business</h2>
+        <p>You hire a marketing agency. They ask you to explain what an RV dealer does. They don't understand seasonality, co-op reimbursement programs, lot events, or why a Class A buyer is a completely different person than a travel trailer buyer. You spend the first six months educating them — and paying for it.</p>
+        <p>DS360 Marketing skips that learning curve entirely. The team has lived in this industry for over two decades. They know which keywords drive lot traffic in April versus October. They know how to structure campaigns that qualify for manufacturer co-op reimbursement. And they know that a Facebook ad showing the wrong floor plan to the wrong audience is a wasted budget.</p>
+      </div>
+      <div class="split-img">
+        <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&auto=format&fit=crop&w=576&h=432&fm=webp&q=75" alt="Marketing strategy" width="576" height="432" loading="lazy"/>
+        <div class="overlay"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. STATEMENT -->
+<section class="sec-g" style="padding:3.5rem 0">
+  <div class="wrap">
+    <div class="bst"><div class="bst-line"></div><p>"The most expensive marketing is the kind where you pay an agency to learn your industry before they can do anything useful."</p></div>
+  </div>
+</section>
+
+<!-- 5. CHANNELS -->
+<section class="sec-w" id="channels">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="badge">Full-Service Channels</div>
+      <h2>Every Channel That Moves Units Off Your Lot</h2>
+      <p>DS360 Marketing covers the full digital landscape — not just one channel. Each campaign is built to work together, and ROI tracking is built into the DS360 platform so you see exactly where your money is going.</p>
+    </div>
+    <div class="channels anim">
+      <div class="channel">
+        <div class="channel-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div>
+        <h4>SEO</h4>
+        <p>Local and national search optimization built for RV dealer queries. "RV dealer near me," model-specific searches, service queries, and seasonal terms. Content strategy that ranks and converts.</p>
+      </div>
+      <div class="channel">
+        <div class="channel-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg></div>
+        <h4>PPC / Paid Search</h4>
+        <p>Google Ads campaigns targeting high-intent buyers. Budget optimization, bid management, negative keyword refinement, and landing page strategy — structured for co-op reimbursement eligibility.</p>
+      </div>
+      <div class="channel">
+        <div class="channel-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <h4>Social Media</h4>
+        <p>Facebook, Instagram, and YouTube campaigns built for the RV buyer journey. Inventory showcases, lifestyle content, event promotion, and retargeting audiences who engaged but didn't convert.</p>
+      </div>
+      <div class="channel">
+        <div class="channel-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></div>
+        <h4>Email Marketing</h4>
+        <p>Segmented campaigns for leads, clients, and service customers. Seasonal promotions, new inventory alerts, service reminders, and F&I product follow-ups — automated sequences that nurture without spamming.</p>
+      </div>
+      <div class="channel">
+        <div class="channel-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></div>
+        <h4>Lead Generation</h4>
+        <p>Multi-channel lead capture funnels. Landing pages, form optimization, lead scoring, and CRM integration. Every lead tracked from first click to lot visit to closed deal inside DS360.</p>
+      </div>
+      <div class="channel">
+        <div class="channel-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M21 12a9 9 0 1 1-6.219-8.56"/><path d="M21 3v5h-5"/></svg></div>
+        <h4>Remarketing</h4>
+        <p>Stay in front of buyers who visited your site, browsed inventory, or started a form but didn't finish. Display, social, and search remarketing that brings them back when they are ready.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. CO-OP PROGRAMS -->
+<section class="sec-g">
+  <div class="wrap">
+    <div class="split split-rev anim">
+      <div class="split-text">
+        <div class="badge">Co-Op Compatible</div>
+        <h2>Campaigns Structured for Manufacturer Co-Op Reimbursement</h2>
+        <p>Most manufacturers offer co-op advertising programs that reimburse dealers for a portion of qualifying marketing spend. But the campaigns have to meet specific guidelines — brand usage, placement rules, reporting requirements — and most agencies don't know these rules exist.</p>
+        <p>DS360 Marketing structures every eligible campaign to meet manufacturer co-op requirements from the start. Your dealership spends the money. The manufacturer reimburses a portion. You get better marketing at a lower net cost.</p>
+        <div class="checks">
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Pre-Structured for Compliance</h3><p>Campaigns built to meet manufacturer co-op guidelines from day one</p></div></div>
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Documentation Handled</h3><p>DS360 provides the reporting and proof of performance manufacturers require</p></div></div>
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Lower Net Cost</h3><p>The manufacturer covers a portion of qualifying spend — your effective cost drops</p></div></div>
+        </div>
+      </div>
+      <div class="split-img">
+        <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?ixlib=rb-4.0.3&auto=format&fit=crop&w=576&h=432&fm=webp&q=75" alt="Co-op marketing" width="576" height="432" loading="lazy"/>
+        <div class="overlay"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7. AUDIENCE TARGETING -->
+<section class="sec-w">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="badge">Precision Targeting</div>
+      <h2>Reach Buyers Who Are Already Shopping — Including at Your Competitors</h2>
+      <p>DS360 Marketing does not spray ads at random audiences. We target people who are actively in the market to buy an RV right now — based on their search behavior, websites they have visited, and how recently they showed intent. Every impression goes to someone who is already looking.</p>
+    </div>
+
+    <div class="target-section anim">
+      <!-- Retargeting windows -->
+      <h3 style="font-size:1rem;font-weight:700;text-align:center;margin-bottom:1.25rem">Retargeting Windows — How Recently They Showed Intent</h3>
+      <div class="target-grid">
+        <div class="target-win">
+          <div class="target-win-num">1</div>
+          <div class="target-win-unit">Day</div>
+          <div class="target-win-label">Searched today — highest intent</div>
+        </div>
+        <div class="target-win">
+          <div class="target-win-num">3</div>
+          <div class="target-win-unit">Days</div>
+          <div class="target-win-label">Active research phase</div>
+        </div>
+        <div class="target-win">
+          <div class="target-win-num">7</div>
+          <div class="target-win-unit">Days</div>
+          <div class="target-win-label">Comparing dealers</div>
+        </div>
+        <div class="target-win">
+          <div class="target-win-num">14</div>
+          <div class="target-win-unit">Days</div>
+          <div class="target-win-label">Narrowing options</div>
+        </div>
+        <div class="target-win">
+          <div class="target-win-num">30</div>
+          <div class="target-win-unit">Days</div>
+          <div class="target-win-label">Re-engage before they go cold</div>
+        </div>
+      </div>
+
+      <!-- Targeting methods -->
+      <h3 style="font-size:1rem;font-weight:700;text-align:center;margin-bottom:1.25rem">How We Find Them</h3>
+      <div class="target-methods">
+        <div class="target-method">
+          <h4>Keyword Intent Targeting</h4>
+          <p>Users who have searched for RV-related keywords — "RV dealers near me," specific makes and models, "fifth wheel vs travel trailer," financing queries, and trade-in searches. If they typed it, we target them.</p>
+        </div>
+        <div class="target-method">
+          <h4>Competitor Website Visitors</h4>
+          <p>Users who have visited a local competitor's website or inventory pages within your market area. They were shopping elsewhere — now your dealership appears in their feed, their search results, and their display ads.</p>
+        </div>
+        <div class="target-method">
+          <h4>In-Market Audience Segments</h4>
+          <p>Google and Meta classify users as "in-market for RVs" based on browsing behavior, search patterns, and content consumption. DS360 Marketing layers these segments with geographic targeting around your dealership.</p>
+        </div>
+        <div class="target-method">
+          <h4>Lookalike Audiences</h4>
+          <p>We build audiences that match the profile of your best existing clients — demographics, interests, online behavior, income indicators. These are people who look like your buyers but have not found you yet.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DYK — COMPETITOR TARGETING -->
+<section class="sec-g">
+  <div class="wrap">
+    <div class="dyk anim">
+      <div class="dyk-tag">Did You Know?</div>
+      <p>When a buyer visits your competitor's website to browse inventory, <strong>DS360 Marketing can place your dealership's ads in front of that same buyer within 24 hours</strong> — on social media, Google Display, and search results. They shopped at your competitor. They see your ad. They visit your lot. Every conversion tracked inside your DS360 dashboard.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 8. ROI TRACKING -->
+<section class="sec-g">
+  <div class="wrap">
+    <div class="split anim">
+      <div class="split-text">
+        <div class="badge">Built Into DS360</div>
+        <h2>ROI Tracking That Closes the Loop</h2>
+        <p>Most marketing agencies send you a report showing clicks and impressions. DS360 Marketing tracks the full journey — from ad click to lot visit to closed deal — because the marketing data lives inside the same platform where your leads, inventory, and sales data already exist.</p>
+        <div class="checks">
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Click to Close Tracking</h3><p>See which campaigns, channels, and keywords actually produced closed deals — not just clicks</p></div></div>
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Cost Per Acquisition</h3><p>Know exactly what it costs to acquire each client — by channel, by campaign, by month</p></div></div>
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Live in Your Portal</h3><p>Marketing performance is visible in the same DS360 dealer portal you already use every day</p></div></div>
+        </div>
+      </div>
+      <div class="split-img">
+        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=576&h=432&fm=webp&q=75" alt="ROI tracking dashboard" width="576" height="432" loading="lazy"/>
+        <div class="overlay"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 9. STATS -->
+<section class="sec-w">
+  <div class="wrap">
+    <div class="grid-3 anim">
+      <div class="stat-card"><div class="stat-val">20+</div><div class="stat-title">Years RV Experience</div><p class="stat-desc">Not learning your industry on your budget — already know it inside and out</p></div>
+      <div class="stat-card"><div class="stat-val">6</div><div class="stat-title">Integrated Channels</div><p class="stat-desc">SEO, PPC, social, email, lead gen, remarketing — working together, not in silos</p></div>
+      <div class="stat-card"><div class="stat-val">100%</div><div class="stat-title">Closed-Loop Tracking</div><p class="stat-desc">From ad click to closed deal — every dollar tracked inside DS360</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 10. MARKETPLACE CROSS-SELL -->
+<section class="sec-g" style="padding:2.5rem 0">
+  <div class="wrap"><div class="bcs"><div class="bcs-dot"></div><div class="bcs-text"><strong>Dealer Exchange &amp; Live Auctions</strong> — marketing drives buyers to your inventory. The DS360 Marketplace gives you additional channels to move units.</div><a href="/marketplace">Explore Marketplace &rarr;</a></div></div>
+</section>
+
+<!-- 11. CONNECTED SERVICES -->
+<section class="sec-g">
+  <div class="wrap">
+    <div class="sec-head"><h2>Connected Services</h2><p>Marketing Services is a premium add-on to your DS360 plan. These platform features amplify your marketing investment.</p></div>
+    <div class="grid-2 anim">
+      <a href="/marketplace/dealer-exchange" class="link-card"><div><h4>Dealer Exchange</h4><p>Marketing brings buyers — Marketplace gives you additional channels to move inventory</p></div><span class="link-arrow">&rarr;</span></a>
+      <a href="/services/ai-fi-presenter" class="link-card"><div><h4>AI F&I Presenter</h4><p>Marketing acquires the client — the AI Presenter converts them on F&I products</p></div><span class="link-arrow">&rarr;</span></a>
+      <a href="/revenue/optimization" class="link-card"><div><h4>Revenue Optimization</h4><p>Marketing drives the top of funnel — Revenue Optimization ensures nothing leaks at the bottom</p></div><span class="link-arrow">&rarr;</span></a>
+      <a href="/services" class="link-card"><div><h4>All Services</h4><p>View the full DS360 service suite</p></div><span class="link-arrow">&rarr;</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- 12. FAQ -->
+<section class="sec-w">
+  <div class="wrap">
+    <div class="faq-layout anim">
+      <div class="faq-left">
+        <div class="badge">FAQ</div>
+        <h2 style="font-size:clamp(1.5rem,3.5vw,2rem);font-weight:700;margin-top:.75rem;line-height:1.2">Marketing Services<br/>Questions</h2>
+        <p style="font-size:1rem;color:var(--muted);line-height:1.7;margin-top:1rem">What you need to know about adding DS360 Marketing to your plan.</p>
+        <a href="/contact" class="btn btn-primary" style="width:fit-content;margin-top:1.5rem">Get an Assessment &rarr;</a>
+      </div>
+      <div class="faq-right">
+        <div class="faq-card"><button class="faq-q"><span>Is Marketing included in my DS360 plan?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faq-a"><p>Marketing Services is a premium add-on — it is not included in the base DS360 dealer subscription. It is a full-service engagement with dedicated strategy, execution, and reporting.</p></div></div>
+        <div class="faq-card"><button class="faq-q"><span>How does pricing work?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faq-a"><p>Pricing is based on the scope of services, number of channels, and your monthly ad spend budget. We start with a marketing assessment to understand your goals, then build a custom plan with transparent pricing. No hidden fees.</p></div></div>
+        <div class="faq-card"><button class="faq-q"><span>Do you handle manufacturer co-op submissions?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faq-a"><p>Yes. DS360 structures qualifying campaigns to meet manufacturer co-op guidelines and provides the documentation and proof of performance required for reimbursement. We handle the paperwork so you collect the credit.</p></div></div>
+        <div class="faq-card"><button class="faq-q"><span>Can I start with just one channel?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faq-a"><p>Yes. You can start with a single channel — SEO only, PPC only, social only — and add channels as you see results. Most dealers who start with one channel expand within 90 days once they see the ROI tracking data inside the platform.</p></div></div>
+        <div class="faq-card"><button class="faq-q"><span>How is DS360 Marketing different from a regular agency?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faq-a"><p>Three things: industry knowledge (20+ years in RV, not learning on your dime), platform integration (ROI tracking lives inside DS360 where your sales data already exists), and co-op expertise (campaigns structured for manufacturer reimbursement from day one). A generic agency gives you none of these.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 13. BOTTOM CTA -->
+<section class="bcta">
+  <div class="wrap">
+    <h2>Stop Paying Agencies to Learn Your Industry.</h2>
+    <p>DS360 Marketing already knows it. Get a free marketing assessment and see where your dealership is leaving leads on the table.</p>
+    <div class="bcta-btns"><a href="/contact" class="btn btn-lg btn-green">Get a Free Assessment &rarr;</a><a href="/services" class="btn btn-lg btn-white">View All Services</a></div>
+  </div>
+</section>
+
+<footer class="footer"><div class="wrap">&copy; 2026 Dealer Suite 360. All rights reserved. Patent Pending Technology.</div></footer>
+
+<script>
+document.querySelectorAll('.faq-q').forEach(b=>{b.addEventListener('click',()=>{const i=b.closest('.faq-card');const o=i.classList.contains('open');document.querySelectorAll('.faq-card').forEach(x=>x.classList.remove('open'));if(!o)i.classList.add('open')})});
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('v');obs.unobserve(x.target)}})},{threshold:.08});
+document.querySelectorAll('.anim').forEach(e=>obs.observe(e));
+</script>
+</body>
+</html>

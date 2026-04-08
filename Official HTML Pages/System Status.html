@@ -1,0 +1,291 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>System Status — Platform Uptime & Incidents | DealerSuite360</title>
+<meta name="description" content="DS360 real-time system status. Check platform uptime, module availability, incident history, and subscribe to status notifications."/>
+<meta name="keywords" content="DS360 status, platform uptime, system status, dealer software status, incident reports"/>
+<meta property="og:title" content="System Status — Platform Uptime & Incidents | DealerSuite360"/>
+<meta property="og:description" content="DS360 real-time system status. Check platform uptime, module availability, incident history, and subscribe to status notifications."/>
+<meta property="og:type" content="website"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="System Status — Platform Uptime & Incidents | DealerSuite360"/>
+<meta name="twitter:description" content="DS360 real-time system status. Check platform uptime, module availability, incident history, and subscribe to status notifications."/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"System Status — Platform Uptime & Incidents","description":"DS360 real-time system status. Check platform uptime, module availability, incident history, and subscribe to status notifications.","provider":{"@type":"Organization","name":"DealerSuite360","url":"https://dealersuite360.com"}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/><style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--primary:hsl(217,95%,26%);--primary-light:hsl(217,95%,36%);--primary-5:hsl(217,95%,26%/0.05);--primary-10:hsl(217,95%,26%/0.10);--primary-20:hsl(217,95%,26%/0.20);--fg:hsl(240,10%,3.9%);--muted:hsl(215.4,16.3%,46.9%);--bg:white;--border:hsl(214.3,31.8%,91.4%);--gray-50:hsl(210,40%,97.5%);--green:#0cb22c;--font:'Inter',-apple-system,BlinkMacSystemFont,sans-serif}
+body{font-family:var(--font);color:var(--fg);background:var(--bg);-webkit-font-smoothing:antialiased;line-height:1.6;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+
+/* ═══ NAV ═══ */
+.nav{position:sticky;top:0;z-index:100;background:white;border-bottom:1px solid var(--border);height:64px;display:flex;align-items:center;padding:0 1rem}
+.nav-inner{max-width:1280px;margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between;padding:0 1rem}
+.nav-logo{font-weight:700;font-size:1.1rem;color:var(--primary);display:flex;align-items:center;gap:.5rem}
+.nav-logo svg{flex-shrink:0}
+.nav-logo .b{font-weight:600;font-size:.55rem;background:var(--primary);color:white;padding:2px 5px;border-radius:3px;text-transform:uppercase;letter-spacing:.5px}
+.nav-links{display:flex;gap:2rem;font-size:.88rem;font-weight:500;color:var(--muted);align-items:center}
+.nav-links a:hover{color:var(--primary)}
+@media(max-width:768px){.nav-links{display:none}}
+
+/* ═══ BUTTONS ═══ */
+.btn{display:inline-flex;align-items:center;gap:.5rem;padding:.75rem 1.5rem;border-radius:.5rem;font-weight:600;font-size:.88rem;transition:all .2s;cursor:pointer;border:none;font-family:var(--font)}
+.btn-primary{background:var(--primary);color:white}.btn-primary:hover{background:var(--primary-light)}
+.btn-green{background:var(--green);color:white}.btn-green:hover{opacity:.9}
+.btn-white{background:white;color:var(--primary);border:1px solid var(--border)}.btn-white:hover{border-color:var(--primary)}
+.btn-outline{background:transparent;color:var(--primary);border:1.5px solid var(--primary)}.btn-outline:hover{background:var(--primary-5)}
+.btn-lg{padding:1rem 2rem;font-size:.95rem}
+
+/* ═══ LAYOUT ═══ */
+.wrap{max-width:1280px;margin:0 auto;padding:0 2rem}
+@media(max-width:640px){.wrap{padding:0 1rem}}
+
+/* ═══ HERO (page-level, centered) ═══ */
+.phero{background:linear-gradient(to bottom right,var(--primary-5),white,var(--primary-5));padding:5rem 0 4rem;text-align:center}
+@media(min-width:1024px){.phero{padding:7rem 0 5rem}}
+.phero-center{max-width:48rem;margin:0 auto}
+.phero h1{font-size:clamp(2rem,5vw,3.25rem);font-weight:800;color:var(--fg);line-height:1.12;margin-bottom:1.25rem}
+.phero p{font-size:1.1rem;color:var(--muted);line-height:1.75;max-width:36rem;margin:0 auto}
+.badge{display:inline-block;font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:var(--primary);background:var(--primary-10);padding:.375rem 1rem;border-radius:9999px;margin-bottom:1.25rem}
+.gradient{background:linear-gradient(135deg,var(--primary),var(--primary-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+/* ═══ STATS BAR ═══ */
+.stats-bar{background:var(--primary);padding:2rem 0}
+.stats-bar-inner{display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;text-align:center;color:white}
+@media(max-width:768px){.stats-bar-inner{grid-template-columns:repeat(2,1fr)}}
+.stat-num{font-size:1.75rem;font-weight:800;margin-bottom:.25rem}
+.stat-label{font-size:.78rem;opacity:.8;text-transform:uppercase;letter-spacing:.5px}
+
+/* ═══ SECTIONS ═══ */
+.sec-w{padding:5rem 0}.sec-g{padding:5rem 0;background:var(--gray-50)}
+.sec-head{text-align:center;margin-bottom:3rem}
+.sec-head h2{font-size:clamp(1.5rem,3.5vw,2.25rem);font-weight:700;margin-bottom:.75rem}
+.sec-head p{font-size:1rem;color:var(--muted);max-width:36rem;margin:0 auto;line-height:1.7}
+
+/* ═══ GRID ═══ */
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:2rem}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem}
+@media(max-width:768px){.grid-2,.grid-3{grid-template-columns:1fr}}
+
+/* ═══ SPLIT LAYOUT ═══ */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+@media(max-width:768px){.split{grid-template-columns:1fr;gap:2rem}}
+.split-text h2{font-size:1.75rem;font-weight:700;margin-bottom:1rem;line-height:1.2}
+.split-text p{font-size:.95rem;color:var(--muted);line-height:1.7;margin-bottom:1.5rem}
+.split-visual{background:var(--primary-5);border:1px solid var(--border);border-radius:1rem;padding:2.5rem;min-height:300px;display:flex;flex-direction:column;justify-content:center}
+
+/* ═══ CARDS ═══ */
+.card{background:white;border:1px solid var(--border);border-radius:.75rem;padding:2rem;transition:all .25s}
+.card:hover{border-color:var(--primary-20);box-shadow:0 4px 24px hsl(217 95% 26%/.06)}
+.card h3{font-size:1.1rem;font-weight:700;margin-bottom:.5rem}
+.card p{font-size:.88rem;color:var(--muted);line-height:1.65}
+.card-icon{width:2.5rem;height:2.5rem;border-radius:.625rem;background:var(--primary-10);display:flex;align-items:center;justify-content:center;margin-bottom:1rem}
+.card-icon svg{width:1.25rem;height:1.25rem;color:var(--primary)}
+
+/* ═══ LINK CARDS ═══ */
+.link-card{display:flex;align-items:center;justify-content:space-between;padding:1.5rem 2rem;background:white;border:1px solid var(--border);border-radius:.75rem;transition:all .25s;cursor:pointer}
+.link-card:hover{border-color:var(--primary);background:var(--primary-5)}
+.link-card h4{font-size:1rem;font-weight:600;margin-bottom:.25rem}
+.link-card p{font-size:.82rem;color:var(--muted)}
+.link-arrow{font-size:1.25rem;color:var(--primary);font-weight:700;transition:transform .2s}
+.link-card:hover .link-arrow{transform:translateX(4px)}
+
+/* ═══ DYK BOX ═══ */
+.dyk{background:linear-gradient(135deg,hsl(217,95%,26%/.03),hsl(140,60%,40%/.03));border:1px solid var(--border);border-radius:.75rem;padding:2rem 2.5rem;margin-top:3rem}
+.dyk-label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--green);margin-bottom:.5rem}
+.dyk h3{font-size:1.1rem;font-weight:700;margin-bottom:.5rem}
+.dyk p{font-size:.88rem;color:var(--muted);line-height:1.7}
+
+/* ═══ FAQ ═══ */
+.faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;max-width:64rem;margin:0 auto}
+@media(max-width:768px){.faq-grid{grid-template-columns:1fr}}
+.faq-card{background:white;border:1px solid var(--border);border-radius:.75rem;overflow:hidden;cursor:pointer;transition:all .25s}
+.faq-card:hover{border-color:var(--primary-20)}
+.faq-q{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;font-size:.92rem;font-weight:600;line-height:1.4;gap:1rem}
+.faq-icon{width:1.75rem;height:1.75rem;border-radius:.5rem;background:var(--primary-10);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .3s;font-size:.88rem;color:var(--primary);font-weight:700}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.faq-a-inner{padding:0 1.5rem 1.25rem;font-size:.85rem;color:var(--muted);line-height:1.7}
+.faq-card.open{border-color:var(--primary)}
+.faq-card.open .faq-icon{background:var(--primary);color:white;transform:rotate(45deg)}
+.faq-card.open .faq-a{max-height:300px}
+
+/* ═══ CONNECTED PAGES ═══ */
+.connected{padding:4rem 0}
+.connected h2{text-align:center;font-size:1.5rem;font-weight:700;margin-bottom:2rem}
+.connected-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+@media(max-width:768px){.connected-grid{grid-template-columns:1fr}}
+
+/* ═══ BOTTOM CTA ═══ */
+.bcta{background:linear-gradient(135deg,var(--primary),hsl(217,95%,28%));text-align:center;padding:5rem 0}
+.bcta h2{font-size:1.875rem;font-weight:700;color:white;margin-bottom:1rem}
+@media(min-width:1024px){.bcta h2{font-size:2.25rem}}
+.bcta p{color:hsl(217 20% 75%);font-size:1.05rem;max-width:36rem;margin:0 auto 2rem;line-height:1.7}
+.bcta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+
+/* ═══ NAVY CARD ═══ */
+.navy-card{background:linear-gradient(135deg,var(--primary),hsl(217,95%,20%));border-radius:1rem;padding:3rem;color:white}
+.navy-card h3{font-size:1.25rem;font-weight:700;margin-bottom:1rem}
+.navy-card p{font-size:.88rem;line-height:1.7;opacity:.85;margin-bottom:.5rem}
+.navy-card ul{list-style:none;display:flex;flex-direction:column;gap:.5rem}
+.navy-card li{font-size:.85rem;padding-left:1.25rem;position:relative;opacity:.85}
+.navy-card li::before{content:"→";position:absolute;left:0;color:hsl(140,60%,55%)}
+
+/* ═══ STATEMENT ═══ */
+.statement{padding:4rem 0;text-align:center;max-width:48rem;margin:0 auto}
+.statement blockquote{font-size:1.35rem;font-weight:600;line-height:1.5;color:var(--fg);font-style:italic;position:relative;padding:0 2rem}
+.statement blockquote::before{content:"\201C";font-size:4rem;color:var(--primary-20);position:absolute;left:-.5rem;top:-.75rem;font-family:Georgia,serif}
+
+/* ═══ CHECKLIST ═══ */
+.checklist{display:flex;flex-direction:column;gap:1rem;max-width:48rem;margin:0 auto}
+.check{display:flex;align-items:flex-start;gap:.75rem}
+.check-dot{width:1.5rem;height:1.5rem;border-radius:50%;background:var(--primary-10);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.125rem}
+.check-dot svg{width:.75rem;height:.75rem}
+.check-info h3{font-weight:600;font-size:.95rem}.check-info p{font-size:.85rem;color:var(--muted)}
+
+/* ═══ STATUS TABLE ═══ */
+.status-grid{max-width:48rem;margin:0 auto;border:1px solid var(--border);border-radius:.75rem;overflow:hidden}
+.status-row{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;border-bottom:1px solid var(--border)}
+.status-row:last-child{border-bottom:none}.status-row:nth-child(even){background:var(--gray-50)}
+.status-name{font-size:.92rem;font-weight:600}
+.status-badge{font-size:.75rem;font-weight:600;padding:.25rem .75rem;border-radius:9999px}
+.status-up{background:hsl(140,60%,92%);color:hsl(140,60%,28%)}
+
+/* ═══ TOC SIDEBAR ═══ */
+.toc-layout{display:grid;grid-template-columns:240px 1fr;gap:3rem;align-items:flex-start}
+@media(max-width:768px){.toc-layout{grid-template-columns:1fr}.toc-sidebar{display:none}}
+.toc-sidebar{position:sticky;top:80px}
+.toc-sidebar a{display:block;font-size:.82rem;padding:.5rem 0;color:var(--muted);border-left:2px solid transparent;padding-left:1rem;transition:all .2s}
+.toc-sidebar a:hover{color:var(--primary);border-left-color:var(--primary)}
+
+/* ═══ CONTENT SECTIONS ═══ */
+.content-section{margin-bottom:3rem}
+.content-section h2{font-size:1.5rem;font-weight:700;margin-bottom:1rem;padding-bottom:.75rem;border-bottom:1px solid var(--border)}
+.content-section h3{font-size:1.1rem;font-weight:600;margin:1.5rem 0 .75rem}
+.content-section p{font-size:.92rem;color:var(--muted);line-height:1.75;margin-bottom:1rem}
+.content-section ul{list-style:none;display:flex;flex-direction:column;gap:.5rem;margin-bottom:1.5rem}
+.content-section li{font-size:.88rem;color:var(--muted);padding-left:1.25rem;position:relative;line-height:1.6}
+.content-section li::before{content:"→";position:absolute;left:0;color:var(--primary)}
+
+/* ═══ SEARCH BAR ═══ */
+.search-bar{max-width:36rem;margin:2rem auto 0;position:relative}
+.search-bar input{width:100%;padding:1rem 1.5rem 1rem 3rem;border:1.5px solid var(--border);border-radius:.75rem;font-size:.95rem;font-family:var(--font);outline:none;transition:border-color .2s}
+.search-bar input:focus{border-color:var(--primary)}
+.search-bar svg{position:absolute;left:1rem;top:50%;transform:translateY(-50%);width:1.25rem;height:1.25rem;color:var(--muted)}
+
+/* ═══ TIMELINE ═══ */
+.timeline{display:flex;flex-direction:column;gap:0;max-width:48rem;margin:0 auto;position:relative}
+.timeline::before{content:"";position:absolute;left:1.1rem;top:1.5rem;bottom:1.5rem;width:2px;background:var(--border)}
+.tl-item{display:flex;gap:1.5rem;padding:1.5rem 0;position:relative}
+.tl-dot{width:2.25rem;height:2.25rem;border-radius:50%;background:var(--primary-10);border:2px solid var(--primary);display:flex;align-items:center;justify-content:center;flex-shrink:0;z-index:1;font-size:.75rem;font-weight:700;color:var(--primary)}
+.tl-content h3{font-size:1rem;font-weight:600;margin-bottom:.25rem}
+.tl-content p{font-size:.85rem;color:var(--muted);line-height:1.6}
+
+/* ═══ PROCESS STEPS ═══ */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;counter-reset:step}
+@media(max-width:768px){.steps{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.steps{grid-template-columns:1fr}}
+.step{text-align:center;padding:2rem 1.5rem;background:white;border:1px solid var(--border);border-radius:.75rem;position:relative;counter-increment:step}
+.step::before{content:counter(step);display:flex;align-items:center;justify-content:center;width:2.5rem;height:2.5rem;border-radius:50%;background:var(--primary);color:white;font-weight:700;font-size:1rem;margin:0 auto 1rem}
+.step h3{font-size:.95rem;font-weight:600;margin-bottom:.5rem}
+.step p{font-size:.82rem;color:var(--muted);line-height:1.6}
+
+/* ═══ FOOTER ═══ */
+.footer{background:var(--gray-50);border-top:1px solid var(--border);padding:2rem 0;text-align:center;font-size:.8rem;color:var(--muted)}
+.footer a{color:var(--primary)}
+
+/* ═══ ANIMATIONS ═══ */
+.anim{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}.anim.v{opacity:1;transform:translateY(0)}
+</style></head><body><nav class="nav"><div class="nav-inner"><div class="nav-logo"><svg width="28" height="28" viewBox="0 0 32 32" fill="none"><path d="M16 2L4 8v16l12 6 12-6V8L16 2z" fill="hsl(217,95%,26%)"/><path d="M16 6l8 4v12l-8 4-8-4V10l8-4z" fill="hsl(217,95%,36%)"/><path d="M16 10v12l-4-2V12l4-2z" fill="white" opacity=".6"/></svg>Dealer Suite<span class="b">360</span></div><div class="nav-links"><a href="/services">Services</a><a href="/products/fi-services">Products</a><a href="/marketplace">Marketplace</a><a href="/technology">Technology</a><a href="/pricing">Pricing</a><a href="/contact" class="btn btn-primary" style="padding:.5rem 1.25rem;font-size:.82rem">Get Started</a></div></div></nav>
+<section class="phero"><div class="wrap"><div class="phero-center">
+  <div class="badge" style="background:hsl(140,60%,92%);color:hsl(140,60%,28%)">All Systems Operational</div>
+  <h1>System <span class="gradient">Status</span></h1>
+  <p>Real-time platform availability, performance metrics, and incident history. If something isn't working right, check here first.</p>
+</div></div></section>
+
+<section class="sec-w"><div class="wrap">
+  <div class="sec-head"><h2>Current Status</h2><p>All modules are monitored 24/7 with automatic alerts and escalation.</p></div>
+  <div class="status-grid anim">
+    <div class="status-row"><span class="status-name">Dealer Dashboard</span><span class="status-badge status-up">Operational</span></div>
+    <div class="status-row"><span class="status-name">Claims Processing</span><span class="status-badge status-up">Operational</span></div>
+    <div class="status-row"><span class="status-name">Customer Portal</span><span class="status-badge status-up">Operational</span></div>
+    <div class="status-row"><span class="status-name">Operator Portal</span><span class="status-badge status-up">Operational</span></div>
+    <div class="status-row"><span class="status-name">Dealer Marketplace</span><span class="status-badge status-up">Operational</span></div>
+    <div class="status-row"><span class="status-name">TechFlow</span><span class="status-badge status-up">Operational</span></div>
+    <div class="status-row"><span class="status-name">AI Document Scanner</span><span class="status-badge status-up">Operational</span></div>
+    <div class="status-row"><span class="status-name">API</span><span class="status-badge status-up">Operational</span></div>
+    <div class="status-row"><span class="status-name">Authentication</span><span class="status-badge status-up">Operational</span></div>
+    <div class="status-row"><span class="status-name">Email Notifications</span><span class="status-badge status-up">Operational</span></div>
+  </div>
+</div></section>
+
+<section class="sec-g"><div class="wrap">
+  <div class="split anim">
+    <div class="split-text">
+      <h2>Uptime Metrics</h2>
+      <p>DS360 is hosted on Railway with Neon PostgreSQL, providing enterprise-grade infrastructure with automatic scaling and redundancy.</p>
+      <div style="display:flex;flex-direction:column;gap:.75rem;margin-top:1.5rem">
+        <div style="display:flex;justify-content:space-between;padding:.75rem 1rem;background:white;border:1px solid var(--border);border-radius:.5rem"><span style="font-size:.88rem;font-weight:600">Last 30 Days</span><span style="font-size:.88rem;font-weight:700;color:var(--green)">99.98%</span></div>
+        <div style="display:flex;justify-content:space-between;padding:.75rem 1rem;background:white;border:1px solid var(--border);border-radius:.5rem"><span style="font-size:.88rem;font-weight:600">Last 90 Days</span><span style="font-size:.88rem;font-weight:700;color:var(--green)">99.95%</span></div>
+        <div style="display:flex;justify-content:space-between;padding:.75rem 1rem;background:white;border:1px solid var(--border);border-radius:.5rem"><span style="font-size:.88rem;font-weight:600">Last 12 Months</span><span style="font-size:.88rem;font-weight:700;color:var(--green)">99.93%</span></div>
+      </div>
+    </div>
+    <div class="split-visual" style="text-align:center">
+      <div style="font-size:4rem;margin-bottom:1rem">🟢</div>
+      <h3 style="font-size:2rem;font-weight:800;color:var(--green);margin-bottom:.5rem">99.98%</h3>
+      <p style="font-size:.92rem;color:var(--muted)">Current 30-day uptime</p>
+      <p style="font-size:.82rem;color:var(--muted);margin-top:.5rem">Last incident: None in current period</p>
+    </div>
+  </div>
+</div></section>
+
+<section class="sec-w"><div class="wrap">
+  <div class="sec-head"><h2>Recent Incidents</h2><p>A log of any service disruptions, maintenance windows, and their resolutions.</p></div>
+  <div class="timeline anim">
+    <div class="tl-item">
+      <div class="tl-dot" style="background:hsl(140,60%,92%);border-color:var(--green);color:var(--green)">&#10003;</div>
+      <div class="tl-content"><h3>Scheduled Maintenance — v2.0.0 Deployment</h3><p><strong>March 17, 2026 &middot; 2:00 AM - 3:15 AM ET</strong> — Planned maintenance window for v2.0.0 release. All services were briefly unavailable during database migration. No data loss. All systems restored ahead of schedule.</p></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot" style="background:hsl(140,60%,92%);border-color:var(--green);color:var(--green)">&#10003;</div>
+      <div class="tl-content"><h3>Email Notification Delay</h3><p><strong>February 28, 2026 &middot; 10:30 AM - 11:15 AM ET</strong> — Email notifications experienced a 45-minute delay due to a third-party SMTP provider issue. No emails were lost — all queued messages were delivered once service was restored.</p></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot" style="background:hsl(140,60%,92%);border-color:var(--green);color:var(--green)">&#10003;</div>
+      <div class="tl-content"><h3>Marketplace Performance Optimization</h3><p><strong>February 15, 2026 &middot; 4:00 AM - 4:30 AM ET</strong> — Brief marketplace module restart during performance optimization. No active auctions were affected. Search and listing performance improved by 40% after optimization.</p></div>
+    </div>
+  </div>
+</div></section>
+
+<section class="sec-g"><div class="wrap">
+  <div class="split anim">
+    <div class="split-text">
+      <h2>Subscribe to Status Updates</h2>
+      <p>Get notified immediately when there's a service disruption, scheduled maintenance, or incident resolution. Choose your preferred notification method.</p>
+      <div style="display:flex;gap:.75rem;max-width:28rem;margin-top:1.5rem"><input type="email" placeholder="dealer@example.com" style="flex:1;padding:.75rem 1rem;border:1.5px solid var(--border);border-radius:.5rem;font-family:var(--font);font-size:.88rem;outline:none"/><button class="btn btn-primary">Subscribe</button></div>
+      <p style="font-size:.78rem;color:var(--muted);margin-top:.75rem">We only send notifications for actual incidents and scheduled maintenance. No marketing emails.</p>
+    </div>
+    <div class="navy-card">
+      <h3>Monitoring Coverage</h3>
+      <ul>
+        <li>24/7 automated health checks every 30 seconds</li>
+        <li>Response time monitoring across all modules</li>
+        <li>Database performance and connection pool tracking</li>
+        <li>API endpoint availability and latency</li>
+        <li>Third-party service dependency monitoring</li>
+        <li>Automatic incident escalation and alerting</li>
+      </ul>
+    </div>
+  </div>
+</div></section>
+
+<section class="connected"><div class="wrap">
+  <h2>Related Resources</h2>
+  <div class="connected-grid">
+    <a href="/help-center" class="link-card"><div><h4>Help Center</h4><p>Contact support if you're experiencing issues</p></div><span class="link-arrow">&rarr;</span></a>
+    <a href="/documentation" class="link-card"><div><h4>Documentation</h4><p>Technical platform reference and guides</p></div><span class="link-arrow">&rarr;</span></a>
+    <a href="/technology" class="link-card"><div><h4>Technology</h4><p>Learn about the DS360 tech stack</p></div><span class="link-arrow">&rarr;</span></a>
+  </div>
+</div></section>
+
+<section class="bcta"><div class="wrap">
+  <h2>Experiencing an Issue?</h2>
+  <p>If something isn't working and it's not listed above, contact our support team. We respond within 1 hour for critical issues.</p>
+  <div class="bcta-btns"><a href="/contact" class="btn btn-lg btn-green">Contact Support &rarr;</a><a href="/help-center" class="btn btn-lg btn-white">Help Center</a></div>
+</div></section>
+<footer class="footer"><div class="wrap">&copy; 2026 DealerSuite360. All rights reserved. Patent Pending Technology. <a href="/privacy">Privacy Policy</a> &middot; <a href="/terms-of-service">Terms of Service</a> &middot; <a href="/cookie-policy">Cookie Policy</a></div></footer><script>document.querySelectorAll('.faq-card').forEach(c=>{c.querySelector('.faq-q').addEventListener('click',()=>{c.classList.toggle('open')})})</script><script>const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('v');obs.unobserve(e.target)}})},{threshold:.1});document.querySelectorAll('.anim').forEach(el=>obs.observe(el))</script></body></html>

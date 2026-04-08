@@ -52,23 +52,13 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/financing"
-                  className="hover:text-primary transition-colors inline-flex items-center gap-1 flex-wrap"
-                  data-testid="link-footer-financing"
-                >
-                  {t('mainServices.financing.title')}
-                  <ServiceBadge quarter="Q2" />
+                <Link href="/financing" className="hover:text-primary transition-colors inline-flex items-center gap-1 flex-wrap" data-testid="link-footer-financing">
+                  {t('mainServices.financing.title')} <ServiceBadge quarter="Q2" />
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/fi-services"
-                  className="hover:text-primary transition-colors inline-flex items-center gap-1 flex-wrap"
-                  data-testid="link-footer-fi-services"
-                >
-                  {t('mainServices.fiServices.title')}
-                  <ServiceBadge quarter="Q2" />
+                <Link href="/fi-services" className="hover:text-primary transition-colors inline-flex items-center gap-1 flex-wrap" data-testid="link-footer-fi-services">
+                  {t('mainServices.fiServices.title')} <ServiceBadge quarter="Q2" />
                 </Link>
               </li>
               <li>
@@ -82,13 +72,18 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/live-auctions"
-                  className="text-primary font-semibold inline-flex items-center gap-1 flex-wrap hover:text-primary/80 transition-colors"
-                  data-testid="link-footer-live-auctions"
-                >
-                  {t('navigation.liveAuctions')}
-                  <ServiceBadge quarter="Q3" />
+                <Link href="/services/techflow" className="hover:text-primary transition-colors inline-flex items-center gap-1 flex-wrap" data-testid="link-footer-techflow">
+                  TechFlow <ServiceBadge quarter="Q3" />
+                </Link>
+              </li>
+              <li>
+                <Link href="/ai-fi-presenter" className="hover:text-primary transition-colors inline-flex items-center gap-1 flex-wrap" data-testid="link-footer-ai-fi">
+                  AI F&amp;I Presenter <ServiceBadge quarter="Q4" />
+                </Link>
+              </li>
+              <li>
+                <Link href="/live-auctions" className="text-primary font-semibold inline-flex items-center gap-1 flex-wrap hover:text-primary/80 transition-colors" data-testid="link-footer-live-auctions">
+                  {t('navigation.liveAuctions')} <ServiceBadge quarter="Q3" />
                 </Link>
               </li>
             </ul>
@@ -218,7 +213,7 @@ export function Footer() {
               {t('footer.copyright')}
             </p>
             <div className="flex flex-wrap justify-center lg:justify-end gap-6 text-sm text-gray-600">
-              <Link href="/privacy-policy" className="hover:text-primary transition-colors" data-testid="link-footer-privacy">
+              <Link href="/privacy" className="hover:text-primary transition-colors" data-testid="link-footer-privacy">
                 {t('footer.privacyPolicy')}
               </Link>
               <Link href="/terms-of-service" className="hover:text-primary transition-colors" data-testid="link-footer-terms">
