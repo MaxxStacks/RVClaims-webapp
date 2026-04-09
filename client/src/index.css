@@ -234,37 +234,3 @@ html, body {
   will-change: transform;
 }
 
-/* =============================================
-   CTA HYBRID 1 — Split Layout on Gray
-   ============================================= */
-.cta-h1{background:var(--gray-50,#f9fafb);padding:5rem 0;position:relative;overflow:hidden}
-.cta-h1::before{content:"";position:absolute;right:-5rem;top:-5rem;width:20rem;height:20rem;border-radius:50%;background:rgba(3,50,128,0.10);pointer-events:none}
-.cta-h1::after{content:"";position:absolute;left:-3rem;bottom:-3rem;width:12rem;height:12rem;border-radius:50%;background:rgba(3,50,128,0.05);pointer-events:none}
-.cta-h1-inner{max-width:52rem;margin:0 auto;padding:0 1.5rem;display:grid;grid-template-columns:1fr auto;gap:4rem;align-items:center;position:relative;z-index:1}
-@media(max-width:768px){.cta-h1-inner{grid-template-columns:1fr;text-align:center}}
-.cta-h1-inner h2{font-size:clamp(1.75rem,4vw,2.25rem);font-weight:700;margin-bottom:.75rem;line-height:1.2;color:hsl(240,10%,3.9%)}
-.cta-h1-inner h2 .accent{color:hsl(217,95%,26%)}
-.cta-h1-inner p{font-size:1rem;color:hsl(215.4,16.3%,46.9%);line-height:1.7;max-width:32rem}
-.cta-h1-btns{display:flex;flex-direction:column;gap:.75rem;flex-shrink:0}
-@media(max-width:768px){.cta-h1-btns{flex-direction:row;justify-content:center;flex-wrap:wrap}}
-.cta-h1 .btn-solid{background:hsl(217,95%,26%);color:white;padding:1rem 2.5rem;font-size:1rem;font-weight:600;border-radius:.5rem;border:none;cursor:pointer;box-shadow:0 10px 20px -5px rgba(3,50,128,.3);transition:all .2s;white-space:nowrap;text-decoration:none;display:inline-block}
-.cta-h1 .btn-solid:hover{background:hsl(217,95%,22%);box-shadow:0 15px 25px -5px rgba(3,50,128,.4)}
-.cta-h1 .btn-ghost{background:white;color:hsl(240,10%,3.9%);padding:.85rem 2.5rem;font-size:.92rem;font-weight:600;border-radius:.5rem;border:1px solid hsl(214.3,31.8%,91.4%);cursor:pointer;transition:all .2s;white-space:nowrap;text-decoration:none;display:inline-block}
-.cta-h1 .btn-ghost:hover{border-color:hsl(217,95%,26%);color:hsl(217,95%,26%)}
-
-/* =============================================
-   CTA HYBRID 2 — Centered on White
-   ============================================= */
-.cta-h2{background:white;border-top:1px solid hsl(214.3,31.8%,91.4%);border-bottom:1px solid hsl(214.3,31.8%,91.4%);padding:5rem 0;position:relative;overflow:hidden}
-.cta-h2::before{content:"";position:absolute;right:-4rem;top:-4rem;width:16rem;height:16rem;border-radius:50%;background:rgba(3,50,128,0.05);pointer-events:none}
-.cta-h2::after{content:"";position:absolute;left:-2rem;bottom:-2rem;width:10rem;height:10rem;border-radius:50%;background:rgba(3,50,128,0.05);pointer-events:none}
-.cta-h2-inner{max-width:48rem;margin:0 auto;padding:0 1.5rem;text-align:center;position:relative;z-index:1}
-.cta-h2-inner h2{font-size:clamp(1.75rem,4vw,2.5rem);font-weight:800;margin-bottom:.75rem;line-height:1.15;color:hsl(240,10%,3.9%)}
-.cta-h2-inner h2 .accent{color:hsl(217,95%,26%)}
-.cta-h2-inner p{font-size:1.05rem;color:hsl(215.4,16.3%,46.9%);line-height:1.7;max-width:36rem;margin:0 auto 2rem}
-.cta-h2-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
-.cta-h2 .btn-solid{background:hsl(217,95%,26%);color:white;padding:1rem 2.5rem;font-size:1rem;font-weight:600;border-radius:.5rem;border:none;cursor:pointer;box-shadow:0 10px 20px -5px rgba(3,50,128,.3);transition:all .2s;text-decoration:none;display:inline-block}
-.cta-h2 .btn-solid:hover{background:hsl(217,95%,22%);box-shadow:0 15px 25px -5px rgba(3,50,128,.4)}
-.cta-h2 .btn-outline{background:transparent;color:hsl(240,10%,3.9%);padding:.85rem 2rem;font-size:.92rem;font-weight:600;border-radius:.5rem;border:1px solid hsl(214.3,31.8%,91.4%);cursor:pointer;transition:all .2s;text-decoration:none;display:inline-block}
-.cta-h2 .btn-outline:hover{border-color:hsl(217,95%,26%);color:hsl(217,95%,26%)}
-
