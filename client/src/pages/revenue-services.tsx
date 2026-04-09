@@ -1,430 +1,399 @@
-import { PageLayout } from "@/components/page-layout";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Link } from "wouter";
-import {
-  TrendingUp,
-  DollarSign,
-  Shield,
-  Store,
-  BarChart3,
-  CheckCircle,
-  ArrowRight,
-  ChevronRight,
-} from "lucide-react";
+import { useState, useEffect } from 'react';
+import { PageLayout } from '@/components/page-layout';
 
-const schema = {
+const faqSchema = {
   "@context": "https://schema.org",
-  "@type": "Service",
-  "name": "RV Dealership Revenue Growth Services",
-  "provider": {
-    "@type": "Organization",
-    "name": "Dealer Suite 360",
-  },
-  "description":
-    "Six outsourced revenue growth services for RV dealerships: claims revenue recovery, F&I, warranty plans, marketplace commissions, parts management, and digital marketing. Launching Q3 2026.",
-  "url": "https://dealersuite360.com/revenue-services",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Do I need to use all revenue tools?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Each tool is modular — you can start with claims processing and add F&I products, TechFlow, marketing, and marketplace access as your operation grows. However, the more tools you stack, the more revenue layers you capture per deal."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between Revenue Services and Revenue Optimization?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Revenue Services is the guide to every tool that makes money. Revenue Optimization is the diagnostic that shows where you are losing money. One shows the tools. The other shows the gaps. Together, they give you the complete picture."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How quickly do revenue improvements show up?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Claims revenue recovery is immediate — the moment DS360 starts catching expired deadlines and maximizing labor lines, claim values increase on the next submission. F&I product revenue starts the day you begin selling products. TechFlow labor recovery starts the month it is activated. Marketing results typically build over 60-90 days."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I see ROI on each tool?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Every revenue-generating tool in DS360 is tracked within the platform. Claims revenue, F&I product margins, TechFlow labor recovery, marketing ROI — all visible in your dealer portal. You see exactly what each tool produces."
+      }
+    }
+  ]
 };
 
-// ─── Revenue Sources Strip data ───────────────────────────────────────────────
-const revenueStats = [
-  { value: "$4,200", label: "Average per-claim revenue captured" },
-  { value: "40%", label: "Increase in F&I product penetration" },
-  { value: "$1,800", label: "Monthly parts revenue upside" },
-  { value: "3.2x", label: "ROI in first 12 months" },
-  { value: "6+", label: "Revenue streams from one platform" },
-];
-
-// ─── Revenue Pillars data ─────────────────────────────────────────────────────
-const pillars = [
+const revBlocks = [
   {
-    icon: TrendingUp,
-    title: "Claims Revenue Recovery",
-    description:
-      "Most dealerships leave 25–35% of their entitled claim revenue uncollected. Our expert team reviews every FRC line to ensure maximum approved labor hours, correct parts pricing, and zero documentation gaps — recovering revenue that was always yours.",
-    bullets: [
-      "FRC code optimization per manufacturer guidelines",
-      "Photo quality review before submission",
-      "Denial prevention through expert claim preparation",
-    ],
-    link: "/claims-processing",
-    linkLabel: "Learn More About Claims Processing",
+    num: '01',
+    title: 'Claims Processing',
+    sub: 'Maximize claim value, prevent expirations, accelerate payouts',
+    body: "Every approved claim is revenue. DS360's AI-powered claims workflow increases labor lines per claim through FRC recognition, optimizes photos for manufacturer standards, generates fail-proof descriptions, and tracks every deadline to prevent expiration denials. The result: more claims approved, higher claim values, faster payouts.",
+    links: [
+      { href: '/services/claims-processing', label: 'Claims Processing' },
+      { href: '/services/parts-components', label: 'Parts & Components' }
+    ]
   },
   {
-    icon: DollarSign,
-    title: "F&I Product Revenue",
-    description:
-      "Our AI F&I Presenter and trained specialists increase extended warranty, GAP, and protection product penetration rates — turning the finance office into your highest-margin department.",
-    bullets: [
-      "AI-powered live video F&I presentations",
-      "Full product portfolio: GAP, extended warranty, protection",
-      "Revenue reporting integrated with your dealer portal",
-    ],
-    link: "/fi-services",
-    linkLabel: "Learn More About F&I Services",
+    num: '02',
+    title: 'TechFlow Labor Recovery',
+    sub: 'Capture every billable technician hour against the right claim',
+    body: "The average dealership loses 12 to 18 labor hours per month on warranty repairs where the technician's time was never logged against the claim. At standard labor rates, that is $1,500 to $2,700 per month in unbilled work. TechFlow auto-generates work orders from approved claims and syncs every labor hour back to the invoice.",
+    links: [
+      { href: '/services/techflow', label: 'TechFlow' }
+    ]
   },
   {
-    icon: Shield,
-    title: "Warranty Plan Margins",
-    description:
-      "Sell OEM and aftermarket extended service plans directly through the platform — with dynamic pricing models, automated claims linkage, and upsell triggers that activate at the right moment in the customer lifecycle.",
-    bullets: [
-      "OEM and aftermarket plan management in one place",
-      "Automated upsell triggers at warranty expiry",
-      "Claims-linked coverage verification for faster approvals",
-    ],
-    link: "/warranty-plans",
-    linkLabel: "Learn More About Warranty Plans",
-  },
-];
-
-// ─── Before / After table data ────────────────────────────────────────────────
-const caseStudyRows = [
-  {
-    metric: "Monthly claim revenue",
-    before: "$12,400",
-    after: "$17,200",
-    positive: true,
+    num: '03',
+    title: 'F&I Product Sales',
+    sub: 'Margin on 6 products + cashback incentive tiers',
+    body: 'Six products, each generating dealer margin on every sale: Extended Warranty (highest margin), GAP Insurance, Appearance Protection, Tire & Wheel, Roadside & Travel (Titanium), and Specialty Protection. Cashback incentives apply on top — Tier 1 (1-2 products), Tier 2 (3-4), Tier 3 (5-6 maximum).',
+    links: [
+      { href: '/products/fi-services', label: 'F&I Products' },
+      { href: '/products/warranty-extended-service', label: 'Extended Warranty' },
+      { href: '/products/gap-insurance', label: 'GAP' },
+      { href: '/products/protection-plans', label: 'Protection Plans' }
+    ]
   },
   {
-    metric: "Average claim approval rate",
-    before: "71%",
-    after: "94%",
-    positive: true,
+    num: '04',
+    title: 'AI F&I Presenter',
+    sub: '100% presentation rate — every client, every product, every time',
+    body: 'The revenue lost to inconsistent F&I delivery is invisible — because nobody knows what a client would have bought if they had received a complete presentation. The AI F&I Presenter ensures 100% of credit-approved clients see every product, with zero staff required. Beta launching Q4 2026.',
+    links: [
+      { href: '/services/ai-fi-presenter', label: 'AI F&I Presenter' }
+    ]
   },
   {
-    metric: "Time spent on claims (hrs / week)",
-    before: "14 hrs",
-    after: "3 hrs",
-    positive: true,
+    num: '05',
+    title: 'On-Site Repairs',
+    sub: 'Net-new revenue from mobile service calls off your lot',
+    body: "Every mobile service call is billable work your shop would never have seen. Roadside emergencies, campsite convenience calls, storage lot service, pre-trip inspections — clients pay for labor and parts on every call. DS360's photo-first dispatch ensures your tech arrives prepared with the right parts.",
+    links: [
+      { href: '/services/on-site-repairs', label: 'On-Site Repairs' }
+    ]
   },
   {
-    metric: "Denial appeals (monthly)",
-    before: "8–12",
-    after: "0–1",
-    positive: true,
+    num: '06',
+    title: 'Financing Cashback',
+    sub: 'Credits from partner financing — redeemable toward inventory',
+    body: 'Route client financing through DS360 partner banks and earn cashback credits on every funded deal. Credits accumulate in your DS360 account and are redeemable toward new unit purchases. Covers loans, leasing, and rental fleet financing. Launching Q4 2026.',
+    links: [
+      { href: '/products/financing-services', label: 'Financing Services' }
+    ]
   },
-];
-
-// ─── Calculator concept boxes ─────────────────────────────────────────────────
-const calcBoxes = [
-  { label: "Monthly RV Units Sold", placeholder: "Example: 20 units" },
-  { label: "Average Claim Value", placeholder: "Example: $850" },
-  { label: "Current Approval Rate", placeholder: "Example: 72%" },
+  {
+    num: '07',
+    title: 'Dealer Marketplace',
+    sub: 'Move inventory through the DS360 dealer network and public auctions',
+    body: "Three channels to move units: Dealer Exchange (dealer-to-dealer network, $499/yr), Live Auctions (monthly public events, $299/yr add-on), and Consignment Services (client-sourced inventory, finder's fee revenue). Revenue from inventory movement that would otherwise sit on your lot or never reach your hands.",
+    links: [
+      { href: '/marketplace', label: 'Marketplace' },
+      { href: '/marketplace/dealer-exchange', label: 'Dealer Exchange' },
+      { href: '/marketplace/live-auctions', label: 'Live Auctions' }
+    ]
+  },
+  {
+    num: '08',
+    title: 'Marketing Services',
+    sub: 'Lot traffic, leads, and clients — tracked to closed deals',
+    body: 'SEO, PPC, social, email, lead gen, and remarketing — all managed by a team with 20+ years in the RV industry. Co-op compatible campaigns, precision targeting (competitor website visitors within 24 hours), and closed-loop ROI tracking from ad click to closed deal inside the DS360 platform.',
+    links: [
+      { href: '/services/marketing-services', label: 'Marketing Services' }
+    ]
+  }
 ];
 
 export default function RevenueServices() {
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [openBlocks, setOpenBlocks] = useState<Set<number>>(new Set());
+
+  useEffect(() => {
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('v'); obs.unobserve(e.target); }
+      });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.anim').forEach(el => obs.observe(el));
+    return () => obs.disconnect();
+  }, []);
+
+  const toggleBlock = (i: number) => {
+    setOpenBlocks(prev => {
+      const next = new Set(prev);
+      if (next.has(i)) { next.delete(i); } else { next.add(i); }
+      return next;
+    });
+  };
+
   return (
     <PageLayout
-      seoTitle="RV Dealership Revenue Services | F&I, Claims Recovery, Warranty & More | Dealer Suite 360"
-      seoDescription="Six proven revenue growth services for RV dealerships — claims recovery, F&I outsourcing, warranty plans, marketplace commissions, parts management, and digital marketing. Launching Q3 2026."
-      seoKeywords="RV dealership revenue services, claims revenue recovery, F&I outsourcing, extended warranty plans, dealer marketplace commissions, RV parts revenue"
-      canonical="/revenue-services"
-      schema={schema}
+      seoTitle="Revenue Services — Every DS360 Tool That Makes You Money"
+      seoDescription="A complete guide to every DS360 tool and product that generates or recovers dealer revenue — claims recovery, F&I product margins, and partner financing cashback."
+      canonical="https://dealersuite360.com/revenue-services"
+      schema={faqSchema}
     >
-      {/* ─── 1. HERO ─────────────────────────────────────────────────────────── */}
-      <section className="pt-24 pb-16 bg-gradient-to-b from-primary/5 to-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <Badge
-            className="mb-6 border border-primary/20 px-3 py-1 text-xs"
-            variant="outline"
-          >
-            Q3 2026
-          </Badge>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight max-w-4xl mx-auto">
-            Unlock New Revenue Streams for Your Dealership
-          </h1>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-10">
-            Dealer Suite 360 goes beyond claims processing — it is the complete
-            revenue engine for your dealership. Six integrated service modules,
-            one platform, one subscription.
-          </p>
-          <div className="flex flex-wrap gap-4 justify-center">
-            <Button size="lg" asChild>
-              <Link href="/contact">
-                Talk to Our Team <ChevronRight className="ml-2 w-4 h-4" />
-              </Link>
-            </Button>
-            <Button size="lg" variant="outline" asChild>
-              <Link href="/pricing">View Pricing</Link>
-            </Button>
+      {/* HERO */}
+      <section className="phero">
+        <div className="wrap">
+          <div className="phero-center">
+            <div className="badge">Revenue Growth</div>
+            <h1>Every DS360 Tool That<span className="gradient">Puts Money in Your Account</span></h1>
+            <p>This is not a feature list. This is a guide to every DS360 tool and product that directly generates revenue, recovers lost revenue, or creates a new revenue stream your dealership did not have before. Three categories. One platform. Revenue from every angle.</p>
+            <div className="phero-btns">
+              <a href="/contact" className="btn btn-lg btn-primary">Book a Revenue Consultation</a>
+              <a href="/revenue/optimization" className="btn btn-lg btn-outline">See What You're Missing</a>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ─── 2. REVENUE SOURCES STRIP ────────────────────────────────────────── */}
-      <section className="bg-primary text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 text-center">
-            {revenueStats.map((stat) => (
-              <div key={stat.value} className="flex flex-col items-center gap-2">
-                <span className="text-4xl md:text-5xl font-bold tracking-tight">
-                  {stat.value}
-                </span>
-                <span className="text-sm text-white/75 leading-snug max-w-[140px]">
-                  {stat.label}
-                </span>
+      {/* STREAM 1: CLAIMS RECOVERY */}
+      <section className="sec-w">
+        <div className="wrap">
+          <div className="split anim">
+            <div className="split-text">
+              <div className="badge">Revenue Stream 1</div>
+              <h2>Claim Revenue Recovery</h2>
+              <p>Every valid warranty claim your dealership files and gets paid on is revenue. Every claim that expires, gets denied due to a weak submission, or is filed with missing labor lines is revenue lost. DS360's claims workflow is designed to maximize claim value and prevent revenue from slipping through the cracks.</p>
+              <div className="checks">
+                <div className="check">
+                  <div className="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" strokeWidth="3"><path d="M5 13l4 4L19 7"/></svg></div>
+                  <div className="check-info"><h3>Expiration Prevention</h3><p>DS360 tracks every claim deadline and sends alerts before manufacturer cutoffs pass — no more expired claims</p></div>
+                </div>
+                <div className="check">
+                  <div className="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" strokeWidth="3"><path d="M5 13l4 4L19 7"/></svg></div>
+                  <div className="check-info"><h3>Maximized Labor Lines</h3><p>AI-assisted Flat Rate Code (FRC) recognition ensures every billable labor line is captured on every claim</p></div>
+                </div>
+                <div className="check">
+                  <div className="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" strokeWidth="3"><path d="M5 13l4 4L19 7"/></svg></div>
+                  <div className="check-info"><h3>97% Approval Rate</h3><p>Photo optimization, fail-proof descriptions, and complete submissions reduce denials to near zero</p></div>
+                </div>
+                <div className="check">
+                  <div className="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" strokeWidth="3"><path d="M5 13l4 4L19 7"/></svg></div>
+                  <div className="check-info"><h3>Faster Payouts</h3><p>Complete, accurate claims move through manufacturer review faster — accelerating your cash flow</p></div>
+                </div>
+              </div>
+              <a href="/services/claims-processing" className="btn btn-primary" style={{width:'fit-content'}}>Claims Processing →</a>
+            </div>
+            <div className="split-img">
+              <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=576&h=432&fm=webp&q=75" alt="Claims revenue" width={576} height={432} loading="lazy" />
+              <div className="overlay"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* STATEMENT */}
+      <section className="sec-g" style={{padding:'3.5rem 0'}}>
+        <div className="wrap">
+          <div className="bst">
+            <div className="bst-line"></div>
+            <p>"You cannot deposit a claim that was never filed. DS360 makes sure every valid claim is filed, optimized, and paid — before the deadline passes."</p>
+          </div>
+        </div>
+      </section>
+
+      {/* STREAM 2: F&I PRODUCT REVENUE */}
+      <section className="sec-w">
+        <div className="wrap">
+          <div className="split split-rev anim">
+            <div className="split-text">
+              <div className="badge">Revenue Stream 2</div>
+              <h2>F&amp;I Product Revenue</h2>
+              <p>Every F&amp;I product your dealership sells to a client is margin in your pocket. DS360 builds, issues, and manages a complete suite of 6 products — your dealership sells them at retail, pays DS360 wholesale, and keeps the difference. Volume-based cashback incentives stack on top of that margin.</p>
+              <div className="checks">
+                <div className="check">
+                  <div className="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" strokeWidth="3"><path d="M5 13l4 4L19 7"/></svg></div>
+                  <div className="check-info"><h3>6 Products in the Suite</h3><p>Extended Warranty, GAP, Appearance, Tire &amp; Wheel, Roadside &amp; Travel, Specialty Protection</p></div>
+                </div>
+                <div className="check">
+                  <div className="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" strokeWidth="3"><path d="M5 13l4 4L19 7"/></svg></div>
+                  <div className="check-info"><h3>You Set the Retail Price</h3><p>DS360 provides wholesale cost. You set retail. The margin is yours.</p></div>
+                </div>
+                <div className="check">
+                  <div className="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" strokeWidth="3"><path d="M5 13l4 4L19 7"/></svg></div>
+                  <div className="check-info"><h3>Cashback Incentive Tiers</h3><p>1-2 products per unit = Tier 1. 3-4 = Tier 2. 5-6 = Tier 3 maximum. Applied to total volume.</p></div>
+                </div>
+                <div className="check">
+                  <div className="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" strokeWidth="3"><path d="M5 13l4 4L19 7"/></svg></div>
+                  <div className="check-info"><h3>AI F&amp;I Presenter</h3><p>Launching beta Q4 2026 — presents every product to every client, 24/7, with zero staff required</p></div>
+                </div>
+              </div>
+              <a href="/products/fi-services" className="btn btn-primary" style={{width:'fit-content'}}>F&amp;I Products →</a>
+            </div>
+            <div className="split-img">
+              <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?ixlib=rb-4.0.3&auto=format&fit=crop&w=576&h=432&fm=webp&q=75" alt="F&I revenue" width={576} height={432} loading="lazy" />
+              <div className="overlay"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* DYK */}
+      <section className="sec-g">
+        <div className="wrap">
+          <div className="dyk anim">
+            <div className="dyk-tag">Did You Know<span style={{color:'#033280'}}>?</span></div>
+            <p>Dealers who <strong>present the full 6-product F&amp;I suite on every deal</strong> generate 3x to 5x more per-unit F&amp;I revenue than those who only offer Extended Warranty. The products exist. The margin is there. The only variable is whether the client sees the presentation — and with the AI F&amp;I Presenter, 100% of them will.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* STREAM 3: FINANCING REVENUE */}
+      <section className="sec-w">
+        <div className="wrap">
+          <div className="split anim">
+            <div className="split-text">
+              <div className="badge">Revenue Stream 3 · Q4 2026</div>
+              <h2>Financing Cashback</h2>
+              <p>The third revenue stream most dealers are not capturing. When a client finances a unit, the bank earns interest for years — and the dealer earns nothing on that transaction. DS360 Financing Services changes that by routing deals through partner banks that offer preferential rates and cashback credits to your dealership on every funded deal.</p>
+              <div className="checks">
+                <div className="check">
+                  <div className="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" strokeWidth="3"><path d="M5 13l4 4L19 7"/></svg></div>
+                  <div className="check-info"><h3>Partner Bank Network</h3><p>Multiple institutions competing for your client's deal — best rate wins</p></div>
+                </div>
+                <div className="check">
+                  <div className="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" strokeWidth="3"><path d="M5 13l4 4L19 7"/></svg></div>
+                  <div className="check-info"><h3>Cashback on Every Deal</h3><p>Credits accumulate in your DS360 account — redeemable toward new unit purchases</p></div>
+                </div>
+                <div className="check">
+                  <div className="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" strokeWidth="3"><path d="M5 13l4 4L19 7"/></svg></div>
+                  <div className="check-info"><h3>Loans, Leasing, Rental Fleet</h3><p>Three financing types — all generating dealer cashback</p></div>
+                </div>
+              </div>
+              <a href="/products/financing-services" className="btn btn-primary" style={{width:'fit-content'}}>Financing Services →</a>
+            </div>
+            <div className="split-img">
+              <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&auto=format&fit=crop&w=576&h=432&fm=webp&q=75" alt="Financing revenue" width={576} height={432} loading="lazy" />
+              <div className="overlay"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* COMPLETE REVENUE MAP */}
+      <section className="sec-g">
+        <div className="wrap">
+          <div className="sec-head">
+            <div className="badge">Complete Revenue Map</div>
+            <h2>Every Revenue Tool — Expandable</h2>
+            <p>Click any block to see how each DS360 tool generates or recovers revenue for your dealership.</p>
+          </div>
+          <div className="rev-stream anim">
+            {revBlocks.map((block, i) => (
+              <div key={i} className={`rev-block${openBlocks.has(i) ? ' open' : ''}`}>
+                <div className="rev-block-head" onClick={() => toggleBlock(i)}>
+                  <div className="rev-block-num">{block.num}</div>
+                  <div className="rev-block-title">
+                    <h3>{block.title}</h3>
+                    <p>{block.sub}</p>
+                  </div>
+                  <div className="rev-block-arrow">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 5v14M5 12h14"/></svg>
+                  </div>
+                </div>
+                <div className="rev-block-body">
+                  <div className="rev-block-content">
+                    <p>{block.body}</p>
+                    <div className="rev-block-links">
+                      {block.links.map((link, j) => (
+                        <a key={j} href={link.href} className="rev-link">{link.label}</a>
+                      ))}
+                    </div>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ─── 3. REVENUE PILLARS ──────────────────────────────────────────────── */}
-      <section className="py-20 bg-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Six Ways Dealer Suite 360 Grows Your Revenue
-            </h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Each module delivers measurable ROI independently — together they
-              transform your dealership's financial performance.
-            </p>
+      {/* CONNECTED */}
+      <section className="sec-w">
+        <div className="wrap">
+          <div className="sec-head">
+            <h2>See the Other Side</h2>
+            <p>Revenue Services shows where the money comes from. Revenue Optimization shows where it's being lost.</p>
           </div>
-
-          <div className="space-y-0">
-            {pillars.map((pillar, index) => {
-              const Icon = pillar.icon;
-              const isEven = index % 2 === 1;
-
-              const contentBlock = (
-                <div className="flex flex-col justify-center py-10 px-4 lg:px-12">
-                  <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-5">
-                    <Icon className="w-6 h-6 text-primary" />
-                  </div>
-                  <h3 className="text-2xl font-bold mb-4">{pillar.title}</h3>
-                  <p className="text-muted-foreground mb-5 leading-relaxed">
-                    {pillar.description}
-                  </p>
-                  <ul className="space-y-2 mb-6">
-                    {pillar.bullets.map((bullet) => (
-                      <li key={bullet} className="flex items-start gap-2 text-sm">
-                        <CheckCircle className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                        <span>{bullet}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <Link
-                    href={pillar.link}
-                    className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
-                  >
-                    {pillar.linkLabel}
-                    <ArrowRight className="w-4 h-4" />
-                  </Link>
-                </div>
-              );
-
-              const placeholderBlock = (
-                <div
-                  className={`flex items-center justify-center rounded-2xl ${
-                    isEven ? "bg-background" : "bg-muted/30"
-                  } min-h-[280px] mx-4 lg:mx-0`}
-                >
-                  <div className="flex flex-col items-center gap-3 text-muted-foreground/40">
-                    <BarChart3 className="w-16 h-16" />
-                    <span className="text-xs uppercase tracking-widest font-medium">
-                      Visual Coming Soon
-                    </span>
-                  </div>
-                </div>
-              );
-
-              return (
-                <div
-                  key={pillar.title}
-                  className={`${isEven ? "bg-muted/30" : "bg-background"} rounded-2xl`}
-                >
-                  <div className="grid md:grid-cols-2 gap-0 max-w-6xl mx-auto">
-                    {isEven ? (
-                      <>
-                        {placeholderBlock}
-                        {contentBlock}
-                      </>
-                    ) : (
-                      <>
-                        {contentBlock}
-                        {placeholderBlock}
-                      </>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
+          <div className="grid-2 anim">
+            <a href="/revenue/optimization" className="link-card"><div><h4>Revenue Optimization</h4><p>Where you're losing money — and how DS360 closes those gaps</p></div><span className="link-arrow">→</span></a>
+            <a href="/services" className="link-card"><div><h4>All Services</h4><p>The full DS360 service suite</p></div><span className="link-arrow">→</span></a>
+            <a href="/products/fi-services" className="link-card"><div><h4>All F&amp;I Products</h4><p>The complete product lineup with pricing and incentive tiers</p></div><span className="link-arrow">→</span></a>
+            <a href="/pricing" className="link-card"><div><h4>Pricing</h4><p>Transparent pricing for every DS360 service and product</p></div><span className="link-arrow">→</span></a>
           </div>
         </div>
       </section>
 
-      {/* ─── 4. MOCK CASE STUDY ──────────────────────────────────────────────── */}
-      <section className="py-20 bg-muted/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Real Results from Real Dealers
-            </h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Dealerships using Dealer Suite 360 see measurable improvements
-              within the first 60 days.
-            </p>
-          </div>
-
-          <div className="bg-card border border-border rounded-2xl p-8 max-w-4xl mx-auto shadow-sm">
-            {/* Quote */}
-            <div className="mb-8">
-              <div className="text-4xl text-primary font-serif leading-none mb-4">
-                &ldquo;
-              </div>
-              <p className="text-lg md:text-xl leading-relaxed font-medium mb-4">
-                We were leaving money on the table on every claim. Within 60
-                days of switching, our average claim payout increased by 38% and
-                we haven&apos;t had a denial in months.
-              </p>
-              <p className="text-muted-foreground font-medium">
-                — Sarah M., Service Manager
-              </p>
-              <p className="text-sm text-muted-foreground mt-1">
-                Maple Ridge RV, British Columbia
-              </p>
+      {/* FAQ */}
+      <section className="sec-g">
+        <div className="wrap">
+          <div className="faq-layout anim">
+            <div className="faq-left">
+              <div className="badge">FAQ</div>
+              <h2 style={{fontSize:'clamp(1.5rem,3.5vw,2rem)',fontWeight:700,marginTop:'.75rem',lineHeight:1.2}}>Revenue Services<br/>Questions</h2>
+              <p style={{fontSize:'1rem',color:'var(--muted)',lineHeight:1.7,marginTop:'1rem'}}>How DS360 generates revenue for your dealership.</p>
+              <a href="/contact" className="btn btn-primary" style={{width:'fit-content',marginTop:'1.5rem'}}>Book a Consultation →</a>
             </div>
-
-            {/* Before / After table */}
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-border">
-                    <th className="text-left py-3 pr-6 font-semibold text-muted-foreground">
-                      Metric
-                    </th>
-                    <th className="text-center py-3 px-4 font-semibold text-muted-foreground">
-                      Before
-                    </th>
-                    <th className="text-center py-3 px-4 font-semibold text-primary">
-                      After
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {caseStudyRows.map((row) => (
-                    <tr
-                      key={row.metric}
-                      className="border-b border-border/50 last:border-0"
-                    >
-                      <td className="py-3 pr-6 text-foreground">{row.metric}</td>
-                      <td className="py-3 px-4 text-center text-muted-foreground">
-                        {row.before}
-                      </td>
-                      <td className="py-3 px-4 text-center font-semibold text-primary">
-                        {row.after}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            <p className="text-xs text-muted-foreground mt-5">
-              * Representative results. Individual dealer outcomes vary.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* ─── 5. REVENUE CALCULATOR CONCEPT ──────────────────────────────────── */}
-      <section className="py-20 bg-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Estimate Your Revenue Potential
-            </h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Three inputs. One number that changes how you see your dealership.
-            </p>
-          </div>
-
-          {/* Calculator visual */}
-          <div className="max-w-4xl mx-auto">
-            <div className="grid md:grid-cols-3 gap-4 mb-6">
-              {calcBoxes.map((box) => (
-                <div
-                  key={box.label}
-                  className="bg-card border border-border rounded-xl p-5"
-                >
-                  <p className="text-xs uppercase tracking-widest font-semibold text-muted-foreground mb-2">
-                    {box.label}
-                  </p>
-                  <div className="h-10 bg-muted/40 rounded-lg flex items-center px-3">
-                    <span className="text-sm text-muted-foreground">
-                      {box.placeholder}
+            <div className="faq-right">
+              {[
+                {
+                  q: 'Do I need to use all revenue tools?',
+                  a: 'No. Each tool is modular — you can start with claims processing and add F&I products, TechFlow, marketing, and marketplace access as your operation grows. However, the more tools you stack, the more revenue layers you capture per deal.'
+                },
+                {
+                  q: 'What is the difference between Revenue Services and Revenue Optimization?',
+                  a: 'Revenue Services is the guide to every tool that makes money. Revenue Optimization is the diagnostic that shows where you are losing money. One shows the tools. The other shows the gaps. Together, they give you the complete picture.'
+                },
+                {
+                  q: 'How quickly do revenue improvements show up?',
+                  a: 'Claims revenue recovery is immediate — the moment DS360 starts catching expired deadlines and maximizing labor lines, claim values increase on the next submission. F&I product revenue starts the day you begin selling products. TechFlow labor recovery starts the month it is activated. Marketing results typically build over 60-90 days.'
+                },
+                {
+                  q: 'Can I see ROI on each tool?',
+                  a: 'Yes. Every revenue-generating tool in DS360 is tracked within the platform. Claims revenue, F&I product margins, TechFlow labor recovery, marketing ROI — all visible in your dealer portal. You see exactly what each tool produces.'
+                }
+              ].map((item, i) => (
+                <div key={i} className={`faq-card${openFaq === i ? ' open' : ''}`}>
+                  <button className="faq-q" onClick={() => setOpenFaq(openFaq === i ? null : i)}>
+                    <span>{item.q}</span>
+                    <span className="faq-icon">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="20" height="20"><path d="M12 5v14M5 12h14"/></svg>
                     </span>
-                  </div>
+                  </button>
+                  <div className="faq-a"><p>{item.a}</p></div>
                 </div>
               ))}
             </div>
-
-            {/* Arrow + result */}
-            <div className="flex flex-col items-center gap-4 py-6">
-              <div className="flex items-center gap-3 text-muted-foreground">
-                <div className="h-px w-16 bg-border" />
-                <ArrowRight className="w-5 h-5" />
-                <span className="text-sm font-medium uppercase tracking-wide">
-                  Your Revenue Opportunity
-                </span>
-                <div className="h-px w-16 bg-border" />
-              </div>
-              <div className="bg-primary/5 border border-primary/20 rounded-2xl px-10 py-6 text-center max-w-lg w-full">
-                <p className="text-muted-foreground text-sm leading-relaxed">
-                  Talk to our team for a{" "}
-                  <span className="font-semibold text-foreground">
-                    free revenue assessment
-                  </span>{" "}
-                  specific to your dealership — we&apos;ll model your exact
-                  opportunity using real data from similar dealers in your
-                  market.
-                </p>
-              </div>
-            </div>
-
-            <div className="text-center mt-6">
-              <Button size="lg" asChild>
-                <Link href="/contact">
-                  Get Your Free Assessment{" "}
-                  <ChevronRight className="ml-2 w-4 h-4" />
-                </Link>
-              </Button>
-            </div>
           </div>
         </div>
       </section>
 
-      {/* ─── 6. CTA STRIP ────────────────────────────────────────────────────── */}
-      <section className="bg-primary text-white py-20">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Ready to Unlock New Revenue?
-          </h2>
-          <p className="text-white/80 text-lg mb-10 max-w-xl mx-auto">
-            Join the dealerships already using Dealer Suite 360 to recover
-            missed revenue and grow every line of their business.
-          </p>
-          <div className="flex flex-wrap gap-4 justify-center">
-            <Button
-              size="lg"
-              variant="secondary"
-              className="bg-white text-primary hover:bg-white/90"
-              asChild
-            >
-              <Link href="/sign-up">
-                Start Free Trial <ArrowRight className="ml-2 w-4 h-4" />
-              </Link>
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-white text-white hover:bg-white/10"
-              asChild
-            >
-              <Link href="/contact">Calculate Your ROI</Link>
-            </Button>
+      {/* BOTTOM CTA */}
+      <section className="bcta">
+        <div className="wrap">
+          <h2>Revenue From Every Angle. One Platform.</h2>
+          <p>Book a revenue consultation and see exactly how much your dealership is leaving on the table — and which DS360 tools recover it.</p>
+          <div className="bcta-btns">
+            <a href="/contact" className="btn btn-lg btn-green">Book a Consultation →</a>
+            <a href="/revenue/optimization" className="btn btn-lg btn-white">Revenue Optimization</a>
           </div>
         </div>
       </section>

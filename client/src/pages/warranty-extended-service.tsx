@@ -1,518 +1,348 @@
-import { useState } from "react";
-import { PageLayout } from "@/components/page-layout";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Link } from "wouter";
-import { ServiceBadge } from "@/components/service-badge";
-import {
-  ShieldCheck,
-  Bell,
-  FileText,
-  CheckCircle2,
-  ChevronDown,
-  ChevronUp,
-  TrendingUp,
-  Wrench,
-  BarChart3,
-  RefreshCw,
-  CircleDollarSign,
-} from "lucide-react";
+import { useState, useEffect } from 'react';
+import { PageLayout } from '@/components/page-layout';
 
-const warrantySchema = [
-  {
-    "@context": "https://schema.org",
-    "@type": "Service",
-    name: "Warranty & Extended Service Plans",
-    description:
-      "Manage manufacturer warranties and sell extended service plans through one platform. Track coverage, process claims, and maximize warranty revenue for your RV dealership.",
-    provider: {
-      "@type": "Organization",
-      name: "DealerSuite360",
-      url: "https://dealersuite360.com",
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "When does Extended Warranty coverage begin?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Coverage begins when the manufacturer's standard warranty expires — or at the time of sale for used units that are already out of manufacturer coverage. The start date is configured during activation."
+      }
     },
-    serviceType: "RV Warranty Management",
-    areaServed: "North America",
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: [
-      {
-        "@type": "Question",
-        name: "How does manufacturer warranty tracking work?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "When a unit is added to the platform by VIN, the system records the manufacturer warranty start date and coverage period. Coverage expiry is tracked automatically per unit, and you receive alerts before warranties expire so you can proactively offer extended service plans.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "Can warranty claims be submitted through the platform?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Warranty claims flow directly into the claims processing module. You create the claim inside the platform, add photos and line items, and the operator team handles submission on manufacturer portals. Approval status is tracked per line and reported back into your dealer dashboard.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "What extended service plans can I sell?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "The platform supports Basic, Plus, and Premium extended service plan tiers covering mechanical, electrical, plumbing, structural, and appliance components. Coverage terms and deductible options are configurable per plan.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "How does warranty plan revenue work for my dealership?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Each extended service plan sold generates a commission for your dealership. Plans are sold at deal closing or post-sale through the customer portal, and revenue is reported in your dealer dashboard with full per-deal and monthly summaries.",
-        },
-      },
-    ],
-  },
-];
-
-const planFeatures = [
-  { feature: "Mechanical Coverage", basic: true, plus: true, premium: true },
-  { feature: "Electrical Coverage", basic: false, plus: true, premium: true },
-  { feature: "Plumbing", basic: false, plus: true, premium: true },
-  { feature: "Structural", basic: false, plus: false, premium: true },
-  { feature: "Appliances", basic: false, plus: true, premium: true },
-  { feature: "Claims Support", basic: "Basic", plus: "Priority", premium: "Dedicated" },
-  { feature: "Response Time", basic: "5 days", plus: "48 hours", premium: "Same day" },
-];
-
-const faqs = [
-  {
-    q: "How does manufacturer warranty tracking work?",
-    a: "When a unit is added to the platform by VIN, the system records the manufacturer warranty start date and coverage period. Coverage expiry is tracked automatically per unit, and you receive alerts before warranties expire so you can proactively offer extended service plans.",
-  },
-  {
-    q: "Can warranty claims be submitted through the platform?",
-    a: "Warranty claims flow directly into the claims processing module. You create the claim inside the platform, add photos and line items, and the operator team handles submission on manufacturer portals. Approval status is tracked per line and reported back into your dealer dashboard.",
-  },
-  {
-    q: "What extended service plans can I sell?",
-    a: "The platform supports Basic, Plus, and Premium extended service plan tiers covering mechanical, electrical, plumbing, structural, and appliance components. Coverage terms and deductible options are configurable per plan.",
-  },
-  {
-    q: "How does warranty plan revenue work for my dealership?",
-    a: "Each extended service plan sold generates a commission for your dealership. Plans are sold at deal closing or post-sale through the customer portal, and revenue is reported in your dealer dashboard with full per-deal and monthly summaries.",
-  },
-];
-
-function PlanCell({
-  value,
-}: {
-  value: boolean | string;
-}) {
-  if (typeof value === "boolean") {
-    return value ? (
-      <CheckCircle2 className="w-5 h-5 text-primary mx-auto" />
-    ) : (
-      <span className="text-muted-foreground/40 text-lg font-light">–</span>
-    );
-  }
-  return <span className="text-sm font-medium text-foreground">{value}</span>;
-}
+    {
+      "@type": "Question",
+      "name": "Can I sell Extended Warranty on used units?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Extended Warranty is available for both new and pre-owned units. For used units where the manufacturer warranty has already expired, coverage begins immediately at the time of sale. This makes it a strong upsell on every used unit your dealership moves."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How are claims processed?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Through the DS360 platform — the same A-Z claims workflow used for manufacturer warranty claims. The client contacts your dealership or submits through the Client Portal. DS360 handles approval, parts, repair, and payout."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is my margin on Extended Warranty?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "You pay DS360 the wholesale cost and set your own retail price. The difference is your margin. Extended Warranty typically carries the highest per-unit margin of any product in the F&I suite. Volume-based cashback incentives further increase your return."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is there a deductible for the client?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Deductible structure depends on the coverage tier selected. Details are provided during dealer onboarding and are clearly stated on the client's certificate so there are no surprises when a claim is filed."
+      }
+    }
+  ]
+};
 
 export default function WarrantyExtendedService() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
+  useEffect(() => {
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('v'); obs.unobserve(e.target); }
+      });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.anim').forEach(el => obs.observe(el));
+    return () => obs.disconnect();
+  }, []);
+
   return (
     <PageLayout
-      seoTitle="Warranty & Extended Service Plans | RV Dealer Solutions | DealerSuite360"
-      seoDescription="Manage manufacturer warranties and sell extended service plans through one platform. Track coverage, process claims, and maximize warranty revenue for your RV dealership."
-      seoKeywords="RV warranty, extended service plans, warranty management, protection plans, warranty sales, manufacturer warranty tracking"
-      canonical="/warranty-plans"
-      schema={warrantySchema}
+      seoTitle="Extended Warranty — RV Protection Beyond Manufacturer Coverage"
+      seoDescription="DS360 Extended Warranty covers major RV systems beyond the manufacturer's standard warranty — drivetrain, electrical, plumbing, appliances, slide-outs. Multiple tiers. Co-branded with your dealership. Claims processed through the platform."
+      canonical="https://dealersuite360.com/warranty-plans"
+      schema={faqSchema}
     >
-      {/* Hero */}
-      <section className="pt-24 pb-16 bg-gradient-to-b from-primary/5 to-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="flex justify-center mb-6">
-            <ServiceBadge quarter="Q2" />
-          </div>
-          <h1 className="text-4xl lg:text-6xl font-bold text-foreground mb-6">
-            Warranty Management &amp; Extended Service Plans
-          </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-10">
-            Track manufacturer warranties per VIN, sell extended service plans
-            at deal closing, and connect warranty claims directly to your
-            claims processing module — all inside one platform.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" asChild>
-              <Link href="/sign-up">Start Selling Warranty Plans</Link>
-            </Button>
-            <Button size="lg" variant="outline" asChild>
-              <Link href="/contact">Talk to Our Team</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* Plan comparison table */}
-      <section className="py-20 bg-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-4">
-              Extended Service Plan Tiers
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Three tiers designed to match every customer's needs and budget.
-              Sell them at deal closing or post-sale through the customer
-              portal.
-            </p>
-          </div>
-
-          <div className="bg-card rounded-xl border border-border overflow-hidden">
-            <table className="w-full border-collapse">
-              <thead>
-                <tr className="border-b border-border">
-                  <th className="text-left p-4 font-semibold text-foreground">
-                    Feature
-                  </th>
-                  <th className="text-center p-4 font-semibold text-foreground">
-                    Basic
-                    <div className="text-sm font-normal text-muted-foreground mt-0.5">
-                      $799 / unit
-                    </div>
-                  </th>
-                  <th className="text-center p-4 font-semibold text-foreground bg-primary/5 border-x border-primary/20">
-                    Plus ⭐
-                    <div className="text-sm font-normal text-muted-foreground mt-0.5">
-                      $1,299 / unit
-                    </div>
-                  </th>
-                  <th className="text-center p-4 font-semibold text-foreground">
-                    Premium
-                    <div className="text-sm font-normal text-muted-foreground mt-0.5">
-                      $1,899 / unit
-                    </div>
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border">
-                {planFeatures.map((row, i) => (
-                  <tr
-                    key={i}
-                    className="hover:bg-muted/20 transition-colors"
-                  >
-                    <td className="p-4 font-medium text-foreground">
-                      {row.feature}
-                    </td>
-                    <td className="p-4 text-center">
-                      <PlanCell value={row.basic} />
-                    </td>
-                    <td className="p-4 text-center bg-primary/5 border-x border-primary/20">
-                      <PlanCell value={row.plus} />
-                    </td>
-                    <td className="p-4 text-center">
-                      <PlanCell value={row.premium} />
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          <div className="text-center mt-8">
-            <Button size="lg" asChild data-testid="button-signup-warranty">
-              <Link href="/sign-up">Start Selling Warranty Plans</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* Manufacturer warranty tracking — alternating layout */}
-      <section className="py-20 bg-muted/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div>
-              <Badge variant="outline" className="mb-4">
-                OEM Warranty Tracking
-              </Badge>
-              <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-6">
-                Manufacturer Warranty Tracking Per VIN
-              </h2>
-              <p className="text-muted-foreground leading-relaxed mb-6">
-                Every unit added to the platform by VIN gets a warranty record.
-                The system tracks the manufacturer warranty start date, coverage
-                period, and expiry date — across all supported manufacturers
-                including Jayco, Forest River, Heartland, Columbia NW, Keystone,
-                and Midwest Auto.
-              </p>
-              <p className="text-muted-foreground leading-relaxed mb-6">
-                Coverage expiry is tracked in real time. As a unit approaches
-                the end of its manufacturer warranty, the platform automatically
-                triggers alerts so your team can proactively reach out and offer
-                an extended service plan — turning a potential support call into
-                a revenue opportunity.
-              </p>
-              <p className="text-muted-foreground leading-relaxed">
-                All warranty data is visible inside the Unit Detail view in your
-                dealer dashboard, alongside claim history, inspection records,
-                and parts orders.
-              </p>
+      {/* HERO */}
+      <section className="phero">
+        <div className="wrap">
+          <div className="phero-grid">
+            <div className="phero-text">
+              <div><a href="/products/fi-services" style={{fontSize:'.82rem',color:'var(--muted)'}}>← All Products</a></div>
+              <div><div className="badge">DS360 Product · Highest F&amp;I Margin</div></div>
+              <h1>The Manufacturer's Warranty Ends.<span className="gradient">Your Client's Protection Doesn't Have To.</span></h1>
+              <p className="phero-desc">DS360 Extended Warranty picks up where the manufacturer leaves off — covering major systems, components, and repairs that standard coverage no longer protects. Issued by DS360, co-branded with your dealership, and claims are processed through the same platform. The highest-margin product in the RV F&amp;I suite and the one your clients are most likely to buy.</p>
+              <div className="phero-btns">
+                <a href="/contact" className="btn btn-lg btn-primary">Start Selling Extended Warranty</a>
+                <a href="#coverage" className="btn btn-lg btn-outline">View Coverage Tiers</a>
+              </div>
+              <div className="phero-stats">
+                <div className="phero-stat"><div className="phero-stat-val">#1</div><div className="phero-stat-label">Highest-Margin F&amp;I Product</div></div>
+                <div className="phero-stat"><div className="phero-stat-val">3</div><div className="phero-stat-label">Coverage Tiers</div></div>
+                <div className="phero-stat"><div className="phero-stat-val">Your</div><div className="phero-stat-label">Brand on the Certificate</div></div>
+              </div>
             </div>
-            <div className="space-y-4">
-              {[
-                {
-                  icon: ShieldCheck,
-                  title: "Per-VIN warranty records",
-                  desc: "Coverage start, expiry, and remaining duration tracked automatically for every unit.",
-                },
-                {
-                  icon: Bell,
-                  title: "Automatic renewal alerts",
-                  desc: "Platform alerts your team before coverage expires — so no unit falls through the cracks.",
-                },
-                {
-                  icon: RefreshCw,
-                  title: "Cross-manufacturer coverage",
-                  desc: "Supports all major RV manufacturers with consistent tracking regardless of brand.",
-                },
-                {
-                  icon: BarChart3,
-                  title: "Coverage visibility in dealer dashboard",
-                  desc: "All warranty data, claim history, and plan details visible in a single Unit Detail view.",
-                },
-              ].map((item) => {
-                const Icon = item.icon;
-                return (
-                  <div
-                    key={item.title}
-                    className="flex items-start gap-4 bg-card rounded-lg p-4 border border-border"
-                  >
-                    <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                      <Icon className="w-4 h-4 text-primary" />
-                    </div>
-                    <div>
-                      <div className="font-semibold text-foreground text-sm">
-                        {item.title}
-                      </div>
-                      <div className="text-muted-foreground text-sm mt-0.5">
-                        {item.desc}
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
+            <div className="phero-img">
+              <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?ixlib=rb-4.0.3&auto=format&fit=crop&w=584&h=438&fm=webp&q=75" alt="Extended warranty" width={584} height={438} />
             </div>
           </div>
         </div>
       </section>
 
-      {/* Claims integration */}
-      <section className="py-20 bg-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-4">
-              Warranty Claims Flow Directly Into Claims Processing
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              No duplicate data entry. Warranty claims created in the platform
-              automatically appear in the operator processing queue.
-            </p>
+      {/* METRIC BAR */}
+      <section className="sec-g" style={{padding:'2.5rem 0'}}>
+        <div className="wrap">
+          <div className="metric-bar">
+            <div className="metric-item"><div className="metric-num">6+</div><div className="metric-label">Major Systems Covered</div></div>
+            <div className="metric-item"><div className="metric-num">3</div><div className="metric-label">Coverage Tiers</div></div>
+            <div className="metric-item"><div className="metric-num">DS360</div><div className="metric-label">Claims Processing</div></div>
+            <div className="metric-item"><div className="metric-num">Co-Brand</div><div className="metric-label">Your Dealer Name</div></div>
           </div>
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                icon: FileText,
-                step: "1",
-                title: "Create Warranty Claim",
-                desc: "Dealer creates a warranty claim in the platform, adding FRC line items, descriptions, and photos per line.",
-              },
-              {
-                icon: Wrench,
-                step: "2",
-                title: "Operator Processes Claim",
-                desc: "The operator team reviews, optimizes FRC codes, and submits the claim on the manufacturer portal — tracking approval per line.",
-              },
-              {
-                icon: CheckCircle2,
-                step: "3",
-                title: "Approvals Reported Back",
-                desc: "Approval and denial decisions per line are logged in the platform and visible in the dealer's claim detail view.",
-              },
-            ].map((item) => {
-              const Icon = item.icon;
-              return (
-                <div
-                  key={item.step}
-                  className="bg-card rounded-xl p-8 border border-border hover:border-primary/40 hover:shadow-lg transition-all duration-300 text-center"
-                >
-                  <div className="w-14 h-14 rounded-full bg-primary text-white flex items-center justify-center text-xl font-bold mx-auto mb-5">
-                    {item.step}
-                  </div>
-                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                    <Icon className="w-5 h-5 text-primary" />
-                  </div>
-                  <h3 className="font-semibold text-foreground mb-3">
-                    {item.title}
-                  </h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed">
-                    {item.desc}
-                  </p>
+        </div>
+      </section>
+
+      {/* THE PITCH */}
+      <section className="sec-w">
+        <div className="wrap">
+          <div className="split anim">
+            <div className="split-text">
+              <div className="badge">The Dealer Opportunity</div>
+              <h2>The Easiest Product to Sell — Because the Client Already Fears the Alternative</h2>
+              <p>Every RV buyer knows that manufacturer warranties expire. What they don't know is how expensive RV repairs are without coverage. A single slide-out motor replacement can cost $2,500. An air conditioner compressor is $1,800. A water heater is $900. These are not hypothetical numbers — these are the repairs your service bay sees every month.</p>
+              <p>Extended Warranty is the product that sells itself once the client understands the cost of not having it. Your job is to present it. DS360 handles everything after the handshake — issuance, certificate, and claims processing when the time comes.</p>
+            </div>
+            <div className="split-img">
+              <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&auto=format&fit=crop&w=576&h=432&fm=webp&q=75" alt="Service bay" width={576} height={432} loading="lazy" />
+              <div className="overlay"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* STATEMENT */}
+      <section className="sec-g" style={{padding:'3.5rem 0'}}>
+        <div className="wrap">
+          <div className="bst">
+            <div className="bst-line"></div>
+            <p>"A slide-out motor replacement costs $2,500. An extended warranty costs a fraction of that. The math does the selling for you."</p>
+          </div>
+        </div>
+      </section>
+
+      {/* WHAT'S COVERED */}
+      <section className="sec-w">
+        <div className="wrap">
+          <div className="sec-head">
+            <div className="badge">Coverage Areas</div>
+            <h2>Major Systems. Real Protection.</h2>
+            <p>DS360 Extended Warranty covers the systems and components that fail most often — and cost the most to repair. This is not a maintenance plan. This is protection against the repairs that can cost your client thousands.</p>
+          </div>
+          <div className="cov-grid anim">
+            <div className="cov-card">
+              <div className="cov-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="20" height="20"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+              <h4>Drivetrain</h4>
+              <p>Engine, transmission, drive axle, transfer case, and related components. The most expensive system to repair on any motorized RV.</p>
+            </div>
+            <div className="cov-card">
+              <div className="cov-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="20" height="20"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+              <h4>Electrical</h4>
+              <p>Wiring harnesses, converters, inverters, generators, control panels, lighting systems, and shore power connections.</p>
+            </div>
+            <div className="cov-card">
+              <div className="cov-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="20" height="20"><path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z"/><path d="M12 6v6"/><path d="M12 18h.01"/></svg></div>
+              <h4>Plumbing</h4>
+              <p>Water pump, water heater, fresh/gray/black tank systems, fittings, valves, and associated plumbing components.</p>
+            </div>
+            <div className="cov-card">
+              <div className="cov-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="20" height="20"><rect width="20" height="14" x="2" y="3" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg></div>
+              <h4>Appliances</h4>
+              <p>Refrigerator, air conditioning, furnace, microwave, range/oven, washer/dryer, and built-in entertainment systems.</p>
+            </div>
+            <div className="cov-card">
+              <div className="cov-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="20" height="20"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg></div>
+              <h4>Slide-Outs</h4>
+              <p>Slide-out motors, mechanisms, seals, and structural components. One of the most common and expensive RV failure points.</p>
+            </div>
+            <div className="cov-card">
+              <div className="cov-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="20" height="20"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+              <h4>Structural</h4>
+              <p>Roof, sidewall, floor, frame, and structural seals. Protection against the failures that compromise the unit's livability and value.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* COVERAGE TIERS */}
+      <section className="sec-g" id="coverage">
+        <div className="wrap">
+          <div className="sec-head">
+            <div className="badge">Coverage Tiers</div>
+            <h2>Three Levels of Protection</h2>
+            <p>Offer your client the level that matches their budget and their comfort. All three tiers are processed through DS360 and co-branded with your dealership.</p>
+          </div>
+          <div className="cov-table anim">
+            <div className="cov-table-head"><div>Component</div><div>Basic</div><div>Standard</div><div>Premium</div></div>
+            <div className="cov-table-row"><div className="cov-table-feat">Drivetrain</div><div className="cov-check">✓</div><div className="cov-check">✓</div><div className="cov-check">✓</div></div>
+            <div className="cov-table-row"><div className="cov-table-feat">Electrical</div><div className="cov-check">✓</div><div className="cov-check">✓</div><div className="cov-check">✓</div></div>
+            <div className="cov-table-row"><div className="cov-table-feat">Plumbing</div><div className="cov-x">—</div><div className="cov-check">✓</div><div className="cov-check">✓</div></div>
+            <div className="cov-table-row"><div className="cov-table-feat">Appliances</div><div className="cov-x">—</div><div className="cov-check">✓</div><div className="cov-check">✓</div></div>
+            <div className="cov-table-row"><div className="cov-table-feat">Slide-Outs</div><div className="cov-x">—</div><div className="cov-x">—</div><div className="cov-check">✓</div></div>
+            <div className="cov-table-row"><div className="cov-table-feat">Structural</div><div className="cov-x">—</div><div className="cov-x">—</div><div className="cov-check">✓</div></div>
+            <div className="cov-table-row"><div className="cov-table-feat">A/C &amp; Heating</div><div className="cov-x">—</div><div className="cov-check">✓</div><div className="cov-check">✓</div></div>
+            <div className="cov-table-row"><div className="cov-table-feat">Roof &amp; Seals</div><div className="cov-x">—</div><div className="cov-x">—</div><div className="cov-check">✓</div></div>
+            <div className="cov-table-row" style={{background:'var(--primary-5)'}}>
+              <div className="cov-table-feat" style={{fontWeight:700}}>Dealer Wholesale Price</div>
+              <div style={{fontWeight:700,color:'var(--primary)',textAlign:'center'}}>$X,XXX</div>
+              <div style={{fontWeight:700,color:'var(--primary)',textAlign:'center'}}>$X,XXX</div>
+              <div style={{fontWeight:700,color:'var(--green)',textAlign:'center'}}>$X,XXX</div>
+            </div>
+          </div>
+          <p style={{textAlign:'center',fontSize:'.78rem',color:'var(--muted)',marginTop:'1.25rem',maxWidth:'40rem',marginLeft:'auto',marginRight:'auto'}}>Prices shown are dealer wholesale cost. You set the retail price. The margin is your revenue. Volume-based cashback incentives available — <a href="/products/fi-services#incentives" style={{color:'var(--primary)',fontWeight:600}}>view incentive tiers</a>.</p>
+        </div>
+      </section>
+
+      {/* AI CROSS-SELL */}
+      <section className="sec-w" style={{padding:'2.5rem 0'}}>
+        <div className="wrap">
+          <div className="bcs">
+            <div className="bcs-dot"></div>
+            <div className="bcs-text"><strong>AI F&amp;I Presenter</strong> will present Extended Warranty to every credit-approved client automatically — with pricing personalized to their unit. Beta launching Q4 2026.</div>
+            <a href="/services/ai-fi-presenter">Learn More →</a>
+          </div>
+        </div>
+      </section>
+
+      {/* HOW CLAIMS WORK */}
+      <section className="sec-w">
+        <div className="wrap">
+          <div className="split split-rev anim">
+            <div className="split-text">
+              <div className="badge">When the Client Needs It</div>
+              <h2>Claims Go Through DS360 — The Same Platform You Already Use</h2>
+              <p>When a client's covered component fails and the manufacturer warranty has expired, they contact your dealership or submit through the Client Portal. The claim enters the DS360 workflow — the same A-Z process used for warranty claims. Approval, parts, repair, payout. Your client's experience is seamless. Your team's process doesn't change.</p>
+              <div className="checks">
+                <div className="check">
+                  <div className="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" strokeWidth="3"><path d="M5 13l4 4L19 7"/></svg></div>
+                  <div className="check-info"><h3>Same Claims Workflow</h3><p>Extended warranty claims use the same DS360 process as manufacturer warranty claims</p></div>
                 </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Revenue section */}
-      <section className="py-20 bg-muted/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-4">
-              Warranty Plans as a Revenue Stream
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Extended service plans generate recurring dealer revenue on every
-              unit — at deal closing and post-sale through the customer portal.
-            </p>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              {
-                icon: CircleDollarSign,
-                stat: "$500–$1,100",
-                label: "Average dealer commission per plan sold",
-              },
-              {
-                icon: TrendingUp,
-                stat: "68%",
-                label: "Of customers offered a plan at closing buy one",
-              },
-              {
-                icon: RefreshCw,
-                stat: "Post-sale",
-                label: "Plans also sold through customer portal after delivery",
-              },
-              {
-                icon: BarChart3,
-                stat: "Per-deal",
-                label: "Revenue reported per deal and monthly in your dashboard",
-              },
-            ].map((item, i) => {
-              const Icon = item.icon;
-              return (
-                <div
-                  key={i}
-                  className="bg-card rounded-xl p-6 border border-border hover:border-primary/40 hover:shadow-lg transition-all duration-300 text-center"
-                >
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                    <Icon className="w-6 h-6 text-primary" />
-                  </div>
-                  <div className="text-2xl font-bold text-foreground mb-2">
-                    {item.stat}
-                  </div>
-                  <div className="text-sm text-muted-foreground leading-relaxed">
-                    {item.label}
-                  </div>
+                <div className="check">
+                  <div className="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" strokeWidth="3"><path d="M5 13l4 4L19 7"/></svg></div>
+                  <div className="check-info"><h3>Parts Through DS360</h3><p>Approved claims trigger parts sourcing automatically — same as warranty parts</p></div>
                 </div>
-              );
-            })}
+                <div className="check">
+                  <div className="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" strokeWidth="3"><path d="M5 13l4 4L19 7"/></svg></div>
+                  <div className="check-info"><h3>Client Sees Your Brand</h3><p>Throughout the entire claims experience, the client interacts with your dealer branding</p></div>
+                </div>
+              </div>
+            </div>
+            <div className="split-img">
+              <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=576&h=432&fm=webp&q=75" alt="Claims processing" width={576} height={432} loading="lazy" />
+              <div className="overlay"></div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Stats strip */}
-      <section className="py-12 bg-primary text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
-            <div>
-              <div className="text-3xl font-bold mb-1">3 Tiers</div>
-              <div className="text-primary-foreground/80 text-sm">
-                Plan Options for Every Customer
-              </div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold mb-1">All Brands</div>
-              <div className="text-primary-foreground/80 text-sm">
-                Major RV Manufacturers Supported
-              </div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold mb-1">Auto</div>
-              <div className="text-primary-foreground/80 text-sm">
-                Coverage Expiry Alerts
-              </div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold mb-1">Integrated</div>
-              <div className="text-primary-foreground/80 text-sm">
-                Directly Into Claims Module
-              </div>
-            </div>
+      {/* DYK */}
+      <section className="sec-g">
+        <div className="wrap">
+          <div className="dyk anim">
+            <div className="dyk-tag">Did You Know<span style={{color:'#033280'}}>?</span></div>
+            <p>The average Class A motorhome owner will spend <strong>over $8,000 in repairs</strong> within the first two years after their manufacturer warranty expires. For fifth wheels, the number is <strong>$4,200 to $6,500</strong>. Extended Warranty is not a luxury — for most RV owners, it is the difference between a manageable expense and a financial crisis.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* STATS */}
+      <section className="sec-w">
+        <div className="wrap">
+          <div className="grid-3 anim">
+            <div className="stat-card"><div className="stat-val">#1</div><div className="stat-title">Highest F&amp;I Margin</div><p className="stat-desc">Extended Warranty consistently generates the highest per-unit revenue of any F&amp;I product</p></div>
+            <div className="stat-card"><div className="stat-val">40%</div><div className="stat-title">Higher Close with Co-Brand</div><p className="stat-desc">Clients trust warranty products from their dealership over unfamiliar third-party names</p></div>
+            <div className="stat-card"><div className="stat-val">$8K+</div><div className="stat-title">Avg Post-Warranty Repairs</div><p className="stat-desc">What Class A owners spend in the first 2 years after manufacturer coverage ends</p></div>
+          </div>
+        </div>
+      </section>
+
+      {/* OTHER PRODUCTS */}
+      <section className="sec-g">
+        <div className="wrap">
+          <div className="sec-head">
+            <h2>Complete the Protection Suite</h2>
+            <p>Extended Warranty covers major systems. These products cover everything else. The more products per unit, the higher your cashback tier.</p>
+          </div>
+          <div className="grid-2 anim">
+            <a href="/products/gap-insurance" className="link-card"><div><h4>GAP Insurance</h4><p>Covers the loan-to-value gap if the unit is totaled or stolen</p></div><span className="link-arrow">→</span></a>
+            <a href="/products/appearance-protection" className="link-card"><div><h4>Appearance Protection</h4><p>Interior and exterior surface coverage — paint, upholstery, vinyl</p></div><span className="link-arrow">→</span></a>
+            <a href="/products/tire-wheel-protection" className="link-card"><div><h4>Tire &amp; Wheel Protection</h4><p>Road hazard coverage for tires and wheels</p></div><span className="link-arrow">→</span></a>
+            <a href="/products/roadside-travel-protection" className="link-card"><div><h4>Roadside &amp; Travel</h4><p>Titanium tier — 160KM+, trip interruption, emergency coverage</p></div><span className="link-arrow">→</span></a>
+            <a href="/products/specialty-protection" className="link-card"><div><h4>Specialty Protection</h4><p>Generators, solar, leveling systems, awnings, accessories</p></div><span className="link-arrow">→</span></a>
+            <a href="/products/fi-services" className="link-card"><div><h4>All Products &amp; Incentives</h4><p>View the full suite and cashback tier structure</p></div><span className="link-arrow">→</span></a>
           </div>
         </div>
       </section>
 
       {/* FAQ */}
-      <section className="py-20 bg-background">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-4">
-              Frequently Asked Questions
-            </h2>
-          </div>
-          <div className="space-y-4">
-            {faqs.map((faq, i) => (
-              <div
-                key={i}
-                className="bg-card rounded-xl border border-border overflow-hidden"
-              >
-                <button
-                  className="w-full text-left p-6 flex items-center justify-between gap-4 hover:bg-muted/20 transition-colors"
-                  onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                  aria-expanded={openFaq === i}
-                >
-                  <span className="font-semibold text-foreground">
-                    {faq.q}
-                  </span>
-                  {openFaq === i ? (
-                    <ChevronUp className="w-5 h-5 text-muted-foreground flex-shrink-0" />
-                  ) : (
-                    <ChevronDown className="w-5 h-5 text-muted-foreground flex-shrink-0" />
-                  )}
-                </button>
-                {openFaq === i && (
-                  <div className="px-6 pb-6 text-muted-foreground leading-relaxed border-t border-border pt-4">
-                    {faq.a}
-                  </div>
-                )}
-              </div>
-            ))}
+      <section className="sec-w">
+        <div className="wrap">
+          <div className="faq-layout anim">
+            <div className="faq-left">
+              <div className="badge">FAQ</div>
+              <h2 style={{fontSize:'clamp(1.5rem,3.5vw,2rem)',fontWeight:700,marginTop:'.75rem',lineHeight:1.2}}>Extended Warranty<br/>Questions</h2>
+              <p style={{fontSize:'1rem',color:'var(--muted)',lineHeight:1.7,marginTop:'1rem'}}>What dealers need to know about selling DS360 Extended Warranty.</p>
+              <a href="/contact" className="btn btn-primary" style={{width:'fit-content',marginTop:'1.5rem'}}>Get Started →</a>
+            </div>
+            <div className="faq-right">
+              {[
+                {
+                  q: 'When does Extended Warranty coverage begin?',
+                  a: "Coverage begins when the manufacturer's standard warranty expires — or at the time of sale for used units that are already out of manufacturer coverage. The start date is configured during activation."
+                },
+                {
+                  q: 'Can I sell Extended Warranty on used units?',
+                  a: 'Yes. Extended Warranty is available for both new and pre-owned units. For used units where the manufacturer warranty has already expired, coverage begins immediately at the time of sale. This makes it a strong upsell on every used unit your dealership moves.'
+                },
+                {
+                  q: 'How are claims processed?',
+                  a: 'Through the DS360 platform — the same A-Z claims workflow used for manufacturer warranty claims. The client contacts your dealership or submits through the Client Portal. DS360 handles approval, parts, repair, and payout.'
+                },
+                {
+                  q: 'What is my margin on Extended Warranty?',
+                  a: 'You pay DS360 the wholesale cost and set your own retail price. The difference is your margin. Extended Warranty typically carries the highest per-unit margin of any product in the F&I suite. Volume-based cashback incentives further increase your return.'
+                },
+                {
+                  q: 'Is there a deductible for the client?',
+                  a: "Deductible structure depends on the coverage tier selected. Details are provided during dealer onboarding and are clearly stated on the client's certificate so there are no surprises when a claim is filed."
+                }
+              ].map((item, i) => (
+                <div key={i} className={`faq-card${openFaq === i ? ' open' : ''}`}>
+                  <button className="faq-q" onClick={() => setOpenFaq(openFaq === i ? null : i)}>
+                    <span>{item.q}</span>
+                    <span className="faq-icon">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="20" height="20"><path d="M12 5v14M5 12h14"/></svg>
+                    </span>
+                  </button>
+                  <div className="faq-a"><p>{item.a}</p></div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-20 bg-muted/30">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
-          <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
-            Start Selling Warranty Plans
-          </h2>
-          <p className="text-xl text-muted-foreground">
-            Add a new revenue stream to every deal. Warranty plan management is
-            available on all DealerSuite360 plans.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" asChild data-testid="button-contact-warranty">
-              <Link href="/sign-up">Create Your Account</Link>
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              asChild
-              data-testid="button-call-warranty"
-            >
-              <Link href="/contact">Talk to Our Team</Link>
-            </Button>
+      {/* BOTTOM CTA */}
+      <section className="bcta">
+        <div className="wrap">
+          <h2>The Manufacturer Warranty Ends. Your Revenue Opportunity Begins.</h2>
+          <p>Add DS360 Extended Warranty to your F&amp;I lineup and start earning on the highest-margin product in the RV industry.</p>
+          <div className="bcta-btns">
+            <a href="/contact" className="btn btn-lg btn-green">Start Selling →</a>
+            <a href="/products/fi-services" className="btn btn-lg btn-white">View All Products</a>
           </div>
         </div>
       </section>
