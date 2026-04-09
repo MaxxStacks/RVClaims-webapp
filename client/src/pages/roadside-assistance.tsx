@@ -1,435 +1,274 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { PageLayout } from "@/components/page-layout";
-import { ServiceBadge } from "@/components/service-badge";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Link } from "wouter";
-import { useLanguage } from "@/hooks/use-language";
-import {
-  Truck, Wrench, Battery, Key, Fuel, AlertCircle,
-  CheckCircle, ChevronDown, DollarSign, Shield,
-  Phone, MapPin, Clock, Users
-} from "lucide-react";
 
-const serviceSchema = {
-  "@context": "https://schema.org",
-  "@type": "Service",
-  "name": "24/7 RV Roadside Assistance",
-  "provider": { "@type": "Organization", "name": "Dealer Suite 360", "url": "https://dealersuite360.com" },
-  "areaServed": { "@type": "Place", "name": "North America" },
-  "description": "Offer your customers 24/7 roadside assistance coverage. Towing, emergency repairs, tire service, and lockout assistance for RVs across North America.",
-  "url": "https://dealersuite360.com/roadside-assistance"
-};
-
-const faqSchema = {
+const schema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
   mainEntity: [
     {
       "@type": "Question",
-      name: "How do dealers add roadside assistance to their product offerings?",
+      name: "Is basic roadside really free?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Dealers enroll through DealerSuite360 and can offer roadside assistance plans at point of sale or as a standalone add-on. Plans are sold per unit at an annual rate, and management is handled entirely through the dealer portal."
-      }
+        text: "Yes. Basic roadside assistance is included in every DS360 dealer plan at no additional charge. There are no per-use fees, no per-client fees, and no activation costs. DS360 covers it entirely.",
+      },
     },
     {
       "@type": "Question",
-      name: "What is the response time for emergency roadside calls?",
+      name: "Can I resell basic roadside to my clients?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Our dispatch center targets a 30-minute response to first contact. Actual on-site arrival times vary by location, but the 24/7 dispatch center is operational at all times to coordinate service and communicate ETAs."
-      }
+        text: "No. Basic roadside is a complimentary benefit only — it cannot be charged to the client. If you want to sell roadside protection as an F&I product, Titanium Roadside & Travel is the resellable option.",
+      },
     },
     {
       "@type": "Question",
-      name: "Does roadside assistance coverage apply across the entire RV?",
+      name: "How do I activate it for a client?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Yes. Coverage applies to the RV unit itself regardless of tow vehicle. This includes Class A, B, and C motorhomes as well as towable units. Tow vehicle-specific breakdowns are not covered under the RV plan."
-      }
+        text: "Activation happens in the DS360 dealer portal at the time of sale. Your team links the roadside benefit to the client's VIN — one step during the delivery process. The client receives confirmation automatically.",
+      },
     },
     {
       "@type": "Question",
-      name: "How is roadside assistance pricing structured for dealers?",
+      name: "What happens if the client is outside 50KM?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Plans are priced per unit per year. Dealers purchase plans at a wholesale rate and sell at retail, retaining the margin. Pricing is tiered based on RV class and coverage level. Contact our team for a dealer pricing sheet."
-      }
-    }
-  ]
+        text: "Basic roadside covers a 50KM radius from your dealership. If the client is outside that zone, they would need Titanium Roadside & Travel for extended coverage. This is also a natural upsell opportunity at the point of sale — offer basic free, then present Titanium for full-trip coverage.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "What is the difference between this and Titanium?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Basic is a free service — 50KM, towing only, complimentary. Titanium is a premium product — 160KM+, trip interruption, emergency lodging and meals, vehicle return, and co-branded with your dealership. Basic is a gift. Titanium is a revenue-generating F&I product your dealership sells.",
+      },
+    },
+  ],
 };
 
-const coverageCards = [
-  {
-    icon: Truck,
-    title: "Emergency Towing",
-    description: "Full RV towing to the nearest qualified service facility when the unit cannot be safely operated.",
-    included: ["Up to 100 miles per incident", "All RV types and sizes", "Flatbed and specialized equipment", "Destination of owner's choice (within limit)"]
-  },
-  {
-    icon: AlertCircle,
-    title: "Flat Tire Service",
-    description: "On-site tire change using the RV's spare or emergency inflation for drivable flats.",
-    included: ["Spare tire mounting", "Tire inflation service", "Referral to tire shop if needed", "All axle positions covered"]
-  },
-  {
-    icon: Battery,
-    title: "Battery Jump Start",
-    description: "Emergency battery boost to get motorhomes and self-contained units running again.",
-    included: ["12V and 24V systems", "Coach and chassis battery", "Generator battery service", "Replacement referral if needed"]
-  },
-  {
-    icon: Key,
-    title: "Lockout Assistance",
-    description: "Professional lockout service when keys are locked inside the unit — day or night.",
-    included: ["Entry door lockouts", "Compartment access", "Key replacement referral", "No damage guarantee"]
-  },
-  {
-    icon: Fuel,
-    title: "Fuel Delivery",
-    description: "Emergency fuel or DEF delivery when the tank runs dry — to get you to the nearest station.",
-    included: ["Up to 5 gallons delivered", "Diesel, gasoline, DEF", "Propane referral service", "Cost of fuel charged separately"]
-  },
-  {
-    icon: Wrench,
-    title: "Emergency Repairs",
-    description: "Minor on-site mechanical assistance when the issue is safe to repair roadside.",
-    included: ["Minor mechanical adjustments", "Hitch and connection help", "Slide-out manual override", "Escalation to tow when needed"]
-  },
-];
-
-const dealerBullets = [
-  "Add a premium revenue line with zero operational overhead — DealerSuite360 handles dispatch, fulfillment, and customer service",
-  "Offer plans at point of sale during unit delivery — highest conversion rate when the customer is most engaged",
-  "Earn margin on every plan sold: purchase wholesale, sell at retail through your branded portal",
-  "Increase customer lifetime value and return visits — customers with active coverage plans return to your service department first",
-];
-
-const ownerBullets = [
-  "Peace of mind for every trip — one number to call from anywhere in North America, 24 hours a day",
-  "Coverage area spans all 50 US states and all Canadian provinces — no geographic exclusions for plan holders",
-  "30-minute response target from dispatch — you'll know help is on the way within minutes of calling",
-  "All RV types covered: motorhomes, travel trailers, fifth wheels, toy haulers, and all specialty formats",
-];
-
-const howItWorksSteps = [
-  {
-    number: "01",
-    icon: Phone,
-    title: "Customer Calls",
-    description: "Customer dials the 24/7 dispatch number on their coverage card. A live dispatcher answers within minutes — no automated menus."
-  },
-  {
-    number: "02",
-    icon: MapPin,
-    title: "Service Assigned",
-    description: "Dispatch locates the nearest qualified service provider for the issue type and dispatches them with full details."
-  },
-  {
-    number: "03",
-    icon: Truck,
-    title: "Service Arrives",
-    description: "The service provider arrives and resolves the issue on-site or arranges safe transport to a service facility."
-  },
-  {
-    number: "04",
-    icon: CheckCircle,
-    title: "Claim Logged",
-    description: "The incident is automatically logged in DealerSuite360. The dealer is notified and the record is available for review."
-  },
-];
-
-function FaqItem({ question, answer }: { question: string; answer: string }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <div className="border border-border rounded-xl overflow-hidden">
-      <button
-        className="w-full flex items-center justify-between p-6 text-left bg-card hover:bg-muted/40 transition-colors"
-        onClick={() => setOpen(!open)}
-        aria-expanded={open}
-      >
-        <span className="font-semibold text-foreground pr-4">{question}</span>
-        <ChevronDown className={`text-primary flex-shrink-0 transition-transform duration-200 ${open ? "rotate-180" : ""}`} size={20} />
-      </button>
-      {open && (
-        <div className="px-6 pb-6 pt-2 bg-card text-muted-foreground leading-relaxed">
-          {answer}
-        </div>
-      )}
-    </div>
-  );
-}
-
 export default function RoadsideAssistance() {
-  const { t } = useLanguage();
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
+
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add("v");
+            obs.unobserve(e.target);
+          }
+        });
+      },
+      { threshold: 0.08 }
+    );
+    document.querySelectorAll(".anim").forEach((el) => obs.observe(el));
+    return () => obs.disconnect();
+  }, []);
+
+  const toggleFaq = (i: number) => setOpenFaq(openFaq === i ? null : i);
 
   return (
     <PageLayout
-      seoTitle="24/7 RV Roadside Assistance | Emergency Coverage | DealerSuite360"
-      seoDescription="Offer your customers 24/7 roadside assistance coverage. Towing, emergency repairs, tire service, and lockout assistance for RVs across North America."
-      seoKeywords="RV roadside assistance, emergency towing, RV breakdown, 24/7 roadside support, dealership roadside program, RV lockout service"
-      canonical="/roadside-assistance"
-      schema={[serviceSchema, faqSchema]}
+      seoTitle="Roadside Assistance — Free with Every DS360 Plan"
+      seoDescription="Every DS360 dealer plan includes free basic roadside assistance — 50KM coverage, DS360-managed dispatch, and a deal-closing incentive that costs your dealership nothing."
+      schema={schema}
     >
-      {/* Hero */}
-      <section className="pt-24 pb-16 bg-gradient-to-b from-primary/5 to-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="mb-6">
-            <ServiceBadge quarter="Q4" />
-          </div>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight max-w-4xl mx-auto">
-            24/7 Roadside Assistance for RV Owners
-          </h1>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-10">
-            Give your customers confidence on every trip. Sell roadside assistance plans directly through DealerSuite360 — we handle dispatch, fulfillment, and customer service. You keep the margin.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" asChild>
-              <Link href="/sign-up">Get Early Access</Link>
-            </Button>
-            <Button size="lg" variant="outline" asChild>
-              <Link href="/contact">Talk to Our Team</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* Coverage Grid */}
-      <section className="py-20 bg-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Complete Roadside Coverage</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Six essential services — all available 24 hours a day, seven days a week, anywhere in North America.
-            </p>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {coverageCards.map((card) => {
-              const Icon = card.icon;
-              return (
-                <div key={card.title} className="bg-card rounded-xl p-8 border border-border hover:border-primary/40 hover:shadow-lg transition-all duration-300">
-                  <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-5">
-                    <Icon className="w-6 h-6 text-primary" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-3">{card.title}</h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed mb-5">{card.description}</p>
-                  <ul className="space-y-2">
-                    {card.included.map((item) => (
-                      <li key={item} className="flex items-start gap-2 text-sm text-muted-foreground">
-                        <CheckCircle className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* For Dealers */}
-      <section className="py-20 bg-muted/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-16 items-center">
-            <div>
-              <Badge className="mb-4 border border-primary/20 px-3 py-1 text-xs" variant="outline">
-                For Dealers
-              </Badge>
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                A New Revenue Line With Zero Overhead
-              </h2>
-              <p className="text-muted-foreground leading-relaxed mb-6 text-lg">
-                Roadside assistance is one of the highest-margin add-ons a dealership can offer. Customers who experience a breakdown without coverage remember it — and so do customers who get fast, professional help when they need it most.
-              </p>
-              <div className="space-y-4">
-                {dealerBullets.map((point) => (
-                  <div key={point} className="flex items-start gap-3">
-                    <CheckCircle className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                    <p className="text-foreground">{point}</p>
-                  </div>
-                ))}
+      {/* 1. HERO */}
+      <section className="phero">
+        <div className="wrap">
+          <div className="phero-grid">
+            <div className="phero-text">
+              <div><a href="/services" style={{fontSize:'.82rem',color:'var(--muted)'}}>← All Services</a></div>
+              <div><div className="badge badge-green">Free with Every DS360 Plan</div></div>
+              <h1>A Deal-Closing Incentive That<span className="gradient">Costs You Nothing</span></h1>
+              <p className="phero-desc">Every DS360 dealer plan includes basic roadside assistance at no additional cost. Offer it to every client at the point of sale as a complimentary benefit — towing coordination, dispatch, and client communication within a 50KM radius. DS360 manages everything. Your dealership gets the credit. The client gets peace of mind. And it never costs you a dollar.</p>
+              <div className="phero-btns">
+                <a href="/contact" className="btn btn-lg btn-primary">Get Started</a>
+                <a href="#comparison" className="btn btn-lg btn-outline">Compare Tiers</a>
+              </div>
+              <div className="phero-stats">
+                <div className="phero-stat"><div className="phero-stat-val">$0</div><div className="phero-stat-label">Cost to Dealer</div></div>
+                <div className="phero-stat"><div className="phero-stat-val">50KM</div><div className="phero-stat-label">Coverage Radius</div></div>
+                <div className="phero-stat"><div className="phero-stat-val">DS360</div><div className="phero-stat-label">Managed Dispatch</div></div>
               </div>
             </div>
-            <div className="bg-card rounded-2xl p-10 border border-border">
-              <DollarSign className="w-12 h-12 text-primary mb-6" />
-              <h3 className="text-xl font-bold mb-4">Revenue Opportunity at Point of Sale</h3>
-              <p className="text-muted-foreground mb-6 leading-relaxed">
-                Roadside assistance plans are sold at unit delivery — the highest-intent moment in the customer relationship. When bundled with extended warranty and protection packages, attachment rates exceed 60%.
-              </p>
-              <div className="bg-primary/5 rounded-xl p-4 border border-primary/10">
-                <p className="text-sm font-medium text-foreground">
-                  Dealers who offer roadside plans at delivery report higher CSI scores, more service appointments, and stronger unit repurchase rates.
-                </p>
+            <div className="phero-img">
+              <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-4.0.3&auto=format&fit=crop&w=584&h=438&fm=webp&q=75" alt="RV on the road" width="584" height="438" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 2. THE SALES TOOL */}
+      <section className="sec-w">
+        <div className="wrap">
+          <div className="split anim">
+            <div className="split-text">
+              <div className="badge">The Sales Advantage</div>
+              <h2>The Easiest Close Incentive You Will Ever Offer</h2>
+              <p>Most F&amp;I products require a pitch, an explanation, and a price conversation. Basic roadside requires one sentence: "Your unit comes with complimentary roadside assistance — if you ever need help on the road, we have you covered." It costs you nothing. It removes a buyer objection. And it gives your client a reason to answer your call the next time you reach out.</p>
+              <p>This is not a product you sell. It is a benefit you give. DS360 manages the dispatch, the towing coordination, and the client communication. Your dealership is the hero.</p>
+            </div>
+            <div className="split-img">
+              <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?ixlib=rb-4.0.3&auto=format&fit=crop&w=576&h=432&fm=webp&q=75" alt="DS360 roadside management" width="576" height="432" loading="lazy" />
+              <div className="overlay"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 3. STATEMENT */}
+      <section className="sec-g" style={{padding:'3.5rem 0'}}>
+        <div className="wrap">
+          <div className="bst"><div className="bst-line"></div><p>"The client does not remember the dealership that sold them the RV. They remember the dealership that showed up when they needed help."</p></div>
+        </div>
+      </section>
+
+      {/* 4. WHAT'S INCLUDED */}
+      <section className="sec-w">
+        <div className="wrap">
+          <div className="split split-rev anim">
+            <div className="split-text">
+              <div className="badge badge-green">Included Free</div>
+              <h2>What Basic Roadside Covers</h2>
+              <p>Basic roadside assistance is a complimentary benefit — not a product for resale. It covers your client within a 50KM radius of your dealership and is activated at the time of sale through the dealer portal.</p>
+              <div className="checks">
+                <div className="check"><div className="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" strokeWidth="3"><path d="M5 13l4 4L19 7"/></svg></div><div className="check-info"><h3>Towing Coordination</h3><p>DS360 dispatches a tow to the client's location within the coverage radius</p></div></div>
+                <div className="check"><div className="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" strokeWidth="3"><path d="M5 13l4 4L19 7"/></svg></div><div className="check-info"><h3>Client Communication</h3><p>DS360 manages the client interaction — ETA updates, driver details, status tracking</p></div></div>
+                <div className="check"><div className="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" strokeWidth="3"><path d="M5 13l4 4L19 7"/></svg></div><div className="check-info"><h3>50KM Coverage Radius</h3><p>Coverage zone centered on your dealership location — covers most local client travel</p></div></div>
+                <div className="check"><div className="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" strokeWidth="3"><path d="M5 13l4 4L19 7"/></svg></div><div className="check-info"><h3>Dealer Portal Activation</h3><p>Your team activates coverage for each client at the time of sale — one click in the portal</p></div></div>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* For Owners */}
-      <section className="py-20 bg-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-16 items-center">
-            <div className="bg-card rounded-2xl p-10 border border-border md:order-1">
-              <Shield className="w-12 h-12 text-primary mb-6" />
-              <h3 className="text-xl font-bold mb-4">True Peace of Mind on Every Trip</h3>
-              <p className="text-muted-foreground mb-6 leading-relaxed">
-                RV travel takes people to some of the most remote and beautiful places on the continent. When something goes wrong — and it eventually does — having a 24/7 dispatch number on hand makes all the difference between a minor inconvenience and a ruined trip.
-              </p>
-              <div className="bg-primary/5 rounded-xl p-4 border border-primary/10">
-                <p className="text-sm font-medium text-foreground">
-                  One phone call connects customers to a live dispatcher who coordinates everything — no searching for local tow companies in an unfamiliar area.
-                </p>
-              </div>
-            </div>
-            <div className="md:order-2">
-              <Badge className="mb-4 border border-primary/20 px-3 py-1 text-xs" variant="outline">
-                For RV Owners
-              </Badge>
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                Help Is Always One Call Away
-              </h2>
-              <p className="text-muted-foreground leading-relaxed mb-6 text-lg">
-                Coverage travels with the RV — not with the owner. Wherever the trip takes them, customers have access to immediate assistance from a live dispatch team.
-              </p>
-              <div className="space-y-4">
-                {ownerBullets.map((point) => (
-                  <div key={point} className="flex items-start gap-3">
-                    <CheckCircle className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                    <p className="text-foreground">{point}</p>
-                  </div>
-                ))}
-              </div>
+            <div className="split-img">
+              <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&auto=format&fit=crop&w=576&h=432&fm=webp&q=75" alt="Roadside assistance" width="576" height="432" loading="lazy" />
+              <div className="overlay"></div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Stats Strip */}
-      <section className="py-12 bg-primary text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            <div>
-              <div className="text-3xl md:text-4xl font-bold mb-2">24/7</div>
-              <div className="text-white/75 text-sm">Live Dispatch — Always On</div>
-            </div>
-            <div>
-              <div className="text-3xl md:text-4xl font-bold mb-2">North America</div>
-              <div className="text-white/75 text-sm">Coverage Area</div>
-            </div>
-            <div>
-              <div className="text-3xl md:text-4xl font-bold mb-2">30-Min</div>
-              <div className="text-white/75 text-sm">Response Target</div>
-            </div>
-            <div>
-              <div className="text-3xl md:text-4xl font-bold mb-2">All RV Types</div>
-              <div className="text-white/75 text-sm">Motorhome to Trailer</div>
-            </div>
+      {/* 5. DYK */}
+      <section className="sec-g">
+        <div className="wrap">
+          <div className="dyk anim">
+            <div className="dyk-tag">Did You Know<span style={{color:'#033280'}}>?</span></div>
+            <p>Dealers who offer <strong>complimentary roadside assistance at the point of sale</strong> report a measurable increase in client satisfaction scores and repeat purchase rates. The cost of providing the benefit is zero. The cost of not offering it is the client who buys their next unit somewhere else.</p>
           </div>
         </div>
       </section>
 
-      {/* How It Works */}
-      <section className="py-20 bg-muted/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-14">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">How It Works</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              From the moment a customer calls to the moment the issue is resolved — four steps, completely managed.
-            </p>
+      {/* 6. TWO-PATH: BASIC VS TITANIUM */}
+      <section className="sec-w" id="comparison">
+        <div className="wrap">
+          <div className="sec-head">
+            <h2>Two Tiers of Roadside Protection</h2>
+            <p>Basic is a free service you offer. Titanium is a premium product you sell. Different purpose, different revenue model — both managed by DS360.</p>
           </div>
-          <div className="grid md:grid-cols-4 gap-8">
-            {howItWorksSteps.map((step) => {
-              const Icon = step.icon;
-              return (
-                <div key={step.number} className="text-center">
-                  <div className="w-16 h-16 rounded-full bg-primary text-white flex items-center justify-center mx-auto mb-4">
-                    <Icon className="w-7 h-7" />
-                  </div>
-                  <div className="text-xs font-semibold text-primary mb-1">{step.number}</div>
-                  <h3 className="font-bold text-foreground mb-3">{step.title}</h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed">{step.description}</p>
-                </div>
-              );
-            })}
+          <div className="paths anim">
+            <div className="path path-basic">
+              <div className="path-tag path-tag-free">Free — Included</div>
+              <h3>Basic Roadside</h3>
+              <p>A complimentary benefit included in every DS360 dealer plan. Cannot be resold — offered to clients as a deal-closing incentive at no cost.</p>
+              <ul className="path-list">
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" strokeWidth="2.5"><path d="M5 13l4 4L19 7"/></svg>50KM coverage radius</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" strokeWidth="2.5"><path d="M5 13l4 4L19 7"/></svg>Towing coordination</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" strokeWidth="2.5"><path d="M5 13l4 4L19 7"/></svg>DS360 managed dispatch</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" strokeWidth="2.5"><path d="M5 13l4 4L19 7"/></svg>Client communication</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--border)" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg><span style={{color:'var(--border)'}}>Cannot be resold</span></li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--border)" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg><span style={{color:'var(--border)'}}>No extended coverage</span></li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--border)" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg><span style={{color:'var(--border)'}}>No trip interruption</span></li>
+              </ul>
+              <div style={{fontSize:'1.75rem',fontWeight:800,color:'var(--green)',marginBottom:'.75rem'}}>$0<span style={{fontSize:'.85rem',fontWeight:500,color:'var(--muted)'}}>/always</span></div>
+              <span style={{fontSize:'.82rem',color:'var(--muted)'}}>Included in your DS360 plan</span>
+            </div>
+            <div className="path path-titan">
+              <div className="path-tag path-tag-premium">Premium — Resellable Product</div>
+              <h3>Titanium Roadside &amp; Travel</h3>
+              <p>A revenue-generating product your dealership sells to clients. Extended coverage, trip interruption benefits, and emergency expenses — issued by DS360, sold by you.</p>
+              <ul className="path-list">
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" strokeWidth="2.5"><path d="M5 13l4 4L19 7"/></svg>160KM+ extended coverage</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" strokeWidth="2.5"><path d="M5 13l4 4L19 7"/></svg>Towing + roadside repair</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" strokeWidth="2.5"><path d="M5 13l4 4L19 7"/></svg>Trip interruption coverage</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" strokeWidth="2.5"><path d="M5 13l4 4L19 7"/></svg>Emergency lodging &amp; meals</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" strokeWidth="2.5"><path d="M5 13l4 4L19 7"/></svg>Vehicle return after breakdown</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" strokeWidth="2.5"><path d="M5 13l4 4L19 7"/></svg>Resellable — dealer earns revenue</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" strokeWidth="2.5"><path d="M5 13l4 4L19 7"/></svg>DS360 co-branded with your dealer name</li>
+              </ul>
+              <a href="/products/roadside-travel-protection" className="btn btn-white" style={{width:'fit-content'}}>Explore Titanium →</a>
+            </div>
+          </div>
+          <p style={{textAlign:'center',fontSize:'.78rem',color:'var(--muted)',marginTop:'2rem',maxWidth:'44rem',marginLeft:'auto',marginRight:'auto',lineHeight:1.6}}>Basic Roadside Assistance is provided free to the dealer and is intended exclusively as a complimentary client incentive. It cannot be sold, charged, or billed to a client under any circumstances. Dealers found charging clients for Basic Roadside will have all Basic Roadside services terminated for their entire client base. <a href="/legal/terms" style={{color:'var(--primary)',fontWeight:600,textDecoration:'underline'}}>View full terms and conditions →</a></p>
+        </div>
+      </section>
+
+      {/* 7. STATS */}
+      <section className="sec-g">
+        <div className="wrap">
+          <div className="grid-3 anim">
+            <div className="stat-card"><div className="stat-val">$0</div><div className="stat-title">Cost to Dealer</div><p className="stat-desc">Basic roadside is fully funded by DS360 — zero cost to your dealership</p></div>
+            <div className="stat-card"><div className="stat-val">50KM</div><div className="stat-title">Coverage Radius</div><p className="stat-desc">Centered on your dealership — covers most local client travel patterns</p></div>
+            <div className="stat-card"><div className="stat-val">100%</div><div className="stat-title">DS360 Managed</div><p className="stat-desc">Dispatch, towing coordination, and client communication — all handled by DS360</p></div>
           </div>
         </div>
       </section>
 
-      {/* Pricing */}
-      <section className="py-20 bg-background">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">Simple Per-Unit Pricing</h2>
-          <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Roadside assistance plans are sold on a per-unit, per-year basis. Dealers purchase at wholesale and earn margin on every plan sold at delivery.
-          </p>
-          <div className="bg-card rounded-2xl p-10 border border-border max-w-md mx-auto">
-            <div className="text-sm font-semibold text-primary uppercase tracking-wide mb-2">Annual Plan</div>
-            <div className="text-5xl font-bold mb-2">Starting at <span className="text-primary">$X</span></div>
-            <div className="text-muted-foreground mb-6">per unit per year</div>
-            <div className="space-y-3 text-left mb-8">
+      {/* 8. CONNECTED SERVICES */}
+      <section className="sec-w">
+        <div className="wrap">
+          <div className="sec-head">
+            <h2>Connected Services</h2>
+            <p>Roadside Assistance is included in every DS360 plan. These services extend the roadside experience.</p>
+          </div>
+          <div className="grid-2 anim">
+            <a href="/services/on-site-repairs" className="link-card"><div><h4>On-Site Repairs</h4><p>When towing brings the unit home, On-Site Repairs can handle the fix at the client's location</p></div><span className="link-arrow">→</span></a>
+            <a href="/products/roadside-travel-protection" className="link-card"><div><h4>Titanium Roadside &amp; Travel</h4><p>Upgrade to the premium product your dealership sells — 160KM+, trip interruption, emergency coverage</p></div><span className="link-arrow">→</span></a>
+            <a href="/services/claims-processing" className="link-card"><div><h4>Claims Processing</h4><p>If the roadside issue is warranty-related, the claim flows directly into the DS360 claims workflow</p></div><span className="link-arrow">→</span></a>
+            <a href="/services" className="link-card"><div><h4>All Services</h4><p>View the full DS360 service suite</p></div><span className="link-arrow">→</span></a>
+          </div>
+        </div>
+      </section>
+
+      {/* 9. FAQ */}
+      <section className="sec-g">
+        <div className="wrap">
+          <div className="faq-layout anim">
+            <div className="faq-left">
+              <div className="badge">FAQ</div>
+              <h2 style={{fontSize:'clamp(1.5rem,3.5vw,2rem)',fontWeight:700,marginTop:'.75rem',lineHeight:1.2}}>Roadside Assistance<br/>Questions</h2>
+              <p style={{fontSize:'1rem',color:'var(--muted)',lineHeight:1.7,marginTop:'1rem'}}>What you need to know about the free basic tier and how it differs from Titanium.</p>
+              <a href="/contact" className="btn btn-primary" style={{width:'fit-content',marginTop:'1.5rem'}}>Contact Us →</a>
+            </div>
+            <div className="faq-right">
               {[
-                "All 6 coverage categories included",
-                "No per-call fees for covered incidents",
-                "Transferable if unit is sold",
-                "Managed through dealer portal",
-              ].map((point) => (
-                <div key={point} className="flex items-center gap-3">
-                  <CheckCircle className="w-4 h-4 text-primary flex-shrink-0" />
-                  <span className="text-sm text-foreground">{point}</span>
+                { q: "Is basic roadside really free?", a: "Yes. Basic roadside assistance is included in every DS360 dealer plan at no additional charge. There are no per-use fees, no per-client fees, and no activation costs. DS360 covers it entirely." },
+                { q: "Can I resell basic roadside to my clients?", a: "No. Basic roadside is a complimentary benefit only — it cannot be charged to the client. If you want to sell roadside protection as an F&I product, Titanium Roadside & Travel is the resellable option." },
+                { q: "How do I activate it for a client?", a: "Activation happens in the DS360 dealer portal at the time of sale. Your team links the roadside benefit to the client's VIN — one step during the delivery process. The client receives confirmation automatically." },
+                { q: "What happens if the client is outside 50KM?", a: "Basic roadside covers a 50KM radius from your dealership. If the client is outside that zone, they would need Titanium Roadside & Travel for extended coverage. This is also a natural upsell opportunity at the point of sale — offer basic free, then present Titanium for full-trip coverage." },
+                { q: "What is the difference between this and Titanium?", a: "Basic is a free service — 50KM, towing only, complimentary. Titanium is a premium product — 160KM+, trip interruption, emergency lodging and meals, vehicle return, and co-branded with your dealership. Basic is a gift. Titanium is a revenue-generating F&I product your dealership sells." },
+              ].map((f, i) => (
+                <div key={i} className={`faq-card${openFaq === i ? ' open' : ''}`}>
+                  <button className="faq-q" onClick={() => toggleFaq(i)}>
+                    <span>{f.q}</span>
+                    <span className="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="20" height="20"><path d="M12 5v14M5 12h14"/></svg></span>
+                  </button>
+                  <div className="faq-a"><p>{f.a}</p></div>
                 </div>
               ))}
             </div>
-            <Button className="w-full" size="lg" asChild>
-              <Link href="/contact">Get Dealer Pricing</Link>
-            </Button>
           </div>
         </div>
       </section>
 
-      {/* FAQ */}
-      <section className="py-20 bg-muted/30">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Frequently Asked Questions</h2>
-          <div className="space-y-4">
-            <FaqItem
-              question="How do dealers add roadside assistance to their product offerings?"
-              answer="Dealers enroll through DealerSuite360 and can offer roadside assistance plans at point of sale or as a standalone add-on. Plans are sold per unit at an annual rate, and management is handled entirely through the dealer portal."
-            />
-            <FaqItem
-              question="What is the response time for emergency roadside calls?"
-              answer="Our dispatch center targets a 30-minute response to first contact. Actual on-site arrival times vary by location, but the 24/7 dispatch center is operational at all times to coordinate service and communicate ETAs."
-            />
-            <FaqItem
-              question="Does roadside assistance coverage apply across the entire RV?"
-              answer="Yes. Coverage applies to the RV unit itself regardless of tow vehicle. This includes Class A, B, and C motorhomes as well as towable units. Tow vehicle-specific breakdowns are not covered under the RV plan."
-            />
-            <FaqItem
-              question="How is roadside assistance pricing structured for dealers?"
-              answer="Plans are priced per unit per year. Dealers purchase plans at a wholesale rate and sell at retail, retaining the margin. Pricing is tiered based on RV class and coverage level. Contact our team for a dealer pricing sheet."
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="py-20 bg-primary/5">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
-          <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
-            Add Roadside Assistance to Your Offerings
-          </h2>
-          <p className="text-xl text-muted-foreground">
-            Launch roadside assistance as part of your DealerSuite360 platform. Available Q4 2026 — contact us to get on the dealer early access list.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" asChild>
-              <Link href="/contact">Contact Our Team</Link>
-            </Button>
-            <Button size="lg" variant="outline" asChild>
-              <Link href="/sign-up">Get Early Access</Link>
-            </Button>
+      {/* 10. BOTTOM CTA */}
+      <section className="bcta">
+        <div className="wrap">
+          <h2>Give Every Client Peace of Mind — At Zero Cost to You.</h2>
+          <p>Basic roadside assistance is included in every DS360 plan. Start using it as a closing tool today.</p>
+          <div className="bcta-btns">
+            <a href="/contact" className="btn btn-lg btn-green">Get Started →</a>
+            <a href="/products/roadside-travel-protection" className="btn btn-lg btn-white">Explore Titanium</a>
           </div>
         </div>
       </section>

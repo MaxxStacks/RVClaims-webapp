@@ -1,205 +1,314 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { PageLayout } from "@/components/page-layout";
-import { ServiceBadge } from "@/components/service-badge";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Link } from "wouter";
-import { useLanguage } from "@/hooks/use-language";
-import {
-  Wrench, Zap, Droplets, Wind, ThumbsUp, Clock,
-  DollarSign, Star, LayoutGrid, ChevronDown,
-  CheckCircle, ArrowRight, Settings, Home
-} from "lucide-react";
 
-const serviceSchema = {
-  "@context": "https://schema.org",
-  "@type": "Service",
-  "name": "On-Site RV Repair Services",
-  "provider": { "@type": "Organization", "name": "Dealer Suite 360", "url": "https://dealersuite360.com" },
-  "areaServed": { "@type": "Place", "name": "North America" },
-  "description": "Coordinate on-site and mobile repair services for warranty claims. Reduce downtime, improve customer satisfaction, and streamline the repair process.",
-  "url": "https://dealersuite360.com/on-site-repairs"
-};
-
-const faqSchema = {
+const schema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
   mainEntity: [
     {
       "@type": "Question",
-      name: "How are on-site repairs coordinated through DealerSuite360?",
+      name: "Is On-Site Repairs included in my DS360 plan?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "When a warranty claim is filed, dealers can flag it for on-site service. The platform dispatches a qualified technician based on location and RV type, and every step — from dispatch to verification — is tracked directly in the dealer dashboard."
-      }
+        text: "Yes. The On-Site Repairs workflow — client photo submission, dispatch tracking, and invoicing — is included in every DS360 dealer plan. You provide the mobile unit and the technician. DS360 provides the system to manage it.",
+      },
     },
     {
       "@type": "Question",
-      name: "What types of repairs can be completed on-site?",
+      name: "Do I need a dedicated mobile service truck?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "On-site technicians can handle mechanical repairs, slide and awning issues, water infiltration, appliance servicing, electrical diagnostics and repairs, and minor structural fixes. Complex structural or frame work may require shop transport."
-      }
+        text: "DS360 does not require a specific vehicle type. A service van, pickup with a utility bed, or any vehicle that carries tools and parts works. The platform manages the workflow — what you drive is your choice.",
+      },
     },
     {
       "@type": "Question",
-      name: "How does on-site repair affect warranty claim processing?",
+      name: "Can I bill warranty work done on-site?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "On-site repairs are fully integrated with the claims module. Work orders, technician notes, photos, and parts used are all linked to the underlying claim record. This ensures accurate documentation for manufacturer reimbursement."
-      }
+        text: "On-Site Repairs is primarily a client-paid service offering. If the issue is covered under warranty, it would follow the standard DS360 claims workflow. The on-site service call itself — dispatch, travel, convenience — is typically billed to the client separately.",
+      },
     },
     {
       "@type": "Question",
-      name: "Is on-site repair service available across all of Canada and the US?",
+      name: "How does photo diagnosis work?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Coverage is expanding across North America. High-density RV markets (Ontario, BC, Alberta, the US Sunbelt) have the highest technician availability. Rural coverage is coordinated through dealer network partnerships."
-      }
-    }
-  ]
+        text: "The client submits photos of the issue through the DS360 Client Portal or mobile app — the damaged component, the location, the surrounding area. Your team reviews the photos, determines what parts and tools are needed, and dispatches prepared. No surprise when the tech arrives.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Does this work with TechFlow?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes. If TechFlow is active on your plan, mobile repair labor is tracked exactly like shop labor. Work orders are created, hours are logged, and everything syncs to the invoice. Same system, different location.",
+      },
+    },
+  ],
 };
 
-const processSteps = [
-  { number: "01", title: "Claim Filed", description: "Dealer creates a warranty claim in DealerSuite360 and flags it for on-site service coordination." },
-  { number: "02", title: "Repair Type Determined", description: "Operator reviews the claim, confirms scope of work, and identifies the required technician skill set." },
-  { number: "03", title: "Technician Dispatched", description: "A qualified mobile technician is assigned based on location, RV type, and availability — typically within 48 hours." },
-  { number: "04", title: "On-Site Repair", description: "The technician arrives at the customer's location — campground, storage, or home — and completes the approved repairs." },
-  { number: "05", title: "Work Verified", description: "Technician submits completion photos, parts documentation, and labor log through the platform." },
-  { number: "06", title: "Claim Updated & Closed", description: "The claim is automatically updated with repair records. Manufacturer reimbursement is processed through normal claim channels." },
-];
-
-const benefits = [
-  {
-    icon: Clock,
-    title: "Reduced Customer Wait Times",
-    description: "Customers don't need to transport their RV to a shop and wait days or weeks for a bay opening. Mobile service can often begin within 48 hours of dispatch, dramatically cutting the time from complaint to resolution — improving the customer experience and your dealership's reputation."
-  },
-  {
-    icon: DollarSign,
-    title: "Lower Transport Costs",
-    description: "Moving a 40-foot fifth wheel or a Class A motorhome to a service facility is expensive. On-site service eliminates towing and transport fees entirely. For minor repairs, the cost savings are significant — and those savings flow back to both the dealer and the customer."
-  },
-  {
-    icon: ThumbsUp,
-    title: "Faster Claim Resolution",
-    description: "When repairs happen on-site, documentation is captured in real time. Photos, technician notes, and parts data upload directly to the claim record. This means faster submission to the manufacturer, fewer back-and-forth requests, and quicker reimbursement cycles."
-  },
-  {
-    icon: Star,
-    title: "Improved Dealer Reputation",
-    description: "Dealerships that offer on-site repair as part of their warranty service stand out in a competitive market. Customers remember who made the process easy. Positive experiences translate directly into reviews, referrals, and repeat business — all tracked through your DealerSuite360 CRM."
-  },
-];
-
-const serviceCards = [
-  {
-    icon: Settings,
-    title: "Mechanical Repairs",
-    description: "Engine, drivetrain, leveling systems, and chassis components. Technicians arrive with diagnostic tools and common parts for same-visit resolution."
-  },
-  {
-    icon: Wind,
-    title: "Slide & Awning Repairs",
-    description: "Slide-out motor replacements, awning fabric and arm repairs, and room seal adjustments. Most slide and awning jobs are completed in a single visit."
-  },
-  {
-    icon: Droplets,
-    title: "Water Infiltration",
-    description: "Roof seal inspection and repair, window resealing, and moisture damage assessment. Early intervention prevents costly interior damage."
-  },
-  {
-    icon: Home,
-    title: "Appliance Service",
-    description: "Refrigerator, furnace, water heater, and air conditioner diagnostics and repair. All major RV appliance brands supported."
-  },
-  {
-    icon: Zap,
-    title: "Electrical Repairs",
-    description: "Shore power connections, inverter issues, solar panel faults, lighting, and 12V system diagnostics. Full electrical testing on-site."
-  },
-  {
-    icon: LayoutGrid,
-    title: "Structural Fixes",
-    description: "Interior cabinetry, flooring, door hardware, and minor exterior panel repairs. Larger structural work is escalated with full claim documentation."
-  },
-];
-
-function FaqItem({ question, answer }: { question: string; answer: string }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <div className="border border-border rounded-xl overflow-hidden">
-      <button
-        className="w-full flex items-center justify-between p-6 text-left bg-card hover:bg-muted/40 transition-colors"
-        onClick={() => setOpen(!open)}
-        aria-expanded={open}
-      >
-        <span className="font-semibold text-foreground pr-4">{question}</span>
-        <ChevronDown className={`text-primary flex-shrink-0 transition-transform duration-200 ${open ? "rotate-180" : ""}`} size={20} />
-      </button>
-      {open && (
-        <div className="px-6 pb-6 pt-2 bg-card text-muted-foreground leading-relaxed">
-          {answer}
-        </div>
-      )}
-    </div>
-  );
-}
-
 export default function OnSiteRepairs() {
-  const { t } = useLanguage();
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
+
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add("v");
+            obs.unobserve(e.target);
+          }
+        });
+      },
+      { threshold: 0.08 }
+    );
+    document.querySelectorAll(".anim").forEach((el) => obs.observe(el));
+    return () => obs.disconnect();
+  }, []);
+
+  const toggleFaq = (i: number) => setOpenFaq(openFaq === i ? null : i);
 
   return (
     <PageLayout
-      seoTitle="On-Site RV Repair Services | Mobile Warranty Repairs | DealerSuite360"
-      seoDescription="Coordinate on-site and mobile repair services for warranty claims. Reduce downtime, improve customer satisfaction, and streamline the repair process."
-      seoKeywords="RV on-site repairs, mobile RV technician, campground repairs, RV service dispatch, dealership network, mobile warranty repairs"
-      canonical="/on-site-repairs"
-      schema={[serviceSchema, faqSchema]}
+      seoTitle="On-Site Repairs — Mobile RV Service & Revenue"
+      seoDescription="Deploy mobile repair units to client locations — roadside emergencies and campsite convenience calls. A net-new revenue stream powered by DS360's photo-first dispatch workflow."
+      schema={schema}
     >
-      {/* Hero */}
-      <section className="pt-24 pb-16 bg-gradient-to-b from-primary/5 to-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="mb-6">
-            <ServiceBadge quarter="Q3" />
-          </div>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight max-w-4xl mx-auto">
-            On-Site Repairs — Minimize Downtime, Maximize Satisfaction
-          </h1>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-10">
-            Mobile repair coordination built directly into the DealerSuite360 platform. Dispatch qualified technicians to campgrounds, storage facilities, or customer driveways — and keep every repair tied to the underlying warranty claim.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" asChild>
-              <Link href="/sign-up">Get Early Access</Link>
-            </Button>
-            <Button size="lg" variant="outline" asChild>
-              <Link href="/contact">Talk to Our Team</Link>
-            </Button>
+      {/* 1. HERO */}
+      <section className="phero">
+        <div className="wrap">
+          <div className="phero-grid">
+            <div className="phero-text">
+              <div><a href="/services" style={{fontSize:'.82rem',color:'var(--muted)'}}>← All Services</a></div>
+              <div><div className="badge">DS360 Service · Included in All Plans</div></div>
+              <h1>Your Service Bay Has Four Walls.<span className="gradient">Your Revenue Doesn't Have To.</span></h1>
+              <p className="phero-desc">On-Site Repairs turns your dealership into a mobile service operation. Deploy repair units to client locations — roadside emergencies, campsite convenience calls, or seasonal pre-trip inspections. Clients submit photos through the DS360 app before your team arrives so the right parts are already on the truck. Every call is billable. Every hour is tracked.</p>
+              <div className="phero-btns">
+                <a href="/contact" className="btn btn-lg btn-primary">Get Started</a>
+                <a href="#how-it-works" className="btn btn-lg btn-outline">How It Works</a>
+              </div>
+              <div className="phero-stats">
+                <div className="phero-stat"><div className="phero-stat-val">New</div><div className="phero-stat-label">Revenue Stream</div></div>
+                <div className="phero-stat"><div className="phero-stat-val">Photo</div><div className="phero-stat-label">Pre-Dispatch Diagnosis</div></div>
+                <div className="phero-stat"><div className="phero-stat-val">100%</div><div className="phero-stat-label">Billable Service Calls</div></div>
+              </div>
+            </div>
+            <div className="phero-img">
+              <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?ixlib=rb-4.0.3&auto=format&fit=crop&w=584&h=438&fm=webp&q=75" alt="On-site mobile repairs" width="584" height="438" />
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Process Flow */}
-      <section className="py-20 bg-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-14">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">How On-Site Repair Works</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Six steps from claim creation to closed — fully tracked in your dashboard.
-            </p>
+      {/* 2. METRIC BAR */}
+      <section className="sec-g" style={{padding:'2.5rem 0'}}>
+        <div className="wrap">
+          <div className="metric-bar">
+            <div className="metric-item"><div className="metric-num">Off-Lot</div><div className="metric-label">Revenue Generation</div></div>
+            <div className="metric-item"><div className="metric-num">Photo</div><div className="metric-label">Diagnosis Before Dispatch</div></div>
+            <div className="metric-item"><div className="metric-num">DS360</div><div className="metric-label">Tracked &amp; Invoiced</div></div>
+            <div className="metric-item"><div className="metric-num">Mobile</div><div className="metric-label">App Integration</div></div>
           </div>
-          <div className="relative">
-            {/* Connecting line — visible on md+ */}
-            <div className="hidden md:block absolute top-8 left-0 right-0 h-0.5 bg-border" style={{ marginLeft: '8.33%', marginRight: '8.33%' }} />
-            <div className="grid md:grid-cols-6 gap-6">
-              {processSteps.map((step) => (
-                <div key={step.number} className="flex flex-col items-center text-center relative">
-                  <div className="w-16 h-16 rounded-full bg-primary text-white flex items-center justify-center text-lg font-bold mb-4 z-10 flex-shrink-0">
-                    {step.number}
-                  </div>
-                  <h3 className="font-semibold text-foreground mb-2 text-sm">{step.title}</h3>
-                  <p className="text-muted-foreground text-xs leading-relaxed">{step.description}</p>
+        </div>
+      </section>
+
+      {/* 3. THE OPPORTUNITY */}
+      <section className="sec-w">
+        <div className="wrap">
+          <div className="split anim">
+            <div className="split-text">
+              <div className="badge">The Opportunity</div>
+              <h2>Revenue That Happens Beyond Your Shop Floor</h2>
+              <p>Most RV dealers only bill for work performed inside their service bay. But your clients are everywhere — on the road, at campgrounds, at storage lots, at their driveways. When something breaks, they either call you and wait, or they call someone else. On-Site Repairs gives you the ability to go to them.</p>
+              <p>This is not warranty work being done off-site. This is a net-new, client-paid service offering that generates revenue from labor and parts on every call — work your dealership would otherwise never see.</p>
+            </div>
+            <div className="split-img">
+              <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-4.0.3&auto=format&fit=crop&w=576&h=432&fm=webp&q=75" alt="RV in landscape" width="576" height="432" loading="lazy" />
+              <div className="overlay"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 4. HOW IT WORKS */}
+      <section className="sec-g" id="how-it-works">
+        <div className="wrap">
+          <div className="sec-head">
+            <div className="badge">How It Works</div>
+            <h2>From Client Call to Completed Repair</h2>
+            <p>Four steps. Photo-first diagnosis means your team arrives prepared.</p>
+          </div>
+          <div className="hstages anim">
+            <div className="hstage">
+              <div className="hstage-num">1</div>
+              <h4>Client Submits Request</h4>
+              <p>Client contacts your dealership or submits a service request through the DS360 Client Portal with photos of the issue and their location.</p>
+              <div className="hstage-arrow">→</div>
+            </div>
+            <div className="hstage">
+              <div className="hstage-num">2</div>
+              <h4>Photo Diagnosis</h4>
+              <p>Your team reviews the photos, identifies the issue, determines what parts and tools are needed, and stages them on the truck before dispatch.</p>
+              <div className="hstage-arrow">→</div>
+            </div>
+            <div className="hstage">
+              <div className="hstage-num">3</div>
+              <h4>Mobile Dispatch</h4>
+              <p>Your technician arrives with the right parts already loaded. No wasted trip. No return visit. The repair starts immediately on arrival.</p>
+              <div className="hstage-arrow">→</div>
+            </div>
+            <div className="hstage">
+              <div className="hstage-num">4</div>
+              <h4>Repair &amp; Invoice</h4>
+              <p>Work is completed on-site. Labor hours and parts are tracked in DS360. The invoice is generated automatically — ready for client payment.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 5. STATEMENT */}
+      <section className="sec-w" style={{padding:'3.5rem 0'}}>
+        <div className="wrap">
+          <div className="bst"><div className="bst-line"></div><p>"When your client's RV breaks down at a campsite, the dealership that sends a truck is the dealership that earns a client for life."</p></div>
+        </div>
+      </section>
+
+      {/* 6. USE CASES */}
+      <section className="sec-g">
+        <div className="wrap">
+          <div className="sec-head">
+            <h2>Where On-Site Repairs Creates Revenue</h2>
+            <p>Four real scenarios where mobile service calls turn into billable work your shop would never see otherwise.</p>
+          </div>
+          <div className="cases anim">
+            <div className="case">
+              <div className="case-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="22" height="22"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+              </div>
+              <h4>Roadside Emergency</h4>
+              <p>Slide-out failure, water leak, electrical issue on the road. Client submits photos. Your team diagnoses remotely, loads the right parts, and dispatches. The repair is billable from the moment the truck rolls.</p>
+            </div>
+            <div className="case">
+              <div className="case-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="22" height="22"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              </div>
+              <h4>Campsite Convenience</h4>
+              <p>A client's awning jams at the campground. Their water heater stops working mid-trip. Minor issues that ruin a vacation. You send a tech. They fix it on-site. Client stays happy. You bill the call.</p>
+            </div>
+            <div className="case">
+              <div className="case-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="22" height="22"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+              </div>
+              <h4>Storage Lot Service</h4>
+              <p>Client's unit is in winter storage. Roof seal needs replacement before the season. Battery maintenance. Pre-trip inspection. You send a tech to the storage lot — the client never has to move the unit.</p>
+            </div>
+            <div className="case">
+              <div className="case-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="22" height="22"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+              <h4>Seasonal Pre-Trip Inspections</h4>
+              <p>Spring is coming. Your client wants their unit checked before the first trip. You offer a mobile pre-trip inspection at their home. If issues are found, the repair happens on the spot or is scheduled at the shop.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 7. TECHFLOW CROSS-SELL */}
+      <section className="sec-w" style={{padding:'2.5rem 0'}}>
+        <div className="wrap">
+          <div className="bcs">
+            <div className="bcs-dot"></div>
+            <div className="bcs-text"><strong>TechFlow</strong> tracks mobile repair labor the same way it tracks shop labor — every on-site hour is documented and synced to the invoice.</div>
+            <a href="/services/techflow">Add TechFlow →</a>
+          </div>
+        </div>
+      </section>
+
+      {/* 8. WHY DS360 */}
+      <section className="sec-w">
+        <div className="wrap">
+          <div className="split split-rev anim">
+            <div className="split-text">
+              <div className="badge">Why DS360</div>
+              <h2>Photo-First Dispatch Changes Everything</h2>
+              <p>The biggest cost of a mobile service call is showing up unprepared. Wrong parts. Wrong tools. A return trip. DS360's photo-first workflow eliminates this. The client submits photos through the app before you dispatch. Your team diagnoses remotely, stages the right parts, and sends the truck knowing exactly what they are walking into.</p>
+              <div className="checks">
+                <div className="check"><div className="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" strokeWidth="3"><path d="M5 13l4 4L19 7"/></svg></div><div className="check-info"><h3>Remote Photo Diagnosis</h3><p>Client photos submitted through the DS360 app before dispatch</p></div></div>
+                <div className="check"><div className="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" strokeWidth="3"><path d="M5 13l4 4L19 7"/></svg></div><div className="check-info"><h3>Pre-Staged Parts</h3><p>The right parts are on the truck before it leaves the lot</p></div></div>
+                <div className="check"><div className="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" strokeWidth="3"><path d="M5 13l4 4L19 7"/></svg></div><div className="check-info"><h3>Tracked in DS360</h3><p>Every mobile call tracked, invoiced, and documented in the dealer portal</p></div></div>
+                <div className="check"><div className="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" strokeWidth="3"><path d="M5 13l4 4L19 7"/></svg></div><div className="check-info"><h3>No Return Trips</h3><p>First-visit resolution rate goes up when the technician arrives prepared</p></div></div>
+              </div>
+            </div>
+            <div className="split-img">
+              <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=576&h=432&fm=webp&q=75" alt="DS360 mobile dispatch" width="576" height="432" loading="lazy" />
+              <div className="overlay"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 9. DYK */}
+      <section className="sec-g">
+        <div className="wrap">
+          <div className="dyk anim">
+            <div className="dyk-tag">Did You Know<span style={{color:'#033280'}}>?</span></div>
+            <p>RV dealers who offer mobile service calls report <strong>30% to 45% higher client retention rates</strong> compared to shop-only operations. The convenience factor alone — coming to the client instead of making them bring a 35-foot vehicle to you — turns a one-time buyer into a repeat client for maintenance, upgrades, and their next unit purchase.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* 10. STATS */}
+      <section className="sec-w">
+        <div className="wrap">
+          <div className="grid-3 anim">
+            <div className="stat-card"><div className="stat-val">New</div><div className="stat-title">Revenue Stream</div><p className="stat-desc">Billable service calls from locations your shop could never reach</p></div>
+            <div className="stat-card"><div className="stat-val">45%</div><div className="stat-title">Higher Retention</div><p className="stat-desc">Mobile service dealers see significantly higher client return rates</p></div>
+            <div className="stat-card"><div className="stat-val">Photo</div><div className="stat-title">First Diagnosis</div><p className="stat-desc">Know the problem before the truck rolls — right parts, first visit</p></div>
+          </div>
+        </div>
+      </section>
+
+      {/* 11. CONNECTED SERVICES */}
+      <section className="sec-g">
+        <div className="wrap">
+          <div className="sec-head">
+            <h2>Connected Services</h2>
+            <p>On-Site Repairs is included in every DS360 dealer plan. These services connect directly to the mobile workflow.</p>
+          </div>
+          <div className="grid-2 anim">
+            <a href="/services/parts-components" className="link-card"><div><h4>Parts &amp; Components</h4><p>Pre-stage parts on the truck using the DS360 supplier network</p></div><span className="link-arrow">→</span></a>
+            <a href="/services/techflow" className="link-card"><div><h4>TechFlow</h4><p>Mobile labor hours tracked and synced to invoices</p></div><span className="link-arrow">→</span></a>
+            <a href="/services/roadside-assistance" className="link-card"><div><h4>Roadside Assistance</h4><p>When towing is needed before the repair, DS360 coordinates both</p></div><span className="link-arrow">→</span></a>
+            <a href="/services" className="link-card"><div><h4>All Services</h4><p>View the full DS360 service suite</p></div><span className="link-arrow">→</span></a>
+          </div>
+        </div>
+      </section>
+
+      {/* 12. FAQ */}
+      <section className="sec-w">
+        <div className="wrap">
+          <div className="faq-layout anim">
+            <div className="faq-left">
+              <div className="badge">FAQ</div>
+              <h2 style={{fontSize:'clamp(1.5rem,3.5vw,2rem)',fontWeight:700,marginTop:'.75rem',lineHeight:1.2}}>On-Site Repairs<br/>Questions</h2>
+              <p style={{fontSize:'1rem',color:'var(--muted)',lineHeight:1.7,marginTop:'1rem'}}>What you need to know about adding mobile service to your operation.</p>
+              <a href="/contact" className="btn btn-primary" style={{width:'fit-content',marginTop:'1.5rem'}}>Contact Us →</a>
+            </div>
+            <div className="faq-right">
+              {[
+                { q: "Is On-Site Repairs included in my DS360 plan?", a: "Yes. The On-Site Repairs workflow — client photo submission, dispatch tracking, and invoicing — is included in every DS360 dealer plan. You provide the mobile unit and the technician. DS360 provides the system to manage it." },
+                { q: "Do I need a dedicated mobile service truck?", a: "DS360 does not require a specific vehicle type. A service van, pickup with a utility bed, or any vehicle that carries tools and parts works. The platform manages the workflow — what you drive is your choice." },
+                { q: "Can I bill warranty work done on-site?", a: "On-Site Repairs is primarily a client-paid service offering. If the issue is covered under warranty, it would follow the standard DS360 claims workflow. The on-site service call itself — dispatch, travel, convenience — is typically billed to the client separately." },
+                { q: "How does photo diagnosis work?", a: "The client submits photos of the issue through the DS360 Client Portal or mobile app — the damaged component, the location, the surrounding area. Your team reviews the photos, determines what parts and tools are needed, and dispatches prepared. No surprise when the tech arrives." },
+                { q: "Does this work with TechFlow?", a: "Yes. If TechFlow is active on your plan, mobile repair labor is tracked exactly like shop labor. Work orders are created, hours are logged, and everything syncs to the invoice. Same system, different location." },
+              ].map((f, i) => (
+                <div key={i} className={`faq-card${openFaq === i ? ' open' : ''}`}>
+                  <button className="faq-q" onClick={() => toggleFaq(i)}>
+                    <span>{f.q}</span>
+                    <span className="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="20" height="20"><path d="M12 5v14M5 12h14"/></svg></span>
+                  </button>
+                  <div className="faq-a"><p>{f.a}</p></div>
                 </div>
               ))}
             </div>
@@ -207,224 +316,14 @@ export default function OnSiteRepairs() {
         </div>
       </section>
 
-      {/* Benefits — 2-column alternating */}
-      <section className="py-20 bg-muted/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-14">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Why On-Site Repair Changes Everything</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Four measurable benefits for your dealership and your customers.
-            </p>
-          </div>
-          <div className="space-y-16">
-            {benefits.map((benefit, index) => {
-              const Icon = benefit.icon;
-              const isEven = index % 2 === 1;
-              return (
-                <div
-                  key={benefit.title}
-                  className={`grid md:grid-cols-2 gap-12 items-center ${isEven ? "md:flex-row-reverse" : ""}`}
-                >
-                  <div className={isEven ? "md:order-2" : ""}>
-                    <div className="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-5">
-                      <Icon className="w-7 h-7 text-primary" />
-                    </div>
-                    <h3 className="text-2xl font-bold mb-4">{benefit.title}</h3>
-                    <p className="text-muted-foreground leading-relaxed text-lg">{benefit.description}</p>
-                  </div>
-                  <div className={`bg-card rounded-2xl p-8 border border-border ${isEven ? "md:order-1" : ""}`}>
-                    <div className="flex items-center gap-3 mb-4">
-                      <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" />
-                      <span className="text-foreground font-medium">Tracked in your DealerSuite360 dashboard</span>
-                    </div>
-                    <div className="flex items-center gap-3 mb-4">
-                      <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" />
-                      <span className="text-foreground font-medium">Linked directly to the underlying warranty claim</span>
-                    </div>
-                    <div className="flex items-center gap-3 mb-4">
-                      <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" />
-                      <span className="text-foreground font-medium">Automatic documentation capture for reimbursement</span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" />
-                      <span className="text-foreground font-medium">Real-time status updates for dealer and customer</span>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Stats Strip */}
-      <section className="py-12 bg-primary text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            <div>
-              <div className="text-3xl md:text-4xl font-bold mb-2">48hr</div>
-              <div className="text-white/75 text-sm">Average Response Time</div>
-            </div>
-            <div>
-              <div className="text-3xl md:text-4xl font-bold mb-2">Lower</div>
-              <div className="text-white/75 text-sm">Transport Costs vs. Shop Towing</div>
-            </div>
-            <div>
-              <div className="text-3xl md:text-4xl font-bold mb-2">Claim</div>
-              <div className="text-white/75 text-sm">Integrated — Zero Manual Entry</div>
-            </div>
-            <div>
-              <div className="text-3xl md:text-4xl font-bold mb-2">North America</div>
-              <div className="text-white/75 text-sm">Coverage Network</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Coverage & Services Grid */}
-      <section className="py-20 bg-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">What Our Technicians Fix On-Site</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Six categories of repair — all fully coordinated through your dealer dashboard.
-            </p>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {serviceCards.map((card) => {
-              const Icon = card.icon;
-              return (
-                <div
-                  key={card.title}
-                  className="bg-card rounded-xl p-8 border border-border hover:border-primary/40 hover:shadow-lg transition-all duration-300"
-                >
-                  <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-5">
-                    <Icon className="w-6 h-6 text-primary" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-3">{card.title}</h3>
-                  <p className="text-muted-foreground leading-relaxed text-sm">{card.description}</p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Claims Integration Section */}
-      <section className="py-20 bg-muted/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-16 items-center">
-            <div>
-              <Badge className="mb-4 border border-primary/20 px-3 py-1 text-xs" variant="outline">
-                Platform Integration
-              </Badge>
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                Every Repair Lives Inside Your Claim
-              </h2>
-              <p className="text-muted-foreground leading-relaxed mb-6 text-lg">
-                On-site repairs are tracked directly in your DealerSuite360 platform. There's no separate system to manage, no manual data entry, and no risk of documentation getting lost between your repair team and your claims team.
-              </p>
-              <div className="space-y-4">
-                {[
-                  "Repair orders auto-link to the associated warranty claim",
-                  "Technician photos upload directly to claim photo gallery",
-                  "Parts used are captured and tied to FRC line items",
-                  "Labor hours populate the claim for manufacturer submission",
-                  "Customer sign-off recorded digitally at point of completion",
-                  "Claim status updates automatically when repair is verified",
-                ].map((point) => (
-                  <div key={point} className="flex items-start gap-3">
-                    <CheckCircle className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                    <span className="text-foreground">{point}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="bg-card rounded-2xl p-10 border border-border">
-              <div className="space-y-6">
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <ArrowRight className="w-5 h-5 text-primary" />
-                  </div>
-                  <div>
-                    <p className="font-semibold mb-1">No Duplicate Data Entry</p>
-                    <p className="text-muted-foreground text-sm">Everything captured on-site flows directly to the claim record.</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <ArrowRight className="w-5 h-5 text-primary" />
-                  </div>
-                  <div>
-                    <p className="font-semibold mb-1">Real-Time Status Visibility</p>
-                    <p className="text-muted-foreground text-sm">Dealer, operator, and customer all see live repair status.</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <ArrowRight className="w-5 h-5 text-primary" />
-                  </div>
-                  <div>
-                    <p className="font-semibold mb-1">Audit-Ready Documentation</p>
-                    <p className="text-muted-foreground text-sm">Every repair creates a complete audit trail for manufacturer review.</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <ArrowRight className="w-5 h-5 text-primary" />
-                  </div>
-                  <div>
-                    <p className="font-semibold mb-1">Faster Reimbursement</p>
-                    <p className="text-muted-foreground text-sm">Complete documentation means fewer revision requests and faster payment.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ */}
-      <section className="py-20 bg-background">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Frequently Asked Questions</h2>
-          <div className="space-y-4">
-            <FaqItem
-              question="How are on-site repairs coordinated through DealerSuite360?"
-              answer="When a warranty claim is filed, dealers can flag it for on-site service. The platform dispatches a qualified technician based on location and RV type, and every step — from dispatch to verification — is tracked directly in the dealer dashboard."
-            />
-            <FaqItem
-              question="What types of repairs can be completed on-site?"
-              answer="On-site technicians can handle mechanical repairs, slide and awning issues, water infiltration, appliance servicing, electrical diagnostics and repairs, and minor structural fixes. Complex structural or frame work may require shop transport."
-            />
-            <FaqItem
-              question="How does on-site repair affect warranty claim processing?"
-              answer="On-site repairs are fully integrated with the claims module. Work orders, technician notes, photos, and parts data upload directly to the claim record. This ensures accurate documentation for manufacturer reimbursement."
-            />
-            <FaqItem
-              question="Is on-site repair service available across all of Canada and the US?"
-              answer="Coverage is expanding across North America. High-density RV markets (Ontario, BC, Alberta, the US Sunbelt) have the highest technician availability. Rural coverage is coordinated through dealer network partnerships."
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="py-20 bg-primary/5">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
-          <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
-            Coordinate Your First On-Site Repair
-          </h2>
-          <p className="text-xl text-muted-foreground">
-            Talk to our team about integrating mobile repair into your warranty claims workflow. Available Q3 2026 — get on the early access list today.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" asChild>
-              <Link href="/contact">Contact Our Team</Link>
-            </Button>
-            <Button size="lg" variant="outline" asChild>
-              <Link href="/sign-up">Get Early Access</Link>
-            </Button>
+      {/* 13. BOTTOM CTA */}
+      <section className="bcta">
+        <div className="wrap">
+          <h2>Take Your Service Department on the Road.</h2>
+          <p>See how On-Site Repairs creates a new revenue stream from locations your shop could never reach.</p>
+          <div className="bcta-btns">
+            <a href="/contact" className="btn btn-lg btn-green">Book a Demo →</a>
+            <a href="/services" className="btn btn-lg btn-white">View All Services</a>
           </div>
         </div>
       </section>
