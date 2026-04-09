@@ -6,7 +6,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { LanguageProvider } from "@/hooks/use-language";
 import { AuthProvider } from "@/hooks/use-auth";
 import { useEffect, lazy, Suspense } from "react";
-import { PageTakeover, SamplePromoContent } from "@/components/page-takeover";
 
 const Home = lazy(() => import("@/pages/home"));
 const About = lazy(() => import("@/pages/about"));
@@ -85,9 +84,7 @@ function Router() {
   return (
     <>
       <ScrollToTop />
-      <PageTakeover delay={1000} dismissalDays={7}>
-        <SamplePromoContent />
-      </PageTakeover>
+
       <Switch>
         <Route path="/" component={Home} />
         <Route path="/about" component={About} />
