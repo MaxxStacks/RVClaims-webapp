@@ -3,8 +3,8 @@ import { eq } from "drizzle-orm";
 import { db } from "./db.js";
 import {
   users,
-  dealers,
-  refreshTokens,
+  dealerships,
+  sessions,
   registerSchema,
   loginSchema,
   type PublicUser,
@@ -14,7 +14,6 @@ import {
   verifyPassword,
   signAccessToken,
   generateRefreshToken,
-  hashRefreshToken,
   refreshTokenExpiresAt,
   verifyAccessToken,
   REFRESH_COOKIE_NAME,
@@ -31,7 +30,7 @@ function toPublicUser(user: typeof users.$inferSelect): PublicUser {
 
 export function registerAuthRoutes(app: Express) {
   // ─── POST /api/auth/register ─────────────────────────────────────────────
-  // Public self-registration. Creates a dealer + dealer_owner account.
+  // Public self-registration. Creates a dealership + dealer_owner account.
   app.post("/api/auth/register", async (req: Request, res: Response) => {
     try {
       const body = registerSchema.parse(req.body);
@@ -51,9 +50,9 @@ export function registerAuthRoutes(app: Express) {
 
       const passwordHash = await hashPassword(body.password);
 
-      // Create dealer record
-      const [dealer] = await db
-        .insert(dealers)
+      // Create dealership record
+      const [dealership] = await db
+        .insert(dealerships)
         .values({
           name: body.dealershipName,
           email: body.dealershipEmail,
@@ -71,7 +70,7 @@ export function registerAuthRoutes(app: Express) {
           firstName: body.firstName,
           lastName: body.lastName,
           role: "dealer_owner",
-          dealerId: dealer.id,
+          dealershipId: dealership.id,
           isActive: true,
         })
         .returning();
@@ -79,17 +78,18 @@ export function registerAuthRoutes(app: Express) {
       const accessToken = signAccessToken({
         userId: user.id,
         role: user.role,
-        dealerId: user.dealerId,
+        dealerId: user.dealershipId,
       });
 
-      const rawRefresh = generateRefreshToken();
-      await db.insert(refreshTokens).values({
+      // Create session record for refresh token
+      const sessionId = generateRefreshToken();
+      await db.insert(sessions).values({
+        id: sessionId,
         userId: user.id,
-        tokenHash: hashRefreshToken(rawRefresh),
         expiresAt: refreshTokenExpiresAt(),
       });
 
-      res.cookie(REFRESH_COOKIE_NAME, rawRefresh, refreshCookieOptions);
+      res.cookie(REFRESH_COOKIE_NAME, sessionId, refreshCookieOptions);
 
       return res.status(201).json({
         success: true,
@@ -120,7 +120,7 @@ export function registerAuthRoutes(app: Express) {
         .parse(req.body);
 
       const DEALER_ROLES = ["dealer_owner", "dealer_staff"] as const;
-      const OPERATOR_ROLES = ["operator", "operator_staff"] as const;
+      const OPERATOR_ROLES = ["operator_admin", "operator_staff"] as const;
 
       const [user] = await db
         .select()
@@ -162,17 +162,18 @@ export function registerAuthRoutes(app: Express) {
       const accessToken = signAccessToken({
         userId: user.id,
         role: user.role,
-        dealerId: user.dealerId,
+        dealerId: user.dealershipId,
       });
 
-      const rawRefresh = generateRefreshToken();
-      await db.insert(refreshTokens).values({
+      // Create session record for refresh token
+      const sessionId = generateRefreshToken();
+      await db.insert(sessions).values({
+        id: sessionId,
         userId: user.id,
-        tokenHash: hashRefreshToken(rawRefresh),
         expiresAt: refreshTokenExpiresAt(),
       });
 
-      res.cookie(REFRESH_COOKIE_NAME, rawRefresh, refreshCookieOptions);
+      res.cookie(REFRESH_COOKIE_NAME, sessionId, refreshCookieOptions);
 
       return res.json({
         success: true,
@@ -191,37 +192,37 @@ export function registerAuthRoutes(app: Express) {
   });
 
   // ─── POST /api/auth/refresh ──────────────────────────────────────────────
-  // Reads httpOnly refresh token cookie, rotates it, returns a new access token.
+  // Reads httpOnly refresh token cookie (session ID), rotates it, returns a new access token.
   app.post("/api/auth/refresh", async (req: Request, res: Response) => {
-    const rawRefresh: string | undefined = req.cookies?.[REFRESH_COOKIE_NAME];
+    const sessionId: string | undefined = req.cookies?.[REFRESH_COOKIE_NAME];
 
-    if (!rawRefresh) {
+    if (!sessionId) {
       return res
         .status(401)
         .json({ success: false, message: "Refresh token missing" });
     }
 
-    const tokenHash = hashRefreshToken(rawRefresh);
-
     try {
       const [stored] = await db
         .select()
-        .from(refreshTokens)
-        .where(eq(refreshTokens.tokenHash, tokenHash))
+        .from(sessions)
+        .where(eq(sessions.id, sessionId))
         .limit(1);
 
-      if (!stored || stored.revokedAt !== null) {
+      if (!stored) {
         res.clearCookie(REFRESH_COOKIE_NAME, { path: refreshCookieOptions.path });
         return res
           .status(401)
-          .json({ success: false, message: "Refresh token invalid or revoked" });
+          .json({ success: false, message: "Session invalid or expired" });
       }
 
       if (stored.expiresAt < new Date()) {
+        // Clean up expired session
+        await db.delete(sessions).where(eq(sessions.id, sessionId));
         res.clearCookie(REFRESH_COOKIE_NAME, { path: refreshCookieOptions.path });
         return res
           .status(401)
-          .json({ success: false, message: "Refresh token expired" });
+          .json({ success: false, message: "Session expired" });
       }
 
       // Fetch current user
@@ -232,33 +233,30 @@ export function registerAuthRoutes(app: Express) {
         .limit(1);
 
       if (!user || !user.isActive) {
+        await db.delete(sessions).where(eq(sessions.id, sessionId));
         res.clearCookie(REFRESH_COOKIE_NAME, { path: refreshCookieOptions.path });
         return res
           .status(401)
           .json({ success: false, message: "User account is inactive" });
       }
 
-      // Revoke old token (rotation)
-      await db
-        .update(refreshTokens)
-        .set({ revokedAt: new Date() })
-        .where(eq(refreshTokens.id, stored.id));
+      // Rotate session (delete old, create new)
+      await db.delete(sessions).where(eq(sessions.id, sessionId));
 
-      // Issue new pair
-      const accessToken = signAccessToken({
+      const newSessionId = generateRefreshToken();
+      await db.insert(sessions).values({
+        id: newSessionId,
         userId: user.id,
-        role: user.role,
-        dealerId: user.dealerId,
-      });
-
-      const newRawRefresh = generateRefreshToken();
-      await db.insert(refreshTokens).values({
-        userId: user.id,
-        tokenHash: hashRefreshToken(newRawRefresh),
         expiresAt: refreshTokenExpiresAt(),
       });
 
-      res.cookie(REFRESH_COOKIE_NAME, newRawRefresh, refreshCookieOptions);
+      const accessToken = signAccessToken({
+        userId: user.id,
+        role: user.role,
+        dealerId: user.dealershipId,
+      });
+
+      res.cookie(REFRESH_COOKIE_NAME, newSessionId, refreshCookieOptions);
 
       return res.json({ success: true, accessToken, user: toPublicUser(user) });
     } catch (err) {
@@ -269,16 +267,13 @@ export function registerAuthRoutes(app: Express) {
 
   // ─── POST /api/auth/logout ───────────────────────────────────────────────
   app.post("/api/auth/logout", async (req: Request, res: Response) => {
-    const rawRefresh: string | undefined = req.cookies?.[REFRESH_COOKIE_NAME];
+    const sessionId: string | undefined = req.cookies?.[REFRESH_COOKIE_NAME];
 
-    if (rawRefresh) {
-      const tokenHash = hashRefreshToken(rawRefresh);
-      // Best-effort revocation
+    if (sessionId) {
       await db
-        .update(refreshTokens)
-        .set({ revokedAt: new Date() })
-        .where(eq(refreshTokens.tokenHash, tokenHash))
-        .catch((e) => console.error("[auth] revoke on logout failed:", e));
+        .delete(sessions)
+        .where(eq(sessions.id, sessionId))
+        .catch((e) => console.error("[auth] session delete on logout failed:", e));
     }
 
     res.clearCookie(REFRESH_COOKIE_NAME, { path: refreshCookieOptions.path });
@@ -322,8 +317,8 @@ export function registerAuthRoutes(app: Express) {
         password: z.string().min(8),
         firstName: z.string().min(1),
         lastName: z.string().min(1),
-        role: z.enum(["dealer_owner", "dealer_staff", "operator", "operator_staff"]),
-        dealerId: z.string().optional(),
+        role: z.enum(["dealer_owner", "dealer_staff", "operator_admin", "operator_staff"]),
+        dealershipId: z.string().optional(),
       });
 
       try {
@@ -338,16 +333,16 @@ export function registerAuthRoutes(app: Express) {
               message: "Dealer owners can only create dealer staff accounts",
             });
           }
-          body.dealerId = caller.dealerId ?? undefined;
-        } else if (caller.role === "operator") {
-          // Can create any role; dealerId required for dealer roles
+          body.dealershipId = caller.dealerId ?? undefined;
+        } else if (caller.role === "operator_admin") {
+          // Can create any role; dealershipId required for dealer roles
           if (
             (body.role === "dealer_owner" || body.role === "dealer_staff") &&
-            !body.dealerId
+            !body.dealershipId
           ) {
             return res.status(400).json({
               success: false,
-              message: "dealerId is required for dealer roles",
+              message: "dealershipId is required for dealer roles",
             });
           }
         } else {
@@ -379,7 +374,7 @@ export function registerAuthRoutes(app: Express) {
             firstName: body.firstName,
             lastName: body.lastName,
             role: body.role,
-            dealerId: body.dealerId ?? null,
+            dealershipId: body.dealershipId ?? null,
             isActive: true,
           })
           .returning();

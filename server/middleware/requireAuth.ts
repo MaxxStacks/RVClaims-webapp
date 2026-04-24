@@ -71,7 +71,7 @@ export function requireDealerScope(
   }
 
   // Operators see everything — no scope restriction
-  if (user.role === "operator" || user.role === "operator_staff") {
+  if (user.role === "operator_admin" || user.role === "operator_staff") {
     return next();
   }
 
