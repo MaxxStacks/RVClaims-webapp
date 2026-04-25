@@ -67,6 +67,11 @@ const OperatorPortal = lazy(() => import("./portals/OperatorPortal"));
 const DealerPortal = lazy(() => import("./portals/DealerPortal"));
 const CustomerPortal = lazy(() => import("./portals/CustomerPortal"));
 const BidderPortal = lazy(() => import("./portals/BidderPortal"));
+const OperatorPortalV6 = lazy(() => import("@/pages/OperatorPortalV6"));
+const DealerPortalV6 = lazy(() => import("@/pages/DealerPortalV6"));
+const ClientPortalV6 = lazy(() => import("@/pages/ClientPortalV6"));
+const BidderPortalV6 = lazy(() => import("@/pages/BidderPortalV6"));
+const PortalSelectV6 = lazy(() => import("@/pages/PortalSelectV6"));
 
 function ScrollToTop() {
   const [location] = useLocation();
@@ -117,6 +122,12 @@ function Router() {
         <Route path="/client">{() => <Redirect to="/login" />}</Route>
         <Route path="/bidder">{() => <Redirect to="/login" />}</Route>
         <Route path="/bidder-login">{() => <Redirect to="/login" />}</Route>
+        {/* v6 portal shells — side-by-side with existing portals for validation */}
+        <Route path="/operator-v6" component={OperatorPortalV6} />
+        <Route path="/dealer-v6" component={DealerPortalV6} />
+        <Route path="/client-v6" component={ClientPortalV6} />
+        <Route path="/bidder-v6" component={BidderPortalV6} />
+        <Route path="/portal-select-v6" component={PortalSelectV6} />
         <Route path="/book-demo" component={BookDemo} />
         <Route path="/on-site-repairs" component={OnSiteRepairs} />
         <Route path="/roadside-assistance" component={RoadsideAssistance} />

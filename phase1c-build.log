@@ -1,0 +1,145 @@
+
+> rest-express@1.0.0 build
+> vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist
+
+[36mvite v5.4.19 [32mbuilding for production...[36m[39m
+transforming...
+Browserslist: browsers data (caniuse-lite) is 18 months old. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+[32m✓[39m 1896 modules transformed.
+rendering chunks...
+[33mwarnings when minifying css:
+▲ [WARNING] Expected identifier but found "-" [css-syntax-error]
+
+    <stdin>:3684:2:
+      3684 │   -: .;
+           ╵   ^
+
+[39m
+computing gzip size...
+[2m../dist/public/[22m[32mindex.html                                              [39m[1m[2m  6.99 kB[22m[1m[22m[2m │ gzip:   2.23 kB[22m
+[2m../dist/public/[22m[32massets/Modern_luxury_toy_hauler_2050a416-B4emwgM5.webp  [39m[1m[2m 12.01 kB[22m[1m[22m
+[2m../dist/public/[22m[32massets/ds360_favicon-chqR-Hvr.png                       [39m[1m[2m175.30 kB[22m[1m[22m
+[2m../dist/public/[22m[32massets/DS360_logo_light-DphdDGhE.png                    [39m[1m[2m218.84 kB[22m[1m[22m
+[2m../dist/public/[22m[35massets/index-DwBHp67P.css                               [39m[1m[2m199.86 kB[22m[1m[22m[2m │ gzip:  31.89 kB[22m
+[2m../dist/public/[22m[36massets/ds360_favicon-Cuaywb_e.js                        [39m[1m[2m  0.06 kB[22m[1m[22m[2m │ gzip:   0.08 kB[22m
+[2m../dist/public/[22m[36massets/DS360_logo_light-DG2zzhJ8.js                     [39m[1m[2m  0.06 kB[22m[1m[22m[2m │ gzip:   0.08 kB[22m
+[2m../dist/public/[22m[36massets/check-CsNo194h.js                                [39m[1m[2m  0.29 kB[22m[1m[22m[2m │ gzip:   0.24 kB[22m
+[2m../dist/public/[22m[36massets/chevron-up-aJdX3XnJ.js                           [39m[1m[2m  0.30 kB[22m[1m[22m[2m │ gzip:   0.25 kB[22m
+[2m../dist/public/[22m[36massets/play-ClR8ikDs.js                                 [39m[1m[2m  0.30 kB[22m[1m[22m[2m │ gzip:   0.25 kB[22m
+[2m../dist/public/[22m[36massets/circle-check-BCLK5nNn.js                         [39m[1m[2m  0.34 kB[22m[1m[22m[2m │ gzip:   0.27 kB[22m
+[2m../dist/public/[22m[36massets/clock-DgJRzCBb.js                                [39m[1m[2m  0.35 kB[22m[1m[22m[2m │ gzip:   0.27 kB[22m
+[2m../dist/public/[22m[36massets/code-BD627Mw_.js                                 [39m[1m[2m  0.35 kB[22m[1m[22m[2m │ gzip:   0.27 kB[22m
+[2m../dist/public/[22m[36massets/circle-check-big-DUCz9gk2.js                     [39m[1m[2m  0.36 kB[22m[1m[22m[2m │ gzip:   0.28 kB[22m
+[2m../dist/public/[22m[36massets/signup-GW3oJcj-.js                               [39m[1m[2m  0.37 kB[22m[1m[22m[2m │ gzip:   0.29 kB[22m
+[2m../dist/public/[22m[36massets/trending-up-CbUr8BzL.js                          [39m[1m[2m  0.37 kB[22m[1m[22m[2m │ gzip:   0.29 kB[22m
+[2m../dist/public/[22m[36massets/lock-CSBmAZ3Y.js                                 [39m[1m[2m  0.38 kB[22m[1m[22m[2m │ gzip:   0.29 kB[22m
+[2m../dist/public/[22m[36massets/credit-card-CNWByoFZ.js                          [39m[1m[2m  0.38 kB[22m[1m[22m[2m │ gzip:   0.29 kB[22m
+[2m../dist/public/[22m[36massets/dollar-sign-C0JJ0plc.js                          [39m[1m[2m  0.39 kB[22m[1m[22m[2m │ gzip:   0.30 kB[22m
+[2m../dist/public/[22m[36massets/laptop-BvEZ5qGe.js                               [39m[1m[2m  0.39 kB[22m[1m[22m[2m │ gzip:   0.29 kB[22m
+[2m../dist/public/[22m[36massets/circle-help-d20IGI73.js                          [39m[1m[2m  0.40 kB[22m[1m[22m[2m │ gzip:   0.30 kB[22m
+[2m../dist/public/[22m[36massets/activity-DvZkitZ5.js                             [39m[1m[2m  0.40 kB[22m[1m[22m[2m │ gzip:   0.30 kB[22m
+[2m../dist/public/[22m[36massets/camera-C7DiqQ38.js                               [39m[1m[2m  0.42 kB[22m[1m[22m[2m │ gzip:   0.31 kB[22m
+[2m../dist/public/[22m[36massets/circle-alert-BJgV4v-r.js                         [39m[1m[2m  0.42 kB[22m[1m[22m[2m │ gzip:   0.29 kB[22m
+[2m../dist/public/[22m[36massets/chart-column-DhiGjYC7.js                         [39m[1m[2m  0.42 kB[22m[1m[22m[2m │ gzip:   0.30 kB[22m
+[2m../dist/public/[22m[36massets/calendar-CWduQruG.js                             [39m[1m[2m  0.43 kB[22m[1m[22m[2m │ gzip:   0.31 kB[22m
+[2m../dist/public/[22m[36massets/download-CBcmWkrx.js                             [39m[1m[2m  0.43 kB[22m[1m[22m[2m │ gzip:   0.32 kB[22m
+[2m../dist/public/[22m[36massets/file-check-DkEswYcP.js                           [39m[1m[2m  0.43 kB[22m[1m[22m[2m │ gzip:   0.30 kB[22m
+[2m../dist/public/[22m[36massets/login-BNL6CJoS.js                                [39m[1m[2m  0.44 kB[22m[1m[22m[2m │ gzip:   0.34 kB[22m
+[2m../dist/public/[22m[36massets/award-CoVICSKV.js                                [39m[1m[2m  0.44 kB[22m[1m[22m[2m │ gzip:   0.33 kB[22m
+[2m../dist/public/[22m[36massets/book-open-DyeSsLs5.js                            [39m[1m[2m  0.45 kB[22m[1m[22m[2m │ gzip:   0.31 kB[22m
+[2m../dist/public/[22m[36massets/users-GVjNezge.js                                [39m[1m[2m  0.47 kB[22m[1m[22m[2m │ gzip:   0.32 kB[22m
+[2m../dist/public/[22m[36massets/factory-DLPqaEu_.js                              [39m[1m[2m  0.47 kB[22m[1m[22m[2m │ gzip:   0.31 kB[22m
+[2m../dist/public/[22m[36massets/file-text-Bckmy3PK.js                            [39m[1m[2m  0.50 kB[22m[1m[22m[2m │ gzip:   0.32 kB[22m
+[2m../dist/public/[22m[36massets/page-layout-DDnMLKAi.js                          [39m[1m[2m  0.53 kB[22m[1m[22m[2m │ gzip:   0.32 kB[22m
+[2m../dist/public/[22m[36massets/building-2-Bobatkqo.js                           [39m[1m[2m  0.61 kB[22m[1m[22m[2m │ gzip:   0.35 kB[22m
+[2m../dist/public/[22m[36massets/not-found-CzogxxxD.js                            [39m[1m[2m  0.67 kB[22m[1m[22m[2m │ gzip:   0.38 kB[22m
+[2m../dist/public/[22m[36massets/sparkles-cl8-0qom.js                             [39m[1m[2m  0.68 kB[22m[1m[22m[2m │ gzip:   0.40 kB[22m
+[2m../dist/public/[22m[36massets/badge-CpO2cr0Z.js                                [39m[1m[2m  0.71 kB[22m[1m[22m[2m │ gzip:   0.37 kB[22m
+[2m../dist/public/[22m[36massets/smartphone-WYsNLB2L.js                           [39m[1m[2m  0.75 kB[22m[1m[22m[2m │ gzip:   0.38 kB[22m
+[2m../dist/public/[22m[36massets/store-C7sjGGAh.js                                [39m[1m[2m  0.81 kB[22m[1m[22m[2m │ gzip:   0.40 kB[22m
+[2m../dist/public/[22m[36massets/wrench-BIff1tCy.js                               [39m[1m[2m  0.94 kB[22m[1m[22m[2m │ gzip:   0.45 kB[22m
+[2m../dist/public/[22m[36massets/card-VPEH_98X.js                                 [39m[1m[2m  0.99 kB[22m[1m[22m[2m │ gzip:   0.37 kB[22m
+[2m../dist/public/[22m[36massets/api-ChSZYeLN.js                                  [39m[1m[2m  1.01 kB[22m[1m[22m[2m │ gzip:   0.50 kB[22m
+[2m../dist/public/[22m[36massets/websocket-C1imU4fW.js                            [39m[1m[2m  1.35 kB[22m[1m[22m[2m │ gzip:   0.57 kB[22m
+[2m../dist/public/[22m[36massets/portal-router-DmkwjFW3.js                        [39m[1m[2m  1.76 kB[22m[1m[22m[2m │ gzip:   0.78 kB[22m
+[2m../dist/public/[22m[36massets/PortalSelectV6-CxObIeWP.js                       [39m[1m[2m  2.96 kB[22m[1m[22m[2m │ gzip:   1.34 kB[22m
+[2m../dist/public/[22m[36massets/MobileBottomNav-D8GHuj0X.js                      [39m[1m[2m  3.39 kB[22m[1m[22m[2m │ gzip:   1.21 kB[22m
+[2m../dist/public/[22m[36massets/latest-news-section-0576iDsx.js                  [39m[1m[2m  3.58 kB[22m[1m[22m[2m │ gzip:   1.49 kB[22m
+[2m../dist/public/[22m[36massets/news-Uxu6hzYI.js                                 [39m[1m[2m  4.35 kB[22m[1m[22m[2m │ gzip:   1.77 kB[22m
+[2m../dist/public/[22m[36massets/news-article-CkeUNq9O.js                         [39m[1m[2m  4.41 kB[22m[1m[22m[2m │ gzip:   1.72 kB[22m
+[2m../dist/public/[22m[36massets/contact-C9g577vz.js                              [39m[1m[2m  4.89 kB[22m[1m[22m[2m │ gzip:   1.65 kB[22m
+[2m../dist/public/[22m[36massets/privacy-policy-CSZHofI7.js                       [39m[1m[2m  5.03 kB[22m[1m[22m[2m │ gzip:   1.86 kB[22m
+[2m../dist/public/[22m[36massets/knowledge-base-BmtKX_Q8.js                       [39m[1m[2m  5.07 kB[22m[1m[22m[2m │ gzip:   1.94 kB[22m
+[2m../dist/public/[22m[36massets/blog-post-DflQk-qu.js                            [39m[1m[2m  5.12 kB[22m[1m[22m[2m │ gzip:   2.09 kB[22m
+[2m../dist/public/[22m[36massets/rv-coverage-DDCQbY8v.js                          [39m[1m[2m  5.60 kB[22m[1m[22m[2m │ gzip:   2.01 kB[22m
+[2m../dist/public/[22m[36massets/industry-reports-CApgDoHx.js                     [39m[1m[2m  6.53 kB[22m[1m[22m[2m │ gzip:   2.56 kB[22m
+[2m../dist/public/[22m[36massets/blog-CVa3A_GW.js                                 [39m[1m[2m  6.59 kB[22m[1m[22m[2m │ gzip:   2.53 kB[22m
+[2m../dist/public/[22m[36massets/help-center-BMcMLfTP.js                          [39m[1m[2m  7.01 kB[22m[1m[22m[2m │ gzip:   2.53 kB[22m
+[2m../dist/public/[22m[36massets/documentation-D2iUle5L.js                        [39m[1m[2m  7.05 kB[22m[1m[22m[2m │ gzip:   2.63 kB[22m
+[2m../dist/public/[22m[36massets/system-status-DOI9waD_.js                        [39m[1m[2m  7.18 kB[22m[1m[22m[2m │ gzip:   1.90 kB[22m
+[2m../dist/public/[22m[36massets/claim-guides-Iy0TWuNq.js                         [39m[1m[2m  7.22 kB[22m[1m[22m[2m │ gzip:   2.74 kB[22m
+[2m../dist/public/[22m[36massets/cookie-policy-DwsTK5KF.js                        [39m[1m[2m  7.97 kB[22m[1m[22m[2m │ gzip:   2.39 kB[22m
+[2m../dist/public/[22m[36massets/webinars-BMlGgvT5.js                             [39m[1m[2m  8.32 kB[22m[1m[22m[2m │ gzip:   2.88 kB[22m
+[2m../dist/public/[22m[36massets/careers-DeHf2YfU.js                              [39m[1m[2m  8.33 kB[22m[1m[22m[2m │ gzip:   3.07 kB[22m
+[2m../dist/public/[22m[36massets/testimonials-kBSp1UDl.js                         [39m[1m[2m  8.39 kB[22m[1m[22m[2m │ gzip:   3.19 kB[22m
+[2m../dist/public/[22m[36massets/protection-plans-1oK5yGul.js                     [39m[1m[2m  8.66 kB[22m[1m[22m[2m │ gzip:   3.09 kB[22m
+[2m../dist/public/[22m[36massets/pipeda-compliance-DXA52dR7.js                    [39m[1m[2m  8.88 kB[22m[1m[22m[2m │ gzip:   2.87 kB[22m
+[2m../dist/public/[22m[36massets/dealer-training-C-kijfd6.js                      [39m[1m[2m  8.95 kB[22m[1m[22m[2m │ gzip:   2.94 kB[22m
+[2m../dist/public/[22m[36massets/terms-of-service-C0Oj7rtV.js                     [39m[1m[2m  9.02 kB[22m[1m[22m[2m │ gzip:   2.92 kB[22m
+[2m../dist/public/[22m[36massets/network-marketplace-D9ytEb5p.js                  [39m[1m[2m  9.05 kB[22m[1m[22m[2m │ gzip:   2.21 kB[22m
+[2m../dist/public/[22m[36massets/about-BhSyU_QD.js                                [39m[1m[2m  9.17 kB[22m[1m[22m[2m │ gzip:   2.63 kB[22m
+[2m../dist/public/[22m[36massets/dealer-integration-rbTIpLJV.js                   [39m[1m[2m  9.31 kB[22m[1m[22m[2m │ gzip:   2.96 kB[22m
+[2m../dist/public/[22m[36massets/sign-up-DVmlu9sv.js                              [39m[1m[2m  9.52 kB[22m[1m[22m[2m │ gzip:   3.04 kB[22m
+[2m../dist/public/[22m[36massets/expert-consultation-e-PGSX_n.js                  [39m[1m[2m  9.72 kB[22m[1m[22m[2m │ gzip:   2.99 kB[22m
+[2m../dist/public/[22m[36massets/extended-warranty-CjD-wFqV.js                    [39m[1m[2m 10.10 kB[22m[1m[22m[2m │ gzip:   3.41 kB[22m
+[2m../dist/public/[22m[36massets/revenue-optimization-BambF3dk.js                 [39m[1m[2m 10.14 kB[22m[1m[22m[2m │ gzip:   3.58 kB[22m
+[2m../dist/public/[22m[36massets/useQuery-BUBXXDSh.js                             [39m[1m[2m 10.52 kB[22m[1m[22m[2m │ gzip:   3.69 kB[22m
+[2m../dist/public/[22m[36massets/partnerships-i2EBIWcs.js                         [39m[1m[2m 10.58 kB[22m[1m[22m[2m │ gzip:   3.20 kB[22m
+[2m../dist/public/[22m[36massets/marketplace-k1x-_phU.js                          [39m[1m[2m 10.69 kB[22m[1m[22m[2m │ gzip:   3.27 kB[22m
+[2m../dist/public/[22m[36massets/dealer-claim-B9wZ4S7Z.js                         [39m[1m[2m 11.66 kB[22m[1m[22m[2m │ gzip:   3.43 kB[22m
+[2m../dist/public/[22m[36massets/api-access-DK_PPjgF.js                           [39m[1m[2m 11.88 kB[22m[1m[22m[2m │ gzip:   3.44 kB[22m
+[2m../dist/public/[22m[36massets/technology-CNQ8xxPI.js                           [39m[1m[2m 12.44 kB[22m[1m[22m[2m │ gzip:   3.60 kB[22m
+[2m../dist/public/[22m[36massets/dealers-Co0UozII.js                              [39m[1m[2m 13.21 kB[22m[1m[22m[2m │ gzip:   3.89 kB[22m
+[2m../dist/public/[22m[36massets/back-to-top-CZGQ7Tpr.js                          [39m[1m[2m 14.68 kB[22m[1m[22m[2m │ gzip:   4.74 kB[22m
+[2m../dist/public/[22m[36massets/pricing-HnMbg3rf.js                              [39m[1m[2m 15.81 kB[22m[1m[22m[2m │ gzip:   4.28 kB[22m
+[2m../dist/public/[22m[36massets/book-demo-CY1fqPn8.js                            [39m[1m[2m 17.73 kB[22m[1m[22m[2m │ gzip:   5.18 kB[22m
+[2m../dist/public/[22m[36massets/consignment-services-C5bSxkdf.js                 [39m[1m[2m 18.82 kB[22m[1m[22m[2m │ gzip:   4.47 kB[22m
+[2m../dist/public/[22m[36massets/live-auctions-CgBT1jMO.js                        [39m[1m[2m 19.50 kB[22m[1m[22m[2m │ gzip:   5.94 kB[22m
+[2m../dist/public/[22m[36massets/roadside-assistance-BNIn49iX.js                  [39m[1m[2m 20.45 kB[22m[1m[22m[2m │ gzip:   4.71 kB[22m
+[2m../dist/public/[22m[36massets/dealer-dashboard-BgeM9K07.js                     [39m[1m[2m 20.62 kB[22m[1m[22m[2m │ gzip:   6.08 kB[22m
+[2m../dist/public/[22m[36massets/on-site-repairs-Bc1Cd-G-.js                      [39m[1m[2m 20.98 kB[22m[1m[22m[2m │ gzip:   5.24 kB[22m
+[2m../dist/public/[22m[36massets/dealer-listing-CZxe33OV.js                       [39m[1m[2m 21.00 kB[22m[1m[22m[2m │ gzip:   5.73 kB[22m
+[2m../dist/public/[22m[36massets/BidderPortalV6-BdtjQgqD.js                       [39m[1m[2m 22.09 kB[22m[1m[22m[2m │ gzip:   5.79 kB[22m
+[2m../dist/public/[22m[36massets/revenue-services-W-e3orlY.js                     [39m[1m[2m 22.26 kB[22m[1m[22m[2m │ gzip:   5.84 kB[22m
+[2m../dist/public/[22m[36massets/warranty-extended-service-BzrU-zP5.js            [39m[1m[2m 24.27 kB[22m[1m[22m[2m │ gzip:   5.65 kB[22m
+[2m../dist/public/[22m[36massets/PublicAuctionPages-CENiIV_5.js                   [39m[1m[2m 24.38 kB[22m[1m[22m[2m │ gzip:   4.46 kB[22m
+[2m../dist/public/[22m[36massets/services-dxoU5Fon.js                             [39m[1m[2m 25.59 kB[22m[1m[22m[2m │ gzip:   6.44 kB[22m
+[2m../dist/public/[22m[36massets/ClientPortalV6-Ch9KEwjI.js                       [39m[1m[2m 26.12 kB[22m[1m[22m[2m │ gzip:   6.48 kB[22m
+[2m../dist/public/[22m[36massets/marketing-services-CJe_md8m.js                   [39m[1m[2m 26.43 kB[22m[1m[22m[2m │ gzip:   6.51 kB[22m
+[2m../dist/public/[22m[36massets/parts-components-BerUwle7.js                     [39m[1m[2m 29.85 kB[22m[1m[22m[2m │ gzip:   7.30 kB[22m
+[2m../dist/public/[22m[36massets/fi-services-BN48rTj4.js                          [39m[1m[2m 30.40 kB[22m[1m[22m[2m │ gzip:   6.67 kB[22m
+[2m../dist/public/[22m[36massets/claims-processing-_B7Lg1Ek.js                    [39m[1m[2m 32.20 kB[22m[1m[22m[2m │ gzip:   5.94 kB[22m
+[2m../dist/public/[22m[36massets/home-BOG_ZNZQ.js                                 [39m[1m[2m 40.04 kB[22m[1m[22m[2m │ gzip:   8.09 kB[22m
+[2m../dist/public/[22m[36massets/financing-C_DHXknP.js                            [39m[1m[2m 42.19 kB[22m[1m[22m[2m │ gzip:   8.62 kB[22m
+[2m../dist/public/[22m[36massets/newsData-BCveWmS9.js                             [39m[1m[2m 42.49 kB[22m[1m[22m[2m │ gzip:  14.98 kB[22m
+[2m../dist/public/[22m[36massets/contact-section-Cw8iK8Uc.js                      [39m[1m[2m 45.20 kB[22m[1m[22m[2m │ gzip:  15.05 kB[22m
+[2m../dist/public/[22m[36massets/BidderPortal-DIWezw2f.js                         [39m[1m[2m 45.38 kB[22m[1m[22m[2m │ gzip:   9.91 kB[22m
+[2m../dist/public/[22m[36massets/OperatorPortalV6-BGh6QZ1_.js                     [39m[1m[2m 49.62 kB[22m[1m[22m[2m │ gzip:  10.23 kB[22m
+[2m../dist/public/[22m[36massets/DealerPortalV6-CNARYa4u.js                       [39m[1m[2m 50.08 kB[22m[1m[22m[2m │ gzip:  10.58 kB[22m
+[2m../dist/public/[22m[36massets/CustomerPortal-jpcubToN.js                       [39m[1m[2m 63.94 kB[22m[1m[22m[2m │ gzip:  10.78 kB[22m
+[2m../dist/public/[22m[36massets/notification-bar-BP9JFYaa.js                     [39m[1m[2m 81.99 kB[22m[1m[22m[2m │ gzip:  35.39 kB[22m
+[2m../dist/public/[22m[36massets/DealerPortal-CYfJIMPj.js                         [39m[1m[2m183.42 kB[22m[1m[22m[2m │ gzip:  28.65 kB[22m
+[2m../dist/public/[22m[36massets/OperatorPortal-cptdR1bO.js                       [39m[1m[2m325.85 kB[22m[1m[22m[2m │ gzip:  49.50 kB[22m
+[2m../dist/public/[22m[36massets/index--B10IfWQ.js                                [39m[1m[33m518.36 kB[39m[22m[2m │ gzip: 160.81 kB[22m
+[33m
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.[39m
+[32m✓ built in 22.88s[39m
+
+  dist\index.js  406.4kb
+
+Done in 21ms
