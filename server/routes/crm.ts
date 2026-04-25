@@ -7,7 +7,8 @@ import {
   crmAttachments, dealerReviews, dealerMessages, quoteRequests,
 } from '@shared/schema';
 import { eq, and, or, ilike, desc, asc, sql, inArray, lt, gte } from 'drizzle-orm';
-import { requireAuth, requireRole } from '../middleware/requireAuth';
+import { requireAuth } from '../middleware/auth';
+import { requireRole } from '../middleware/rbac';
 import { generateSlug } from '../directory/import-dealers';
 
 const router = Router();

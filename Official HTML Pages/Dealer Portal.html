@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Dealer Portal — Your Dealership Command Center | DealerSuite360</title>
+<meta name="description" content="The DS360 Dealer Portal — claims, units, photos, billing, staff, F&I products, marketplace, and TechFlow all in one dashboard. See exactly how DS360 fits into your day."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--primary:hsl(217,95%,26%);--primary-light:hsl(217,95%,36%);--primary-5:hsl(217,95%,26%/0.05);--primary-10:hsl(217,95%,26%/0.10);--primary-20:hsl(217,95%,26%/0.20);--primary-40:hsl(217,95%,26%/0.40);--fg:hsl(240,10%,3.9%);--muted:hsl(215.4,16.3%,46.9%);--bg:white;--card:white;--border:hsl(214.3,31.8%,91.4%);--gray-50:hsl(210,40%,97.5%);--green:#0cb22c;--green-h:#0a9624;--font:'Inter',-apple-system,BlinkMacSystemFont,sans-serif}
+body{font-family:var(--font);color:var(--fg);background:var(--bg);-webkit-font-smoothing:antialiased;line-height:1.6;overflow-x:hidden}
+img{max-width:100%;height:auto;display:block}a{color:inherit;text-decoration:none}
+.nav{position:sticky;top:0;z-index:100;background:white;border-bottom:1px solid var(--border);height:64px;display:flex;align-items:center;padding:0 1rem}.nav-inner{max-width:1280px;margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between;padding:0 1rem}.nav-logo{font-weight:700;font-size:1.1rem;color:var(--primary);display:flex;align-items:center;gap:.5rem}.nav-logo .b{font-weight:600;font-size:.55rem;background:var(--primary);color:white;padding:2px 5px;border-radius:3px}.nav-links{display:flex;gap:2rem;font-size:.88rem;font-weight:500;color:var(--muted)}.nav-links a:hover{color:var(--primary)}@media(max-width:768px){.nav-links{display:none}}
+.wrap{max-width:1280px;margin:0 auto;padding:0 1rem}@media(min-width:640px){.wrap{padding:0 1.5rem}}@media(min-width:1024px){.wrap{padding:0 2rem}}
+.sec-w{padding:5rem 0;background:white}.sec-g{padding:5rem 0;background:var(--gray-50)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;font-family:var(--font);font-size:.88rem;font-weight:600;padding:.75rem 1.5rem;border-radius:.5rem;border:none;cursor:pointer;transition:all .2s}.btn-lg{padding:.85rem 2rem;font-size:.95rem}.btn-primary{background:var(--primary);color:white;box-shadow:0 10px 15px -3px rgba(0,0,0,.1)}.btn-primary:hover{background:hsl(217,95%,23%)}.btn-outline{background:transparent;color:var(--fg);border:1px solid var(--border)}.btn-outline:hover{background:var(--gray-50)}.btn-green{background:var(--green);color:white}.btn-green:hover{background:var(--green-h)}.btn-white{background:white;color:var(--primary)}.btn-white:hover{background:#f5f5f5}
+.badge{display:inline-flex;align-items:center;padding:.25rem .75rem;border-radius:9999px;font-size:.75rem;font-weight:500;background:var(--primary-10);color:var(--primary);border:1px solid var(--primary-20)}
+.sec-head{text-align:center;margin-bottom:4rem;display:flex;flex-direction:column;align-items:center;gap:1rem}.sec-head h2{font-size:clamp(1.75rem,4vw,2.25rem);font-weight:700}.sec-head p{font-size:1.05rem;color:var(--muted);max-width:48rem;line-height:1.7}
+.phero{background:linear-gradient(to bottom right,var(--primary-5),var(--bg),var(--primary-10));background-image:radial-gradient(circle at 25px 25px,rgba(30,58,138,.1) 2px,transparent 0),radial-gradient(circle at 75px 75px,rgba(30,58,138,.05) 2px,transparent 0);background-size:100px 100px;padding:5rem 0}@media(min-width:1024px){.phero{padding:6rem 0}}
+.phero-grid{display:grid;grid-template-columns:1fr;gap:3rem;align-items:center}@media(min-width:1024px){.phero-grid{grid-template-columns:1fr 1fr}}
+.phero-text{display:flex;flex-direction:column;gap:1.75rem}.phero h1{font-size:clamp(2rem,4.5vw,3.25rem);font-weight:700;line-height:1.15}.phero h1 .gradient{display:block;background:linear-gradient(135deg,var(--primary),var(--primary-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.phero-desc{font-size:1.1rem;color:var(--muted);line-height:1.7}.phero-btns{display:flex;gap:1rem;flex-wrap:wrap}
+.phero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;padding-top:2rem;border-top:1px solid var(--border)}.phero-stat{text-align:center}.phero-stat-val{font-size:1.5rem;font-weight:700;color:var(--primary)}.phero-stat-label{font-size:.8rem;color:var(--muted)}.phero-img{border-radius:1rem;box-shadow:0 25px 50px -12px rgba(0,0,0,.25);overflow:hidden}
+.split{display:grid;grid-template-columns:1fr;gap:4rem;align-items:center}@media(min-width:1024px){.split{grid-template-columns:1fr 1fr}}.split-rev{direction:rtl}.split-rev>*{direction:ltr}.split-text{display:flex;flex-direction:column;gap:1.5rem}.split-text h2{font-size:clamp(1.75rem,4vw,2.25rem);font-weight:700}.split-text>p{font-size:1.05rem;color:var(--muted);line-height:1.7}.split-img{position:relative;border-radius:1rem;overflow:hidden;box-shadow:0 25px 50px -12px rgba(0,0,0,.25)}.split-img img{width:100%;height:auto}.split-img .overlay{position:absolute;inset:0;background:linear-gradient(to top right,var(--primary-20),transparent)}
+.checks{display:flex;flex-direction:column;gap:1rem}.check{display:flex;align-items:flex-start;gap:.75rem}.check-dot{width:1.5rem;height:1.5rem;border-radius:50%;background:var(--primary-10);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.125rem}.check-dot svg{width:.75rem;height:.75rem}.check-info h3{font-weight:600;font-size:.95rem}.check-info p{font-size:.85rem;color:var(--muted)}
+.bst{text-align:center;padding:2rem;max-width:48rem;margin:0 auto}.bst-line{width:3rem;height:3px;background:var(--primary);margin:0 auto 1.5rem;border-radius:2px}.bst p{font-size:clamp(1.15rem,3vw,1.4rem);font-weight:600;color:var(--fg);line-height:1.5;font-style:italic}
+.dyk{position:relative;max-width:52rem;margin:0 auto;background:linear-gradient(135deg,hsl(217 95% 26%/.03),hsl(217 95% 26%/.08));border:1px solid var(--primary-20);border-radius:.75rem;padding:2.5rem 2.5rem 2.5rem 5.5rem;overflow:hidden}.dyk::before{content:'?';position:absolute;left:-1rem;top:50%;transform:translateY(-50%);font-size:8rem;font-weight:800;color:var(--primary-10);line-height:1;pointer-events:none}.dyk-tag{display:inline-flex;align-items:center;gap:.4rem;font-size:.72rem;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.75rem}.dyk>p{font-size:1.1rem;color:var(--fg);line-height:1.7}.dyk>p strong{color:var(--primary);font-weight:700}@media(max-width:768px){.dyk{padding:2rem 1.5rem}.dyk::before{display:none}}
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:2rem}@media(max-width:768px){.grid-2{grid-template-columns:1fr}}
+.link-card{display:flex;align-items:center;justify-content:space-between;background:white;border:1px solid var(--border);border-radius:.75rem;padding:1.25rem 1.5rem;transition:all .25s}.link-card:hover{border-color:var(--primary);transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.05)}.link-card h4{font-size:.95rem;font-weight:600;margin-bottom:.2rem}.link-card p{font-size:.8rem;color:var(--muted)}.link-arrow{font-size:1.15rem;color:var(--primary);transition:transform .2s;flex-shrink:0;margin-left:1rem}.link-card:hover .link-arrow{transform:translateX(4px)}
+.faq-layout{display:grid;grid-template-columns:1fr;gap:3rem;align-items:flex-start}@media(min-width:1024px){.faq-layout{grid-template-columns:1fr 1.4fr;gap:4rem}}.faq-left{position:sticky;top:5rem}@media(max-width:1023px){.faq-left{position:static}}.faq-right{display:flex;flex-direction:column;gap:.75rem}.faq-card{background:var(--card);border:1px solid var(--border);border-radius:.75rem;overflow:hidden;transition:border-color .2s}.faq-card.open{border-color:var(--primary-40)}.faq-q{width:100%;display:flex;justify-content:space-between;align-items:center;padding:1.25rem 1.5rem;background:0;border:0;font-family:var(--font);font-size:.92rem;font-weight:600;color:var(--fg);cursor:pointer;text-align:left;gap:1rem;line-height:1.4}.faq-q:hover{color:var(--primary)}.faq-icon{width:2rem;height:2rem;border-radius:.5rem;background:var(--primary-10);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}.faq-icon svg{color:var(--primary);transition:transform .2s}.faq-card.open .faq-icon{background:var(--primary)}.faq-card.open .faq-icon svg{color:white;transform:rotate(45deg)}.faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease}.faq-card.open .faq-a{max-height:500px}.faq-a p{padding:0 1.5rem 1.25rem;font-size:.9rem;color:var(--muted);line-height:1.8}
+.bcta{background:linear-gradient(135deg,hsl(217,95%,18%),hsl(217,95%,28%));text-align:center;padding:5rem 0}.bcta h2{font-size:clamp(1.75rem,4vw,2.25rem);font-weight:700;color:white;margin-bottom:1rem}.bcta p{color:hsl(217,20%,75%);font-size:1.05rem;max-width:36rem;margin:0 auto 2rem;line-height:1.7}.bcta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.footer{background:var(--gray-50);border-top:1px solid var(--border);padding:2rem 0;text-align:center;font-size:.8rem;color:var(--muted)}.anim{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}.anim.v{opacity:1;transform:translateY(0)}
+
+/* Day in the life timeline */
+.day{max-width:48rem;margin:0 auto}
+.day-step{display:grid;grid-template-columns:5rem 1fr;gap:1.5rem;padding-bottom:2rem;position:relative}
+.day-step:last-child{padding-bottom:0}
+.day-left{display:flex;flex-direction:column;align-items:center;position:relative}
+.day-left::after{content:'';position:absolute;top:3.5rem;bottom:0;width:2px;background:var(--border)}
+.day-step:last-child .day-left::after{display:none}
+.day-time{font-size:.72rem;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:.04em;text-align:center;background:var(--primary-10);padding:.35rem .5rem;border-radius:.35rem;white-space:nowrap}
+.day-content{background:white;border:1px solid var(--border);border-radius:.75rem;padding:1.25rem 1.5rem;transition:all .25s}
+.day-content:hover{border-color:var(--primary-20);box-shadow:0 6px 16px rgba(0,0,0,.04)}
+.day-content h4{font-size:.95rem;font-weight:700;margin-bottom:.3rem}
+.day-content p{font-size:.85rem;color:var(--muted);line-height:1.6}
+@media(max-width:640px){.day-step{grid-template-columns:3.5rem 1fr;gap:1rem}}
+</style>
+</head>
+<body>
+
+<nav class="nav"><div class="nav-inner"><div class="nav-logo"><svg width="28" height="28" viewBox="0 0 32 32" fill="none"><path d="M16 2L4 8v16l12 6 12-6V8L16 2z" fill="hsl(217,95%,26%)"/><path d="M16 6l8 4v12l-8 4-8-4V10l8-4z" fill="hsl(217,95%,36%)"/><path d="M16 10v12l-4-2V12l4-2z" fill="white" opacity=".6"/></svg>Dealer Suite<span class="b">360</span></div><div class="nav-links"><a href="/services">Services</a><a href="/products/fi-services">Products</a><a href="/marketplace">Marketplace</a><a href="/technology" style="color:var(--primary);font-weight:600">Technology</a><a href="/pricing">Pricing</a><a href="/contact" class="btn btn-primary" style="padding:.5rem 1.25rem;font-size:.82rem">Get Started</a></div></div></nav>
+
+<!-- 1. HERO -->
+<section class="phero">
+  <div class="wrap">
+    <div class="phero-grid">
+      <div class="phero-text">
+        <div><a href="/technology/platform" style="font-size:.82rem;color:var(--muted)">&larr; Technology Platform</a></div>
+        <div><div class="badge">DS360 Portal</div></div>
+        <h1>See What Your<span class="gradient">Day Looks Like on DS360.</span></h1>
+        <p class="phero-desc">This is not a feature list. This is a walkthrough of what you see when you log in, how the portal supports your daily operations, and what changes between your morning coffee and your end-of-day close. If you are evaluating DS360, this page shows you exactly how it fits into your day.</p>
+        <div class="phero-btns"><a href="/contact" class="btn btn-lg btn-primary">Book a Live Demo</a><a href="#your-day" class="btn btn-lg btn-outline">See Your Day</a></div>
+        <div class="phero-stats">
+          <div class="phero-stat"><div class="phero-stat-val">All-in-One</div><div class="phero-stat-label">Single Dashboard</div></div>
+          <div class="phero-stat"><div class="phero-stat-val">Real-Time</div><div class="phero-stat-label">Claim Status</div></div>
+          <div class="phero-stat"><div class="phero-stat-val">RBAC</div><div class="phero-stat-label">Owner vs Staff Views</div></div>
+        </div>
+      </div>
+      <div class="phero-img"><img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=584&h=438&fm=webp&q=75" alt="Dealer Portal" width="584" height="438"/></div>
+    </div>
+  </div>
+</section>
+
+<!-- 2. WHAT YOU SEE -->
+<section class="sec-w">
+  <div class="wrap">
+    <div class="split anim">
+      <div class="split-text">
+        <div class="badge">Your Dashboard</div>
+        <h2>One Login. Everything in One Place.</h2>
+        <p>When you log in to the DS360 Dealer Portal, you see your entire operation on one screen. Active claims with real-time status, units organized by VIN, pending parts deliveries, billing summary, staff activity, marketplace listings, and F&I product access — all without switching between tabs, tools, or systems.</p>
+        <div class="checks">
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Claims at a Glance</h3><p>Every active claim with status, deadline, and next action required — sorted by urgency</p></div></div>
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Unit Management</h3><p>VIN-based dashboards with warranty info, claim history, photos, documents, and service records</p></div></div>
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Financial Overview</h3><p>Billing, payment tracking, F&I product revenue, and cashback tier status</p></div></div>
+        </div>
+      </div>
+      <div class="split-img">
+        <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&auto=format&fit=crop&w=576&h=432&fm=webp&q=75" alt="Dashboard" width="576" height="432" loading="lazy"/>
+        <div class="overlay"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. STATEMENT -->
+<section class="sec-g" style="padding:3.5rem 0">
+  <div class="wrap"><div class="bst"><div class="bst-line"></div><p>"A dealer evaluating DS360 should finish this page thinking: I can see exactly how this fits into my day."</p></div></div>
+</section>
+
+<!-- 4. A DAY IN THE LIFE -->
+<section class="sec-w" id="your-day">
+  <div class="wrap">
+    <div class="sec-head"><div class="badge">Your Day on DS360</div><h2>Morning to Close — What Happens at Each Step</h2><p>This is a typical day for a dealer running their operation through the DS360 portal.</p></div>
+    <div class="day anim">
+      <div class="day-step">
+        <div class="day-left"><div class="day-time">8:00 AM</div></div>
+        <div class="day-content"><h4>Morning Dashboard Check</h4><p>Log in and scan your dashboard. See which claims moved overnight — approvals, parts shipped, deadlines approaching. Check notifications for any manufacturer responses that came in after hours. Review today's priority list automatically sorted by urgency.</p></div>
+      </div>
+      <div class="day-step">
+        <div class="day-left"><div class="day-time">9:00 AM</div></div>
+        <div class="day-content"><h4>New Claim Submission</h4><p>A unit came in yesterday with a water heater failure. Open the unit dashboard by VIN, upload inspection photos, and the AI Document Scanner reads the warranty certificate and auto-populates coverage details. AI suggests FRC codes and generates a fail-proof description. Submit to DS360 for processing.</p></div>
+      </div>
+      <div class="day-step">
+        <div class="day-left"><div class="day-time">10:30 AM</div></div>
+        <div class="day-content"><h4>Parts Status Update</h4><p>Check the Parts & Components tracker. Two parts ordered last week show "shipped" — ETAs are visible. A third part is sourced from an alternative supplier at a lower cost. Update the client through the Customer Portal messaging — they see the status change in real time.</p></div>
+      </div>
+      <div class="day-step">
+        <div class="day-left"><div class="day-time">12:00 PM</div></div>
+        <div class="day-content"><h4>F&I Product Sale</h4><p>A client who purchased a unit last week received their AI F&I Presenter link. They accepted Extended Warranty and Appearance Protection overnight. The accepted products auto-synced to your portal — no manual entry. Revenue logged. Cashback tier updated.</p></div>
+      </div>
+      <div class="day-step">
+        <div class="day-left"><div class="day-time">2:00 PM</div></div>
+        <div class="day-content"><h4>TechFlow Service Check</h4><p>An approved warranty claim auto-generated a TechFlow work order this morning. Your service manager assigned it to a technician. The tech logged 3.5 hours — those hours are already synced back to the claim invoice. Zero manual time entry.</p></div>
+      </div>
+      <div class="day-step">
+        <div class="day-left"><div class="day-time">3:30 PM</div></div>
+        <div class="day-content"><h4>Marketplace Activity</h4><p>A travel trailer has been on your lot for 75 days. You pushed it to the Dealer Exchange last week. Today, a dealer 400KM away inquired. DS360 initiated the escrow process. You might move this unit by end of week without a single walk-in.</p></div>
+      </div>
+      <div class="day-step">
+        <div class="day-left"><div class="day-time">5:00 PM</div></div>
+        <div class="day-content"><h4>End-of-Day Review</h4><p>Check billing summary — claims submitted, products sold, parts ordered, marketplace transactions pending. Review any deadline alerts for tomorrow. Log out knowing that the AI F&I Presenter is still presenting products to clients who received their links today — working after hours so you don't have to.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. OWNER VERSUS STAFF -->
+<section class="sec-g">
+  <div class="wrap">
+    <div class="split split-rev anim">
+      <div class="split-text">
+        <div class="badge">Role-Based Views</div>
+        <h2>Dealer Owner VERSUS Dealer Staff — Different Views, Same Portal</h2>
+        <p>Not everyone at your dealership needs to see everything. DS360's RBAC system gives the owner full access while restricting staff to operational tasks only. Both roles log into the same portal — they just see different things.</p>
+        <div class="checks">
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Dealer Owner Sees</h3><p>Claims, units, billing, invoices, payment history, staff management, F&I product access, marketplace listings, TechFlow, reporting, and cashback tier status</p></div></div>
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Dealer Staff Sees</h3><p>Claims and units for their dealership — operational access only. No billing, no invoices, no staff management, no admin configuration</p></div></div>
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Same Login, Different Experience</h3><p>Staff members are added through the owner's dashboard with their role assigned. No separate portal, no separate URL — just filtered access</p></div></div>
+        </div>
+      </div>
+      <div class="split-img">
+        <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?ixlib=rb-4.0.3&auto=format&fit=crop&w=576&h=432&fm=webp&q=75" alt="Role-based views" width="576" height="432" loading="lazy"/>
+        <div class="overlay"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. KEY FEATURES -->
+<section class="sec-w">
+  <div class="wrap">
+    <div class="split anim">
+      <div class="split-text">
+        <div class="badge">Portal Features</div>
+        <h2>Everything Runs Through One Portal</h2>
+        <p>The Dealer Portal is not a reporting dashboard that sits beside your tools. It is the tool. Every operational action — from claim creation to parts tracking to F&I product sales to marketplace listings — happens inside the portal. No external systems. No tab switching. No data re-entry.</p>
+        <div class="checks">
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Claim Creation &amp; Tracking</h3><p>Submit new claims, track status in real time, view manufacturer responses, and manage the full lifecycle</p></div></div>
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Unit Management</h3><p>Every unit organized by VIN with warranty info, claim history, photos, documents, and service records</p></div></div>
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Photo &amp; Document Upload</h3><p>Upload claim photos, warranty certificates, invoices, and inspection reports — AI scans and auto-populates fields</p></div></div>
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Billing &amp; Payments</h3><p>Track invoices, view payment history, monitor F&I product revenue, and check cashback tier progress</p></div></div>
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Staff Management</h3><p>Add staff, assign roles (Owner or Staff), and control who sees what — all from the portal settings</p></div></div>
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Marketplace &amp; F&I Access</h3><p>List units on the Dealer Exchange, push to Live Auctions, access F&I products, and send AI F&I Presenter links — all in-portal</p></div></div>
+        </div>
+      </div>
+      <div class="split-img">
+        <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-4.0.3&auto=format&fit=crop&w=576&h=432&fm=webp&q=75" alt="Portal features" width="576" height="432" loading="lazy"/>
+        <div class="overlay"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7. DYK -->
+<section class="sec-g">
+  <div class="wrap">
+    <div class="dyk anim">
+      <div class="dyk-tag">Did You Know?</div>
+      <p>The average RV dealership uses <strong>4 to 7 separate software systems</strong> for claims, service, inventory, F&I, and accounting. Each system has its own login, its own data, and its own workflow. DS360 consolidates all of this into a single portal — one login, one data layer, one workflow. The time saved on system switching alone is worth the platform cost.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 8. CONNECTED -->
+<section class="sec-w">
+  <div class="wrap">
+    <div class="grid-2 anim">
+      <a href="/platform/client-portal" class="link-card"><div><h4>Client Portal</h4><p>What your clients see — white-label, dealer-branded</p></div><span class="link-arrow">&rarr;</span></a>
+      <a href="/platform/mobile-app" class="link-card"><div><h4>Mobile App</h4><p>The portal in your pocket — scan, capture, push to claim</p></div><span class="link-arrow">&rarr;</span></a>
+      <a href="/technology/platform" class="link-card"><div><h4>Technology Platform</h4><p>4 portals, security, and enterprise architecture</p></div><span class="link-arrow">&rarr;</span></a>
+      <a href="/pricing" class="link-card"><div><h4>Pricing</h4><p>What it costs — transparent pricing for every service</p></div><span class="link-arrow">&rarr;</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- 9. FAQ -->
+<section class="sec-g">
+  <div class="wrap">
+    <div class="faq-layout anim">
+      <div class="faq-left">
+        <div class="badge">FAQ</div>
+        <h2 style="font-size:clamp(1.5rem,3.5vw,2rem);font-weight:700;margin-top:.75rem;line-height:1.2">Dealer Portal<br/>Questions</h2>
+        <p style="font-size:1rem;color:var(--muted);line-height:1.7;margin-top:1rem">About your day-to-day experience.</p>
+        <a href="/contact" class="btn btn-primary" style="width:fit-content;margin-top:1.5rem">Book a Demo &rarr;</a>
+      </div>
+      <div class="faq-right">
+        <div class="faq-card"><button class="faq-q"><span>How long does onboarding take?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faq-a"><p>Most dealerships are fully operational on DS360 within 1-2 weeks. DS360 handles account setup, data import, staff role configuration, and initial training. You start submitting claims on day one.</p></div></div>
+        <div class="faq-card"><button class="faq-q"><span>Can I access the portal on mobile?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faq-a"><p>Yes. The portal is fully responsive and works on any device. The DS360 Mobile App (launching Q3 2026 as a PWA) adds native features like camera-based document scanning, unit tag scanning, and push-to-claim workflows that go beyond what the browser portal offers.</p></div></div>
+        <div class="faq-card"><button class="faq-q"><span>How many staff accounts can I create?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faq-a"><p>There is no limit on staff accounts. Add as many team members as you need, each with their role (Owner or Staff) assigned by you. Staff members get filtered access — they see claims and units but not billing, invoicing, or admin settings.</p></div></div>
+        <div class="faq-card"><button class="faq-q"><span>Can I customize the portal with my branding?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faq-a"><p>The Dealer Portal uses the DS360 interface. The Customer Portal — the client-facing side — is fully white-labeled with your logo, colors, and custom domain. Your clients see your brand. Your staff sees the DS360 operational interface.</p></div></div>
+        <div class="faq-card"><button class="faq-q"><span>Is there bilingual support?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faq-a"><p>Yes. DS360 supports English and French throughout the platform — essential for Quebec dealerships and the broader Canadian market. Bilingual support covers the Dealer Portal, Customer Portal, and the upcoming Mobile App.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 10. BOTTOM CTA -->
+<section class="bcta">
+  <div class="wrap">
+    <h2>See It in Action. Book a Live Demo.</h2>
+    <p>Walk through the Dealer Portal with a DS360 specialist — see how claims, units, F&I, marketplace, and service management work in a single dashboard.</p>
+    <div class="bcta-btns"><a href="/contact" class="btn btn-lg btn-green">Book a Demo &rarr;</a><a href="/pricing" class="btn btn-lg btn-white">View Pricing</a></div>
+  </div>
+</section>
+
+<footer class="footer"><div class="wrap">&copy; 2026 Dealer Suite 360. All rights reserved. Patent Pending Technology.</div></footer>
+
+<script>
+document.querySelectorAll('.faq-q').forEach(b=>{b.addEventListener('click',()=>{const i=b.closest('.faq-card');const o=i.classList.contains('open');document.querySelectorAll('.faq-card').forEach(x=>x.classList.remove('open'));if(!o)i.classList.add('open')})});
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('v');obs.unobserve(x.target)}})},{threshold:.08});
+document.querySelectorAll('.anim').forEach(e=>obs.observe(e));
+</script>
+</body>
+</html>

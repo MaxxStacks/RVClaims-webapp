@@ -1,27 +1,43 @@
 import {
   createContext,
   useContext,
-  useEffect,
-  useState,
-  useCallback,
   type ReactNode,
 } from "react";
-import type { PublicUser, UserRole } from "@shared/schema";
-import {
-  login as apiLogin,
-  logout as apiLogout,
-  register as apiRegister,
-  refreshSession,
-  type RegisterPayload,
-} from "@/lib/auth-api";
+import { useUser, useClerk } from "@clerk/clerk-react";
+import type { UserRole } from "@shared/schema";
 
-// ─── Context shape ────────────────────────────────────────────────────────────
+// Re-export RegisterPayload shape for backward compat
+export interface RegisterPayload {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  dealershipName: string;
+  dealershipEmail: string;
+  dealershipPhone?: string;
+}
+
+// PublicUser-like shape derived from Clerk
+interface AuthUser {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  phone: string | null;
+  avatarUrl: string | null;
+  role: UserRole;
+  dealershipId: string | null;
+  timezone: string | null;
+  language: string | null;
+  lastLoginAt: Date | null;
+  createdAt: Date;
+}
 
 interface AuthContextValue {
-  user: PublicUser | null;
+  user: AuthUser | null;
   isLoading: boolean;
   isAuthenticated: boolean;
-  login: (email: string, password: string, portal?: "dealer" | "operator" | "client" | "bidder", rememberMe?: boolean) => Promise<{ success: boolean; message?: string }>;
+  login: (email: string, password: string, portal?: string, rememberMe?: boolean) => Promise<{ success: boolean; message?: string }>;
   register: (payload: RegisterPayload) => Promise<{ success: boolean; message?: string }>;
   logout: () => Promise<void>;
   hasRole: (...roles: UserRole[]) => boolean;
@@ -31,64 +47,50 @@ interface AuthContextValue {
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
-// ─── Provider ─────────────────────────────────────────────────────────────────
-
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<PublicUser | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const { user: clerkUser, isLoaded } = useUser();
+  const { signOut } = useClerk();
 
-  // On mount, try to restore the session via the refresh cookie.
-  // If no valid session exists the server returns 401 and we stay logged out.
-  useEffect(() => {
-    refreshSession()
-      .then((res) => {
-        if (res.success && res.user) {
-          setUser(res.user);
-        }
-      })
-      .catch(() => {
-        // No active session — normal for unauthenticated visitors
-      })
-      .finally(() => setIsLoading(false));
-  }, []);
-
-  const login = useCallback(
-    async (email: string, password: string, portal?: "dealer" | "operator" | "client" | "bidder", rememberMe?: boolean) => {
-      const res = await apiLogin(email, password, portal, rememberMe);
-      if (res.success && res.user) {
-        setUser(res.user);
-        return { success: true };
+  const user: AuthUser | null = clerkUser && isLoaded
+    ? {
+        id: clerkUser.id,
+        email: clerkUser.primaryEmailAddress?.emailAddress ?? "",
+        firstName: clerkUser.firstName ?? "",
+        lastName: clerkUser.lastName ?? "",
+        phone: null,
+        avatarUrl: clerkUser.imageUrl ?? null,
+        role: ((clerkUser.publicMetadata?.role as UserRole) ?? "client"),
+        dealershipId: (clerkUser.publicMetadata?.dealershipId as string) ?? null,
+        timezone: null,
+        language: null,
+        lastLoginAt: null,
+        createdAt: new Date(clerkUser.createdAt ?? Date.now()),
       }
-      return { success: false, message: res.message ?? "Login failed" };
-    },
-    []
-  );
+    : null;
 
-  const register = useCallback(async (payload: RegisterPayload) => {
-    const res = await apiRegister(payload);
-    if (res.success && res.user) {
-      setUser(res.user);
-      return { success: true };
-    }
-    return { success: false, message: res.message ?? "Registration failed" };
-  }, []);
+  const login = async (_email: string, _password: string, _portal?: string, _rememberMe?: boolean) => {
+    window.location.href = "/login";
+    return { success: true };
+  };
 
-  const logout = useCallback(async () => {
-    await apiLogout();
-    setUser(null);
-  }, []);
+  const register = async (_payload: RegisterPayload) => {
+    window.location.href = "/signup";
+    return { success: true };
+  };
 
-  const hasRole = useCallback(
-    (...roles: UserRole[]) => {
-      if (!user) return false;
-      return roles.includes(user.role);
-    },
-    [user]
-  );
+  const logout = async () => {
+    await signOut();
+    window.location.href = "/";
+  };
+
+  const hasRole = (...roles: UserRole[]): boolean => {
+    if (!user) return false;
+    return roles.includes(user.role);
+  };
 
   const value: AuthContextValue = {
     user,
-    isLoading,
+    isLoading: !isLoaded,
     isAuthenticated: user !== null,
     login,
     register,
@@ -100,8 +102,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
-
-// ─── Hook ─────────────────────────────────────────────────────────────────────
 
 export function useAuth(): AuthContextValue {
   const ctx = useContext(AuthContext);

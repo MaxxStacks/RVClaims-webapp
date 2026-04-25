@@ -4,7 +4,8 @@ import { Router } from 'express';
 import { db } from '../db';
 import { blogPosts, contentQueue } from '@shared/schema';
 import { eq, desc, and, sql } from 'drizzle-orm';
-import { requireAuth, requireRole } from '../middleware/requireAuth';
+import { requireAuth } from '../middleware/auth';
+import { requireRole } from '../middleware/rbac';
 
 const router = Router();
 

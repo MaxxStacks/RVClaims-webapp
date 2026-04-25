@@ -2,7 +2,6 @@
 
 import express, { type Express } from "express";
 import { createServer, type Server } from "http";
-import authRoutes from "./auth";
 import userRoutes from "./users";
 import dealershipRoutes from "./dealerships";
 import unitRoutes from "./units";
@@ -60,7 +59,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.use("/api/payments/webhook", express.raw({ type: "application/json" }));
 
   // ==================== v2.1 API ROUTES ====================
-  app.use("/api/auth", authRoutes);
   app.use("/api/users", userRoutes);
   app.use("/api/dealerships", dealershipRoutes);
   app.use("/api/units", unitRoutes);

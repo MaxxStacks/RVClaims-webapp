@@ -70,13 +70,14 @@ export const EMAIL_EVENT_TYPES = ["sent", "delivered", "opened", "clicked", "bou
 export const users = pgTable("users", {
   id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
   email: text("email").notNull().unique(),
-  passwordHash: text("password_hash").notNull(),
+  passwordHash: text("password_hash"),
   firstName: text("first_name").notNull(),
   lastName: text("last_name").notNull(),
   phone: text("phone"),
   avatarUrl: text("avatar_url"),
   role: text("role", { enum: USER_ROLES }).notNull(),
   roles: jsonb("roles").$type<string[]>().default(sql`'[]'::jsonb`),
+  clerkUserId: text("clerk_user_id").unique(),
   dealershipId: uuid("dealership_id"),
   timezone: text("timezone").default("America/Toronto"),
   language: text("language").default("en"),
@@ -169,6 +170,7 @@ export const dealerships = pgTable("dealerships", {
   marketingEnabled: boolean("marketing_enabled").default(false),
   consignmentEnabled: boolean("consignment_enabled").default(false),
   partsStoreEnabled: boolean("parts_store_enabled").default(false),
+  clerkOrgId: text("clerk_org_id").unique(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });

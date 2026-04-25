@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>TechFlow — Service Department Management for RV Dealers | DealerSuite360</title>
+<meta name="description" content="TechFlow bridges the gap between your claims desk and service bay. Approved claims auto-generate work orders, labor hours sync to invoices, and unbilled labor disappears."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --primary:hsl(217,95%,26%);--primary-light:hsl(217,95%,36%);
+  --primary-5:hsl(217,95%,26%/0.05);--primary-10:hsl(217,95%,26%/0.10);--primary-20:hsl(217,95%,26%/0.20);--primary-40:hsl(217,95%,26%/0.40);
+  --fg:hsl(240,10%,3.9%);--muted:hsl(215.4,16.3%,46.9%);
+  --bg:white;--card:white;--border:hsl(214.3,31.8%,91.4%);
+  --gray-50:hsl(210,40%,97.5%);
+  --green:#0cb22c;--green-h:#0a9624;
+  --font:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+}
+body{font-family:var(--font);color:var(--fg);background:var(--bg);-webkit-font-smoothing:antialiased;line-height:1.6;overflow-x:hidden}
+img{max-width:100%;height:auto;display:block}a{color:inherit;text-decoration:none}
+
+.nav{position:sticky;top:0;z-index:100;background:white;border-bottom:1px solid var(--border);height:64px;display:flex;align-items:center;padding:0 1rem}
+.nav-inner{max-width:1280px;margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between;padding:0 1rem}
+.nav-logo{font-weight:700;font-size:1.1rem;color:var(--primary);display:flex;align-items:center;gap:.5rem}
+.nav-logo .b{font-weight:600;font-size:.55rem;background:var(--primary);color:white;padding:2px 5px;border-radius:3px}
+.nav-links{display:flex;gap:2rem;font-size:.88rem;font-weight:500;color:var(--muted)}
+.nav-links a:hover{color:var(--primary)}
+@media(max-width:768px){.nav-links{display:none}}
+
+.wrap{max-width:1280px;margin:0 auto;padding:0 1rem}
+@media(min-width:640px){.wrap{padding:0 1.5rem}}
+@media(min-width:1024px){.wrap{padding:0 2rem}}
+
+.sec-w{padding:5rem 0;background:white}
+.sec-g{padding:5rem 0;background:var(--gray-50)}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;font-family:var(--font);font-size:.88rem;font-weight:600;padding:.75rem 1.5rem;border-radius:.5rem;border:none;cursor:pointer;transition:all .2s}
+.btn-lg{padding:.85rem 2rem;font-size:.95rem}
+.btn-primary{background:var(--primary);color:white;box-shadow:0 10px 15px -3px rgba(0,0,0,.1)}.btn-primary:hover{background:hsl(217,95%,23%)}
+.btn-outline{background:transparent;color:var(--fg);border:1px solid var(--border)}.btn-outline:hover{background:var(--gray-50)}
+.btn-green{background:var(--green);color:white}.btn-green:hover{background:var(--green-h)}
+.btn-white{background:white;color:var(--primary)}.btn-white:hover{background:#f5f5f5}
+.badge{display:inline-flex;align-items:center;padding:.25rem .75rem;border-radius:9999px;font-size:.75rem;font-weight:500;background:var(--primary-10);color:var(--primary);border:1px solid var(--primary-20)}
+
+.sec-head{text-align:center;margin-bottom:4rem;display:flex;flex-direction:column;align-items:center;gap:1rem}
+.sec-head h2{font-size:clamp(1.75rem,4vw,2.25rem);font-weight:700}
+.sec-head p{font-size:1.05rem;color:var(--muted);max-width:48rem;line-height:1.7}
+
+/* Hero */
+.phero{background:linear-gradient(to bottom right,var(--primary-5),var(--bg),var(--primary-10));
+  background-image:radial-gradient(circle at 25px 25px,rgba(30,58,138,.1) 2px,transparent 0),radial-gradient(circle at 75px 75px,rgba(30,58,138,.05) 2px,transparent 0);
+  background-size:100px 100px;padding:5rem 0}
+@media(min-width:1024px){.phero{padding:6rem 0}}
+.phero-grid{display:grid;grid-template-columns:1fr;gap:3rem;align-items:center}
+@media(min-width:1024px){.phero-grid{grid-template-columns:1fr 1fr}}
+.phero-text{display:flex;flex-direction:column;gap:1.75rem}
+.phero h1{font-size:clamp(2rem,4.5vw,3.25rem);font-weight:700;line-height:1.15}
+.phero h1 .gradient{display:block;background:linear-gradient(135deg,var(--primary),var(--primary-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.phero-desc{font-size:1.1rem;color:var(--muted);line-height:1.7}
+.phero-btns{display:flex;gap:1rem;flex-wrap:wrap}
+.phero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;padding-top:2rem;border-top:1px solid var(--border)}
+.phero-stat{text-align:center}
+.phero-stat-val{font-size:1.5rem;font-weight:700;color:var(--primary)}.phero-stat-label{font-size:.8rem;color:var(--muted)}
+.phero-img{border-radius:1rem;box-shadow:0 25px 50px -12px rgba(0,0,0,.25);overflow:hidden}
+
+/* Metric bar */
+.metric-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-radius:.75rem;overflow:hidden;border:1px solid var(--border)}
+@media(max-width:640px){.metric-bar{grid-template-columns:repeat(2,1fr)}}
+.metric-item{text-align:center;padding:1.75rem 1rem;background:white;border-right:1px solid var(--border)}
+.metric-item:last-child{border-right:none}
+@media(max-width:640px){.metric-item:nth-child(2){border-right:none}.metric-item:nth-child(3),.metric-item:nth-child(4){border-top:1px solid var(--border)}}
+.metric-num{font-size:clamp(1.5rem,3.5vw,2.25rem);font-weight:800;color:var(--primary);line-height:1}
+.metric-label{font-size:.78rem;color:var(--muted);margin-top:.5rem}
+
+/* Split */
+.split{display:grid;grid-template-columns:1fr;gap:4rem;align-items:center}
+@media(min-width:1024px){.split{grid-template-columns:1fr 1fr}}
+.split-rev{direction:rtl}.split-rev>*{direction:ltr}
+.split-text{display:flex;flex-direction:column;gap:1.5rem}
+.split-text h2{font-size:clamp(1.75rem,4vw,2.25rem);font-weight:700}
+.split-text>p{font-size:1.05rem;color:var(--muted);line-height:1.7}
+.split-img{position:relative;border-radius:1rem;overflow:hidden;box-shadow:0 25px 50px -12px rgba(0,0,0,.25)}
+.split-img img{width:100%;height:auto}
+.split-img .overlay{position:absolute;inset:0;background:linear-gradient(to top right,var(--primary-20),transparent);border-radius:1rem}
+
+/* Checks */
+.checks{display:flex;flex-direction:column;gap:1rem}
+.check{display:flex;align-items:flex-start;gap:.75rem}
+.check-dot{width:1.5rem;height:1.5rem;border-radius:50%;background:var(--primary-10);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.125rem}
+.check-dot svg{width:.75rem;height:.75rem}
+.check-info h3{font-weight:600;font-size:.95rem}
+.check-info p{font-size:.85rem;color:var(--muted)}
+
+/* Flow diagram */
+.flow{max-width:52rem;margin:0 auto}
+.flow-step{display:grid;grid-template-columns:4rem 1fr;gap:1.5rem;position:relative;padding-bottom:2rem}
+.flow-step:last-child{padding-bottom:0}
+.flow-step::before{content:'';position:absolute;left:1.95rem;top:3.5rem;bottom:0;width:2px;background:var(--border)}
+.flow-step:last-child::before{display:none}
+.flow-step.flow-green::before{background:var(--green)}
+.flow-node{width:4rem;height:4rem;border-radius:1rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;z-index:1}
+.flow-node-blue{background:var(--primary);color:white}
+.flow-node-green{background:var(--green);color:white}
+.flow-node-light{background:var(--primary-10);color:var(--primary)}
+.flow-node svg{width:1.5rem;height:1.5rem}
+.flow-body{background:var(--card);border:1px solid var(--border);border-radius:.75rem;padding:1.5rem 1.75rem;transition:all .25s}
+.flow-body:hover{border-color:var(--primary-20);box-shadow:0 4px 12px rgba(0,0,0,.04)}
+.flow-body h4{font-size:1rem;font-weight:700;margin-bottom:.35rem;display:flex;align-items:center;gap:.5rem}
+.flow-body p{font-size:.88rem;color:var(--muted);line-height:1.6}
+.flow-body-tag{font-size:.6rem;font-weight:700;padding:.15rem .45rem;border-radius:3px;text-transform:uppercase;letter-spacing:.04em}
+.flow-body-auto{background:hsl(140,60%,92%);color:hsl(140,60%,28%)}
+.flow-body-manual{background:hsl(45,80%,90%);color:hsl(40,70%,30%)}
+
+/* Feature grid */
+.feat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.25rem;max-width:52rem;margin:0 auto}
+@media(max-width:640px){.feat-grid{grid-template-columns:1fr}}
+.feat-card{background:var(--card);border:1px solid var(--border);border-radius:.75rem;padding:1.75rem;transition:all .25s}
+.feat-card:hover{border-color:var(--primary-20);box-shadow:0 8px 20px rgba(0,0,0,.05);transform:translateY(-3px)}
+.feat-card h4{font-size:1rem;font-weight:700;margin-bottom:.35rem}
+.feat-card p{font-size:.85rem;color:var(--muted);line-height:1.6}
+.feat-card-icon{width:2.5rem;height:2.5rem;background:var(--primary-10);border-radius:.5rem;display:flex;align-items:center;justify-content:center;margin-bottom:1rem}
+.feat-card-icon svg{width:1.25rem;height:1.25rem;color:var(--primary)}
+
+/* DYK */
+.dyk{position:relative;max-width:52rem;margin:0 auto;background:linear-gradient(135deg,hsl(217 95% 26%/.03),hsl(217 95% 26%/.08));border:1px solid var(--primary-20);border-radius:.75rem;padding:2.5rem 2.5rem 2.5rem 5.5rem;overflow:hidden}
+.dyk::before{content:'?';position:absolute;left:-1rem;top:50%;transform:translateY(-50%);font-size:8rem;font-weight:800;color:var(--primary-10);line-height:1;pointer-events:none}
+.dyk-tag{display:inline-flex;align-items:center;gap:.4rem;font-size:.72rem;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.75rem}
+.dyk>p{font-size:1.1rem;color:var(--fg);line-height:1.7}
+.dyk>p strong{color:var(--primary);font-weight:700}
+@media(max-width:768px){.dyk{padding:2rem 1.5rem}.dyk::before{display:none}}
+
+/* BA */
+.ba{display:grid;grid-template-columns:1fr 1fr;gap:0;max-width:52rem;margin:0 auto;border:1px solid var(--border);border-radius:.75rem;overflow:hidden}
+@media(max-width:640px){.ba{grid-template-columns:1fr}}
+.ba-col{padding:2rem}.ba-before{background:hsl(0 0% 97%)}.ba-after{background:var(--primary-5)}
+.ba-tag{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:1rem;display:flex;align-items:center;gap:.4rem}
+.ba-before .ba-tag{color:hsl(0 60% 45%)}.ba-after .ba-tag{color:var(--green)}
+.ba-list{display:flex;flex-direction:column;gap:.6rem;list-style:none}
+.ba-list li{display:flex;align-items:flex-start;gap:.6rem;font-size:.88rem;line-height:1.5}
+.ba-list li svg{flex-shrink:0;margin-top:.15rem}
+.ba-before .ba-list li{color:var(--muted)}.ba-after .ba-list li{color:var(--fg)}
+
+/* Statement */
+.bst{text-align:center;padding:2rem;max-width:48rem;margin:0 auto}
+.bst-line{width:3rem;height:3px;background:var(--primary);margin:0 auto 1.5rem;border-radius:2px}
+.bst p{font-size:clamp(1.15rem,3vw,1.4rem);font-weight:600;color:var(--fg);line-height:1.5;font-style:italic}
+
+/* Stats */
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem}@media(max-width:768px){.grid-3{grid-template-columns:1fr}}
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:2rem}@media(max-width:768px){.grid-2{grid-template-columns:1fr}}
+.stat-card{background:var(--card);border-radius:.75rem;padding:2rem;border:1px solid var(--border);text-align:center;transition:transform .3s,box-shadow .3s}
+.stat-card:hover{transform:translateY(-5px);box-shadow:0 20px 25px -5px rgba(0,0,0,.1)}
+.stat-val{font-size:2.25rem;font-weight:700;color:var(--primary);margin-bottom:.5rem}
+.stat-title{font-weight:600;margin-bottom:.5rem;font-size:.95rem}
+.stat-desc{font-size:.85rem;color:var(--muted)}
+
+/* Link cards */
+.link-card{display:flex;align-items:center;justify-content:space-between;background:white;border:1px solid var(--border);border-radius:.75rem;padding:1.25rem 1.5rem;transition:all .25s}
+.link-card:hover{border-color:var(--primary);transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.05)}
+.link-card h4{font-size:.95rem;font-weight:600;margin-bottom:.2rem}
+.link-card p{font-size:.8rem;color:var(--muted)}
+.link-arrow{font-size:1.15rem;color:var(--primary);transition:transform .2s;flex-shrink:0;margin-left:1rem}
+.link-card:hover .link-arrow{transform:translateX(4px)}
+
+/* FAQ */
+.faq-layout{display:grid;grid-template-columns:1fr;gap:3rem;align-items:flex-start}
+@media(min-width:1024px){.faq-layout{grid-template-columns:1fr 1.4fr;gap:4rem}}
+.faq-left{position:sticky;top:5rem}@media(max-width:1023px){.faq-left{position:static}}
+.faq-right{display:flex;flex-direction:column;gap:.75rem}
+.faq-card{background:var(--card);border:1px solid var(--border);border-radius:.75rem;overflow:hidden;transition:border-color .2s}
+.faq-card.open{border-color:var(--primary-40)}
+.faq-q{width:100%;display:flex;justify-content:space-between;align-items:center;padding:1.25rem 1.5rem;background:0;border:0;font-family:var(--font);font-size:.92rem;font-weight:600;color:var(--fg);cursor:pointer;text-align:left;gap:1rem;line-height:1.4}
+.faq-q:hover{color:var(--primary)}
+.faq-icon{width:2rem;height:2rem;border-radius:.5rem;background:var(--primary-10);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
+.faq-icon svg{color:var(--primary);transition:transform .2s}
+.faq-card.open .faq-icon{background:var(--primary)}.faq-card.open .faq-icon svg{color:white;transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease}
+.faq-card.open .faq-a{max-height:400px}
+.faq-a p{padding:0 1.5rem 1.25rem;font-size:.9rem;color:var(--muted);line-height:1.8}
+
+.bcta{background:linear-gradient(135deg,hsl(217,95%,18%),hsl(217,95%,28%));text-align:center;padding:5rem 0}
+.bcta h2{font-size:clamp(1.75rem,4vw,2.25rem);font-weight:700;color:white;margin-bottom:1rem}
+.bcta p{color:hsl(217,20%,75%);font-size:1.05rem;max-width:36rem;margin:0 auto 2rem;line-height:1.7}
+.bcta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+
+.footer{background:var(--gray-50);border-top:1px solid var(--border);padding:2rem 0;text-align:center;font-size:.8rem;color:var(--muted)}
+.anim{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}.anim.v{opacity:1;transform:translateY(0)}
+
+/* ROI Calculator */
+.calc{max-width:40rem;margin:0 auto;background:var(--card);border:1px solid var(--border);border-radius:.75rem;overflow:hidden}
+.calc-head{background:var(--primary);color:white;padding:1.5rem 2rem;text-align:center}
+.calc-head h3{font-size:1.2rem;font-weight:700;margin-bottom:.25rem}
+.calc-head p{font-size:.85rem;color:hsl(217,30%,80%)}
+.calc-body{padding:2rem}
+.calc-row{margin-bottom:1.25rem}
+.calc-row label{display:block;font-size:.85rem;font-weight:600;margin-bottom:.4rem}
+.calc-row input[type=range]{width:100%;accent-color:var(--primary);height:6px;cursor:pointer}
+.calc-val{display:flex;justify-content:space-between;font-size:.78rem;color:var(--muted);margin-top:.25rem}
+.calc-result{background:var(--primary-5);border:1px solid var(--primary-20);border-radius:.5rem;padding:1.25rem;text-align:center;margin-top:.5rem}
+.calc-result-val{font-size:2rem;font-weight:800;color:var(--primary)}
+.calc-result-label{font-size:.85rem;color:var(--muted);margin-top:.25rem}
+
+</style>
+</head>
+<body>
+
+<nav class="nav"><div class="nav-inner"><div class="nav-logo"><svg width="28" height="28" viewBox="0 0 32 32" fill="none"><path d="M16 2L4 8v16l12 6 12-6V8L16 2z" fill="hsl(217,95%,26%)"/><path d="M16 6l8 4v12l-8 4-8-4V10l8-4z" fill="hsl(217,95%,36%)"/><path d="M16 10v12l-4-2V12l4-2z" fill="white" opacity=".6"/></svg>Dealer Suite<span class="b">360</span></div><div class="nav-links"><a href="/services">Services</a><a href="/products/fi-services">Products</a><a href="/marketplace">Marketplace</a><a href="/technology">Technology</a><a href="/pricing">Pricing</a><a href="/contact" class="btn btn-primary" style="padding:.5rem 1.25rem;font-size:.82rem">Get Started</a></div></div></nav>
+
+<!-- 1. HERO -->
+<section class="phero">
+  <div class="wrap">
+    <div class="phero-grid">
+      <div class="phero-text">
+        <div><a href="/services" style="font-size:.82rem;color:var(--muted)">&larr; All Services</a></div>
+        <div><div class="badge">DS360 Add-On Service</div></div>
+        <h1>Your Claims Desk and Service Bay<span class="gradient">Are Finally Connected</span></h1>
+        <p class="phero-desc">TechFlow bridges the gap between approved warranty claims and completed repairs. Work orders generate automatically, technicians get assigned, labor hours sync back to the claim invoice — and walk-in service traffic stops flooding your showroom floor. One workflow from approval to payout.</p>
+        <div class="phero-btns"><a href="/contact" class="btn btn-lg btn-primary">Add TechFlow to Your Plan</a><a href="#how-it-works" class="btn btn-lg btn-outline">See How It Works</a></div>
+        <div class="phero-stats">
+          <div class="phero-stat"><div class="phero-stat-val">$2.7K</div><div class="phero-stat-label">Avg Monthly Revenue Recovered</div></div>
+          <div class="phero-stat"><div class="phero-stat-val">18h</div><div class="phero-stat-label">Avg Unbilled Hours Eliminated</div></div>
+          <div class="phero-stat"><div class="phero-stat-val">2</div><div class="phero-stat-label">Departments Finally Connected</div></div>
+        </div>
+      </div>
+      <div class="phero-img"><img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?ixlib=rb-4.0.3&auto=format&fit=crop&w=584&h=438&fm=webp&q=75" alt="TechFlow service management" width="584" height="438"/></div>
+    </div>
+  </div>
+</section>
+
+<!-- 2. METRIC BAR -->
+<section class="sec-g" style="padding:2.5rem 0">
+  <div class="wrap"><div class="metric-bar">
+    <div class="metric-item"><div class="metric-num">0</div><div class="metric-label">Unbilled Labor Hours</div></div>
+    <div class="metric-item"><div class="metric-num">0</div><div class="metric-label">Manual Data Entry</div></div>
+    <div class="metric-item"><div class="metric-num">100%</div><div class="metric-label">Labor Synced to Claims</div></div>
+    <div class="metric-item"><div class="metric-num">Auto</div><div class="metric-label">Work Order Creation</div></div>
+  </div></div>
+</section>
+
+<!-- PARTS CROSS-SELL -->
+<section class="sec-w" style="padding:2.5rem 0">
+  <div class="wrap"><div class="bcs"><div class="bcs-dot"></div><div class="bcs-text"><strong>Parts &amp; Components</strong> feeds directly into TechFlow — when parts arrive from the DS360 network, the work order is already queued and waiting.</div><a href="/services/parts-components">Learn More &rarr;</a></div></div>
+</section>
+
+<!-- 3. THE PROBLEM + BEFORE/AFTER -->
+<section class="sec-w">
+  <div class="wrap">
+    <div class="split anim">
+      <div class="split-text">
+        <div class="badge">The Problem</div>
+        <h2>Two Departments. Two Systems. Revenue Falls Through the Cracks.</h2>
+        <p>Your claims desk approves a warranty repair. But the service bay finds out about it through a sticky note, a verbal handoff, or — worst case — not at all. The technician does the work. The hours are not logged against the claim. The invoice goes out short. And nobody knows revenue was left on the table until it is too late.</p>
+        <p>TechFlow eliminates the gap. When a claim is approved, the work order is already waiting in the service bay — with the right technician assigned, the authorized hours documented, and every minute tracked back to the claim invoice automatically.</p>
+      </div>
+      <div>
+        <div class="ba">
+          <div class="ba-col ba-before">
+            <div class="ba-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Without TechFlow</div>
+            <ul class="ba-list">
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Sticky notes between departments</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Technician hours not logged</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Invoices submitted short</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Walk-ins flood the showroom</li>
+            </ul>
+          </div>
+          <div class="ba-col ba-after">
+            <div class="ba-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><path d="M5 13l4 4L19 7"/></svg>With TechFlow</div>
+            <ul class="ba-list">
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="#0cb22c" stroke-width="2.5" width="16" height="16"><path d="M5 13l4 4L19 7"/></svg>Auto work orders from claims</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="#0cb22c" stroke-width="2.5" width="16" height="16"><path d="M5 13l4 4L19 7"/></svg>Every labor hour tracked</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="#0cb22c" stroke-width="2.5" width="16" height="16"><path d="M5 13l4 4L19 7"/></svg>Hours sync to claim invoice</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="#0cb22c" stroke-width="2.5" width="16" height="16"><path d="M5 13l4 4L19 7"/></svg>Service routed away from sales</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. HOW IT WORKS — VISUAL FLOW -->
+<section class="sec-g" id="how-it-works">
+  <div class="wrap">
+    <div class="sec-head"><div class="badge">How TechFlow Works</div><h2>One Workflow. Zero Handoff Gaps.</h2><p>From claim approval to completed repair — every step connected, every hour tracked.</p></div>
+    <div class="flow anim">
+      <div class="flow-step flow-green">
+        <div class="flow-node flow-node-blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg></div>
+        <div class="flow-body"><h4>Claim Approved <span class="flow-body-tag flow-body-auto">Automatic</span></h4><p>The manufacturer approves the warranty claim. DS360 captures the repair scope, authorized labor hours, and part requirements. TechFlow picks up immediately.</p></div>
+      </div>
+      <div class="flow-step flow-green">
+        <div class="flow-node flow-node-blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg></div>
+        <div class="flow-body"><h4>Work Order Generated <span class="flow-body-tag flow-body-auto">Automatic</span></h4><p>TechFlow creates a work order containing the approved repair details — what needs to be done, what parts are authorized, how many labor hours are approved, and the claim reference number.</p></div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-node flow-node-light"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <div class="flow-body"><h4>Technician Assigned <span class="flow-body-tag flow-body-manual">Your Team</span></h4><p>Your service manager assigns the work order to the appropriate technician based on skill set, availability, and workload. The technician sees the full repair scope on their dashboard.</p></div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-node flow-node-light"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <div class="flow-body"><h4>Labor Hours Tracked <span class="flow-body-tag flow-body-auto">Automatic</span></h4><p>As the technician works, labor hours are tracked against the work order. Start, pause, complete — every minute is documented and tied to the approved claim.</p></div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-node flow-node-green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+        <div class="flow-body"><h4>Hours Sync to Invoice <span class="flow-body-tag flow-body-auto">Automatic</span></h4><p>Completed labor hours flow directly into the claim invoice alongside parts costs. The invoice is accurate, complete, and ready for manufacturer payout — no manual entry, no missed hours.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. STATEMENT BREATHER -->
+<section class="sec-w" style="padding:3.5rem 0">
+  <div class="wrap">
+    <div class="bst"><div class="bst-line"></div><p>"If a technician works on a warranty repair and the hours are not on the invoice, your dealership just donated that labor for free."</p></div>
+  </div>
+</section>
+
+<!-- 6. KEY FEATURES -->
+<section class="sec-g">
+  <div class="wrap">
+    <div class="sec-head"><h2>What TechFlow Gives Your Service Department</h2><p>Beyond the claims connection — TechFlow is a service management layer built for how RV dealers actually operate.</p></div>
+    <div class="feat-grid anim">
+      <div class="feat-card">
+        <div class="feat-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg></div>
+        <h4>Automated Work Orders</h4>
+        <p>Every approved claim becomes a work order instantly. No re-keying information, no copy-paste errors, no delays between approval and assignment.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <h4>Labor Hour Tracking</h4>
+        <p>Technicians clock in and out against specific work orders. Every hour is documented, timestamped, and tied to the corresponding claim.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <h4>Technician Assignment</h4>
+        <p>Assign the right tech to the right job. See availability, skill set, and current workload before making assignments.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+        <h4>Invoice Sync</h4>
+        <p>Completed hours auto-populate the claim invoice. Parts costs from the DS360 parts workflow are already there. One complete, accurate invoice — ready for payout.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg></div>
+        <h4>Service Analytics</h4>
+        <p>Track technician productivity, average repair times, and labor utilization rates. Know where your service department is efficient and where it is leaving money.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 13.52 9H12"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg></div>
+        <h4>Showroom Traffic Control</h4>
+        <p>Route service clients directly to the service bay — not through your showroom. Walk-in service traffic stops disrupting your sales floor.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7. DYK -->
+<section class="sec-w">
+  <div class="wrap">
+    <div class="dyk anim">
+      <div class="dyk-tag">Did You Know?</div>
+      <p>The average RV dealership loses <strong>12 to 18 labor hours per month</strong> on warranty repairs where the technician's time was never logged against the claim. At standard labor rates, that is <strong>$1,500 to $2,700 per month</strong> in unbilled work — revenue your dealership earned but never collected.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ROI: LABOR RECOVERY CALCULATOR -->
+<section class="sec-g">
+  <div class="wrap">
+    <div class="sec-head"><h2>How Much Unbilled Labor Is Your Dealership Losing?</h2><p>Adjust the sliders to match your operation. See what TechFlow recovers.</p></div>
+    <div class="calc anim">
+      <div class="calc-head"><h3>Labor Recovery Calculator</h3><p>Estimate your monthly revenue recovery with TechFlow</p></div>
+      <div class="calc-body">
+        <div class="calc-row">
+          <label>Technicians in your service department</label>
+          <input type="range" min="1" max="20" value="4" id="tf-techs"/>
+          <div class="calc-val"><span>1</span><span id="tf-techs-val">4 techs</span><span>20</span></div>
+        </div>
+        <div class="calc-row">
+          <label>Estimated unbilled hours per tech per month</label>
+          <input type="range" min="1" max="20" value="5" id="tf-hours"/>
+          <div class="calc-val"><span>1</span><span id="tf-hours-val">5 hours</span><span>20</span></div>
+        </div>
+        <div class="calc-row">
+          <label>Average labor rate ($/hour)</label>
+          <input type="range" min="75" max="200" value="135" step="5" id="tf-rate"/>
+          <div class="calc-val"><span>$75</span><span id="tf-rate-val">$135/hr</span><span>$200</span></div>
+        </div>
+        <div class="calc-result">
+          <div class="calc-result-val" id="tf-result">$2,700</div>
+          <div class="calc-result-label">Estimated monthly revenue recovered with TechFlow</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STAT CARDS — REVENUE IMPACT -->
+<section class="sec-w">
+  <div class="wrap">
+    <div class="sec-head"><h2>The Revenue Impact of Connected Departments</h2></div>
+    <div class="grid-3 anim">
+      <div class="stat-card"><div class="stat-val">$2.7K</div><div class="stat-title">Monthly Revenue Recovered</div><p class="stat-desc">Average unbilled labor recovered when TechFlow connects claims to service</p></div>
+      <div class="stat-card"><div class="stat-val">18h</div><div class="stat-title">Labor Hours Recaptured</div><p class="stat-desc">Average monthly labor hours that were previously untracked against claims</p></div>
+      <div class="stat-card"><div class="stat-val">100%</div><div class="stat-title">Invoice Accuracy</div><p class="stat-desc">Every labor hour and part cost documented and synced — no manual entry</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 8. WHY ADD-ON -->
+<section class="sec-g">
+  <div class="wrap">
+    <div class="split split-rev anim">
+      <div class="split-text">
+        <div class="badge">Add-On Service</div>
+        <h2>Add TechFlow to Any DS360 Plan</h2>
+        <p>TechFlow is not a separate platform. It is an add-on that plugs directly into your existing DS360 claims workflow. If you are already processing claims with DS360, adding TechFlow takes the workflow one step further — from "claim approved" all the way through "repair complete, invoice submitted."</p>
+        <div class="checks">
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>No Separate Login</h3><p>TechFlow lives inside the same DS360 portal your team already uses</p></div></div>
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Claims Integration</h3><p>Work orders are generated from approved claims — no duplicate data entry</p></div></div>
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Parts-to-Repair Pipeline</h3><p>When parts arrive from the DS360 network, the TechFlow work order is already queued</p></div></div>
+        </div>
+        <a href="/pricing" class="btn btn-primary" style="width:fit-content;margin-top:.5rem">View TechFlow Pricing &rarr;</a>
+      </div>
+      <div class="split-img">
+        <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&auto=format&fit=crop&w=576&h=432&fm=webp&q=75" alt="TechFlow dashboard" width="576" height="432" loading="lazy"/>
+        <div class="overlay"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 9. CONNECTED SERVICES -->
+<section class="sec-w">
+  <div class="wrap">
+    <div class="sec-head"><h2>Connected Services</h2><p>TechFlow sits between Parts and the final invoice. These services feed directly into the TechFlow workflow.</p></div>
+    <div class="grid-2 anim">
+      <a href="/services/claims-processing" class="link-card"><div><h4>Claims Processing</h4><p>Approved claims are the trigger for every TechFlow work order</p></div><span class="link-arrow">&rarr;</span></a>
+      <a href="/services/parts-components" class="link-card"><div><h4>Parts &amp; Components</h4><p>When parts arrive, the work order is already waiting</p></div><span class="link-arrow">&rarr;</span></a>
+      <a href="/services/on-site-repairs" class="link-card"><div><h4>On-Site Repairs</h4><p>TechFlow tracks mobile repair labor the same way it tracks shop labor</p></div><span class="link-arrow">&rarr;</span></a>
+      <a href="/services" class="link-card"><div><h4>All Services</h4><p>View the full DS360 service suite</p></div><span class="link-arrow">&rarr;</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- 10. FAQ -->
+<section class="sec-g">
+  <div class="wrap">
+    <div class="faq-layout anim">
+      <div class="faq-left">
+        <div class="badge">FAQ</div>
+        <h2 style="font-size:clamp(1.5rem,3.5vw,2rem);font-weight:700;margin-top:.75rem;line-height:1.2">TechFlow<br/>Questions</h2>
+        <p style="font-size:1rem;color:var(--muted);line-height:1.7;margin-top:1rem">Everything you need to know about adding TechFlow to your DS360 plan.</p>
+        <a href="/contact" class="btn btn-primary" style="width:fit-content;margin-top:1.5rem">Contact Us &rarr;</a>
+      </div>
+      <div class="faq-right">
+        <div class="faq-card"><button class="faq-q"><span>Is TechFlow included in my DS360 plan?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faq-a"><p>TechFlow is an add-on service available on top of any DS360 dealer plan. It is not included by default because not every dealer needs service department management — but for those who do, adding it takes minutes.</p></div></div>
+        <div class="faq-card"><button class="faq-q"><span>Can I use TechFlow without Claims Processing?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faq-a"><p>TechFlow is designed to work with the DS360 claims workflow — the auto-generated work orders and invoice sync depend on claims data. It can function for general service work, but the real power is the claims integration.</p></div></div>
+        <div class="faq-card"><button class="faq-q"><span>How does TechFlow handle non-warranty work?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faq-a"><p>TechFlow supports both warranty and non-warranty work orders. Customer-pay repairs, maintenance work, and internal jobs can all be created and tracked — the difference is that warranty work orders auto-generate from approved claims.</p></div></div>
+        <div class="faq-card"><button class="faq-q"><span>How many technicians can I add?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faq-a"><p>TechFlow pricing is flexible — details are available on the Pricing page. The system is built to scale from a single-tech operation to a multi-bay dealership with dozens of technicians.</p></div></div>
+        <div class="faq-card"><button class="faq-q"><span>Does TechFlow work with the DS360 Mobile App?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faq-a"><p>When the DS360 Mobile App launches, technicians will be able to view work orders, clock hours, and update repair status directly from the service bay — no need to walk to a desktop computer.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 11. BOTTOM CTA -->
+<section class="bcta">
+  <div class="wrap">
+    <h2>Stop Losing Labor Hours. Start Billing Every Minute.</h2>
+    <p>Add TechFlow to your DS360 plan and connect your claims desk to your service bay — from approval to invoice, nothing falls through the cracks.</p>
+    <div class="bcta-btns"><a href="/contact" class="btn btn-lg btn-green">Add TechFlow &rarr;</a><a href="/services" class="btn btn-lg btn-white">View All Services</a></div>
+  </div>
+</section>
+
+<footer class="footer"><div class="wrap">&copy; 2026 Dealer Suite 360. All rights reserved. Patent Pending Technology.</div></footer>
+
+<script>
+document.querySelectorAll('.faq-q').forEach(b=>{b.addEventListener('click',()=>{const i=b.closest('.faq-card');const o=i.classList.contains('open');document.querySelectorAll('.faq-card').forEach(x=>x.classList.remove('open'));if(!o)i.classList.add('open')})});
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('v');obs.unobserve(x.target)}})},{threshold:.08});
+document.querySelectorAll('.anim').forEach(e=>obs.observe(e));
+
+// TechFlow ROI calculator
+document.querySelectorAll('#tf-techs,#tf-hours,#tf-rate').forEach(el=>{el.addEventListener('input',()=>{
+  const t=document.getElementById('tf-techs').value;
+  const h=document.getElementById('tf-hours').value;
+  const r=document.getElementById('tf-rate').value;
+  document.getElementById('tf-techs-val').textContent=t+' techs';
+  document.getElementById('tf-hours-val').textContent=h+' hours';
+  document.getElementById('tf-rate-val').textContent='$'+r+'/hr';
+  const rev=t*h*r;
+  document.getElementById('tf-result').textContent='$'+rev.toLocaleString();
+})});
+</script>
+</body>
+</html>

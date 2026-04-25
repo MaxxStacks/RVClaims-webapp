@@ -2,6 +2,8 @@ import "dotenv/config";
 import express, { type Request, Response, NextFunction } from "express";
 import { crawlerMiddleware } from "./middleware/crawler-middleware";
 import cookieParser from "cookie-parser";
+import { clerkMiddleware } from "@clerk/express";
+import clerkWebhookRouter from "./routes/clerk-webhook";
 import compression from "compression";
 import { initWebSocket } from "./lib/websocket";
 import path from "path";
@@ -13,7 +15,11 @@ import { setupVite, serveStatic, log } from "./vite";
 
 const app = express();
 app.use(compression());
-app.use(express.json());
+app.use(express.json({
+  verify: (req: any, _res, buf) => { req.rawBody = buf; }
+}));
+app.use("/api/webhooks/clerk", clerkWebhookRouter);
+app.use(clerkMiddleware());
 app.use(
   helmet({
     contentSecurityPolicy: {

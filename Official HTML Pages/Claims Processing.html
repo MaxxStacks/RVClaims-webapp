@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>RV Claims Processing — AI-Powered Warranty & DAF Claims | DealerSuite360</title>
+  <meta name="description" content="DS360 handles the full RV claims lifecycle — DAF, PDI, Warranty, and Extended Warranty. AI-powered Flat Rate Code (FRC) recognition, photo optimization, and deadline tracking."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --primary:hsl(217 95% 26%);--primary-light:hsl(217 95% 36%);
+      --primary-5:hsl(217 95% 26%/0.05);--primary-10:hsl(217 95% 26%/0.10);--primary-20:hsl(217 95% 26%/0.20);--primary-40:hsl(217 95% 26%/0.40);
+      --fg:hsl(240 10% 3.9%);--muted:hsl(215.4 16.3% 46.9%);
+      --bg:hsl(0 0% 100%);--card:hsl(0 0% 100%);--border:hsl(214.3 31.8% 91.4%);
+      --gray-50:hsl(210 40% 97.5%);--gray-100:hsl(210 40% 96%);
+      --green:#0cb22c;--green-h:#0a9624;
+      --font:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+    }
+    body{font-family:var(--font);color:var(--fg);background:var(--bg);-webkit-font-smoothing:antialiased;line-height:1.6;overflow-x:hidden}
+    img{max-width:100%;height:auto;display:block}
+    a{color:inherit;text-decoration:none}
+
+    /* ═══ NAV ═══ */
+    .nav{position:sticky;top:0;z-index:100;background:white;border-bottom:1px solid var(--border);height:64px;display:flex;align-items:center;padding:0 1rem}
+    .nav-inner{max-width:1280px;margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between;padding:0 1rem}
+    .nav-logo{font-weight:700;font-size:1.1rem;color:var(--primary);display:flex;align-items:center;gap:.5rem}
+    .nav-logo .b{font-weight:600;font-size:.55rem;background:var(--primary);color:white;padding:2px 5px;border-radius:3px;margin-bottom:4px}
+    .nav-links{display:flex;gap:2rem;font-size:.88rem;font-weight:500;color:var(--muted)}
+    .nav-links a:hover{color:var(--primary)}
+    @media(max-width:768px){.nav-links{display:none}}
+
+    /* ═══ LAYOUT ═══ */
+    .wrap{max-width:1280px;margin:0 auto;padding:0 1rem}
+    @media(min-width:640px){.wrap{padding:0 1.5rem}}
+    @media(min-width:1024px){.wrap{padding:0 2rem}}
+
+    /* ═══ HERO (matches hero-section.tsx exactly) ═══ */
+    .hero{position:relative;background:linear-gradient(to bottom right,var(--primary-5),var(--bg),var(--primary-10));
+      background-image:radial-gradient(circle at 25px 25px,rgba(30,58,138,.1) 2px,transparent 0),radial-gradient(circle at 75px 75px,rgba(30,58,138,.05) 2px,transparent 0);
+      background-size:100px 100px}
+    .hero .wrap{padding-top:5rem;padding-bottom:5rem}
+    @media(min-width:1024px){.hero .wrap{padding-top:8rem;padding-bottom:8rem}}
+    .hero-grid{display:grid;grid-template-columns:1fr;gap:3rem;align-items:center}
+    @media(min-width:1024px){.hero-grid{grid-template-columns:1fr 1fr;gap:3rem}}
+    .hero-text{display:flex;flex-direction:column;gap:2rem}
+    .hero-badge{display:inline-flex;align-items:center;padding:.25rem .75rem;border-radius:9999px;font-size:.75rem;font-weight:500;background:var(--primary-10);color:var(--primary);border:1px solid var(--primary-20);width:fit-content}
+    .hero h1{font-size:2.25rem;font-weight:700;color:var(--fg);line-height:1.15}
+    @media(min-width:1024px){.hero h1{font-size:3.75rem}}
+    .hero h1 .gradient{display:block;background:linear-gradient(135deg,var(--primary),var(--primary-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .hero-desc{font-size:1.15rem;color:var(--muted);line-height:1.7}
+    .hero-btns{display:flex;flex-direction:column;gap:1rem}
+    @media(min-width:640px){.hero-btns{flex-direction:row}}
+    .hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;padding-top:2rem;border-top:1px solid var(--border)}
+    .hero-stat{text-align:center}
+    .hero-stat-val{font-size:1.5rem;font-weight:700;color:var(--primary);font-variant-numeric:tabular-nums}
+    .hero-stat-label{font-size:.8rem;color:var(--muted)}
+    .hero-img{border-radius:1rem;box-shadow:0 25px 50px -12px rgba(0,0,0,.25);overflow:hidden}
+    .hero-img img{width:100%;height:auto}
+
+    /* ═══ BUTTONS (matches Button component) ═══ */
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;font-family:var(--font);font-size:.88rem;font-weight:600;padding:.75rem 1.5rem;border-radius:.5rem;border:none;cursor:pointer;transition:all .2s}
+    .btn-lg{padding:.85rem 2rem;font-size:.95rem}
+    .btn-primary{background:var(--primary);color:white;box-shadow:0 10px 15px -3px rgba(0,0,0,.1)}
+    .btn-primary:hover{background:hsl(217 95% 23%);box-shadow:0 20px 25px -5px rgba(0,0,0,.1)}
+    .btn-outline{background:transparent;color:var(--fg);border:1px solid var(--border)}
+    .btn-outline:hover{background:var(--gray-50)}
+    .btn-green{background:var(--green);color:white}
+    .btn-green:hover{background:var(--green-h)}
+    .btn-white{background:white;color:var(--primary)}
+    .btn-white:hover{background:var(--gray-50)}
+
+    /* ═══ BADGE PILL (matches ServiceBadge/inline badge) ═══ */
+    .badge{display:inline-flex;align-items:center;padding:.25rem .75rem;border-radius:9999px;font-size:.75rem;font-weight:500;background:var(--primary-10);color:var(--primary);border:1px solid var(--primary-20)}
+
+    /* ═══ SECTION ═══ */
+    .sec-white{padding:5rem 0;background:white}
+    .sec-gray{padding:5rem 0;background:var(--gray-50)}
+
+    /* ═══ SECTION HEADER (matches centered header pattern) ═══ */
+    .sec-head{text-align:center;margin-bottom:4rem;display:flex;flex-direction:column;align-items:center;gap:1rem}
+    .sec-head h2{font-size:1.875rem;font-weight:700;color:var(--fg)}
+    @media(min-width:1024px){.sec-head h2{font-size:2.25rem}}
+    .sec-head p{font-size:1.15rem;color:var(--muted);max-width:48rem;line-height:1.7}
+
+    /* ═══ CARD GRID (matches main-services-section.tsx) ═══ */
+    .grid-4{display:grid;grid-template-columns:1fr;gap:2rem}
+    @media(min-width:768px){.grid-4{grid-template-columns:repeat(2,1fr)}}
+    @media(min-width:1024px){.grid-4{grid-template-columns:repeat(4,1fr)}}
+    .grid-5{display:grid;grid-template-columns:1fr;gap:2rem}
+    @media(min-width:768px){.grid-5{grid-template-columns:repeat(2,1fr)}}
+    @media(min-width:1024px){.grid-5{grid-template-columns:repeat(5,1fr)}}
+    .grid-3{display:grid;grid-template-columns:1fr;gap:2rem}
+    @media(min-width:768px){.grid-3{grid-template-columns:repeat(2,1fr)}}
+    @media(min-width:1024px){.grid-3{grid-template-columns:repeat(3,1fr)}}
+    .grid-2{display:grid;grid-template-columns:1fr;gap:2rem}
+    @media(min-width:768px){.grid-2{grid-template-columns:repeat(2,1fr)}}
+
+    /* ═══ SERVICE CARD (matches main-services card pattern) ═══ */
+    .svc-card{background:var(--card);border-radius:.75rem;padding:1.5rem;border:1px solid var(--border);transition:transform .3s,box-shadow .3s,border-color .3s;cursor:pointer;height:100%}
+    .svc-card:hover{transform:translateY(-5px);box-shadow:0 20px 25px -5px rgba(0,0,0,.1),0 10px 10px -5px rgba(0,0,0,.04);border-color:var(--primary-40)}
+    .svc-icon{width:3rem;height:3rem;background:var(--primary-10);border-radius:.5rem;display:flex;align-items:center;justify-content:center;margin-bottom:1rem;font-size:1.25rem}
+    .svc-card h3{font-size:1.1rem;font-weight:600;margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+    .svc-card p{font-size:.88rem;color:var(--muted);margin-bottom:1rem;line-height:1.6}
+    .svc-card ul{list-style:none;display:flex;flex-direction:column;gap:.5rem;font-size:.85rem;color:var(--muted)}
+    .svc-card ul li{display:flex;align-items:flex-start;gap:.5rem}
+    .svc-card ul li::before{content:"•";flex-shrink:0}
+
+    /* ═══ CLAIM TYPE CARD (matches claims-section.tsx) ═══ */
+    .claim-card{background:white;border-radius:.75rem;padding:1.5rem;box-shadow:0 4px 6px -1px rgba(0,0,0,.06);transition:box-shadow .3s;text-align:center}
+    .claim-card:hover{box-shadow:0 20px 25px -5px rgba(0,0,0,.1),0 10px 10px -5px rgba(0,0,0,.04)}
+    
+    .claim-icon svg,.svc-icon svg,.portal-icon svg{width:1.5rem;height:1.5rem;color:var(--primary)}
+    .claim-icon svg{width:2rem;height:2rem}
+    .claim-icon{width:4rem;height:4rem;background:var(--gray-100);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;font-size:1.5rem}
+    .claim-card h3{font-size:1.1rem;font-weight:600;margin-bottom:.75rem}
+    .claim-card p{font-size:.85rem;color:var(--muted);line-height:1.6}
+
+    /* ═══ SPLIT LAYOUT (matches financing-section.tsx / technology-section.tsx) ═══ */
+    .split{display:grid;grid-template-columns:1fr;gap:4rem;align-items:center}
+    @media(min-width:1024px){.split{grid-template-columns:1fr 1fr}}
+    .split-text{display:flex;flex-direction:column;gap:1.5rem}
+    .split-text h2{font-size:1.875rem;font-weight:700;color:var(--fg)}
+    @media(min-width:1024px){.split-text h2{font-size:2.25rem}}
+    .split-text>p{font-size:1.1rem;color:var(--muted);line-height:1.7}
+    .split-img{position:relative;border-radius:1rem;overflow:hidden;box-shadow:0 25px 50px -12px rgba(0,0,0,.25)}
+    .split-img img{width:100%;height:auto}
+    .split-img .overlay{position:absolute;inset:0;background:linear-gradient(to top right,var(--primary-20),transparent);border-radius:1rem}
+
+    /* ═══ CHECKLIST (matches technology/financing check items) ═══ */
+    .checks{display:flex;flex-direction:column;gap:1rem}
+    .check{display:flex;align-items:flex-start;gap:.75rem}
+    .check-dot{width:1.5rem;height:1.5rem;border-radius:50%;background:var(--primary-10);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.125rem}
+    .check-dot svg{width:.75rem;height:.75rem}
+    .check-info h3{font-weight:600;font-size:.95rem}
+    .check-info p{font-size:.85rem;color:var(--muted)}
+
+    /* ═══ STAT CARD (matches experience-section.tsx) ═══ */
+    .stat-card{background:var(--card);border-radius:.75rem;padding:2rem;border:1px solid var(--border);text-align:center;transition:transform .3s,box-shadow .3s}
+    .stat-card:hover{transform:translateY(-5px);box-shadow:0 20px 25px -5px rgba(0,0,0,.1),0 10px 10px -5px rgba(0,0,0,.04)}
+    .stat-val{font-size:2.25rem;font-weight:700;color:var(--primary);margin-bottom:.5rem;font-variant-numeric:tabular-nums}
+    .stat-title{font-weight:600;margin-bottom:.5rem;font-size:.95rem}
+    .stat-desc{font-size:.85rem;color:var(--muted)}
+
+    /* ═══ MFR GRID (matches experience-section.tsx manufacturer grid) ═══ */
+    .mfr-box{background:hsl(210 40% 96%/0.3);border-radius:1rem;padding:2rem 2rem 1.5rem}
+    @media(min-width:1024px){.mfr-box{padding:3rem 3rem 2rem}}
+    .mfr-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;max-width:64rem;margin:0 auto}
+    @media(min-width:768px){.mfr-grid{grid-template-columns:repeat(3,1fr)}}
+    .mfr-item{height:4rem;background:linear-gradient(to right,var(--primary-5),var(--primary-10));border:1px solid var(--primary-20);border-radius:.5rem;display:flex;align-items:center;justify-content:center;font-size:.88rem;font-weight:600;color:var(--primary);transition:all .3s}
+    .mfr-item:hover{background:linear-gradient(to right,var(--primary-10),hsl(217 95% 26%/0.15))}
+
+    /* ═══ PRICING (new — styled to match site patterns) ═══ */
+            .pricing-head h3{font-size:1.35rem;font-weight:700;margin-bottom:.25rem}
+    .pricing-head p{font-size:.88rem;color:hsl(217 30% 80%)}
+        .pricing-row{display:flex;justify-content:space-between;align-items:center;padding:.85rem 0;border-bottom:1px solid var(--border);font-size:.9rem}
+    .pricing-row:last-child{border-bottom:none}
+            
+    /* ═══ PORTAL CARDS (matches technology portal section) ═══ */
+    .portal-card{background:var(--card);border-radius:.75rem;padding:1.5rem;border:1px solid var(--border)}
+    .portal-icon{width:3rem;height:3rem;background:var(--primary-10);border-radius:.5rem;display:flex;align-items:center;justify-content:center;margin-bottom:1rem;font-size:1.2rem}
+    .portal-card h3{font-size:1.1rem;font-weight:600;margin-bottom:.5rem;color:var(--fg)}
+    .portal-card p{font-size:.85rem;color:var(--muted);line-height:1.6}
+
+    /* ═══ LINK CARD ═══ */
+    .link-card{display:flex;align-items:center;justify-content:space-between;background:white;border:1px solid var(--border);border-radius:.75rem;padding:1.25rem 1.5rem;transition:all .25s;cursor:pointer}
+    .link-card:hover{border-color:var(--primary);transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.05)}
+    .link-card h4{font-size:.95rem;font-weight:600;margin-bottom:.2rem}
+    .link-card p{font-size:.8rem;color:var(--muted)}
+    .link-arrow{font-size:1.15rem;color:var(--primary);transition:transform .2s;flex-shrink:0;margin-left:1rem}
+    .link-card:hover .link-arrow{transform:translateX(4px)}
+
+    /* ═══ FAQ (accordion) ═══ */
+    .faq-item{border-bottom:1px solid var(--border)}
+    .faq-q{width:100%;display:flex;justify-content:space-between;align-items:center;padding:1.25rem 0;background:0;border:0;font-family:var(--font);font-size:.95rem;font-weight:600;color:var(--fg);cursor:pointer;text-align:left;gap:1rem}
+    .faq-q:hover{color:var(--primary)}
+    .faq-chev{transition:transform .2s;color:var(--muted);flex-shrink:0;font-size:.9rem}
+    .faq-item.open .faq-chev{transform:rotate(180deg)}
+    .faq-a{max-height:0;overflow:hidden;transition:max-height .3s}
+    .faq-item.open .faq-a{max-height:300px;padding-bottom:1.25rem}
+    .faq-a p{font-size:.9rem;color:var(--muted);line-height:1.8}
+
+    /* ═══ BOTTOM CTA ═══ */
+    .bcta{background:linear-gradient(135deg,hsl(217 95% 18%),hsl(217 95% 28%));text-align:center;padding:5rem 0}
+    .bcta h2{font-size:1.875rem;font-weight:700;color:white;margin-bottom:1rem}
+    @media(min-width:1024px){.bcta h2{font-size:2.25rem}}
+    .bcta p{color:hsl(217 20% 75%);font-size:1.05rem;max-width:36rem;margin:0 auto 2rem;line-height:1.7}
+    .bcta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+
+    /* ═══ FOOTER ═══ */
+    .footer{background:var(--gray-50);border-top:1px solid var(--border);padding:2rem 0;text-align:center;font-size:.8rem;color:var(--muted)}
+
+    /* ═══ ANIMATIONS ═══ */
+    .slide-in-up{animation:slideInUp .6s ease-out forwards}
+    @keyframes slideInUp{from{transform:translateY(30px);opacity:0}to{transform:translateY(0);opacity:1}}
+    .fade-in{animation:fadeIn .8s ease-out forwards}
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+    .anim{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
+    .anim.v{opacity:1;transform:translateY(0)}
+
+    /* ═══ PRICING TABLE ═══ */
+    .pricing-table{display:grid;grid-template-columns:1fr;gap:1.5rem;max-width:72rem;margin:0 auto}
+    @media(min-width:768px){.pricing-table{grid-template-columns:repeat(3,1fr)}}
+    .pt-col{background:var(--card);border:1px solid var(--border);border-radius:.75rem;display:flex;flex-direction:column;position:relative;transition:transform .3s,box-shadow .3s}
+    .pt-col:hover{transform:translateY(-4px);box-shadow:0 20px 25px -5px rgba(0,0,0,.08)}
+    .pt-featured{border:2px solid var(--primary);box-shadow:0 8px 24px rgba(3,50,128,.12)}
+    .pt-featured:hover{box-shadow:0 20px 40px rgba(3,50,128,.18)}
+    .pt-popular{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--primary);color:white;font-size:.75rem;font-weight:600;padding:.35rem 1.25rem;border-radius:9999px;white-space:nowrap}
+    .pt-head{padding:2rem 1.75rem 1.25rem;text-align:center;border-bottom:1px solid var(--border)}
+    .pt-featured .pt-head{padding-top:2.5rem}
+    .pt-tier{font-size:1.1rem;font-weight:700;color:var(--fg);margin-bottom:.75rem}
+    .pt-price{display:flex;align-items:baseline;justify-content:center;gap:.15rem;margin-bottom:.75rem}
+    .pt-dollar{font-size:1.25rem;font-weight:600;color:var(--fg)}
+    .pt-amount{font-size:2.75rem;font-weight:800;color:var(--fg);line-height:1;letter-spacing:-.02em}
+    .pt-featured .pt-amount{color:var(--primary)}
+    .pt-period{font-size:.9rem;color:var(--muted);font-weight:500}
+    .pt-desc{font-size:.82rem;color:var(--muted);line-height:1.5}
+    .pt-body{padding:1.5rem 1.75rem;flex:1}
+    .pt-body ul{list-style:none;display:flex;flex-direction:column;gap:.7rem}
+    .pt-body li{display:flex;align-items:center;gap:.65rem;font-size:.88rem;line-height:1.4}
+    .pt-body li svg{width:1rem;height:1rem;flex-shrink:0}
+    .pt-on{color:var(--fg)}.pt-on svg{color:var(--green)}
+    .pt-off{color:var(--muted)}.pt-off svg{color:var(--border);opacity:.7}
+    .pt-foot{padding:1.25rem 1.75rem 1.75rem;border-top:1px solid var(--border)}
+
+    /* ═══ FAQ LAYOUT ═══ */
+    .faq-layout{display:grid;grid-template-columns:1fr;gap:3rem;align-items:flex-start}
+    @media(min-width:1024px){.faq-layout{grid-template-columns:1fr 1.4fr;gap:4rem}}
+    .faq-left{position:sticky;top:5rem}
+    @media(max-width:1023px){.faq-left{position:static}}
+    .faq-right{display:flex;flex-direction:column;gap:.75rem}
+    .faq-card{background:var(--card);border:1px solid var(--border);border-radius:.75rem;overflow:hidden;transition:border-color .2s}
+    .faq-card.open{border-color:var(--primary-40)}
+    .faq-q{width:100%;display:flex;justify-content:space-between;align-items:center;padding:1.25rem 1.5rem;background:0;border:0;font-family:var(--font);font-size:.92rem;font-weight:600;color:var(--fg);cursor:pointer;text-align:left;gap:1rem;line-height:1.4}
+    .faq-q:hover{color:var(--primary)}
+    .faq-icon{width:2rem;height:2rem;border-radius:.5rem;background:var(--primary-10);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
+    .faq-icon svg{color:var(--primary);transition:transform .2s}
+    .faq-card.open .faq-icon{background:var(--primary)}.faq-card.open .faq-icon svg{color:white;transform:rotate(45deg)}
+    .faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease}
+    .faq-card.open .faq-a{max-height:400px}
+    .faq-a p{padding:0 1.5rem 1.25rem;font-size:.9rem;color:var(--muted);line-height:1.8}
+  </style>
+</head>
+<body>
+
+<!-- ═══ NAV ═══ -->
+<nav class="nav"><div class="nav-inner">
+  <div class="nav-logo">
+    <svg width="28" height="28" viewBox="0 0 32 32" fill="none"><path d="M16 2L4 8v16l12 6 12-6V8L16 2z" fill="hsl(217 95% 26%)"/><path d="M16 6l8 4v12l-8 4-8-4V10l8-4z" fill="hsl(217 95% 36%)"/><path d="M16 10v12l-4-2V12l4-2z" fill="white" opacity=".6"/></svg>
+    Dealer Suite<span class="b">360</span>
+  </div>
+  <div class="nav-links">
+    <a href="/services">Services</a>
+    <a href="/products/fi-services">Products</a>
+    <a href="/marketplace">Marketplace</a>
+    <a href="/technology">Technology</a>
+    <a href="/pricing">Pricing</a>
+    <a href="/contact" class="btn btn-primary" style="padding:.5rem 1.25rem;font-size:.82rem">Get Started</a>
+  </div>
+</div></nav>
+
+<!-- ═══ HERO (matches hero-section.tsx: light gradient, 2-col, badge, gradient-text, stats bar) ═══ -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="hero-text slide-in-up">
+        <div>
+          <div class="hero-badge">AI-Powered Claims Platform</div>
+        </div>
+        <div>
+          <h1>
+            A-Z Claims Processing for
+            <span class="gradient">RV Dealers</span>
+          </h1>
+          <p class="hero-desc">Manage the full claims lifecycle from inspection to payout. Industry-leading warranty expiration notifications ensure no valid claim expires before it is filed — eliminating lost revenue before it happens. AI-powered Flat Rate Code recognition, photo optimization, and deadline tracking deliver maximum approvals and faster payouts.</p>
+        </div>
+        <div class="hero-btns">
+          <a href="/contact" class="btn btn-lg btn-primary">Start Processing Claims</a>
+          <a href="#services" class="btn btn-lg btn-outline">See How It Works</a>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat"><div class="hero-stat-val">150%</div><div class="hero-stat-label">Revenue Increase</div></div>
+          <div class="hero-stat"><div class="hero-stat-val">97%</div><div class="hero-stat-label">Approval Rate</div></div>
+          <div class="hero-stat"><div class="hero-stat-val">48h</div><div class="hero-stat-label">Processing Time</div></div>
+        </div>
+      </div>
+      <div class="fade-in">
+        <div class="hero-img">
+          <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=584&h=438&fm=webp&q=75" alt="RV claims management dashboard" width="584" height="438" fetchpriority="high"/>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ MAIN SERVICES GRID (matches main-services-section.tsx) ═══ -->
+<section class="sec-white" id="services">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="badge">Core Claims Services</div>
+      <h2>Complete Dealership Solutions</h2>
+      <p>DS360 processes five categories of RV claims with manufacturer-specific workflows, AI optimization, and deadline monitoring built in.</p>
+    </div>
+    <div class="grid-4 anim">
+      <div class="svc-card">
+        <div class="svc-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg></div>
+        <h3>DAF & PDI Claims</h3>
+        <p>Capture issues at dealer acceptance and pre-delivery inspection before manufacturer windows close.</p>
+        <ul><li>AI-flagged inspection items</li><li>Deadline monitoring</li><li>Photo documentation</li></ul>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></div>
+        <h3>Warranty Claims</h3>
+        <p>Full lifecycle tracking for manufacturer warranty claims — from submission through payout.</p>
+        <ul><li>VIN-based tracking</li><li>Multi-manufacturer FRC codes</li><li>Expiry prevention alerts</li></ul>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></div>
+        <h3>Extended & Protection</h3>
+        <p>Process claims under extended warranties and protection plans through the same DS360 workflow.</p>
+        <ul><li>Extended warranty tracking</li><li>Protection plan claims</li><li>Unified claim workflow</li></ul>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></div>
+        <h3>Revenue Recovery</h3>
+        <p>AI identifies missed labor lines, expired windows, and unsubmitted claims across your operation.</p>
+        <ul><li>Labor line maximization</li><li>Unsubmitted claim surfacing</li><li>Revenue leakage reports</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SPECIALIZED CLAIMS (matches claims-section.tsx: gray bg, 5-col round icons) ═══ -->
+<section class="sec-gray">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Specialized Claims Processing</h2>
+      <p>DS360 processes all five categories with manufacturer-specific workflows for each claim type.</p>
+    </div>
+    <div class="grid-5 anim">
+      <div class="claim-card"><div class="claim-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 13.52 9H12"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg></div><h3>DAF</h3><p>Dealer Acceptance Form — issues at initial inspection</p></div>
+      <div class="claim-card"><div class="claim-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></div><h3>PDI</h3><p>Pre-Delivery Inspection — problems before handoff</p></div>
+      <div class="claim-card"><div class="claim-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg></div><h3>Warranty</h3><p>Manufacturer standard warranty defects and failures</p></div>
+      <div class="claim-card"><div class="claim-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></div><h3>Extended</h3><p>Claims beyond original manufacturer coverage</p></div>
+      <div class="claim-card"><div class="claim-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="20" x="4" y="2" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/></svg></div><h3>Protection</h3><p>Appearance, Tire & Wheel, Roadside, Specialty</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ AI SPLIT (matches technology-section.tsx: badge, checklist, image right) ═══ -->
+<section class="sec-white">
+  <div class="wrap">
+    <div class="split anim">
+      <div class="split-text">
+        <div class="badge">Patent-Pending AI Technology</div>
+        <h2>World-Leading Claim Management Software</h2>
+        <p>DS360 does not just track claims — it actively increases claim value and approval rates using proprietary technology no other platform can access.</p>
+        <div class="checks">
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Flat Rate Code (FRC) Recognition</h3><p>AI identifies correct failure report codes, reducing denial-causing coding errors</p></div></div>
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Photo Optimization</h3><p>Every image verified against manufacturer submission standards</p></div></div>
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Description Generation</h3><p>Fail-proof repair descriptions that pass review on first submission</p></div></div>
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Labor Line Maximization</h3><p>Surfaces billable labor your team may have missed on every claim</p></div></div>
+        </div>
+        <a href="/contact" class="btn btn-primary" style="width:fit-content;margin-top:.5rem">Learn More →</a>
+      </div>
+      <div class="split-img">
+        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=576&h=432&fm=webp&q=75" alt="Claims management analytics dashboard" width="576" height="432" loading="lazy"/>
+        <div class="overlay"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ EXPERIENCE / STATS (matches experience-section.tsx) ═══ -->
+<section class="sec-gray">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>15 Years of Industry Excellence</h2>
+      <p>Results from dealers processing claims through the DS360 platform.</p>
+    </div>
+    <div class="grid-3 anim" style="margin-bottom:4rem">
+      <div class="stat-card"><div class="stat-val">150%</div><div class="stat-title">Revenue Increase</div><p class="stat-desc">Average claims revenue growth for DS360 partner dealers</p></div>
+      <div class="stat-card"><div class="stat-val">97%</div><div class="stat-title">Approval Rate</div><p class="stat-desc">First-submission approval rate with AI-optimized claims</p></div>
+      <div class="stat-card"><div class="stat-val">48h</div><div class="stat-title">Processing Time</div><p class="stat-desc">Average turnaround from submission to manufacturer response</p></div>
+    </div>
+
+    <!-- Manufacturer box (matches experience-section.tsx manufacturer grid) -->
+    <div class="mfr-box anim">
+      <h3 style="font-size:1.5rem;font-weight:600;text-align:center;margin-bottom:.75rem">Manufacturer Coverage</h3>
+      <p style="text-align:center;color:var(--muted);margin-bottom:2rem;max-width:40rem;margin-left:auto;margin-right:auto;font-size:.95rem">DS360 integrates with every RV manufacturer in the industry. The manufacturers listed below represent our most active integrations — but our platform covers all manufacturers, including their full brand lineups.</p>
+      <div class="mfr-grid">
+        <div class="mfr-item">Jayco</div>
+        <div class="mfr-item">Forest River</div>
+        <div class="mfr-item">Heartland</div>
+        <div class="mfr-item">Keystone</div>
+        <div class="mfr-item">Columbia NW</div>
+        <div class="mfr-item">Midwest Auto</div>
+      </div>
+      <p style="text-align:center;color:var(--primary);margin-top:1.5rem;font-size:.95rem;font-weight:600">These are our most popular integrations. DS360 covers every RV manufacturer in North America &mdash; if they make RVs, we process their claims.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PORTALS SPLIT (matches financing-section.tsx: reversed, badge, checks, image) ═══ -->
+<section class="sec-white">
+  <div class="wrap">
+    <div class="split anim" style="direction:rtl">
+      <div class="split-img" style="direction:ltr">
+        <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&auto=format&fit=crop&w=576&h=432&fm=webp&q=75" alt="Dealer portal team collaboration" width="576" height="432" loading="lazy"/>
+        <div class="overlay"></div>
+      </div>
+      <div class="split-text" style="direction:ltr">
+        <div class="badge">Dealer & Client Portals</div>
+        <h2>Dedicated Portals for Every User</h2>
+        <p>Your team tracks claims in the Dealer Portal. Your clients check status in a white-label Customer Portal branded with your dealership. DS360 processes everything in the Operator Portal.</p>
+        <div class="checks">
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Dealer Portal</h3><p>Claims creation, unit tracking, photos, billing, staff management</p></div></div>
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Client Portal</h3><p>White-label self-service — warranty info, claim tracking, issue submission</p></div></div>
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>24/7 AI Monitoring</h3><p>Guardrails and continuous monitoring across all portals</p></div></div>
+        </div>
+        <a href="/platform/dealer-portal" class="btn btn-primary" style="width:fit-content;margin-top:.5rem">Explore the Portal →</a>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ═══ PRICING ═══ -->
+<section class="sec-gray">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="badge">Pricing</div>
+      <h2>Choose the Right Plan for Your Dealership</h2>
+      <p>Claims processing is included in every DS360 plan. Choose the tier that matches your operation.</p>
+    </div>
+
+    <div class="pricing-table anim">
+      <div class="pt-col">
+        <div class="pt-head">
+          <div class="pt-tier">Starter</div>
+          <div class="pt-price"><span class="pt-dollar">$</span><span class="pt-amount">&mdash;</span><span class="pt-period">/mo</span></div>
+          <div class="pt-desc">For single-location dealers getting started with claims management</div>
+        </div>
+        <div class="pt-body">
+          <ul>
+            <li class="pt-on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>A-Z claims lifecycle</li>
+            <li class="pt-on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>AI FRC recognition</li>
+            <li class="pt-on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>Photo optimization</li>
+            <li class="pt-on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>Deadline alerts</li>
+            <li class="pt-on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>DAF, PDI &amp; Warranty</li>
+            <li class="pt-on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>Dealer portal</li>
+            <li class="pt-off"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Extended &amp; Protection claims</li>
+            <li class="pt-off"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>White-label client portal</li>
+            <li class="pt-off"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Labor line maximization</li>
+            <li class="pt-off"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Priority support</li>
+          </ul>
+        </div>
+        <div class="pt-foot">
+          <a href="/contact" class="btn btn-outline" style="width:100%;justify-content:center;color:var(--fg)">Get Started</a>
+        </div>
+      </div>
+
+      <div class="pt-col pt-featured">
+        <div class="pt-popular">Most Popular</div>
+        <div class="pt-head">
+          <div class="pt-tier">Professional</div>
+          <div class="pt-price"><span class="pt-dollar">$</span><span class="pt-amount">&mdash;</span><span class="pt-period">/mo</span></div>
+          <div class="pt-desc">For growing dealers who need the full claims engine and client portal</div>
+        </div>
+        <div class="pt-body">
+          <ul>
+            <li class="pt-on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>A-Z claims lifecycle</li>
+            <li class="pt-on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>AI FRC recognition</li>
+            <li class="pt-on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>Photo optimization</li>
+            <li class="pt-on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>Deadline alerts</li>
+            <li class="pt-on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>All 5 claim types</li>
+            <li class="pt-on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>Dealer portal</li>
+            <li class="pt-on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>White-label client portal</li>
+            <li class="pt-on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>Labor line maximization</li>
+            <li class="pt-on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>AI description generation</li>
+            <li class="pt-off"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Priority support</li>
+          </ul>
+        </div>
+        <div class="pt-foot">
+          <a href="/contact" class="btn btn-green" style="width:100%;justify-content:center">Get Started &rarr;</a>
+        </div>
+      </div>
+
+      <div class="pt-col">
+        <div class="pt-head">
+          <div class="pt-tier">Enterprise</div>
+          <div class="pt-price"><span class="pt-amount" style="font-size:2rem">Custom</span></div>
+          <div class="pt-desc">For multi-location dealers and high-volume operations</div>
+        </div>
+        <div class="pt-body">
+          <ul>
+            <li class="pt-on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>Everything in Professional</li>
+            <li class="pt-on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>Multi-location management</li>
+            <li class="pt-on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>Priority support</li>
+            <li class="pt-on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>Dedicated account manager</li>
+            <li class="pt-on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>Custom integrations</li>
+            <li class="pt-on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>Volume-based pricing</li>
+            <li class="pt-on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>Onboarding &amp; training</li>
+            <li class="pt-on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>SLA guarantee</li>
+          </ul>
+        </div>
+        <div class="pt-foot">
+          <a href="/contact" class="btn btn-outline" style="width:100%;justify-content:center;color:var(--fg)">Contact Sales</a>
+        </div>
+      </div>
+    </div>
+
+    <p style="text-align:center;margin-top:2rem;font-size:.88rem;color:var(--muted)">All plans include basic roadside assistance. <a href="/pricing" style="color:var(--primary);font-weight:500">View full pricing details &rarr;</a></p>
+  </div>
+</section>
+
+
+<!-- ═══ CONNECTED SERVICES ═══ -->
+<section class="sec-white">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="badge">Connected Services</div>
+      <h2>Claims Processing Powers Everything Else</h2>
+    </div>
+    <div class="grid-2 anim">
+      <a href="/services/parts-components" class="link-card"><div><h4>Parts &amp; Components</h4><p>Approved claims trigger fast parts sourcing across North America</p></div><span class="link-arrow">&rarr;</span></a>
+      <a href="/services/techflow" class="link-card"><div><h4>TechFlow</h4><p>Approved claims auto-generate work orders with labor sync</p></div><span class="link-arrow">&rarr;</span></a>
+      <a href="/revenue/services" class="link-card"><div><h4>Revenue Services</h4><p>Claims recovery as part of the full DS360 revenue model</p></div><span class="link-arrow">&rarr;</span></a>
+      <a href="/revenue/optimization" class="link-card"><div><h4>Revenue Optimization</h4><p>See how much revenue your dealership is missing</p></div><span class="link-arrow">&rarr;</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FAQ ═══ -->
+<section class="sec-gray">
+  <div class="wrap">
+    <div class="faq-layout anim">
+      <div class="faq-left">
+        <div class="badge">FAQ</div>
+        <h2 style="font-size:clamp(1.75rem,4vw,2.25rem);font-weight:700;color:var(--fg);margin-top:.75rem;line-height:1.2">Common Questions<br/>About Claims Processing</h2>
+        <p style="font-size:1rem;color:var(--muted);line-height:1.7;margin-top:1rem">Everything you need to know about how DS360 handles claims for your dealership.</p>
+        <a href="/contact" class="btn btn-primary" style="width:fit-content;margin-top:1.5rem">Still Have Questions? &rarr;</a>
+      </div>
+      <div class="faq-right">
+        <div class="faq-card">
+          <button class="faq-q"><span>Does DS360 submit claims directly to manufacturers?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 5v14M5 12h14"/></svg></span></button>
+          <div class="faq-a"><p>DS360 is a tracking and management platform. Actual submissions happen through manufacturer portals. DS360 prepares, optimizes, and tracks every claim so your submissions are complete and compliant before they reach the manufacturer.</p></div>
+        </div>
+        <div class="faq-card">
+          <button class="faq-q"><span>Which manufacturers does DS360 support?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 5v14M5 12h14"/></svg></span></button>
+          <div class="faq-a"><p>Jayco, Forest River, Heartland, Keystone, Columbia Northwest, and Midwest Auto. Additional manufacturers are added to the platform continuously.</p></div>
+        </div>
+        <div class="faq-card">
+          <button class="faq-q"><span>How does DS360 prevent claim expirations?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 5v14M5 12h14"/></svg></span></button>
+          <div class="faq-a"><p>The platform monitors every open warranty window by VIN and sends automated alerts at 30, 14, and 7 days before the manufacturer deadline closes. Your team gets full visibility into every claim at risk.</p></div>
+        </div>
+        <div class="faq-card">
+          <button class="faq-q"><span>Can DS360 handle claims for units I did not sell?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 5v14M5 12h14"/></svg></span></button>
+          <div class="faq-a"><p>Yes. DS360 tracks claims by VIN, not by original sale. If the unit is in your shop for warranty work, DS360 manages the claim regardless of where it was originally purchased.</p></div>
+        </div>
+        <div class="faq-card">
+          <button class="faq-q"><span>What claim types does DS360 process?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 5v14M5 12h14"/></svg></span></button>
+          <div class="faq-a"><p>DAF, PDI, Warranty, Extended Warranty, and Protection Plan claims &mdash; covering the full lifecycle of every unit from dealer acceptance through post-warranty coverage.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ BOTTOM CTA ═══ -->
+<section class="bcta">
+  <div class="wrap">
+    <h2>Ready to Optimize Your Claims Revenue?</h2>
+    <p>Book a walkthrough and see how DS360 processes claims faster, prevents denials, and ensures no valid claim goes unfiled.</p>
+    <div class="bcta-btns"><a href="/contact" class="btn btn-lg btn-green">Start Processing Claims &rarr;</a><a href="/pricing" class="btn btn-lg btn-white">View Pricing</a></div>
+  </div>
+</section>
+
+<footer class="footer"><div class="wrap">&copy; 2026 Dealer Suite 360. All rights reserved. Patent Pending Technology.</div></footer>
+
+<script>
+document.querySelectorAll('.faq-q').forEach(b=>{b.addEventListener('click',()=>{const i=b.closest('.faq-card'),o=i.classList.contains('open');document.querySelectorAll('.faq-card').forEach(x=>x.classList.remove('open'));if(!o)i.classList.add('open')})});
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('v');obs.unobserve(x.target)}})},{threshold:.08});
+document.querySelectorAll('.anim').forEach(e=>obs.observe(e));
+</script>
+</body>
+</html>

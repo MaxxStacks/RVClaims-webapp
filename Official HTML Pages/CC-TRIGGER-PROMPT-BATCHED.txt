@@ -1,0 +1,52 @@
+Read CC-CONVERSION-SPEC.md in the project root. This is your specification. Read it COMPLETELY before writing any code.
+
+The HTML template files are located at: D:\Maxx-Projects-Files\Dealer Suite 360\Official HTML Pages\
+
+BEFORE YOU WRITE ANY CODE:
+1. Read the ENTIRE spec top to bottom — especially the "WHAT YOU ARE NOT DOING" section.
+2. Read the existing codebase: router config, global CSS, and at least 3 existing page components to understand the naming convention and patterns.
+3. Identify how existing pages set their `<title>`, meta tags, and structured data — use the same approach.
+
+THEN start with Batch 1 ONLY (5 pages):
+- Claims Processing.html
+- Financing Services.html
+- FI Services.html
+- Warranty Extended Service.html
+- Revenue Services.html
+
+For EACH page:
+1. Open the HTML file
+2. Extract the body content between </nav> and <footer>
+3. Convert to JSX mechanically (className, self-closing tags, entities)
+4. Copy ALL metadata from the HTML <head> (title, description, keywords, OG, Twitter, JSON-LD)
+5. Wrap in a React component with metadata in useEffect
+6. Wire FAQ accordion as React state if the page has FAQ
+7. Wire scroll animations via IntersectionObserver if the page uses .anim class
+8. Register the route
+9. Add page-specific CSS that isn't already in the global stylesheet
+
+CRITICAL RULES:
+- The HTML content is SACRED. Do not rewrite, rephrase, remove, or reorganize ANY text.
+- Do not touch the Header, Footer, Navbar, or any existing components not being replaced.
+- Do not touch App.tsx layout structure beyond adding route registrations.
+- Do not touch any portal routes.
+- Do not change menus or navigation. Leave them exactly as they are.
+- Every "Did You Know?" section: the "?" must be #033280 (brand navy), not black.
+- Transfer CTAs exactly as they appear in each HTML file. Do not swap or standardize them.
+
+After Batch 1 is complete and npm run build passes with zero errors:
+git add -A
+git commit -m "Batch 1: Convert Claims Processing, Financing, FI Services, Warranty, Revenue Services to TSX
+
+- Converted 5 HTML templates to React TSX components
+- All SEO metadata transferred (title, description, OG, Twitter, JSON-LD)
+- FAQ schema added for pages with FAQ sections
+- Canonical URLs set
+- Routes registered
+- No existing components modified beyond replacements
+- npm run build passes with zero errors"
+git push origin main
+
+THEN STOP. Say: "Batch 1 complete: Claims Processing, Financing Services, FI Services, Warranty Extended Service, Revenue Services. Ready for your review — confirm when I should proceed to Batch 2."
+
+DO NOT proceed to Batch 2 until I confirm.

@@ -17,7 +17,9 @@ const RvCoverage = lazy(() => import("@/pages/rv-coverage"));
 const Contact = lazy(() => import("@/pages/contact"));
 const PrivacyPolicy = lazy(() => import("@/pages/privacy-policy"));
 const DealerLogin = lazy(() => import("@/pages/dealer-login"));
+const LoginPage = lazy(() => import("@/pages/login"));
 const Signup = lazy(() => import("@/pages/signup"));
+const PortalRouter = lazy(() => import("@/pages/portal-router"));
 const Financing = lazy(() => import("@/pages/financing"));
 const WarrantyExtendedService = lazy(() => import("@/pages/warranty-extended-service"));
 const FIServices = lazy(() => import("@/pages/fi-services"));
@@ -99,9 +101,11 @@ function Router() {
         <Route path="/warranty-extended-service">{() => <Redirect to="/warranty-plans" />}</Route>
         <Route path="/contact" component={Contact} />
         <Route path="/privacy-policy" component={PrivacyPolicy} />
+        <Route path="/login" component={LoginPage} />
+        <Route path="/signup" component={Signup} />
+        <Route path="/portal-router" component={PortalRouter} />
         <Route path="/dealer" component={DealerLogin} />
         <Route path="/client-login" component={DealerLogin} />
-        <Route path="/signup" component={Signup} />
         <Route path="/financing" component={Financing} />
         <Route path="/fi-services" component={FIServices} />
         <Route path="/network-marketplace" component={NetworkMarketplace} />

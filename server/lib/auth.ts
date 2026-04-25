@@ -1,13 +1,11 @@
-// server/lib/auth.ts — JWT token management, password hashing, session management
+// server/lib/auth.ts — Non-JWT auth utilities still used post-Clerk migration
+// Clerk manages passwords and session tokens; this file keeps invite/reset helpers.
 
 import { randomBytes, scrypt, timingSafeEqual } from "crypto";
 import { promisify } from "util";
-import { SignJWT, jwtVerify, type JWTPayload } from "jose";
-import { PLATFORM_DEFAULTS, TOKEN_TYPES, type UserRole } from "@shared/constants";
+import { PLATFORM_DEFAULTS } from "@shared/constants";
 
 const scryptAsync = promisify(scrypt);
-
-// ==================== PASSWORD HASHING ====================
 
 export async function hashPassword(password: string): Promise<string> {
   const salt = randomBytes(16).toString("hex");
@@ -21,55 +19,6 @@ export async function verifyPassword(password: string, hash: string): Promise<bo
   const keyBuffer = Buffer.from(key, "hex");
   return timingSafeEqual(derived, keyBuffer);
 }
-
-// ==================== JWT TOKENS ====================
-
-interface TokenPayload extends JWTPayload {
-  userId: string;
-  role: UserRole;
-  dealershipId?: string;
-  type: string;
-}
-
-const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || "ds360-dev-secret-change-in-production-" + randomBytes(16).toString("hex")
-);
-
-export async function generateAccessToken(userId: string, role: UserRole, dealershipId?: string): Promise<string> {
-  return new SignJWT({
-    userId,
-    role,
-    dealershipId,
-    type: TOKEN_TYPES.ACCESS,
-  })
-    .setProtectedHeader({ alg: "HS256" })
-    .setIssuedAt()
-    .setExpirationTime(`${PLATFORM_DEFAULTS.jwtAccessExpiryMinutes}m`)
-    .sign(JWT_SECRET);
-}
-
-export async function generateRefreshToken(userId: string, role: UserRole, dealershipId?: string): Promise<string> {
-  return new SignJWT({
-    userId,
-    role,
-    dealershipId,
-    type: TOKEN_TYPES.REFRESH,
-  })
-    .setProtectedHeader({ alg: "HS256" })
-    .setExpirationTime(`${PLATFORM_DEFAULTS.jwtRefreshExpiryDays}d`)
-    .sign(JWT_SECRET);
-}
-
-export async function verifyToken(token: string): Promise<TokenPayload | null> {
-  try {
-    const { payload } = await jwtVerify(token, JWT_SECRET);
-    return payload as TokenPayload;
-  } catch {
-    return null;
-  }
-}
-
-// ==================== INVITE & RESET TOKENS ====================
 
 export function generateSecureToken(): string {
   return randomBytes(32).toString("hex");
@@ -87,8 +36,17 @@ export function getResetExpiry(): Date {
   return expires;
 }
 
-// ==================== SESSION ID ====================
-
 export function generateSessionId(): string {
   return randomBytes(32).toString("hex");
+}
+
+// verifyToken stub — WS JWT auth superseded by Clerk in Phase 1B.
+// Returns null for all tokens; WebSocket Clerk auth in a future phase.
+export async function verifyToken(_token: string): Promise<{
+  type: string;
+  userId: string;
+  role: string;
+  dealershipId?: string;
+} | null> {
+  return null;
 }

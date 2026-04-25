@@ -1,48 +1,60 @@
 /**
- * api.ts — Central API client for all portal data calls.
+ * api.ts — Central API client.
  *
- * Uses the in-memory access token from auth-api.ts.
- * Handles 401 by calling /api/auth/refresh automatically, then retries once.
- * All portals import `apiFetch` from here — never call fetch directly.
+ * Uses Clerk session token via window.Clerk for authentication.
+ * Backward-compatible: apiFetch, api, authQueryFn are kept for portals.
+ * New code should use useApiFetch() hook.
  */
 
-import { getAccessToken, setAccessToken } from "./auth-api";
+import { useAuth } from "@clerk/clerk-react";
 
-// ─── Refresh deduplication ────────────────────────────────────────────────────
+// ─── Global Clerk type (set by ClerkProvider on window) ──────────────────────
 
-let _refreshPromise: Promise<boolean> | null = null;
-
-async function tryRefresh(): Promise<boolean> {
-  if (_refreshPromise) return _refreshPromise;
-
-  _refreshPromise = (async () => {
-    try {
-      const res = await fetch("/api/auth/refresh", {
-        method: "POST",
-        credentials: "include",
-      });
-      const data = await res.json();
-      if (data.success && data.accessToken) {
-        setAccessToken(data.accessToken);
-        return true;
-      }
-      setAccessToken(null);
-      return false;
-    } catch {
-      setAccessToken(null);
-      return false;
-    } finally {
-      _refreshPromise = null;
-    }
-  })();
-
-  return _refreshPromise;
+declare global {
+  interface Window {
+    Clerk?: {
+      session?: {
+        getToken: () => Promise<string | null>;
+      };
+    };
+  }
 }
 
-// ─── Core fetch wrapper ───────────────────────────────────────────────────────
+// ─── Token retrieval (works outside React components) ────────────────────────
+
+async function getClerkToken(): Promise<string | null> {
+  try {
+    return (await window.Clerk?.session?.getToken()) ?? null;
+  } catch {
+    return null;
+  }
+}
+
+// ─── Hook-based fetch wrapper (for new code inside React components) ─────────
+
+export function useApiFetch() {
+  const { getToken } = useAuth();
+
+  return async function apiFetchHook<T = unknown>(
+    path: string,
+    options: RequestInit = {}
+  ): Promise<T> {
+    const token = await getToken();
+    const headers = new Headers(options.headers);
+    if (options.body !== undefined && !headers.has("Content-Type")) {
+      headers.set("Content-Type", "application/json");
+    }
+    if (token) headers.set("Authorization", `Bearer ${token}`);
+
+    const res = await fetch(path, { ...options, headers, credentials: "include" });
+    if (!res.ok) throw new Error(`${res.status}: ${res.statusText}`);
+    return res.json() as Promise<T>;
+  };
+}
+
+// ─── Core fetch wrapper (backward-compatible for portals) ────────────────────
 
 export interface ApiFetchOptions extends RequestInit {
-  /** Skip attaching the Bearer token (used internally for refresh calls) */
   skipAuth?: boolean;
 }
 
@@ -54,14 +66,13 @@ export async function apiFetch<T = unknown>(
 
   const headers = new Headers(fetchOptions.headers);
 
-  // Always JSON for body payloads
   if (fetchOptions.body !== undefined && !headers.has("Content-Type")) {
     headers.set("Content-Type", "application/json");
   }
 
-  const token = getAccessToken();
-  if (!skipAuth && token) {
-    headers.set("Authorization", `Bearer ${token}`);
+  if (!skipAuth) {
+    const token = await getClerkToken();
+    if (token) headers.set("Authorization", `Bearer ${token}`);
   }
 
   const res = await fetch(path, {
@@ -70,22 +81,8 @@ export async function apiFetch<T = unknown>(
     credentials: "include",
   });
 
-  // Auto-refresh on 401 — only once to avoid loops
   if (res.status === 401 && !skipAuth) {
-    const refreshed = await tryRefresh();
-    if (refreshed) {
-      const newToken = getAccessToken();
-      if (newToken) headers.set("Authorization", `Bearer ${newToken}`);
-      const retry = await fetch(path, {
-        ...fetchOptions,
-        headers,
-        credentials: "include",
-      });
-      if (!retry.ok) throw new Error(`${retry.status}: ${retry.statusText}`);
-      return retry.json() as Promise<T>;
-    }
-    // Refresh failed — redirect to login
-    window.location.href = "/dealer";
+    window.location.href = "/login";
     throw new Error("Session expired");
   }
 
@@ -97,23 +94,17 @@ export async function apiFetch<T = unknown>(
 
 export const api = {
   get: <T = unknown>(path: string) => apiFetch<T>(path),
-
   post: <T = unknown>(path: string, body: unknown) =>
     apiFetch<T>(path, { method: "POST", body: JSON.stringify(body) }),
-
   put: <T = unknown>(path: string, body: unknown) =>
     apiFetch<T>(path, { method: "PUT", body: JSON.stringify(body) }),
-
   patch: <T = unknown>(path: string, body: unknown) =>
     apiFetch<T>(path, { method: "PATCH", body: JSON.stringify(body) }),
-
   delete: <T = unknown>(path: string) =>
     apiFetch<T>(path, { method: "DELETE" }),
 };
 
 // ─── TanStack Query helper ────────────────────────────────────────────────────
-// Use this as queryFn to attach auth headers automatically.
-// Example: useQuery({ queryKey: ['/api/claims'], queryFn: authQueryFn })
 
 export function authQueryFn<T = unknown>({
   queryKey,

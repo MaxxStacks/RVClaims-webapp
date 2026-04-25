@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Bidder Portal — Public RV Auction Buyer Experience | DealerSuite360</title>
+<meta name="description" content="The DS360 Bidder Portal — where public buyers browse RV auction listings, place bids, manage deposits, and complete purchases through Stripe escrow. Monthly auction events."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--primary:hsl(217,95%,26%);--primary-light:hsl(217,95%,36%);--primary-5:hsl(217,95%,26%/0.05);--primary-10:hsl(217,95%,26%/0.10);--primary-20:hsl(217,95%,26%/0.20);--primary-40:hsl(217,95%,26%/0.40);--fg:hsl(240,10%,3.9%);--muted:hsl(215.4,16.3%,46.9%);--bg:white;--card:white;--border:hsl(214.3,31.8%,91.4%);--gray-50:hsl(210,40%,97.5%);--green:#0cb22c;--green-h:#0a9624;--font:'Inter',-apple-system,BlinkMacSystemFont,sans-serif}
+body{font-family:var(--font);color:var(--fg);background:var(--bg);-webkit-font-smoothing:antialiased;line-height:1.6;overflow-x:hidden}
+img{max-width:100%;height:auto;display:block}a{color:inherit;text-decoration:none}
+.nav{position:sticky;top:0;z-index:100;background:white;border-bottom:1px solid var(--border);height:64px;display:flex;align-items:center;padding:0 1rem}.nav-inner{max-width:1280px;margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between;padding:0 1rem}.nav-logo{font-weight:700;font-size:1.1rem;color:var(--primary);display:flex;align-items:center;gap:.5rem}.nav-logo .b{font-weight:600;font-size:.55rem;background:var(--primary);color:white;padding:2px 5px;border-radius:3px}.nav-links{display:flex;gap:2rem;font-size:.88rem;font-weight:500;color:var(--muted)}.nav-links a:hover{color:var(--primary)}@media(max-width:768px){.nav-links{display:none}}
+.wrap{max-width:1280px;margin:0 auto;padding:0 1rem}@media(min-width:640px){.wrap{padding:0 1.5rem}}@media(min-width:1024px){.wrap{padding:0 2rem}}
+.sec-w{padding:5rem 0;background:white}.sec-g{padding:5rem 0;background:var(--gray-50)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;font-family:var(--font);font-size:.88rem;font-weight:600;padding:.75rem 1.5rem;border-radius:.5rem;border:none;cursor:pointer;transition:all .2s}.btn-lg{padding:.85rem 2rem;font-size:.95rem}.btn-primary{background:var(--primary);color:white;box-shadow:0 10px 15px -3px rgba(0,0,0,.1)}.btn-primary:hover{background:hsl(217,95%,23%)}.btn-outline{background:transparent;color:var(--fg);border:1px solid var(--border)}.btn-outline:hover{background:var(--gray-50)}.btn-green{background:var(--green);color:white}.btn-green:hover{background:var(--green-h)}.btn-white{background:white;color:var(--primary)}.btn-white:hover{background:#f5f5f5}
+.badge{display:inline-flex;align-items:center;padding:.25rem .75rem;border-radius:9999px;font-size:.75rem;font-weight:500;background:var(--primary-10);color:var(--primary);border:1px solid var(--primary-20)}
+.sec-head{text-align:center;margin-bottom:4rem;display:flex;flex-direction:column;align-items:center;gap:1rem}.sec-head h2{font-size:clamp(1.75rem,4vw,2.25rem);font-weight:700}.sec-head p{font-size:1.05rem;color:var(--muted);max-width:48rem;line-height:1.7}
+.phero{background:linear-gradient(to bottom right,var(--primary-5),var(--bg),var(--primary-10));background-image:radial-gradient(circle at 25px 25px,rgba(30,58,138,.1) 2px,transparent 0),radial-gradient(circle at 75px 75px,rgba(30,58,138,.05) 2px,transparent 0);background-size:100px 100px;padding:5rem 0}@media(min-width:1024px){.phero{padding:6rem 0}}
+.phero-grid{display:grid;grid-template-columns:1fr;gap:3rem;align-items:center}@media(min-width:1024px){.phero-grid{grid-template-columns:1fr 1fr}}
+.phero-text{display:flex;flex-direction:column;gap:1.75rem}.phero h1{font-size:clamp(2rem,4.5vw,3.25rem);font-weight:700;line-height:1.15}.phero h1 .gradient{display:block;background:linear-gradient(135deg,var(--primary),var(--primary-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.phero-desc{font-size:1.1rem;color:var(--muted);line-height:1.7}.phero-btns{display:flex;gap:1rem;flex-wrap:wrap}
+.phero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;padding-top:2rem;border-top:1px solid var(--border)}.phero-stat{text-align:center}.phero-stat-val{font-size:1.5rem;font-weight:700;color:var(--primary)}.phero-stat-label{font-size:.8rem;color:var(--muted)}.phero-img{border-radius:1rem;box-shadow:0 25px 50px -12px rgba(0,0,0,.25);overflow:hidden}
+.split{display:grid;grid-template-columns:1fr;gap:4rem;align-items:center}@media(min-width:1024px){.split{grid-template-columns:1fr 1fr}}.split-rev{direction:rtl}.split-rev>*{direction:ltr}.split-text{display:flex;flex-direction:column;gap:1.5rem}.split-text h2{font-size:clamp(1.75rem,4vw,2.25rem);font-weight:700}.split-text>p{font-size:1.05rem;color:var(--muted);line-height:1.7}.split-img{position:relative;border-radius:1rem;overflow:hidden;box-shadow:0 25px 50px -12px rgba(0,0,0,.25)}.split-img img{width:100%;height:auto}.split-img .overlay{position:absolute;inset:0;background:linear-gradient(to top right,var(--primary-20),transparent)}
+.checks{display:flex;flex-direction:column;gap:1rem}.check{display:flex;align-items:flex-start;gap:.75rem}.check-dot{width:1.5rem;height:1.5rem;border-radius:50%;background:var(--primary-10);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.125rem}.check-dot svg{width:.75rem;height:.75rem}.check-info h3{font-weight:600;font-size:.95rem}.check-info p{font-size:.85rem;color:var(--muted)}
+.bst{text-align:center;padding:2rem;max-width:48rem;margin:0 auto}.bst-line{width:3rem;height:3px;background:var(--primary);margin:0 auto 1.5rem;border-radius:2px}.bst p{font-size:clamp(1.15rem,3vw,1.4rem);font-weight:600;color:var(--fg);line-height:1.5;font-style:italic}
+.dyk{position:relative;max-width:52rem;margin:0 auto;background:linear-gradient(135deg,hsl(217 95% 26%/.03),hsl(217 95% 26%/.08));border:1px solid var(--primary-20);border-radius:.75rem;padding:2.5rem 2.5rem 2.5rem 5.5rem;overflow:hidden}.dyk::before{content:'?';position:absolute;left:-1rem;top:50%;transform:translateY(-50%);font-size:8rem;font-weight:800;color:var(--primary-10);line-height:1;pointer-events:none}.dyk-tag{display:inline-flex;align-items:center;gap:.4rem;font-size:.72rem;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.75rem}.dyk>p{font-size:1.1rem;color:var(--fg);line-height:1.7}.dyk>p strong{color:var(--primary);font-weight:700}@media(max-width:768px){.dyk{padding:2rem 1.5rem}.dyk::before{display:none}}
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:2rem}@media(max-width:768px){.grid-2{grid-template-columns:1fr}}
+.link-card{display:flex;align-items:center;justify-content:space-between;background:white;border:1px solid var(--border);border-radius:.75rem;padding:1.25rem 1.5rem;transition:all .25s}.link-card:hover{border-color:var(--primary);transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.05)}.link-card h4{font-size:.95rem;font-weight:600;margin-bottom:.2rem}.link-card p{font-size:.8rem;color:var(--muted)}.link-arrow{font-size:1.15rem;color:var(--primary);transition:transform .2s;flex-shrink:0;margin-left:1rem}.link-card:hover .link-arrow{transform:translateX(4px)}
+.faq-layout{display:grid;grid-template-columns:1fr;gap:3rem;align-items:flex-start}@media(min-width:1024px){.faq-layout{grid-template-columns:1fr 1.4fr;gap:4rem}}.faq-left{position:sticky;top:5rem}@media(max-width:1023px){.faq-left{position:static}}.faq-right{display:flex;flex-direction:column;gap:.75rem}.faq-card{background:var(--card);border:1px solid var(--border);border-radius:.75rem;overflow:hidden;transition:border-color .2s}.faq-card.open{border-color:var(--primary-40)}.faq-q{width:100%;display:flex;justify-content:space-between;align-items:center;padding:1.25rem 1.5rem;background:0;border:0;font-family:var(--font);font-size:.92rem;font-weight:600;color:var(--fg);cursor:pointer;text-align:left;gap:1rem;line-height:1.4}.faq-q:hover{color:var(--primary)}.faq-icon{width:2rem;height:2rem;border-radius:.5rem;background:var(--primary-10);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}.faq-icon svg{color:var(--primary);transition:transform .2s}.faq-card.open .faq-icon{background:var(--primary)}.faq-card.open .faq-icon svg{color:white;transform:rotate(45deg)}.faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease}.faq-card.open .faq-a{max-height:500px}.faq-a p{padding:0 1.5rem 1.25rem;font-size:.9rem;color:var(--muted);line-height:1.8}
+.bcta{background:linear-gradient(135deg,hsl(217,95%,18%),hsl(217,95%,28%));text-align:center;padding:5rem 0}.bcta h2{font-size:clamp(1.75rem,4vw,2.25rem);font-weight:700;color:white;margin-bottom:1rem}.bcta p{color:hsl(217,20%,75%);font-size:1.05rem;max-width:36rem;margin:0 auto 2rem;line-height:1.7}.bcta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.footer{background:var(--gray-50);border-top:1px solid var(--border);padding:2rem 0;text-align:center;font-size:.8rem;color:var(--muted)}.anim{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}.anim.v{opacity:1;transform:translateY(0)}
+
+/* Bidder steps */
+.bid-steps{max-width:52rem;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:1.25rem}
+@media(max-width:768px){.bid-steps{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.bid-steps{grid-template-columns:1fr}}
+.bid-step{background:white;border:1px solid var(--border);border-radius:.75rem;padding:1.5rem;text-align:center;transition:all .25s}
+.bid-step:hover{border-color:var(--primary-20);box-shadow:0 8px 20px rgba(0,0,0,.05);transform:translateY(-3px)}
+.bid-num{width:2.25rem;height:2.25rem;background:var(--primary);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.82rem;font-weight:800;margin:0 auto .75rem}
+.bid-step:last-child .bid-num{background:var(--green)}
+.bid-step h4{font-size:.88rem;font-weight:700;margin-bottom:.3rem}
+.bid-step p{font-size:.78rem;color:var(--muted);line-height:1.5}
+
+/* Feature grid */
+.bf-grid{max-width:52rem;margin:0 auto;display:grid;grid-template-columns:repeat(2,1fr);gap:1.25rem}
+@media(max-width:640px){.bf-grid{grid-template-columns:1fr}}
+.bf-card{background:white;border:1px solid var(--border);border-radius:.75rem;padding:1.5rem;display:flex;align-items:flex-start;gap:1rem;transition:all .25s}
+.bf-card:hover{border-color:var(--primary-20);box-shadow:0 6px 16px rgba(0,0,0,.04);transform:translateY(-2px)}
+.bf-icon{width:2.5rem;height:2.5rem;background:var(--primary-10);border-radius:.5rem;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.bf-icon svg{width:1.15rem;height:1.15rem;color:var(--primary)}
+.bf-card h4{font-size:.92rem;font-weight:700;margin-bottom:.2rem}
+.bf-card p{font-size:.82rem;color:var(--muted);line-height:1.55}
+</style>
+</head>
+<body>
+
+<nav class="nav"><div class="nav-inner"><div class="nav-logo"><svg width="28" height="28" viewBox="0 0 32 32" fill="none"><path d="M16 2L4 8v16l12 6 12-6V8L16 2z" fill="hsl(217,95%,26%)"/><path d="M16 6l8 4v12l-8 4-8-4V10l8-4z" fill="hsl(217,95%,36%)"/><path d="M16 10v12l-4-2V12l4-2z" fill="white" opacity=".6"/></svg>Dealer Suite<span class="b">360</span></div><div class="nav-links"><a href="/services">Services</a><a href="/products/fi-services">Products</a><a href="/marketplace">Marketplace</a><a href="/technology" style="color:var(--primary);font-weight:600">Technology</a><a href="/pricing">Pricing</a><a href="/contact" class="btn btn-primary" style="padding:.5rem 1.25rem;font-size:.82rem">Get Started</a></div></div></nav>
+
+<!-- 1. HERO -->
+<section class="phero">
+  <div class="wrap">
+    <div class="phero-grid">
+      <div class="phero-text">
+        <div><a href="/technology/platform" style="font-size:.82rem;color:var(--muted)">&larr; Technology Platform</a></div>
+        <div><div class="badge">DS360 Bidder Portal</div></div>
+        <h1>Browse. Bid. Buy.<span class="gradient">All From One Portal.</span></h1>
+        <p class="phero-desc">The Bidder Portal is where public buyers access DS360 monthly Live Auctions. Browse available RVs with full photos and specs, place bids in real time, manage deposits, and complete purchases through Stripe escrow — all in a clean, professional interface designed to convert browsers into buyers.</p>
+        <div class="phero-btns"><a href="/marketplace/live-auctions" class="btn btn-lg btn-primary">Learn About Live Auctions</a><a href="#how-it-works" class="btn btn-lg btn-outline">How It Works</a></div>
+        <div class="phero-stats">
+          <div class="phero-stat"><div class="phero-stat-val">Monthly</div><div class="phero-stat-label">Auction Events</div></div>
+          <div class="phero-stat"><div class="phero-stat-val">Stripe</div><div class="phero-stat-label">Escrow Protected</div></div>
+          <div class="phero-stat"><div class="phero-stat-val">Verified</div><div class="phero-stat-label">Bidder Registration</div></div>
+        </div>
+      </div>
+      <div class="phero-img"><img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=584&h=438&fm=webp&q=75" alt="Bidder Portal" width="584" height="438"/></div>
+    </div>
+  </div>
+</section>
+
+<!-- 2. WHAT BIDDERS SEE -->
+<section class="sec-w">
+  <div class="wrap">
+    <div class="split anim">
+      <div class="split-text">
+        <div class="badge">The Buyer Experience</div>
+        <h2>A Professional Auction Interface Built to Sell</h2>
+        <p>The Bidder Portal is not a classified board. It is a curated auction platform where every listing comes from a verified DS360 dealer, every unit has been documented with full photos and specs, and every transaction is protected by Stripe escrow. Buyers trust the platform because DS360 manages every step.</p>
+        <p>For dealers, this matters — because the buyer experience reflects on your inventory. A professional portal with clean listings, real-time bidding, and secure transactions converts more browsers into buyers than a generic listing site ever could.</p>
+      </div>
+      <div class="split-img">
+        <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&auto=format&fit=crop&w=576&h=432&fm=webp&q=75" alt="Buyer experience" width="576" height="432" loading="lazy"/>
+        <div class="overlay"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. STATEMENT -->
+<section class="sec-g" style="padding:3.5rem 0">
+  <div class="wrap"><div class="bst"><div class="bst-line"></div><p>"A buyer who trusts the platform bids higher and closes faster. The Bidder Portal is built to earn that trust on every listing."</p></div></div>
+</section>
+
+<!-- 4. HOW IT WORKS -->
+<section class="sec-w" id="how-it-works">
+  <div class="wrap">
+    <div class="sec-head"><div class="badge">Bidder Journey</div><h2>Register to Purchase — Four Steps</h2><p>Every public buyer follows the same verified process. Registration, deposit, bidding, and escrow-secured close.</p></div>
+    <div class="bid-steps anim">
+      <div class="bid-step"><div class="bid-num">1</div><h4>Register &amp; Verify</h4><p>Buyer creates an account with identity verification. Verified status is required before bidding is enabled.</p></div>
+      <div class="bid-step"><div class="bid-num">2</div><h4>Browse &amp; Filter</h4><p>Search auction listings by RV type, year, brand, price range. Full photos, specs, and condition details on every unit.</p></div>
+      <div class="bid-step"><div class="bid-num">3</div><h4>Place Bids</h4><p>Place bids in real time. Receive notifications on outbids. Set maximum auto-bid limits. Track all active bids from the dashboard.</p></div>
+      <div class="bid-step"><div class="bid-num">4</div><h4>Win &amp; Purchase</h4><p>Winning bidder completes the transaction through Stripe escrow. DS360 manages deposit, balance, documentation, and delivery coordination.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. PORTAL FEATURES -->
+<section class="sec-g">
+  <div class="wrap">
+    <div class="sec-head"><div class="badge">Portal Features</div><h2>What Bidders See When They Log In</h2><p>Every feature is designed to make browsing easy, bidding transparent, and purchasing secure.</p></div>
+    <div class="bf-grid anim">
+      <div class="bf-card">
+        <div class="bf-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+        <div><h4>Search &amp; Filter</h4><p>Find units by RV type, year, manufacturer, price range, location, and condition. Results update in real time.</p></div>
+      </div>
+      <div class="bf-card">
+        <div class="bf-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg></div>
+        <div><h4>Full Photo Galleries</h4><p>Every listing includes multi-angle photos — exterior, interior, engine, damage documentation, and VIN verification shots.</p></div>
+      </div>
+      <div class="bf-card">
+        <div class="bf-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
+        <div><h4>Real-Time Bidding</h4><p>Place bids and see competing bids update live. Set auto-bid maximums so the system bids for you up to your limit.</p></div>
+      </div>
+      <div class="bf-card">
+        <div class="bf-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
+        <div><h4>Bid Notifications</h4><p>Instant alerts when you are outbid, when an auction is closing, and when you win. Never miss a bid opportunity.</p></div>
+      </div>
+      <div class="bf-card">
+        <div class="bf-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></div>
+        <div><h4>Deposit Management</h4><p>Manage your bidding deposit through Stripe. Deposit is required before bidding — held securely until the auction closes.</p></div>
+      </div>
+      <div class="bf-card">
+        <div class="bf-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <div><h4>Secure Purchase</h4><p>Winning transactions are completed through Stripe escrow. DS360 manages the documentation, payment processing, and delivery coordination.</p></div>
+      </div>
+      <div class="bf-card">
+        <div class="bf-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></div>
+        <div><h4>Unit Specs &amp; History</h4><p>Full specifications — VIN, year, make, model, weight, floor plan, mileage, and condition notes from the selling dealer.</p></div>
+      </div>
+      <div class="bf-card">
+        <div class="bf-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+        <div><h4>Auction Calendar</h4><p>View upcoming auction dates, countdown timers to next event, and preview listings before the auction opens for bidding.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. FOR DEALERS -->
+<section class="sec-w">
+  <div class="wrap">
+    <div class="split split-rev anim">
+      <div class="split-text">
+        <div class="badge">For Dealers</div>
+        <h2>The Portal Sells Your Inventory for You</h2>
+        <p>You list the unit. The Bidder Portal does the rest. Public buyers browse, filter, and bid — competing against each other for your inventory. The professional experience builds trust, the real-time bidding creates urgency, and the escrow protection eliminates risk for both sides.</p>
+        <div class="checks">
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Competitive Bidding Drives Prices Up</h3><p>Multiple bidders on the same unit can push the sale price above your reserve — something a single-buyer negotiation cannot do</p></div></div>
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Verified Buyers Only</h3><p>Identity verification and deposit requirements filter out tire-kickers — every bidder is qualified before they can bid</p></div></div>
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>DS360 Manages the Close</h3><p>You don't negotiate with the buyer, process the payment, or manage the paperwork. DS360 handles the entire transaction.</p></div></div>
+        </div>
+      </div>
+      <div class="split-img">
+        <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?ixlib=rb-4.0.3&auto=format&fit=crop&w=576&h=432&fm=webp&q=75" alt="For dealers" width="576" height="432" loading="lazy"/>
+        <div class="overlay"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7. DYK -->
+<section class="sec-g">
+  <div class="wrap">
+    <div class="dyk anim">
+      <div class="dyk-tag">Did You Know?</div>
+      <p>Auction platforms with <strong>verified bidder registration and escrow protection see 60-80% higher close rates</strong> than open classified boards — because both sides trust the transaction. The DS360 Bidder Portal is built on that principle: verify the buyer, protect the money, manage the close.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 8. CONNECTED -->
+<section class="sec-w">
+  <div class="wrap">
+    <div class="grid-2 anim">
+      <a href="/marketplace/live-auctions" class="link-card"><div><h4>Live Auctions</h4><p>Monthly public auction events — the source of Bidder Portal listings</p></div><span class="link-arrow">&rarr;</span></a>
+      <a href="/marketplace/dealer-exchange" class="link-card"><div><h4>Dealer Exchange</h4><p>The dealer-to-dealer network that feeds auction listings</p></div><span class="link-arrow">&rarr;</span></a>
+      <a href="/marketplace" class="link-card"><div><h4>Marketplace Overview</h4><p>All three inventory channels in one view</p></div><span class="link-arrow">&rarr;</span></a>
+      <a href="/technology/platform" class="link-card"><div><h4>Technology Platform</h4><p>The 4 portals including the Bidder Portal</p></div><span class="link-arrow">&rarr;</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- 9. FAQ -->
+<section class="sec-g">
+  <div class="wrap">
+    <div class="faq-layout anim">
+      <div class="faq-left">
+        <div class="badge">FAQ</div>
+        <h2 style="font-size:clamp(1.5rem,3.5vw,2rem);font-weight:700;margin-top:.75rem;line-height:1.2">Bidder Portal<br/>Questions</h2>
+        <p style="font-size:1rem;color:var(--muted);line-height:1.7;margin-top:1rem">For dealers and public buyers.</p>
+        <a href="/marketplace/live-auctions" class="btn btn-primary" style="width:fit-content;margin-top:1.5rem">View Live Auctions &rarr;</a>
+      </div>
+      <div class="faq-right">
+        <div class="faq-card"><button class="faq-q"><span>How does a public buyer register?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faq-a"><p>Public buyers visit the Bidder Portal and create an account. Registration includes identity verification — name, email, phone, and payment method. A bidding deposit is required before the buyer can place bids. This process filters non-serious inquiries and protects dealers from fraudulent bids.</p></div></div>
+        <div class="faq-card"><button class="faq-q"><span>What happens if the reserve is not met?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faq-a"><p>If bidding does not reach the dealer's reserve price, the unit is not sold. It returns to the Dealer Exchange and can be pushed to the next monthly auction — same listing, same photos, no relisting required. The dealer is never forced to sell below their minimum.</p></div></div>
+        <div class="faq-card"><button class="faq-q"><span>How is payment handled?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faq-a"><p>All payments are processed through Stripe. The winning bidder's deposit is applied toward the purchase price. The remaining balance is collected through Stripe before delivery is coordinated. DS360 manages the entire payment flow — the dealer receives funds after the transaction is confirmed complete.</p></div></div>
+        <div class="faq-card"><button class="faq-q"><span>Can buyers inspect units before bidding?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faq-a"><p>Every listing includes comprehensive photo galleries and full specifications. For buyers who want an in-person inspection, arrangements can be made through DS360 before the auction closes — subject to dealer availability and location. Remote buyers rely on the documented condition report and photo evidence.</p></div></div>
+        <div class="faq-card"><button class="faq-q"><span>Does the dealer interact with the buyer directly?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faq-a"><p>Not until the transaction closes. During the auction, DS360 acts as the intermediary. The dealer's identity is protected throughout the bidding process. After the winning bid is confirmed and escrow is secured, DS360 facilitates the introduction for delivery coordination.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 10. BOTTOM CTA -->
+<section class="bcta">
+  <div class="wrap">
+    <h2>Your Inventory. Their Bids. DS360 Manages Everything in Between.</h2>
+    <p>The Bidder Portal turns your Live Auction listings into competitive, escrow-protected sales events every month.</p>
+    <div class="bcta-btns"><a href="/marketplace/live-auctions" class="btn btn-lg btn-green">Add Live Auctions &rarr;</a><a href="/marketplace" class="btn btn-lg btn-white">View Marketplace</a></div>
+  </div>
+</section>
+
+<footer class="footer"><div class="wrap">&copy; 2026 Dealer Suite 360. All rights reserved. Patent Pending Technology.</div></footer>
+
+<script>
+document.querySelectorAll('.faq-q').forEach(b=>{b.addEventListener('click',()=>{const i=b.closest('.faq-card');const o=i.classList.contains('open');document.querySelectorAll('.faq-card').forEach(x=>x.classList.remove('open'));if(!o)i.classList.add('open')})});
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('v');obs.unobserve(x.target)}})},{threshold:.08});
+document.querySelectorAll('.anim').forEach(e=>obs.observe(e));
+</script>
+</body>
+</html>

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Mobile App — Your Dealership in Every Pocket | DealerSuite360</title>
+<meta name="description" content="DS360 Mobile App — dealer version for scanning, capturing, and push-to-claim workflows. White-label client version with your branding. PWA launching Q3 2026."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--primary:hsl(217,95%,26%);--primary-light:hsl(217,95%,36%);--primary-5:hsl(217,95%,26%/0.05);--primary-10:hsl(217,95%,26%/0.10);--primary-20:hsl(217,95%,26%/0.20);--primary-40:hsl(217,95%,26%/0.40);--fg:hsl(240,10%,3.9%);--muted:hsl(215.4,16.3%,46.9%);--bg:white;--card:white;--border:hsl(214.3,31.8%,91.4%);--gray-50:hsl(210,40%,97.5%);--green:#0cb22c;--green-h:#0a9624;--font:'Inter',-apple-system,BlinkMacSystemFont,sans-serif}
+body{font-family:var(--font);color:var(--fg);background:var(--bg);-webkit-font-smoothing:antialiased;line-height:1.6;overflow-x:hidden}
+img{max-width:100%;height:auto;display:block}a{color:inherit;text-decoration:none}
+.nav{position:sticky;top:0;z-index:100;background:white;border-bottom:1px solid var(--border);height:64px;display:flex;align-items:center;padding:0 1rem}.nav-inner{max-width:1280px;margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between;padding:0 1rem}.nav-logo{font-weight:700;font-size:1.1rem;color:var(--primary);display:flex;align-items:center;gap:.5rem}.nav-logo .b{font-weight:600;font-size:.55rem;background:var(--primary);color:white;padding:2px 5px;border-radius:3px}.nav-links{display:flex;gap:2rem;font-size:.88rem;font-weight:500;color:var(--muted)}.nav-links a:hover{color:var(--primary)}@media(max-width:768px){.nav-links{display:none}}
+.wrap{max-width:1280px;margin:0 auto;padding:0 1rem}@media(min-width:640px){.wrap{padding:0 1.5rem}}@media(min-width:1024px){.wrap{padding:0 2rem}}
+.sec-w{padding:5rem 0;background:white}.sec-g{padding:5rem 0;background:var(--gray-50)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;font-family:var(--font);font-size:.88rem;font-weight:600;padding:.75rem 1.5rem;border-radius:.5rem;border:none;cursor:pointer;transition:all .2s}.btn-lg{padding:.85rem 2rem;font-size:.95rem}.btn-primary{background:var(--primary);color:white;box-shadow:0 10px 15px -3px rgba(0,0,0,.1)}.btn-primary:hover{background:hsl(217,95%,23%)}.btn-outline{background:transparent;color:var(--fg);border:1px solid var(--border)}.btn-outline:hover{background:var(--gray-50)}.btn-green{background:var(--green);color:white}.btn-green:hover{background:var(--green-h)}.btn-white{background:white;color:var(--primary)}.btn-white:hover{background:#f5f5f5}
+.badge{display:inline-flex;align-items:center;padding:.25rem .75rem;border-radius:9999px;font-size:.75rem;font-weight:500;background:var(--primary-10);color:var(--primary);border:1px solid var(--primary-20)}
+.sec-head{text-align:center;margin-bottom:4rem;display:flex;flex-direction:column;align-items:center;gap:1rem}.sec-head h2{font-size:clamp(1.75rem,4vw,2.25rem);font-weight:700}.sec-head p{font-size:1.05rem;color:var(--muted);max-width:48rem;line-height:1.7}
+.phero{background:linear-gradient(to bottom right,var(--primary-5),var(--bg),var(--primary-10));background-image:radial-gradient(circle at 25px 25px,rgba(30,58,138,.1) 2px,transparent 0),radial-gradient(circle at 75px 75px,rgba(30,58,138,.05) 2px,transparent 0);background-size:100px 100px;padding:5rem 0}@media(min-width:1024px){.phero{padding:6rem 0}}
+.phero-grid{display:grid;grid-template-columns:1fr;gap:3rem;align-items:center}@media(min-width:1024px){.phero-grid{grid-template-columns:1fr 1fr}}
+.phero-text{display:flex;flex-direction:column;gap:1.75rem}.phero h1{font-size:clamp(2rem,4.5vw,3.25rem);font-weight:700;line-height:1.15}.phero h1 .gradient{display:block;background:linear-gradient(135deg,var(--primary),var(--primary-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.phero-desc{font-size:1.1rem;color:var(--muted);line-height:1.7}.phero-btns{display:flex;gap:1rem;flex-wrap:wrap}
+.phero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;padding-top:2rem;border-top:1px solid var(--border)}.phero-stat{text-align:center}.phero-stat-val{font-size:1.5rem;font-weight:700;color:var(--primary)}.phero-stat-label{font-size:.8rem;color:var(--muted)}.phero-img{border-radius:1rem;box-shadow:0 25px 50px -12px rgba(0,0,0,.25);overflow:hidden}
+.split{display:grid;grid-template-columns:1fr;gap:4rem;align-items:center}@media(min-width:1024px){.split{grid-template-columns:1fr 1fr}}.split-rev{direction:rtl}.split-rev>*{direction:ltr}.split-text{display:flex;flex-direction:column;gap:1.5rem}.split-text h2{font-size:clamp(1.75rem,4vw,2.25rem);font-weight:700}.split-text>p{font-size:1.05rem;color:var(--muted);line-height:1.7}.split-img{position:relative;border-radius:1rem;overflow:hidden;box-shadow:0 25px 50px -12px rgba(0,0,0,.25)}.split-img img{width:100%;height:auto}.split-img .overlay{position:absolute;inset:0;background:linear-gradient(to top right,var(--primary-20),transparent)}
+.checks{display:flex;flex-direction:column;gap:1rem}.check{display:flex;align-items:flex-start;gap:.75rem}.check-dot{width:1.5rem;height:1.5rem;border-radius:50%;background:var(--primary-10);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.125rem}.check-dot svg{width:.75rem;height:.75rem}.check-info h3{font-weight:600;font-size:.95rem}.check-info p{font-size:.85rem;color:var(--muted)}
+.bst{text-align:center;padding:2rem;max-width:48rem;margin:0 auto}.bst-line{width:3rem;height:3px;background:var(--primary);margin:0 auto 1.5rem;border-radius:2px}.bst p{font-size:clamp(1.15rem,3vw,1.4rem);font-weight:600;color:var(--fg);line-height:1.5;font-style:italic}
+.dyk{position:relative;max-width:52rem;margin:0 auto;background:linear-gradient(135deg,hsl(217 95% 26%/.03),hsl(217 95% 26%/.08));border:1px solid var(--primary-20);border-radius:.75rem;padding:2.5rem 2.5rem 2.5rem 5.5rem;overflow:hidden}.dyk::before{content:'?';position:absolute;left:-1rem;top:50%;transform:translateY(-50%);font-size:8rem;font-weight:800;color:var(--primary-10);line-height:1;pointer-events:none}.dyk-tag{display:inline-flex;align-items:center;gap:.4rem;font-size:.72rem;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.75rem}.dyk>p{font-size:1.1rem;color:var(--fg);line-height:1.7}.dyk>p strong{color:var(--primary);font-weight:700}@media(max-width:768px){.dyk{padding:2rem 1.5rem}.dyk::before{display:none}}
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:2rem}@media(max-width:768px){.grid-2{grid-template-columns:1fr}}
+.link-card{display:flex;align-items:center;justify-content:space-between;background:white;border:1px solid var(--border);border-radius:.75rem;padding:1.25rem 1.5rem;transition:all .25s}.link-card:hover{border-color:var(--primary);transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.05)}.link-card h4{font-size:.95rem;font-weight:600;margin-bottom:.2rem}.link-card p{font-size:.8rem;color:var(--muted)}.link-arrow{font-size:1.15rem;color:var(--primary);transition:transform .2s;flex-shrink:0;margin-left:1rem}.link-card:hover .link-arrow{transform:translateX(4px)}
+.faq-layout{display:grid;grid-template-columns:1fr;gap:3rem;align-items:flex-start}@media(min-width:1024px){.faq-layout{grid-template-columns:1fr 1.4fr;gap:4rem}}.faq-left{position:sticky;top:5rem}@media(max-width:1023px){.faq-left{position:static}}.faq-right{display:flex;flex-direction:column;gap:.75rem}.faq-card{background:var(--card);border:1px solid var(--border);border-radius:.75rem;overflow:hidden;transition:border-color .2s}.faq-card.open{border-color:var(--primary-40)}.faq-q{width:100%;display:flex;justify-content:space-between;align-items:center;padding:1.25rem 1.5rem;background:0;border:0;font-family:var(--font);font-size:.92rem;font-weight:600;color:var(--fg);cursor:pointer;text-align:left;gap:1rem;line-height:1.4}.faq-q:hover{color:var(--primary)}.faq-icon{width:2rem;height:2rem;border-radius:.5rem;background:var(--primary-10);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}.faq-icon svg{color:var(--primary);transition:transform .2s}.faq-card.open .faq-icon{background:var(--primary)}.faq-card.open .faq-icon svg{color:white;transform:rotate(45deg)}.faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease}.faq-card.open .faq-a{max-height:500px}.faq-a p{padding:0 1.5rem 1.25rem;font-size:.9rem;color:var(--muted);line-height:1.8}
+.bcta{background:linear-gradient(135deg,hsl(217,95%,18%),hsl(217,95%,28%));text-align:center;padding:5rem 0}.bcta h2{font-size:clamp(1.75rem,4vw,2.25rem);font-weight:700;color:white;margin-bottom:1rem}.bcta p{color:hsl(217,20%,75%);font-size:1.05rem;max-width:36rem;margin:0 auto 2rem;line-height:1.7}.bcta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.footer{background:var(--gray-50);border-top:1px solid var(--border);padding:2rem 0;text-align:center;font-size:.8rem;color:var(--muted)}.anim{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}.anim.v{opacity:1;transform:translateY(0)}
+
+/* Launch badge */
+.launch-badge{display:inline-flex;align-items:center;gap:.5rem;background:hsl(140,60%,92%);border:1px solid hsl(140,50%,80%);padding:.35rem 1rem;border-radius:9999px;font-size:.75rem;font-weight:700;color:hsl(140,60%,28%)}
+.launch-dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* Workflow steps */
+.wf{max-width:52rem;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr);gap:1rem}
+@media(max-width:768px){.wf{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:480px){.wf{grid-template-columns:1fr}}
+.wf-step{background:white;border:1px solid var(--border);border-radius:.75rem;padding:1.25rem;text-align:center;transition:all .25s}
+.wf-step:hover{border-color:var(--primary-20);box-shadow:0 6px 16px rgba(0,0,0,.05);transform:translateY(-2px)}
+.wf-num{width:2rem;height:2rem;background:var(--primary);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;margin:0 auto .6rem}
+.wf-step:last-child .wf-num{background:var(--green)}
+.wf-step h4{font-size:.82rem;font-weight:700;margin-bottom:.2rem}
+.wf-step p{font-size:.72rem;color:var(--muted);line-height:1.4}
+</style>
+</head>
+<body>
+
+<nav class="nav"><div class="nav-inner"><div class="nav-logo"><svg width="28" height="28" viewBox="0 0 32 32" fill="none"><path d="M16 2L4 8v16l12 6 12-6V8L16 2z" fill="hsl(217,95%,26%)"/><path d="M16 6l8 4v12l-8 4-8-4V10l8-4z" fill="hsl(217,95%,36%)"/><path d="M16 10v12l-4-2V12l4-2z" fill="white" opacity=".6"/></svg>Dealer Suite<span class="b">360</span></div><div class="nav-links"><a href="/services">Services</a><a href="/products/fi-services">Products</a><a href="/marketplace">Marketplace</a><a href="/technology" style="color:var(--primary);font-weight:600">Technology</a><a href="/pricing">Pricing</a><a href="/contact" class="btn btn-primary" style="padding:.5rem 1.25rem;font-size:.82rem">Get Started</a></div></div></nav>
+
+<!-- 1. HERO -->
+<section class="phero">
+  <div class="wrap">
+    <div class="phero-grid">
+      <div class="phero-text">
+        <div><a href="/technology/platform" style="font-size:.82rem;color:var(--muted)">&larr; Technology Platform</a></div>
+        <div><div class="launch-badge"><span class="launch-dot"></span>Launching Q3 2026</div></div>
+        <h1>Your Dealership<span class="gradient">in Every Pocket.</span></h1>
+        <p class="phero-desc">Two apps. One for your team — scan tags, capture photos, and push claims from the lot. One for your clients — branded with your logo and colors, giving them mobile access to their unit, claims, and F&I products. PWA first, React Native planned for app store availability.</p>
+        <div class="phero-btns"><a href="/contact" class="btn btn-lg btn-primary">Join the Waitlist</a><a href="#dealer-app" class="btn btn-lg btn-outline">Dealer App</a></div>
+        <div class="phero-stats">
+          <div class="phero-stat"><div class="phero-stat-val">2</div><div class="phero-stat-label">App Versions</div></div>
+          <div class="phero-stat"><div class="phero-stat-val">PWA</div><div class="phero-stat-label">First — No App Store</div></div>
+          <div class="phero-stat"><div class="phero-stat-val">EN/FR</div><div class="phero-stat-label">Bilingual</div></div>
+        </div>
+      </div>
+      <div class="phero-img"><img src="https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&auto=format&fit=crop&w=584&h=438&fm=webp&q=75" alt="Mobile App" width="584" height="438"/></div>
+    </div>
+  </div>
+</section>
+
+<!-- 2. DEALER APP -->
+<section class="sec-w" id="dealer-app">
+  <div class="wrap">
+    <div class="split anim">
+      <div class="split-text">
+        <div class="badge">Dealer App</div>
+        <h2>Scan. Capture. Push to Claim. From the Lot.</h2>
+        <p>The Dealer App is built for the service bay and the lot — not the desk. Your technicians and service staff use it to scan unit tags, capture claim photos, read documents, and push batches of work directly into the DS360 processing queue. No walking back to the computer. No manual data entry. No lost photos.</p>
+        <div class="checks">
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>AI Document Scanner</h3><p>Point the camera at a warranty certificate, invoice, or inspection report — AI reads the document and auto-populates platform fields</p></div></div>
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Unit Tag Scanner</h3><p>Scan the physical VIN plate or spec tag on any unit — AI reads VIN, weight, brand, model and auto-populates the unit dashboard</p></div></div>
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Photo Capture for Claims</h3><p>Take claim photos directly in the app — they are tagged to the VIN and organized in the correct photo category automatically</p></div></div>
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Push to Claim</h3><p>Batch multiple items — photos, documents, notes — and push them into the DS360 Processing Queue with one tap. Operator is notified instantly.</p></div></div>
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Real-Time Notifications</h3><p>Claim status changes, parts delivery updates, and deadline alerts pushed directly to the app</p></div></div>
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Offline Mode</h3><p>Works in areas with poor connectivity — data syncs automatically when the connection returns</p></div></div>
+        </div>
+      </div>
+      <div class="split-img">
+        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=576&h=432&fm=webp&q=75" alt="Dealer App" width="576" height="432" loading="lazy"/>
+        <div class="overlay"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. MOBILE WORKFLOW -->
+<section class="sec-g">
+  <div class="wrap">
+    <div class="sec-head"><div class="badge">The Mobile Workflow</div><h2>Lot to Processing Queue in 5 Steps</h2><p>This is the workflow your technician runs from the lot — no computer required.</p></div>
+    <div class="wf anim">
+      <div class="wf-step"><div class="wf-num">1</div><h4>Scan Tag</h4><p>Point camera at VIN plate. AI reads and creates or finds the unit.</p></div>
+      <div class="wf-step"><div class="wf-num">2</div><h4>Create Unit</h4><p>If new, AI auto-populates specs from the tag scan. If existing, unit dashboard opens.</p></div>
+      <div class="wf-step"><div class="wf-num">3</div><h4>Take Photos</h4><p>Capture damage, defect, or inspection photos. Auto-tagged to VIN and category.</p></div>
+      <div class="wf-step"><div class="wf-num">4</div><h4>Scan Docs</h4><p>Scan warranty cert or report. AI extracts data and files it in the unit record.</p></div>
+      <div class="wf-step"><div class="wf-num">5</div><h4>Push to Claim</h4><p>One tap. Everything enters the Processing Queue. Operator notified.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. STATEMENT -->
+<section class="sec-w" style="padding:3.5rem 0">
+  <div class="wrap"><div class="bst"><div class="bst-line"></div><p>"Your technician scanned the tag, photographed the damage, and pushed to claim — all before walking back inside. The operator had the notification before the tech reached the door."</p></div></div>
+</section>
+
+<!-- 5. CLIENT APP -->
+<section class="sec-w">
+  <div class="wrap">
+    <div class="split split-rev anim">
+      <div class="split-text">
+        <div class="badge">Client App — White-Label</div>
+        <h2>Your Branded App in Your Client's Pocket</h2>
+        <p>The Client App is the mobile version of the Client Portal — white-labeled with your dealership's logo and colors. Your clients download it and see your brand, not DS360. It gives them mobile access to everything the web portal offers, plus native features like camera-based issue submission and push notifications for claim updates.</p>
+        <div class="checks">
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Your Brand on Their Phone</h3><p>Your logo, your colors — the app looks like you built it. DS360 is invisible.</p></div></div>
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>File Claims via Camera</h3><p>Client photographs an issue and submits through the app — photo, description, and VIN are packaged and sent to your dealership and DS360</p></div></div>
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Purchase Protection Products</h3><p>Clients can browse and purchase F&I protection products directly through the app — AI F&I Presenter accessible on mobile</p></div></div>
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Request On-Site Service</h3><p>One tap to request on-site repair — client submits photos, location, and issue description. Nearest DS360 partner dealer is dispatched.</p></div></div>
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Vehicle Specs &amp; Warranty Status</h3><p>Full unit details, warranty dates, coverage type, and claim history — accessible anytime from the client's phone</p></div></div>
+        </div>
+      </div>
+      <div class="split-img">
+        <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?ixlib=rb-4.0.3&auto=format&fit=crop&w=576&h=432&fm=webp&q=75" alt="Client App" width="576" height="432" loading="lazy"/>
+        <div class="overlay"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. DYK -->
+<section class="sec-g">
+  <div class="wrap">
+    <div class="dyk anim">
+      <div class="dyk-tag">Did You Know?</div>
+      <p>Dealers who offer <strong>branded mobile apps report significantly higher client retention rates</strong> — because the app keeps the dealership's name on the client's phone screen every day. When that client is ready to upgrade, trade in, or refer a friend, your dealership is literally one tap away. No other RV dealer in the market offers a white-label client app.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 7. PWA VS NATIVE -->
+<section class="sec-w">
+  <div class="wrap">
+    <div class="split anim">
+      <div class="split-text">
+        <div class="badge">Technology Approach</div>
+        <h2>PWA First. React Native Next.</h2>
+        <p>The DS360 Mobile App launches as a Progressive Web App (PWA) — installable directly from the browser with no app store required. This means faster deployment, instant updates, and cross-platform compatibility on both iOS and Android from day one.</p>
+        <p>React Native development is planned for a follow-up release, bringing the app to the Apple App Store and Google Play for native distribution. PWA users will transition seamlessly — same account, same data, enhanced native features.</p>
+        <div class="checks">
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>PWA — Q3 2026</h3><p>Install from browser. Works on all devices. No app store approval delays. Instant updates pushed by DS360.</p></div></div>
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>React Native — Post-Launch</h3><p>App Store and Google Play distribution. Native push notifications. Enhanced camera and offline capabilities.</p></div></div>
+        </div>
+      </div>
+      <div class="split-img">
+        <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-4.0.3&auto=format&fit=crop&w=576&h=432&fm=webp&q=75" alt="PWA" width="576" height="432" loading="lazy"/>
+        <div class="overlay"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 8. CONNECTED -->
+<section class="sec-g">
+  <div class="wrap">
+    <div class="grid-2 anim">
+      <a href="/platform/dealer-portal" class="link-card"><div><h4>Dealer Portal</h4><p>The full desktop experience — the app extends it to mobile</p></div><span class="link-arrow">&rarr;</span></a>
+      <a href="/platform/client-portal" class="link-card"><div><h4>Client Portal</h4><p>The web version of what the Client App delivers on mobile</p></div><span class="link-arrow">&rarr;</span></a>
+      <a href="/services/claims-processing" class="link-card"><div><h4>Claims Processing</h4><p>Push to Claim feeds directly into the claims workflow</p></div><span class="link-arrow">&rarr;</span></a>
+      <a href="/services/on-site-repairs" class="link-card"><div><h4>On-Site Repairs</h4><p>Client app enables photo-first mobile service requests</p></div><span class="link-arrow">&rarr;</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- 9. FAQ -->
+<section class="sec-w">
+  <div class="wrap">
+    <div class="faq-layout anim">
+      <div class="faq-left">
+        <div class="badge">FAQ</div>
+        <h2 style="font-size:clamp(1.5rem,3.5vw,2rem);font-weight:700;margin-top:.75rem;line-height:1.2">Mobile App<br/>Questions</h2>
+        <p style="font-size:1rem;color:var(--muted);line-height:1.7;margin-top:1rem">Dealer and client app details.</p>
+        <a href="/contact" class="btn btn-primary" style="width:fit-content;margin-top:1.5rem">Join the Waitlist &rarr;</a>
+      </div>
+      <div class="faq-right">
+        <div class="faq-card"><button class="faq-q"><span>When does the Mobile App launch?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faq-a"><p>The PWA version launches Q3 2026. Dealers on the waitlist receive early access. React Native (App Store / Google Play) follows after the PWA launch — timeline to be announced.</p></div></div>
+        <div class="faq-card"><button class="faq-q"><span>What is a PWA?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faq-a"><p>A Progressive Web App is a web application that can be installed on your phone's home screen directly from the browser — no App Store or Google Play download required. It looks and feels like a native app but updates instantly without requiring manual updates from the user.</p></div></div>
+        <div class="faq-card"><button class="faq-q"><span>Does the client app work offline?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faq-a"><p>The Dealer App has offline mode — critical for lots and service bays with poor connectivity. Data syncs automatically when the connection returns. The Client App requires an active connection for most features but cached data like unit specs and warranty info is available offline.</p></div></div>
+        <div class="faq-card"><button class="faq-q"><span>Can my client see my branding on the app?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faq-a"><p>Yes. The Client App is fully white-labeled — your logo, your colors, your dealership name. Just like the Client Portal web version, DS360 is invisible to the end client. The app appears as if your dealership built it.</p></div></div>
+        <div class="faq-card"><button class="faq-q"><span>Is there an additional cost for the app?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faq-a"><p>Pricing for the Mobile App will be announced closer to the Q3 2026 launch. Dealers on the waitlist will receive pricing details and early access information before public availability.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 10. BOTTOM CTA -->
+<section class="bcta">
+  <div class="wrap">
+    <h2>Two Apps. Your Brand. Every Pocket.</h2>
+    <p>Join the waitlist for the DS360 Mobile App — launching Q3 2026. Dealer scanning workflows and white-label client experience on every phone.</p>
+    <div class="bcta-btns"><a href="/contact" class="btn btn-lg btn-green">Join the Waitlist &rarr;</a><a href="/platform/dealer-portal" class="btn btn-lg btn-white">Dealer Portal</a></div>
+  </div>
+</section>
+
+<footer class="footer"><div class="wrap">&copy; 2026 Dealer Suite 360. All rights reserved. Patent Pending Technology.</div></footer>
+
+<script>
+document.querySelectorAll('.faq-q').forEach(b=>{b.addEventListener('click',()=>{const i=b.closest('.faq-card');const o=i.classList.contains('open');document.querySelectorAll('.faq-card').forEach(x=>x.classList.remove('open'));if(!o)i.classList.add('open')})});
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('v');obs.unobserve(x.target)}})},{threshold:.08});
+document.querySelectorAll('.anim').forEach(e=>obs.observe(e));
+</script>
+</body>
+</html>

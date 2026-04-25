@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Roadside Assistance — Free with Every DS360 Plan | DealerSuite360</title>
+<meta name="description" content="Every DS360 dealer plan includes free basic roadside assistance — 50KM coverage, DS360-managed dispatch, and a deal-closing incentive that costs your dealership nothing."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --primary:hsl(217,95%,26%);--primary-light:hsl(217,95%,36%);
+  --primary-5:hsl(217,95%,26%/0.05);--primary-10:hsl(217,95%,26%/0.10);--primary-20:hsl(217,95%,26%/0.20);--primary-40:hsl(217,95%,26%/0.40);
+  --fg:hsl(240,10%,3.9%);--muted:hsl(215.4,16.3%,46.9%);
+  --bg:white;--card:white;--border:hsl(214.3,31.8%,91.4%);
+  --gray-50:hsl(210,40%,97.5%);
+  --green:#0cb22c;--green-h:#0a9624;
+  --font:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+}
+body{font-family:var(--font);color:var(--fg);background:var(--bg);-webkit-font-smoothing:antialiased;line-height:1.6;overflow-x:hidden}
+img{max-width:100%;height:auto;display:block}a{color:inherit;text-decoration:none}
+
+.nav{position:sticky;top:0;z-index:100;background:white;border-bottom:1px solid var(--border);height:64px;display:flex;align-items:center;padding:0 1rem}
+.nav-inner{max-width:1280px;margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between;padding:0 1rem}
+.nav-logo{font-weight:700;font-size:1.1rem;color:var(--primary);display:flex;align-items:center;gap:.5rem}
+.nav-logo .b{font-weight:600;font-size:.55rem;background:var(--primary);color:white;padding:2px 5px;border-radius:3px}
+.nav-links{display:flex;gap:2rem;font-size:.88rem;font-weight:500;color:var(--muted)}
+.nav-links a:hover{color:var(--primary)}@media(max-width:768px){.nav-links{display:none}}
+
+.wrap{max-width:1280px;margin:0 auto;padding:0 1rem}
+@media(min-width:640px){.wrap{padding:0 1.5rem}}@media(min-width:1024px){.wrap{padding:0 2rem}}
+
+.sec-w{padding:5rem 0;background:white}.sec-g{padding:5rem 0;background:var(--gray-50)}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;font-family:var(--font);font-size:.88rem;font-weight:600;padding:.75rem 1.5rem;border-radius:.5rem;border:none;cursor:pointer;transition:all .2s}
+.btn-lg{padding:.85rem 2rem;font-size:.95rem}
+.btn-primary{background:var(--primary);color:white;box-shadow:0 10px 15px -3px rgba(0,0,0,.1)}.btn-primary:hover{background:hsl(217,95%,23%)}
+.btn-outline{background:transparent;color:var(--fg);border:1px solid var(--border)}.btn-outline:hover{background:var(--gray-50)}
+.btn-green{background:var(--green);color:white}.btn-green:hover{background:var(--green-h)}
+.btn-white{background:white;color:var(--primary)}.btn-white:hover{background:#f5f5f5}
+.badge{display:inline-flex;align-items:center;padding:.25rem .75rem;border-radius:9999px;font-size:.75rem;font-weight:500;background:var(--primary-10);color:var(--primary);border:1px solid var(--primary-20)}
+.badge-green{background:hsl(140,60%,92%);color:hsl(140,60%,28%);border-color:hsl(140,50%,80%)}
+
+.sec-head{text-align:center;margin-bottom:4rem;display:flex;flex-direction:column;align-items:center;gap:1rem}
+.sec-head h2{font-size:clamp(1.75rem,4vw,2.25rem);font-weight:700}
+.sec-head p{font-size:1.05rem;color:var(--muted);max-width:48rem;line-height:1.7}
+
+/* Hero */
+.phero{background:linear-gradient(to bottom right,var(--primary-5),var(--bg),var(--primary-10));
+  background-image:radial-gradient(circle at 25px 25px,rgba(30,58,138,.1) 2px,transparent 0),radial-gradient(circle at 75px 75px,rgba(30,58,138,.05) 2px,transparent 0);
+  background-size:100px 100px;padding:5rem 0}
+@media(min-width:1024px){.phero{padding:6rem 0}}
+.phero-grid{display:grid;grid-template-columns:1fr;gap:3rem;align-items:center}
+@media(min-width:1024px){.phero-grid{grid-template-columns:1fr 1fr}}
+.phero-text{display:flex;flex-direction:column;gap:1.75rem}
+.phero h1{font-size:clamp(2rem,4.5vw,3.25rem);font-weight:700;line-height:1.15}
+.phero h1 .gradient{display:block;background:linear-gradient(135deg,var(--primary),var(--primary-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.phero-desc{font-size:1.1rem;color:var(--muted);line-height:1.7}
+.phero-btns{display:flex;gap:1rem;flex-wrap:wrap}
+.phero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;padding-top:2rem;border-top:1px solid var(--border)}
+.phero-stat{text-align:center}.phero-stat-val{font-size:1.5rem;font-weight:700;color:var(--primary)}.phero-stat-label{font-size:.8rem;color:var(--muted)}
+.phero-img{border-radius:1rem;box-shadow:0 25px 50px -12px rgba(0,0,0,.25);overflow:hidden}
+
+/* Split */
+.split{display:grid;grid-template-columns:1fr;gap:4rem;align-items:center}
+@media(min-width:1024px){.split{grid-template-columns:1fr 1fr}}
+.split-rev{direction:rtl}.split-rev>*{direction:ltr}
+.split-text{display:flex;flex-direction:column;gap:1.5rem}
+.split-text h2{font-size:clamp(1.75rem,4vw,2.25rem);font-weight:700}
+.split-text>p{font-size:1.05rem;color:var(--muted);line-height:1.7}
+.split-img{position:relative;border-radius:1rem;overflow:hidden;box-shadow:0 25px 50px -12px rgba(0,0,0,.25)}
+.split-img img{width:100%;height:auto}
+.split-img .overlay{position:absolute;inset:0;background:linear-gradient(to top right,var(--primary-20),transparent)}
+
+/* Checks */
+.checks{display:flex;flex-direction:column;gap:1rem}
+.check{display:flex;align-items:flex-start;gap:.75rem}
+.check-dot{width:1.5rem;height:1.5rem;border-radius:50%;background:var(--primary-10);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.125rem}
+.check-dot svg{width:.75rem;height:.75rem}
+.check-info h3{font-weight:600;font-size:.95rem}.check-info p{font-size:.85rem;color:var(--muted)}
+
+/* Comparison table */
+.cmp{max-width:52rem;margin:0 auto;border:1px solid var(--border);border-radius:.75rem;overflow:hidden}
+.cmp-head{display:grid;grid-template-columns:2fr 1fr 1fr;gap:0;background:var(--primary);color:white;font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.cmp-head>div{padding:1rem 1.25rem}
+.cmp-head>div:nth-child(2){background:rgba(255,255,255,.08);text-align:center}
+.cmp-head>div:nth-child(3){background:rgba(12,178,44,.15);text-align:center}
+.cmp-row{display:grid;grid-template-columns:2fr 1fr 1fr;gap:0;border-bottom:1px solid var(--border);font-size:.88rem}
+.cmp-row:last-child{border-bottom:none}
+.cmp-row>div{padding:.85rem 1.25rem;display:flex;align-items:center}
+.cmp-row>div:nth-child(2),.cmp-row>div:nth-child(3){justify-content:center}
+.cmp-row:nth-child(even){background:var(--gray-50)}
+.cmp-feat{font-weight:500;color:var(--fg)}
+.cmp-check{color:var(--green);font-weight:700;font-size:1.1rem}
+.cmp-x{color:var(--border);font-size:.9rem}
+.cmp-text{font-size:.82rem;color:var(--muted);font-weight:500}
+
+/* DYK */
+.dyk{position:relative;max-width:52rem;margin:0 auto;background:linear-gradient(135deg,hsl(217 95% 26%/.03),hsl(217 95% 26%/.08));border:1px solid var(--primary-20);border-radius:.75rem;padding:2.5rem 2.5rem 2.5rem 5.5rem;overflow:hidden}
+.dyk::before{content:'?';position:absolute;left:-1rem;top:50%;transform:translateY(-50%);font-size:8rem;font-weight:800;color:var(--primary-10);line-height:1;pointer-events:none}
+.dyk-tag{display:inline-flex;align-items:center;gap:.4rem;font-size:.72rem;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.75rem}
+.dyk>p{font-size:1.1rem;color:var(--fg);line-height:1.7}
+.dyk>p strong{color:var(--primary);font-weight:700}
+@media(max-width:768px){.dyk{padding:2rem 1.5rem}.dyk::before{display:none}}
+
+/* Statement */
+.bst{text-align:center;padding:2rem;max-width:48rem;margin:0 auto}
+.bst-line{width:3rem;height:3px;background:var(--primary);margin:0 auto 1.5rem;border-radius:2px}
+.bst p{font-size:clamp(1.15rem,3vw,1.4rem);font-weight:600;color:var(--fg);line-height:1.5;font-style:italic}
+
+/* Two-path */
+.paths{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;max-width:52rem;margin:0 auto}
+@media(max-width:768px){.paths{grid-template-columns:1fr}}
+.path{border-radius:.75rem;padding:2rem;display:flex;flex-direction:column;transition:all .25s}
+.path:hover{transform:translateY(-3px)}
+.path-basic{background:var(--card);border:1px solid var(--border)}
+.path-basic:hover{box-shadow:0 8px 20px rgba(0,0,0,.05);border-color:var(--primary-20)}
+.path-titan{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:white;border:2px solid transparent}
+.path-titan:hover{box-shadow:0 12px 30px rgba(3,50,128,.2)}
+.path-tag{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:.25rem .65rem;border-radius:9999px;display:inline-flex;width:fit-content;margin-bottom:1rem}
+.path-tag-free{background:hsl(140,60%,92%);color:hsl(140,60%,28%)}
+.path-tag-premium{background:rgba(255,255,255,.2);color:white}
+.path h3{font-size:1.25rem;font-weight:700;margin-bottom:.5rem}
+.path-basic h3{color:var(--fg)}.path-titan h3{color:white}
+.path>p{font-size:.9rem;line-height:1.6;margin-bottom:1.25rem}
+.path-basic>p{color:var(--muted)}.path-titan>p{color:rgba(255,255,255,.8)}
+.path-list{list-style:none;display:flex;flex-direction:column;gap:.5rem;margin-bottom:1.5rem;flex:1}
+.path-list li{display:flex;align-items:flex-start;gap:.5rem;font-size:.85rem;line-height:1.5}
+.path-list li svg{width:1rem;height:1rem;flex-shrink:0;margin-top:.15rem}
+.path-basic .path-list li{color:var(--muted)}
+.path-titan .path-list li{color:rgba(255,255,255,.8)}
+
+/* Stats */
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem}@media(max-width:768px){.grid-3{grid-template-columns:1fr}}
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:2rem}@media(max-width:768px){.grid-2{grid-template-columns:1fr}}
+.stat-card{background:var(--card);border-radius:.75rem;padding:2rem;border:1px solid var(--border);text-align:center;transition:transform .3s,box-shadow .3s}
+.stat-card:hover{transform:translateY(-5px);box-shadow:0 20px 25px -5px rgba(0,0,0,.1)}
+.stat-val{font-size:2.25rem;font-weight:700;color:var(--primary);margin-bottom:.5rem}.stat-title{font-weight:600;margin-bottom:.5rem;font-size:.95rem}.stat-desc{font-size:.85rem;color:var(--muted)}
+
+/* Link cards */
+.link-card{display:flex;align-items:center;justify-content:space-between;background:white;border:1px solid var(--border);border-radius:.75rem;padding:1.25rem 1.5rem;transition:all .25s}
+.link-card:hover{border-color:var(--primary);transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.05)}
+.link-card h4{font-size:.95rem;font-weight:600;margin-bottom:.2rem}.link-card p{font-size:.8rem;color:var(--muted)}
+.link-arrow{font-size:1.15rem;color:var(--primary);transition:transform .2s;flex-shrink:0;margin-left:1rem}
+.link-card:hover .link-arrow{transform:translateX(4px)}
+
+/* FAQ */
+.faq-layout{display:grid;grid-template-columns:1fr;gap:3rem;align-items:flex-start}
+@media(min-width:1024px){.faq-layout{grid-template-columns:1fr 1.4fr;gap:4rem}}
+.faq-left{position:sticky;top:5rem}@media(max-width:1023px){.faq-left{position:static}}
+.faq-right{display:flex;flex-direction:column;gap:.75rem}
+.faq-card{background:var(--card);border:1px solid var(--border);border-radius:.75rem;overflow:hidden;transition:border-color .2s}.faq-card.open{border-color:var(--primary-40)}
+.faq-q{width:100%;display:flex;justify-content:space-between;align-items:center;padding:1.25rem 1.5rem;background:0;border:0;font-family:var(--font);font-size:.92rem;font-weight:600;color:var(--fg);cursor:pointer;text-align:left;gap:1rem;line-height:1.4}.faq-q:hover{color:var(--primary)}
+.faq-icon{width:2rem;height:2rem;border-radius:.5rem;background:var(--primary-10);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
+.faq-icon svg{color:var(--primary);transition:transform .2s}
+.faq-card.open .faq-icon{background:var(--primary)}.faq-card.open .faq-icon svg{color:white;transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease}.faq-card.open .faq-a{max-height:400px}
+.faq-a p{padding:0 1.5rem 1.25rem;font-size:.9rem;color:var(--muted);line-height:1.8}
+
+.bcta{background:linear-gradient(135deg,hsl(217,95%,18%),hsl(217,95%,28%));text-align:center;padding:5rem 0}
+.bcta h2{font-size:clamp(1.75rem,4vw,2.25rem);font-weight:700;color:white;margin-bottom:1rem}
+.bcta p{color:hsl(217,20%,75%);font-size:1.05rem;max-width:36rem;margin:0 auto 2rem;line-height:1.7}
+.bcta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+
+.footer{background:var(--gray-50);border-top:1px solid var(--border);padding:2rem 0;text-align:center;font-size:.8rem;color:var(--muted)}
+.anim{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}.anim.v{opacity:1;transform:translateY(0)}
+
+/* Compliance Notice */
+.notice{max-width:52rem;margin:0 auto;background:hsl(0,70%,97%);border:2px solid hsl(0,50%,85%);border-radius:.75rem;padding:2rem 2.5rem;position:relative}
+.notice-header{display:flex;align-items:center;gap:.75rem;margin-bottom:1rem}
+.notice-icon{width:2.5rem;height:2.5rem;background:hsl(0,60%,50%);border-radius:.5rem;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.notice-icon svg{width:1.25rem;height:1.25rem;color:white}
+.notice-title{font-size:1rem;font-weight:700;color:hsl(0,60%,35%);text-transform:uppercase;letter-spacing:.04em}
+.notice p{font-size:.9rem;color:hsl(0,30%,30%);line-height:1.7}
+.notice p strong{color:hsl(0,60%,35%)}
+.notice-line{height:1px;background:hsl(0,50%,85%);margin:1rem 0}
+
+</style>
+</head>
+<body>
+
+<nav class="nav"><div class="nav-inner"><div class="nav-logo"><svg width="28" height="28" viewBox="0 0 32 32" fill="none"><path d="M16 2L4 8v16l12 6 12-6V8L16 2z" fill="hsl(217,95%,26%)"/><path d="M16 6l8 4v12l-8 4-8-4V10l8-4z" fill="hsl(217,95%,36%)"/><path d="M16 10v12l-4-2V12l4-2z" fill="white" opacity=".6"/></svg>Dealer Suite<span class="b">360</span></div><div class="nav-links"><a href="/services">Services</a><a href="/products/fi-services">Products</a><a href="/marketplace">Marketplace</a><a href="/technology">Technology</a><a href="/pricing">Pricing</a><a href="/contact" class="btn btn-primary" style="padding:.5rem 1.25rem;font-size:.82rem">Get Started</a></div></div></nav>
+
+<!-- 1. HERO -->
+<section class="phero">
+  <div class="wrap">
+    <div class="phero-grid">
+      <div class="phero-text">
+        <div><a href="/services" style="font-size:.82rem;color:var(--muted)">&larr; All Services</a></div>
+        <div><div class="badge badge-green">Free with Every DS360 Plan</div></div>
+        <h1>A Deal-Closing Incentive That<span class="gradient">Costs You Nothing</span></h1>
+        <p class="phero-desc">Every DS360 dealer plan includes basic roadside assistance at no additional cost. Offer it to every client at the point of sale as a complimentary benefit — towing coordination, dispatch, and client communication within a 50KM radius. DS360 manages everything. Your dealership gets the credit. The client gets peace of mind. And it never costs you a dollar.</p>
+        <div class="phero-btns"><a href="/contact" class="btn btn-lg btn-primary">Get Started</a><a href="#comparison" class="btn btn-lg btn-outline">Compare Tiers</a></div>
+        <div class="phero-stats">
+          <div class="phero-stat"><div class="phero-stat-val">$0</div><div class="phero-stat-label">Cost to Dealer</div></div>
+          <div class="phero-stat"><div class="phero-stat-val">50KM</div><div class="phero-stat-label">Coverage Radius</div></div>
+          <div class="phero-stat"><div class="phero-stat-val">DS360</div><div class="phero-stat-label">Managed Dispatch</div></div>
+        </div>
+      </div>
+      <div class="phero-img"><img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-4.0.3&auto=format&fit=crop&w=584&h=438&fm=webp&q=75" alt="RV on the road" width="584" height="438"/></div>
+    </div>
+  </div>
+</section>
+
+<!-- 2. THE SALES TOOL -->
+<section class="sec-w">
+  <div class="wrap">
+    <div class="split anim">
+      <div class="split-text">
+        <div class="badge">The Sales Advantage</div>
+        <h2>The Easiest Close Incentive You Will Ever Offer</h2>
+        <p>Most F&I products require a pitch, an explanation, and a price conversation. Basic roadside requires one sentence: "Your unit comes with complimentary roadside assistance — if you ever need help on the road, we have you covered." It costs you nothing. It removes a buyer objection. And it gives your client a reason to answer your call the next time you reach out.</p>
+        <p>This is not a product you sell. It is a benefit you give. DS360 manages the dispatch, the towing coordination, and the client communication. Your dealership is the hero.</p>
+      </div>
+      <div class="split-img">
+        <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?ixlib=rb-4.0.3&auto=format&fit=crop&w=576&h=432&fm=webp&q=75" alt="DS360 roadside management" width="576" height="432" loading="lazy"/>
+        <div class="overlay"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. STATEMENT -->
+<section class="sec-g" style="padding:3.5rem 0">
+  <div class="wrap">
+    <div class="bst"><div class="bst-line"></div><p>"The client does not remember the dealership that sold them the RV. They remember the dealership that showed up when they needed help."</p></div>
+  </div>
+</section>
+
+<!-- 4. WHAT'S INCLUDED -->
+<section class="sec-w">
+  <div class="wrap">
+    <div class="split split-rev anim">
+      <div class="split-text">
+        <div class="badge badge-green">Included Free</div>
+        <h2>What Basic Roadside Covers</h2>
+        <p>Basic roadside assistance is a complimentary benefit — not a product for resale. It covers your client within a 50KM radius of your dealership and is activated at the time of sale through the dealer portal.</p>
+        <div class="checks">
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Towing Coordination</h3><p>DS360 dispatches a tow to the client's location within the coverage radius</p></div></div>
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Client Communication</h3><p>DS360 manages the client interaction — ETA updates, driver details, status tracking</p></div></div>
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>50KM Coverage Radius</h3><p>Coverage zone centered on your dealership location — covers most local client travel</p></div></div>
+          <div class="check"><div class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="check-info"><h3>Dealer Portal Activation</h3><p>Your team activates coverage for each client at the time of sale — one click in the portal</p></div></div>
+        </div>
+      </div>
+      <div class="split-img">
+        <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&auto=format&fit=crop&w=576&h=432&fm=webp&q=75" alt="Roadside assistance" width="576" height="432" loading="lazy"/>
+        <div class="overlay"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. DYK -->
+<section class="sec-g">
+  <div class="wrap">
+    <div class="dyk anim">
+      <div class="dyk-tag">Did You Know?</div>
+      <p>Dealers who offer <strong>complimentary roadside assistance at the point of sale</strong> report a measurable increase in client satisfaction scores and repeat purchase rates. The cost of providing the benefit is zero. The cost of not offering it is the client who buys their next unit somewhere else.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 6. TWO-PATH: BASIC VS TITANIUM -->
+<section class="sec-w" id="comparison">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Two Tiers of Roadside Protection</h2>
+      <p>Basic is a free service you offer. Titanium is a premium product you sell. Different purpose, different revenue model — both managed by DS360.</p>
+    </div>
+    <div class="paths anim">
+      <div class="path path-basic">
+        <div class="path-tag path-tag-free">Free — Included</div>
+        <h3>Basic Roadside</h3>
+        <p>A complimentary benefit included in every DS360 dealer plan. Cannot be resold — offered to clients as a deal-closing incentive at no cost.</p>
+        <ul class="path-list">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>50KM coverage radius</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>Towing coordination</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>DS360 managed dispatch</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>Client communication</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--border)" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg><span style="color:var(--border)">Cannot be resold</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--border)" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg><span style="color:var(--border)">No extended coverage</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--border)" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg><span style="color:var(--border)">No trip interruption</span></li>
+        </ul>
+        <div style="font-size:1.75rem;font-weight:800;color:var(--green);margin-bottom:.75rem">$0<span style="font-size:.85rem;font-weight:500;color:var(--muted)">/always</span></div>
+        <span style="font-size:.82rem;color:var(--muted)">Included in your DS360 plan</span>
+      </div>
+      <div class="path path-titan">
+        <div class="path-tag path-tag-premium">Premium — Resellable Product</div>
+        <h3>Titanium Roadside &amp; Travel</h3>
+        <p>A revenue-generating product your dealership sells to clients. Extended coverage, trip interruption benefits, and emergency expenses — issued by DS360, sold by you.</p>
+        <ul class="path-list">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>160KM+ extended coverage</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>Towing + roadside repair</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>Trip interruption coverage</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>Emergency lodging &amp; meals</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>Vehicle return after breakdown</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>Resellable — dealer earns revenue</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>DS360 co-branded with your dealer name</li>
+        </ul>
+        <a href="/products/roadside-travel-protection" class="btn btn-white" style="width:fit-content">Explore Titanium &rarr;</a>
+      </div>
+    </div>
+  
+    <p style="text-align:center;font-size:.78rem;color:var(--muted);margin-top:2rem;max-width:44rem;margin-left:auto;margin-right:auto;line-height:1.6">Basic Roadside Assistance is provided free to the dealer and is intended exclusively as a complimentary client incentive. It cannot be sold, charged, or billed to a client under any circumstances. Dealers found charging clients for Basic Roadside will have all Basic Roadside services terminated for their entire client base. <a href="/legal/terms" style="color:var(--primary);font-weight:600;text-decoration:underline">View full terms and conditions &rarr;</a></p>
+
+</div>
+</section>
+
+<!-- 7. STATS -->
+<section class="sec-g">
+  <div class="wrap">
+    <div class="grid-3 anim">
+      <div class="stat-card"><div class="stat-val">$0</div><div class="stat-title">Cost to Dealer</div><p class="stat-desc">Basic roadside is fully funded by DS360 — zero cost to your dealership</p></div>
+      <div class="stat-card"><div class="stat-val">50KM</div><div class="stat-title">Coverage Radius</div><p class="stat-desc">Centered on your dealership — covers most local client travel patterns</p></div>
+      <div class="stat-card"><div class="stat-val">100%</div><div class="stat-title">DS360 Managed</div><p class="stat-desc">Dispatch, towing coordination, and client communication — all handled by DS360</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 8. CONNECTED SERVICES -->
+<section class="sec-w">
+  <div class="wrap">
+    <div class="sec-head"><h2>Connected Services</h2><p>Roadside Assistance is included in every DS360 plan. These services extend the roadside experience.</p></div>
+    <div class="grid-2 anim">
+      <a href="/services/on-site-repairs" class="link-card"><div><h4>On-Site Repairs</h4><p>When towing brings the unit home, On-Site Repairs can handle the fix at the client's location</p></div><span class="link-arrow">&rarr;</span></a>
+      <a href="/products/roadside-travel-protection" class="link-card"><div><h4>Titanium Roadside &amp; Travel</h4><p>Upgrade to the premium product your dealership sells — 160KM+, trip interruption, emergency coverage</p></div><span class="link-arrow">&rarr;</span></a>
+      <a href="/services/claims-processing" class="link-card"><div><h4>Claims Processing</h4><p>If the roadside issue is warranty-related, the claim flows directly into the DS360 claims workflow</p></div><span class="link-arrow">&rarr;</span></a>
+      <a href="/services" class="link-card"><div><h4>All Services</h4><p>View the full DS360 service suite</p></div><span class="link-arrow">&rarr;</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- 9. FAQ -->
+<section class="sec-g">
+  <div class="wrap">
+    <div class="faq-layout anim">
+      <div class="faq-left">
+        <div class="badge">FAQ</div>
+        <h2 style="font-size:clamp(1.5rem,3.5vw,2rem);font-weight:700;margin-top:.75rem;line-height:1.2">Roadside Assistance<br/>Questions</h2>
+        <p style="font-size:1rem;color:var(--muted);line-height:1.7;margin-top:1rem">What you need to know about the free basic tier and how it differs from Titanium.</p>
+        <a href="/contact" class="btn btn-primary" style="width:fit-content;margin-top:1.5rem">Contact Us &rarr;</a>
+      </div>
+      <div class="faq-right">
+        <div class="faq-card"><button class="faq-q"><span>Is basic roadside really free?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faq-a"><p>Yes. Basic roadside assistance is included in every DS360 dealer plan at no additional charge. There are no per-use fees, no per-client fees, and no activation costs. DS360 covers it entirely.</p></div></div>
+        <div class="faq-card"><button class="faq-q"><span>Can I resell basic roadside to my clients?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faq-a"><p>No. Basic roadside is a complimentary benefit only — it cannot be charged to the client. If you want to sell roadside protection as an F&I product, Titanium Roadside & Travel is the resellable option.</p></div></div>
+        <div class="faq-card"><button class="faq-q"><span>How do I activate it for a client?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faq-a"><p>Activation happens in the DS360 dealer portal at the time of sale. Your team links the roadside benefit to the client's VIN — one step during the delivery process. The client receives confirmation automatically.</p></div></div>
+        <div class="faq-card"><button class="faq-q"><span>What happens if the client is outside 50KM?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faq-a"><p>Basic roadside covers a 50KM radius from your dealership. If the client is outside that zone, they would need Titanium Roadside & Travel for extended coverage. This is also a natural upsell opportunity at the point of sale — offer basic free, then present Titanium for full-trip coverage.</p></div></div>
+        <div class="faq-card"><button class="faq-q"><span>What is the difference between this and Titanium?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faq-a"><p>Basic is a free service — 50KM, towing only, complimentary. Titanium is a premium product — 160KM+, trip interruption, emergency lodging and meals, vehicle return, and co-branded with your dealership. Basic is a gift. Titanium is a revenue-generating F&I product your dealership sells.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 10. BOTTOM CTA -->
+<section class="bcta">
+  <div class="wrap">
+    <h2>Give Every Client Peace of Mind — At Zero Cost to You.</h2>
+    <p>Basic roadside assistance is included in every DS360 plan. Start using it as a closing tool today.</p>
+    <div class="bcta-btns"><a href="/contact" class="btn btn-lg btn-green">Get Started &rarr;</a><a href="/products/roadside-travel-protection" class="btn btn-lg btn-white">Explore Titanium</a></div>
+  </div>
+</section>
+
+<footer class="footer"><div class="wrap">&copy; 2026 Dealer Suite 360. All rights reserved. Patent Pending Technology.</div></footer>
+
+<script>
+document.querySelectorAll('.faq-q').forEach(b=>{b.addEventListener('click',()=>{const i=b.closest('.faq-card');const o=i.classList.contains('open');document.querySelectorAll('.faq-card').forEach(x=>x.classList.remove('open'));if(!o)i.classList.add('open')})});
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('v');obs.unobserve(x.target)}})},{threshold:.08});
+document.querySelectorAll('.anim').forEach(e=>obs.observe(e));
+</script>
+</body>
+</html>
