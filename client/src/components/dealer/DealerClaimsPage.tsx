@@ -31,8 +31,9 @@ export default function DealerClaimsPage() {
       const list = await apiFetch<any[]>("/api/v6/claims");
       setClaims(list);
       try {
-        const u = await apiFetch<any[]>("/api/units");
-        setUnits(u);
+        const resp = await apiFetch<{ units?: any[]; success?: boolean } | any[]>("/api/units");
+        const list = Array.isArray(resp) ? resp : (resp as any).units ?? [];
+        setUnits(list);
       } catch {}
     } finally {
       setLoading(false);
@@ -42,8 +43,12 @@ export default function DealerClaimsPage() {
   useEffect(() => { refresh(); }, []);
 
   async function submit() {
-    if (!form.unitId || !form.type || !form.manufacturer) {
-      alert("Fill all required fields");
+    if (!form.type || !form.manufacturer) {
+      alert("Manufacturer and Type are required");
+      return;
+    }
+    if (!form.unitId && units.length > 0) {
+      alert("Please select a unit");
       return;
     }
     setSubmitting(true);
@@ -77,6 +82,11 @@ export default function DealerClaimsPage() {
           <div style={{ background: "white", padding: 24, borderRadius: 8, minWidth: 480 }}>
             <h2 style={{ margin: "0 0 16px", fontSize: 18 }}>Submit New Claim</h2>
             <div style={{ display: "grid", gap: 10 }}>
+              {units.length === 0 ? (
+                <div style={{ padding: "10px 12px", background: "#fff8e1", border: "1px solid #ffe082", borderRadius: 6, fontSize: 12, color: "#795548", marginBottom: 4 }}>
+                  No units on file for this dealership yet. Add a unit in the <strong>Units / Inventory</strong> section first.
+                </div>
+              ) : null}
               <label style={{ fontSize: 12 }}>
                 Unit (VIN)
                 <select value={form.unitId} onChange={e => setForm({ ...form, unitId: e.target.value })} style={{ width: "100%", padding: 8, marginTop: 4 }}>
