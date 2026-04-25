@@ -53,6 +53,11 @@ self.addEventListener("fetch", (event) => {
   // Skip Stripe
   if (url.hostname.includes("stripe.com")) return;
 
+  // Skip Clerk and Cloudflare (external auth/challenge scripts must not be cached)
+  if (url.hostname.includes("clerk.accounts.dev") ||
+      url.hostname.includes("clerk.com") ||
+      url.hostname.includes("cloudflare.com")) return;
+
   // API calls: network-first, fall back to cache
   if (url.pathname.startsWith("/api/")) {
     event.respondWith(
