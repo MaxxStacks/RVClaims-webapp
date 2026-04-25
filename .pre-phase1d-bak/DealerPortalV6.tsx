@@ -1,0 +1,465 @@
+// DealerPortalV6 — generated from v6 schema. Do not hand-edit menu structure;
+// edit /schema/v6.json and regenerate.
+// Preserves existing sidebar CSS classes (sidebar, sidebar-nav, nav-section, nav-label, nav-item, nb-* badges).
+
+import { useState, useEffect } from "react";
+import ds360Icon from "@assets/ds360_favicon.png";
+import { useUser, useClerk } from "@clerk/clerk-react";
+import { useApiFetch } from "@/lib/api";
+
+// ============================================================================
+// V6 SCHEMA METADATA — role-scoping and RBAC rules baked in
+// ============================================================================
+
+const PAGE_META: Record<string, { menu_item: string; section: string; scoped_role: string }> = {"dealer.ops.dashboard": {"menu_item": "Dashboard", "section": "Operations", "scoped_role": ""}, "dealer.ops.claims": {"menu_item": "Claims", "section": "Operations", "scoped_role": ""}, "dealer.ops.inventory": {"menu_item": "Units / Inventory", "section": "Operations", "scoped_role": ""}, "dealer.ops.clients": {"menu_item": "Clients", "section": "Operations", "scoped_role": ""}, "dealer.ops.sales_services": {"menu_item": "Sales & Services", "section": "Operations", "scoped_role": ""}, "dealer.ops.documents": {"menu_item": "Documents", "section": "Operations", "scoped_role": ""}, "dealer.ops.messages": {"menu_item": "Messages", "section": "Operations", "scoped_role": ""}, "dealer.account.my_subscription": {"menu_item": "My Subscription", "section": "Account", "scoped_role": ""}, "dealer.account.portal_settings": {"menu_item": "Portal Settings", "section": "Account", "scoped_role": ""}, "dealer.ops.financing": {"menu_item": "Financing", "section": "Operations", "scoped_role": ""}, "dealer.ops.parts_store": {"menu_item": "Parts Store", "section": "Operations", "scoped_role": ""}, "dealer.ops.consignment": {"menu_item": "Consignment", "section": "Operations", "scoped_role": ""}, "dealer.ops.techflow": {"menu_item": "TechFlow", "section": "Operations", "scoped_role": ""}, "dealer.ops.marketing": {"menu_item": "Marketing", "section": "Operations", "scoped_role": ""}, "dealer.marketplace.browse": {"menu_item": "Browse Listings", "section": "Marketplace", "scoped_role": ""}, "dealer.marketplace.my_bids": {"menu_item": "My Bids", "section": "Marketplace", "scoped_role": ""}, "dealer.marketplace.my_listings": {"menu_item": "My Listings (Sell)", "section": "Marketplace", "scoped_role": ""}, "dealer.marketplace.public_showcase": {"menu_item": "Public Showcase", "section": "Marketplace", "scoped_role": ""}, "dealer.marketplace.escrow_payments": {"menu_item": "Escrow & My Payments", "section": "Marketplace", "scoped_role": ""}, "dealer.consignor_guest.my_units": {"menu_item": "My Consigned Unit(s)", "section": "Consignor Guest", "scoped_role": "consignor"}, "dealer.consignor_guest.offers_bids": {"menu_item": "Offers & Bids on My Unit", "section": "Consignor Guest", "scoped_role": "consignor"}, "dealer.consignor_guest.payouts": {"menu_item": "My Payouts", "section": "Consignor Guest", "scoped_role": "consignor"}, "dealer.public_bidder_guest.my_bids": {"menu_item": "My Bids (Public Bidder)", "section": "Public Bidder Guest", "scoped_role": "public_bidder"}, "dealer.public_bidder_guest.verification": {"menu_item": "Verification & Payment", "section": "Public Bidder Guest", "scoped_role": "public_bidder"}};
+
+const ROLES: Record<string, any> = {"operator_admin": {"label": "Operator Admin", "login_portal": "ds360_master", "created_by": "system (first operator account)", "scope": "full_platform", "can_create": ["operator_staff", "dealer_owner"], "description": "Full access to every page on the Operator Portal including billing, commissions, Stripe admin, and platform settings."}, "operator_staff": {"label": "Operator Staff", "login_portal": "ds360_master", "created_by": "operator_admin (via Staff & Permissions)", "scope": "operations_claims_no_billing", "can_create": [], "blocked_pages": ["master.mgmt.revenue_billing", "master.mgmt.campaign_templates", "master.mgmt.communications", "master.mgmt.blog", "master.mgmt.staff_permissions", "master.mgmt.platform_settings", "master.marketplace.transactions", "master.marketplace.escrow_admin", "master.marketplace.members"], "scoped_pages": {"master.mgmt.dealer_accounts": "read_only_no_billing", "master.mgmt.financing_partners": "no_commission_visible", "master.mgmt.consignment_oversight": "no_payout_amounts", "master.ops.work_by_dealer": "no_invoice_section", "master.ops.reporting": "no_revenue_per_dealer"}, "description": "Claims processing, warranty verification, parts coordination. Cannot see billing, commissions, staff management, or platform settings."}, "dealer_owner": {"label": "Dealer Owner", "login_portal": "dealer", "created_by": "operator_admin (on new dealer creation)", "scope": "full_dealership_inc_billing", "can_create": ["dealer_staff", "technician", "public_bidder (scoped)", "consignor (scoped)", "client"], "description": "Full access to their Dealer Portal including billing, subscription, staff/tech management, marketplace bidding, and partner account creation."}, "dealer_staff": {"label": "Dealer Staff", "login_portal": "dealer", "created_by": "dealer_owner (via Portal Settings > Staff tab)", "scope": "operations_no_billing_no_admin", "can_create": [], "blocked_pages": ["dealer.account.my_subscription", "dealer.account.portal_settings", "dealer.marketplace.escrow_payments"], "scoped_pages": {"dealer.ops.dashboard": "no_revenue_snapshot", "dealer.ops.sales_services": "no_commission_tracker", "dealer.ops.consignment": "no_payout_amounts", "dealer.ops.documents": "no_ds360_invoices", "dealer.ops.parts_store": "no_revenue_tracker"}, "description": "Operational access \u2014 claims, units, clients, sales entry, parts fulfillment, techflow coordination. No billing, no staff management, no subscription, no escrow."}, "technician": {"label": "Technician", "login_portal": "dealer", "created_by": "dealer_owner (via Portal Settings > Technicians tab)", "scope": "techflow_own_work_orders_only", "can_create": [], "allowed_pages_only": ["dealer.ops.dashboard", "dealer.ops.claims", "dealer.ops.techflow"], "scoped_pages": {"dealer.ops.dashboard": "tech_view_my_jobs_today", "dealer.ops.claims": "read_only_own_workorder_claims", "dealer.ops.techflow": "own_work_orders_schedule_timelog"}, "description": "Sees only their own work orders, schedule, time log, and read-only access to claims tied to their work. No access to inventory, clients, financials, or any admin functions."}, "public_bidder": {"label": "Public Bidder (Dealer-sponsored)", "login_portal": "dealer", "created_by": "dealer_owner (via Portal Settings > Partners tab)", "scope": "marketplace_public_showcase_own_bids_only", "can_create": [], "allowed_pages_only": ["dealer.ops.dashboard", "dealer.marketplace.browse", "dealer.marketplace.public_showcase", "dealer.public_bidder_guest.my_bids", "dealer.public_bidder_guest.verification"], "header_label": "[Dealer Name] \u2014 Marketplace Access", "description": "CC-verified bidder sponsored by a specific dealer. Sees only Public Showcase listings (not full dealer-to-dealer marketplace), own bids, own verification + payment methods. Scoped to sponsoring dealer."}, "independent_bidder": {"label": "Independent Bidder (Live Monthly Auctions)", "login_portal": "bidder", "created_by": "self-registration on Bidder Portal", "scope": "live_monthly_auctions_until_won", "can_create": [], "allowed_pages_only": ["bidder.main.dashboard", "bidder.main.live_auctions", "bidder.main.browse", "bidder.main.my_bids", "bidder.main.escrow", "bidder.account.profile", "bidder.account.verification", "bidder.account.payment_methods", "bidder.account.settings"], "becomes_client_on_win": true, "description": "Standalone buyer account for Live Monthly public auctions. Not linked to any dealer until they win a unit, at which point they auto-provision as a client of the winning unit's selling dealer."}, "consignor": {"label": "Consignor (Dealer-sponsored)", "login_portal": "dealer", "created_by": "dealer_owner (via Consignment > Add Consignor)", "scope": "own_consigned_units_only", "can_create": [], "allowed_pages_only": ["dealer.ops.dashboard", "dealer.consignor_guest.my_units", "dealer.consignor_guest.offers_bids", "dealer.consignor_guest.payouts"], "header_label": "[Dealer Name] \u2014 Consignment Portal", "description": "Third party whose unit a dealer is selling on consignment. View-only of their own consigned unit(s), offers/bids on their unit, payout history, banking verification (Stripe Connect), and tax docs."}, "client": {"label": "Client", "login_portal": "client", "created_by": "dealer_owner (via Clients > Add Client) OR auto on bidder win (dealer_owner of winning unit)", "scope": "own_unit_warranty_services_only", "can_create": [], "description": "End customer of a dealer. Sees own vehicle, warranties, services, claims, documents, F&I offers, financing, parts store, service appointments. Linked to their dealer via invite link (or auto via winning a live auction)."}};
+
+const HOSTS_ROLES: string[] = ["dealer_owner", "dealer_staff", "technician", "public_bidder", "consignor"];
+
+// Subset of page_ids each role may see on this portal. Empty list = all pages allowed
+// except those in blocked_pages or scoped_pages restrictions.
+function getAllowedPagesForRole(role: string): string[] | null {
+  const def = ROLES[role];
+  if (!def) return null;
+  return def.allowed_pages_only || null;
+}
+
+function getBlockedPagesForRole(role: string): string[] {
+  const def = ROLES[role];
+  return def?.blocked_pages || [];
+}
+
+// ============================================================================
+// COMPONENT
+// ============================================================================
+
+export default function DealerPortalV6() {
+  const [currentPage, setCurrentPage] = useState<string>("dealer.ops.dashboard");
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const { user: clerkUser, isLoaded } = useUser();
+  const { signOut } = useClerk();
+  const apiFetch = useApiFetch();
+  // Map Clerk user to local-shape user object expected by the rest of this component
+  const user = clerkUser ? {
+    name: [clerkUser.firstName, clerkUser.lastName].filter(Boolean).join(" ") || clerkUser.username || "User",
+    role: ((clerkUser.unsafeMetadata as any)?.devRoleOverride as string) || (clerkUser.publicMetadata as any)?.role,
+    roles: ((clerkUser.publicMetadata as any)?.roles || []) as string[],
+  } : null;
+  const logout = async () => { await signOut(); window.location.href = "/login"; };
+  const userRole: string = user?.role || "dealer_owner";
+
+  // If user role is not hosted by this portal, redirect or show message
+  const roleAllowedOnPortal = HOSTS_ROLES.includes(userRole);
+
+  const isNavActive = (id: string) => currentPage === id;
+  const showPage = (id: string) => setCurrentPage(id);
+
+  function canSeePage(pageId: string): boolean {
+    const allowedOnly = getAllowedPagesForRole(userRole);
+    if (allowedOnly && !allowedOnly.includes(pageId)) return false;
+    const blocked = getBlockedPagesForRole(userRole);
+    if (blocked.includes(pageId)) return false;
+    const meta = PAGE_META[pageId];
+    if (meta?.scoped_role && meta.scoped_role !== userRole) return false;
+    return true;
+  }
+
+  function anyVisible(pageIds: string[]): boolean {
+    return pageIds.some(id => canSeePage(id));
+  }
+
+  // If user role not hosted here, show access denied
+  if (!roleAllowedOnPortal) {
+    return (
+      <div className="app">
+        <main className="main" style={{marginLeft: 0}}>
+          <div className="content" style={{padding: 40}}>
+            <h2>Access Denied</h2>
+            <p>Your role <code>{userRole}</code> is not permitted on this portal.</p>
+            <p>Expected role types for this portal: <code>{HOSTS_ROLES.join(", ")}</code></p>
+            <button className="btn btn-p" onClick={async () => { await logout(); window.location.href = "/"; }}>Sign Out</button>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  // If current page is not visible to this user, snap to first visible page
+  useEffect(() => {
+    if (!canSeePage(currentPage)) {
+      const firstVisible = Object.keys(PAGE_META).find(canSeePage);
+      if (firstVisible) setCurrentPage(firstVisible);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userRole]);
+
+  const userInitials = (user?.name || "Dealer").split(" ").map((s: string) => s[0]).join("").slice(0, 2).toUpperCase();
+  const userDisplayName = user?.name || "Dealer";
+  const roleLabel = ROLES[userRole]?.label || "Dealer";
+
+  // Wait for Clerk to load before rendering portal
+  if (!isLoaded) {
+    return (
+      <div style={{minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", color: "#666"}}>
+        Loading portal...
+      </div>
+    );
+  }
+
+  return (
+    <div className="app">
+      <nav className={`sidebar${sidebarCollapsed ? " collapsed" : ""}`}>
+        <div className="sidebar-logo">
+          <img src={ds360Icon} width={36} height={36} style={{borderRadius: 8}} alt="DS360" />
+          <div className="sidebar-logo-text">
+            <div className="sidebar-logo-sub" style={{fontSize: 12, fontWeight: 600}}>Dealership Portal</div>
+          </div>
+          <span className="sidebar-badge">Dealer</span>
+        </div>
+        <div className="sidebar-nav">
+    {anyVisible(["dealer.ops.dashboard"]) && <div className="nav-section">
+      <div className="nav-label">Overview</div>
+      {canSeePage("dealer.ops.dashboard") && <div className={`nav-item ${isNavActive("dealer.ops.dashboard") ? "active" : ""}`} onClick={() => showPage("dealer.ops.dashboard")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</div>}
+    </div>}
+    {anyVisible(["dealer.ops.claims", "dealer.ops.inventory", "dealer.ops.clients", "dealer.ops.sales_services", "dealer.ops.documents", "dealer.ops.messages", "dealer.ops.financing", "dealer.ops.parts_store", "dealer.ops.consignment", "dealer.ops.techflow", "dealer.ops.marketing"]) && <div className="nav-section">
+      <div className="nav-label">Operations</div>
+      {canSeePage("dealer.ops.claims") && <div className={`nav-item ${isNavActive("dealer.ops.claims") ? "active" : ""}`} onClick={() => showPage("dealer.ops.claims")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Claims</div>}
+      {canSeePage("dealer.ops.inventory") && <div className={`nav-item ${isNavActive("dealer.ops.inventory") ? "active" : ""}`} onClick={() => showPage("dealer.ops.inventory")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4a2 2 0 012 2v6a2 2 0 01-2 2h-4"/><circle cx="5.5" cy="18" r="2.5"/><circle cx="18.5" cy="18" r="2.5"/></svg>Units / Inventory</div>}
+      {canSeePage("dealer.ops.clients") && <div className={`nav-item ${isNavActive("dealer.ops.clients") ? "active" : ""}`} onClick={() => showPage("dealer.ops.clients")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Clients</div>}
+      {canSeePage("dealer.ops.sales_services") && <div className={`nav-item ${isNavActive("dealer.ops.sales_services") ? "active" : ""}`} onClick={() => showPage("dealer.ops.sales_services")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg>Sales &amp; Services</div>}
+      {canSeePage("dealer.ops.documents") && <div className={`nav-item ${isNavActive("dealer.ops.documents") ? "active" : ""}`} onClick={() => showPage("dealer.ops.documents")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Documents</div>}
+      {canSeePage("dealer.ops.messages") && <div className={`nav-item ${isNavActive("dealer.ops.messages") ? "active" : ""}`} onClick={() => showPage("dealer.ops.messages")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Messages</div>}
+      {canSeePage("dealer.ops.financing") && <div className={`nav-item ${isNavActive("dealer.ops.financing") ? "active" : ""}`} onClick={() => showPage("dealer.ops.financing")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>Financing</div>}
+      {canSeePage("dealer.ops.parts_store") && <div className={`nav-item ${isNavActive("dealer.ops.parts_store") ? "active" : ""}`} onClick={() => showPage("dealer.ops.parts_store")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>Parts Store</div>}
+      {canSeePage("dealer.ops.consignment") && <div className={`nav-item ${isNavActive("dealer.ops.consignment") ? "active" : ""}`} onClick={() => showPage("dealer.ops.consignment")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.83z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>Consignment</div>}
+      {canSeePage("dealer.ops.techflow") && <div className={`nav-item ${isNavActive("dealer.ops.techflow") ? "active" : ""}`} onClick={() => showPage("dealer.ops.techflow")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>TechFlow</div>}
+      {canSeePage("dealer.ops.marketing") && <div className={`nav-item ${isNavActive("dealer.ops.marketing") ? "active" : ""}`} onClick={() => showPage("dealer.ops.marketing")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M3 11l18-5v12L3 13"/><path d="M11.6 16.8a3 3 0 11-5.8-1.6"/></svg>Marketing</div>}
+    </div>}
+    {anyVisible(["dealer.marketplace.browse", "dealer.marketplace.my_bids", "dealer.marketplace.my_listings", "dealer.marketplace.public_showcase", "dealer.marketplace.escrow_payments"]) && <div className="nav-section">
+      <div className="nav-label">Marketplace</div>
+      {canSeePage("dealer.marketplace.browse") && <div className={`nav-item ${isNavActive("dealer.marketplace.browse") ? "active" : ""}`} onClick={() => showPage("dealer.marketplace.browse")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>Browse Listings</div>}
+      {canSeePage("dealer.marketplace.my_bids") && <div className={`nav-item ${isNavActive("dealer.marketplace.my_bids") ? "active" : ""}`} onClick={() => showPage("dealer.marketplace.my_bids")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>My Bids</div>}
+      {canSeePage("dealer.marketplace.my_listings") && <div className={`nav-item ${isNavActive("dealer.marketplace.my_listings") ? "active" : ""}`} onClick={() => showPage("dealer.marketplace.my_listings")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>My Listings (Sell)</div>}
+      {canSeePage("dealer.marketplace.public_showcase") && <div className={`nav-item ${isNavActive("dealer.marketplace.public_showcase") ? "active" : ""}`} onClick={() => showPage("dealer.marketplace.public_showcase")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>Public Showcase</div>}
+      {canSeePage("dealer.marketplace.escrow_payments") && <div className={`nav-item ${isNavActive("dealer.marketplace.escrow_payments") ? "active" : ""}`} onClick={() => showPage("dealer.marketplace.escrow_payments")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>Escrow &amp; My Payments</div>}
+    </div>}
+    {anyVisible(["dealer.consignor_guest.my_units", "dealer.consignor_guest.offers_bids", "dealer.consignor_guest.payouts"]) && <div className="nav-section">
+      <div className="nav-label">Consignor Guest</div>
+      {canSeePage("dealer.consignor_guest.my_units") && (!PAGE_META["dealer.consignor_guest.my_units"].scoped_role || PAGE_META["dealer.consignor_guest.my_units"].scoped_role === userRole) && <div className={`nav-item ${isNavActive("dealer.consignor_guest.my_units") ? "active" : ""}`} onClick={() => showPage("dealer.consignor_guest.my_units")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4a2 2 0 012 2v6a2 2 0 01-2 2h-4"/><circle cx="5.5" cy="18" r="2.5"/><circle cx="18.5" cy="18" r="2.5"/></svg>My Consigned Unit(s)</div>}
+      {canSeePage("dealer.consignor_guest.offers_bids") && (!PAGE_META["dealer.consignor_guest.offers_bids"].scoped_role || PAGE_META["dealer.consignor_guest.offers_bids"].scoped_role === userRole) && <div className={`nav-item ${isNavActive("dealer.consignor_guest.offers_bids") ? "active" : ""}`} onClick={() => showPage("dealer.consignor_guest.offers_bids")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4a2 2 0 012 2v6a2 2 0 01-2 2h-4"/><circle cx="5.5" cy="18" r="2.5"/><circle cx="18.5" cy="18" r="2.5"/></svg>Offers &amp; Bids on My Unit</div>}
+      {canSeePage("dealer.consignor_guest.payouts") && (!PAGE_META["dealer.consignor_guest.payouts"].scoped_role || PAGE_META["dealer.consignor_guest.payouts"].scoped_role === userRole) && <div className={`nav-item ${isNavActive("dealer.consignor_guest.payouts") ? "active" : ""}`} onClick={() => showPage("dealer.consignor_guest.payouts")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.83z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>My Payouts</div>}
+    </div>}
+    {anyVisible(["dealer.public_bidder_guest.my_bids", "dealer.public_bidder_guest.verification"]) && <div className="nav-section">
+      <div className="nav-label">Public Bidder Guest</div>
+      {canSeePage("dealer.public_bidder_guest.my_bids") && (!PAGE_META["dealer.public_bidder_guest.my_bids"].scoped_role || PAGE_META["dealer.public_bidder_guest.my_bids"].scoped_role === userRole) && <div className={`nav-item ${isNavActive("dealer.public_bidder_guest.my_bids") ? "active" : ""}`} onClick={() => showPage("dealer.public_bidder_guest.my_bids")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>My Bids (Public Bidder)</div>}
+      {canSeePage("dealer.public_bidder_guest.verification") && (!PAGE_META["dealer.public_bidder_guest.verification"].scoped_role || PAGE_META["dealer.public_bidder_guest.verification"].scoped_role === userRole) && <div className={`nav-item ${isNavActive("dealer.public_bidder_guest.verification") ? "active" : ""}`} onClick={() => showPage("dealer.public_bidder_guest.verification")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>Verification &amp; Payment</div>}
+    </div>}
+    {anyVisible(["dealer.account.my_subscription", "dealer.account.portal_settings"]) && <div className="nav-section">
+      <div className="nav-label">Account</div>
+      {canSeePage("dealer.account.my_subscription") && <div className={`nav-item ${isNavActive("dealer.account.my_subscription") ? "active" : ""}`} onClick={() => showPage("dealer.account.my_subscription")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>My Subscription</div>}
+      {canSeePage("dealer.account.portal_settings") && <div className={`nav-item ${isNavActive("dealer.account.portal_settings") ? "active" : ""}`} onClick={() => showPage("dealer.account.portal_settings")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>Portal Settings</div>}
+    </div>}
+        </div>
+        <div className="sidebar-footer">
+          <div className="user-info" onClick={() => showPage("dealer.ops.dashboard")} style={{cursor: "pointer"}}>
+            <div className="user-avatar">{userInitials}</div>
+            <div>
+              <div className="user-name">{userDisplayName}</div>
+              <div className="user-role">{roleLabel}</div>
+            </div>
+          </div>
+          <button
+            onClick={async () => { await logout(); window.location.href = "/"; }}
+            style={{width: "100%", marginTop: 8, padding: "7px 12px", background: "none", border: "1px solid #e0e0e0", borderRadius: 6, fontSize: 12, color: "#888", cursor: "pointer", fontFamily: "inherit", textAlign: "left", display: "flex", alignItems: "center", gap: 6}}
+          >
+            <svg width={13} height={13} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+              <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/>
+              <polyline points="16 17 21 12 16 7"/>
+              <line x1="21" y1="12" x2="9" y2="12"/>
+            </svg>
+            Sign Out
+          </button>
+        </div>
+      </nav>
+
+      <main className="main">
+        <div className="content">
+          {renderPage(currentPage, userRole)}
+        </div>
+      </main>
+    </div>
+  );
+}
+
+function renderPage(pageId: string, userRole: string) {
+  switch (pageId) {
+    case 'dealer.ops.dashboard': return <PageScaffold
+      pageId="dealer.ops.dashboard"
+      title="Dashboard"
+      section="Operations"
+      scopedRole=""
+      subItems={[{"sub_id": "dealer.ops.dashboard.active_claims_summary", "label": "Active claims summary", "internal_in": ["dealer.ops.claims"]}, {"sub_id": "dealer.ops.dashboard.recent_warranty_sales", "label": "Recent warranty sales", "internal_in": ["dealer.ops.sales_services"]}, {"sub_id": "dealer.ops.dashboard.notifications_from_ds360", "label": "Notifications from DS360", "internal_in": ["master.mgmt.communications"], "ext_in": [{"sys": "email", "act": "notif surface"}]}, {"sub_id": "dealer.ops.dashboard.revenue_snapshot", "label": "Revenue snapshot", "internal_in": ["dealer.ops.sales_services"], "notes": "Hidden from Dealer Staff"}]}
+    />;
+    case 'dealer.ops.claims': return <PageScaffold
+      pageId="dealer.ops.claims"
+      title="Claims"
+      section="Operations"
+      scopedRole=""
+      subItems={[{"sub_id": "dealer.ops.claims.all_claims", "label": "All Claims"}, {"sub_id": "dealer.ops.claims.snc_unit_lookup", "label": "Submit New Claim \u203a Unit lookup / VIN", "internal_in": ["dealer.ops.inventory"]}, {"sub_id": "dealer.ops.claims.snc_claim_type", "label": "Submit New Claim \u203a Claim type"}, {"sub_id": "dealer.ops.claims.snc_description", "label": "Submit New Claim \u203a Description & symptom"}, {"sub_id": "dealer.ops.claims.snc_photo_upload", "label": "Submit New Claim \u203a Photo upload", "ext_out": [{"sys": "anthropic", "act": "AI Doc Scanner extracts data"}]}, {"sub_id": "dealer.ops.claims.snc_submit", "label": "Submit New Claim \u203a Submit", "internal_out": ["master.ops.claim_queue", "client.main.claims (if linked)"], "ext_out": [{"sys": "email", "act": "submission confirmation"}]}, {"sub_id": "dealer.ops.claims.csv_status_timeline", "label": "Claim Status View \u203a Status timeline", "internal_in": ["master.ops.claim_queue"]}, {"sub_id": "dealer.ops.claims.csv_photos", "label": "Claim Status View \u203a Photos"}, {"sub_id": "dealer.ops.claims.csv_add_note", "label": "Claim Status View \u203a Add note", "internal_out": ["master.ops.work_by_dealer"]}, {"sub_id": "dealer.ops.claims.csv_parts_status", "label": "Claim Status View \u203a Parts status", "internal_in": ["master.ops.parts_management"]}, {"sub_id": "dealer.ops.claims.csv_thread", "label": "Claim Status View \u203a DS360 message thread", "internal_out": ["master.ops.work_by_dealer"], "ext_out": [{"sys": "email", "act": "message notif"}]}]}
+    />;
+    case 'dealer.ops.inventory': return <PageScaffold
+      pageId="dealer.ops.inventory"
+      title="Units / Inventory"
+      section="Operations"
+      scopedRole=""
+      subItems={[{"sub_id": "dealer.ops.inventory.all_units", "label": "All Units"}, {"sub_id": "dealer.ops.inventory.add_unit", "label": "Add Unit", "ext_out": [{"sys": "anthropic", "act": "Unit Tag Scanner (mobile PWA, optional)"}]}, {"sub_id": "dealer.ops.inventory.ud_specs", "label": "Unit Detail \u203a Specs (VIN, model, year)"}, {"sub_id": "dealer.ops.inventory.ud_client_linked", "label": "Unit Detail \u203a Client linked", "internal_in": ["dealer.ops.clients"], "internal_out": ["client.main.vehicle (when linked)"]}, {"sub_id": "dealer.ops.inventory.ud_warranties_services", "label": "Unit Detail \u203a Active warranties & services", "internal_in": ["dealer.ops.sales_services"]}, {"sub_id": "dealer.ops.inventory.ud_claims_history", "label": "Unit Detail \u203a Claims history", "internal_in": ["dealer.ops.claims"]}]}
+    />;
+    case 'dealer.ops.clients': return <PageScaffold
+      pageId="dealer.ops.clients"
+      title="Clients"
+      section="Operations"
+      scopedRole=""
+      subItems={[{"sub_id": "dealer.ops.clients.all_clients", "label": "All Clients"}, {"sub_id": "dealer.ops.clients.add_client", "label": "Add Client", "internal_out": ["client.* (provisions Client Portal)"], "ext_out": [{"sys": "email", "act": "client invite"}]}, {"sub_id": "dealer.ops.clients.cf_profile", "label": "Client File \u203a Profile & contact info", "internal_in": ["client.main.account"]}, {"sub_id": "dealer.ops.clients.cf_vehicles", "label": "Client File \u203a Vehicle(s) owned", "internal_in": ["dealer.ops.inventory"]}, {"sub_id": "dealer.ops.clients.cf_warranties", "label": "Client File \u203a Active warranties", "internal_in": ["dealer.ops.sales_services"]}, {"sub_id": "dealer.ops.clients.cf_services", "label": "Client File \u203a Active services", "internal_in": ["dealer.ops.sales_services"]}, {"sub_id": "dealer.ops.clients.cf_claim_history", "label": "Client File \u203a Claim history", "internal_in": ["dealer.ops.claims"]}, {"sub_id": "dealer.ops.clients.cf_fi_products", "label": "Client File \u203a F&I products sold", "internal_in": ["dealer.ops.sales_services"]}, {"sub_id": "dealer.ops.clients.cf_fi_presenter_link", "label": "Client File \u203a AI F&I presenter link", "internal_out": ["client.main.fi_offers"], "ext_out": [{"sys": "tavus", "act": "initialize avatar session"}, {"sys": "anthropic", "act": "configure F&I AI brain context"}, {"sys": "email", "act": "F&I session invite"}]}]}
+    />;
+    case 'dealer.ops.sales_services': return <PageScaffold
+      pageId="dealer.ops.sales_services"
+      title="Sales & Services"
+      section="Operations"
+      scopedRole=""
+      subItems={[{"sub_id": "dealer.ops.sales_services.ns_select_client_unit", "label": "New Sale \u203a Select client & unit", "internal_in": ["dealer.ops.clients", "dealer.ops.inventory"]}, {"sub_id": "dealer.ops.sales_services.ns_choose_product", "label": "New Sale \u203a Choose product", "internal_in": ["master.mgmt.catalog"]}, {"sub_id": "dealer.ops.sales_services.ns_terms_pricing", "label": "New Sale \u203a Set terms & confirm pricing", "internal_in": ["master.mgmt.dealer_accounts (custom pricing)"]}, {"sub_id": "dealer.ops.sales_services.ns_generate_contract", "label": "New Sale \u203a Generate contract", "internal_out": ["client.main.warranties", "client.main.services", "client.main.documents", "master.mgmt.revenue_billing (commission)"], "ext_out": [{"sys": "email", "act": "deliver contract"}]}, {"sub_id": "dealer.ops.sales_services.warranty_plans", "label": "Warranty Plans", "internal_in": ["master.mgmt.catalog"]}, {"sub_id": "dealer.ops.sales_services.gap", "label": "GAP Coverage", "internal_in": ["master.mgmt.catalog"]}, {"sub_id": "dealer.ops.sales_services.roadside", "label": "Roadside Assistance", "internal_in": ["master.mgmt.catalog"]}, {"sub_id": "dealer.ops.sales_services.extended_warranty", "label": "Extended Warranty", "internal_in": ["master.mgmt.catalog"]}, {"sub_id": "dealer.ops.sales_services.wheel_tire", "label": "Wheel & Tire", "internal_in": ["master.mgmt.catalog"]}, {"sub_id": "dealer.ops.sales_services.other_services", "label": "Other Services", "internal_in": ["master.mgmt.catalog"]}, {"sub_id": "dealer.ops.sales_services.commission_tracker", "label": "Commission Tracker", "notes": "Hidden from Dealer Staff"}]}
+    />;
+    case 'dealer.ops.documents': return <PageScaffold
+      pageId="dealer.ops.documents"
+      title="Documents"
+      section="Operations"
+      scopedRole=""
+      subItems={[{"sub_id": "dealer.ops.documents.contracts", "label": "Contracts", "internal_in": ["dealer.ops.sales_services"]}, {"sub_id": "dealer.ops.documents.invoices_from_ds360", "label": "Invoices from DS360", "internal_in": ["master.mgmt.revenue_billing"], "notes": "Hidden from Dealer Staff"}, {"sub_id": "dealer.ops.documents.my_reports", "label": "My Reports"}]}
+    />;
+    case 'dealer.ops.messages': return <PageScaffold
+      pageId="dealer.ops.messages"
+      title="Messages"
+      section="Operations"
+      scopedRole=""
+      subItems={[{"sub_id": "dealer.ops.messages.inbox_from_ds360", "label": "Inbox (from DS360)", "internal_in": ["master.mgmt.communications"], "ext_in": [{"sys": "email", "act": "notif surface"}]}, {"sub_id": "dealer.ops.messages.claim_threads", "label": "Claim threads", "internal_in": ["master.ops.work_by_dealer"], "internal_out": ["master.ops.work_by_dealer (replies)"], "ext_out": [{"sys": "email", "act": "message notif"}]}, {"sub_id": "dealer.ops.messages.product_notifications", "label": "Product notifications", "internal_in": ["master.mgmt.catalog"]}]}
+    />;
+    case 'dealer.account.my_subscription': return <PageScaffold
+      pageId="dealer.account.my_subscription"
+      title="My Subscription"
+      section="Account"
+      scopedRole=""
+      subItems={[{"sub_id": "dealer.account.my_subscription.current_plan_billing", "label": "Current plan & billing", "internal_out": ["master.mgmt.revenue_billing"], "ext_in": [{"sys": "stripe", "act": "Customer Portal billing data"}], "ext_out": [{"sys": "stripe", "act": "update payment method / change subscription"}, {"sys": "email", "act": "billing + renewal reminders"}]}, {"sub_id": "dealer.account.my_subscription.invoices_from_ds360", "label": "Invoices from DS360", "ext_in": [{"sys": "stripe", "act": "invoice list"}]}]}
+    />;
+    case 'dealer.account.portal_settings': return <PageScaffold
+      pageId="dealer.account.portal_settings"
+      title="Portal Settings"
+      section="Account"
+      scopedRole=""
+      subItems={[{"sub_id": "dealer.account.portal_settings.tab_branding", "label": "Branding tab (logo, colors, white-label)", "internal_out": ["client.* (branding)"]}, {"sub_id": "dealer.account.portal_settings.tab_domain", "label": "Domain tab (CNAME)", "ext_out": [{"sys": "cloudflare", "act": "create CNAME + auto SSL"}]}, {"sub_id": "dealer.account.portal_settings.tab_staff", "label": "Staff tab (manage dealer_staff accounts)", "internal_out": ["dealer.* (provisions Dealer Staff)"], "ext_out": [{"sys": "email", "act": "Dealer Staff invite"}]}, {"sub_id": "dealer.account.portal_settings.tab_technicians", "label": "Technicians tab (manage technician accounts)", "internal_out": ["dealer.ops.techflow (tech roster)"], "ext_out": [{"sys": "email", "act": "Technician invite"}]}, {"sub_id": "dealer.account.portal_settings.tab_partners", "label": "Partners tab (public_bidders + consignors scoped access)", "internal_out": ["dealer.ops.consignment (consignor link)", "dealer.marketplace.* (public_bidder scope)"], "ext_out": [{"sys": "email", "act": "partner access invite"}, {"sys": "stripe", "act": "Stripe Connect init (consignors)"}]}, {"sub_id": "dealer.account.portal_settings.tab_notifications", "label": "Notifications tab", "ext_out": [{"sys": "email", "act": "preference confirmation"}]}]}
+    />;
+    case 'dealer.ops.financing': return <PageScaffold
+      pageId="dealer.ops.financing"
+      title="Financing"
+      section="Operations"
+      scopedRole=""
+      subItems={[{"sub_id": "dealer.ops.financing.na_select_client_unit", "label": "New Application \u203a Select client & unit", "internal_in": ["dealer.ops.clients", "dealer.ops.inventory"]}, {"sub_id": "dealer.ops.financing.na_credit_info", "label": "New Application \u203a Credit info capture"}, {"sub_id": "dealer.ops.financing.na_select_lenders", "label": "New Application \u203a Select lenders to submit to", "internal_in": ["master.mgmt.financing_partners"]}, {"sub_id": "dealer.ops.financing.na_submit", "label": "New Application \u203a Submit", "internal_out": ["master.ops.financing_applications"], "ext_out": [{"sys": "lender_apis", "act": "submit application to selected lenders"}, {"sys": "email", "act": "application submission confirmation"}]}, {"sub_id": "dealer.ops.financing.as_timeline", "label": "Application Status \u203a Timeline", "internal_in": ["master.ops.financing_applications"]}, {"sub_id": "dealer.ops.financing.as_lender_responses", "label": "Application Status \u203a Lender responses", "ext_in": [{"sys": "lender_apis", "act": "approval/decline/counter responses"}]}, {"sub_id": "dealer.ops.financing.as_rate_comparison", "label": "Application Status \u203a Rate comparison"}, {"sub_id": "dealer.ops.financing.as_select_finalize", "label": "Application Status \u203a Select lender & finalize", "internal_out": ["client.main.financing (loan documents)", "client.main.documents"], "ext_out": [{"sys": "lender_apis", "act": "commit acceptance"}]}, {"sub_id": "dealer.ops.financing.funded_deals", "label": "Funded Deals", "internal_out": ["master.mgmt.revenue_billing (financing commission)"]}, {"sub_id": "dealer.ops.financing.payment_tracking", "label": "Client payment tracking (view)", "ext_in": [{"sys": "lender_apis", "act": "payment status"}]}]}
+    />;
+    case 'dealer.ops.parts_store': return <PageScaffold
+      pageId="dealer.ops.parts_store"
+      title="Parts Store"
+      section="Operations"
+      scopedRole=""
+      subItems={[{"sub_id": "dealer.ops.parts_store.store_settings", "label": "Store Settings (name, visibility)"}, {"sub_id": "dealer.ops.parts_store.my_inventory", "label": "My Inventory (from DS360 catalog)", "internal_in": ["master.mgmt.parts_catalog"]}, {"sub_id": "dealer.ops.parts_store.pricing_markup", "label": "Pricing & Markup"}, {"sub_id": "dealer.ops.parts_store.client_orders_incoming", "label": "Client Orders (incoming)", "internal_in": ["client.main.parts_store"]}, {"sub_id": "dealer.ops.parts_store.fulfillment_queue", "label": "Fulfillment queue", "internal_out": ["master.ops.parts_orders"], "ext_out": [{"sys": "parts_suppliers", "act": "drop-ship order to supplier"}, {"sys": "email", "act": "fulfillment status to client"}]}, {"sub_id": "dealer.ops.parts_store.shipped_delivered", "label": "Shipped / Delivered tracking", "ext_in": [{"sys": "parts_suppliers", "act": "tracking numbers"}]}, {"sub_id": "dealer.ops.parts_store.returns_exchanges", "label": "Returns & exchanges", "ext_out": [{"sys": "stripe", "act": "refund processing"}]}, {"sub_id": "dealer.ops.parts_store.parts_revenue_tracker", "label": "Parts revenue tracker", "internal_out": ["master.mgmt.revenue_billing"], "notes": "Hidden from Dealer Staff"}]}
+    />;
+    case 'dealer.ops.consignment': return <PageScaffold
+      pageId="dealer.ops.consignment"
+      title="Consignment"
+      section="Operations"
+      scopedRole=""
+      subItems={[{"sub_id": "dealer.ops.consignment.all_consignors", "label": "All Consignors"}, {"sub_id": "dealer.ops.consignment.add_consignor", "label": "Add Consignor", "ext_out": [{"sys": "stripe", "act": "create Stripe Connect account for payout"}, {"sys": "email", "act": "consignor welcome + onboarding"}]}, {"sub_id": "dealer.ops.consignment.cf_contact_info", "label": "Consignor File \u203a Contact info"}, {"sub_id": "dealer.ops.consignment.cf_agreement", "label": "Consignor File \u203a Agreement (% split, duration)"}, {"sub_id": "dealer.ops.consignment.cf_payout_history", "label": "Consignor File \u203a Payout history", "ext_in": [{"sys": "stripe", "act": "Connect transfer history"}]}, {"sub_id": "dealer.ops.consignment.cf_banking_info", "label": "Consignor File \u203a Banking info", "ext_in": [{"sys": "stripe", "act": "Connect onboarding status"}], "notes": "Sensitive; access-controlled"}, {"sub_id": "dealer.ops.consignment.consigned_units", "label": "Consigned Units (flagged inventory)", "internal_in": ["dealer.ops.inventory"]}, {"sub_id": "dealer.ops.consignment.active_listings", "label": "Active listings", "internal_out": ["marketplace.main.sell (if listed to marketplace)"]}, {"sub_id": "dealer.ops.consignment.sold_consignments", "label": "Sold consignments", "internal_out": ["master.mgmt.consignment_oversight"]}, {"sub_id": "dealer.ops.consignment.payouts_pending", "label": "Payouts pending", "ext_out": [{"sys": "stripe", "act": "Stripe Connect transfer to consignor"}, {"sys": "email", "act": "payout sent notification"}]}]}
+    />;
+    case 'dealer.ops.techflow': return <PageScaffold
+      pageId="dealer.ops.techflow"
+      title="TechFlow"
+      section="Operations"
+      scopedRole=""
+      subItems={[{"sub_id": "dealer.ops.techflow.technicians", "label": "Technicians (manage tech staff)", "ext_out": [{"sys": "email", "act": "tech invite email"}]}, {"sub_id": "dealer.ops.techflow.wo_incoming_from_claims", "label": "Work Orders \u203a Incoming from Claims", "internal_in": ["master.ops.claim_queue (approved warranty)"], "notes": "Auto-generated from approved warranty claim"}, {"sub_id": "dealer.ops.techflow.wo_scheduled", "label": "Work Orders \u203a Scheduled"}, {"sub_id": "dealer.ops.techflow.wo_in_progress", "label": "Work Orders \u203a In Progress"}, {"sub_id": "dealer.ops.techflow.wo_completed", "label": "Work Orders \u203a Completed", "internal_out": ["master.ops.work_by_dealer (labor hours \u2192 Claim Invoice)"]}, {"sub_id": "dealer.ops.techflow.wo_invoiced", "label": "Work Orders \u203a Invoiced", "ext_out": [{"sys": "stripe", "act": "labor invoice (if billable)"}]}, {"sub_id": "dealer.ops.techflow.dispatch_board", "label": "Dispatch board (map + route)", "ext_in": [{"sys": "maps_routing", "act": "tech locations + traffic"}], "ext_out": [{"sys": "maps_routing", "act": "calculate route to service location"}]}, {"sub_id": "dealer.ops.techflow.labor_hours_tracking", "label": "Labor Hours (syncs to claim invoice)", "internal_out": ["master.ops.work_by_dealer (labor sync)"]}, {"sub_id": "dealer.ops.techflow.mobile_service_scheduling", "label": "Mobile Service Scheduling", "ext_out": [{"sys": "maps_routing", "act": "route optimization + ETA"}, {"sys": "email", "act": "appointment confirmation to client"}]}, {"sub_id": "dealer.ops.techflow.client_service_requests", "label": "Client service requests (inbox)", "internal_in": ["client.main.service_appointments"]}]}
+    />;
+    case 'dealer.ops.marketing': return <PageScaffold
+      pageId="dealer.ops.marketing"
+      title="Marketing"
+      section="Operations"
+      scopedRole=""
+      subItems={[{"sub_id": "dealer.ops.marketing.c_email_campaigns", "label": "Campaigns \u203a Email campaigns", "internal_in": ["master.mgmt.campaign_templates", "dealer.ops.clients (customer list)"], "ext_out": [{"sys": "email", "act": "send marketing email to client list"}]}, {"sub_id": "dealer.ops.marketing.c_campaign_library", "label": "Campaigns \u203a Library (saved)"}, {"sub_id": "dealer.ops.marketing.c_analytics", "label": "Campaigns \u203a Analytics (opens, clicks, conversions)", "ext_in": [{"sys": "email", "act": "delivery + engagement events"}]}, {"sub_id": "dealer.ops.marketing.lc_forms", "label": "Lead Capture \u203a Forms (create/manage)", "internal_in": ["master.mgmt.campaign_templates"]}, {"sub_id": "dealer.ops.marketing.lc_leads_inbox", "label": "Lead Capture \u203a Leads inbox", "internal_out": ["dealer.ops.clients (convert lead \u2192 client)"], "ext_in": [{"sys": "email", "act": "form submission via email webhook"}]}, {"sub_id": "dealer.ops.marketing.landing_pages", "label": "Landing Pages", "internal_in": ["master.mgmt.campaign_templates"]}, {"sub_id": "dealer.ops.marketing.seo_pages", "label": "SEO pages (dealer directory)", "internal_in": ["master.mgmt.campaign_templates"]}, {"sub_id": "dealer.ops.marketing.customer_segmentation", "label": "Customer segmentation", "internal_in": ["dealer.ops.clients"]}]}
+    />;
+    case 'dealer.marketplace.browse': return <PageScaffold
+      pageId="dealer.marketplace.browse"
+      title="Browse Listings"
+      section="Marketplace"
+      scopedRole=""
+      subItems={[{"sub_id": "dealer.marketplace.browse.all_active", "label": "All Active Auctions", "internal_in": ["marketplace.main.sell (all listings)"]}, {"sub_id": "dealer.marketplace.browse.search_filter", "label": "Search & Filter (manufacturer, year, price)"}, {"sub_id": "dealer.marketplace.browse.listing_detail", "label": "Listing Detail (specs, photos, current bid, history)"}, {"sub_id": "dealer.marketplace.browse.place_bid", "label": "Place bid", "internal_out": ["dealer.marketplace.my_bids", "marketplace.main.my_bids"], "ext_out": [{"sys": "stripe", "act": "$500 escrow hold"}, {"sys": "email", "act": "bid confirmation"}]}, {"sub_id": "dealer.marketplace.browse.watch_listing", "label": "Watch listing"}]}
+    />;
+    case 'dealer.marketplace.my_bids': return <PageScaffold
+      pageId="dealer.marketplace.my_bids"
+      title="My Bids"
+      section="Marketplace"
+      scopedRole=""
+      subItems={[{"sub_id": "dealer.marketplace.my_bids.active_bids", "label": "Active Bids"}, {"sub_id": "dealer.marketplace.my_bids.won_units", "label": "Won Units", "internal_out": ["master.mgmt.revenue_billing ($250 commission)", "dealer.ops.inventory (acquire into inventory)"], "ext_out": [{"sys": "stripe", "act": "escrow release to seller + commission capture"}, {"sys": "email", "act": "Won notification"}]}, {"sub_id": "dealer.marketplace.my_bids.lost_bids", "label": "Lost Bids"}, {"sub_id": "dealer.marketplace.my_bids.watchlist", "label": "Watchlist"}]}
+    />;
+    case 'dealer.marketplace.my_listings': return <PageScaffold
+      pageId="dealer.marketplace.my_listings"
+      title="My Listings (Sell)"
+      section="Marketplace"
+      scopedRole=""
+      subItems={[{"sub_id": "dealer.marketplace.my_listings.create_listing", "label": "Create New Listing", "internal_in": ["dealer.ops.inventory", "dealer.ops.consignment (consigned units)"], "internal_out": ["marketplace.main.browse", "dealer.marketplace.browse"], "ext_out": [{"sys": "email", "act": "listing-created confirmation"}]}, {"sub_id": "dealer.marketplace.my_listings.active_listings", "label": "Active listings"}, {"sub_id": "dealer.marketplace.my_listings.sold", "label": "Sold", "internal_out": ["dealer.ops.consignment (payout trigger if consigned)"], "ext_out": [{"sys": "email", "act": "sold notification"}]}, {"sub_id": "dealer.marketplace.my_listings.expired", "label": "Expired"}]}
+    />;
+    case 'dealer.marketplace.public_showcase': return <PageScaffold
+      pageId="dealer.marketplace.public_showcase"
+      title="Public Showcase"
+      section="Marketplace"
+      scopedRole=""
+      subItems={[{"sub_id": "dealer.marketplace.public_showcase.monthly_auctions", "label": "Monthly 24-hr public auctions"}, {"sub_id": "dealer.marketplace.public_showcase.my_showcase_listings", "label": "My Showcase listings"}, {"sub_id": "dealer.marketplace.public_showcase.buyer_inquiries", "label": "Buyer inquiries", "ext_out": [{"sys": "email", "act": "inquiry response"}]}]}
+    />;
+    case 'dealer.marketplace.escrow_payments': return <PageScaffold
+      pageId="dealer.marketplace.escrow_payments"
+      title="Escrow & My Payments"
+      section="Marketplace"
+      scopedRole=""
+      subItems={[{"sub_id": "dealer.marketplace.escrow_payments.my_escrow_holds", "label": "My active escrow holds", "ext_in": [{"sys": "stripe", "act": "hold state for this dealer"}]}, {"sub_id": "dealer.marketplace.escrow_payments.payment_history", "label": "Payment history", "ext_in": [{"sys": "stripe", "act": "payment history"}]}, {"sub_id": "dealer.marketplace.escrow_payments.pending_releases", "label": "Pending releases"}, {"sub_id": "dealer.marketplace.escrow_payments.commission_paid", "label": "DS360 commission paid ($250 per win)"}]}
+    />;
+    case 'dealer.consignor_guest.my_units': return <PageScaffold
+      pageId="dealer.consignor_guest.my_units"
+      title="My Consigned Unit(s)"
+      section="Consignor Guest"
+      scopedRole="consignor"
+      subItems={[{"sub_id": "dealer.consignor_guest.my_units.listing_status", "label": "Listing status (own units only)", "internal_in": ["dealer.ops.consignment", "dealer.marketplace.my_listings"]}, {"sub_id": "dealer.consignor_guest.my_units.photos_specs", "label": "Unit photos & specs (read-only)"}, {"sub_id": "dealer.consignor_guest.my_units.price_negotiation_log", "label": "Price negotiation log"}, {"sub_id": "dealer.consignor_guest.my_units.notes_from_dealer", "label": "Notes from dealer"}]}
+    />;
+    case 'dealer.consignor_guest.offers_bids': return <PageScaffold
+      pageId="dealer.consignor_guest.offers_bids"
+      title="Offers & Bids on My Unit"
+      section="Consignor Guest"
+      scopedRole="consignor"
+      subItems={[{"sub_id": "dealer.consignor_guest.offers_bids.current_offers", "label": "Current offers", "internal_in": ["dealer.marketplace.my_bids"]}, {"sub_id": "dealer.consignor_guest.offers_bids.bid_history", "label": "Bid history"}, {"sub_id": "dealer.consignor_guest.offers_bids.accept_decline_override", "label": "Accept / decline (dealer-mediated)", "notes": "Consignor provides input; dealer executes"}]}
+    />;
+    case 'dealer.consignor_guest.payouts': return <PageScaffold
+      pageId="dealer.consignor_guest.payouts"
+      title="My Payouts"
+      section="Consignor Guest"
+      scopedRole="consignor"
+      subItems={[{"sub_id": "dealer.consignor_guest.payouts.pending_payouts", "label": "Pending payouts", "internal_in": ["dealer.ops.consignment"]}, {"sub_id": "dealer.consignor_guest.payouts.completed_payouts", "label": "Completed payouts", "ext_in": [{"sys": "stripe", "act": "Stripe Connect transfer history"}]}, {"sub_id": "dealer.consignor_guest.payouts.banking_verification", "label": "Banking verification status", "ext_in": [{"sys": "stripe", "act": "Connect account status"}]}, {"sub_id": "dealer.consignor_guest.payouts.tax_documents", "label": "Tax documents (1099 if applicable)", "ext_in": [{"sys": "stripe", "act": "1099 form retrieval"}]}]}
+    />;
+    case 'dealer.public_bidder_guest.my_bids': return <PageScaffold
+      pageId="dealer.public_bidder_guest.my_bids"
+      title="My Bids (Public Bidder)"
+      section="Public Bidder Guest"
+      scopedRole="public_bidder"
+      subItems={[{"sub_id": "dealer.public_bidder_guest.my_bids.active_bids", "label": "Active bids (own)"}, {"sub_id": "dealer.public_bidder_guest.my_bids.won_units", "label": "Won units (own)", "ext_out": [{"sys": "stripe", "act": "escrow release on won"}]}, {"sub_id": "dealer.public_bidder_guest.my_bids.lost_bids", "label": "Lost bids (own)"}, {"sub_id": "dealer.public_bidder_guest.my_bids.escrow_status", "label": "Escrow status", "ext_in": [{"sys": "stripe", "act": "own escrow state"}]}]}
+    />;
+    case 'dealer.public_bidder_guest.verification': return <PageScaffold
+      pageId="dealer.public_bidder_guest.verification"
+      title="Verification & Payment"
+      section="Public Bidder Guest"
+      scopedRole="public_bidder"
+      subItems={[{"sub_id": "dealer.public_bidder_guest.verification.id_verification", "label": "Identity verification", "ext_out": [{"sys": "stripe", "act": "identity verification"}]}, {"sub_id": "dealer.public_bidder_guest.verification.payment_methods", "label": "Payment methods (for escrow)", "ext_in": [{"sys": "stripe", "act": "payment method list"}], "ext_out": [{"sys": "stripe", "act": "add/remove payment method"}]}, {"sub_id": "dealer.public_bidder_guest.verification.buyer_agreement", "label": "Buyer agreement (terms acceptance)"}]}
+    />;
+    default: return <div className="pn"><p style={{padding: 24}}>Page not found: <code>{pageId}</code></p></div>;
+  }
+}
+
+// ============================================================================
+// PageScaffold — generic page renderer showing schema metadata.
+// This is the v6 development scaffolding. Real page components will replace
+// these as they're built; each scaffold shows exactly what the page should
+// read from, write to, and integrate with externally.
+// ============================================================================
+
+interface SubItem {
+  sub_id: string;
+  label: string;
+  internal_in?: string[];
+  internal_out?: string[];
+  ext_in?: Array<{ sys: string; act: string }>;
+  ext_out?: Array<{ sys: string; act: string }>;
+  notes?: string;
+}
+
+interface PageScaffoldProps {
+  pageId: string;
+  title: string;
+  section: string;
+  scopedRole: string;
+  subItems: SubItem[];
+}
+
+const EXT_SYS_COLORS: Record<string, string> = {
+  stripe: "#635bff", email: "#1e88e5", anthropic: "#cc785c", tavus: "#9b59b6",
+  cloudflare: "#f48120", mfr_portals: "#16a34a", parts_suppliers: "#8b5a2b",
+  lender_apis: "#0891b2", maps_routing: "#dc2626",
+};
+
+function PageScaffold({ pageId, title, section, scopedRole, subItems }: PageScaffoldProps) {
+  return (
+    <div className="page-scaffold">
+      <div className="ph">
+        <div>
+          <div style={{fontSize: 11, color: "#888", textTransform: "uppercase", letterSpacing: "0.05em", fontWeight: 600}}>{section}</div>
+          <h1 style={{margin: "4px 0 0", fontSize: 22, fontWeight: 600}}>{title}</h1>
+          {scopedRole && <div style={{fontSize: 11, color: "#b8860b", marginTop: 4}}>Scoped to role: <code>{scopedRole}</code></div>}
+        </div>
+        <div style={{fontSize: 10, color: "#aaa", fontFamily: "monospace"}}>{pageId}</div>
+      </div>
+
+      <div className="pn" style={{marginTop: 16, padding: 16, background: "#fff9e6", borderLeft: "3px solid #b8860b", fontSize: 12, color: "#8b6914"}}>
+        <strong>Development scaffold.</strong> This page is rendered from the v6 schema. Sub-items below show the intended contents + data connections.
+        Real page content will replace this scaffold as each module is built.
+      </div>
+
+      <div style={{marginTop: 20, display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(420px, 1fr))", gap: 12}}>
+        {subItems.map((si, idx) => (
+          <div key={si.sub_id} className="pn" style={{padding: 14}}>
+            <div style={{fontSize: 13, fontWeight: 600, color: "#1a1f2e", marginBottom: 8}}>{si.label}</div>
+            <div style={{fontSize: 10, color: "#999", fontFamily: "monospace", marginBottom: 10}}>{si.sub_id}</div>
+
+            {si.internal_in && si.internal_in.length > 0 && (
+              <div style={{marginBottom: 8}}>
+                <div style={{fontSize: 9, textTransform: "uppercase", letterSpacing: "0.05em", color: "#777", fontWeight: 600, marginBottom: 2}}>Internal reads</div>
+                {si.internal_in.map((r, i) => <div key={i} style={{fontSize: 11, color: "#555"}}>← {r}</div>)}
+              </div>
+            )}
+            {si.internal_out && si.internal_out.length > 0 && (
+              <div style={{marginBottom: 8}}>
+                <div style={{fontSize: 9, textTransform: "uppercase", letterSpacing: "0.05em", color: "#777", fontWeight: 600, marginBottom: 2}}>Internal writes</div>
+                {si.internal_out.map((w, i) => <div key={i} style={{fontSize: 11, color: "#555"}}>→ {w}</div>)}
+              </div>
+            )}
+            {si.ext_in && si.ext_in.length > 0 && (
+              <div style={{marginBottom: 8}}>
+                <div style={{fontSize: 9, textTransform: "uppercase", letterSpacing: "0.05em", color: "#b8860b", fontWeight: 600, marginBottom: 2}}>External inbound</div>
+                {si.ext_in.map((e, i) => (
+                  <div key={i} style={{fontSize: 11}}>
+                    <span style={{display: "inline-block", padding: "1px 8px", borderRadius: 10, background: EXT_SYS_COLORS[e.sys] || "#888", color: "white", fontSize: 9, fontWeight: 600, marginRight: 4}}>{e.sys}</span>
+                    <span style={{color: "#8b6914"}}>{e.act}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+            {si.ext_out && si.ext_out.length > 0 && (
+              <div style={{marginBottom: 8}}>
+                <div style={{fontSize: 9, textTransform: "uppercase", letterSpacing: "0.05em", color: "#b8860b", fontWeight: 600, marginBottom: 2}}>External outbound</div>
+                {si.ext_out.map((e, i) => (
+                  <div key={i} style={{fontSize: 11}}>
+                    <span style={{display: "inline-block", padding: "1px 8px", borderRadius: 10, background: EXT_SYS_COLORS[e.sys] || "#888", color: "white", fontSize: 9, fontWeight: 600, marginRight: 4}}>{e.sys}</span>
+                    <span style={{color: "#8b6914"}}>{e.act}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+            {si.notes && (
+              <div style={{marginTop: 8, padding: 6, background: "#f5f6f8", borderRadius: 4, fontSize: 10, color: "#666", fontStyle: "italic"}}>{si.notes}</div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
