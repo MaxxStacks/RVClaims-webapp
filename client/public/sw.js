@@ -1,7 +1,7 @@
 // public/sw.js — Service Worker for Dealer Suite 360 PWA
 // Cache-first for assets, network-first for API calls
 
-const CACHE_NAME = "dealersuite360-v2.3.0";
+const CACHE_NAME = "dealersuite360-v2.4.0";
 const STATIC_ASSETS = [
   "/",
   "/dealer",
