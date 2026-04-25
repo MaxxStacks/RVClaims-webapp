@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import ds360Icon from "@assets/ds360_favicon.png";
 import { useUser, useClerk } from "@clerk/clerk-react";
 import { useApiFetch } from "@/lib/api";
+import NotificationBell from "@/components/NotificationBell";
 
 // ============================================================================
 // V6 SCHEMA METADATA — role-scoping and RBAC rules baked in
@@ -138,6 +139,9 @@ export default function BidderPortalV6() {
     </div>}
         </div>
         <div className="sidebar-footer">
+          <div style={{padding: "8px 12px", borderTop: "1px solid #eee"}}>
+            <NotificationBell />
+          </div>
           <div className="user-info" onClick={() => showPage("bidder.main.dashboard")} style={{cursor: "pointer"}}>
             <div className="user-avatar">{userInitials}</div>
             <div>

@@ -6,6 +6,8 @@ import { useState, useEffect } from "react";
 import ds360Icon from "@assets/ds360_favicon.png";
 import { useUser, useClerk } from "@clerk/clerk-react";
 import { useApiFetch } from "@/lib/api";
+import NotificationBell from "@/components/NotificationBell";
+import ClaimQueuePage from "@/components/operator/ClaimQueuePage";
 
 // ============================================================================
 // V6 SCHEMA METADATA — role-scoping and RBAC rules baked in
@@ -158,6 +160,9 @@ export default function OperatorPortalV6() {
     </div>}
         </div>
         <div className="sidebar-footer">
+          <div style={{padding: "8px 12px", borderTop: "1px solid #eee"}}>
+            <NotificationBell />
+          </div>
           <div className="user-info" onClick={() => showPage("master.mgmt.dashboard")} style={{cursor: "pointer"}}>
             <div className="user-avatar">{userInitials}</div>
             <div>
@@ -253,13 +258,7 @@ function renderPage(pageId: string, userRole: string) {
       scopedRole=""
       subItems={[{"sub_id": "master.ops.dashboard.claim_queue_overview", "label": "Claim queue overview", "internal_in": ["master.ops.claim_queue"]}, {"sub_id": "master.ops.dashboard.new_submissions", "label": "New submissions", "internal_in": ["dealer.ops.claims (all)"]}, {"sub_id": "master.ops.dashboard.notifications_feed", "label": "Notifications feed"}, {"sub_id": "master.ops.dashboard.parts_awaiting_receipt", "label": "Parts awaiting receipt", "internal_in": ["master.ops.parts_management"]}]}
     />;
-    case 'master.ops.claim_queue': return <PageScaffold
-      pageId="master.ops.claim_queue"
-      title="Claim Queue"
-      section="Operations"
-      scopedRole=""
-      subItems={[{"sub_id": "master.ops.claim_queue.new_unassigned", "label": "New / Unassigned"}, {"sub_id": "master.ops.claim_queue.in_review", "label": "In Review"}, {"sub_id": "master.ops.claim_queue.submitted_to_mfr", "label": "Submitted to Manufacturer", "ext_out": [{"sys": "email", "act": "status notif \u2192 dealer + client"}]}, {"sub_id": "master.ops.claim_queue.awaiting_parts", "label": "Awaiting Parts", "ext_out": [{"sys": "email", "act": "status notif"}]}, {"sub_id": "master.ops.claim_queue.awaiting_payment", "label": "Awaiting Payment", "ext_out": [{"sys": "email", "act": "status notif"}]}, {"sub_id": "master.ops.claim_queue.completed", "label": "Completed", "ext_out": [{"sys": "email", "act": "completion notif"}]}]}
-    />;
+    case 'master.ops.claim_queue': return <ClaimQueuePage />;
     case 'master.ops.work_by_dealer': return <PageScaffold
       pageId="master.ops.work_by_dealer"
       title="Work by Dealer"

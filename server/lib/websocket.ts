@@ -3,10 +3,12 @@
 
 import { WebSocketServer, WebSocket } from "ws";
 import type { Server } from "http";
-import { verifyToken } from "./auth";
-import { TOKEN_TYPES } from "@shared/constants";
+import { verifyToken as clerkVerifyToken } from "@clerk/backend";
 import type { UserRole } from "@shared/constants";
 import { initAuctionWebSocket as registerAuctionEvents } from '../websocket/auctions';
+import { db } from "../db";
+import { users } from "@shared/schema";
+import { eq } from "drizzle-orm";
 
 interface AuthenticatedSocket extends WebSocket {
   userId?: string;
@@ -41,37 +43,46 @@ export function initWebSocket(server: Server): WebSocketServer {
       return;
     }
 
-    // Verify token
-    const payload = await verifyToken(token);
-    if (!payload || payload.type !== TOKEN_TYPES.ACCESS) {
+    // Verify Clerk JWT and look up user record
+    let clerkUserId: string;
+    try {
+      const verified = await clerkVerifyToken(token, { secretKey: process.env.CLERK_SECRET_KEY! });
+      clerkUserId = verified.sub;
+    } catch {
       ws.close(4001, "Invalid token");
       return;
     }
 
+    const [user] = await db.select().from(users).where(eq(users.clerkUserId, clerkUserId)).limit(1);
+    if (!user || !user.isActive) {
+      ws.close(4001, "User not found");
+      return;
+    }
+
     // Attach user info
-    ws.userId = payload.userId;
-    ws.role = payload.role as UserRole;
-    ws.dealershipId = payload.dealershipId;
+    ws.userId = user.id;
+    ws.role = user.role as UserRole;
+    ws.dealershipId = user.dealershipId;
     ws.isAlive = true;
 
     // Register connection
-    if (!connections.has(payload.userId)) {
-      connections.set(payload.userId, new Set());
+    if (!connections.has(user.id)) {
+      connections.set(user.id, new Set());
     }
-    connections.get(payload.userId)!.add(ws);
+    connections.get(user.id)!.add(ws);
 
     // Join dealership room
-    if (payload.dealershipId) {
-      if (!dealershipRooms.has(payload.dealershipId)) {
-        dealershipRooms.set(payload.dealershipId, new Set());
+    if (user.dealershipId) {
+      if (!dealershipRooms.has(user.dealershipId)) {
+        dealershipRooms.set(user.dealershipId, new Set());
       }
-      dealershipRooms.get(payload.dealershipId)!.add(ws);
+      dealershipRooms.get(user.dealershipId)!.add(ws);
     }
 
-    console.log(`[WS] Connected: ${payload.userId} (${payload.role})`);
+    console.log(`[WS] Connected: ${user.id} (${user.role})`);
 
     // Send welcome
-    ws.send(JSON.stringify({ type: "connected", payload: { userId: payload.userId, role: payload.role } }));
+    ws.send(JSON.stringify({ type: "connected", payload: { userId: user.id, role: user.role } }));
 
     // Handle messages
     ws.on("message", (data) => {

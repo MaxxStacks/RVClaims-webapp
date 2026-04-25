@@ -6,6 +6,8 @@ import { useState, useEffect } from "react";
 import ds360Icon from "@assets/ds360_favicon.png";
 import { useUser, useClerk } from "@clerk/clerk-react";
 import { useApiFetch } from "@/lib/api";
+import NotificationBell from "@/components/NotificationBell";
+import DealerClaimsPage from "@/components/dealer/DealerClaimsPage";
 
 // ============================================================================
 // V6 SCHEMA METADATA — role-scoping and RBAC rules baked in
@@ -162,6 +164,9 @@ export default function DealerPortalV6() {
     </div>}
         </div>
         <div className="sidebar-footer">
+          <div style={{padding: "8px 12px", borderTop: "1px solid #eee"}}>
+            <NotificationBell />
+          </div>
           <div className="user-info" onClick={() => showPage("dealer.ops.dashboard")} style={{cursor: "pointer"}}>
             <div className="user-avatar">{userInitials}</div>
             <div>
@@ -201,13 +206,7 @@ function renderPage(pageId: string, userRole: string) {
       scopedRole=""
       subItems={[{"sub_id": "dealer.ops.dashboard.active_claims_summary", "label": "Active claims summary", "internal_in": ["dealer.ops.claims"]}, {"sub_id": "dealer.ops.dashboard.recent_warranty_sales", "label": "Recent warranty sales", "internal_in": ["dealer.ops.sales_services"]}, {"sub_id": "dealer.ops.dashboard.notifications_from_ds360", "label": "Notifications from DS360", "internal_in": ["master.mgmt.communications"], "ext_in": [{"sys": "email", "act": "notif surface"}]}, {"sub_id": "dealer.ops.dashboard.revenue_snapshot", "label": "Revenue snapshot", "internal_in": ["dealer.ops.sales_services"], "notes": "Hidden from Dealer Staff"}]}
     />;
-    case 'dealer.ops.claims': return <PageScaffold
-      pageId="dealer.ops.claims"
-      title="Claims"
-      section="Operations"
-      scopedRole=""
-      subItems={[{"sub_id": "dealer.ops.claims.all_claims", "label": "All Claims"}, {"sub_id": "dealer.ops.claims.snc_unit_lookup", "label": "Submit New Claim \u203a Unit lookup / VIN", "internal_in": ["dealer.ops.inventory"]}, {"sub_id": "dealer.ops.claims.snc_claim_type", "label": "Submit New Claim \u203a Claim type"}, {"sub_id": "dealer.ops.claims.snc_description", "label": "Submit New Claim \u203a Description & symptom"}, {"sub_id": "dealer.ops.claims.snc_photo_upload", "label": "Submit New Claim \u203a Photo upload", "ext_out": [{"sys": "anthropic", "act": "AI Doc Scanner extracts data"}]}, {"sub_id": "dealer.ops.claims.snc_submit", "label": "Submit New Claim \u203a Submit", "internal_out": ["master.ops.claim_queue", "client.main.claims (if linked)"], "ext_out": [{"sys": "email", "act": "submission confirmation"}]}, {"sub_id": "dealer.ops.claims.csv_status_timeline", "label": "Claim Status View \u203a Status timeline", "internal_in": ["master.ops.claim_queue"]}, {"sub_id": "dealer.ops.claims.csv_photos", "label": "Claim Status View \u203a Photos"}, {"sub_id": "dealer.ops.claims.csv_add_note", "label": "Claim Status View \u203a Add note", "internal_out": ["master.ops.work_by_dealer"]}, {"sub_id": "dealer.ops.claims.csv_parts_status", "label": "Claim Status View \u203a Parts status", "internal_in": ["master.ops.parts_management"]}, {"sub_id": "dealer.ops.claims.csv_thread", "label": "Claim Status View \u203a DS360 message thread", "internal_out": ["master.ops.work_by_dealer"], "ext_out": [{"sys": "email", "act": "message notif"}]}]}
-    />;
+    case 'dealer.ops.claims': return <DealerClaimsPage />;
     case 'dealer.ops.inventory': return <PageScaffold
       pageId="dealer.ops.inventory"
       title="Units / Inventory"

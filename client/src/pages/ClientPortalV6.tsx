@@ -6,6 +6,8 @@ import { useState, useEffect } from "react";
 import ds360Icon from "@assets/ds360_favicon.png";
 import { useUser, useClerk } from "@clerk/clerk-react";
 import { useApiFetch } from "@/lib/api";
+import NotificationBell from "@/components/NotificationBell";
+import ClientClaimsPage from "@/components/client/ClientClaimsPage";
 
 // ============================================================================
 // V6 SCHEMA METADATA — role-scoping and RBAC rules baked in
@@ -138,6 +140,9 @@ export default function ClientPortalV6() {
     </div>}
         </div>
         <div className="sidebar-footer">
+          <div style={{padding: "8px 12px", borderTop: "1px solid #eee"}}>
+            <NotificationBell />
+          </div>
           <div className="user-info" onClick={() => showPage("client.main.dashboard")} style={{cursor: "pointer"}}>
             <div className="user-avatar">{userInitials}</div>
             <div>
@@ -198,13 +203,7 @@ function renderPage(pageId: string, userRole: string) {
       scopedRole=""
       subItems={[{"sub_id": "client.main.services.roadside", "label": "Roadside Assistance", "internal_in": ["dealer.ops.sales_services"]}, {"sub_id": "client.main.services.gap", "label": "GAP Coverage", "internal_in": ["dealer.ops.sales_services"]}, {"sub_id": "client.main.services.extended_warranty", "label": "Extended Warranty", "internal_in": ["dealer.ops.sales_services"]}, {"sub_id": "client.main.services.other_active", "label": "Other active plans", "internal_in": ["dealer.ops.sales_services"]}]}
     />;
-    case 'client.main.claims': return <PageScaffold
-      pageId="client.main.claims"
-      title="Claims"
-      section="Main"
-      scopedRole=""
-      subItems={[{"sub_id": "client.main.claims.active_claims", "label": "Active Claims (read-only)", "internal_in": ["dealer.ops.claims"]}, {"sub_id": "client.main.claims.claim_history", "label": "Claim History", "internal_in": ["dealer.ops.claims"]}, {"sub_id": "client.main.claims.sni_describe", "label": "Submit New Issue \u203a Describe problem"}, {"sub_id": "client.main.claims.sni_add_photos", "label": "Submit New Issue \u203a Add photos", "ext_out": [{"sys": "anthropic", "act": "AI Doc Scanner"}]}, {"sub_id": "client.main.claims.sni_submit", "label": "Submit New Issue \u203a Submit \u2192 Dealer / DS360", "internal_out": ["dealer.ops.claims"], "ext_out": [{"sys": "email", "act": "submission confirmation"}]}]}
-    />;
+    case 'client.main.claims': return <ClientClaimsPage />;
     case 'client.main.documents': return <PageScaffold
       pageId="client.main.documents"
       title="Documents"

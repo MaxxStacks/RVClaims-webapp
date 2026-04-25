@@ -23,6 +23,9 @@ import publicAuctionRoutes from './public-auctions';
 import blogRoutes from './blog';
 import directoryRoutes from './directory';
 import crmRoutes from './crm';
+import claimsV6Router from './claims-v6';
+import notificationsV6Router from './notifications-v6';
+import usersV6Router from './users-v6';
 
 // Import existing routes for backward compat
 import { storage } from "../storage";
@@ -80,6 +83,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.use('/api/blog', blogRoutes);
   app.use('/api/dealers', directoryRoutes);
   app.use('/api/crm', crmRoutes);
+  app.use('/api/v6/claims', claimsV6Router);
+  app.use('/api/v6/notifications', notificationsV6Router);
+  app.use('/api/v6/users', usersV6Router);
 
   // ==================== EXISTING ROUTES (backward compat) ====================
 
