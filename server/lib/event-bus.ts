@@ -215,6 +215,117 @@ const CATALOG: Record<string, FanOut[]> = {
       }),
     },
   ],
+  // ---- Parts events ----
+  "parts.order_initiated": [
+    {
+      to_roles: ["operator_admin", "operator_staff"],
+      in_app: true, email: false, sms: "opt_in",
+      priority: "informational" as const,
+      cta: { label: "Review parts order", route: "/operator-v6" },
+      body_template: (p: any) => ({
+        title: "New parts order initiated",
+        body: `Order ${p.orderNumber} from ${p.dealerName} (${p.itemCount} items, ${p.totalQuantity} units)`,
+      }),
+    },
+    {
+      to_roles: ["dealer_owner", "dealer_staff"],
+      in_app: true, email: false, sms: "opt_in",
+      priority: "informational" as const,
+      body_template: (p: any) => ({
+        title: "Parts order created",
+        body: `Order ${p.orderNumber} created with ${p.itemCount} items`,
+      }),
+    },
+  ],
+  "parts.order_submitted_supplier": [
+    {
+      to_roles: ["dealer_owner", "dealer_staff"],
+      in_app: true, email: true, sms: "opt_in",
+      priority: "informational" as const,
+      body_template: (p: any) => ({
+        title: "Parts ordered from supplier",
+        body: `Order ${p.orderNumber} sent to supplier. Ref: ${p.supplierOrderRef || "pending"}`,
+      }),
+    },
+  ],
+  "parts.supplier_ack": [
+    {
+      to_roles: ["dealer_owner", "dealer_staff"],
+      in_app: true, email: false, sms: "opt_in",
+      priority: "informational" as const,
+      body_template: (p: any) => ({
+        title: "Supplier acknowledged order",
+        body: `Order ${p.orderNumber} acknowledged by supplier`,
+      }),
+    },
+  ],
+  "parts.shipped": [
+    {
+      to_roles: ["dealer_owner", "dealer_staff"],
+      in_app: true, email: true, sms: "opt_in",
+      priority: "informational" as const,
+      body_template: (p: any) => ({
+        title: "Parts shipped",
+        body: `Order ${p.orderNumber} shipped via ${p.carrier || "courier"}. Tracking: ${p.trackingNumber || "—"}`,
+      }),
+    },
+  ],
+  "parts.received": [
+    {
+      to_roles: ["dealer_owner", "dealer_staff"],
+      in_app: true, email: true, sms: "opt_in",
+      priority: "action_required" as const,
+      cta: { label: "Begin repair", route: "/dealer-v6" },
+      body_template: (p: any) => ({
+        title: "Parts received — repair can begin",
+        body: `Order ${p.orderNumber} received. Repair work can now start on the associated claim.`,
+      }),
+    },
+    {
+      to_roles: ["operator_admin", "operator_staff"],
+      in_app: true, email: false, sms: "opt_in",
+      priority: "informational" as const,
+      body_template: (p: any) => ({
+        title: "Dealer received parts",
+        body: `${p.dealerName} confirmed receipt of order ${p.orderNumber}`,
+      }),
+    },
+  ],
+  "parts_store.order_placed": [
+    {
+      to_roles: ["dealer_owner", "dealer_staff"],
+      in_app: true, email: true, sms: "opt_in",
+      priority: "action_required" as const,
+      cta: { label: "Fulfill order", route: "/dealer-v6" },
+      body_template: (p: any) => ({
+        title: "New retail parts order",
+        body: `Customer ${p.customerName || ""} placed order ${p.orderNumber} for ${p.itemCount} items.`,
+      }),
+    },
+  ],
+  "parts_store.fulfilled": [
+    {
+      to_roles: ["client"],
+      in_app: true, email: true, sms: "opt_in",
+      priority: "informational" as const,
+      body_template: (p: any) => ({
+        title: "Your order is being shipped",
+        body: `Your order ${p.orderNumber} has been fulfilled and is on its way.`,
+      }),
+    },
+  ],
+  "parts_store.delivered": [
+    {
+      to_roles: ["client"],
+      in_app: true, email: true, sms: "opt_in",
+      priority: "informational" as const,
+      body_template: (p: any) => ({
+        title: "Order delivered",
+        body: `Your order ${p.orderNumber} was delivered.`,
+      }),
+    },
+  ],
+  // ---- End Parts events ----
   "claim.completed": [
     {
       to_roles: ["dealer_owner", "dealer_staff"],

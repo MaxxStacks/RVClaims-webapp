@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useApiFetch } from "@/lib/api";
+import PhotoUploader from "@/components/PhotoUploader";
+import PhotoGallery from "@/components/PhotoGallery";
 
 const STATUS_COLOR: Record<string, string> = {
   new_unassigned: "#1e88e5",
@@ -20,6 +22,8 @@ export default function DealerClaimsPage() {
   const [form, setForm] = useState({ unitId: "", type: "", manufacturer: "", dealerNotes: "" });
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [selectedClaimId, setSelectedClaimId] = useState<string | null>(null);
+  const [photoRefreshKey, setPhotoRefreshKey] = useState(0);
 
   async function refresh() {
     setLoading(true);
@@ -133,7 +137,7 @@ export default function DealerClaimsPage() {
           </thead>
           <tbody>
             {claims.map(c => (
-              <tr key={c.id} style={{ borderBottom: "1px solid #f3f3f3", fontSize: 12 }}>
+              <tr key={c.id} onClick={() => { setSelectedClaimId(c.id); setPhotoRefreshKey(k => k + 1); }} style={{ borderBottom: "1px solid #f3f3f3", fontSize: 12, cursor: "pointer" }}>
                 <td style={{ padding: 10, fontWeight: 600 }}>{c.claimNumber}</td>
                 <td>{c.type}</td>
                 <td>{c.manufacturer}</td>
@@ -147,6 +151,29 @@ export default function DealerClaimsPage() {
             ))}
           </tbody>
         </table>
+      )}
+
+      {selectedClaimId && (
+        <div style={{
+          position: "fixed", top: 0, right: 0, bottom: 0, width: 520, background: "white",
+          boxShadow: "-4px 0 20px rgba(0,0,0,0.1)", overflowY: "auto", zIndex: 900, padding: 24,
+        }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+            <h2 style={{ margin: 0, fontSize: 18 }}>Claim Photos</h2>
+            <button onClick={() => setSelectedClaimId(null)} style={{ background: "none", border: 0, fontSize: 20, cursor: "pointer" }}>×</button>
+          </div>
+          <h3 style={{ fontSize: 13, margin: "0 0 8px", color: "#555" }}>Uploaded Photos</h3>
+          <PhotoGallery claimId={selectedClaimId} refreshKey={photoRefreshKey} />
+          <div style={{ marginTop: 16 }}>
+            <h3 style={{ fontSize: 13, margin: "0 0 8px", color: "#555" }}>Add Photos</h3>
+            <PhotoUploader
+              scope="claims"
+              scopeId={selectedClaimId}
+              photoType="claim_evidence"
+              onUploadComplete={() => setPhotoRefreshKey(k => k + 1)}
+            />
+          </div>
+        </div>
       )}
     </div>
   );

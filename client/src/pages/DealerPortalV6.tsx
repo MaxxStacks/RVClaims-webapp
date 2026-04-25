@@ -8,6 +8,7 @@ import { useUser, useClerk } from "@clerk/clerk-react";
 import { useApiFetch } from "@/lib/api";
 import NotificationBell from "@/components/NotificationBell";
 import DealerClaimsPage from "@/components/dealer/DealerClaimsPage";
+import DealerPartsOrdersPage from "@/components/dealer/DealerPartsOrdersPage";
 
 // ============================================================================
 // V6 SCHEMA METADATA — role-scoping and RBAC rules baked in
@@ -263,13 +264,7 @@ function renderPage(pageId: string, userRole: string) {
       scopedRole=""
       subItems={[{"sub_id": "dealer.ops.financing.na_select_client_unit", "label": "New Application \u203a Select client & unit", "internal_in": ["dealer.ops.clients", "dealer.ops.inventory"]}, {"sub_id": "dealer.ops.financing.na_credit_info", "label": "New Application \u203a Credit info capture"}, {"sub_id": "dealer.ops.financing.na_select_lenders", "label": "New Application \u203a Select lenders to submit to", "internal_in": ["master.mgmt.financing_partners"]}, {"sub_id": "dealer.ops.financing.na_submit", "label": "New Application \u203a Submit", "internal_out": ["master.ops.financing_applications"], "ext_out": [{"sys": "lender_apis", "act": "submit application to selected lenders"}, {"sys": "email", "act": "application submission confirmation"}]}, {"sub_id": "dealer.ops.financing.as_timeline", "label": "Application Status \u203a Timeline", "internal_in": ["master.ops.financing_applications"]}, {"sub_id": "dealer.ops.financing.as_lender_responses", "label": "Application Status \u203a Lender responses", "ext_in": [{"sys": "lender_apis", "act": "approval/decline/counter responses"}]}, {"sub_id": "dealer.ops.financing.as_rate_comparison", "label": "Application Status \u203a Rate comparison"}, {"sub_id": "dealer.ops.financing.as_select_finalize", "label": "Application Status \u203a Select lender & finalize", "internal_out": ["client.main.financing (loan documents)", "client.main.documents"], "ext_out": [{"sys": "lender_apis", "act": "commit acceptance"}]}, {"sub_id": "dealer.ops.financing.funded_deals", "label": "Funded Deals", "internal_out": ["master.mgmt.revenue_billing (financing commission)"]}, {"sub_id": "dealer.ops.financing.payment_tracking", "label": "Client payment tracking (view)", "ext_in": [{"sys": "lender_apis", "act": "payment status"}]}]}
     />;
-    case 'dealer.ops.parts_store': return <PageScaffold
-      pageId="dealer.ops.parts_store"
-      title="Parts Store"
-      section="Operations"
-      scopedRole=""
-      subItems={[{"sub_id": "dealer.ops.parts_store.store_settings", "label": "Store Settings (name, visibility)"}, {"sub_id": "dealer.ops.parts_store.my_inventory", "label": "My Inventory (from DS360 catalog)", "internal_in": ["master.mgmt.parts_catalog"]}, {"sub_id": "dealer.ops.parts_store.pricing_markup", "label": "Pricing & Markup"}, {"sub_id": "dealer.ops.parts_store.client_orders_incoming", "label": "Client Orders (incoming)", "internal_in": ["client.main.parts_store"]}, {"sub_id": "dealer.ops.parts_store.fulfillment_queue", "label": "Fulfillment queue", "internal_out": ["master.ops.parts_orders"], "ext_out": [{"sys": "parts_suppliers", "act": "drop-ship order to supplier"}, {"sys": "email", "act": "fulfillment status to client"}]}, {"sub_id": "dealer.ops.parts_store.shipped_delivered", "label": "Shipped / Delivered tracking", "ext_in": [{"sys": "parts_suppliers", "act": "tracking numbers"}]}, {"sub_id": "dealer.ops.parts_store.returns_exchanges", "label": "Returns & exchanges", "ext_out": [{"sys": "stripe", "act": "refund processing"}]}, {"sub_id": "dealer.ops.parts_store.parts_revenue_tracker", "label": "Parts revenue tracker", "internal_out": ["master.mgmt.revenue_billing"], "notes": "Hidden from Dealer Staff"}]}
-    />;
+    case 'dealer.ops.parts_store': return <DealerPartsOrdersPage />;
     case 'dealer.ops.consignment': return <PageScaffold
       pageId="dealer.ops.consignment"
       title="Consignment"

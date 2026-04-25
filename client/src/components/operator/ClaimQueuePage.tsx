@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useApiFetch } from "@/lib/api";
+import PhotoUploader from "@/components/PhotoUploader";
+import PhotoGallery from "@/components/PhotoGallery";
 
 const STATUS_COLUMNS = [
   { key: "new_unassigned", label: "New / Unassigned", color: "#1e88e5" },
@@ -16,6 +18,8 @@ export default function ClaimQueuePage() {
   const [claims, setClaims] = useState<any[]>([]);
   const [staff, setStaff] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedClaimId, setSelectedClaimId] = useState<string | null>(null);
+  const [photoRefreshKey, setPhotoRefreshKey] = useState(0);
 
   async function refresh() {
     setLoading(true);
@@ -78,7 +82,11 @@ export default function ClaimQueuePage() {
                 </div>
                 {colClaims.map(c => (
                   <div key={c.id} style={{ background: "white", padding: 10, marginBottom: 6, borderRadius: 6, borderLeft: `3px solid ${col.color}` }}>
-                    <div style={{ fontSize: 11, fontWeight: 600 }}>{c.claimNumber}</div>
+                    <div style={{ fontSize: 11, fontWeight: 600, cursor: "pointer", display: "flex", justifyContent: "space-between" }}
+                      onClick={() => { setSelectedClaimId(c.id); setPhotoRefreshKey(k => k + 1); }}>
+                      <span>{c.claimNumber}</span>
+                      <span style={{ fontSize: 9, color: "#888" }}>Photos</span>
+                    </div>
                     <div style={{ fontSize: 10, color: "#888" }}>{c.manufacturer} · {c.type}</div>
                     {c.status === "new_unassigned" && staff.length > 0 && (
                       <select
@@ -129,6 +137,29 @@ export default function ClaimQueuePage() {
               </div>
             );
           })}
+        </div>
+      )}
+
+      {selectedClaimId && (
+        <div style={{
+          position: "fixed", top: 0, right: 0, bottom: 0, width: 520, background: "white",
+          boxShadow: "-4px 0 20px rgba(0,0,0,0.1)", overflowY: "auto", zIndex: 900, padding: 24,
+        }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+            <h2 style={{ margin: 0, fontSize: 18 }}>Claim Photos</h2>
+            <button onClick={() => setSelectedClaimId(null)} style={{ background: "none", border: 0, fontSize: 20, cursor: "pointer" }}>×</button>
+          </div>
+          <h3 style={{ fontSize: 13, margin: "0 0 8px", color: "#555" }}>Uploaded Photos</h3>
+          <PhotoGallery claimId={selectedClaimId} refreshKey={photoRefreshKey} />
+          <div style={{ marginTop: 16 }}>
+            <h3 style={{ fontSize: 13, margin: "0 0 8px", color: "#555" }}>Add Photos</h3>
+            <PhotoUploader
+              scope="claims"
+              scopeId={selectedClaimId}
+              photoType="operator_review"
+              onUploadComplete={() => setPhotoRefreshKey(k => k + 1)}
+            />
+          </div>
         </div>
       )}
     </div>

@@ -8,6 +8,7 @@ import { useUser, useClerk } from "@clerk/clerk-react";
 import { useApiFetch } from "@/lib/api";
 import NotificationBell from "@/components/NotificationBell";
 import ClaimQueuePage from "@/components/operator/ClaimQueuePage";
+import PartsManagementPage from "@/components/operator/PartsManagementPage";
 
 // ============================================================================
 // V6 SCHEMA METADATA — role-scoping and RBAC rules baked in
@@ -266,13 +267,7 @@ function renderPage(pageId: string, userRole: string) {
       scopedRole=""
       subItems={[{"sub_id": "master.ops.work_by_dealer.units_vins", "label": "Units / VINs", "internal_in": ["dealer.ops.inventory"]}, {"sub_id": "master.ops.work_by_dealer.active_claims", "label": "Active Claims", "internal_in": ["dealer.ops.claims"]}, {"sub_id": "master.ops.work_by_dealer.cd_submitted_photos", "label": "Claim Detail \u203a Submitted photos", "ext_out": [{"sys": "anthropic", "act": "AI Doc Scanner on photos"}]}, {"sub_id": "master.ops.work_by_dealer.cd_3c_documentation", "label": "Claim Detail \u203a 3C documentation"}, {"sub_id": "master.ops.work_by_dealer.cd_frc_lines", "label": "Claim Detail \u203a FRC lines"}, {"sub_id": "master.ops.work_by_dealer.cd_parts_ordering", "label": "Claim Detail \u203a Parts ordering", "internal_out": ["master.ops.parts_management"], "ext_out": [{"sys": "parts_suppliers", "act": "create order"}]}, {"sub_id": "master.ops.work_by_dealer.cd_mfr_submission", "label": "Claim Detail \u203a Manufacturer submission", "ext_out": [{"sys": "mfr_portals", "act": "submit (off-platform)"}]}, {"sub_id": "master.ops.work_by_dealer.cd_invoice_payment", "label": "Claim Detail \u203a Invoice & payment", "ext_out": [{"sys": "stripe", "act": "create invoice (Super Admin only)"}, {"sys": "email", "act": "invoice delivery"}], "notes": "Super Admin only"}, {"sub_id": "master.ops.work_by_dealer.cd_dealer_thread", "label": "Claim Detail \u203a Dealer message thread", "internal_out": ["dealer.ops.messages"], "ext_out": [{"sys": "email", "act": "message notif"}]}, {"sub_id": "master.ops.work_by_dealer.warranty_sales_verify", "label": "Warranty sales (verify)", "internal_in": ["dealer.ops.sales_services"]}, {"sub_id": "master.ops.work_by_dealer.service_contracts", "label": "Service contracts", "internal_in": ["dealer.ops.documents"]}, {"sub_id": "master.ops.work_by_dealer.dealer_documents", "label": "Dealer documents", "internal_in": ["dealer.ops.documents"]}]}
     />;
-    case 'master.ops.parts_management': return <PageScaffold
-      pageId="master.ops.parts_management"
-      title="Parts Management"
-      section="Operations"
-      scopedRole=""
-      subItems={[{"sub_id": "master.ops.parts_management.active_orders", "label": "Active orders", "ext_out": [{"sys": "parts_suppliers", "act": "place + track"}]}, {"sub_id": "master.ops.parts_management.received", "label": "Received", "internal_out": ["dealer.ops.claims (parts status)"], "ext_in": [{"sys": "parts_suppliers", "act": "receiving confirmation"}], "ext_out": [{"sys": "email", "act": "notify dealer"}]}, {"sub_id": "master.ops.parts_management.suppliers", "label": "Suppliers"}]}
-    />;
+    case 'master.ops.parts_management': return <PartsManagementPage />;
     case 'master.ops.manufacturer_portals': return <PageScaffold
       pageId="master.ops.manufacturer_portals"
       title="Manufacturer Portals"
@@ -329,13 +324,7 @@ function renderPage(pageId: string, userRole: string) {
       scopedRole=""
       subItems={[{"sub_id": "master.ops.techflow_oversight.all_technicians", "label": "All technicians (cross-dealer)", "internal_in": ["dealer.ops.techflow (all)"]}, {"sub_id": "master.ops.techflow_oversight.active_dispatches", "label": "Active dispatches (live map)", "ext_in": [{"sys": "maps_routing", "act": "live tech positions"}]}, {"sub_id": "master.ops.techflow_oversight.completed_jobs", "label": "Completed jobs"}, {"sub_id": "master.ops.techflow_oversight.labor_hours_reports", "label": "Labor hours reports", "internal_in": ["dealer.ops.techflow"], "internal_out": ["master.ops.work_by_dealer (Claim Detail labor sync)"]}, {"sub_id": "master.ops.techflow_oversight.claim_workorder_sync", "label": "Claim \u2192 work order sync status", "internal_in": ["master.ops.claim_queue", "dealer.ops.techflow"]}]}
     />;
-    case 'master.ops.parts_orders': return <PageScaffold
-      pageId="master.ops.parts_orders"
-      title="Parts Orders"
-      section="Operations"
-      scopedRole=""
-      subItems={[{"sub_id": "master.ops.parts_orders.new_client_orders", "label": "New client orders", "internal_in": ["client.main.parts_store"]}, {"sub_id": "master.ops.parts_orders.fulfillment_queue", "label": "Fulfillment queue", "internal_in": ["dealer.ops.parts_store"]}, {"sub_id": "master.ops.parts_orders.shipped", "label": "Shipped", "ext_out": [{"sys": "email", "act": "shipment notification to client"}]}, {"sub_id": "master.ops.parts_orders.delivered", "label": "Delivered", "ext_out": [{"sys": "email", "act": "delivery confirmation"}]}, {"sub_id": "master.ops.parts_orders.returns_issues", "label": "Returns / issues"}]}
-    />;
+    case 'master.ops.parts_orders': return <PartsManagementPage />;
     case 'master.marketplace.listings_oversight': return <PageScaffold
       pageId="master.marketplace.listings_oversight"
       title="Listings Oversight"

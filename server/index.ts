@@ -6,6 +6,7 @@ import { clerkMiddleware } from "@clerk/express";
 import clerkWebhookRouter from "./routes/clerk-webhook";
 import compression from "compression";
 import { initWebSocket } from "./lib/websocket";
+import { startEmailWorker } from "./lib/email-worker";
 import path from "path";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
@@ -29,8 +30,8 @@ app.use(
         scriptSrcAttr: ["'unsafe-inline'"],
         styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
         fontSrc: ["'self'", "https://fonts.gstatic.com"],
-        imgSrc: ["'self'", "data:", "blob:", "https://images.unsplash.com", "https://*.unsplash.com", "https://img.clerk.com"],
-        connectSrc: ["'self'", "wss:", "ws:", "https://*.clerk.accounts.dev", "https://clerk-telemetry.com", "https://api.clerk.com"],
+        imgSrc: ["'self'", "data:", "blob:", "https://images.unsplash.com", "https://*.unsplash.com", "https://img.clerk.com", "https://*.r2.dev", "https://*.r2.cloudflarestorage.com"],
+        connectSrc: ["'self'", "wss:", "ws:", "https://*.clerk.accounts.dev", "https://clerk-telemetry.com", "https://api.clerk.com", "https://*.r2.cloudflarestorage.com", "https://*.r2.dev"],
         mediaSrc: ["'self'"],
         workerSrc: ["'self'", "blob:"],
         objectSrc: ["'none'"],
@@ -118,5 +119,6 @@ app.use((req, res, next) => {
   const port = parseInt(process.env.PORT || '3001', 10);
   server.listen(port, "0.0.0.0", () => {
     log(`serving on port ${port}`);
+    startEmailWorker();
   });
 })();

@@ -30,7 +30,7 @@ export const BILLING_FREQUENCIES = ["one_time", "monthly", "quarterly", "annual"
 export const FINANCING_STATUSES = ["submitted", "shopping", "approved", "declined", "completed"] as const;
 export const FI_DEAL_STATUSES = ["flagged", "recommending", "presented", "completed"] as const;
 export const WARRANTY_PLAN_STATUSES = ["active", "expiring", "expired", "cancelled"] as const;
-export const PARTS_ORDER_STATUSES = ["requested", "sourcing", "quoted", "ordered", "shipped", "delivered"] as const;
+export const PARTS_ORDER_STATUSES = ["requested", "sourcing", "quoted", "ordered", "shipped", "delivered", "initiated", "submitted_to_supplier", "supplier_ack", "received", "cancelled"] as const;
 export const PARTS_PRIORITIES = ["normal", "urgent"] as const;
 export const TICKET_CATEGORIES = ["claim_warranty", "billing", "parts_order", "general", "warranty_expiry", "fi_protection", "feedback"] as const;
 export const TICKET_STATUSES = ["open", "waiting_dealer", "waiting_client", "action_needed", "resolved", "closed"] as const;
@@ -63,7 +63,7 @@ export const LENDER_SUBMISSION_STATUSES = [
 export const LOAN_DEAL_STATUSES = ["pending_funding", "funded", "past_due", "default", "paid_off"] as const;
 export const CAMPAIGN_STATUSES = ["draft", "scheduled", "sending", "sent", "paused", "archived"] as const;
 export const LEAD_STATUSES = ["new", "assigned", "contacted", "qualified", "converted", "disqualified", "lost"] as const;
-export const EMAIL_EVENT_TYPES = ["sent", "delivered", "opened", "clicked", "bounced", "unsubscribed", "complained"] as const;
+export const EMAIL_EVENT_TYPES = ["sent", "delivered", "opened", "clicked", "bounced", "unsubscribed", "complained", "send_failed"] as const;
 
 // ==================== 1. USERS ====================
 
@@ -442,16 +442,63 @@ export const partsOrders = pgTable("parts_orders", {
   orderNumber: text("order_number").notNull().unique(),
   dealershipId: uuid("dealership_id").notNull(),
   claimId: uuid("claim_id"),
-  items: text("items").notNull(),
+  items: text("items"),
   estimatedCost: decimal("estimated_cost", { precision: 10, scale: 2 }),
   status: text("status", { enum: PARTS_ORDER_STATUSES }).default("requested"),
   eta: date("eta"),
   priority: text("priority", { enum: PARTS_PRIORITIES }).default("normal"),
   operatorNotes: text("operator_notes"),
   dealerNotes: text("dealer_notes"),
+  supplier: text("supplier"),
+  totalQuantity: integer("total_quantity").default(0),
+  initiatedById: uuid("initiated_by_id"),
+  initiatedAt: timestamp("initiated_at"),
+  submittedToSupplierAt: timestamp("submitted_to_supplier_at"),
+  supplierOrderRef: text("supplier_order_ref"),
+  supplierAckAt: timestamp("supplier_ack_at"),
+  shippedAt: timestamp("shipped_at"),
+  trackingNumber: text("tracking_number"),
+  carrier: text("carrier"),
+  receivedAt: timestamp("received_at"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
+
+// ==================== 17b. PARTS ORDER ITEMS ====================
+
+export const partsOrderItems = pgTable("parts_order_items", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  orderId: uuid("order_id").notNull(),
+  partNumber: text("part_number").notNull(),
+  description: text("description"),
+  quantity: integer("quantity").default(1).notNull(),
+  unitCost: decimal("unit_cost", { precision: 10, scale: 2 }),
+});
+
+// ==================== 17c. V6 UPLOADS ====================
+
+export const UPLOAD_STATUSES = ["pending", "uploaded", "failed"] as const;
+export const UPLOAD_SCOPES = ["claims", "units", "general"] as const;
+
+export const v6Uploads = pgTable("v6_uploads", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  storageKey: text("storage_key").notNull(),
+  publicUrl: text("public_url").notNull(),
+  contentType: text("content_type").notNull(),
+  uploadStatus: text("upload_status", { enum: UPLOAD_STATUSES }).default("pending"),
+  uploadedById: uuid("uploaded_by_id"),
+  uploadedAt: timestamp("uploaded_at"),
+  photoType: text("photo_type").default("general"),
+  scope: text("scope", { enum: UPLOAD_SCOPES }).default("general"),
+  scopeId: uuid("scope_id"),
+  filename: text("filename"),
+  sizeBytes: integer("size_bytes"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+}, (table) => [
+  index("v6_uploads_scope_idx").on(table.scope, table.scopeId),
+  index("v6_uploads_uploader_idx").on(table.uploadedById),
+  index("v6_uploads_status_idx").on(table.uploadStatus),
+]);
 
 // ==================== 18. TICKETS ====================
 
@@ -1055,6 +1102,10 @@ export const notificationDeliveries = pgTable("notification_deliveries", {
   isRead: boolean("is_read").default(false),
   readAt: timestamp("read_at"),
   deliveredAt: timestamp("delivered_at"),
+  failureReason: text("failure_reason"),
+  sentAt: timestamp("sent_at"),
+  providerMessageId: text("provider_message_id"),
+  updatedAt: timestamp("updated_at"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 }, (table) => [
   index("notif_deliveries_event_idx").on(table.eventId),
@@ -1405,11 +1456,14 @@ export const emailEvents = pgTable("email_events", {
   id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
   campaignId: uuid("campaign_id"),
   transactionalId: uuid("transactional_id"),
-  recipientEmail: text("recipient_email").notNull(),
+  deliveryId: uuid("delivery_id"),
+  recipientEmail: text("recipient_email"),
   eventType: text("event_type", { enum: EMAIL_EVENT_TYPES }).notNull(),
   linkUrl: text("link_url"),
   userAgent: text("user_agent"),
   ipAddress: text("ip_address"),
+  payload: jsonb("payload").$type<Record<string, unknown>>(),
+  providerMessageId: text("provider_message_id"),
   occurredAt: timestamp("occurred_at").defaultNow().notNull(),
 }, (table) => [
   index("email_events_campaign_idx").on(table.campaignId),
