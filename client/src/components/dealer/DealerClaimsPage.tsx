@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useApiFetch } from "@/lib/api";
+import { useLocation } from "wouter";
 import PhotoUploader from "@/components/PhotoUploader";
 import PhotoGallery from "@/components/PhotoGallery";
 
@@ -16,6 +17,7 @@ const STATUS_COLOR: Record<string, string> = {
 
 export default function DealerClaimsPage() {
   const apiFetch = useApiFetch();
+  const [, navigate] = useLocation();
   const [claims, setClaims] = useState<any[]>([]);
   const [units, setUnits] = useState<any[]>([]);
   const [showNew, setShowNew] = useState(false);
@@ -69,12 +71,10 @@ export default function DealerClaimsPage() {
           <div style={{ fontSize: 11, color: "#888", textTransform: "uppercase", fontWeight: 600 }}>Operations</div>
           <h1 style={{ margin: "4px 0 0", fontSize: 22, fontWeight: 600 }}>Claims</h1>
         </div>
-        <button
-          onClick={() => setShowNew(true)}
-          style={{ padding: "8px 16px", background: "#033280", color: "white", border: 0, borderRadius: 6, fontSize: 13, fontWeight: 600, cursor: "pointer" }}
-        >
-          + New Claim
-        </button>
+        <div style={{ fontSize: 11, color: "#888", alignSelf: "center" }}>
+          To create a new claim, open a unit from{" "}
+          <span onClick={() => navigate("/dealer-v6")} style={{ color: "#033280", cursor: "pointer", textDecoration: "underline" }}>Inventory</span>
+        </div>
       </div>
 
       {showNew && (
@@ -147,7 +147,7 @@ export default function DealerClaimsPage() {
           </thead>
           <tbody>
             {claims.map(c => (
-              <tr key={c.id} onClick={() => { setSelectedClaimId(c.id); setPhotoRefreshKey(k => k + 1); }} style={{ borderBottom: "1px solid #f3f3f3", fontSize: 12, cursor: "pointer" }}>
+              <tr key={c.id} onClick={() => c.unitId ? navigate(`/dealer-v6/units/${c.unitId}`) : (setSelectedClaimId(c.id), setPhotoRefreshKey(k => k + 1))} style={{ borderBottom: "1px solid #f3f3f3", fontSize: 12, cursor: "pointer" }}>
                 <td style={{ padding: 10, fontWeight: 600 }}>{c.claimNumber}</td>
                 <td>{c.type}</td>
                 <td>{c.manufacturer}</td>

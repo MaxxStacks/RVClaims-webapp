@@ -14,7 +14,7 @@ export const INVITE_ROLES = ["operator_staff", "dealer_owner", "dealer_staff", "
 export const DEALERSHIP_PLANS = ["plan_a", "plan_b", "custom"] as const;
 export const DEALERSHIP_STATUSES = ["active", "suspended", "pending"] as const;
 export const RV_TYPES = ["travel_trailer", "fifth_wheel", "class_a", "class_c", "toy_hauler", "pop_up", "van_camper", "truck_camper"] as const;
-export const UNIT_STATUSES = ["on_lot", "delivered", "in_service", "sold"] as const;
+export const UNIT_STATUSES = ["on_lot", "delivered", "in_service", "sold", "in_inventory", "consigned", "sold_out_of_state"] as const;
 export const CLAIM_TYPES = ["daf", "pdi", "warranty", "extended_warranty", "insurance"] as const;
 export const CLAIM_STATUSES = ["draft", "submitted", "new_unassigned", "assigned", "in_review", "info_requested", "submitted_to_mfr", "processing", "authorized", "approved", "partial_approval", "denied", "appeal_pending", "reopened", "awaiting_parts", "parts_ordered", "ready_for_repair", "repair", "completed", "payment_requested", "awaiting_payment", "paid", "closed"] as const;
 export const FRC_LINE_STATUSES = ["pending", "approved", "denied"] as const;
@@ -203,6 +203,13 @@ export const units = pgTable("units", {
   pdiCompleted: boolean("pdi_completed").default(false),
   pdiDate: date("pdi_date"),
   status: text("status", { enum: UNIT_STATUSES }).default("on_lot"),
+  intakeDate: date("intake_date"),
+  soldDate: date("sold_date"),
+  lotLocation: text("lot_location"),
+  extendedWarrantyPlan: text("extended_warranty_plan"),
+  extendedWarrantyStart: date("extended_warranty_start"),
+  serviceContractActive: boolean("service_contract_active").default(false),
+  serviceContractEnd: date("service_contract_end"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 }, (table) => [

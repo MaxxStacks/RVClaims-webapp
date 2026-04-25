@@ -79,9 +79,9 @@ router.post("/", async (req: Request, res: Response) => {
     return res.status(403).json({ error: "Only dealers can submit claims" });
   }
 
-  const { unitId, type, manufacturer, dealerNotes, estimatedAmount } = req.body;
-  if (!unitId || !type || !manufacturer) {
-    return res.status(400).json({ error: "Missing required fields: unitId, type, manufacturer" });
+  const { unitId, type, dealerNotes, estimatedAmount, customManufacturer } = req.body;
+  if (!unitId || !type) {
+    return res.status(400).json({ error: "Missing required fields: unitId, type" });
   }
 
   try {
@@ -89,6 +89,8 @@ router.post("/", async (req: Request, res: Response) => {
     if (!unit || unit.dealershipId !== u.dealershipId) {
       return res.status(403).json({ error: "Unit not found in your dealership" });
     }
+
+    const manufacturer = customManufacturer || unit.manufacturer || "";
 
     const claimNumber = await nextClaimNumber();
     const [created] = await db.insert(claims).values({

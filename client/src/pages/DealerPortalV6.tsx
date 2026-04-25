@@ -9,6 +9,7 @@ import { useApiFetch } from "@/lib/api";
 import NotificationBell from "@/components/NotificationBell";
 import DealerClaimsPage from "@/components/dealer/DealerClaimsPage";
 import DealerPartsOrdersPage from "@/components/dealer/DealerPartsOrdersPage";
+import InventoryListPage from "@/components/units/InventoryListPage";
 
 // ============================================================================
 // V6 SCHEMA METADATA — role-scoping and RBAC rules baked in
@@ -208,13 +209,7 @@ function renderPage(pageId: string, userRole: string) {
       subItems={[{"sub_id": "dealer.ops.dashboard.active_claims_summary", "label": "Active claims summary", "internal_in": ["dealer.ops.claims"]}, {"sub_id": "dealer.ops.dashboard.recent_warranty_sales", "label": "Recent warranty sales", "internal_in": ["dealer.ops.sales_services"]}, {"sub_id": "dealer.ops.dashboard.notifications_from_ds360", "label": "Notifications from DS360", "internal_in": ["master.mgmt.communications"], "ext_in": [{"sys": "email", "act": "notif surface"}]}, {"sub_id": "dealer.ops.dashboard.revenue_snapshot", "label": "Revenue snapshot", "internal_in": ["dealer.ops.sales_services"], "notes": "Hidden from Dealer Staff"}]}
     />;
     case 'dealer.ops.claims': return <DealerClaimsPage />;
-    case 'dealer.ops.inventory': return <PageScaffold
-      pageId="dealer.ops.inventory"
-      title="Units / Inventory"
-      section="Operations"
-      scopedRole=""
-      subItems={[{"sub_id": "dealer.ops.inventory.all_units", "label": "All Units"}, {"sub_id": "dealer.ops.inventory.add_unit", "label": "Add Unit", "ext_out": [{"sys": "anthropic", "act": "Unit Tag Scanner (mobile PWA, optional)"}]}, {"sub_id": "dealer.ops.inventory.ud_specs", "label": "Unit Detail \u203a Specs (VIN, model, year)"}, {"sub_id": "dealer.ops.inventory.ud_client_linked", "label": "Unit Detail \u203a Client linked", "internal_in": ["dealer.ops.clients"], "internal_out": ["client.main.vehicle (when linked)"]}, {"sub_id": "dealer.ops.inventory.ud_warranties_services", "label": "Unit Detail \u203a Active warranties & services", "internal_in": ["dealer.ops.sales_services"]}, {"sub_id": "dealer.ops.inventory.ud_claims_history", "label": "Unit Detail \u203a Claims history", "internal_in": ["dealer.ops.claims"]}]}
-    />;
+    case 'dealer.ops.inventory': return <InventoryListPage context="dealer" />;
     case 'dealer.ops.clients': return <PageScaffold
       pageId="dealer.ops.clients"
       title="Clients"

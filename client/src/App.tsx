@@ -72,6 +72,18 @@ const DealerPortalV6 = lazy(() => import("@/pages/DealerPortalV6"));
 const ClientPortalV6 = lazy(() => import("@/pages/ClientPortalV6"));
 const BidderPortalV6 = lazy(() => import("@/pages/BidderPortalV6"));
 const PortalSelectV6 = lazy(() => import("@/pages/PortalSelectV6"));
+const UnitProfilePageOperator = lazy(async () => {
+  const { default: Comp } = await import("@/components/units/UnitProfilePage");
+  return { default: () => <Comp context="operator" /> };
+});
+const UnitProfilePageDealer = lazy(async () => {
+  const { default: Comp } = await import("@/components/units/UnitProfilePage");
+  return { default: () => <Comp context="dealer" /> };
+});
+const UnitProfilePageClient = lazy(async () => {
+  const { default: Comp } = await import("@/components/units/UnitProfilePage");
+  return { default: () => <Comp context="client" /> };
+});
 
 function ScrollToTop() {
   const [location] = useLocation();
@@ -123,6 +135,9 @@ function Router() {
         <Route path="/bidder">{() => <Redirect to="/login" />}</Route>
         <Route path="/bidder-login">{() => <Redirect to="/login" />}</Route>
         {/* v6 portal shells — side-by-side with existing portals for validation */}
+        <Route path="/operator-v6/units/:id" component={UnitProfilePageOperator} />
+        <Route path="/dealer-v6/units/:id" component={UnitProfilePageDealer} />
+        <Route path="/client-v6/units/:id" component={UnitProfilePageClient} />
         <Route path="/operator-v6" component={OperatorPortalV6} />
         <Route path="/dealer-v6" component={DealerPortalV6} />
         <Route path="/client-v6" component={ClientPortalV6} />

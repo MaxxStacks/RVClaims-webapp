@@ -8,6 +8,7 @@ import { useUser, useClerk } from "@clerk/clerk-react";
 import { useApiFetch } from "@/lib/api";
 import NotificationBell from "@/components/NotificationBell";
 import ClientClaimsPage from "@/components/client/ClientClaimsPage";
+import InventoryListPage from "@/components/units/InventoryListPage";
 
 // ============================================================================
 // V6 SCHEMA METADATA — role-scoping and RBAC rules baked in
@@ -182,13 +183,7 @@ function renderPage(pageId: string, userRole: string) {
       scopedRole=""
       subItems={[{"sub_id": "client.main.dashboard.coverage_overview", "label": "Coverage overview", "internal_in": ["dealer.ops.sales_services"]}, {"sub_id": "client.main.dashboard.open_claims", "label": "Open claims", "internal_in": ["dealer.ops.claims"]}, {"sub_id": "client.main.dashboard.quick_actions", "label": "Quick actions"}]}
     />;
-    case 'client.main.vehicle': return <PageScaffold
-      pageId="client.main.vehicle"
-      title="My Vehicle"
-      section="Main"
-      scopedRole=""
-      subItems={[{"sub_id": "client.main.vehicle.unit_details", "label": "Unit details (VIN, model, year)", "internal_in": ["dealer.ops.inventory"]}, {"sub_id": "client.main.vehicle.dealer_info", "label": "Dealer info", "internal_in": ["master.mgmt.dealer_accounts"]}, {"sub_id": "client.main.vehicle.documents", "label": "Documents", "internal_in": ["dealer.ops.documents"]}]}
-    />;
+    case 'client.main.vehicle': return <InventoryListPage context="client" />;
     case 'client.main.warranties': return <PageScaffold
       pageId="client.main.warranties"
       title="My Warranties"
