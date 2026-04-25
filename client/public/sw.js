@@ -1,7 +1,7 @@
 // public/sw.js — Service Worker for Dealer Suite 360 PWA
 // Cache-first for assets, network-first for API calls
 
-const CACHE_NAME = "dealersuite360-v2.4.0";
+const CACHE_NAME = "dealersuite360-v2.5.0";
 const STATIC_ASSETS = [
   "/",
   "/dealer",
@@ -53,10 +53,17 @@ self.addEventListener("fetch", (event) => {
   // Skip Stripe
   if (url.hostname.includes("stripe.com")) return;
 
-  // Skip Clerk and Cloudflare (external auth/challenge scripts must not be cached)
+  // Skip Clerk, Cloudflare, and Google Fonts — external resources must not be cached
   if (url.hostname.includes("clerk.accounts.dev") ||
       url.hostname.includes("clerk.com") ||
-      url.hostname.includes("cloudflare.com")) return;
+      url.hostname.includes("cloudflare.com") ||
+      url.hostname.includes("fonts.googleapis.com") ||
+      url.hostname.includes("fonts.gstatic.com")) return;
+
+  // Skip auth pages — always fetch fresh so CSP headers and Clerk JS are current
+  if (url.pathname === "/login" || url.pathname.startsWith("/login/") ||
+      url.pathname === "/signup" || url.pathname.startsWith("/signup/") ||
+      url.pathname === "/portal-router") return;
 
   // API calls: network-first, fall back to cache
   if (url.pathname.startsWith("/api/")) {

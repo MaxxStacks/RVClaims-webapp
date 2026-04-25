@@ -17,7 +17,6 @@ const RevenueServices = lazy(() => import("@/pages/revenue-services"));
 const RvCoverage = lazy(() => import("@/pages/rv-coverage"));
 const Contact = lazy(() => import("@/pages/contact"));
 const PrivacyPolicy = lazy(() => import("@/pages/privacy-policy"));
-const DealerLogin = lazy(() => import("@/pages/dealer-login"));
 const LoginPage = lazy(() => import("@/pages/login"));
 const Signup = lazy(() => import("@/pages/signup"));
 const PortalRouter = lazy(() => import("@/pages/portal-router"));
@@ -27,15 +26,11 @@ const FIServices = lazy(() => import("@/pages/fi-services"));
 const NetworkMarketplace = lazy(() => import("@/pages/network-marketplace"));
 const LiveAuctions = lazy(() => import("@/pages/live-auctions"));
 const Pricing = lazy(() => import("@/pages/pricing"));
-const OperatorLogin = lazy(() => import("@/pages/operator-login"));
-const BidderLoginPage = lazy(() => import("@/pages/bidder-login"));
-const CustomerLogin = lazy(() => import("@/pages/customer-login"));
 const BookDemo = lazy(() => import("@/pages/book-demo"));
 const OnSiteRepairs = lazy(() => import("@/pages/on-site-repairs"));
 const RoadsideAssistance = lazy(() => import("@/pages/roadside-assistance"));
 const NewsPage = lazy(() => import("@/pages/news"));
 const NewsArticlePage = lazy(() => import("@/pages/news-article"));
-const ResetPassword = lazy(() => import("@/pages/reset-password"));
 const BlogPage = lazy(() => import("@/pages/blog"));
 const BlogPostPage = lazy(() => import("@/pages/blog-post"));
 const DealersPage = lazy(() => import("@/pages/dealers"));
@@ -111,17 +106,17 @@ function Router() {
         <Route path="/login" component={LoginPage} />
         <Route path="/signup" component={Signup} />
         <Route path="/portal-router" component={PortalRouter} />
-        <Route path="/dealer" component={DealerLogin} />
-        <Route path="/client-login" component={DealerLogin} />
+        <Route path="/dealer">{() => <Redirect to="/login" />}</Route>
+        <Route path="/client-login">{() => <Redirect to="/login" />}</Route>
         <Route path="/financing" component={Financing} />
         <Route path="/fi-services" component={FIServices} />
         <Route path="/network-marketplace" component={NetworkMarketplace} />
         <Route path="/live-auctions" component={LiveAuctions} />
         <Route path="/pricing" component={Pricing} />
-        <Route path="/operator" component={OperatorLogin} />
-        <Route path="/client" component={CustomerLogin} />
-        <Route path="/bidder" component={BidderLoginPage} />
-        <Route path="/bidder-login">{() => <Redirect to="/bidder" />}</Route>
+        <Route path="/operator">{() => <Redirect to="/login" />}</Route>
+        <Route path="/client">{() => <Redirect to="/login" />}</Route>
+        <Route path="/bidder">{() => <Redirect to="/login" />}</Route>
+        <Route path="/bidder-login">{() => <Redirect to="/login" />}</Route>
         <Route path="/book-demo" component={BookDemo} />
         <Route path="/on-site-repairs" component={OnSiteRepairs} />
         <Route path="/roadside-assistance" component={RoadsideAssistance} />
@@ -129,7 +124,7 @@ function Router() {
         <Route path="/news/:id" component={NewsArticlePage} />
         <Route path="/actualites" component={NewsPage} />
         <Route path="/actualites/:id" component={NewsArticlePage} />
-        <Route path="/reset-password" component={ResetPassword} />
+        <Route path="/reset-password">{() => <Redirect to="/login" />}</Route>
         <Route path="/blog/:slug" component={BlogPostPage} />
         <Route path="/blog" component={BlogPage} />
         <Route path="/dealers/listing/:slug" component={DealerListingPage} />

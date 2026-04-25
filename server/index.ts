@@ -34,7 +34,7 @@ app.use(
         mediaSrc: ["'self'"],
         workerSrc: ["'self'", "blob:"],
         objectSrc: ["'none'"],
-        frameSrc: ["'none'", "https://challenges.cloudflare.com"],
+        frameSrc: ["https://challenges.cloudflare.com"],
         baseUri: ["'self'"],
         formAction: ["'self'"],
         upgradeInsecureRequests: [],
