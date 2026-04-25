@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { LanguageProvider } from "@/hooks/use-language";
 import { AuthProvider } from "@/hooks/use-auth";
+import { AuthenticateWithRedirectCallback } from "@clerk/clerk-react";
 import { useEffect, lazy, Suspense } from "react";
 
 const Home = lazy(() => import("@/pages/home"));
@@ -101,6 +102,12 @@ function Router() {
         <Route path="/warranty-extended-service">{() => <Redirect to="/warranty-plans" />}</Route>
         <Route path="/contact" component={Contact} />
         <Route path="/privacy-policy" component={PrivacyPolicy} />
+        {/* Clerk OAuth callback routes — must be before the exact /login and /signup routes */}
+        <Route path="/login/sso-callback">{() => <AuthenticateWithRedirectCallback />}</Route>
+        <Route path="/signup/sso-callback">{() => <AuthenticateWithRedirectCallback />}</Route>
+        {/* Wildcard sub-routes so Clerk can render factor/verify steps internally */}
+        <Route path="/login/:rest*" component={LoginPage} />
+        <Route path="/signup/:rest*" component={Signup} />
         <Route path="/login" component={LoginPage} />
         <Route path="/signup" component={Signup} />
         <Route path="/portal-router" component={PortalRouter} />
