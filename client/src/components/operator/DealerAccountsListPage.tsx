@@ -97,7 +97,7 @@ export default function DealerAccountsListPage() {
                   <div style={{fontSize: 11, color: "#888", fontWeight: 400}}>{d.email}</div>
                 </td>
                 <td><span style={{padding: "2px 8px", borderRadius: 10, background: TIER_COLOR[d.brandingTier || "base"], color: "white", fontSize: 10, fontWeight: 600}}>{TIER_LABEL[d.brandingTier || "base"]}</span></td>
-                <td><span style={{padding: "2px 8px", borderRadius: 10, background: REVIEW_COLOR[d.reviewStatus || "active"], color: "white", fontSize: 10, fontWeight: 600}}>{(d.reviewStatus || "active").replace("_", " ")}</span></td>
+                <td><span style={{padding: "2px 8px", borderRadius: 10, background: REVIEW_COLOR[d.reviewStatus] || "#888", color: "white", fontSize: 10, fontWeight: 600}}>{d.reviewStatus ? d.reviewStatus.replace("_", " ") : "unknown"}</span></td>
                 <td>{d.unitCount}</td>
                 <td>{d.claimCount}</td>
                 <td style={{fontSize: 11, color: "#888"}}>{d.createdAt ? new Date(d.createdAt).toLocaleDateString() : "—"}</td>

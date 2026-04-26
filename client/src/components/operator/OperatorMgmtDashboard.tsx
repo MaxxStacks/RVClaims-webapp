@@ -27,7 +27,7 @@ export default function OperatorMgmtDashboard({ onNavigate }: Props) {
     }).finally(() => setLoading(false));
   }, []);
 
-  const activeDealers = dealers.filter(d => d.status === "active");
+  const activeDealers = dealers.filter(d => d.reviewStatus === "active");
   const now = new Date();
   const claimsThisMonth = claims.filter(c => {
     const d = new Date(c.createdAt);
@@ -79,17 +79,22 @@ export default function OperatorMgmtDashboard({ onNavigate }: Props) {
                 </thead>
                 <tbody>
                   {recentDealers.map(d => {
-                    const sty = d.status === "active"
+                    const rs = d.reviewStatus || "unknown";
+                    const sty = rs === "active"
                       ? { bg: "#dcfce7", color: "#166534" }
-                      : d.status === "pending"
+                      : rs === "pending_review"
                       ? { bg: "#fef3c7", color: "#92400e" }
-                      : { bg: "#f3f4f6", color: "#6b7280" };
+                      : rs === "suspended"
+                      ? { bg: "#fee2e2", color: "#991b1b" }
+                      : rs === "rejected"
+                      ? { bg: "#f3f4f6", color: "#6b7280" }
+                      : { bg: "#f3f4f6", color: "#9ca3af" };
                     return (
                       <tr key={d.id} style={{ borderBottom: "1px solid #f5f5f5" }}>
                         <td style={{ padding: "12px 16px", fontSize: 13, fontWeight: 600, color: "#111" }}>{d.name || "—"}</td>
                         <td style={{ padding: "12px 16px" }}>
                           <span style={{ padding: "3px 10px", borderRadius: 9999, fontSize: 11, fontWeight: 500, background: sty.bg, color: sty.color }}>
-                            {d.status || "—"}
+                            {rs.replace("_", " ")}
                           </span>
                         </td>
                         <td style={{ padding: "12px 16px", fontSize: 12, color: "#555" }}>{d.subscriptionPlan ? `Plan ${d.subscriptionPlan}` : "—"}</td>
