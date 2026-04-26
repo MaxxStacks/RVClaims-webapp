@@ -76,7 +76,7 @@ async function main() {
   const [createdUnit] = await db.insert(schema.units).values({
     vin: testVin,
     year: 2026,
-    make: "Verify-Make",
+    manufacturer: "Verify-Mfr",
     model: "Verify-Model",
     stockNumber: TAG,
     status: "in_inventory",
@@ -103,7 +103,7 @@ async function main() {
     claimNumber,
     dealershipId: dealership.id,
     unitId: createdUnit.id,
-    manufacturer: createdUnit.make,
+    manufacturer: "Verify-Mfr",
     type: "warranty",
     status: "new_unassigned",
     dealerNotes: `${TAG} - automated verification claim`,
