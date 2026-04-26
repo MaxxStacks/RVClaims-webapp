@@ -38,6 +38,16 @@ export const NOTIFICATION_TYPES = ["claim_update", "invoice", "payment", "financ
 export const FEATURE_PRIORITIES = ["low", "medium", "high"] as const;
 export const FEATURE_STATUSES = ["backlog", "under_review", "planned", "in_progress", "completed"] as const;
 
+// ==================== PHASE 2C NEW ENUMS ====================
+
+export const BRANDING_TIERS = ["base", "mid", "enterprise"] as const;
+export const MODULE_CATALOG_KEYS = [
+  "claims", "techflow", "marketplace", "parts_store", "ai_fi", "marketing", "consignment", "financing",
+] as const;
+export const MODULE_PRICING_TYPES = ["subscription", "per_use", "hybrid", "commission"] as const;
+export const MODULE_STATUSES = ["enabled", "disabled", "trial", "past_due"] as const;
+export const DEALERSHIP_REVIEW_STATUSES = ["active", "pending_review", "suspended", "rejected"] as const;
+
 // ==================== PHASE 1A NEW ENUMS ====================
 
 export const EVENT_PRIORITIES = ["informational", "action_required", "urgent"] as const;
@@ -171,9 +181,64 @@ export const dealerships = pgTable("dealerships", {
   consignmentEnabled: boolean("consignment_enabled").default(false),
   partsStoreEnabled: boolean("parts_store_enabled").default(false),
   clerkOrgId: text("clerk_org_id").unique(),
+  // Phase 2C — Branding tier + white-label fields
+  brandingTier: text("branding_tier", { enum: BRANDING_TIERS }).default("base"),
+  secondaryColor: text("secondary_color").default("#0cb22c"),
+  fontFamily: text("font_family").default("Inter"),
+  emailFromName: text("email_from_name"),
+  customSubdomain: text("custom_subdomain").unique(),
+  // Phase 2C — Pending review fields
+  reviewStatus: text("review_status", { enum: DEALERSHIP_REVIEW_STATUSES }).default("active"),
+  reviewedAt: timestamp("reviewed_at"),
+  reviewedById: uuid("reviewed_by_id"),
+  reviewNotes: text("review_notes"),
+  // Phase 2C — Normalized address fields
+  addressLine1: text("address_line_1"),
+  addressLine2: text("address_line_2"),
+  stateProvince: text("state_province"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
+
+// ==================== 4B. MODULE CATALOG ====================
+
+export const moduleCatalog = pgTable("module_catalog", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  moduleKey: text("module_key", { enum: MODULE_CATALOG_KEYS }).notNull().unique(),
+  name: text("name").notNull(),
+  description: text("description"),
+  pricingType: text("pricing_type", { enum: MODULE_PRICING_TYPES }).notNull(),
+  defaultMonthlyCents: integer("default_monthly_cents"),
+  defaultSetupCents: integer("default_setup_cents"),
+  defaultPerUseCents: integer("default_per_use_cents"),
+  defaultCommissionBps: integer("default_commission_bps"),
+  requiresBrandingTier: text("requires_branding_tier", { enum: BRANDING_TIERS }).default("base"),
+  isBaseRequired: boolean("is_base_required").default(false),
+  sortOrder: integer("sort_order").default(0),
+  active: boolean("active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// ==================== 4C. DEALERSHIP MODULES ====================
+
+export const dealershipModules = pgTable("dealership_modules", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  dealershipId: uuid("dealership_id").notNull(),
+  moduleKey: text("module_key", { enum: MODULE_CATALOG_KEYS }).notNull(),
+  status: text("status", { enum: MODULE_STATUSES }).default("enabled"),
+  monthlyCents: integer("monthly_cents"),
+  setupCents: integer("setup_cents"),
+  perUseCents: integer("per_use_cents"),
+  commissionBps: integer("commission_bps"),
+  enabledAt: timestamp("enabled_at").defaultNow(),
+  enabledById: uuid("enabled_by_id"),
+  disabledAt: timestamp("disabled_at"),
+  trialEndsAt: timestamp("trial_ends_at"),
+  notes: text("notes"),
+}, (table) => [
+  index("dealership_modules_dealership_idx").on(table.dealershipId),
+  index("dealership_modules_module_idx").on(table.moduleKey),
+]);
 
 // ==================== 5. UNITS ====================
 
@@ -748,6 +813,8 @@ export type Invitation = typeof invitations.$inferSelect;
 export type Session = typeof sessions.$inferSelect;
 export type AuditLogEntry = typeof auditLog.$inferSelect;
 export type PlatformSetting = typeof platformSettings.$inferSelect;
+export type ModuleCatalog = typeof moduleCatalog.$inferSelect;
+export type DealershipModule = typeof dealershipModules.$inferSelect;
 
 // Backward compat with existing codebase
 export const contacts = pgTable("contacts", {

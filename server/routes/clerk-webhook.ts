@@ -152,6 +152,23 @@ router.post("/", async (req: Request, res: Response) => {
           });
           console.log(`[clerk-webhook] user.created → inserted: ${email}`);
         }
+
+        // Phase 2C: auto-create pending dealership for public dealer signups
+        const meta = data.public_metadata || {};
+        if (meta.dealerSignupName && meta.role === "dealer_owner_pending") {
+          const { dealerships } = await import("@shared/schema");
+          const [pendingDealership] = await db.insert(dealerships).values({
+            name: meta.dealerSignupName,
+            email: email,
+            status: "pending",
+            reviewStatus: "pending_review",
+            brandingTier: "base",
+          }).returning();
+          await db.update(users)
+            .set({ dealershipId: pendingDealership.id, role: "dealer_owner", roles: ["dealer_owner"] })
+            .where(eq(users.clerkUserId, data.id));
+          console.log(`[clerk-webhook] Created pending dealership: ${pendingDealership.name}`);
+        }
         break;
       }
 

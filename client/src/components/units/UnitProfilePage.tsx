@@ -19,12 +19,14 @@ export default function UnitProfilePage({ context }: Props) {
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState("Identity");
   const [editing, setEditing] = useState<Record<string, any>>({});
-  const [showNewClaim, setShowNewClaim] = useState(false);
   const [photoRefreshKey, setPhotoRefreshKey] = useState(0);
   const [saving, setSaving] = useState(false);
+  const [siblingUnits, setSiblingUnits] = useState<any[]>([]);
+  const [siblingFilter, setSiblingFilter] = useState({ search: "", status: "" });
 
   const tabs = context === "client" ? TABS_CLIENT : TABS_ALL;
   const canEdit = context !== "client";
+  const showSidebar = context !== "client";
 
   async function refresh() {
     setLoading(true);
@@ -40,6 +42,14 @@ export default function UnitProfilePage({ context }: Props) {
   }
 
   useEffect(() => { refresh(); }, [params.id]);
+
+  useEffect(() => {
+    if (!showSidebar) return;
+    const p = new URLSearchParams();
+    if (siblingFilter.status) p.set("status", siblingFilter.status);
+    if (siblingFilter.search) p.set("search", siblingFilter.search);
+    apiFetch<any[]>(`/api/v6/units?${p.toString()}`).then(setSiblingUnits).catch(() => {});
+  }, [siblingFilter.status, siblingFilter.search, showSidebar]);
 
   async function save() {
     setSaving(true);
@@ -62,27 +72,82 @@ export default function UnitProfilePage({ context }: Props) {
     }
   }
 
-  async function submitNewClaim(form: { type: string; dealerNotes: string }) {
-    await apiFetch("/api/v6/claims", {
-      method: "POST",
-      body: JSON.stringify({ unitId: params.id, type: form.type, dealerNotes: form.dealerNotes }),
-    });
-    setShowNewClaim(false);
-    await refresh();
-  }
-
   if (loading) return <div style={{ padding: 40, textAlign: "center", color: "#888" }}>Loading...</div>;
   if (!data) return <div style={{ padding: 40, textAlign: "center", color: "#c0392b" }}>Unit not found</div>;
 
   const { unit, claims, photos, customer, dealership } = data;
 
   return (
-    <div style={{ padding: 24 }}>
+    <div style={{ display: "flex", minHeight: "100vh", background: "#f7f9fc" }}>
+      {showSidebar && (
+        <div style={{ width: 260, background: "white", borderRight: "1px solid #e5eaf2", display: "flex", flexDirection: "column", overflow: "hidden", flexShrink: 0 }}>
+          <div style={{ padding: 16, borderBottom: "1px solid #f0f2f5" }}>
+            <button onClick={() => navigate(`/${context}-v6`)} style={{ background: "none", border: 0, color: "#033280", fontSize: 12, cursor: "pointer", padding: 0, marginBottom: 12 }}>
+              ← All Inventory
+            </button>
+            <div style={{ fontSize: 11, color: "#888", textTransform: "uppercase", fontWeight: 600, marginBottom: 8 }}>Other Units</div>
+            <input
+              placeholder="Search VIN, make..."
+              value={siblingFilter.search}
+              onChange={e => setSiblingFilter({ ...siblingFilter, search: e.target.value })}
+              style={{ width: "100%", padding: "6px 8px", fontSize: 12, border: "1px solid #d5dbe5", borderRadius: 4, marginBottom: 6, boxSizing: "border-box" }}
+            />
+            <select
+              value={siblingFilter.status}
+              onChange={e => setSiblingFilter({ ...siblingFilter, status: e.target.value })}
+              style={{ width: "100%", padding: "6px 8px", fontSize: 11, border: "1px solid #d5dbe5", borderRadius: 4 }}
+            >
+              <option value="">All statuses</option>
+              <option value="in_inventory">In Stock</option>
+              <option value="sold">Sold</option>
+              <option value="in_service">In Service</option>
+              <option value="consigned">Consigned</option>
+            </select>
+          </div>
+          <div style={{ flex: 1, overflowY: "auto", padding: "8px 0" }}>
+            {siblingUnits.length === 0 ? (
+              <div style={{ padding: 16, fontSize: 11, color: "#888", textAlign: "center" }}>No units</div>
+            ) : siblingUnits.map(u => {
+              const isActive = u.id === params.id;
+              return (
+                <div
+                  key={u.id}
+                  onClick={() => navigate(`/${context}-v6/units/${u.id}`)}
+                  style={{
+                    padding: "10px 16px", cursor: "pointer",
+                    background: isActive ? "#eaf1fb" : "transparent",
+                    borderLeft: isActive ? "3px solid #033280" : "3px solid transparent",
+                  }}
+                  onMouseEnter={e => { if (!isActive) e.currentTarget.style.background = "#f7f9fc"; }}
+                  onMouseLeave={e => { if (!isActive) e.currentTarget.style.background = "transparent"; }}
+                >
+                  <div style={{ fontSize: 12, fontWeight: 600, color: isActive ? "#033280" : "#222" }}>
+                    {u.year} {u.make}
+                  </div>
+                  <div style={{ fontSize: 10, color: "#888", fontFamily: "monospace", marginTop: 2 }}>
+                    {u.vin?.slice(-8)}
+                  </div>
+                  <div style={{ display: "flex", gap: 4, marginTop: 4 }}>
+                    <span style={{ fontSize: 9, padding: "1px 5px", background: "#f0f2f5", color: "#666", borderRadius: 3 }}>{u.status?.replace(/_/g, " ")}</span>
+                    {u.mfrWarrantyStatus === "active" && <span style={{ fontSize: 9, padding: "1px 5px", background: "#dcfce7", color: "#166534", borderRadius: 3 }}>● W</span>}
+                    {u.mfrWarrantyStatus === "expiring" && <span style={{ fontSize: 9, padding: "1px 5px", background: "#fef3c7", color: "#92400e", borderRadius: 3 }}>● W</span>}
+                    {u.mfrWarrantyStatus === "expired" && <span style={{ fontSize: 9, padding: "1px 5px", background: "#fee2e2", color: "#991b1b", borderRadius: 3 }}>● W</span>}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      <div style={{ flex: 1, padding: 24, overflowY: "auto" }}>
       <div style={{ marginBottom: 16 }}>
-        <button onClick={() => navigate(`/${context}-v6`)}
-          style={{ background: "none", border: 0, color: "#033280", fontSize: 12, cursor: "pointer", marginBottom: 8, padding: 0 }}>
-          ← Back to inventory
-        </button>
+        {!showSidebar && (
+          <button onClick={() => navigate(`/${context}-v6`)}
+            style={{ background: "none", border: 0, color: "#033280", fontSize: 12, cursor: "pointer", marginBottom: 8, padding: 0 }}>
+            ← Back to inventory
+          </button>
+        )}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
           <div>
             <div style={{ fontSize: 11, color: "#888", textTransform: "uppercase", fontWeight: 600 }}>
@@ -98,7 +163,7 @@ export default function UnitProfilePage({ context }: Props) {
             </div>
           </div>
           {context === "dealer" && (
-            <button onClick={() => setShowNewClaim(true)}
+            <button onClick={() => navigate(`/dealer-v6/units/${params.id}/claims/new`)}
               style={{ padding: "10px 18px", background: "#0cb22c", color: "white", border: 0, borderRadius: 6, fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
               + New Claim
             </button>
@@ -271,13 +336,7 @@ export default function UnitProfilePage({ context }: Props) {
         </div>
       )}
 
-      {showNewClaim && (
-        <NewClaimModal
-          unit={unit}
-          onSubmit={submitNewClaim}
-          onClose={() => setShowNewClaim(false)}
-        />
-      )}
+      </div>
     </div>
   );
 }
@@ -327,62 +386,3 @@ function USection({ title, status, children }: any) {
   );
 }
 
-function NewClaimModal({ unit, onSubmit, onClose }: any) {
-  const [form, setForm] = useState({ type: "", dealerNotes: "" });
-  const [submitting, setSubmitting] = useState(false);
-
-  async function handleSubmit() {
-    if (!form.type) { alert("Claim type required"); return; }
-    setSubmitting(true);
-    try { await onSubmit(form); }
-    finally { setSubmitting(false); }
-  }
-
-  return (
-    <div onClick={onClose}
-      style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000 }}>
-      <div onClick={e => e.stopPropagation()}
-        style={{ background: "white", padding: 24, borderRadius: 8, minWidth: 480 }}>
-        <h2 style={{ margin: "0 0 8px" }}>New Claim</h2>
-        <div style={{ fontSize: 12, color: "#666", marginBottom: 16 }}>
-          For {unit.year} {unit.manufacturer} {unit.model} · VIN <span style={{ fontFamily: "monospace" }}>{unit.vin}</span>
-        </div>
-        <div style={{ padding: 12, background: "#f7f9fc", borderRadius: 6, marginBottom: 16, fontSize: 12 }}>
-          <strong>Manufacturer:</strong> {unit.manufacturer} (auto-filled from unit)<br />
-          <strong>Mfr warranty:</strong>{" "}
-          {unit.mfrWarrantyStatus === "active" ? "✓ Active"
-            : unit.mfrWarrantyStatus === "expired" ? "Expired"
-            : unit.mfrWarrantyStatus === "expiring" ? "Expiring soon"
-            : "Not set"}
-        </div>
-        <div style={{ display: "grid", gap: 10 }}>
-          <label style={{ fontSize: 12 }}>Claim type *
-            <select value={form.type} onChange={e => setForm({ ...form, type: e.target.value })}
-              style={{ width: "100%", padding: 8, marginTop: 4 }}>
-              <option value="">Select type</option>
-              <option value="warranty">Warranty</option>
-              <option value="extended_warranty">Extended Warranty</option>
-              <option value="pdi">PDI</option>
-              <option value="daf">DAF</option>
-              <option value="insurance">Insurance</option>
-            </select>
-          </label>
-          <label style={{ fontSize: 12 }}>Notes
-            <textarea value={form.dealerNotes} onChange={e => setForm({ ...form, dealerNotes: e.target.value })}
-              style={{ width: "100%", padding: 8, marginTop: 4, minHeight: 100 }} />
-          </label>
-          <div style={{ display: "flex", gap: 8, marginTop: 12, justifyContent: "flex-end" }}>
-            <button onClick={onClose}
-              style={{ padding: "8px 14px", border: "1px solid #ccc", background: "white", borderRadius: 6, cursor: "pointer" }}>
-              Cancel
-            </button>
-            <button onClick={handleSubmit} disabled={submitting}
-              style={{ padding: "8px 14px", background: "#033280", color: "white", border: 0, borderRadius: 6, cursor: "pointer", fontWeight: 600 }}>
-              {submitting ? "Creating..." : "Create Claim"}
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}

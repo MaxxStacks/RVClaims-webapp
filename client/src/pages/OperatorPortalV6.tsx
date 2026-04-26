@@ -10,6 +10,7 @@ import NotificationBell from "@/components/NotificationBell";
 import ClaimQueuePage from "@/components/operator/ClaimQueuePage";
 import PartsManagementPage from "@/components/operator/PartsManagementPage";
 import InventoryListPage from "@/components/units/InventoryListPage";
+import DealerAccountsListPage from "@/components/operator/DealerAccountsListPage";
 
 // ============================================================================
 // V6 SCHEMA METADATA — role-scoping and RBAC rules baked in
@@ -204,13 +205,7 @@ function renderPage(pageId: string, userRole: string) {
       scopedRole=""
       subItems={[{"sub_id": "master.mgmt.dashboard.revenue_overview", "label": "Revenue overview", "internal_in": ["master.mgmt.revenue_billing"]}, {"sub_id": "master.mgmt.dashboard.active_dealers_growth", "label": "Active dealers & growth", "internal_in": ["master.mgmt.dealer_accounts"]}, {"sub_id": "master.mgmt.dashboard.subscription_mrr", "label": "Subscription MRR", "ext_in": [{"sys": "stripe", "act": "subscription metrics"}]}, {"sub_id": "master.mgmt.dashboard.alerts_notifications", "label": "Alerts & notifications", "internal_in": ["system.event_feed"]}]}
     />;
-    case 'master.mgmt.dealer_accounts': return <PageScaffold
-      pageId="master.mgmt.dealer_accounts"
-      title="Dealer Accounts"
-      section="Management"
-      scopedRole=""
-      subItems={[{"sub_id": "master.mgmt.dealer_accounts.all_dealers", "label": "All Dealers", "notes": "list view, no external"}, {"sub_id": "master.mgmt.dealer_accounts.add_new_dealer", "label": "Add New Dealer", "internal_out": ["dealer.* (provisions tenant)"], "ext_out": [{"sys": "stripe", "act": "create customer + subscription"}, {"sys": "email", "act": "welcome + invite"}]}, {"sub_id": "master.mgmt.dealer_accounts.df_account_overview", "label": "Dealer File \u203a Account overview"}, {"sub_id": "master.mgmt.dealer_accounts.df_subscription_plan", "label": "Dealer File \u203a Subscription & plan", "ext_in": [{"sys": "stripe", "act": "subscription data"}], "ext_out": [{"sys": "stripe", "act": "modify subscription"}]}, {"sub_id": "master.mgmt.dealer_accounts.df_services_enrolled", "label": "Dealer File \u203a Services enrolled"}, {"sub_id": "master.mgmt.dealer_accounts.df_custom_pricing", "label": "Dealer File \u203a Custom pricing & terms"}, {"sub_id": "master.mgmt.dealer_accounts.df_billing_history", "label": "Dealer File \u203a Billing history", "ext_in": [{"sys": "stripe", "act": "invoice history"}]}, {"sub_id": "master.mgmt.dealer_accounts.df_documents_contracts", "label": "Dealer File \u203a Documents & contracts"}, {"sub_id": "master.mgmt.dealer_accounts.df_activity_log", "label": "Dealer File \u203a Activity log"}]}
-    />;
+    case 'master.mgmt.dealer_accounts': return <DealerAccountsListPage />;
     case 'master.mgmt.catalog': return <PageScaffold
       pageId="master.mgmt.catalog"
       title="Product & Service Catalog"

@@ -32,13 +32,6 @@ export default function InventoryListPage({ context }: Props) {
   const [units, setUnits] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState({ status: "", search: "" });
-  const [showNewUnit, setShowNewUnit] = useState(false);
-  const [newUnit, setNewUnit] = useState({
-    vin: "", year: new Date().getFullYear(), make: "", model: "",
-    stockNumber: "", status: "in_inventory",
-  });
-  const [creating, setCreating] = useState(false);
-
   async function refresh() {
     setLoading(true);
     try {
@@ -57,25 +50,6 @@ export default function InventoryListPage({ context }: Props) {
 
   useEffect(() => { refresh(); }, [filter.status]);
 
-  async function createUnit() {
-    if (!newUnit.vin || !newUnit.make) {
-      alert("VIN and make are required");
-      return;
-    }
-    setCreating(true);
-    try {
-      const created = await apiFetch<any>("/api/v6/units", {
-        method: "POST",
-        body: JSON.stringify({ ...newUnit, manufacturer: newUnit.make }),
-      });
-      setShowNewUnit(false);
-      setNewUnit({ vin: "", year: new Date().getFullYear(), make: "", model: "", stockNumber: "", status: "in_inventory" });
-      navigate(`/${context}-v6/units/${created.id}`);
-    } finally {
-      setCreating(false);
-    }
-  }
-
   const kpis = {
     total: units.length,
     inStock: units.filter(u => u.status === "in_inventory" || u.status === "on_lot").length,
@@ -91,7 +65,7 @@ export default function InventoryListPage({ context }: Props) {
           <h1 style={{ margin: "4px 0 0", fontSize: 22, fontWeight: 600 }}>Units</h1>
         </div>
         {context !== "client" && (
-          <button onClick={() => setShowNewUnit(true)}
+          <button onClick={() => navigate(`/${context}-v6/units/new`)}
             style={{ padding: "8px 16px", background: "#033280", color: "white", border: 0, borderRadius: 6, fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
             + New Unit
           </button>
@@ -179,63 +153,6 @@ export default function InventoryListPage({ context }: Props) {
         </table>
       )}
 
-      {showNewUnit && (
-        <div onClick={() => setShowNewUnit(false)}
-          style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000 }}>
-          <div onClick={e => e.stopPropagation()}
-            style={{ background: "white", padding: 24, borderRadius: 8, minWidth: 480, maxWidth: 560 }}>
-            <h2 style={{ margin: "0 0 16px" }}>New Unit</h2>
-            <div style={{ display: "grid", gap: 10 }}>
-              <label style={{ fontSize: 12 }}>VIN *
-                <input value={newUnit.vin}
-                  onChange={e => setNewUnit({ ...newUnit, vin: e.target.value.toUpperCase() })}
-                  style={{ width: "100%", padding: 8, marginTop: 4, fontFamily: "monospace" }} maxLength={17} />
-              </label>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 2fr 2fr", gap: 8 }}>
-                <label style={{ fontSize: 12 }}>Year *
-                  <input type="number" value={newUnit.year}
-                    onChange={e => setNewUnit({ ...newUnit, year: parseInt(e.target.value, 10) })}
-                    style={{ width: "100%", padding: 8, marginTop: 4 }} />
-                </label>
-                <label style={{ fontSize: 12 }}>Make *
-                  <input value={newUnit.make}
-                    onChange={e => setNewUnit({ ...newUnit, make: e.target.value })}
-                    style={{ width: "100%", padding: 8, marginTop: 4 }} placeholder="Jayco, Forest River..." />
-                </label>
-                <label style={{ fontSize: 12 }}>Model
-                  <input value={newUnit.model}
-                    onChange={e => setNewUnit({ ...newUnit, model: e.target.value })}
-                    style={{ width: "100%", padding: 8, marginTop: 4 }} />
-                </label>
-              </div>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
-                <label style={{ fontSize: 12 }}>Stock #
-                  <input value={newUnit.stockNumber}
-                    onChange={e => setNewUnit({ ...newUnit, stockNumber: e.target.value })}
-                    style={{ width: "100%", padding: 8, marginTop: 4 }} />
-                </label>
-                <label style={{ fontSize: 12 }}>Status
-                  <select value={newUnit.status}
-                    onChange={e => setNewUnit({ ...newUnit, status: e.target.value })}
-                    style={{ width: "100%", padding: 8, marginTop: 4 }}>
-                    {Object.entries(STATUS_LABEL).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
-                  </select>
-                </label>
-              </div>
-              <div style={{ display: "flex", gap: 8, marginTop: 12, justifyContent: "flex-end" }}>
-                <button onClick={() => setShowNewUnit(false)}
-                  style={{ padding: "8px 14px", border: "1px solid #ccc", background: "white", borderRadius: 6, cursor: "pointer" }}>
-                  Cancel
-                </button>
-                <button onClick={createUnit} disabled={creating}
-                  style={{ padding: "8px 14px", background: "#033280", color: "white", border: 0, borderRadius: 6, cursor: "pointer", fontWeight: 600 }}>
-                  {creating ? "Creating..." : "Create Unit"}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

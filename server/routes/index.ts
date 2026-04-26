@@ -29,6 +29,7 @@ import usersV6Router from './users-v6';
 import uploadsV6Router from './uploads-v6';
 import partsV6Router from './parts-v6';
 import unitsV6Router from './units-v6';
+import dealershipsV6Router from './dealerships-v6';
 
 // Import existing routes for backward compat
 import { storage } from "../storage";
@@ -92,6 +93,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.use('/api/v6/uploads', uploadsV6Router);
   app.use('/api/v6/parts-orders', partsV6Router);
   app.use('/api/v6/units', unitsV6Router);
+  app.use('/api/v6/dealerships', dealershipsV6Router);
 
   // ==================== EXISTING ROUTES (backward compat) ====================
 

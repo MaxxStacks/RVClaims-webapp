@@ -84,6 +84,11 @@ const UnitProfilePageClient = lazy(async () => {
   const { default: Comp } = await import("@/components/units/UnitProfilePage");
   return { default: () => <Comp context="client" /> };
 });
+const DealerAccountsListPage = lazy(() => import("@/components/operator/DealerAccountsListPage"));
+const NewDealershipPage = lazy(() => import("@/components/operator/NewDealershipPage"));
+const DealershipDetailPage = lazy(() => import("@/components/operator/DealershipDetailPage"));
+const NewUnitPage = lazy(() => import("@/components/units/NewUnitPage"));
+const NewClaimPage = lazy(() => import("@/components/claims/NewClaimPage"));
 
 function ScrollToTop() {
   const [location] = useLocation();
@@ -135,7 +140,12 @@ function Router() {
         <Route path="/bidder">{() => <Redirect to="/login" />}</Route>
         <Route path="/bidder-login">{() => <Redirect to="/login" />}</Route>
         {/* v6 portal shells — side-by-side with existing portals for validation */}
+        <Route path="/operator-v6/dealerships/new" component={NewDealershipPage} />
+        <Route path="/operator-v6/dealerships/:id" component={DealershipDetailPage} />
+        <Route path="/operator-v6/dealerships" component={DealerAccountsListPage} />
         <Route path="/operator-v6/units/:id" component={UnitProfilePageOperator} />
+        <Route path="/dealer-v6/units/:unitId/claims/new" component={NewClaimPage} />
+        <Route path="/dealer-v6/units/new" component={NewUnitPage} />
         <Route path="/dealer-v6/units/:id" component={UnitProfilePageDealer} />
         <Route path="/client-v6/units/:id" component={UnitProfilePageClient} />
         <Route path="/operator-v6" component={OperatorPortalV6} />
