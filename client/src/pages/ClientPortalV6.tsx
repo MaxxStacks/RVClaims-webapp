@@ -6,7 +6,8 @@ import { useState, useEffect } from "react";
 import ds360Icon from "@assets/ds360_favicon.png";
 import { useUser, useClerk } from "@clerk/clerk-react";
 import { useApiFetch } from "@/lib/api";
-import AppBar from "@/components/AppBar";
+import PortalShell from "@/components/layout/PortalShell";
+import ClientMainNav from "@/pages/nav/ClientMainNav";
 import ClientClaimsPage from "@/components/client/ClientClaimsPage";
 import InventoryListPage from "@/components/units/InventoryListPage";
 
@@ -111,66 +112,17 @@ export default function ClientPortalV6() {
   }
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
-      <AppBar context="client" />
-      <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
-      <nav className={`sidebar${sidebarCollapsed ? " collapsed" : ""}`} style={{ position: "relative", flexShrink: 0, height: "100%" }}>
-        <div className="sidebar-logo">
-          <img src={ds360Icon} width={36} height={36} style={{borderRadius: 8}} alt="DS360" />
-          <div className="sidebar-logo-text">
-            <div className="sidebar-logo-sub" style={{fontSize: 12, fontWeight: 600}}>Client Portal</div>
-          </div>
-          <span className="sidebar-badge">Client</span>
-        </div>
-        <div className="sidebar-nav">
-    {anyVisible(["client.main.dashboard"]) && <div className="nav-section">
-      <div className="nav-label">Overview</div>
-      {canSeePage("client.main.dashboard") && <div className={`nav-item ${isNavActive("client.main.dashboard") ? "active" : ""}`} onClick={() => showPage("client.main.dashboard")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</div>}
-    </div>}
-    {anyVisible(["client.main.vehicle", "client.main.warranties", "client.main.services", "client.main.claims", "client.main.documents", "client.main.fi_offers", "client.main.messages", "client.main.account", "client.main.financing", "client.main.parts_store", "client.main.service_appointments"]) && <div className="nav-section">
-      <div className="nav-label">Main</div>
-      {canSeePage("client.main.vehicle") && <div className={`nav-item ${isNavActive("client.main.vehicle") ? "active" : ""}`} onClick={() => showPage("client.main.vehicle")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4a2 2 0 012 2v6a2 2 0 01-2 2h-4"/><circle cx="5.5" cy="18" r="2.5"/><circle cx="18.5" cy="18" r="2.5"/></svg>My Vehicle</div>}
-      {canSeePage("client.main.warranties") && <div className={`nav-item ${isNavActive("client.main.warranties") ? "active" : ""}`} onClick={() => showPage("client.main.warranties")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>My Warranties</div>}
-      {canSeePage("client.main.services") && <div className={`nav-item ${isNavActive("client.main.services") ? "active" : ""}`} onClick={() => showPage("client.main.services")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>My Services</div>}
-      {canSeePage("client.main.claims") && <div className={`nav-item ${isNavActive("client.main.claims") ? "active" : ""}`} onClick={() => showPage("client.main.claims")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Claims</div>}
-      {canSeePage("client.main.documents") && <div className={`nav-item ${isNavActive("client.main.documents") ? "active" : ""}`} onClick={() => showPage("client.main.documents")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Documents</div>}
-      {canSeePage("client.main.fi_offers") && <div className={`nav-item ${isNavActive("client.main.fi_offers") ? "active" : ""}`} onClick={() => showPage("client.main.fi_offers")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>F&amp;I Offers</div>}
-      {canSeePage("client.main.messages") && <div className={`nav-item ${isNavActive("client.main.messages") ? "active" : ""}`} onClick={() => showPage("client.main.messages")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Messages</div>}
-      {canSeePage("client.main.account") && <div className={`nav-item ${isNavActive("client.main.account") ? "active" : ""}`} onClick={() => showPage("client.main.account")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Account</div>}
-      {canSeePage("client.main.financing") && <div className={`nav-item ${isNavActive("client.main.financing") ? "active" : ""}`} onClick={() => showPage("client.main.financing")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>My Financing</div>}
-      {canSeePage("client.main.parts_store") && <div className={`nav-item ${isNavActive("client.main.parts_store") ? "active" : ""}`} onClick={() => showPage("client.main.parts_store")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Parts Store</div>}
-      {canSeePage("client.main.service_appointments") && <div className={`nav-item ${isNavActive("client.main.service_appointments") ? "active" : ""}`} onClick={() => showPage("client.main.service_appointments")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Service Appointments</div>}
-    </div>}
-        </div>
-        <div className="sidebar-footer">
-          <div className="user-info" onClick={() => showPage("client.main.dashboard")} style={{cursor: "pointer"}}>
-            <div className="user-avatar">{userInitials}</div>
-            <div>
-              <div className="user-name">{userDisplayName}</div>
-              <div className="user-role">{roleLabel}</div>
-            </div>
-          </div>
-          <button
-            onClick={async () => { await logout(); window.location.href = "/"; }}
-            style={{width: "100%", marginTop: 8, padding: "7px 12px", background: "none", border: "1px solid #e0e0e0", borderRadius: 6, fontSize: 12, color: "#888", cursor: "pointer", fontFamily: "inherit", textAlign: "left", display: "flex", alignItems: "center", gap: 6}}
-          >
-            <svg width={13} height={13} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-              <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/>
-              <polyline points="16 17 21 12 16 7"/>
-              <line x1="21" y1="12" x2="9" y2="12"/>
-            </svg>
-            Sign Out
-          </button>
-        </div>
+    <PortalShell context="client" mainNav={
+      <nav className={`sidebar${sidebarCollapsed ? " collapsed" : ""}`} style={{ position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column" }}>
+        <ClientMainNav currentPage={currentPage} onShowPage={setCurrentPage} />
       </nav>
-
+    }>
       <main className="main" style={{ marginLeft: 0, flex: 1, overflowY: "auto" }}>
         <div className="content">
           {renderPage(currentPage, userRole)}
         </div>
       </main>
-      </div>
-    </div>
+    </PortalShell>
   );
 }
 

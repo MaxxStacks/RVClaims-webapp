@@ -94,11 +94,8 @@ export default function AppBar({ context, contextLabel }: AppBarProps) {
       display: "flex",
       alignItems: "center",
       justifyContent: "space-between",
-      paddingLeft: 260,
+      paddingLeft: 16,
       paddingRight: 16,
-      position: "sticky",
-      top: 0,
-      zIndex: 150,
       flexShrink: 0,
     }}>
       {/* Left: portal label */}

@@ -6,7 +6,8 @@ import { useState, useEffect } from "react";
 import ds360Icon from "@assets/ds360_favicon.png";
 import { useUser, useClerk } from "@clerk/clerk-react";
 import { useApiFetch } from "@/lib/api";
-import AppBar from "@/components/AppBar";
+import PortalShell from "@/components/layout/PortalShell";
+import BidderMainNav from "@/pages/nav/BidderMainNav";
 
 // ============================================================================
 // V6 SCHEMA METADATA — role-scoping and RBAC rules baked in
@@ -109,66 +110,17 @@ export default function BidderPortalV6() {
   }
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
-      <AppBar context="bidder" />
-      <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
-      <nav className={`sidebar${sidebarCollapsed ? " collapsed" : ""}`} style={{ position: "relative", flexShrink: 0, height: "100%" }}>
-        <div className="sidebar-logo">
-          <img src={ds360Icon} width={36} height={36} style={{borderRadius: 8}} alt="DS360" />
-          <div className="sidebar-logo-text">
-            <div className="sidebar-logo-sub" style={{fontSize: 12, fontWeight: 600}}>Bidder Portal</div>
-          </div>
-          <span className="sidebar-badge">Bidder</span>
-        </div>
-        <div className="sidebar-nav">
-    {anyVisible(["bidder.main.live_auctions", "bidder.main.browse", "bidder.main.my_bids", "bidder.main.escrow"]) && <div className="nav-section">
-      <div className="nav-label">Main</div>
-      {canSeePage("bidder.main.live_auctions") && <div className={`nav-item ${isNavActive("bidder.main.live_auctions") ? "active" : ""}`} onClick={() => showPage("bidder.main.live_auctions")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>Live Monthly Auctions</div>}
-      {canSeePage("bidder.main.browse") && <div className={`nav-item ${isNavActive("bidder.main.browse") ? "active" : ""}`} onClick={() => showPage("bidder.main.browse")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4a2 2 0 012 2v6a2 2 0 01-2 2h-4"/><circle cx="5.5" cy="18" r="2.5"/><circle cx="18.5" cy="18" r="2.5"/></svg>Browse Units</div>}
-      {canSeePage("bidder.main.my_bids") && <div className={`nav-item ${isNavActive("bidder.main.my_bids") ? "active" : ""}`} onClick={() => showPage("bidder.main.my_bids")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>My Bids</div>}
-      {canSeePage("bidder.main.escrow") && <div className={`nav-item ${isNavActive("bidder.main.escrow") ? "active" : ""}`} onClick={() => showPage("bidder.main.escrow")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>Escrow &amp; Payments</div>}
-    </div>}
-    {anyVisible(["bidder.account.profile", "bidder.account.verification", "bidder.account.payment_methods", "bidder.account.settings"]) && <div className="nav-section">
-      <div className="nav-label">Account</div>
-      {canSeePage("bidder.account.profile") && <div className={`nav-item ${isNavActive("bidder.account.profile") ? "active" : ""}`} onClick={() => showPage("bidder.account.profile")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>Profile</div>}
-      {canSeePage("bidder.account.verification") && <div className={`nav-item ${isNavActive("bidder.account.verification") ? "active" : ""}`} onClick={() => showPage("bidder.account.verification")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>Verification</div>}
-      {canSeePage("bidder.account.payment_methods") && <div className={`nav-item ${isNavActive("bidder.account.payment_methods") ? "active" : ""}`} onClick={() => showPage("bidder.account.payment_methods")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>Payment Methods</div>}
-      {canSeePage("bidder.account.settings") && <div className={`nav-item ${isNavActive("bidder.account.settings") ? "active" : ""}`} onClick={() => showPage("bidder.account.settings")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>Settings</div>}
-    </div>}
-    {anyVisible(["bidder.main.dashboard"]) && <div className="nav-section">
-      <div className="nav-label">Overview</div>
-      {canSeePage("bidder.main.dashboard") && <div className={`nav-item ${isNavActive("bidder.main.dashboard") ? "active" : ""}`} onClick={() => showPage("bidder.main.dashboard")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</div>}
-    </div>}
-        </div>
-        <div className="sidebar-footer">
-          <div className="user-info" onClick={() => showPage("bidder.main.dashboard")} style={{cursor: "pointer"}}>
-            <div className="user-avatar">{userInitials}</div>
-            <div>
-              <div className="user-name">{userDisplayName}</div>
-              <div className="user-role">{roleLabel}</div>
-            </div>
-          </div>
-          <button
-            onClick={async () => { await logout(); window.location.href = "/"; }}
-            style={{width: "100%", marginTop: 8, padding: "7px 12px", background: "none", border: "1px solid #e0e0e0", borderRadius: 6, fontSize: 12, color: "#888", cursor: "pointer", fontFamily: "inherit", textAlign: "left", display: "flex", alignItems: "center", gap: 6}}
-          >
-            <svg width={13} height={13} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-              <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/>
-              <polyline points="16 17 21 12 16 7"/>
-              <line x1="21" y1="12" x2="9" y2="12"/>
-            </svg>
-            Sign Out
-          </button>
-        </div>
+    <PortalShell context="bidder" mainNav={
+      <nav className={`sidebar${sidebarCollapsed ? " collapsed" : ""}`} style={{ position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column" }}>
+        <BidderMainNav currentPage={currentPage} onShowPage={setCurrentPage} />
       </nav>
-
+    }>
       <main className="main" style={{ marginLeft: 0, flex: 1, overflowY: "auto" }}>
         <div className="content">
           {renderPage(currentPage, userRole)}
         </div>
       </main>
-      </div>
-    </div>
+    </PortalShell>
   );
 }
 

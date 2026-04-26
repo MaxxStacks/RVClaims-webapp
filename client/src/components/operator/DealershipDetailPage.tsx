@@ -1,19 +1,20 @@
 import { useEffect, useState } from "react";
-import { useParams, useLocation } from "wouter";
+import { useParams } from "wouter";
 import { useApiFetch } from "@/lib/api";
+import PortalShell from "@/components/layout/PortalShell";
+import SectionLayout from "@/components/layout/SectionLayout";
+import DealersContextSidebar from "@/components/operator/DealersContextSidebar";
+import OperatorMainNav from "@/pages/nav/OperatorMainNav";
 
 const TABS = ["Overview", "Owner & Staff", "Modules & Pricing", "Subscription", "Branding", "Activity"] as const;
 
 export default function DealershipDetailPage() {
   const params = useParams<{ id: string }>();
   const apiFetch = useApiFetch();
-  const [, navigate] = useLocation();
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState<string>("Overview");
   const [edit, setEdit] = useState<Record<string, any>>({});
-  const [siblingDealers, setSiblingDealers] = useState<any[]>([]);
-  const [siblingFilter, setSiblingFilter] = useState({ search: "", reviewStatus: "" });
 
   async function refresh() {
     setLoading(true);
@@ -24,13 +25,6 @@ export default function DealershipDetailPage() {
     } finally { setLoading(false); }
   }
   useEffect(() => { refresh(); }, [params.id]);
-
-  useEffect(() => {
-    const p = new URLSearchParams();
-    if (siblingFilter.reviewStatus) p.set("reviewStatus", siblingFilter.reviewStatus);
-    if (siblingFilter.search) p.set("search", siblingFilter.search);
-    apiFetch<any[]>(`/api/v6/dealerships?${p.toString()}`).then(setSiblingDealers).catch(() => {});
-  }, [siblingFilter.reviewStatus, siblingFilter.search]);
 
   async function save() {
     const allowed = ["name", "email", "phone", "addressLine1", "addressLine2", "city", "stateProvince", "postalCode", "country", "brandingTier", "status", "logoUrl", "primaryColor", "secondaryColor", "fontFamily", "emailFromName", "customSubdomain"];
@@ -68,66 +62,12 @@ export default function DealershipDetailPage() {
   const enabledModuleKeys = new Set(modules.filter((m: any) => m.status === "enabled").map((m: any) => m.moduleKey));
 
   return (
-    <div style={{ display: "flex", minHeight: "calc(100vh - 56px)", background: "#f7f9fc" }}>
-      <div style={{ width: 260, background: "white", borderRight: "1px solid #e5eaf2", display: "flex", flexDirection: "column", overflow: "hidden", flexShrink: 0 }}>
-        <div style={{ padding: 16, borderBottom: "1px solid #f0f2f5" }}>
-          <button onClick={() => navigate("/operator-v6/dealerships")}
-            style={{ background: "none", border: 0, color: "#033280", fontSize: 12, cursor: "pointer", padding: 0, marginBottom: 12 }}>
-            ← All Dealer Accounts
-          </button>
-          <div style={{ fontSize: 11, color: "#888", textTransform: "uppercase", fontWeight: 600, marginBottom: 8 }}>Other Dealers</div>
-          <input
-            placeholder="Search by name..."
-            value={siblingFilter.search}
-            onChange={e => setSiblingFilter({ ...siblingFilter, search: e.target.value })}
-            style={{ width: "100%", padding: "6px 8px", fontSize: 12, border: "1px solid #d5dbe5", borderRadius: 4, marginBottom: 6, boxSizing: "border-box" }}
-          />
-          <select
-            value={siblingFilter.reviewStatus}
-            onChange={e => setSiblingFilter({ ...siblingFilter, reviewStatus: e.target.value })}
-            style={{ width: "100%", padding: "6px 8px", fontSize: 11, border: "1px solid #d5dbe5", borderRadius: 4 }}
-          >
-            <option value="">All statuses</option>
-            <option value="active">Active</option>
-            <option value="pending_review">Pending Review</option>
-            <option value="suspended">Suspended</option>
-            <option value="rejected">Rejected</option>
-          </select>
-        </div>
-        <div style={{ flex: 1, overflowY: "auto", padding: "8px 0" }}>
-          {siblingDealers.length === 0 ? (
-            <div style={{ padding: 16, fontSize: 11, color: "#888", textAlign: "center" }}>No dealers</div>
-          ) : siblingDealers.map((d: any) => {
-            const isActive = d.id === params.id;
-            return (
-              <div
-                key={d.id}
-                onClick={() => navigate(`/operator-v6/dealerships/${d.id}`)}
-                style={{
-                  padding: "10px 16px", cursor: "pointer",
-                  background: isActive ? "#eaf1fb" : "transparent",
-                  borderLeft: isActive ? "3px solid #033280" : "3px solid transparent",
-                }}
-                onMouseEnter={e => { if (!isActive) e.currentTarget.style.background = "#f7f9fc"; }}
-                onMouseLeave={e => { if (!isActive) e.currentTarget.style.background = "transparent"; }}
-              >
-                <div style={{ fontSize: 12, fontWeight: 600, color: isActive ? "#033280" : "#222" }}>{d.name}</div>
-                <div style={{ fontSize: 10, color: "#888", marginTop: 2 }}>{d.email}</div>
-                <div style={{ display: "flex", gap: 4, marginTop: 4 }}>
-                  <span style={{ fontSize: 9, padding: "1px 5px", background: "#f0f2f5", color: "#666", borderRadius: 3 }}>{d.brandingTier || "base"}</span>
-                  <span style={{ fontSize: 9, padding: "1px 5px",
-                    background: d.reviewStatus === "active" ? "#dcfce7" : d.reviewStatus === "pending_review" ? "#fef3c7" : d.reviewStatus === "suspended" ? "#fee2e2" : "#f0f2f5",
-                    color: d.reviewStatus === "active" ? "#166534" : d.reviewStatus === "pending_review" ? "#92400e" : d.reviewStatus === "suspended" ? "#991b1b" : "#666",
-                    borderRadius: 3 }}>
-                    {(d.reviewStatus || "active").replace("_", " ")}
-                  </span>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
+    <PortalShell context="operator" mainNav={
+      <nav className="sidebar" style={{ position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column" }}>
+        <OperatorMainNav currentPage="master.mgmt.dealer_accounts" />
+      </nav>
+    }>
+      <SectionLayout contextualSidebar={<DealersContextSidebar activeId={params.id} />}>
       <div style={{ flex: 1, padding: 24, overflowY: "auto" }}>
       <div style={{display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 16}}>
         <div>
@@ -273,7 +213,8 @@ export default function DealershipDetailPage() {
         </div>
       )}
       </div>
-    </div>
+      </SectionLayout>
+    </PortalShell>
   );
 }
 

@@ -3,6 +3,12 @@ import { useParams, useLocation } from "wouter";
 import { useApiFetch } from "@/lib/api";
 import PhotoUploader from "@/components/PhotoUploader";
 import PhotoGallery from "@/components/PhotoGallery";
+import PortalShell from "@/components/layout/PortalShell";
+import SectionLayout from "@/components/layout/SectionLayout";
+import UnitsContextSidebar from "@/components/units/UnitsContextSidebar";
+import OperatorMainNav from "@/pages/nav/OperatorMainNav";
+import DealerMainNav from "@/pages/nav/DealerMainNav";
+import ClientMainNav from "@/pages/nav/ClientMainNav";
 
 interface Props {
   context: "operator" | "dealer" | "client";
@@ -21,12 +27,9 @@ export default function UnitProfilePage({ context }: Props) {
   const [editing, setEditing] = useState<Record<string, any>>({});
   const [photoRefreshKey, setPhotoRefreshKey] = useState(0);
   const [saving, setSaving] = useState(false);
-  const [siblingUnits, setSiblingUnits] = useState<any[]>([]);
-  const [siblingFilter, setSiblingFilter] = useState({ search: "", status: "" });
 
   const tabs = context === "client" ? TABS_CLIENT : TABS_ALL;
   const canEdit = context !== "client";
-  const showSidebar = context !== "client";
 
   async function refresh() {
     setLoading(true);
@@ -42,14 +45,6 @@ export default function UnitProfilePage({ context }: Props) {
   }
 
   useEffect(() => { refresh(); }, [params.id]);
-
-  useEffect(() => {
-    if (!showSidebar) return;
-    const p = new URLSearchParams();
-    if (siblingFilter.status) p.set("status", siblingFilter.status);
-    if (siblingFilter.search) p.set("search", siblingFilter.search);
-    apiFetch<any[]>(`/api/v6/units?${p.toString()}`).then(setSiblingUnits).catch(() => {});
-  }, [siblingFilter.status, siblingFilter.search, showSidebar]);
 
   async function save() {
     setSaving(true);
@@ -77,77 +72,21 @@ export default function UnitProfilePage({ context }: Props) {
 
   const { unit, claims, photos, customer, dealership } = data;
 
-  return (
-    <div style={{ display: "flex", minHeight: "100vh", background: "#f7f9fc" }}>
-      {showSidebar && (
-        <div style={{ width: 260, background: "white", borderRight: "1px solid #e5eaf2", display: "flex", flexDirection: "column", overflow: "hidden", flexShrink: 0 }}>
-          <div style={{ padding: 16, borderBottom: "1px solid #f0f2f5" }}>
-            <button onClick={() => navigate(`/${context}-v6`)} style={{ background: "none", border: 0, color: "#033280", fontSize: 12, cursor: "pointer", padding: 0, marginBottom: 12 }}>
-              ← All Inventory
-            </button>
-            <div style={{ fontSize: 11, color: "#888", textTransform: "uppercase", fontWeight: 600, marginBottom: 8 }}>Other Units</div>
-            <input
-              placeholder="Search VIN, make..."
-              value={siblingFilter.search}
-              onChange={e => setSiblingFilter({ ...siblingFilter, search: e.target.value })}
-              style={{ width: "100%", padding: "6px 8px", fontSize: 12, border: "1px solid #d5dbe5", borderRadius: 4, marginBottom: 6, boxSizing: "border-box" }}
-            />
-            <select
-              value={siblingFilter.status}
-              onChange={e => setSiblingFilter({ ...siblingFilter, status: e.target.value })}
-              style={{ width: "100%", padding: "6px 8px", fontSize: 11, border: "1px solid #d5dbe5", borderRadius: 4 }}
-            >
-              <option value="">All statuses</option>
-              <option value="in_inventory">In Stock</option>
-              <option value="sold">Sold</option>
-              <option value="in_service">In Service</option>
-              <option value="consigned">Consigned</option>
-            </select>
-          </div>
-          <div style={{ flex: 1, overflowY: "auto", padding: "8px 0" }}>
-            {siblingUnits.length === 0 ? (
-              <div style={{ padding: 16, fontSize: 11, color: "#888", textAlign: "center" }}>No units</div>
-            ) : siblingUnits.map(u => {
-              const isActive = u.id === params.id;
-              return (
-                <div
-                  key={u.id}
-                  onClick={() => navigate(`/${context}-v6/units/${u.id}`)}
-                  style={{
-                    padding: "10px 16px", cursor: "pointer",
-                    background: isActive ? "#eaf1fb" : "transparent",
-                    borderLeft: isActive ? "3px solid #033280" : "3px solid transparent",
-                  }}
-                  onMouseEnter={e => { if (!isActive) e.currentTarget.style.background = "#f7f9fc"; }}
-                  onMouseLeave={e => { if (!isActive) e.currentTarget.style.background = "transparent"; }}
-                >
-                  <div style={{ fontSize: 12, fontWeight: 600, color: isActive ? "#033280" : "#222" }}>
-                    {u.year} {u.make}
-                  </div>
-                  <div style={{ fontSize: 10, color: "#888", fontFamily: "monospace", marginTop: 2 }}>
-                    {u.vin?.slice(-8)}
-                  </div>
-                  <div style={{ display: "flex", gap: 4, marginTop: 4 }}>
-                    <span style={{ fontSize: 9, padding: "1px 5px", background: "#f0f2f5", color: "#666", borderRadius: 3 }}>{u.status?.replace(/_/g, " ")}</span>
-                    {u.mfrWarrantyStatus === "active" && <span style={{ fontSize: 9, padding: "1px 5px", background: "#dcfce7", color: "#166534", borderRadius: 3 }}>● W</span>}
-                    {u.mfrWarrantyStatus === "expiring" && <span style={{ fontSize: 9, padding: "1px 5px", background: "#fef3c7", color: "#92400e", borderRadius: 3 }}>● W</span>}
-                    {u.mfrWarrantyStatus === "expired" && <span style={{ fontSize: 9, padding: "1px 5px", background: "#fee2e2", color: "#991b1b", borderRadius: 3 }}>● W</span>}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
+  const mainNav = context === "operator"
+    ? <nav className="sidebar" style={{ position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column" }}><OperatorMainNav currentPage="master.ops.work_by_dealer" /></nav>
+    : context === "dealer"
+    ? <nav className="sidebar" style={{ position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column" }}><DealerMainNav currentPage="dealer.ops.inventory" /></nav>
+    : <nav className="sidebar" style={{ position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column" }}><ClientMainNav currentPage="client.main.vehicle" /></nav>;
 
+  const contextSidebar = context !== "client"
+    ? <UnitsContextSidebar context={context} activeId={params.id} />
+    : undefined;
+
+  return (
+    <PortalShell context={context} mainNav={mainNav}>
+      <SectionLayout contextualSidebar={contextSidebar}>
       <div style={{ flex: 1, padding: 24, overflowY: "auto" }}>
       <div style={{ marginBottom: 16 }}>
-        {!showSidebar && (
-          <button onClick={() => navigate(`/${context}-v6`)}
-            style={{ background: "none", border: 0, color: "#033280", fontSize: 12, cursor: "pointer", marginBottom: 8, padding: 0 }}>
-            ← Back to inventory
-          </button>
-        )}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
           <div>
             <div style={{ fontSize: 11, color: "#888", textTransform: "uppercase", fontWeight: 600 }}>
@@ -337,7 +276,8 @@ export default function UnitProfilePage({ context }: Props) {
       )}
 
       </div>
-    </div>
+      </SectionLayout>
+    </PortalShell>
   );
 }
 

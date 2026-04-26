@@ -84,11 +84,87 @@ const UnitProfilePageClient = lazy(async () => {
   const { default: Comp } = await import("@/components/units/UnitProfilePage");
   return { default: () => <Comp context="client" /> };
 });
-const DealerAccountsListPage = lazy(() => import("@/components/operator/DealerAccountsListPage"));
-const NewDealershipPage = lazy(() => import("@/components/operator/NewDealershipPage"));
+// DealershipDetailPage has PortalShell embedded — load as-is
 const DealershipDetailPage = lazy(() => import("@/components/operator/DealershipDetailPage"));
-const NewUnitPage = lazy(() => import("@/components/units/NewUnitPage"));
-const NewClaimPage = lazy(() => import("@/components/claims/NewClaimPage"));
+
+// Routes that need PortalShell injected at the route level (dual-use or standalone pages)
+const DealerAccountsListPageRoute = lazy(async () => {
+  const [
+    { default: Inner },
+    { default: PortalShell },
+    { default: SectionLayout },
+    { default: DealersContextSidebar },
+    { default: OperatorMainNav },
+  ] = await Promise.all([
+    import("@/components/operator/DealerAccountsListPage"),
+    import("@/components/layout/PortalShell"),
+    import("@/components/layout/SectionLayout"),
+    import("@/components/operator/DealersContextSidebar"),
+    import("@/pages/nav/OperatorMainNav"),
+  ]);
+  function Route() {
+    const nav = <nav className="sidebar" style={{ position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column" }}><OperatorMainNav currentPage="master.mgmt.dealer_accounts" /></nav>;
+    return (
+      <PortalShell context="operator" mainNav={nav}>
+        <SectionLayout contextualSidebar={<DealersContextSidebar />}>
+          <Inner />
+        </SectionLayout>
+      </PortalShell>
+    );
+  }
+  return { default: Route };
+});
+
+const NewDealershipPageRoute = lazy(async () => {
+  const [
+    { default: Inner },
+    { default: PortalShell },
+    { default: OperatorMainNav },
+  ] = await Promise.all([
+    import("@/components/operator/NewDealershipPage"),
+    import("@/components/layout/PortalShell"),
+    import("@/pages/nav/OperatorMainNav"),
+  ]);
+  function Route() {
+    const nav = <nav className="sidebar" style={{ position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column" }}><OperatorMainNav currentPage="master.mgmt.dealer_accounts" /></nav>;
+    return <PortalShell context="operator" mainNav={nav}><Inner /></PortalShell>;
+  }
+  return { default: Route };
+});
+
+const NewUnitPageRoute = lazy(async () => {
+  const [
+    { default: Inner },
+    { default: PortalShell },
+    { default: DealerMainNav },
+  ] = await Promise.all([
+    import("@/components/units/NewUnitPage"),
+    import("@/components/layout/PortalShell"),
+    import("@/pages/nav/DealerMainNav"),
+  ]);
+  function Route() {
+    const nav = <nav className="sidebar" style={{ position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column" }}><DealerMainNav currentPage="dealer.ops.inventory" /></nav>;
+    return <PortalShell context="dealer" mainNav={nav}><Inner /></PortalShell>;
+  }
+  return { default: Route };
+});
+
+const NewClaimPageRoute = lazy(async () => {
+  const [
+    { default: Inner },
+    { default: PortalShell },
+    { default: DealerMainNav },
+  ] = await Promise.all([
+    import("@/components/claims/NewClaimPage"),
+    import("@/components/layout/PortalShell"),
+    import("@/pages/nav/DealerMainNav"),
+  ]);
+  function Route() {
+    const nav = <nav className="sidebar" style={{ position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column" }}><DealerMainNav currentPage="dealer.ops.inventory" /></nav>;
+    return <PortalShell context="dealer" mainNav={nav}><Inner /></PortalShell>;
+  }
+  return { default: Route };
+});
 
 function ScrollToTop() {
   const [location] = useLocation();
@@ -140,12 +216,12 @@ function Router() {
         <Route path="/bidder">{() => <Redirect to="/login" />}</Route>
         <Route path="/bidder-login">{() => <Redirect to="/login" />}</Route>
         {/* v6 portal shells — side-by-side with existing portals for validation */}
-        <Route path="/operator-v6/dealerships/new" component={NewDealershipPage} />
+        <Route path="/operator-v6/dealerships/new" component={NewDealershipPageRoute} />
         <Route path="/operator-v6/dealerships/:id" component={DealershipDetailPage} />
-        <Route path="/operator-v6/dealerships" component={DealerAccountsListPage} />
+        <Route path="/operator-v6/dealerships" component={DealerAccountsListPageRoute} />
         <Route path="/operator-v6/units/:id" component={UnitProfilePageOperator} />
-        <Route path="/dealer-v6/units/:unitId/claims/new" component={NewClaimPage} />
-        <Route path="/dealer-v6/units/new" component={NewUnitPage} />
+        <Route path="/dealer-v6/units/:unitId/claims/new" component={NewClaimPageRoute} />
+        <Route path="/dealer-v6/units/new" component={NewUnitPageRoute} />
         <Route path="/dealer-v6/units/:id" component={UnitProfilePageDealer} />
         <Route path="/client-v6/units/:id" component={UnitProfilePageClient} />
         <Route path="/operator-v6" component={OperatorPortalV6} />

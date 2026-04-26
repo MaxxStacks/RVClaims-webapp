@@ -6,7 +6,8 @@ import { useState, useEffect } from "react";
 import ds360Icon from "@assets/ds360_favicon.png";
 import { useUser, useClerk } from "@clerk/clerk-react";
 import { useApiFetch } from "@/lib/api";
-import AppBar from "@/components/AppBar";
+import PortalShell from "@/components/layout/PortalShell";
+import DealerMainNav from "@/pages/nav/DealerMainNav";
 import DealerClaimsPage from "@/components/dealer/DealerClaimsPage";
 import DealerPartsOrdersPage from "@/components/dealer/DealerPartsOrdersPage";
 import InventoryListPage from "@/components/units/InventoryListPage";
@@ -112,90 +113,17 @@ export default function DealerPortalV6() {
   }
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
-      <AppBar context="dealer" />
-      <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
-      <nav className={`sidebar${sidebarCollapsed ? " collapsed" : ""}`} style={{ position: "relative", flexShrink: 0, height: "100%" }}>
-        <div className="sidebar-logo">
-          <img src={ds360Icon} width={36} height={36} style={{borderRadius: 8}} alt="DS360" />
-          <div className="sidebar-logo-text">
-            <div className="sidebar-logo-sub" style={{fontSize: 12, fontWeight: 600}}>Dealership Portal</div>
-          </div>
-          <span className="sidebar-badge">Dealer</span>
-        </div>
-        <div className="sidebar-nav">
-    {anyVisible(["dealer.ops.dashboard"]) && <div className="nav-section">
-      <div className="nav-label">Overview</div>
-      {canSeePage("dealer.ops.dashboard") && <div className={`nav-item ${isNavActive("dealer.ops.dashboard") ? "active" : ""}`} onClick={() => showPage("dealer.ops.dashboard")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</div>}
-    </div>}
-    {anyVisible(["dealer.ops.claims", "dealer.ops.inventory", "dealer.ops.clients", "dealer.ops.sales_services", "dealer.ops.documents", "dealer.ops.messages", "dealer.ops.financing", "dealer.ops.parts_store", "dealer.ops.consignment", "dealer.ops.techflow", "dealer.ops.marketing"]) && <div className="nav-section">
-      <div className="nav-label">Operations</div>
-      {canSeePage("dealer.ops.claims") && <div className={`nav-item ${isNavActive("dealer.ops.claims") ? "active" : ""}`} onClick={() => showPage("dealer.ops.claims")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Claims</div>}
-      {canSeePage("dealer.ops.inventory") && <div className={`nav-item ${isNavActive("dealer.ops.inventory") ? "active" : ""}`} onClick={() => showPage("dealer.ops.inventory")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4a2 2 0 012 2v6a2 2 0 01-2 2h-4"/><circle cx="5.5" cy="18" r="2.5"/><circle cx="18.5" cy="18" r="2.5"/></svg>Units / Inventory</div>}
-      {canSeePage("dealer.ops.clients") && <div className={`nav-item ${isNavActive("dealer.ops.clients") ? "active" : ""}`} onClick={() => showPage("dealer.ops.clients")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Clients</div>}
-      {canSeePage("dealer.ops.sales_services") && <div className={`nav-item ${isNavActive("dealer.ops.sales_services") ? "active" : ""}`} onClick={() => showPage("dealer.ops.sales_services")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg>Sales &amp; Services</div>}
-      {canSeePage("dealer.ops.documents") && <div className={`nav-item ${isNavActive("dealer.ops.documents") ? "active" : ""}`} onClick={() => showPage("dealer.ops.documents")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Documents</div>}
-      {canSeePage("dealer.ops.messages") && <div className={`nav-item ${isNavActive("dealer.ops.messages") ? "active" : ""}`} onClick={() => showPage("dealer.ops.messages")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Messages</div>}
-      {canSeePage("dealer.ops.financing") && <div className={`nav-item ${isNavActive("dealer.ops.financing") ? "active" : ""}`} onClick={() => showPage("dealer.ops.financing")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>Financing</div>}
-      {canSeePage("dealer.ops.parts_store") && <div className={`nav-item ${isNavActive("dealer.ops.parts_store") ? "active" : ""}`} onClick={() => showPage("dealer.ops.parts_store")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>Parts Store</div>}
-      {canSeePage("dealer.ops.consignment") && <div className={`nav-item ${isNavActive("dealer.ops.consignment") ? "active" : ""}`} onClick={() => showPage("dealer.ops.consignment")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.83z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>Consignment</div>}
-      {canSeePage("dealer.ops.techflow") && <div className={`nav-item ${isNavActive("dealer.ops.techflow") ? "active" : ""}`} onClick={() => showPage("dealer.ops.techflow")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>TechFlow</div>}
-      {canSeePage("dealer.ops.marketing") && <div className={`nav-item ${isNavActive("dealer.ops.marketing") ? "active" : ""}`} onClick={() => showPage("dealer.ops.marketing")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M3 11l18-5v12L3 13"/><path d="M11.6 16.8a3 3 0 11-5.8-1.6"/></svg>Marketing</div>}
-    </div>}
-    {anyVisible(["dealer.marketplace.browse", "dealer.marketplace.my_bids", "dealer.marketplace.my_listings", "dealer.marketplace.public_showcase", "dealer.marketplace.escrow_payments"]) && <div className="nav-section">
-      <div className="nav-label">Marketplace</div>
-      {canSeePage("dealer.marketplace.browse") && <div className={`nav-item ${isNavActive("dealer.marketplace.browse") ? "active" : ""}`} onClick={() => showPage("dealer.marketplace.browse")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>Browse Listings</div>}
-      {canSeePage("dealer.marketplace.my_bids") && <div className={`nav-item ${isNavActive("dealer.marketplace.my_bids") ? "active" : ""}`} onClick={() => showPage("dealer.marketplace.my_bids")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>My Bids</div>}
-      {canSeePage("dealer.marketplace.my_listings") && <div className={`nav-item ${isNavActive("dealer.marketplace.my_listings") ? "active" : ""}`} onClick={() => showPage("dealer.marketplace.my_listings")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>My Listings (Sell)</div>}
-      {canSeePage("dealer.marketplace.public_showcase") && <div className={`nav-item ${isNavActive("dealer.marketplace.public_showcase") ? "active" : ""}`} onClick={() => showPage("dealer.marketplace.public_showcase")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>Public Showcase</div>}
-      {canSeePage("dealer.marketplace.escrow_payments") && <div className={`nav-item ${isNavActive("dealer.marketplace.escrow_payments") ? "active" : ""}`} onClick={() => showPage("dealer.marketplace.escrow_payments")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>Escrow &amp; My Payments</div>}
-    </div>}
-    {anyVisible(["dealer.consignor_guest.my_units", "dealer.consignor_guest.offers_bids", "dealer.consignor_guest.payouts"]) && <div className="nav-section">
-      <div className="nav-label">Consignor Guest</div>
-      {canSeePage("dealer.consignor_guest.my_units") && (!PAGE_META["dealer.consignor_guest.my_units"].scoped_role || PAGE_META["dealer.consignor_guest.my_units"].scoped_role === userRole) && <div className={`nav-item ${isNavActive("dealer.consignor_guest.my_units") ? "active" : ""}`} onClick={() => showPage("dealer.consignor_guest.my_units")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4a2 2 0 012 2v6a2 2 0 01-2 2h-4"/><circle cx="5.5" cy="18" r="2.5"/><circle cx="18.5" cy="18" r="2.5"/></svg>My Consigned Unit(s)</div>}
-      {canSeePage("dealer.consignor_guest.offers_bids") && (!PAGE_META["dealer.consignor_guest.offers_bids"].scoped_role || PAGE_META["dealer.consignor_guest.offers_bids"].scoped_role === userRole) && <div className={`nav-item ${isNavActive("dealer.consignor_guest.offers_bids") ? "active" : ""}`} onClick={() => showPage("dealer.consignor_guest.offers_bids")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4a2 2 0 012 2v6a2 2 0 01-2 2h-4"/><circle cx="5.5" cy="18" r="2.5"/><circle cx="18.5" cy="18" r="2.5"/></svg>Offers &amp; Bids on My Unit</div>}
-      {canSeePage("dealer.consignor_guest.payouts") && (!PAGE_META["dealer.consignor_guest.payouts"].scoped_role || PAGE_META["dealer.consignor_guest.payouts"].scoped_role === userRole) && <div className={`nav-item ${isNavActive("dealer.consignor_guest.payouts") ? "active" : ""}`} onClick={() => showPage("dealer.consignor_guest.payouts")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.83z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>My Payouts</div>}
-    </div>}
-    {anyVisible(["dealer.public_bidder_guest.my_bids", "dealer.public_bidder_guest.verification"]) && <div className="nav-section">
-      <div className="nav-label">Public Bidder Guest</div>
-      {canSeePage("dealer.public_bidder_guest.my_bids") && (!PAGE_META["dealer.public_bidder_guest.my_bids"].scoped_role || PAGE_META["dealer.public_bidder_guest.my_bids"].scoped_role === userRole) && <div className={`nav-item ${isNavActive("dealer.public_bidder_guest.my_bids") ? "active" : ""}`} onClick={() => showPage("dealer.public_bidder_guest.my_bids")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>My Bids (Public Bidder)</div>}
-      {canSeePage("dealer.public_bidder_guest.verification") && (!PAGE_META["dealer.public_bidder_guest.verification"].scoped_role || PAGE_META["dealer.public_bidder_guest.verification"].scoped_role === userRole) && <div className={`nav-item ${isNavActive("dealer.public_bidder_guest.verification") ? "active" : ""}`} onClick={() => showPage("dealer.public_bidder_guest.verification")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>Verification &amp; Payment</div>}
-    </div>}
-    {anyVisible(["dealer.account.my_subscription", "dealer.account.portal_settings"]) && <div className="nav-section">
-      <div className="nav-label">Account</div>
-      {canSeePage("dealer.account.my_subscription") && <div className={`nav-item ${isNavActive("dealer.account.my_subscription") ? "active" : ""}`} onClick={() => showPage("dealer.account.my_subscription")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>My Subscription</div>}
-      {canSeePage("dealer.account.portal_settings") && <div className={`nav-item ${isNavActive("dealer.account.portal_settings") ? "active" : ""}`} onClick={() => showPage("dealer.account.portal_settings")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>Portal Settings</div>}
-    </div>}
-        </div>
-        <div className="sidebar-footer">
-          <div className="user-info" onClick={() => showPage("dealer.ops.dashboard")} style={{cursor: "pointer"}}>
-            <div className="user-avatar">{userInitials}</div>
-            <div>
-              <div className="user-name">{userDisplayName}</div>
-              <div className="user-role">{roleLabel}</div>
-            </div>
-          </div>
-          <button
-            onClick={async () => { await logout(); window.location.href = "/"; }}
-            style={{width: "100%", marginTop: 8, padding: "7px 12px", background: "none", border: "1px solid #e0e0e0", borderRadius: 6, fontSize: 12, color: "#888", cursor: "pointer", fontFamily: "inherit", textAlign: "left", display: "flex", alignItems: "center", gap: 6}}
-          >
-            <svg width={13} height={13} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-              <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/>
-              <polyline points="16 17 21 12 16 7"/>
-              <line x1="21" y1="12" x2="9" y2="12"/>
-            </svg>
-            Sign Out
-          </button>
-        </div>
+    <PortalShell context="dealer" mainNav={
+      <nav className={`sidebar${sidebarCollapsed ? " collapsed" : ""}`} style={{ position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column" }}>
+        <DealerMainNav currentPage={currentPage} onShowPage={setCurrentPage} />
       </nav>
-
+    }>
       <main className="main" style={{ marginLeft: 0, flex: 1, overflowY: "auto" }}>
         <div className="content">
           {renderPage(currentPage, userRole)}
         </div>
       </main>
-      </div>
-    </div>
+    </PortalShell>
   );
 }
 
