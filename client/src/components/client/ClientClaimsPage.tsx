@@ -2,14 +2,28 @@ import { useEffect, useState } from "react";
 import { useApiFetch } from "@/lib/api";
 
 const STATUS_LABEL: Record<string, string> = {
-  new_unassigned: "Submitted",
-  assigned: "Being assigned",
+  draft: "Draft",
+  new_unassigned: "Submitted — pending review",
+  assigned: "Under review",
   in_review: "Under review",
+  info_requested: "Under review",
   submitted_to_mfr: "Sent to manufacturer",
   approved: "Approved",
-  denied: "Not approved",
+  denied: "Not approved — contact your dealer",
   partial_approval: "Partially approved",
   completed: "Completed",
+};
+
+const STATUS_COLOR: Record<string, { bg: string; text: string }> = {
+  approved: { bg: "#dcfce7", text: "#166534" },
+  completed: { bg: "#dcfce7", text: "#166534" },
+  denied: { bg: "#fee2e2", text: "#991b1b" },
+  info_requested: { bg: "#fef3c7", text: "#92400e" },
+};
+
+const TYPE_LABEL: Record<string, string> = {
+  warranty: "Warranty", extended_warranty: "Extended Warranty",
+  pdi: "PDI", daf: "DAF", insurance: "Insurance",
 };
 
 export default function ClientClaimsPage() {
@@ -19,7 +33,7 @@ export default function ClientClaimsPage() {
 
   useEffect(() => {
     apiFetch<any[]>("/api/v6/claims")
-      .then(setClaims)
+      .then(rows => setClaims((rows || []).filter(c => c.status !== "draft")))
       .catch(() => setClaims([]))
       .finally(() => setLoading(false));
   }, []);
@@ -28,26 +42,35 @@ export default function ClientClaimsPage() {
 
   return (
     <div style={{ padding: 24 }}>
-      <h1 style={{ fontSize: 22, fontWeight: 600, marginBottom: 16 }}>My Claims</h1>
+      <h1 style={{ fontSize: 22, fontWeight: 600, marginBottom: 4 }}>My Claims</h1>
+      <p style={{ fontSize: 13, color: "#666", marginBottom: 20 }}>
+        Track the status of your service and warranty claims.
+      </p>
       {claims.length === 0 ? (
         <div style={{ padding: 40, textAlign: "center", color: "#888", background: "#fafbfd", borderRadius: 8 }}>
-          You have no active claims.
+          You have no active claims at this time.
         </div>
       ) : (
         <div style={{ display: "grid", gap: 10 }}>
-          {claims.map(c => (
-            <div key={c.id} style={{ padding: 16, border: "1px solid #e5eaf2", borderRadius: 8 }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <div>
-                  <div style={{ fontSize: 14, fontWeight: 600 }}>Claim {c.claimNumber}</div>
-                  <div style={{ fontSize: 12, color: "#888", marginTop: 2 }}>{c.manufacturer}</div>
-                </div>
-                <div style={{ padding: "4px 10px", background: "#eaf1fb", color: "#033280", borderRadius: 12, fontSize: 11, fontWeight: 600 }}>
-                  {STATUS_LABEL[c.status] || c.status}
+          {claims.map(c => {
+            const colors = STATUS_COLOR[c.status] || { bg: "#eaf1fb", text: "#033280" };
+            return (
+              <div key={c.id} style={{ padding: 16, border: "1px solid #e5eaf2", borderRadius: 8, background: "white" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                  <div>
+                    <div style={{ fontSize: 14, fontWeight: 600 }}>Claim {c.claimNumber}</div>
+                    <div style={{ fontSize: 12, color: "#888", marginTop: 2 }}>
+                      {TYPE_LABEL[c.type] || c.type}
+                      {c.createdAt && <> · Submitted {new Date(c.createdAt).toLocaleDateString()}</>}
+                    </div>
+                  </div>
+                  <div style={{ padding: "4px 12px", background: colors.bg, color: colors.text, borderRadius: 12, fontSize: 11, fontWeight: 600, textAlign: "right", maxWidth: 200 }}>
+                    {STATUS_LABEL[c.status] || c.status?.replace(/_/g, " ")}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>

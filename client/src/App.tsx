@@ -88,27 +88,22 @@ const UnitProfilePageClient = lazy(async () => {
 const DealershipDetailPage = lazy(() => import("@/components/operator/DealershipDetailPage"));
 
 // Routes that need PortalShell injected at the route level (dual-use or standalone pages)
+// List page — no contextual sidebar (the table IS the list; sidebar would duplicate it)
 const DealerAccountsListPageRoute = lazy(async () => {
   const [
     { default: Inner },
     { default: PortalShell },
-    { default: SectionLayout },
-    { default: DealersContextSidebar },
     { default: OperatorMainNav },
   ] = await Promise.all([
     import("@/components/operator/DealerAccountsListPage"),
     import("@/components/layout/PortalShell"),
-    import("@/components/layout/SectionLayout"),
-    import("@/components/operator/DealersContextSidebar"),
     import("@/pages/nav/OperatorMainNav"),
   ]);
   function Route() {
     const nav = <nav className="sidebar" style={{ position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column" }}><OperatorMainNav currentPage="master.mgmt.dealer_accounts" /></nav>;
     return (
       <PortalShell context="operator" mainNav={nav}>
-        <SectionLayout contextualSidebar={<DealersContextSidebar />}>
-          <Inner />
-        </SectionLayout>
+        <div style={{ flex: 1, overflowY: "auto" }}><Inner /></div>
       </PortalShell>
     );
   }

@@ -25,6 +25,7 @@ type FanOut = {
 const CATALOG: Record<string, FanOut[]> = {
   "claim.submitted": [
     {
+      // RBAC: claim.submitted goes ONLY to operator — NOT dealer (they created it), NOT client, NOT technician
       to_roles: ["operator_admin", "operator_staff"],
       in_app: true, email: true, sms: "opt_in",
       priority: "action_required",
@@ -32,15 +33,6 @@ const CATALOG: Record<string, FanOut[]> = {
       body_template: (p) => ({
         title: "New claim submitted",
         body: `${p.dealerName || "A dealer"} submitted claim ${p.claimNumber} on VIN ${p.vin}`,
-      }),
-    },
-    {
-      to_roles: ["dealer_owner", "dealer_staff"],
-      in_app: true, email: true, sms: "opt_in",
-      priority: "informational",
-      body_template: (p) => ({
-        title: "Claim submitted",
-        body: `Your claim ${p.claimNumber} was received and is being reviewed`,
       }),
     },
   ],
@@ -67,21 +59,13 @@ const CATALOG: Record<string, FanOut[]> = {
   ],
   "claim.put_in_review": [
     {
+      // Dealer gets notified when claim enters review — client does NOT see internal operator steps
       to_roles: ["dealer_owner", "dealer_staff"],
-      in_app: true, email: true, sms: "opt_in",
+      in_app: true, email: false, sms: "opt_in",
       priority: "informational",
       body_template: (p) => ({
         title: "Claim status updated",
         body: `Claim ${p.claimNumber} is now in review`,
-      }),
-    },
-    {
-      to_roles: ["client"],
-      in_app: true, email: true, sms: "opt_in",
-      priority: "informational",
-      body_template: (p) => ({
-        title: "Claim status updated",
-        body: `Your claim is now in review`,
       }),
     },
   ],
