@@ -4,8 +4,6 @@ import { useApiFetch } from "@/lib/api";
 import PhotoUploader from "@/components/PhotoUploader";
 import PhotoGallery from "@/components/PhotoGallery";
 import PortalShell from "@/components/layout/PortalShell";
-import SectionLayout from "@/components/layout/SectionLayout";
-import UnitsContextSidebar from "@/components/units/UnitsContextSidebar";
 import OperatorMainNav from "@/pages/nav/OperatorMainNav";
 import DealerMainNav from "@/pages/nav/DealerMainNav";
 import ClientMainNav from "@/pages/nav/ClientMainNav";
@@ -78,14 +76,10 @@ export default function UnitProfilePage({ context }: Props) {
     ? <nav className="sidebar" style={{ position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column" }}><DealerMainNav currentPage="dealer.ops.inventory" /></nav>
     : <nav className="sidebar" style={{ position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column" }}><ClientMainNav currentPage="client.main.vehicle" /></nav>;
 
-  const contextSidebar = context !== "client"
-    ? <UnitsContextSidebar context={context} activeId={params.id} />
-    : undefined;
-
   return (
     <PortalShell context={context} mainNav={mainNav}>
-      <SectionLayout contextualSidebar={contextSidebar}>
-      <div style={{ flex: 1, padding: "28px 32px", overflowY: "auto" }}>
+      <main className="main" style={{ marginLeft: 0, flex: 1, overflowY: "auto" }}>
+      <div className="content">
       <div style={{ marginBottom: 16 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
           <div>
@@ -276,7 +270,7 @@ export default function UnitProfilePage({ context }: Props) {
       )}
 
       </div>
-      </SectionLayout>
+      </main>
     </PortalShell>
   );
 }
