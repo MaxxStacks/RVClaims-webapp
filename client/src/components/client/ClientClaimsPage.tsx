@@ -41,21 +41,21 @@ export default function ClientClaimsPage() {
   if (loading) return <div style={{ padding: 24 }}>Loading...</div>;
 
   return (
-    <div style={{ padding: 24 }}>
-      <h1 style={{ fontSize: 22, fontWeight: 600, marginBottom: 4 }}>My Claims</h1>
+    <div style={{ padding: "28px 32px" }}>
+      <h1 style={{ fontSize: 20, fontWeight: 700, marginBottom: 4 }}>My Claims</h1>
       <p style={{ fontSize: 13, color: "#666", marginBottom: 20 }}>
         Track the status of your service and warranty claims.
       </p>
       {claims.length === 0 ? (
-        <div style={{ padding: 40, textAlign: "center", color: "#888", background: "#fafbfd", borderRadius: 8 }}>
+        <div style={{ padding: 40, textAlign: "center", color: "#888", background: "#fafafa", borderRadius: 8 }}>
           You have no active claims at this time.
         </div>
       ) : (
         <div style={{ display: "grid", gap: 10 }}>
           {claims.map(c => {
-            const colors = STATUS_COLOR[c.status] || { bg: "#eaf1fb", text: "#033280" };
+            const colors = STATUS_COLOR[c.status] || { bg: "#eff6ff", text: "#033280" };
             return (
-              <div key={c.id} style={{ padding: 16, border: "1px solid #e5eaf2", borderRadius: 8, background: "white" }}>
+              <div key={c.id} style={{ padding: 16, border: "1px solid #e5e7eb", borderRadius: 8, background: "white" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                   <div>
                     <div style={{ fontSize: 14, fontWeight: 600 }}>Claim {c.claimNumber}</div>

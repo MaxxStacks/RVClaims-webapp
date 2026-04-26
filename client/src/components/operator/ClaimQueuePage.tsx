@@ -84,14 +84,14 @@ export default function ClaimQueuePage() {
   const uniqueManufacturers = Array.from(new Set(claimsList.map(c => c.manufacturer).filter(Boolean)));
 
   return (
-    <div style={{ padding: 24, display: "flex", flexDirection: "column", height: "100%", overflow: "hidden" }}>
+    <div style={{ padding: "28px 32px", display: "flex", flexDirection: "column", height: "100%", overflow: "hidden" }}>
       {/* Header */}
       <div style={{ marginBottom: 16, flexShrink: 0 }}>
         <div style={{ fontSize: 11, color: "#888", textTransform: "uppercase", fontWeight: 600 }}>Operations</div>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
-          <h1 style={{ margin: "4px 0 0", fontSize: 22, fontWeight: 600 }}>Claim Queue</h1>
+          <h1 style={{ margin: "4px 0 0", fontSize: 20, fontWeight: 700 }}>Claim Queue</h1>
           <button onClick={refresh}
-            style={{ padding: "6px 14px", border: "1px solid #d5dbe5", borderRadius: 6, background: "white", fontSize: 12, cursor: "pointer" }}>
+            style={{ padding: "6px 14px", border: "1px solid #e0e0e0", borderRadius: 8, background: "white", fontSize: 12, cursor: "pointer" }}>
             Refresh
           </button>
         </div>
@@ -102,10 +102,10 @@ export default function ClaimQueuePage() {
             placeholder="Search claim # or model..."
             value={filters.search}
             onChange={e => setFilters(f => ({ ...f, search: e.target.value }))}
-            style={{ padding: "6px 10px", fontSize: 12, border: "1px solid #d5dbe5", borderRadius: 6, minWidth: 200 }}
+            style={{ padding: "8px 12px", fontSize: 12, border: "1px solid #e0e0e0", borderRadius: 8, minWidth: 200 }}
           />
           <select value={filters.type} onChange={e => setFilters(f => ({ ...f, type: e.target.value }))}
-            style={{ padding: "6px 10px", fontSize: 12, border: "1px solid #d5dbe5", borderRadius: 6 }}>
+            style={{ padding: "8px 12px", fontSize: 12, border: "1px solid #e0e0e0", borderRadius: 8 }}>
             <option value="">All types</option>
             <option value="warranty">Warranty</option>
             <option value="extended_warranty">Extended Warranty</option>
@@ -114,13 +114,13 @@ export default function ClaimQueuePage() {
             <option value="insurance">Insurance</option>
           </select>
           <select value={filters.manufacturer} onChange={e => setFilters(f => ({ ...f, manufacturer: e.target.value }))}
-            style={{ padding: "6px 10px", fontSize: 12, border: "1px solid #d5dbe5", borderRadius: 6 }}>
+            style={{ padding: "8px 12px", fontSize: 12, border: "1px solid #e0e0e0", borderRadius: 8 }}>
             <option value="">All manufacturers</option>
             {uniqueManufacturers.map(m => <option key={m} value={m}>{m}</option>)}
           </select>
           {(filters.type || filters.manufacturer || filters.search) && (
             <button onClick={() => setFilters({ dealershipId: "", type: "", manufacturer: "", search: "" })}
-              style={{ padding: "6px 10px", fontSize: 11, border: "1px solid #d5dbe5", borderRadius: 6, background: "white", cursor: "pointer", color: "#888" }}>
+              style={{ padding: "6px 10px", fontSize: 11, border: "1px solid #e0e0e0", borderRadius: 8, background: "white", cursor: "pointer", color: "#888" }}>
               Clear filters
             </button>
           )}
@@ -140,7 +140,7 @@ export default function ClaimQueuePage() {
                   <span style={{ width: 8, height: 8, borderRadius: 4, background: col.color, display: "inline-block" }} />
                   <span style={{ fontSize: 12, fontWeight: 600, color: "#222" }}>{col.label}</span>
                 </div>
-                <span style={{ fontSize: 11, color: "#888", background: "#f0f2f5", padding: "2px 8px", borderRadius: 10 }}>
+                <span style={{ fontSize: 11, color: "#888", background: "#f0f0f0", padding: "2px 8px", borderRadius: 10 }}>
                   {col.claims.length}
                 </span>
               </div>
@@ -148,18 +148,18 @@ export default function ClaimQueuePage() {
               {/* Cards */}
               <div style={{ flex: 1, overflowY: "auto", display: "flex", flexDirection: "column", gap: 8 }}>
                 {col.claims.length === 0 ? (
-                  <div style={{ padding: 20, textAlign: "center", color: "#ccc", fontSize: 11, background: "#fafbfd", borderRadius: 6, border: "1px dashed #e5eaf2" }}>
+                  <div style={{ padding: 20, textAlign: "center", color: "#ccc", fontSize: 11, background: "#fafafa", borderRadius: 6, border: "1px dashed #e5e7eb" }}>
                     No claims
                   </div>
                 ) : col.claims.map(c => (
                   <div key={c.id} onClick={() => openClaim(c.id)}
                     style={{
                       padding: 12, background: "white", borderRadius: 8,
-                      border: selectedClaimId === c.id ? "2px solid #033280" : "1px solid #e5eaf2",
-                      cursor: "pointer", boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
+                      border: selectedClaimId === c.id ? "2px solid #033280" : "1px solid #e5e7eb",
+                      cursor: "pointer",
                     }}
-                    onMouseEnter={e => { if (selectedClaimId !== c.id) e.currentTarget.style.boxShadow = "0 2px 8px rgba(0,0,0,0.1)"; }}
-                    onMouseLeave={e => { if (selectedClaimId !== c.id) e.currentTarget.style.boxShadow = "0 1px 3px rgba(0,0,0,0.05)"; }}>
+                    onMouseEnter={e => { if (selectedClaimId !== c.id) e.currentTarget.style.background = "#fafafa"; }}
+                    onMouseLeave={e => { if (selectedClaimId !== c.id) e.currentTarget.style.background = "white"; }}>
                     <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
                       <span style={{ fontWeight: 700, fontSize: 12, color: "#033280" }}>{c.claimNumber}</span>
                       <span style={{
@@ -258,7 +258,7 @@ export default function ClaimQueuePage() {
 
               {/* Dealer notes */}
               {claimDetail.claim?.dealerNotes && (
-                <div style={{ padding: 14, background: "#f7f9fc", borderRadius: 8, marginBottom: 16 }}>
+                <div style={{ padding: 14, background: "#fafafa", borderRadius: 8, marginBottom: 16 }}>
                   <div style={{ fontSize: 11, color: "#888", fontWeight: 600, marginBottom: 6 }}>DEALER NOTES</div>
                   <div style={{ fontSize: 13, color: "#222", lineHeight: 1.5 }}>{claimDetail.claim.dealerNotes}</div>
                 </div>
@@ -274,7 +274,7 @@ export default function ClaimQueuePage() {
                     {claimDetail.claimPhotos.map((p: any) => (
                       <a key={p.id} href={p.url || p.publicUrl} target="_blank" rel="noreferrer">
                         <img src={p.url || p.publicUrl} alt=""
-                          style={{ width: "100%", height: 90, objectFit: "cover", borderRadius: 6, border: "1px solid #e5eaf2" }} />
+                          style={{ width: "100%", height: 90, objectFit: "cover", borderRadius: 6, border: "1px solid #e5e7eb" }} />
                       </a>
                     ))}
                   </div>
@@ -283,7 +283,7 @@ export default function ClaimQueuePage() {
 
               {/* Full unit file */}
               {claimDetail.unit && (
-                <div style={{ borderTop: "1px solid #e5eaf2", paddingTop: 16 }}>
+                <div style={{ borderTop: "1px solid #e5e7eb", paddingTop: 16 }}>
                   <div style={{ fontSize: 11, color: "#888", fontWeight: 600, marginBottom: 12 }}>UNIT FILE</div>
 
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 16 }}>
@@ -300,7 +300,7 @@ export default function ClaimQueuePage() {
 
                   {/* Customer */}
                   {claimDetail.customer && (
-                    <div style={{ padding: 12, background: "#f7f9fc", borderRadius: 6, marginBottom: 16 }}>
+                    <div style={{ padding: 12, background: "#fafafa", borderRadius: 6, marginBottom: 16 }}>
                       <div style={{ fontSize: 11, color: "#888", fontWeight: 600, marginBottom: 6 }}>CUSTOMER</div>
                       <div style={{ fontSize: 13 }}>{claimDetail.customer.firstName} {claimDetail.customer.lastName}</div>
                       <div style={{ fontSize: 11, color: "#666" }}>
@@ -312,7 +312,7 @@ export default function ClaimQueuePage() {
 
                   {/* Dealership */}
                   {claimDetail.dealership && (
-                    <div style={{ padding: 12, background: "#f7f9fc", borderRadius: 6, marginBottom: 16 }}>
+                    <div style={{ padding: 12, background: "#fafafa", borderRadius: 6, marginBottom: 16 }}>
                       <div style={{ fontSize: 11, color: "#888", fontWeight: 600, marginBottom: 6 }}>DEALERSHIP</div>
                       <div style={{ fontSize: 13 }}>{claimDetail.dealership.name}</div>
                       <div style={{ fontSize: 11, color: "#666" }}>{claimDetail.dealership.email}</div>
@@ -328,7 +328,7 @@ export default function ClaimQueuePage() {
                       {claimDetail.unitClaims
                         .filter((c: any) => c.id !== claimDetail.claim.id)
                         .map((c: any) => (
-                          <div key={c.id} style={{ padding: "8px 0", borderBottom: "1px solid #f0f2f5", fontSize: 12 }}>
+                          <div key={c.id} style={{ padding: "8px 0", borderBottom: "1px solid #f0f0f0", fontSize: 12 }}>
                             <span style={{ fontWeight: 600 }}>{c.claimNumber}</span>
                             <span style={{ marginLeft: 8, color: "#666" }}>{c.type} · {c.status?.replace(/_/g, " ")}</span>
                             <span style={{ marginLeft: 8, color: "#888", fontSize: 10 }}>
@@ -348,7 +348,7 @@ export default function ClaimQueuePage() {
                       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(80px, 1fr))", gap: 6 }}>
                         {claimDetail.unitPhotos.slice(0, 8).map((p: any) => (
                           <img key={p.id} src={p.url || p.publicUrl} alt=""
-                            style={{ width: "100%", height: 70, objectFit: "cover", borderRadius: 4, border: "1px solid #e5eaf2" }} />
+                            style={{ width: "100%", height: 70, objectFit: "cover", borderRadius: 4, border: "1px solid #e5e7eb" }} />
                         ))}
                       </div>
                     </div>
@@ -366,7 +366,7 @@ export default function ClaimQueuePage() {
 function ActionBtn({ label, color, onClick }: { label: string; color: string; onClick: () => void }) {
   return (
     <button onClick={onClick}
-      style={{ padding: "7px 14px", background: color, color: "white", border: 0, borderRadius: 6, fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
+      style={{ padding: "7px 14px", background: color, color: "white", border: 0, borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
       {label}
     </button>
   );

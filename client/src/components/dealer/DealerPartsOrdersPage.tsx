@@ -44,15 +44,15 @@ export default function DealerPartsOrdersPage() {
   }
 
   return (
-    <div style={{ padding: 24 }}>
+    <div style={{ padding: "28px 32px" }}>
       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 16 }}>
         <div>
           <div style={{ fontSize: 11, color: "#888", textTransform: "uppercase", fontWeight: 600 }}>Operations</div>
-          <h1 style={{ margin: "4px 0 0", fontSize: 22, fontWeight: 600 }}>Parts Orders</h1>
+          <h1 style={{ margin: "4px 0 0", fontSize: 20, fontWeight: 700 }}>Parts Orders</h1>
         </div>
         <button
           onClick={() => setShowNew(true)}
-          style={{ padding: "8px 16px", background: "#033280", color: "white", border: 0, borderRadius: 6, fontSize: 13, fontWeight: 600, cursor: "pointer" }}
+          style={{ padding: "8px 16px", background: "#033280", color: "white", border: 0, borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: "pointer" }}
         >
           + New Order
         </button>
@@ -80,8 +80,8 @@ export default function DealerPartsOrdersPage() {
                 />
               </label>
               <div style={{ display: "flex", gap: 8, marginTop: 12, justifyContent: "flex-end" }}>
-                <button onClick={() => setShowNew(false)} style={{ padding: "8px 14px", border: "1px solid #ccc", background: "white", borderRadius: 6, cursor: "pointer" }}>Cancel</button>
-                <button onClick={submit} disabled={submitting} style={{ padding: "8px 14px", background: "#033280", color: "white", border: 0, borderRadius: 6, cursor: "pointer" }}>
+                <button onClick={() => setShowNew(false)} style={{ padding: "8px 14px", border: "1px solid #e0e0e0", background: "white", borderRadius: 8, cursor: "pointer" }}>Cancel</button>
+                <button onClick={submit} disabled={submitting} style={{ padding: "8px 14px", background: "#033280", color: "white", border: 0, borderRadius: 8, cursor: "pointer" }}>
                   {submitting ? "Creating..." : "Create Order"}
                 </button>
               </div>
@@ -91,13 +91,13 @@ export default function DealerPartsOrdersPage() {
       )}
 
       {orders.length === 0 ? (
-        <div style={{ padding: 40, textAlign: "center", color: "#888", background: "#fafbfd", borderRadius: 8 }}>
+        <div style={{ padding: 40, textAlign: "center", color: "#888", background: "#fafafa", borderRadius: 8 }}>
           No parts orders yet. Click <strong>+ New Order</strong> to request parts.
         </div>
       ) : (
         <table style={{ width: "100%", borderCollapse: "collapse" }}>
           <thead>
-            <tr style={{ borderBottom: "2px solid #eee", textAlign: "left", fontSize: 11, color: "#888" }}>
+            <tr style={{ borderBottom: "1px solid #f0f0f0", textAlign: "left", fontSize: 11, color: "#888", background: "#fafafa" }}>
               <th style={{ padding: 10 }}>Order #</th>
               <th>Supplier</th>
               <th>Qty</th>
@@ -108,7 +108,7 @@ export default function DealerPartsOrdersPage() {
           </thead>
           <tbody>
             {orders.map(o => (
-              <tr key={o.id} style={{ borderBottom: "1px solid #f3f3f3", fontSize: 12 }}>
+              <tr key={o.id} style={{ borderBottom: "1px solid #f5f5f5", fontSize: 12 }}>
                 <td style={{ padding: 10, fontWeight: 600 }}>{o.orderNumber}</td>
                 <td>{o.supplier || "—"}</td>
                 <td>{o.totalQuantity ?? "—"}</td>

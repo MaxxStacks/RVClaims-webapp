@@ -41,14 +41,14 @@ export default function DealerClaimsPage() {
   };
 
   return (
-    <div style={{padding: 24}}>
+    <div style={{padding: "28px 32px"}}>
       <div style={{display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16}}>
         <div>
           <div style={{fontSize: 11, color: "#888", textTransform: "uppercase", fontWeight: 600}}>Operations</div>
-          <h1 style={{margin: "4px 0 0", fontSize: 22, fontWeight: 600}}>Claims</h1>
+          <h1 style={{margin: "4px 0 0", fontSize: 20, fontWeight: 700}}>Claims</h1>
         </div>
         <button onClick={() => setShowInventoryPicker(!showInventoryPicker)}
-          style={{padding: "10px 18px", background: "#0cb22c", color: "white", border: 0, borderRadius: 6, fontSize: 13, fontWeight: 600, cursor: "pointer"}}>
+          style={{padding: "10px 18px", background: "#22c55e", color: "white", border: 0, borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: "pointer"}}>
           + New Claim
         </button>
       </div>
@@ -61,7 +61,7 @@ export default function DealerClaimsPage() {
       </div>
 
       {showInventoryPicker && (
-        <div style={{marginBottom: 16, padding: 16, background: "white", borderRadius: 8, border: "1px solid #e5eaf2"}}>
+        <div style={{marginBottom: 16, padding: 16, background: "white", borderRadius: 8, border: "1px solid #e5e7eb"}}>
           <div style={{display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12}}>
             <strong style={{fontSize: 13}}>Select a unit to file a claim against:</strong>
             <button onClick={() => setShowInventoryPicker(false)} style={{background: "none", border: 0, fontSize: 18, cursor: "pointer"}}>×</button>
@@ -73,8 +73,8 @@ export default function DealerClaimsPage() {
               </div>
             ) : units.map(u => (
               <div key={u.id} onClick={() => navigate(`/dealer-v6/units/${u.id}/claims/new`)}
-                style={{padding: 10, border: "1px solid #f0f2f5", borderRadius: 6, cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", background: "white"}}
-                onMouseEnter={e => e.currentTarget.style.background = "#f7f9fc"}
+                style={{padding: 10, border: "1px solid #e5e7eb", borderRadius: 8, cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", background: "white"}}
+                onMouseEnter={e => e.currentTarget.style.background = "#f7f7f7"}
                 onMouseLeave={e => e.currentTarget.style.background = "white"}>
                 <div>
                   <div style={{fontSize: 13, fontWeight: 600}}>{u.year} {u.make} {u.model}</div>
@@ -89,20 +89,20 @@ export default function DealerClaimsPage() {
 
       <div style={{marginBottom: 12}}>
         <select value={filter.status} onChange={e => setFilter({status: e.target.value})}
-          style={{padding: "6px 10px", fontSize: 12, border: "1px solid #d5dbe5", borderRadius: 6}}>
+          style={{padding: "8px 12px", fontSize: 12, border: "1px solid #e0e0e0", borderRadius: 8}}>
           <option value="">All statuses</option>
           {Object.keys(STATUS_COLOR).map(s => <option key={s} value={s}>{s.replace(/_/g, " ")}</option>)}
         </select>
       </div>
 
       {loading ? <div style={{padding: 40, textAlign: "center"}}>Loading...</div> : filtered.length === 0 ? (
-        <div style={{padding: 60, textAlign: "center", background: "#fafbfd", borderRadius: 8, color: "#888"}}>
+        <div style={{padding: 60, textAlign: "center", background: "#fafafa", borderRadius: 8, color: "#888"}}>
           No claims found.
         </div>
       ) : (
         <table style={{width: "100%", borderCollapse: "collapse", background: "white", borderRadius: 8, overflow: "hidden"}}>
           <thead>
-            <tr style={{borderBottom: "2px solid #eee", textAlign: "left", fontSize: 11, color: "#888", textTransform: "uppercase"}}>
+            <tr style={{borderBottom: "1px solid #f0f0f0", textAlign: "left", fontSize: 11, color: "#888", textTransform: "uppercase", background: "#fafafa"}}>
               <th style={{padding: 12}}>Claim #</th>
               <th>Type</th>
               <th>Manufacturer</th>
@@ -113,8 +113,8 @@ export default function DealerClaimsPage() {
           <tbody>
             {filtered.map(c => (
               <tr key={c.id} onClick={() => c.unitId && navigate(`/dealer-v6/units/${c.unitId}`)}
-                style={{borderBottom: "1px solid #f3f3f3", fontSize: 13, cursor: c.unitId ? "pointer" : "default"}}
-                onMouseEnter={e => { if (c.unitId) e.currentTarget.style.background = "#f7f9fc"; }}
+                style={{borderBottom: "1px solid #f5f5f5", fontSize: 13, cursor: c.unitId ? "pointer" : "default"}}
+                onMouseEnter={e => { if (c.unitId) e.currentTarget.style.background = "#f7f7f7"; }}
                 onMouseLeave={e => e.currentTarget.style.background = "white"}>
                 <td style={{padding: 12, fontWeight: 600}}>{c.claimNumber}</td>
                 <td>{c.type}</td>
@@ -132,9 +132,9 @@ export default function DealerClaimsPage() {
 
 function Kpi({ label, value, color }: { label: string; value: number; color: string }) {
   return (
-    <div style={{padding: 14, background: "white", border: "1px solid #e5eaf2", borderRadius: 8}}>
+    <div style={{padding: 20, background: "white", border: "1px solid #e5e7eb", borderRadius: 8}}>
       <div style={{fontSize: 11, color: "#888", textTransform: "uppercase", fontWeight: 600}}>{label}</div>
-      <div style={{fontSize: 22, fontWeight: 700, color, marginTop: 4}}>{value}</div>
+      <div style={{fontSize: 28, fontWeight: 700, color, marginTop: 4}}>{value}</div>
     </div>
   );
 }

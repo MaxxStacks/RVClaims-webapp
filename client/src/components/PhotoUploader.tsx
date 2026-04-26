@@ -84,12 +84,12 @@ export default function PhotoUploader({ scope, scopeId, photoType = "general", o
         onDragLeave={() => setDragOver(false)}
         onDrop={(e) => { e.preventDefault(); setDragOver(false); handleFiles(e.dataTransfer.files); }}
         style={{
-          border: `2px dashed ${dragOver ? "#033280" : "#d5dbe5"}`,
+          border: `2px dashed ${dragOver ? "#033280" : "#e0e0e0"}`,
           borderRadius: 8,
           padding: 24,
           textAlign: "center",
           cursor: "pointer",
-          background: dragOver ? "#f0f5ff" : "#fafbfd",
+          background: dragOver ? "#eff6ff" : "#fafafa",
           transition: "all 150ms",
         }}
       >
@@ -112,8 +112,8 @@ export default function PhotoUploader({ scope, scopeId, photoType = "general", o
           {uploads.map((u) => (
             <div key={u.id} style={{
               padding: "8px 12px",
-              background: u.status === "error" ? "#fee" : u.status === "done" ? "#efe" : "#f7f9fc",
-              borderRadius: 6,
+              background: u.status === "error" ? "#fee" : u.status === "done" ? "#efe" : "#fafafa",
+              borderRadius: 8,
               fontSize: 12,
               display: "flex",
               alignItems: "center",
@@ -122,7 +122,7 @@ export default function PhotoUploader({ scope, scopeId, photoType = "general", o
               <div style={{ flex: 1 }}>
                 <div>{u.name}</div>
                 {u.status === "uploading" && (
-                  <div style={{ height: 4, background: "#e5eaf2", borderRadius: 2, marginTop: 4, overflow: "hidden" }}>
+                  <div style={{ height: 4, background: "#e5e7eb", borderRadius: 2, marginTop: 4, overflow: "hidden" }}>
                     <div style={{ width: `${u.progress}%`, height: "100%", background: "#033280" }} />
                   </div>
                 )}

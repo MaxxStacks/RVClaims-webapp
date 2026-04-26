@@ -86,7 +86,7 @@ export default function NotificationBell() {
         <div style={{
           position: "absolute", top: 38, right: 0,
           width: 360, maxHeight: 480, overflowY: "auto",
-          background: "white", border: "1px solid #e5eaf2", borderRadius: 8,
+          background: "white", border: "1px solid #e5e7eb", borderRadius: 8,
           boxShadow: "0 8px 24px rgba(0,0,0,0.12)", zIndex: 1000,
         }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 14px", borderBottom: "1px solid #eee" }}>
@@ -105,9 +105,9 @@ export default function NotificationBell() {
               onClick={() => { if (n.ctaRoute) window.location.href = n.ctaRoute; }}
               style={{
                 padding: "10px 14px",
-                borderBottom: "1px solid #f3f3f3",
+                borderBottom: "1px solid #f5f5f5",
                 cursor: n.ctaRoute ? "pointer" : "default",
-                background: n.isRead ? "white" : "#f0f5ff",
+                background: n.isRead ? "white" : "#eff6ff",
               }}
             >
               <div style={{ fontSize: 12, fontWeight: 600, marginBottom: 2 }}>{n.title}</div>

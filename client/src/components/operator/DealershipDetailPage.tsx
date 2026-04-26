@@ -68,7 +68,7 @@ export default function DealershipDetailPage() {
       </nav>
     }>
       <SectionLayout contextualSidebar={<DealersContextSidebar activeId={params.id} />}>
-      <div style={{ flex: 1, padding: 24, overflowY: "auto" }}>
+      <div style={{ flex: 1, padding: "28px 32px", overflowY: "auto" }}>
       <div style={{display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 16}}>
         <div>
           <h1 style={{margin: 0, fontSize: 24, fontWeight: 700}}>{dealership.name}</h1>
@@ -78,19 +78,19 @@ export default function DealershipDetailPage() {
         </div>
         {dealership.reviewStatus === "pending_review" && (
           <div style={{display: "flex", gap: 8}}>
-            <button onClick={reject} style={{padding: "8px 16px", border: "1px solid #c0392b", color: "#c0392b", background: "white", borderRadius: 6, cursor: "pointer"}}>Reject</button>
-            <button onClick={approve} style={{padding: "8px 16px", background: "#16a34a", color: "white", border: 0, borderRadius: 6, cursor: "pointer", fontWeight: 600}}>Approve</button>
+            <button onClick={reject} style={{padding: "8px 16px", border: "1px solid #c0392b", color: "#c0392b", background: "white", borderRadius: 8, cursor: "pointer"}}>Reject</button>
+            <button onClick={approve} style={{padding: "8px 16px", background: "#16a34a", color: "white", border: 0, borderRadius: 8, cursor: "pointer", fontWeight: 600}}>Approve</button>
           </div>
         )}
       </div>
 
-      <div style={{display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12, marginBottom: 20}}>
+      <div style={{display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginBottom: 28}}>
         <Stat label="Units" value={kpis.unitCount}/>
         <Stat label="Claims" value={kpis.claimCount}/>
         <Stat label="Active Modules" value={modules.filter((m: any) => m.status === "enabled").length}/>
       </div>
 
-      <div style={{display: "flex", borderBottom: "1px solid #e5eaf2", marginBottom: 20}}>
+      <div style={{display: "flex", borderBottom: "1px solid #e5e7eb", marginBottom: 20}}>
         {TABS.map(t => (
           <button key={t} onClick={() => setTab(t)}
             style={{
@@ -116,7 +116,7 @@ export default function DealershipDetailPage() {
           <DField label="Province/State" value={edit.stateProvince} onChange={(v: string) => setEdit({...edit, stateProvince: v})}/>
           <DField label="Postal code" value={edit.postalCode} onChange={(v: string) => setEdit({...edit, postalCode: v})}/>
           <div style={{gridColumn: "1 / -1", marginTop: 8}}>
-            <button onClick={save} style={{padding: "8px 16px", background: "#033280", color: "white", border: 0, borderRadius: 6, cursor: "pointer", fontWeight: 600}}>
+            <button onClick={save} style={{padding: "8px 16px", background: "#033280", color: "white", border: 0, borderRadius: 8, cursor: "pointer", fontWeight: 600}}>
               Save changes
             </button>
           </div>
@@ -126,16 +126,16 @@ export default function DealershipDetailPage() {
       {tab === "Owner & Staff" && (
         <div>
           {users.length === 0 ? (
-            <div style={{padding: 40, textAlign: "center", color: "#888", background: "#fafbfd", borderRadius: 8}}>
+            <div style={{padding: 40, textAlign: "center", color: "#888", background: "#fafafa", borderRadius: 8}}>
               No users linked to this dealership yet. (Invite functionality coming soon — for now, link users via Clerk dashboard public_metadata.dealershipId)
             </div>
           ) : (
             <table style={{width: "100%", borderCollapse: "collapse", background: "white", borderRadius: 8, overflow: "hidden"}}>
-              <thead><tr style={{borderBottom: "2px solid #eee", textAlign: "left", fontSize: 11, color: "#888"}}>
+              <thead><tr style={{borderBottom: "1px solid #f0f0f0", textAlign: "left", fontSize: 11, color: "#888", background: "#fafafa"}}>
                 <th style={{padding: 12}}>Name</th><th>Email</th><th>Role</th><th>Active</th>
               </tr></thead>
               <tbody>{users.map((u: any) => (
-                <tr key={u.id} style={{borderBottom: "1px solid #f3f3f3", fontSize: 13}}>
+                <tr key={u.id} style={{borderBottom: "1px solid #f5f5f5", fontSize: 13}}>
                   <td style={{padding: 12, fontWeight: 600}}>{u.firstName} {u.lastName}</td>
                   <td>{u.email}</td>
                   <td>{u.role}</td>
@@ -153,7 +153,7 @@ export default function DealershipDetailPage() {
             const isEnabled = enabledModuleKeys.has(mod.moduleKey);
             const isRequired = mod.isBaseRequired;
             return (
-              <div key={mod.moduleKey} style={{padding: 16, border: "1px solid #e5eaf2", borderRadius: 8, background: isEnabled ? "#f0f5ff" : "white"}}>
+              <div key={mod.moduleKey} style={{padding: 16, border: "1px solid #e5e7eb", borderRadius: 8, background: isEnabled ? "#eff6ff" : "white"}}>
                 <div style={{display: "flex", justifyContent: "space-between", alignItems: "flex-start"}}>
                   <div style={{flex: 1}}>
                     <div style={{fontSize: 14, fontWeight: 600}}>{mod.name}{isRequired && <span style={{marginLeft: 6, padding: "1px 6px", background: "#888", color: "white", fontSize: 9, borderRadius: 4}}>REQUIRED</span>}</div>
@@ -167,8 +167,8 @@ export default function DealershipDetailPage() {
                   </div>
                   {!isRequired && (
                     <button onClick={() => toggleModule(mod.moduleKey, !isEnabled)}
-                      style={{padding: "6px 14px", background: isEnabled ? "white" : "#0cb22c", color: isEnabled ? "#c0392b" : "white",
-                        border: isEnabled ? "1px solid #c0392b" : "0", borderRadius: 6, cursor: "pointer", fontSize: 12, fontWeight: 600}}>
+                      style={{padding: "6px 14px", background: isEnabled ? "white" : "#22c55e", color: isEnabled ? "#c0392b" : "white",
+                        border: isEnabled ? "1px solid #c0392b" : "0", borderRadius: 8, cursor: "pointer", fontSize: 12, fontWeight: 600}}>
                       {isEnabled ? "Disable" : "Enable"}
                     </button>
                   )}
@@ -180,7 +180,7 @@ export default function DealershipDetailPage() {
       )}
 
       {tab === "Subscription" && (
-        <div style={{padding: 40, textAlign: "center", color: "#888", background: "#fafbfd", borderRadius: 8}}>
+        <div style={{padding: 40, textAlign: "center", color: "#888", background: "#fafafa", borderRadius: 8}}>
           Stripe billing integration coming in Phase 2D. Module pricing is configured per-dealer in Modules tab.
         </div>
       )}
@@ -201,14 +201,14 @@ export default function DealershipDetailPage() {
           {dealership.brandingTier === "enterprise" && (
             <DField label="Custom subdomain" value={edit.customSubdomain} onChange={(v: string) => setEdit({...edit, customSubdomain: v})}/>
           )}
-          <button onClick={save} style={{padding: "8px 16px", background: "#033280", color: "white", border: 0, borderRadius: 6, cursor: "pointer", fontWeight: 600, justifySelf: "start"}}>
+          <button onClick={save} style={{padding: "8px 16px", background: "#033280", color: "white", border: 0, borderRadius: 8, cursor: "pointer", fontWeight: 600, justifySelf: "start"}}>
             Save branding
           </button>
         </div>
       )}
 
       {tab === "Activity" && (
-        <div style={{padding: 40, textAlign: "center", color: "#888", background: "#fafbfd", borderRadius: 8}}>
+        <div style={{padding: 40, textAlign: "center", color: "#888", background: "#fafafa", borderRadius: 8}}>
           Activity log coming in Phase 2D.
         </div>
       )}
@@ -220,7 +220,7 @@ export default function DealershipDetailPage() {
 
 function Stat({ label, value }: any) {
   return (
-    <div style={{padding: 16, background: "white", border: "1px solid #e5eaf2", borderRadius: 8}}>
+    <div style={{padding: 16, background: "white", border: "1px solid #e5e7eb", borderRadius: 8}}>
       <div style={{fontSize: 11, color: "#888", textTransform: "uppercase", fontWeight: 600}}>{label}</div>
       <div style={{fontSize: 20, fontWeight: 700, color: "#033280", marginTop: 4}}>{value}</div>
     </div>
@@ -232,12 +232,12 @@ function DField({ label, value, onChange, options }: any) {
       <div style={{fontSize: 11, color: "#888", textTransform: "uppercase", fontWeight: 600, marginBottom: 4}}>{label}</div>
       {options ? (
         <select value={value || ""} onChange={e => onChange(e.target.value)}
-          style={{width: "100%", padding: 8, border: "1px solid #d5dbe5", borderRadius: 4, fontSize: 13}}>
+          style={{width: "100%", padding: 8, border: "1px solid #e0e0e0", borderRadius: 8, fontSize: 13}}>
           {options.map((o: string) => <option key={o} value={o}>{o.replace(/_/g, " ")}</option>)}
         </select>
       ) : (
         <input value={value || ""} onChange={e => onChange(e.target.value)}
-          style={{width: "100%", padding: 8, border: "1px solid #d5dbe5", borderRadius: 4, fontSize: 13}}/>
+          style={{width: "100%", padding: 8, border: "1px solid #e0e0e0", borderRadius: 8, fontSize: 13}}/>
       )}
     </div>
   );

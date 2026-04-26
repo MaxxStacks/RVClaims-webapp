@@ -35,19 +35,19 @@ export default function DealerAccountsListPage() {
   };
 
   return (
-    <div style={{padding: 24}}>
+    <div style={{padding: "28px 32px"}}>
       <div style={{display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16}}>
         <div>
           <div style={{fontSize: 11, color: "#888", textTransform: "uppercase", fontWeight: 600}}>Management</div>
-          <h1 style={{margin: "4px 0 0", fontSize: 22, fontWeight: 600}}>Dealer Accounts</h1>
+          <h1 style={{margin: "4px 0 0", fontSize: 20, fontWeight: 700}}>Dealer Accounts</h1>
         </div>
         <button onClick={() => navigate("/operator-v6/dealerships/new")}
-          style={{padding: "10px 18px", background: "#0cb22c", color: "white", border: 0, borderRadius: 6, fontSize: 13, fontWeight: 600, cursor: "pointer"}}>
+          style={{padding: "10px 18px", background: "#22c55e", color: "white", border: 0, borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: "pointer"}}>
           + New Dealership
         </button>
       </div>
 
-      <div style={{display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: 12, marginBottom: 20}}>
+      <div style={{display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: 16, marginBottom: 28}}>
         <Kpi label="Total Dealerships" value={kpis.total} color="#033280" />
         <Kpi label="Active" value={kpis.active} color="#16a34a" />
         <Kpi label="Pending Review" value={kpis.pending} color="#f48120"
@@ -57,7 +57,7 @@ export default function DealerAccountsListPage() {
 
       <div style={{display: "flex", gap: 8, marginBottom: 12}}>
         <select value={filter.reviewStatus} onChange={e => setFilter({...filter, reviewStatus: e.target.value})}
-          style={{padding: "6px 10px", fontSize: 12, border: "1px solid #d5dbe5", borderRadius: 6}}>
+          style={{padding: "8px 12px", fontSize: 12, border: "1px solid #e0e0e0", borderRadius: 8}}>
           <option value="">All statuses</option>
           <option value="active">Active</option>
           <option value="pending_review">Pending Review</option>
@@ -67,17 +67,17 @@ export default function DealerAccountsListPage() {
         <input placeholder="Search by dealer name..." value={filter.search}
           onChange={e => setFilter({...filter, search: e.target.value})}
           onKeyDown={e => e.key === "Enter" && refresh()}
-          style={{flex: 1, padding: "6px 10px", fontSize: 12, border: "1px solid #d5dbe5", borderRadius: 6}}/>
+          style={{flex: 1, padding: "8px 12px", fontSize: 12, border: "1px solid #e0e0e0", borderRadius: 8}}/>
       </div>
 
       {loading ? <div style={{padding: 40, textAlign: "center"}}>Loading...</div> : dealerships.length === 0 ? (
-        <div style={{padding: 60, textAlign: "center", background: "#fafbfd", borderRadius: 8, color: "#888"}}>
+        <div style={{padding: 60, textAlign: "center", background: "#fafafa", borderRadius: 8, color: "#888"}}>
           No dealerships found. Click "+ New Dealership" to add one.
         </div>
       ) : (
         <table style={{width: "100%", borderCollapse: "collapse", background: "white", borderRadius: 8, overflow: "hidden"}}>
           <thead>
-            <tr style={{borderBottom: "2px solid #eee", textAlign: "left", fontSize: 11, color: "#888", textTransform: "uppercase"}}>
+            <tr style={{borderBottom: "1px solid #f0f0f0", textAlign: "left", fontSize: 11, color: "#888", textTransform: "uppercase", background: "#fafafa"}}>
               <th style={{padding: 12}}>Dealership</th>
               <th>Tier</th>
               <th>Status</th>
@@ -89,8 +89,8 @@ export default function DealerAccountsListPage() {
           <tbody>
             {dealerships.map(d => (
               <tr key={d.id} onClick={() => navigate(`/operator-v6/dealerships/${d.id}`)}
-                style={{borderBottom: "1px solid #f3f3f3", fontSize: 13, cursor: "pointer"}}
-                onMouseEnter={e => e.currentTarget.style.background = "#f7f9fc"}
+                style={{borderBottom: "1px solid #f5f5f5", fontSize: 13, cursor: "pointer"}}
+                onMouseEnter={e => e.currentTarget.style.background = "#f7f7f7"}
                 onMouseLeave={e => e.currentTarget.style.background = "white"}>
                 <td style={{padding: 12, fontWeight: 600}}>
                   {d.name}
@@ -113,9 +113,9 @@ export default function DealerAccountsListPage() {
 function Kpi({ label, value, color, onClick }: any) {
   return (
     <div onClick={onClick}
-      style={{padding: 16, background: "white", border: "1px solid #e5eaf2", borderRadius: 8, cursor: onClick ? "pointer" : "default"}}>
+      style={{padding: 20, background: "white", border: "1px solid #e5e7eb", borderRadius: 8, cursor: onClick ? "pointer" : "default"}}>
       <div style={{fontSize: 11, color: "#888", marginBottom: 4, textTransform: "uppercase", fontWeight: 600}}>{label}</div>
-      <div style={{fontSize: 24, fontWeight: 700, color}}>{value}</div>
+      <div style={{fontSize: 28, fontWeight: 700, color}}>{value}</div>
     </div>
   );
 }

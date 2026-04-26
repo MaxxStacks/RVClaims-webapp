@@ -58,37 +58,37 @@ export default function InventoryListPage({ context }: Props) {
   };
 
   return (
-    <div style={{ padding: 24 }}>
+    <div style={{ padding: "28px 32px" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
         <div>
           <div style={{ fontSize: 11, color: "#888", textTransform: "uppercase", fontWeight: 600 }}>Inventory</div>
-          <h1 style={{ margin: "4px 0 0", fontSize: 22, fontWeight: 600 }}>Units</h1>
+          <h1 style={{ margin: "4px 0 0", fontSize: 20, fontWeight: 700 }}>Units</h1>
         </div>
         {context !== "client" && (
           <button onClick={() => navigate(`/${context}-v6/units/new`)}
-            style={{ padding: "8px 16px", background: "#033280", color: "white", border: 0, borderRadius: 6, fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
+            style={{ padding: "8px 16px", background: "#033280", color: "white", border: 0, borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
             + New Unit
           </button>
         )}
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: 12, marginBottom: 20 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: 16, marginBottom: 28 }}>
         {[
           { label: "TOTAL UNITS", value: kpis.total, color: "#033280" },
           { label: "IN STOCK", value: kpis.inStock, color: "#16a34a" },
           { label: "SOLD", value: kpis.sold, color: "#1e88e5" },
           { label: "IN SERVICE", value: kpis.inService, color: "#f48120" },
         ].map(k => (
-          <div key={k.label} style={{ padding: 16, background: "white", border: "1px solid #e5eaf2", borderRadius: 8 }}>
+          <div key={k.label} style={{ padding: 20, background: "white", border: "1px solid #e5e7eb", borderRadius: 8 }}>
             <div style={{ fontSize: 11, color: "#888", marginBottom: 4 }}>{k.label}</div>
-            <div style={{ fontSize: 24, fontWeight: 700, color: k.color }}>{k.value}</div>
+            <div style={{ fontSize: 28, fontWeight: 700, color: k.color }}>{k.value}</div>
           </div>
         ))}
       </div>
 
       <div style={{ display: "flex", gap: 8, marginBottom: 12, alignItems: "center" }}>
         <select value={filter.status} onChange={e => setFilter({ ...filter, status: e.target.value })}
-          style={{ padding: "6px 10px", fontSize: 12, border: "1px solid #d5dbe5", borderRadius: 6 }}>
+          style={{ padding: "8px 12px", fontSize: 12, border: "1px solid #e0e0e0", borderRadius: 8 }}>
           <option value="">All statuses</option>
           {Object.entries(STATUS_LABEL).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
         </select>
@@ -97,10 +97,10 @@ export default function InventoryListPage({ context }: Props) {
           value={filter.search}
           onChange={e => setFilter({ ...filter, search: e.target.value })}
           onKeyDown={e => e.key === "Enter" && refresh()}
-          style={{ flex: 1, padding: "6px 10px", fontSize: 12, border: "1px solid #d5dbe5", borderRadius: 6 }}
+          style={{ flex: 1, padding: "8px 12px", fontSize: 12, border: "1px solid #e0e0e0", borderRadius: 8 }}
         />
         <button onClick={refresh}
-          style={{ padding: "6px 14px", border: "1px solid #d5dbe5", borderRadius: 6, background: "white", fontSize: 12, cursor: "pointer" }}>
+          style={{ padding: "6px 14px", border: "1px solid #e0e0e0", borderRadius: 8, background: "white", fontSize: 12, cursor: "pointer" }}>
           Search
         </button>
       </div>
@@ -108,13 +108,13 @@ export default function InventoryListPage({ context }: Props) {
       {loading ? (
         <div style={{ padding: 40, textAlign: "center", color: "#888" }}>Loading...</div>
       ) : units.length === 0 ? (
-        <div style={{ padding: 60, textAlign: "center", background: "#fafbfd", borderRadius: 8, color: "#888" }}>
+        <div style={{ padding: 60, textAlign: "center", background: "#fafafa", borderRadius: 8, color: "#888" }}>
           No units found. {context !== "client" && "Click '+ New Unit' to add one."}
         </div>
       ) : (
         <table style={{ width: "100%", borderCollapse: "collapse", background: "white", borderRadius: 8, overflow: "hidden" }}>
           <thead>
-            <tr style={{ borderBottom: "2px solid #eee", textAlign: "left", fontSize: 11, color: "#888", textTransform: "uppercase" }}>
+            <tr style={{ borderBottom: "1px solid #f0f0f0", textAlign: "left", fontSize: 11, color: "#888", textTransform: "uppercase", background: "#fafafa" }}>
               <th style={{ padding: 12 }}>Stock #</th>
               <th>VIN</th>
               <th>Year</th>
@@ -128,8 +128,8 @@ export default function InventoryListPage({ context }: Props) {
             {units.map(u => (
               <tr key={u.id}
                 onClick={() => navigate(`/${context}-v6/units/${u.id}`)}
-                style={{ borderBottom: "1px solid #f3f3f3", fontSize: 13, cursor: "pointer" }}
-                onMouseEnter={e => (e.currentTarget.style.background = "#f7f9fc")}
+                style={{ borderBottom: "1px solid #f5f5f5", fontSize: 13, cursor: "pointer" }}
+                onMouseEnter={e => (e.currentTarget.style.background = "#f7f7f7")}
                 onMouseLeave={e => (e.currentTarget.style.background = "white")}>
                 <td style={{ padding: 12, fontWeight: 600 }}>{u.stockNumber || "—"}</td>
                 <td style={{ fontFamily: "monospace", fontSize: 11 }}>{u.vin}</td>

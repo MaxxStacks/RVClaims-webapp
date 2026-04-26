@@ -37,12 +37,12 @@ export default function UnitsContextSidebar({ context, activeId }: Props) {
           placeholder="Search VIN, make..."
           value={filter.search}
           onChange={e => setFilter({ ...filter, search: e.target.value })}
-          style={{ width: "100%", padding: "6px 8px", fontSize: 12, border: "1px solid #d5dbe5", borderRadius: 4, marginBottom: 6, boxSizing: "border-box" }}
+          style={{ width: "100%", padding: "6px 8px", fontSize: 12, border: "1px solid #e0e0e0", borderRadius: 6, marginBottom: 6, boxSizing: "border-box" }}
         />
         <select
           value={filter.status}
           onChange={e => setFilter({ ...filter, status: e.target.value })}
-          style={{ width: "100%", padding: "6px 8px", fontSize: 11, border: "1px solid #d5dbe5", borderRadius: 4 }}
+          style={{ width: "100%", padding: "6px 8px", fontSize: 11, border: "1px solid #e0e0e0", borderRadius: 6 }}
         >
           <option value="">All statuses</option>
           <option value="in_inventory">In Stock</option>
@@ -64,7 +64,6 @@ export default function UnitsContextSidebar({ context, activeId }: Props) {
                 padding: `${LAYOUT.sidebarItemPaddingY}px ${LAYOUT.sidebarItemPaddingX}px`,
                 cursor: "pointer",
                 background: isActive ? LAYOUT.navyLight : "transparent",
-                borderLeft: isActive ? `3px solid ${LAYOUT.navy}` : "3px solid transparent",
               }}
               onMouseEnter={e => { if (!isActive) e.currentTarget.style.background = LAYOUT.bgPage; }}
               onMouseLeave={e => { if (!isActive) e.currentTarget.style.background = "transparent"; }}

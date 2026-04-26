@@ -34,7 +34,7 @@ export default function PhotoGallery({ claimId, refreshKey = 0 }: Props) {
               backgroundSize: "cover",
               backgroundPosition: "center",
               cursor: "pointer",
-              border: "1px solid #e5eaf2",
+              border: "1px solid #e5e7eb",
             }}
           />
         ))}

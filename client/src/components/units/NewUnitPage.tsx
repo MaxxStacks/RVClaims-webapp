@@ -30,8 +30,8 @@ export default function NewUnitPage() {
   }
 
   return (
-    <div style={{display: "flex", minHeight: "100vh", background: "#f7f9fc"}}>
-      <div style={{width: 240, background: "white", borderRight: "1px solid #e5eaf2", padding: 20, overflowY: "auto"}}>
+    <div style={{display: "flex", minHeight: "100vh", background: "#f5f6f8"}}>
+      <div style={{width: 240, background: "white", borderRight: "1px solid #e5e7eb", padding: 20, overflowY: "auto"}}>
         <button onClick={() => navigate("/dealer-v6")} style={{background: "none", border: 0, color: "#033280", fontSize: 12, cursor: "pointer", marginBottom: 20}}>
           ← Back to Inventory
         </button>
@@ -39,7 +39,7 @@ export default function NewUnitPage() {
         {recentUnits.map(u => (
           <div key={u.id} onClick={() => navigate(`/dealer-v6/units/${u.id}`)}
             style={{padding: "8px 10px", marginBottom: 4, borderRadius: 4, cursor: "pointer", fontSize: 12}}
-            onMouseEnter={e => e.currentTarget.style.background = "#f7f9fc"}
+            onMouseEnter={e => e.currentTarget.style.background = "#f5f5f5"}
             onMouseLeave={e => e.currentTarget.style.background = "transparent"}>
             <div style={{fontWeight: 600}}>{u.year} {u.make}</div>
             <div style={{fontSize: 10, color: "#888"}}>{u.vin}</div>
@@ -82,11 +82,11 @@ export default function NewUnitPage() {
         </Section>
 
         <div style={{display: "flex", justifyContent: "flex-end", gap: 8, marginTop: 24}}>
-          <button onClick={() => navigate("/dealer-v6")} style={{padding: "10px 18px", border: "1px solid #d5dbe5", background: "white", borderRadius: 6, cursor: "pointer"}}>
+          <button onClick={() => navigate("/dealer-v6")} style={{padding: "10px 18px", border: "1px solid #e0e0e0", background: "white", borderRadius: 8, cursor: "pointer"}}>
             Cancel
           </button>
           <button onClick={submit} disabled={submitting}
-            style={{padding: "10px 24px", background: "#0cb22c", color: "white", border: 0, borderRadius: 6, cursor: submitting ? "wait" : "pointer", fontWeight: 600}}>
+            style={{padding: "10px 24px", background: "#22c55e", color: "white", border: 0, borderRadius: 8, cursor: submitting ? "wait" : "pointer", fontWeight: 600}}>
             {submitting ? "Creating..." : "Create Unit"}
           </button>
         </div>
@@ -97,7 +97,7 @@ export default function NewUnitPage() {
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div style={{padding: 20, background: "white", borderRadius: 8, border: "1px solid #e5eaf2", marginBottom: 16}}>
+    <div style={{padding: 20, background: "white", borderRadius: 8, border: "1px solid #e5e7eb", marginBottom: 16}}>
       <h3 style={{margin: "0 0 14px", fontSize: 14, color: "#033280"}}>{title}</h3>
       <div style={{display: "grid", gap: 12}}>{children}</div>
     </div>
@@ -113,12 +113,12 @@ function Field({ label, value, onChange, type, options, mono, placeholder, maxLe
       <div style={{fontSize: 11, color: "#888", textTransform: "uppercase", fontWeight: 600, marginBottom: 4}}>{label}</div>
       {options ? (
         <select value={value} onChange={e => onChange(e.target.value)}
-          style={{width: "100%", padding: 10, border: "1px solid #d5dbe5", borderRadius: 6, fontSize: 13}}>
+          style={{width: "100%", padding: 10, border: "1px solid #e0e0e0", borderRadius: 8, fontSize: 13}}>
           {options.map(o => <option key={o} value={o}>{o.replace(/_/g, " ")}</option>)}
         </select>
       ) : (
         <input type={type || "text"} value={value} onChange={e => onChange(e.target.value)} placeholder={placeholder} maxLength={maxLen}
-          style={{width: "100%", padding: 10, border: "1px solid #d5dbe5", borderRadius: 6, fontSize: 13, fontFamily: mono ? "monospace" : "inherit"}}/>
+          style={{width: "100%", padding: 10, border: "1px solid #e0e0e0", borderRadius: 8, fontSize: 13, fontFamily: mono ? "monospace" : "inherit"}}/>
       )}
     </div>
   );

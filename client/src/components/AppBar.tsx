@@ -88,14 +88,14 @@ export default function AppBar({ context, contextLabel }: AppBarProps) {
 
   return (
     <div style={{
-      height: 56,
+      height: 60,
       background: "white",
-      borderBottom: "1px solid #e5eaf2",
+      borderBottom: "1px solid #e5e7eb",
       display: "flex",
       alignItems: "center",
       justifyContent: "space-between",
-      paddingLeft: 16,
-      paddingRight: 16,
+      paddingLeft: 32,
+      paddingRight: 32,
       flexShrink: 0,
     }}>
       {/* Left: portal label */}
@@ -109,7 +109,7 @@ export default function AppBar({ context, contextLabel }: AppBarProps) {
           <button
             onClick={() => { setBellOpen(o => !o); setMenuOpen(false); }}
             style={{
-              width: 36, height: 36, borderRadius: 8, border: "1px solid #e5eaf2",
+              width: 36, height: 36, borderRadius: 8, border: "1px solid #e5e7eb",
               background: "white", display: "flex", alignItems: "center", justifyContent: "center",
               cursor: "pointer", position: "relative", color: "#555",
             }}
@@ -129,12 +129,12 @@ export default function AppBar({ context, contextLabel }: AppBarProps) {
           {bellOpen && (
             <div style={{
               position: "absolute", right: 0, top: 44, width: 320,
-              background: "white", border: "1px solid #e5eaf2", borderRadius: 10,
+              background: "white", border: "1px solid #e5e7eb", borderRadius: 10,
               boxShadow: "0 8px 24px rgba(0,0,0,0.10)", zIndex: 300,
               maxHeight: "70vh", display: "flex", flexDirection: "column",
               overflow: "hidden",
             }}>
-              <div style={{ padding: "12px 16px", borderBottom: "1px solid #f0f2f5", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <div style={{ padding: "12px 16px", borderBottom: "1px solid #f0f0f0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <span style={{ fontSize: 13, fontWeight: 600 }}>Notifications</span>
                 {unreadCount > 0 && (
                   <button onClick={markAllRead} style={{ background: "none", border: 0, fontSize: 11, color: "#033280", cursor: "pointer", fontWeight: 500 }}>
@@ -147,8 +147,8 @@ export default function AppBar({ context, contextLabel }: AppBarProps) {
                   <div style={{ padding: 32, textAlign: "center", color: "#888", fontSize: 12 }}>No notifications</div>
                 ) : notifications.map((n: any) => (
                   <div key={n.id} style={{
-                    padding: "12px 16px", borderBottom: "1px solid #f7f7f7",
-                    background: n.isRead ? "white" : "#f5f8ff",
+                    padding: "12px 16px", borderBottom: "1px solid #f5f5f5",
+                    background: n.isRead ? "white" : "#eff6ff",
                   }}>
                     <div style={{ fontSize: 12, fontWeight: n.isRead ? 400 : 600, color: "#222", lineHeight: 1.4 }}>{n.title || n.subject || "Notification"}</div>
                     {n.body && <div style={{ fontSize: 11, color: "#666", marginTop: 3, lineHeight: 1.4 }}>{n.body}</div>}
@@ -178,10 +178,10 @@ export default function AppBar({ context, contextLabel }: AppBarProps) {
           {menuOpen && (
             <div style={{
               position: "absolute", right: 0, top: 44, width: 220,
-              background: "white", border: "1px solid #e5eaf2", borderRadius: 10,
+              background: "white", border: "1px solid #e5e7eb", borderRadius: 10,
               boxShadow: "0 8px 24px rgba(0,0,0,0.10)", zIndex: 300, overflow: "hidden",
             }}>
-              <div style={{ padding: "14px 16px", borderBottom: "1px solid #f0f2f5" }}>
+              <div style={{ padding: "14px 16px", borderBottom: "1px solid #f0f0f0" }}>
                 <div style={{ fontSize: 13, fontWeight: 600, color: "#222" }}>{displayName}</div>
                 <div style={{ fontSize: 11, color: "#888", marginTop: 2 }}>{PORTAL_LABELS[context]}</div>
               </div>
@@ -190,7 +190,7 @@ export default function AppBar({ context, contextLabel }: AppBarProps) {
               </button>
               <button
                 onClick={async () => { await signOut(); window.location.href = "/login"; }}
-                style={{ ...menuItemStyle, color: "#dc2626", borderTop: "1px solid #f0f2f5" }}
+                style={{ ...menuItemStyle, color: "#dc2626", borderTop: "1px solid #f0f0f0" }}
               >
                 Sign out
               </button>

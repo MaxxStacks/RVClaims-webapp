@@ -37,13 +37,13 @@ export default function PartsManagementPage() {
   }
 
   return (
-    <div style={{ padding: 24 }}>
+    <div style={{ padding: "28px 32px" }}>
       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 16 }}>
         <div>
           <div style={{ fontSize: 11, color: "#888", textTransform: "uppercase", fontWeight: 600 }}>Operations</div>
-          <h1 style={{ margin: "4px 0 0", fontSize: 22, fontWeight: 600 }}>Parts Management</h1>
+          <h1 style={{ margin: "4px 0 0", fontSize: 20, fontWeight: 700 }}>Parts Management</h1>
         </div>
-        <button onClick={refresh} style={{ padding: "6px 14px", border: "1px solid #d5dbe5", borderRadius: 6, background: "white", fontSize: 12, cursor: "pointer" }}>
+        <button onClick={refresh} style={{ padding: "6px 14px", border: "1px solid #e0e0e0", borderRadius: 8, background: "white", fontSize: 12, cursor: "pointer" }}>
           Refresh
         </button>
       </div>
@@ -51,13 +51,13 @@ export default function PartsManagementPage() {
       {loading ? (
         <div>Loading...</div>
       ) : orders.length === 0 ? (
-        <div style={{ padding: 40, textAlign: "center", color: "#888", background: "#fafbfd", borderRadius: 8 }}>
+        <div style={{ padding: 40, textAlign: "center", color: "#888", background: "#fafafa", borderRadius: 8 }}>
           No parts orders yet.
         </div>
       ) : (
         <table style={{ width: "100%", borderCollapse: "collapse" }}>
           <thead>
-            <tr style={{ borderBottom: "2px solid #eee", textAlign: "left", fontSize: 11, color: "#888" }}>
+            <tr style={{ borderBottom: "1px solid #f0f0f0", textAlign: "left", fontSize: 11, color: "#888", background: "#fafafa" }}>
               <th style={{ padding: 10 }}>Order #</th>
               <th>Supplier</th>
               <th>Qty</th>
@@ -68,7 +68,7 @@ export default function PartsManagementPage() {
           </thead>
           <tbody>
             {orders.map(o => (
-              <tr key={o.id} style={{ borderBottom: "1px solid #f3f3f3", fontSize: 12 }}>
+              <tr key={o.id} style={{ borderBottom: "1px solid #f5f5f5", fontSize: 12 }}>
                 <td style={{ padding: 10, fontWeight: 600 }}>{o.orderNumber}</td>
                 <td>{o.supplier || "—"}</td>
                 <td>{o.totalQuantity ?? "—"}</td>

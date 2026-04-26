@@ -8,17 +8,17 @@ export const LAYOUT = {
 
   // Colors
   navy: "#033280",
-  navyLight: "#eaf1fb",
-  navyBg: "#f0f5ff",
-  green: "#0cb22c",
-  borderLight: "#e5eaf2",
-  borderLighter: "#f0f2f5",
-  bgPage: "#f7f9fc",
+  navyLight: "#eff6ff",
+  navyBg: "#f5f6f8",
+  green: "#22c55e",
+  borderLight: "#e5e7eb",
+  borderLighter: "#f0f0f0",
+  bgPage: "#f5f6f8",
   bgWhite: "white",
 
   // Text
-  textPrimary: "#222",
-  textSecondary: "#666",
+  textPrimary: "#111",
+  textSecondary: "#555",
   textMuted: "#888",
   textLabel: "#888",
 

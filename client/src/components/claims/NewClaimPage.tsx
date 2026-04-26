@@ -91,14 +91,14 @@ export default function NewClaimPage() {
   const canSubmit = draftClaimId && photoCount >= 1 && !submitting;
 
   return (
-    <div style={{display: "flex", minHeight: "100vh", background: "#f7f9fc"}}>
+    <div style={{display: "flex", minHeight: "100vh", background: "#f5f6f8"}}>
       {/* Left info panel */}
-      <div style={{width: 280, background: "white", borderRight: "1px solid #e5eaf2", padding: 20, overflowY: "auto", flexShrink: 0}}>
+      <div style={{width: 280, background: "white", borderRight: "1px solid #e5e7eb", padding: 20, overflowY: "auto", flexShrink: 0}}>
         <button onClick={cancel} style={{background: "none", border: 0, color: "#033280", fontSize: 12, cursor: "pointer", marginBottom: 20}}>
           ← Back to Unit
         </button>
 
-        <div style={{padding: 14, background: "#f7f9fc", borderRadius: 8, marginBottom: 16}}>
+        <div style={{padding: 14, background: "#fafafa", borderRadius: 8, marginBottom: 16}}>
           <div style={{fontSize: 11, color: "#888", textTransform: "uppercase", fontWeight: 600, marginBottom: 6}}>Unit</div>
           <div style={{fontWeight: 600, fontSize: 14}}>{unit.year} {unit.manufacturer}</div>
           <div style={{fontSize: 12, color: "#666", marginTop: 2}}>{unit.model}</div>
@@ -106,7 +106,7 @@ export default function NewClaimPage() {
           {unit.stockNumber && <div style={{fontSize: 11, color: "#666", marginTop: 4}}>Stock #{unit.stockNumber}</div>}
         </div>
 
-        <div style={{padding: 14, background: "#f7f9fc", borderRadius: 8, marginBottom: 16}}>
+        <div style={{padding: 14, background: "#fafafa", borderRadius: 8, marginBottom: 16}}>
           <div style={{fontSize: 11, color: "#888", textTransform: "uppercase", fontWeight: 600, marginBottom: 8}}>Warranty Status</div>
           <WarrantyStatus label="Manufacturer" status={mfrStatus} until={unit.manufacturerWarrantyEnd}/>
           <WarrantyStatus label="Extended" status={extStatus} until={unit.extendedWarrantyEnd}/>
@@ -144,7 +144,7 @@ export default function NewClaimPage() {
         {/* Photo upload — required before submit */}
         <Section title="Photos (Required)">
           {!draftClaimId ? (
-            <div style={{padding: 20, textAlign: "center", color: "#888", fontSize: 12, background: "#fafbfd", borderRadius: 6}}>
+            <div style={{padding: 20, textAlign: "center", color: "#888", fontSize: 12, background: "#fafafa", borderRadius: 8}}>
               Select a claim type above to enable photo upload.
             </div>
           ) : (
@@ -170,7 +170,7 @@ export default function NewClaimPage() {
 
         <div style={{display: "flex", justifyContent: "flex-end", gap: 8, marginTop: 8}}>
           <button onClick={cancel} disabled={cancelling}
-            style={{padding: "10px 18px", border: "1px solid #d5dbe5", background: "white", borderRadius: 6, cursor: cancelling ? "wait" : "pointer"}}>
+            style={{padding: "10px 18px", border: "1px solid #e0e0e0", background: "white", borderRadius: 8, cursor: cancelling ? "wait" : "pointer"}}>
             {cancelling ? "Cancelling..." : "Cancel"}
           </button>
           <button
@@ -178,8 +178,8 @@ export default function NewClaimPage() {
             disabled={!canSubmit}
             title={!draftClaimId ? "Select a claim type first" : photoCount === 0 ? "Upload at least 1 photo first" : ""}
             style={{
-              padding: "10px 24px", background: canSubmit ? "#0cb22c" : "#ccc",
-              color: "white", border: 0, borderRadius: 6,
+              padding: "10px 24px", background: canSubmit ? "#22c55e" : "#ccc",
+              color: "white", border: 0, borderRadius: 8,
               cursor: canSubmit ? "pointer" : "not-allowed", fontWeight: 600,
             }}>
             {submitting ? "Submitting..." : "Submit Claim"}
@@ -198,7 +198,7 @@ export default function NewClaimPage() {
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div style={{padding: 20, background: "white", borderRadius: 8, border: "1px solid #e5eaf2", marginBottom: 16}}>
+    <div style={{padding: 20, background: "white", borderRadius: 8, border: "1px solid #e5e7eb", marginBottom: 16}}>
       <h3 style={{margin: "0 0 14px", fontSize: 14, color: "#033280"}}>{title}</h3>
       <div style={{display: "grid", gap: 12}}>{children}</div>
     </div>
@@ -225,15 +225,15 @@ function Field({ label, value, onChange, type, options, multiline, placeholder, 
       <div style={{fontSize: 11, color: "#888", textTransform: "uppercase", fontWeight: 600, marginBottom: 4}}>{label}</div>
       {options ? (
         <select value={value} onChange={e => onChange(e.target.value)}
-          style={{width: "100%", padding: 10, border: "1px solid #d5dbe5", borderRadius: 6, fontSize: 13}}>
+          style={{width: "100%", padding: 10, border: "1px solid #e0e0e0", borderRadius: 8, fontSize: 13}}>
           {options.map(o => <option key={o.v} value={o.v}>{o.label}</option>)}
         </select>
       ) : multiline ? (
         <textarea value={value} onChange={e => onChange(e.target.value)} placeholder={placeholder}
-          style={{width: "100%", padding: 10, border: "1px solid #d5dbe5", borderRadius: 6, fontSize: 13, minHeight: 100, fontFamily: "inherit"}}/>
+          style={{width: "100%", padding: 10, border: "1px solid #e0e0e0", borderRadius: 8, fontSize: 13, minHeight: 100, fontFamily: "inherit"}}/>
       ) : (
         <input type={type || "text"} value={value} onChange={e => onChange(e.target.value)} placeholder={placeholder}
-          style={{width: "100%", padding: 10, border: "1px solid #d5dbe5", borderRadius: 6, fontSize: 13}}/>
+          style={{width: "100%", padding: 10, border: "1px solid #e0e0e0", borderRadius: 8, fontSize: 13}}/>
       )}
       {hint && <div style={{fontSize: 10, color: "#888", marginTop: 4}}>{hint}</div>}
     </div>

@@ -85,7 +85,7 @@ export default function UnitProfilePage({ context }: Props) {
   return (
     <PortalShell context={context} mainNav={mainNav}>
       <SectionLayout contextualSidebar={contextSidebar}>
-      <div style={{ flex: 1, padding: 24, overflowY: "auto" }}>
+      <div style={{ flex: 1, padding: "28px 32px", overflowY: "auto" }}>
       <div style={{ marginBottom: 16 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
           <div>
@@ -103,14 +103,14 @@ export default function UnitProfilePage({ context }: Props) {
           </div>
           {context === "dealer" && (
             <button onClick={() => navigate(`/dealer-v6/units/${params.id}/claims/new`)}
-              style={{ padding: "10px 18px", background: "#0cb22c", color: "white", border: 0, borderRadius: 6, fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
+              style={{ padding: "10px 18px", background: "#22c55e", color: "white", border: 0, borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
               + New Claim
             </button>
           )}
         </div>
       </div>
 
-      <div style={{ display: "flex", gap: 0, borderBottom: "1px solid #e5eaf2", marginBottom: 20 }}>
+      <div style={{ display: "flex", gap: 0, borderBottom: "1px solid #e5e7eb", marginBottom: 20 }}>
         {tabs.map(t => (
           <button key={t} onClick={() => setTab(t)}
             style={{
@@ -122,12 +122,12 @@ export default function UnitProfilePage({ context }: Props) {
             }}>
             {t}
             {t === "Claims" && claims?.length > 0 && (
-              <span style={{ marginLeft: 6, padding: "1px 7px", background: "#f0f5ff", color: "#033280", borderRadius: 10, fontSize: 10, fontWeight: 600 }}>
+              <span style={{ marginLeft: 6, padding: "1px 7px", background: "#eff6ff", color: "#033280", borderRadius: 10, fontSize: 10, fontWeight: 600 }}>
                 {claims.length}
               </span>
             )}
             {t === "Photos" && photos?.length > 0 && (
-              <span style={{ marginLeft: 6, padding: "1px 7px", background: "#f0f5ff", color: "#033280", borderRadius: 10, fontSize: 10, fontWeight: 600 }}>
+              <span style={{ marginLeft: 6, padding: "1px 7px", background: "#eff6ff", color: "#033280", borderRadius: 10, fontSize: 10, fontWeight: 600 }}>
                 {photos.length}
               </span>
             )}
@@ -151,7 +151,7 @@ export default function UnitProfilePage({ context }: Props) {
           {canEdit && (
             <div style={{ gridColumn: "1 / -1", marginTop: 8 }}>
               <button onClick={save} disabled={saving}
-                style={{ padding: "8px 16px", background: "#033280", color: "white", border: 0, borderRadius: 6, cursor: "pointer", fontWeight: 600 }}>
+                style={{ padding: "8px 16px", background: "#033280", color: "white", border: 0, borderRadius: 8, cursor: "pointer", fontWeight: 600 }}>
                 {saving ? "Saving..." : "Save changes"}
               </button>
             </div>
@@ -184,7 +184,7 @@ export default function UnitProfilePage({ context }: Props) {
           </USection>
           {canEdit && (
             <button onClick={save} disabled={saving}
-              style={{ padding: "8px 16px", background: "#033280", color: "white", border: 0, borderRadius: 6, cursor: "pointer", fontWeight: 600, marginTop: 8 }}>
+              style={{ padding: "8px 16px", background: "#033280", color: "white", border: 0, borderRadius: 8, cursor: "pointer", fontWeight: 600, marginTop: 8 }}>
               {saving ? "Saving..." : "Save warranty changes"}
             </button>
           )}
@@ -194,13 +194,13 @@ export default function UnitProfilePage({ context }: Props) {
       {tab === "Customer" && context !== "client" && (
         <div>
           {customer ? (
-            <div style={{ padding: 20, background: "white", border: "1px solid #e5eaf2", borderRadius: 8 }}>
+            <div style={{ padding: 20, background: "white", border: "1px solid #e5e7eb", borderRadius: 8 }}>
               <h3 style={{ margin: "0 0 12px" }}>{customer.firstName} {customer.lastName}</h3>
               <div style={{ fontSize: 13, color: "#666" }}>{customer.email}</div>
               {customer.phone && <div style={{ fontSize: 13, color: "#666" }}>{customer.phone}</div>}
             </div>
           ) : (
-            <div style={{ padding: 40, textAlign: "center", color: "#888", background: "#fafbfd", borderRadius: 8 }}>
+            <div style={{ padding: 40, textAlign: "center", color: "#888", background: "#fafafa", borderRadius: 8 }}>
               No customer assigned to this unit yet.
               <div style={{ fontSize: 11, marginTop: 8 }}>Customer is assigned when unit is sold via the Sales workflow.</div>
             </div>
@@ -226,7 +226,7 @@ export default function UnitProfilePage({ context }: Props) {
       )}
 
       {tab === "Documents" && (
-        <div style={{ padding: 40, textAlign: "center", color: "#888", background: "#fafbfd", borderRadius: 8 }}>
+        <div style={{ padding: 40, textAlign: "center", color: "#888", background: "#fafafa", borderRadius: 8 }}>
           Document management coming in Phase 2C.
         </div>
       )}
@@ -234,7 +234,7 @@ export default function UnitProfilePage({ context }: Props) {
       {tab === "Claims" && (
         <div>
           {!claims || claims.length === 0 ? (
-            <div style={{ padding: 40, textAlign: "center", color: "#888", background: "#fafbfd", borderRadius: 8 }}>
+            <div style={{ padding: 40, textAlign: "center", color: "#888", background: "#fafafa", borderRadius: 8 }}>
               No claims on this unit yet.
               {context === "dealer" && (
                 <div style={{ fontSize: 12, marginTop: 8 }}>Click "+ New Claim" above to create one.</div>
@@ -256,7 +256,7 @@ export default function UnitProfilePage({ context }: Props) {
                     <td style={{ padding: 12, fontWeight: 600 }}>{c.claimNumber}</td>
                     <td>{c.type}</td>
                     <td>
-                      <span style={{ padding: "2px 8px", borderRadius: 10, background: "#eaf1fb", color: "#033280", fontSize: 10, fontWeight: 600 }}>
+                      <span style={{ padding: "2px 8px", borderRadius: 10, background: "#eff6ff", color: "#033280", fontSize: 10, fontWeight: 600 }}>
                         {c.status?.replace(/_/g, " ")}
                       </span>
                     </td>
@@ -270,7 +270,7 @@ export default function UnitProfilePage({ context }: Props) {
       )}
 
       {tab === "Service" && (
-        <div style={{ padding: 40, textAlign: "center", color: "#888", background: "#fafbfd", borderRadius: 8 }}>
+        <div style={{ padding: 40, textAlign: "center", color: "#888", background: "#fafafa", borderRadius: 8 }}>
           Service history (TechFlow integration) coming in Phase 2D.
         </div>
       )}
@@ -301,12 +301,12 @@ function UField({ label, value, onChange, canEdit, type, options, mono, readOnly
         <div style={{ padding: "8px 0", fontSize: 14, fontFamily: mono ? "monospace" : "inherit" }}>{value ?? "—"}</div>
       ) : options ? (
         <select value={value ?? ""} onChange={e => onChange?.(e.target.value)}
-          style={{ width: "100%", padding: 8, border: "1px solid #d5dbe5", borderRadius: 4, fontSize: 13 }}>
+          style={{ width: "100%", padding: 8, border: "1px solid #e0e0e0", borderRadius: 8, fontSize: 13 }}>
           {options.map((o: string) => <option key={o} value={o}>{o.replace(/_/g, " ")}</option>)}
         </select>
       ) : (
         <input type={type || "text"} value={value ?? ""} onChange={e => onChange?.(e.target.value)}
-          style={{ width: "100%", padding: 8, border: "1px solid #d5dbe5", borderRadius: 4, fontSize: 13, fontFamily: mono ? "monospace" : "inherit" }} />
+          style={{ width: "100%", padding: 8, border: "1px solid #e0e0e0", borderRadius: 8, fontSize: 13, fontFamily: mono ? "monospace" : "inherit" }} />
       )}
     </div>
   );
@@ -316,7 +316,7 @@ function USection({ title, status, children }: any) {
   const colors: Record<string, string> = { active: "#16a34a", expiring: "#f48120", expired: "#c0392b", none: "#999" };
   const labels: Record<string, string> = { active: "● Active", expiring: "● Expiring soon", expired: "● Expired", none: "Not set" };
   return (
-    <div style={{ padding: 20, background: "white", border: "1px solid #e5eaf2", borderRadius: 8, marginBottom: 16 }}>
+    <div style={{ padding: 20, background: "white", border: "1px solid #e5e7eb", borderRadius: 8, marginBottom: 16 }}>
       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 12, alignItems: "center" }}>
         <h3 style={{ margin: 0, fontSize: 14 }}>{title}</h3>
         {status && <span style={{ color: colors[status], fontSize: 12, fontWeight: 600 }}>{labels[status]}</span>}
