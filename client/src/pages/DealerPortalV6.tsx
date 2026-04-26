@@ -11,6 +11,7 @@ import DealerMainNav from "@/pages/nav/DealerMainNav";
 import DealerClaimsPage from "@/components/dealer/DealerClaimsPage";
 import DealerPartsOrdersPage from "@/components/dealer/DealerPartsOrdersPage";
 import InventoryListPage from "@/components/units/InventoryListPage";
+import DealerDashboard from "@/components/dealer/DealerDashboard";
 
 // ============================================================================
 // V6 SCHEMA METADATA — role-scoping and RBAC rules baked in
@@ -120,22 +121,16 @@ export default function DealerPortalV6() {
     }>
       <main className="main" style={{ marginLeft: 0, flex: 1, overflowY: "auto" }}>
         <div className="content">
-          {renderPage(currentPage, userRole)}
+          {renderPage(currentPage, userRole, setCurrentPage)}
         </div>
       </main>
     </PortalShell>
   );
 }
 
-function renderPage(pageId: string, userRole: string) {
+function renderPage(pageId: string, userRole: string, navigate: (page: string) => void) {
   switch (pageId) {
-    case 'dealer.ops.dashboard': return <PageScaffold
-      pageId="dealer.ops.dashboard"
-      title="Dashboard"
-      section="Operations"
-      scopedRole=""
-      subItems={[{"sub_id": "dealer.ops.dashboard.active_claims_summary", "label": "Active claims summary", "internal_in": ["dealer.ops.claims"]}, {"sub_id": "dealer.ops.dashboard.recent_warranty_sales", "label": "Recent warranty sales", "internal_in": ["dealer.ops.sales_services"]}, {"sub_id": "dealer.ops.dashboard.notifications_from_ds360", "label": "Notifications from DS360", "internal_in": ["master.mgmt.communications"], "ext_in": [{"sys": "email", "act": "notif surface"}]}, {"sub_id": "dealer.ops.dashboard.revenue_snapshot", "label": "Revenue snapshot", "internal_in": ["dealer.ops.sales_services"], "notes": "Hidden from Dealer Staff"}]}
-    />;
+    case 'dealer.ops.dashboard': return <DealerDashboard onNavigate={navigate} />;
     case 'dealer.ops.claims': return <DealerClaimsPage />;
     case 'dealer.ops.inventory': return <InventoryListPage context="dealer" />;
     case 'dealer.ops.clients': return <PageScaffold

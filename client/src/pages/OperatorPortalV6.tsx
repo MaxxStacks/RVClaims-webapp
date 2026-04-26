@@ -12,6 +12,8 @@ import ClaimQueuePage from "@/components/operator/ClaimQueuePage";
 import PartsManagementPage from "@/components/operator/PartsManagementPage";
 import InventoryListPage from "@/components/units/InventoryListPage";
 import DealerAccountsListPage from "@/components/operator/DealerAccountsListPage";
+import OperatorMgmtDashboard from "@/components/operator/OperatorMgmtDashboard";
+import OperatorOpsDashboard from "@/components/operator/OperatorOpsDashboard";
 
 // ============================================================================
 // V6 SCHEMA METADATA — role-scoping and RBAC rules baked in
@@ -121,7 +123,7 @@ export default function OperatorPortalV6() {
     }>
       <main className="main" style={{ marginLeft: 0, flex: 1, overflowY: "auto" }}>
         <div className="content">
-          {renderPage(currentPage, userRole)}
+          {renderPage(currentPage, userRole, setCurrentPage)}
         </div>
       </main>
     </PortalShell>
@@ -129,15 +131,9 @@ export default function OperatorPortalV6() {
 }
 
 
-function renderPage(pageId: string, userRole: string) {
+function renderPage(pageId: string, userRole: string, navigate: (page: string) => void) {
   switch (pageId) {
-    case 'master.mgmt.dashboard': return <PageScaffold
-      pageId="master.mgmt.dashboard"
-      title="Dashboard"
-      section="Management"
-      scopedRole=""
-      subItems={[{"sub_id": "master.mgmt.dashboard.revenue_overview", "label": "Revenue overview", "internal_in": ["master.mgmt.revenue_billing"]}, {"sub_id": "master.mgmt.dashboard.active_dealers_growth", "label": "Active dealers & growth", "internal_in": ["master.mgmt.dealer_accounts"]}, {"sub_id": "master.mgmt.dashboard.subscription_mrr", "label": "Subscription MRR", "ext_in": [{"sys": "stripe", "act": "subscription metrics"}]}, {"sub_id": "master.mgmt.dashboard.alerts_notifications", "label": "Alerts & notifications", "internal_in": ["system.event_feed"]}]}
-    />;
+    case 'master.mgmt.dashboard': return <OperatorMgmtDashboard onNavigate={navigate} />;
     case 'master.mgmt.dealer_accounts': return <DealerAccountsListPage />;
     case 'master.mgmt.catalog': return <PageScaffold
       pageId="master.mgmt.catalog"
@@ -181,13 +177,7 @@ function renderPage(pageId: string, userRole: string) {
       scopedRole=""
       subItems={[{"sub_id": "master.mgmt.blog.queue", "label": "Queue (scheduled)"}, {"sub_id": "master.mgmt.blog.drafts", "label": "Drafts (AI-generated)", "ext_in": [{"sys": "anthropic", "act": "generated draft"}]}, {"sub_id": "master.mgmt.blog.published", "label": "Published", "internal_out": ["public_marketing_site.blog"]}, {"sub_id": "master.mgmt.blog.cron_scheduler", "label": "Cron scheduler config", "ext_out": [{"sys": "anthropic", "act": "trigger generation (cron)"}]}]}
     />;
-    case 'master.ops.dashboard': return <PageScaffold
-      pageId="master.ops.dashboard"
-      title="Operations Dashboard"
-      section="Operations"
-      scopedRole=""
-      subItems={[{"sub_id": "master.ops.dashboard.claim_queue_overview", "label": "Claim queue overview", "internal_in": ["master.ops.claim_queue"]}, {"sub_id": "master.ops.dashboard.new_submissions", "label": "New submissions", "internal_in": ["dealer.ops.claims (all)"]}, {"sub_id": "master.ops.dashboard.notifications_feed", "label": "Notifications feed"}, {"sub_id": "master.ops.dashboard.parts_awaiting_receipt", "label": "Parts awaiting receipt", "internal_in": ["master.ops.parts_management"]}]}
-    />;
+    case 'master.ops.dashboard': return <OperatorOpsDashboard onNavigate={navigate} />;
     case 'master.ops.claim_queue': return <ClaimQueuePage />;
     case 'master.ops.work_by_dealer': return <InventoryListPage context="operator" />;
     case 'master.ops.parts_management': return <PartsManagementPage />;

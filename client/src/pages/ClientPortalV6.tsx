@@ -10,6 +10,7 @@ import PortalShell from "@/components/layout/PortalShell";
 import ClientMainNav from "@/pages/nav/ClientMainNav";
 import ClientClaimsPage from "@/components/client/ClientClaimsPage";
 import InventoryListPage from "@/components/units/InventoryListPage";
+import ClientDashboard from "@/components/client/ClientDashboard";
 
 // ============================================================================
 // V6 SCHEMA METADATA — role-scoping and RBAC rules baked in
@@ -119,22 +120,16 @@ export default function ClientPortalV6() {
     }>
       <main className="main" style={{ marginLeft: 0, flex: 1, overflowY: "auto" }}>
         <div className="content">
-          {renderPage(currentPage, userRole)}
+          {renderPage(currentPage, userRole, setCurrentPage)}
         </div>
       </main>
     </PortalShell>
   );
 }
 
-function renderPage(pageId: string, userRole: string) {
+function renderPage(pageId: string, userRole: string, navigate: (page: string) => void) {
   switch (pageId) {
-    case 'client.main.dashboard': return <PageScaffold
-      pageId="client.main.dashboard"
-      title="Dashboard"
-      section="Main"
-      scopedRole=""
-      subItems={[{"sub_id": "client.main.dashboard.coverage_overview", "label": "Coverage overview", "internal_in": ["dealer.ops.sales_services"]}, {"sub_id": "client.main.dashboard.open_claims", "label": "Open claims", "internal_in": ["dealer.ops.claims"]}, {"sub_id": "client.main.dashboard.quick_actions", "label": "Quick actions"}]}
-    />;
+    case 'client.main.dashboard': return <ClientDashboard onNavigate={navigate} />;
     case 'client.main.vehicle': return <InventoryListPage context="client" />;
     case 'client.main.warranties': return <PageScaffold
       pageId="client.main.warranties"
