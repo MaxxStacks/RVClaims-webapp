@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import ds360Icon from "@assets/ds360_favicon.png";
 import { useUser, useClerk } from "@clerk/clerk-react";
 import { useApiFetch } from "@/lib/api";
-import NotificationBell from "@/components/NotificationBell";
+import AppBar from "@/components/AppBar";
 
 // ============================================================================
 // V6 SCHEMA METADATA — role-scoping and RBAC rules baked in
@@ -109,8 +109,10 @@ export default function BidderPortalV6() {
   }
 
   return (
-    <div className="app">
-      <nav className={`sidebar${sidebarCollapsed ? " collapsed" : ""}`}>
+    <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
+      <AppBar context="bidder" />
+      <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
+      <nav className={`sidebar${sidebarCollapsed ? " collapsed" : ""}`} style={{ position: "relative", flexShrink: 0, height: "100%" }}>
         <div className="sidebar-logo">
           <img src={ds360Icon} width={36} height={36} style={{borderRadius: 8}} alt="DS360" />
           <div className="sidebar-logo-text">
@@ -139,9 +141,6 @@ export default function BidderPortalV6() {
     </div>}
         </div>
         <div className="sidebar-footer">
-          <div style={{padding: "8px 12px", borderTop: "1px solid #eee"}}>
-            <NotificationBell />
-          </div>
           <div className="user-info" onClick={() => showPage("bidder.main.dashboard")} style={{cursor: "pointer"}}>
             <div className="user-avatar">{userInitials}</div>
             <div>
@@ -163,11 +162,12 @@ export default function BidderPortalV6() {
         </div>
       </nav>
 
-      <main className="main">
+      <main className="main" style={{ marginLeft: 0, flex: 1, overflowY: "auto" }}>
         <div className="content">
           {renderPage(currentPage, userRole)}
         </div>
       </main>
+      </div>
     </div>
   );
 }

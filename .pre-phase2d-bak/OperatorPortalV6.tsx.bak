@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import ds360Icon from "@assets/ds360_favicon.png";
 import { useUser, useClerk } from "@clerk/clerk-react";
 import { useApiFetch } from "@/lib/api";
-import AppBar from "@/components/AppBar";
+import NotificationBell from "@/components/NotificationBell";
 import ClaimQueuePage from "@/components/operator/ClaimQueuePage";
 import PartsManagementPage from "@/components/operator/PartsManagementPage";
 import InventoryListPage from "@/components/units/InventoryListPage";
@@ -113,10 +113,8 @@ export default function OperatorPortalV6() {
   }
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
-      <AppBar context="operator" />
-      <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
-      <nav className={`sidebar${sidebarCollapsed ? " collapsed" : ""}`} style={{ position: "relative", flexShrink: 0, height: "100%" }}>
+    <div className="app">
+      <nav className={`sidebar${sidebarCollapsed ? " collapsed" : ""}`}>
         <div className="sidebar-logo">
           <img src={ds360Icon} width={36} height={36} style={{borderRadius: 8}} alt="DS360" />
           <div className="sidebar-logo-text">
@@ -165,6 +163,9 @@ export default function OperatorPortalV6() {
     </div>}
         </div>
         <div className="sidebar-footer">
+          <div style={{padding: "8px 12px", borderTop: "1px solid #eee"}}>
+            <NotificationBell />
+          </div>
           <div className="user-info" onClick={() => showPage("master.mgmt.dashboard")} style={{cursor: "pointer"}}>
             <div className="user-avatar">{userInitials}</div>
             <div>
@@ -186,12 +187,11 @@ export default function OperatorPortalV6() {
         </div>
       </nav>
 
-      <main className="main" style={{ marginLeft: 0, flex: 1, overflowY: "auto" }}>
+      <main className="main">
         <div className="content">
           {renderPage(currentPage, userRole)}
         </div>
       </main>
-      </div>
     </div>
   );
 }
