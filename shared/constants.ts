@@ -1,10 +1,10 @@
 // shared/constants.ts — Role permissions, sequence generators, platform defaults
 
-export type UserRole = "operator_admin" | "operator_staff" | "dealer_owner" | "dealer_staff" | "client" | "bidder";
+export type UserRole = "operator_admin" | "operator_staff" | "dealer_owner" | "dealer_staff" | "technician" | "public_bidder" | "consignor" | "client" | "bidder";
 
 export const OPERATOR_ROLES: UserRole[] = ["operator_admin", "operator_staff"];
-export const DEALER_ROLES: UserRole[] = ["dealer_owner", "dealer_staff"];
-export const ALL_ROLES: UserRole[] = ["operator_admin", "operator_staff", "dealer_owner", "dealer_staff", "client", "bidder"];
+export const DEALER_ROLES: UserRole[] = ["dealer_owner", "dealer_staff", "technician", "public_bidder", "consignor"];
+export const ALL_ROLES: UserRole[] = ["operator_admin", "operator_staff", "dealer_owner", "dealer_staff", "technician", "public_bidder", "consignor", "client", "bidder"];
 
 // Permission matrix — what each role can access
 export const PERMISSIONS: Record<UserRole, {
@@ -64,6 +64,48 @@ export const PERMISSIONS: Record<UserRole, {
     canViewFinancials: true,
   },
   dealer_staff: {
+    canAccessOperatorPortal: false,
+    canAccessDealerPortal: true,
+    canAccessClientPortal: false,
+    canAccessBidderPortal: false,
+    canManageBilling: false,
+    canManageStaff: false,
+    canManagePlatformSettings: false,
+    canViewAllDealers: false,
+    canProcessClaims: false,
+    canManageFrcCodes: false,
+    canCreateInvoices: false,
+    canViewFinancials: false,
+  },
+  technician: {
+    canAccessOperatorPortal: false,
+    canAccessDealerPortal: true,
+    canAccessClientPortal: false,
+    canAccessBidderPortal: false,
+    canManageBilling: false,
+    canManageStaff: false,
+    canManagePlatformSettings: false,
+    canViewAllDealers: false,
+    canProcessClaims: false,
+    canManageFrcCodes: false,
+    canCreateInvoices: false,
+    canViewFinancials: false,
+  },
+  public_bidder: {
+    canAccessOperatorPortal: false,
+    canAccessDealerPortal: true,
+    canAccessClientPortal: false,
+    canAccessBidderPortal: false,
+    canManageBilling: false,
+    canManageStaff: false,
+    canManagePlatformSettings: false,
+    canViewAllDealers: false,
+    canProcessClaims: false,
+    canManageFrcCodes: false,
+    canCreateInvoices: false,
+    canViewFinancials: false,
+  },
+  consignor: {
     canAccessOperatorPortal: false,
     canAccessDealerPortal: true,
     canAccessClientPortal: false,

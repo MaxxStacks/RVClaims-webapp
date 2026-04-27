@@ -38,6 +38,7 @@ const DealerListingPage = lazy(() => import("@/pages/dealer-listing"));
 const DealerClaimPage = lazy(() => import("@/pages/dealer-claim"));
 const DealerDashboardPage = lazy(() => import("@/pages/dealer-dashboard"));
 const SignUpRequest = lazy(() => import("@/pages/sign-up"));
+const DevAccess = lazy(() => import("@/pages/dev-access"));
 const Marketplace = lazy(() => import("@/pages/marketplace"));
 const TermsOfService = lazy(() => import("@/pages/terms-of-service"));
 const CookiePolicy = lazy(() => import("@/pages/cookie-policy"));
@@ -199,6 +200,7 @@ function Router() {
         <Route path="/login" component={LoginPage} />
         <Route path="/signup" component={Signup} />
         <Route path="/portal-router" component={PortalRouter} />
+        <Route path="/dev-access" component={DevAccess} />
         <Route path="/dealer">{() => <Redirect to="/login" />}</Route>
         <Route path="/client-login">{() => <Redirect to="/login" />}</Route>
         <Route path="/financing" component={Financing} />

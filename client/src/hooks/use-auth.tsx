@@ -6,7 +6,6 @@ import {
 import { useUser, useClerk } from "@clerk/clerk-react";
 import type { UserRole } from "@shared/schema";
 
-// Re-export RegisterPayload shape for backward compat
 export interface RegisterPayload {
   email: string;
   password: string;
@@ -17,7 +16,6 @@ export interface RegisterPayload {
   dealershipPhone?: string;
 }
 
-// PublicUser-like shape derived from Clerk
 interface AuthUser {
   id: string;
   email: string;
@@ -37,6 +35,7 @@ interface AuthContextValue {
   user: AuthUser | null;
   isLoading: boolean;
   isAuthenticated: boolean;
+  isDevMode: boolean;
   login: (email: string, password: string, portal?: string, rememberMe?: boolean) => Promise<{ success: boolean; message?: string }>;
   register: (payload: RegisterPayload) => Promise<{ success: boolean; message?: string }>;
   logout: () => Promise<void>;
@@ -47,11 +46,35 @@ interface AuthContextValue {
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
+const DEALER_SUB_ROLES: UserRole[] = ["dealer_owner", "dealer_staff", "technician", "public_bidder", "consignor"];
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const { user: clerkUser, isLoaded } = useUser();
   const { signOut } = useClerk();
 
-  const user: AuthUser | null = clerkUser && isLoaded
+  // Dev bypass: localStorage key ds360-dev-role overrides Clerk auth entirely
+  const devRole = (typeof window !== "undefined"
+    ? localStorage.getItem("ds360-dev-role")
+    : null) as UserRole | null;
+
+  const devUser: AuthUser | null = devRole
+    ? {
+        id: "dev-user-001",
+        email: "dev@dealersuite360.com",
+        firstName: "Dev",
+        lastName: "User",
+        phone: null,
+        avatarUrl: null,
+        role: devRole,
+        dealershipId: DEALER_SUB_ROLES.includes(devRole) ? "dev-dealer-001" : null,
+        timezone: null,
+        language: null,
+        lastLoginAt: null,
+        createdAt: new Date(),
+      }
+    : null;
+
+  const clerkDerivedUser: AuthUser | null = !devRole && clerkUser && isLoaded
     ? {
         id: clerkUser.id,
         email: clerkUser.primaryEmailAddress?.emailAddress ?? "",
@@ -68,6 +91,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     : null;
 
+  const user = devUser ?? clerkDerivedUser;
+
   const login = async (_email: string, _password: string, _portal?: string, _rememberMe?: boolean) => {
     window.location.href = "/login";
     return { success: true };
@@ -79,6 +104,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const logout = async () => {
+    if (devRole) {
+      localStorage.removeItem("ds360-dev-role");
+      window.location.href = "/dev-access";
+      return;
+    }
     await signOut();
     window.location.href = "/";
   };
@@ -90,8 +120,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const value: AuthContextValue = {
     user,
-    isLoading: !isLoaded,
+    isLoading: devRole ? false : !isLoaded,
     isAuthenticated: user !== null,
+    isDevMode: !!devRole,
     login,
     register,
     logout,
