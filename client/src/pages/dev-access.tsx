@@ -63,50 +63,21 @@ const SECTIONS: { label: string; color: string; bg: string; roles: RoleCard[] }[
 export default function DevAccess() {
   const { user: clerkUser, isLoaded } = useUser();
   const [loading, setLoading] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
 
-  // Current active dev role — read from Clerk unsafeMetadata (primary) or localStorage (fallback)
-  const clerkDevRole = isLoaded && clerkUser
-    ? ((clerkUser.unsafeMetadata as any)?.devRoleOverride as string | undefined)
-    : undefined;
-  const localDevRole = typeof window !== "undefined"
+  // Read active role from localStorage — use-auth.tsx prioritizes this over Clerk session
+  const active = typeof window !== "undefined"
     ? localStorage.getItem("ds360-dev-role") ?? undefined
     : undefined;
-  const active = clerkDevRole || localDevRole;
 
-  const enter = async (role: string) => {
-    setError(null);
+  const enter = (role: string) => {
     setLoading(role);
-    try {
-      if (isLoaded && clerkUser) {
-        // Preferred path: write to Clerk unsafeMetadata — picked up by useAuth()
-        // Clear localStorage first so it doesn't shadow unsafeMetadata in useAuth()
-        localStorage.removeItem("ds360-dev-role");
-        await clerkUser.update({ unsafeMetadata: { devRoleOverride: role } });
-      } else {
-        // Fallback: localStorage bypass for unauthenticated dev access
-        localStorage.setItem("ds360-dev-role", role);
-      }
-      window.location.href = PORTAL_TARGETS[role] ?? "/";
-    } catch (e: any) {
-      setError(e?.message || "Failed to set dev role");
-      setLoading(null);
-    }
+    localStorage.setItem("ds360-dev-role", role);
+    window.location.href = PORTAL_TARGETS[role] ?? "/";
   };
 
-  const clear = async () => {
-    setError(null);
-    setLoading("__clear__");
-    try {
-      if (isLoaded && clerkUser) {
-        await clerkUser.update({ unsafeMetadata: { devRoleOverride: null } });
-      }
-      localStorage.removeItem("ds360-dev-role");
-      setLoading(null);
-    } catch (e: any) {
-      setError(e?.message || "Failed to clear dev role");
-      setLoading(null);
-    }
+  const clear = () => {
+    localStorage.removeItem("ds360-dev-role");
+    window.location.reload();
   };
 
   return (
@@ -119,7 +90,7 @@ export default function DevAccess() {
             <div style={{ fontSize: 13, fontWeight: 700, color: "#033280", textTransform: "uppercase", letterSpacing: "1px" }}>Dev Access</div>
             <div style={{ fontSize: 12, color: "#64748b" }}>
               {isLoaded && clerkUser
-                ? `Signed in as ${clerkUser.primaryEmailAddress?.emailAddress ?? clerkUser.id} · role override via Clerk unsafeMetadata`
+                ? `Signed in as ${clerkUser.primaryEmailAddress?.emailAddress ?? clerkUser.id} · role override via localStorage`
                 : "Not signed in · role override via localStorage"}
             </div>
           </div>
@@ -133,10 +104,9 @@ export default function DevAccess() {
           {active && (
             <button
               onClick={clear}
-              disabled={loading === "__clear__"}
-              style={{ padding: "8px 16px", background: "#fff", border: "1px solid #e2e8f0", borderRadius: 6, fontSize: 13, color: "#64748b", cursor: "pointer", fontWeight: 500, opacity: loading === "__clear__" ? 0.6 : 1 }}
+              style={{ padding: "8px 16px", background: "#fff", border: "1px solid #e2e8f0", borderRadius: 6, fontSize: 13, color: "#64748b", cursor: "pointer", fontWeight: 500 }}
             >
-              {loading === "__clear__" ? "Clearing…" : "Clear Override"}
+              Clear Override
             </button>
           )}
         </div>
@@ -145,25 +115,14 @@ export default function DevAccess() {
       {/* Warning */}
       <div style={{ background: "#fef3c7", borderBottom: "1px solid #fcd34d", padding: "10px 40px", fontSize: 13, color: "#92400e" }}>
         <span style={{ fontWeight: 700 }}>⚠ Development Only</span>
-        {" — "}
-        {isLoaded && clerkUser
-          ? "Role override is written to your Clerk unsafeMetadata.devRoleOverride and read by useAuth(). Clear it before production use."
-          : "Not signed into Clerk — using localStorage fallback. Sign in for the full override experience."}
+        {" — Role override stored in localStorage (ds360-dev-role). useAuth() reads this before Clerk, giving any portal the selected role. Clear before production testing."}
       </div>
-
-      {error && (
-        <div style={{ background: "#fef2f2", border: "1px solid #fca5a5", borderRadius: 8, margin: "16px 40px", padding: "12px 16px", fontSize: 13, color: "#dc2626" }}>
-          Error: {error}
-        </div>
-      )}
 
       {/* Content */}
       <div style={{ maxWidth: 900, margin: "0 auto", padding: "40px 24px" }}>
         <h1 style={{ fontSize: 24, fontWeight: 700, color: "#0f172a", marginBottom: 6 }}>Select a Role to Preview</h1>
         <p style={{ fontSize: 14, color: "#64748b", marginBottom: 40 }}>
-          {isLoaded && clerkUser
-            ? "Clicking a role writes devRoleOverride to your Clerk session, then navigates to that portal. useAuth() picks it up instantly."
-            : "Clicking a role stores it in localStorage and navigates. Sign in to Clerk for the more reliable override path."}
+          Clicking a role sets ds360-dev-role in localStorage and navigates to that portal. useAuth() picks it up on load without touching your Clerk session.
         </p>
 
         <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
@@ -218,7 +177,7 @@ export default function DevAccess() {
                           opacity: loading && !isSpinning ? 0.5 : 1,
                         }}
                       >
-                        {isSpinning ? "Setting role…" : isActive ? "Re-enter Portal →" : `Enter as ${r.label} →`}
+                        {isSpinning ? "Navigating…" : isActive ? "Re-enter Portal →" : `Enter as ${r.label} →`}
                       </button>
                     </div>
                   );
