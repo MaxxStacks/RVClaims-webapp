@@ -610,7 +610,10 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
       <div className={`nav-item ${isNavActive('units') ? 'active' : ''}`} onClick={() => showPage('units')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4a2 2 0 012 2v6a2 2 0 01-2 2h-4"/><circle cx="5.5" cy="18" r="2.5"/><circle cx="18.5" cy="18" r="2.5"/></svg>Units</div>
       <div className={`nav-item ${isNavActive('frc') ? 'active' : ''}`} onClick={() => showPage('frc')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>FRC Codes</div>
       <div className={`nav-item ${isNavActive('mfr-portals') ? 'active' : ''}`} onClick={() => showPage('mfr-portals')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Mfr Portals</div>
-      <div className={`nav-item ${isNavActive('techflow-oversight') ? 'active' : ''}`} onClick={() => showPage('techflow-oversight')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>TechFlow Oversight<span className="nb blue">4</span></div></div>
+      <div className={`nav-item ${isNavActive('techflow-oversight') ? 'active' : ''}`} onClick={() => showPage('techflow-oversight')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>TechFlow Oversight<span className="nb blue">4</span></div>
+      <div className={`nav-item ${isNavActive('op-work-by-dealer') ? 'active' : ''}`} onClick={() => showPage('op-work-by-dealer')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Work by Dealer *</div>
+      <div className={`nav-item ${isNavActive('op-campaign-templates') ? 'active' : ''}`} onClick={() => showPage('op-campaign-templates')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Campaign Templates *</div>
+      <div className={`nav-item ${isNavActive('op-consignment-oversight') ? 'active' : ''}`} onClick={() => showPage('op-consignment-oversight')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 014-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>Consignment Oversight *</div></div>
     <div className="nav-section"><div className="nav-label">Services</div>
       <div className={`nav-item ${isNavActive('marketplace') ? 'active' : ''}`} onClick={() => showPage('marketplace')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a4 4 0 00-8 0v2"/><path d="M12 12v3"/></svg>Service Marketplace</div>
       <div className={`nav-item ${isNavActive('svc-financing') ? 'active' : ''}`} onClick={() => showPage('svc-financing')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>Financing<span className="nb green">3</span></div>
@@ -618,13 +621,16 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
       <div className={`nav-item ${isNavActive('parts-catalog') ? 'active' : ''}`} onClick={() => showPage('parts-catalog')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 002 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>Parts Catalog</div>
       <div className={`nav-item ${isNavActive('svc-fi') ? 'active' : ''}`} onClick={() => showPage('svc-fi')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>F&I Services<span className="nb green">2</span></div>
       <div className={`nav-item ${isNavActive('svc-warranty') ? 'active' : ''}`} onClick={() => showPage('svc-warranty')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 12l2 2 4-4"/></svg>Warranty Plans<span className="nb blue">14</span></div>
-      <div className={`nav-item ${isNavActive('svc-parts') ? 'active' : ''}`} onClick={() => showPage('svc-parts')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>Parts & Accessories<span className="nb blue">8</span></div></div>
+      <div className={`nav-item ${isNavActive('svc-parts') ? 'active' : ''}`} onClick={() => showPage('svc-parts')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>Parts & Accessories<span className="nb blue">8</span></div>
+      <div className={`nav-item ${isNavActive('op-parts-mgmt') ? 'active' : ''}`} onClick={() => showPage('op-parts-mgmt')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>Parts Management *</div>
+      <div className={`nav-item ${isNavActive('op-parts-orders') ? 'active' : ''}`} onClick={() => showPage('op-parts-orders')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 002 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>Parts Orders *</div></div>
     <div className="nav-section"><div className="nav-label">Marketplace</div>
       <div className={`nav-item ${isNavActive('mkt-members') ? 'active' : ''}`} onClick={() => showPage('mkt-members')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>Members<span className="nb blue">28</span></div>
       <div className={`nav-item ${isNavActive('mkt-listings') ? 'active' : ''}`} onClick={() => showPage('mkt-listings')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4a2 2 0 012 2v6a2 2 0 01-2 2h-4"/></svg>Listings<span className="nb green">142</span></div>
       <div className={`nav-item ${isNavActive('mkt-transactions') ? 'active' : ''}`} onClick={() => showPage('mkt-transactions')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>Transactions</div>
       <div className={`nav-item ${isNavActive('mkt-auctions') ? 'active' : ''}`} onClick={() => showPage('mkt-auctions')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>Live Auctions<span className="nb amber">3</span></div>
       <div className={`nav-item ${isNavActive('mkt-public-events') ? 'active' : ''}`} onClick={() => showPage('mkt-public-events')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Public Auctions<span className="nb blue">14</span></div>
+      <div className={`nav-item ${isNavActive('op-escrow-admin') ? 'active' : ''}`} onClick={() => showPage('op-escrow-admin')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>Escrow Admin *</div>
     </div>
     {isOperatorAdmin && <div className="nav-section"><div className="nav-label">Finance</div>
       <div className={`nav-item ${isNavActive('billing') ? 'active' : ''}`} onClick={() => showPage('billing')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>Billing & Invoices</div>
@@ -2314,6 +2320,66 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
     </>
   )}
   {!crmDetailDealer && <div style={{textAlign:'center',padding:40,color:'#888'}}>Loading…</div>}
+</div>
+
+{/* ─── WORK BY DEALER * ─── */}
+<div className={`page ${activePage === 'op-work-by-dealer' ? 'active' : ''}`} id="page-op-work-by-dealer">
+  <div className="pn" style={{padding: '48px 32px', textAlign: 'center', maxWidth: 560, margin: '0 auto'}}>
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" strokeWidth="1.5" style={{marginBottom: 16}}><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    <div style={{fontSize: 20, fontWeight: 700, color: '#0f172a', marginBottom: 8}}>Work by Dealer *</div>
+    <div style={{fontSize: 14, color: '#64748b', lineHeight: 1.6, marginBottom: 24}}>View all open claims and outstanding work items grouped by dealer. Filter by status, claim type, or date to prioritize your processing queue across the dealer network.</div>
+    <span style={{background: '#fef3c7', color: '#92400e', fontSize: 12, fontWeight: 600, padding: '4px 14px', borderRadius: 20, border: '1px solid #fcd34d'}}>Coming Soon — V6 Feature</span>
+  </div>
+</div>
+
+{/* ─── CAMPAIGN TEMPLATES * ─── */}
+<div className={`page ${activePage === 'op-campaign-templates' ? 'active' : ''}`} id="page-op-campaign-templates">
+  <div className="pn" style={{padding: '48px 32px', textAlign: 'center', maxWidth: 560, margin: '0 auto'}}>
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" strokeWidth="1.5" style={{marginBottom: 16}}><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+    <div style={{fontSize: 20, fontWeight: 700, color: '#0f172a', marginBottom: 8}}>Campaign Templates *</div>
+    <div style={{fontSize: 14, color: '#64748b', lineHeight: 1.6, marginBottom: 24}}>Build and manage reusable email and SMS campaign templates for dealer communications, onboarding sequences, renewal reminders, and promotional outreach.</div>
+    <span style={{background: '#fef3c7', color: '#92400e', fontSize: 12, fontWeight: 600, padding: '4px 14px', borderRadius: 20, border: '1px solid #fcd34d'}}>Coming Soon — V6 Feature</span>
+  </div>
+</div>
+
+{/* ─── CONSIGNMENT OVERSIGHT * ─── */}
+<div className={`page ${activePage === 'op-consignment-oversight' ? 'active' : ''}`} id="page-op-consignment-oversight">
+  <div className="pn" style={{padding: '48px 32px', textAlign: 'center', maxWidth: 560, margin: '0 auto'}}>
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" strokeWidth="1.5" style={{marginBottom: 16}}><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 014-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>
+    <div style={{fontSize: 20, fontWeight: 700, color: '#0f172a', marginBottom: 8}}>Consignment Oversight *</div>
+    <div style={{fontSize: 14, color: '#64748b', lineHeight: 1.6, marginBottom: 24}}>Monitor all active consignment listings across the dealer network. Review offer activity, payout status, seller disputes, and consignment agreement compliance from a single view.</div>
+    <span style={{background: '#fef3c7', color: '#92400e', fontSize: 12, fontWeight: 600, padding: '4px 14px', borderRadius: 20, border: '1px solid #fcd34d'}}>Coming Soon — V6 Feature</span>
+  </div>
+</div>
+
+{/* ─── PARTS MANAGEMENT * ─── */}
+<div className={`page ${activePage === 'op-parts-mgmt' ? 'active' : ''}`} id="page-op-parts-mgmt">
+  <div className="pn" style={{padding: '48px 32px', textAlign: 'center', maxWidth: 560, margin: '0 auto'}}>
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" strokeWidth="1.5" style={{marginBottom: 16}}><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+    <div style={{fontSize: 20, fontWeight: 700, color: '#0f172a', marginBottom: 8}}>Parts Management *</div>
+    <div style={{fontSize: 14, color: '#64748b', lineHeight: 1.6, marginBottom: 24}}>Track all parts ordered across active claims. Monitor manufacturer sourcing vs. local supplier status, expected arrival dates, and link received parts to their respective claim lines.</div>
+    <span style={{background: '#fef3c7', color: '#92400e', fontSize: 12, fontWeight: 600, padding: '4px 14px', borderRadius: 20, border: '1px solid #fcd34d'}}>Coming Soon — V6 Feature</span>
+  </div>
+</div>
+
+{/* ─── PARTS ORDERS * ─── */}
+<div className={`page ${activePage === 'op-parts-orders' ? 'active' : ''}`} id="page-op-parts-orders">
+  <div className="pn" style={{padding: '48px 32px', textAlign: 'center', maxWidth: 560, margin: '0 auto'}}>
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" strokeWidth="1.5" style={{marginBottom: 16}}><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 002 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+    <div style={{fontSize: 20, fontWeight: 700, color: '#0f172a', marginBottom: 8}}>Parts Orders *</div>
+    <div style={{fontSize: 14, color: '#64748b', lineHeight: 1.6, marginBottom: 24}}>Operator-side view of all parts orders submitted across all dealers. Create, approve, and track orders from manufacturer or local suppliers with full audit trail and cost tracking per claim line.</div>
+    <span style={{background: '#fef3c7', color: '#92400e', fontSize: 12, fontWeight: 600, padding: '4px 14px', borderRadius: 20, border: '1px solid #fcd34d'}}>Coming Soon — V6 Feature</span>
+  </div>
+</div>
+
+{/* ─── ESCROW ADMIN * ─── */}
+<div className={`page ${activePage === 'op-escrow-admin' ? 'active' : ''}`} id="page-op-escrow-admin">
+  <div className="pn" style={{padding: '48px 32px', textAlign: 'center', maxWidth: 560, margin: '0 auto'}}>
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" strokeWidth="1.5" style={{marginBottom: 16}}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+    <div style={{fontSize: 20, fontWeight: 700, color: '#0f172a', marginBottom: 8}}>Escrow Admin *</div>
+    <div style={{fontSize: 14, color: '#64748b', lineHeight: 1.6, marginBottom: 24}}>Manage escrow holds for auction transactions. Review active holds, release funds upon unit delivery confirmation, handle disputes, and generate settlement reports for buyers and sellers.</div>
+    <span style={{background: '#fef3c7', color: '#92400e', fontSize: 12, fontWeight: 600, padding: '4px 14px', borderRadius: 20, border: '1px solid #fcd34d'}}>Coming Soon — V6 Feature</span>
+  </div>
 </div>
 
 

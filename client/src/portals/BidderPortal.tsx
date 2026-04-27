@@ -221,11 +221,19 @@ export default function BidderPortal() {
         Payment &amp; Card
         {!cardAdded && <span className="nb amber">!</span>}
       </div>
+      <div className={`nav-item ${isNavActive('payment-methods') ? 'active' : ''}`} onClick={() => showPage('payment-methods')}>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/><path d="M6 14h4"/><path d="M14 14h4"/></svg>
+        Payment Methods *
+      </div>
     </div>
 
     {/* AUCTIONS */}
     <div className="nav-section">
       <div className="nav-label">Auctions</div>
+      <div className={`nav-item ${isNavActive('browse-units') ? 'active' : ''}`} onClick={() => showPage('browse-units')}>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        Browse Units *
+      </div>
       <div className={`nav-item ${isNavActive('upcoming') ? 'active' : ''}`} onClick={() => showPage('upcoming')}>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
         Upcoming Auctions
@@ -826,6 +834,27 @@ export default function BidderPortal() {
         </div>
       )}
     </div>
+  </div>
+</div>
+
+
+{/* ─── BROWSE UNITS * ─── */}
+<div className={`page ${activePage === 'browse-units' ? 'active' : ''}`} id="page-browse-units">
+  <div className="pn" style={{padding: '48px 32px', textAlign: 'center', maxWidth: 520, margin: '0 auto'}}>
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" strokeWidth="1.5" style={{marginBottom: 16}}><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <div style={{fontSize: 20, fontWeight: 700, color: '#0f172a', marginBottom: 8}}>Browse Units *</div>
+    <div style={{fontSize: 14, color: '#555', lineHeight: 1.6, marginBottom: 24}}>Search and filter the full marketplace inventory — travel trailers, fifth wheels, Class A, Class C, and more. Save units to your watchlist and get notified when they go to auction.</div>
+    <span style={{background: '#fef3c7', color: '#92400e', fontSize: 12, fontWeight: 600, padding: '4px 14px', borderRadius: 20, border: '1px solid #fcd34d'}}>Coming Soon — V6 Feature</span>
+  </div>
+</div>
+
+{/* ─── PAYMENT METHODS * ─── */}
+<div className={`page ${activePage === 'payment-methods' ? 'active' : ''}`} id="page-payment-methods">
+  <div className="pn" style={{padding: '48px 32px', textAlign: 'center', maxWidth: 520, margin: '0 auto'}}>
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" strokeWidth="1.5" style={{marginBottom: 16}}><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/><path d="M6 14h4"/><path d="M14 14h4"/></svg>
+    <div style={{fontSize: 20, fontWeight: 700, color: '#0f172a', marginBottom: 8}}>Payment Methods *</div>
+    <div style={{fontSize: 14, color: '#555', lineHeight: 1.6, marginBottom: 24}}>Manage all payment methods on your bidder account — credit cards, bank accounts, and escrow funding sources. Set your default method for auction deposits and final payments.</div>
+    <span style={{background: '#fef3c7', color: '#92400e', fontSize: 12, fontWeight: 600, padding: '4px 14px', borderRadius: 20, border: '1px solid #fcd34d'}}>Coming Soon — V6 Feature</span>
   </div>
 </div>
 
