@@ -11,12 +11,6 @@ export default function LoginPage() {
       padding: 20,
     }}>
       <SignIn
-        appearance={{
-          variables: { colorPrimary: "#033280" },
-          elements: {
-            card: { boxShadow: "0 4px 20px rgba(3,50,128,0.08)" },
-          },
-        }}
         routing="path"
         path="/login"
         signUpUrl="/signup"

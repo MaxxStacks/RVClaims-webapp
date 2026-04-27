@@ -11,7 +11,6 @@ export default function SignupPage() {
       padding: 20,
     }}>
       <SignUp
-        appearance={{ variables: { colorPrimary: "#033280" } }}
         routing="path"
         path="/signup"
         signInUrl="/login"
