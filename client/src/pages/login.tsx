@@ -1,4 +1,5 @@
 import { SignIn } from "@clerk/clerk-react";
+import { clerkAppearance } from "@/lib/clerk-appearance";
 
 export default function LoginPage() {
   return (
@@ -11,6 +12,7 @@ export default function LoginPage() {
       padding: 20,
     }}>
       <SignIn
+        appearance={clerkAppearance}
         routing="path"
         path="/login"
         signUpUrl="/signup"
