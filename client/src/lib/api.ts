@@ -82,7 +82,10 @@ export async function apiFetch<T = unknown>(
   });
 
   if (res.status === 401 && !skipAuth) {
-    window.location.href = "/login";
+    // In dev-role mode the Clerk user has no DB record, so the server always
+    // returns 401. Don't redirect — let the portal's try/catch handle it.
+    const isDevMode = typeof window !== "undefined" && !!localStorage.getItem("ds360-dev-role");
+    if (!isDevMode) window.location.href = "/login";
     throw new Error("Session expired");
   }
 
