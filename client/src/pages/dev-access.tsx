@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useUser } from "@clerk/clerk-react";
 import logoLight from "@assets/DS360_logo_light.png";
 
 const PORTAL_TARGETS: Record<string, string> = {
@@ -34,11 +35,11 @@ const SECTIONS: { label: string; color: string; bg: string; roles: RoleCard[] }[
     color: "#059669",
     bg: "#f0fdf4",
     roles: [
-      { role: "dealer_owner", label: "Dealer Owner", desc: "Full dealership control — claims, units, staff, billing, subscription" },
-      { role: "dealer_staff", label: "Dealer Staff", desc: "Claims and units only — no billing, no staff management" },
-      { role: "technician", label: "Technician", desc: "Service workflow, parts, and unit access only" },
-      { role: "public_bidder", label: "Public Bidder", desc: "Marketplace browsing, auction bidding, escrow payments" },
-      { role: "consignor", label: "Consignor", desc: "Consignment listings, offer management, payout tracking" },
+      { role: "dealer_owner",  label: "Dealer Owner",   desc: "Full dealership control — claims, units, staff, billing, subscription" },
+      { role: "dealer_staff",  label: "Dealer Staff",   desc: "Claims and units only — no billing, no staff management" },
+      { role: "technician",    label: "Technician",     desc: "Service workflow, parts, and unit access only" },
+      { role: "public_bidder", label: "Public Bidder",  desc: "Marketplace browsing, auction bidding, escrow payments" },
+      { role: "consignor",     label: "Consignor",      desc: "Consignment listings, offer management, payout tracking" },
     ],
   },
   {
@@ -60,22 +61,52 @@ const SECTIONS: { label: string; color: string; bg: string; roles: RoleCard[] }[
 ];
 
 export default function DevAccess() {
-  const [active, setActive] = useState<string | null>(null);
+  const { user: clerkUser, isLoaded } = useUser();
+  const [loading, setLoading] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const current = localStorage.getItem("ds360-dev-role");
-    setActive(current);
-  }, []);
+  // Current active dev role — read from Clerk unsafeMetadata (primary) or localStorage (fallback)
+  const clerkDevRole = isLoaded && clerkUser
+    ? ((clerkUser.unsafeMetadata as any)?.devRoleOverride as string | undefined)
+    : undefined;
+  const localDevRole = typeof window !== "undefined"
+    ? localStorage.getItem("ds360-dev-role") ?? undefined
+    : undefined;
+  const active = clerkDevRole || localDevRole;
 
-  const enter = (role: string) => {
-    localStorage.setItem("ds360-dev-role", role);
-    const target = PORTAL_TARGETS[role] ?? "/";
-    window.location.href = target;
+  const enter = async (role: string) => {
+    setError(null);
+    setLoading(role);
+    try {
+      if (isLoaded && clerkUser) {
+        // Preferred path: write to Clerk unsafeMetadata — picked up by useAuth()
+        // Clear localStorage first so it doesn't shadow unsafeMetadata in useAuth()
+        localStorage.removeItem("ds360-dev-role");
+        await clerkUser.update({ unsafeMetadata: { devRoleOverride: role } });
+      } else {
+        // Fallback: localStorage bypass for unauthenticated dev access
+        localStorage.setItem("ds360-dev-role", role);
+      }
+      window.location.href = PORTAL_TARGETS[role] ?? "/";
+    } catch (e: any) {
+      setError(e?.message || "Failed to set dev role");
+      setLoading(null);
+    }
   };
 
-  const clear = () => {
-    localStorage.removeItem("ds360-dev-role");
-    setActive(null);
+  const clear = async () => {
+    setError(null);
+    setLoading("__clear__");
+    try {
+      if (isLoaded && clerkUser) {
+        await clerkUser.update({ unsafeMetadata: { devRoleOverride: null } });
+      }
+      localStorage.removeItem("ds360-dev-role");
+      setLoading(null);
+    } catch (e: any) {
+      setError(e?.message || "Failed to clear dev role");
+      setLoading(null);
+    }
   };
 
   return (
@@ -86,51 +117,68 @@ export default function DevAccess() {
           <img src={logoLight} alt="Dealer Suite 360" style={{ height: 48, width: "auto" }} />
           <div style={{ borderLeft: "1px solid #e2e8f0", paddingLeft: 20 }}>
             <div style={{ fontSize: 13, fontWeight: 700, color: "#033280", textTransform: "uppercase", letterSpacing: "1px" }}>Dev Access</div>
-            <div style={{ fontSize: 12, color: "#64748b" }}>Role switcher — not visible in production</div>
+            <div style={{ fontSize: 12, color: "#64748b" }}>
+              {isLoaded && clerkUser
+                ? `Signed in as ${clerkUser.primaryEmailAddress?.emailAddress ?? clerkUser.id} · role override via Clerk unsafeMetadata`
+                : "Not signed in · role override via localStorage"}
+            </div>
           </div>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
           {active && (
             <div style={{ display: "flex", alignItems: "center", gap: 8, background: "#fef3c7", border: "1px solid #fcd34d", borderRadius: 6, padding: "6px 12px", fontSize: 12, color: "#92400e", fontWeight: 600 }}>
-              <span>●</span> Active: {active}
+              <span>●</span> Active override: {active}
             </div>
           )}
           {active && (
             <button
               onClick={clear}
-              style={{ padding: "8px 16px", background: "#fff", border: "1px solid #e2e8f0", borderRadius: 6, fontSize: 13, color: "#64748b", cursor: "pointer", fontWeight: 500 }}
+              disabled={loading === "__clear__"}
+              style={{ padding: "8px 16px", background: "#fff", border: "1px solid #e2e8f0", borderRadius: 6, fontSize: 13, color: "#64748b", cursor: "pointer", fontWeight: 500, opacity: loading === "__clear__" ? 0.6 : 1 }}
             >
-              Clear Role
+              {loading === "__clear__" ? "Clearing…" : "Clear Override"}
             </button>
           )}
         </div>
       </div>
 
-      {/* Warning banner */}
-      <div style={{ background: "#fef3c7", borderBottom: "1px solid #fcd34d", padding: "10px 40px", display: "flex", alignItems: "center", gap: 10, fontSize: 13, color: "#92400e" }}>
+      {/* Warning */}
+      <div style={{ background: "#fef3c7", borderBottom: "1px solid #fcd34d", padding: "10px 40px", fontSize: 13, color: "#92400e" }}>
         <span style={{ fontWeight: 700 }}>⚠ Development Only</span>
-        <span>— This page bypasses Clerk authentication. Remove <code style={{ background: "rgba(0,0,0,0.08)", padding: "1px 4px", borderRadius: 3 }}>ds360-dev-role</code> from localStorage before any production use.</span>
+        {" — "}
+        {isLoaded && clerkUser
+          ? "Role override is written to your Clerk unsafeMetadata.devRoleOverride and read by useAuth(). Clear it before production use."
+          : "Not signed into Clerk — using localStorage fallback. Sign in for the full override experience."}
       </div>
+
+      {error && (
+        <div style={{ background: "#fef2f2", border: "1px solid #fca5a5", borderRadius: 8, margin: "16px 40px", padding: "12px 16px", fontSize: 13, color: "#dc2626" }}>
+          Error: {error}
+        </div>
+      )}
 
       {/* Content */}
       <div style={{ maxWidth: 900, margin: "0 auto", padding: "40px 24px" }}>
         <h1 style={{ fontSize: 24, fontWeight: 700, color: "#0f172a", marginBottom: 6 }}>Select a Role to Preview</h1>
-        <p style={{ fontSize: 14, color: "#64748b", marginBottom: 40 }}>Click any role to enter that portal as that user type. The role is stored in localStorage and bypasses Clerk entirely.</p>
+        <p style={{ fontSize: 14, color: "#64748b", marginBottom: 40 }}>
+          {isLoaded && clerkUser
+            ? "Clicking a role writes devRoleOverride to your Clerk session, then navigates to that portal. useAuth() picks it up instantly."
+            : "Clicking a role stores it in localStorage and navigates. Sign in to Clerk for the more reliable override path."}
+        </p>
 
         <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
           {SECTIONS.map((section) => (
             <div key={section.label}>
-              {/* Section header */}
               <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
                 <div style={{ width: 3, height: 20, background: section.color, borderRadius: 2 }} />
                 <span style={{ fontSize: 12, fontWeight: 700, color: section.color, textTransform: "uppercase", letterSpacing: "1.5px" }}>{section.label}</span>
                 <div style={{ flex: 1, height: 1, background: "#e2e8f0" }} />
               </div>
 
-              {/* Role cards */}
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 12 }}>
                 {section.roles.map((r) => {
                   const isActive = active === r.role;
+                  const isSpinning = loading === r.role;
                   return (
                     <div
                       key={r.role}
@@ -142,7 +190,6 @@ export default function DevAccess() {
                         display: "flex",
                         flexDirection: "column",
                         gap: 12,
-                        transition: "border-color 0.15s",
                       }}
                     >
                       <div>
@@ -157,6 +204,7 @@ export default function DevAccess() {
                       </div>
                       <button
                         onClick={() => enter(r.role)}
+                        disabled={!!loading}
                         style={{
                           padding: "9px 0",
                           background: isActive ? section.color : "#f8fafc",
@@ -165,12 +213,12 @@ export default function DevAccess() {
                           borderRadius: 6,
                           fontSize: 13,
                           fontWeight: 600,
-                          cursor: "pointer",
+                          cursor: loading ? "not-allowed" : "pointer",
                           fontFamily: "inherit",
-                          transition: "all 0.15s",
+                          opacity: loading && !isSpinning ? 0.5 : 1,
                         }}
                       >
-                        {isActive ? "Re-enter Portal →" : "Enter as " + r.label + " →"}
+                        {isSpinning ? "Setting role…" : isActive ? "Re-enter Portal →" : `Enter as ${r.label} →`}
                       </button>
                     </div>
                   );
