@@ -1,6 +1,6 @@
 import { useState, FormEvent } from "react";
 import logoLight from "@assets/DS360_logo_light.png";
-import { Menu, X, Building, User, Gavel, Linkedin, Facebook, Youtube, Instagram, Twitter, ChevronRight, Search } from "lucide-react";
+import { Menu, X, LogIn, Linkedin, Facebook, Youtube, Instagram, Twitter, ChevronRight, Search } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { useLanguage } from "@/hooks/use-language";
 import { LanguageToggle } from "@/components/language-toggle";
@@ -379,31 +379,21 @@ export function MobileMenu() {
               <p className="text-xs text-muted-foreground mb-3 text-left">{t('mobileMenu.loginSubtext')}</p>
               <div className="space-y-2">
                 <Link
-                  href="/dealer"
+                  href="/login"
                   onClick={closeMenu}
                   className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-primary text-white rounded-lg font-semibold hover:bg-primary/90 transition-all duration-300 shadow-md hover:shadow-xl group"
-                  data-testid="button-dealer-login"
+                  data-testid="button-sign-in"
                 >
-                  <Building className="group-hover:scale-110 transition-transform" size={18} />
-                  <span>{t('mobileMenu.dealer')}</span>
+                  <LogIn className="group-hover:scale-110 transition-transform" size={18} />
+                  <span>Sign In</span>
                 </Link>
                 <Link
-                  href="/client"
+                  href="/sign-up"
                   onClick={closeMenu}
                   className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-card text-foreground border border-border rounded-lg font-semibold hover:bg-primary/5 hover:border-primary/40 transition-all duration-300 group"
-                  data-testid="button-client-portal"
+                  data-testid="button-sign-up"
                 >
-                  <User className="group-hover:scale-110 transition-transform" size={18} />
-                  <span>Client Portal</span>
-                </Link>
-                <Link
-                  href="/bidder"
-                  onClick={closeMenu}
-                  className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-card text-foreground border border-border rounded-lg font-semibold hover:bg-primary/5 hover:border-primary/40 transition-all duration-300 group"
-                  data-testid="button-bidder-portal"
-                >
-                  <Gavel className="group-hover:scale-110 transition-transform" size={18} />
-                  <span>Bidder Portal</span>
+                  <span>Sign Up</span>
                 </Link>
               </div>
             </div>

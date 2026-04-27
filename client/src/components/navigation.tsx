@@ -49,21 +49,12 @@ export function Navigation() {
             <div className="flex items-center gap-3">
               {/* Desktop-only: Dealer Login + Book a Demo */}
               <Link
-                href="/dealer"
+                href="/login"
                 className="hidden lg:block text-sm text-muted-foreground hover:text-foreground transition-colors"
-                data-testid="link-dealer-login-top"
+                data-testid="link-sign-in-top"
               >
-                {t('navigation.dealerLogin')}
+                Sign In
               </Link>
-              <Link href="/book-demo" className="hidden lg:block">
-                <button
-                  className="px-4 py-2 border border-primary text-primary text-sm font-semibold rounded-lg hover:bg-primary/10 transition-colors"
-                  data-testid="button-book-demo"
-                >
-                  {t('navigation.bookDemo')}
-                </button>
-              </Link>
-              {/* Always visible: Sign Up */}
               <Link href="/sign-up">
                 <button
                   className="px-6 py-2.5 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-colors shadow-md hover:shadow-lg"
@@ -340,17 +331,8 @@ export function Navigation() {
             </Link>
           </div>
 
-          {/* Right Side - Contact Button, Language Toggle and Hamburger */}
+          {/* Right Side - Language Toggle and Hamburger */}
           <div className="flex items-center space-x-4">
-            {/* Contact Button - Desktop Only */}
-            <Link
-              href="/contact"
-              className="hidden lg:block bg-primary text-primary-foreground px-4 py-2 rounded-md hover:bg-primary/90 transition-colors"
-              data-testid="button-contact"
-            >
-              {t('navigation.contact')}
-            </Link>
-
             <LanguageToggle />
             <MobileMenu />
           </div>
