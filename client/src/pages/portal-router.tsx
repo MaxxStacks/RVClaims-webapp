@@ -4,15 +4,15 @@ import { useEffect, useRef } from "react";
 // Sub-paths required — exact paths (/client, /dealer, etc.) are redirect-to-/login stubs in the router.
 // Must include a sub-path segment to match /client/:rest*, /dealer/:rest*, etc.
 const ROLE_TARGETS: Record<string, string> = {
-  operator_admin: "/operator/dashboard",
-  operator_staff: "/operator/dashboard",
-  dealer_owner:   "/dealer/dashboard",
-  dealer_staff:   "/dealer/dashboard",
-  technician:     "/dealer/dashboard",
-  public_bidder:  "/dealer/dashboard",
-  consignor:      "/dealer/dashboard",
-  bidder:         "/bidder/dashboard",
-  client:         "/client/dashboard",
+  operator_admin: "/operator-v6",
+  operator_staff: "/operator-v6",
+  dealer_owner:   "/dealer-v6",
+  dealer_staff:   "/dealer-v6",
+  technician:     "/dealer-v6",
+  public_bidder:  "/dealer-v6",
+  consignor:      "/dealer-v6",
+  bidder:         "/bidder-v6",
+  client:         "/client-v6",
 };
 
 export default function PortalRouter() {

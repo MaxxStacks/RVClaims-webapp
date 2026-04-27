@@ -43,7 +43,8 @@ export default function CustomerPortal() {
   const [chatMessage, setChatMessage] = useState('');
   const [chatMessages, setChatMessages] = useState<any[]>([]);
 
-  const titles: Record<string, [string, string]> = {dashboard:['Dashboard','Welcome back, Robert'],'my-unit':['My Unit','2024 Jayco Jay Flight 264BH'],warranty:['Warranty \u0026 Coverage','Active coverage details'],documents:['Documents','Warranty certs, inspection reports'],claims:['Claim Status','Track your claims'],'claim-detail':['CLM-0248','Warranty claim in progress'],'report-issue':['Report an Issue','Upload photos and describe the problem'],parts:['Parts Orders','Track parts for your claims'],'fi-products':['Protection Plans','Available products for your RV'],roadside:['Roadside Assistance','Coming soon'],tickets:['Support Tickets','Track conversations with dealer'],'ticket-detail':['TKT-0042','Warranty claim ticket'],'new-ticket':['New Ticket','Create a support ticket'],'quick-chat':['Quick Chat','Quick questions with Smith\u0027s RV Centre'],settings:['Settings','Your profile and preferences']};
+  const titles: Record<string, [string, string]> = {dashboard:['Dashboard','Welcome back, Robert'],'my-unit':['My Unit','2024 Jayco Jay Flight 264BH'],warranty:['Warranty \u0026 Coverage','Active coverage details'],documents:['Documents','Warranty certs, inspection reports'],claims:['Claim Status','Track your claims'],'claim-detail':['CLM-0248','Warranty claim in progress'],'report-issue':['Report an Issue','Upload photos and describe the problem'],parts:['Parts Orders','Track parts for your claims'],'fi-products':['Protection Plans','Available products for your RV'],roadside:['Roadside Assistance','Coming soon'],tickets:['Support Tickets','Track conversations with dealer'],'ticket-detail':['TKT-0042','Warranty claim ticket'],'new-ticket':['New Ticket','Create a support ticket'],'quick-chat':['Quick Chat','Quick questions with Smith\u0027s RV Centre'],settings:['Settings','Your profile and preferences'],
+'my-financing':['My Financing','Loan details & payment schedule'],'service-appointments':['Service Appointments','Schedule & track dealer appointments'],'fi-offers':['Protection Offers','Personalized plans for your RV'],'client-messages':['Messages','Inbox from Smith\'s RV Centre']};
 
   const parents: Record<string, string> = {'claim-detail':'claims','ticket-detail':'tickets','new-ticket':'tickets'};
 
@@ -55,20 +56,20 @@ export default function CustomerPortal() {
     const fetch = async () => {
       try {
         if (activePage === 'dashboard' || activePage === 'claims') {
-          const d = await apiFetch<any>('/api/claims');
-          setCustClaims(d.claims || []);
+          const d = await apiFetch<any>('/api/v6/claims');
+          setCustClaims(Array.isArray(d) ? d : []);
         }
         if (activePage === 'dashboard' || activePage === 'my-unit' || activePage === 'warranty') {
-          const d = await apiFetch<any>('/api/units');
-          setCustUnit((d.units || [])[0] || null);
+          const d = await apiFetch<any>('/api/v6/units');
+          setCustUnit((Array.isArray(d) ? d : [])[0] || null);
         }
         if (activePage === 'tickets' || activePage === 'ticket-detail') {
           const d = await apiFetch<any>('/api/tickets');
           setCustTickets(d.tickets || []);
         }
         if (activePage === 'parts') {
-          const d = await apiFetch<any>('/api/parts-orders');
-          setCustPartsOrders(d.partsOrders || []);
+          const d = await apiFetch<any>('/api/v6/parts-orders');
+          setCustPartsOrders(Array.isArray(d) ? d : []);
         }
       } catch (err: any) {
         setDataError(err?.message || 'Failed to load data');
@@ -170,8 +171,12 @@ export default function CustomerPortal() {
       <div className={`nav-item ${isNavActive('parts') ? 'active' : ''}`} onClick={() => showPage('parts')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 7h-9"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>Parts Orders</div></div>
     <div className="nav-section"><div className="nav-label">Extras</div>
       <div className={`nav-item ${isNavActive('fi-products') ? 'active' : ''}`} onClick={() => showPage('fi-products')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Protection Plans<span className="nb green">New</span></div>
+      <div className={`nav-item ${isNavActive('fi-offers') ? 'active' : ''}`} onClick={() => showPage('fi-offers')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>My Offers<span className="nb amber">1</span></div>
+      <div className={`nav-item ${isNavActive('my-financing') ? 'active' : ''}`} onClick={() => showPage('my-financing')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>My Financing</div>
+      <div className={`nav-item ${isNavActive('service-appointments') ? 'active' : ''}`} onClick={() => showPage('service-appointments')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Appointments</div>
       <div className={`nav-item ${isNavActive('roadside') ? 'active' : ''}`} onClick={() => showPage('roadside')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.362 1.903.7 2.81"/></svg>Roadside Assist<span className="nb amber">Soon</span></div></div>
     <div className="nav-section"><div className="nav-label">Account</div>
+      <div className={`nav-item ${isNavActive('client-messages') ? 'active' : ''}`} onClick={() => showPage('client-messages')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Messages<span className="nb blue">1</span></div>
       <div className={`nav-item ${isNavActive('tickets') ? 'active' : ''}`} onClick={() => showPage('tickets')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Support Tickets<span className="nb blue">3</span></div>
       <div className={`nav-item ${isNavActive('quick-chat') ? 'active' : ''}`} onClick={() => showPage('quick-chat')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Quick Chat</div>
       <div className={`nav-item ${isNavActive('settings') ? 'active' : ''}`} onClick={() => showPage('settings')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09"/></svg>Settings</div></div>
@@ -611,6 +616,110 @@ export default function CustomerPortal() {
   </div>
 </div>
 </div>
+</div>
+<div className={`page ${activePage === 'my-financing' ? 'active' : ''}`} id="page-my-financing">
+  <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:16,marginBottom:20}}>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Loan Balance</div><div className="sc-v" style={{color:'#1a1a2e'}}>$61,240</div></div>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Monthly Payment</div><div className="sc-v" style={{color:'#2563eb'}}>$1,148</div></div>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Next Payment</div><div className="sc-v" style={{color:'#f59e0b'}}>May 1</div></div>
+  </div>
+  <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:20,marginBottom:20}}>
+    <div className="pn" style={{padding:24}}>
+      <div style={{fontWeight:600,fontSize:14,marginBottom:16}}>Loan Details</div>
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,fontSize:13}}>
+        {[['Lender','RBC Royal Bank'],['Interest Rate','4.99% fixed'],['Term','84 months'],['Start Date','May 1, 2024'],['End Date','Apr 1, 2031'],['Original Amount','$68,500']].map(([k,v])=>(
+          <div key={k}><div style={{color:'#888',fontSize:11,marginBottom:2}}>{k}</div><div style={{fontWeight:500}}>{v}</div></div>
+        ))}
+      </div>
+    </div>
+    <div className="pn" style={{padding:24}}>
+      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:16}}>
+        <div style={{fontWeight:600,fontSize:14}}>Payment History</div>
+        <button className="btn btn-p" style={{fontSize:12}}>Make a Payment</button>
+      </div>
+      <div style={{display:'flex',flexDirection:'column',gap:8}}>
+        {[{date:'Apr 1, 2026',amount:1148,status:'paid'},{date:'Mar 1, 2026',amount:1148,status:'paid'},{date:'Feb 1, 2026',amount:1148,status:'paid'},{date:'Jan 1, 2026',amount:1148,status:'paid'}].map((p,i)=>(
+          <div key={i} style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'8px 12px',borderRadius:6,background:'#f9fafb',fontSize:13}}>
+            <span>{p.date}</span>
+            <span style={{fontWeight:600}}>${p.amount.toLocaleString()}</span>
+            <span className="bg active" style={{fontSize:11}}>{p.status}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div className={`page ${activePage === 'service-appointments' ? 'active' : ''}`} id="page-service-appointments">
+  <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:20,marginBottom:20}}>
+    <div className="pn" style={{padding:24}}>
+      <div style={{fontWeight:600,fontSize:14,marginBottom:16}}>Book an Appointment</div>
+      <div style={{display:'flex',flexDirection:'column',gap:12}}>
+        <div><label style={{fontSize:12,color:'#888',display:'block',marginBottom:4}}>Service Type</label><select style={{width:'100%',padding:'10px 12px',border:'1px solid #e0e0e0',borderRadius:8,fontSize:13,fontFamily:'inherit'}}><option>Warranty Repair</option><option>PDI Inspection</option><option>Seasonal Service</option><option>Slide-out Maintenance</option><option>Custom</option></select></div>
+        <div><label style={{fontSize:12,color:'#888',display:'block',marginBottom:4}}>Preferred Date</label><input type="date" style={{width:'100%',padding:'10px 12px',border:'1px solid #e0e0e0',borderRadius:8,fontSize:13,fontFamily:'inherit'}} /></div>
+        <div><label style={{fontSize:12,color:'#888',display:'block',marginBottom:4}}>Preferred Time</label><select style={{width:'100%',padding:'10px 12px',border:'1px solid #e0e0e0',borderRadius:8,fontSize:13,fontFamily:'inherit'}}><option>Morning (8AM–12PM)</option><option>Afternoon (12PM–4PM)</option><option>Any time</option></select></div>
+        <div><label style={{fontSize:12,color:'#888',display:'block',marginBottom:4}}>Notes</label><textarea placeholder="Describe the issue or what you need done..." style={{width:'100%',padding:'10px 12px',border:'1px solid #e0e0e0',borderRadius:8,fontSize:13,fontFamily:'inherit',minHeight:80}}></textarea></div>
+        <button className="btn btn-p">Request Appointment</button>
+      </div>
+    </div>
+    <div className="pn" style={{padding:24}}>
+      <div style={{fontWeight:600,fontSize:14,marginBottom:16}}>Upcoming & Recent</div>
+      <div style={{display:'flex',flexDirection:'column',gap:10}}>
+        {[{date:'May 5, 2026',type:'Slide-out Seal Repair',tech:'Mike T.',status:'scheduled'},{date:'Mar 12, 2026',type:'Warranty Repair — AC Unit',tech:'Jason R.',status:'complete'},{date:'Jan 20, 2026',type:'PDI Inspection',tech:'Carlos P.',status:'complete'}].map((a,i)=>(
+          <div key={i} style={{padding:'12px 16px',border:'1px solid #e8e8e8',borderRadius:8}}>
+            <div style={{display:'flex',justifyContent:'space-between',marginBottom:4}}><span style={{fontWeight:600,fontSize:13}}>{a.date}</span><span className={`bg ${a.status}`} style={{fontSize:11}}>{a.status}</span></div>
+            <div style={{fontSize:13,color:'#555'}}>{a.type}</div>
+            <div style={{fontSize:12,color:'#888',marginTop:2}}>Technician: {a.tech}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div className={`page ${activePage === 'fi-offers' ? 'active' : ''}`} id="page-fi-offers">
+  <div style={{fontSize:13,color:'#666',marginBottom:20}}>Personalized protection offers for your 2024 Jayco Jay Flight. Reviewed and recommended by Smith's RV Centre based on your coverage and usage.</div>
+  <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:16,marginBottom:20}}>
+    {[{name:'Extended Warranty',desc:'5 years / 100,000 km bumper-to-bumper coverage after factory warranty expires.',price:'$1,895',highlight:true,badge:'Recommended'},{name:'GAP Insurance',desc:'Covers the gap between loan balance and actual cash value if your RV is totalled.',price:'$495',highlight:false,badge:null},{name:'Tire & Wheel Protection',desc:'Covers flat tires, road hazard damage, and rim replacement.',price:'$395',highlight:false,badge:'Popular'}].map(p=>(
+      <div key={p.name} className="pn" style={{padding:20,border:p.highlight?'2px solid #08235d':'1px solid #e8e8e8',position:'relative'}}>
+        {p.badge && <div style={{position:'absolute',top:12,right:12,background:p.highlight?'#08235d':'#22c55e',color:'white',fontSize:10,fontWeight:600,padding:'2px 8px',borderRadius:4}}>{p.badge}</div>}
+        <div style={{fontWeight:700,fontSize:15,marginBottom:8}}>{p.name}</div>
+        <div style={{fontSize:13,color:'#555',lineHeight:1.6,marginBottom:16}}>{p.desc}</div>
+        <div style={{fontSize:20,fontWeight:700,color:'#08235d',marginBottom:12}}>{p.price}<span style={{fontSize:12,fontWeight:400,color:'#888'}}>/one-time</span></div>
+        <button className="btn btn-p" style={{width:'100%',fontSize:13}} onClick={()=>showPage('fi-products')}>Learn More</button>
+      </div>
+    ))}
+  </div>
+  <div className="pn" style={{padding:20,background:'#f0f4ff'}}>
+    <div style={{display:'flex',alignItems:'center',gap:12}}><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#08235d" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg><div><div style={{fontWeight:600,fontSize:13}}>AI-Powered Recommendation</div><div style={{fontSize:12,color:'#555'}}>Based on your unit's age, usage patterns, and manufacturer history, our system recommends adding extended warranty coverage before your factory warranty expires in Feb 2028.</div></div></div>
+  </div>
+</div>
+
+<div className={`page ${activePage === 'client-messages' ? 'active' : ''}`} id="page-client-messages">
+  <div style={{display:'grid',gridTemplateColumns:'260px 1fr',gap:16,height:520}}>
+    <div className="pn" style={{padding:0,overflow:'hidden'}}>
+      <div style={{padding:'12px 16px',borderBottom:'1px solid #f0f0f0',fontWeight:600,fontSize:13}}>Inbox</div>
+      {[{name:"Smith's RV Centre",msg:'Your claim CLM-0248 is being processed.',time:'2h ago',unread:true},{name:"Smith's RV Centre",msg:'Parts ordered for your warranty repair.',time:'3d ago',unread:false}].map((m,i)=>(
+        <div key={i} style={{padding:'12px 16px',borderBottom:'1px solid #f8f8f8',cursor:'pointer',background:m.unread?'#f0f4ff':'white',display:'flex',gap:10}}>
+          <div style={{width:36,height:36,borderRadius:'50%',background:'#08235d',color:'white',display:'flex',alignItems:'center',justifyContent:'center',fontSize:12,flexShrink:0}}>SR</div>
+          <div style={{flex:1,minWidth:0}}><div style={{fontWeight:m.unread?600:400,fontSize:13,marginBottom:2}}>{m.name}</div><div style={{fontSize:12,color:'#888',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{m.msg}</div><div style={{fontSize:11,color:'#aaa',marginTop:2}}>{m.time}</div></div>
+          {m.unread && <div style={{width:8,height:8,borderRadius:'50%',background:'#2563eb',flexShrink:0,marginTop:4}}></div>}
+        </div>
+      ))}
+    </div>
+    <div className="pn" style={{display:'flex',flexDirection:'column'}}>
+      <div style={{padding:'12px 20px',borderBottom:'1px solid #f0f0f0',fontWeight:600,fontSize:14}}>Smith's RV Centre</div>
+      <div style={{flex:1,padding:20,overflowY:'auto',display:'flex',flexDirection:'column',gap:10}}>
+        <div style={{background:'#f0f4ff',borderRadius:12,padding:'12px 16px',maxWidth:'80%',fontSize:13,alignSelf:'flex-start'}}>Hi Robert — your claim CLM-0248 has been submitted to Jayco. Expected response within 5-7 business days. We'll keep you updated!</div>
+        <div style={{background:'#08235d',color:'white',borderRadius:12,padding:'12px 16px',maxWidth:'80%',fontSize:13,alignSelf:'flex-end'}}>Thanks! Is there anything I need to do on my end?</div>
+        <div style={{background:'#f0f4ff',borderRadius:12,padding:'12px 16px',maxWidth:'80%',fontSize:13,alignSelf:'flex-start'}}>Nothing for now. We have all the photos we need. The part has been ordered and should arrive by May 3rd.</div>
+      </div>
+      <div style={{padding:'12px 16px',borderTop:'1px solid #f0f0f0',display:'flex',gap:8}}>
+        <input placeholder="Reply to Smith's RV Centre..." style={{flex:1,padding:'8px 14px',border:'1px solid #e0e0e0',borderRadius:20,fontSize:13,fontFamily:'inherit'}} />
+        <button className="btn btn-p" style={{borderRadius:20}}>Send</button>
+      </div>
+    </div>
+  </div>
 </div>
     <MobileBottomNav portalType="client" activePage={activePage} onNavigate={showPage} parents={parents} />
     <OfflineBanner />

@@ -30,6 +30,7 @@ export default function OperatorPortal() {
 
   // ─── Auth ──────────────────────────────────────────────────────────────────
   const { user, logout } = useAuth();
+  const isOperatorAdmin = !user || user.role === 'operator_admin';
 
   // ─── API data state ────────────────────────────────────────────────────────
   const [opClaims, setOpClaims] = useState<any[]>([]);
@@ -203,7 +204,8 @@ marketplace:['Service Marketplace','Manage services'],'svc-financing':['Financin
 'svc-warranty':['Warranty Plans','14 active'],'svc-warranty-new':['Add Warranty Plan','Register or sell'],
 'svc-parts':['Parts \u0026 Accessories','8 orders'],'svc-parts-detail':['PO-0038','Smith\u0027s RV'],'svc-parts-new':['New Parts Order','Request parts'],
 'mkt-members':['Marketplace Members','28 dealers'],'mkt-member-detail':['Member Detail','Dealer verification'],'mkt-member-signup':['New Application','Review & approve'],'mkt-listings':['All Listings','142 active'],'mkt-listing-detail':['Listing Detail','Unit details'],'mkt-transactions':['Transactions','Escrow & commissions'],'mkt-transaction-detail':['Transaction Detail','Escrow tracking'],'mkt-auctions':['Live Auctions','Manage auctions'],'mkt-auction-detail':['Auction Detail','Bidding & settlement'],'mkt-public-events':['Public Auction Events','Monthly public sales'],'mkt-public-event-detail':['Event Detail','Manage showcase'],
-billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u0026 Services','Billable items'],'add-product':['Add Product / Service','Create item'],'edit-product':['Edit Product / Service','Modify item'],'create-invoice':['Create Invoice','New invoice'],reports:['Revenue Reports','Analytics'],notifications:['Notifications','Compose'],users:['Users \u0026 Roles','Manage users'],settings:['Settings','Platform config'],changelog:['Changelog','Version history \u0026 roadmap'],'add-feature-req':['Feature Request','Submit new request'],'blog':['Blog Management','AI content pipeline'],'crm':['Dealer CRM','Pipeline & market intelligence'],'crm-kanban':['Pipeline Kanban','Drag & drop stage management'],'crm-dealer':['Dealer CRM Record','Full 360° view']};
+billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u0026 Services','Billable items'],'add-product':['Add Product / Service','Create item'],'edit-product':['Edit Product / Service','Modify item'],'create-invoice':['Create Invoice','New invoice'],reports:['Revenue Reports','Analytics'],notifications:['Notifications','Compose'],users:['Users \u0026 Roles','Manage users'],settings:['Settings','Platform config'],changelog:['Changelog','Version history \u0026 roadmap'],'add-feature-req':['Feature Request','Submit new request'],'blog':['Blog Management','AI content pipeline'],'crm':['Dealer CRM','Pipeline & market intelligence'],'crm-kanban':['Pipeline Kanban','Drag & drop stage management'],'crm-dealer':['Dealer CRM Record','Full 360° view'],
+'ops-dashboard':['Operations Dashboard','Active claims, work orders & live queue'],'mfr-portals':['Manufacturer Portals','Quick-launch manufacturer claim systems'],'financing-apps':['Financing Applications','Review & submit to lenders'],'techflow-oversight':['TechFlow Oversight','Work orders across all dealers'],'financing-partners':['Financing Partners','Lenders, rates & partner management'],'parts-catalog':['Parts Catalog','Global parts & accessories catalog'],'communications':['Communications Hub','Broadcast messages & push notifications']};
 
   const parents: Record<string, string> = {'dealer-detail':'dealers','claim-detail':'claims','batch-review':'queue','unit-detail':'units','add-dealer':'dealers','add-unit':'units','create-invoice':'billing','add-product':'products','edit-product':'products','add-feature-req':'changelog','svc-financing-detail':'svc-financing','svc-financing-new':'svc-financing','svc-fi-detail':'svc-fi','svc-fi-new':'svc-fi','svc-warranty-new':'svc-warranty','svc-parts-detail':'svc-parts','svc-parts-new':'svc-parts','mkt-member-detail':'mkt-members','mkt-member-signup':'mkt-members','mkt-listing-detail':'mkt-listings','mkt-transaction-detail':'mkt-transactions','mkt-auction-detail':'mkt-auctions','mkt-public-event-detail':'mkt-public-events','crm-kanban':'crm','crm-dealer':'crm'};
 
@@ -216,26 +218,26 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
       try {
         if (activePage === 'dashboard') {
           const [cd, dd] = await Promise.all([
-            apiFetch<any>('/api/claims'),
-            apiFetch<any>('/api/dealerships'),
+            apiFetch<any>('/api/v6/claims'),
+            apiFetch<any>('/api/v6/dealerships'),
           ]);
-          setOpClaims(cd.claims || []);
-          setOpDealers(dd.dealerships || []);
+          setOpClaims(Array.isArray(cd) ? cd : []);
+          setOpDealers(Array.isArray(dd) ? dd : []);
         } else if (activePage === 'claims' || activePage === 'stale') {
-          const d = await apiFetch<any>('/api/claims');
-          setOpClaims(d.claims || []);
+          const d = await apiFetch<any>('/api/v6/claims');
+          setOpClaims(Array.isArray(d) ? d : []);
         } else if (activePage === 'claim-detail' && selectedClaimId) {
-          const d = await apiFetch<any>(`/api/claims/${selectedClaimId}`);
+          const d = await apiFetch<any>(`/api/v6/claims/${selectedClaimId}`);
           setSelectedClaimDetail(d.claim || null);
         } else if (activePage === 'dealers') {
-          const d = await apiFetch<any>('/api/dealerships');
-          setOpDealers(d.dealerships || []);
+          const d = await apiFetch<any>('/api/v6/dealerships');
+          setOpDealers(Array.isArray(d) ? d : []);
         } else if (activePage === 'dealer-detail' && selectedDealerId) {
-          const d = await apiFetch<any>(`/api/dealerships/${selectedDealerId}`);
+          const d = await apiFetch<any>(`/api/v6/dealerships/${selectedDealerId}`);
           setSelectedDealerDetail(d.dealership || null);
         } else if (activePage === 'units') {
-          const d = await apiFetch<any>('/api/units');
-          setOpUnits(d.units || []);
+          const d = await apiFetch<any>('/api/v6/units');
+          setOpUnits(Array.isArray(d) ? d : []);
         } else if (activePage === 'queue') {
           const d = await apiFetch<any>('/api/batches?status=uploaded');
           setOpBatches(d.batches || []);
@@ -243,11 +245,11 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
           const d = await apiFetch<any>('/api/invoices');
           setOpInvoices(d.invoices || []);
         } else if (activePage === 'users') {
-          const d = await apiFetch<any>('/api/users');
-          setOpUsers(d.users || []);
+          const d = await apiFetch<any>('/api/v6/users');
+          setOpUsers(Array.isArray(d) ? d : []);
         } else if (activePage === 'notifications') {
-          const d = await apiFetch<any>('/api/notifications');
-          setOpNotifications(d.notifications || []);
+          const d = await apiFetch<any>('/api/v6/notifications');
+          setOpNotifications(Array.isArray(d) ? d : []);
         } else if (activePage === 'products') {
           const d = await apiFetch<any>('/api/products');
           setOpProducts(d.products || []);
@@ -294,7 +296,7 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
     wsClient.connect();
     const unsubClaim = wsClient.on('claim:updated', () => {
       if (activePage === 'claims' || activePage === 'dashboard') {
-        apiFetch<any>('/api/claims').then(d => setOpClaims(d.claims || [])).catch(() => {});
+        apiFetch<any>('/api/v6/claims').then(d => setOpClaims(Array.isArray(d) ? d : [])).catch(() => {});
       }
     });
     const unsubBatch = wsClient.on('batch:uploaded', () => {
@@ -310,22 +312,20 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
     if (!addDealerForm.name || !addDealerForm.email) return;
     setAddDealerSaving(true);
     try {
-      await apiFetch('/api/dealerships', {
+      await apiFetch('/api/v6/dealerships', {
         method: 'POST',
         body: JSON.stringify({
           name: addDealerForm.name,
           email: addDealerForm.email,
           contactName: addDealerForm.contactName,
           phone: addDealerForm.phone,
-          street: addDealerForm.street,
+          addressLine1: addDealerForm.street,
           city: addDealerForm.city,
-          plan: addDealerForm.plan,
-          status: 'pending',
         }),
       });
       setAddDealerForm({ name: '', contactName: '', email: '', phone: '', street: '', city: '', plan: 'plan_a' });
-      const d = await apiFetch<any>('/api/dealerships');
-      setOpDealers(d.dealerships || []);
+      const d = await apiFetch<any>('/api/v6/dealerships');
+      setOpDealers(Array.isArray(d) ? d : []);
       showPage('dealers');
     } catch { /* ignore */ } finally {
       setAddDealerSaving(false);
@@ -336,7 +336,7 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
     if (!addUnitForm.vin || !addUnitForm.dealershipId) return;
     setAddUnitSaving(true);
     try {
-      await apiFetch('/api/units', {
+      await apiFetch('/api/v6/units', {
         method: 'POST',
         body: JSON.stringify({
           vin: addUnitForm.vin,
@@ -348,8 +348,8 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
         }),
       });
       setAddUnitForm({ vin: '', year: '', manufacturer: '', model: '', stockNumber: '', dealershipId: '' });
-      const d = await apiFetch<any>('/api/units');
-      setOpUnits(d.units || []);
+      const d = await apiFetch<any>('/api/v6/units');
+      setOpUnits(Array.isArray(d) ? d : []);
       showPage('units');
     } catch { /* ignore */ } finally {
       setAddUnitSaving(false);
@@ -358,24 +358,22 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
 
   const handleApproveDealership = async (id: string) => {
     try {
-      await apiFetch(`/api/dealerships/${id}`, { method: 'PUT', body: JSON.stringify({ status: 'active' }) });
-      const d = await apiFetch<any>('/api/dealerships');
-      setOpDealers(d.dealerships || []);
+      await apiFetch(`/api/v6/dealerships/${id}/approve`, { method: 'POST' });
+      const d = await apiFetch<any>('/api/v6/dealerships');
+      setOpDealers(Array.isArray(d) ? d : []);
     } catch { /* ignore */ }
   };
 
   const handleMarkNotificationRead = async (id: string) => {
     try {
-      await apiFetch(`/api/notifications/${id}/read`, { method: 'PUT' });
+      await apiFetch(`/api/v6/notifications/${id}/read`, { method: 'POST' });
       setOpNotifications(prev => prev.map(n => n.id === id ? { ...n, isRead: true } : n));
     } catch { /* ignore */ }
   };
 
   const handleMarkAllNotificationsRead = async () => {
     try {
-      await Promise.all(
-        opNotifications.filter(n => !n.isRead).map(n => apiFetch(`/api/notifications/${n.id}/read`, { method: 'PUT' }))
-      );
+      await apiFetch('/api/v6/notifications/mark-all-read', { method: 'POST' });
       setOpNotifications(prev => prev.map(n => ({ ...n, isRead: true })));
     } catch { /* ignore */ }
   };
@@ -518,7 +516,9 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
     } catch { /* ignore */ }
   };
 
+  const adminOnlyPages = ['billing', 'products', 'reports', 'users', 'settings', 'financing-partners'];
   const showPage = (id: string) => {
+    if (!isOperatorAdmin && adminOnlyPages.includes(id)) return;
     setActivePage(id);
     if (titles[id]) { setPageTitle(titles[id][0]); setPageSub(titles[id][1]); }
     window.scrollTo(0, 0);
@@ -608,10 +608,14 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
     <div className="nav-section"><div className="nav-label">Management</div>
       <div className={`nav-item ${isNavActive('dealers') ? 'active' : ''}`} onClick={() => showPage('dealers')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>Dealers<span className="nb amber">3</span></div>
       <div className={`nav-item ${isNavActive('units') ? 'active' : ''}`} onClick={() => showPage('units')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4a2 2 0 012 2v6a2 2 0 01-2 2h-4"/><circle cx="5.5" cy="18" r="2.5"/><circle cx="18.5" cy="18" r="2.5"/></svg>Units</div>
-      <div className={`nav-item ${isNavActive('frc') ? 'active' : ''}`} onClick={() => showPage('frc')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>FRC Codes</div></div>
+      <div className={`nav-item ${isNavActive('frc') ? 'active' : ''}`} onClick={() => showPage('frc')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>FRC Codes</div>
+      <div className={`nav-item ${isNavActive('mfr-portals') ? 'active' : ''}`} onClick={() => showPage('mfr-portals')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Mfr Portals</div>
+      <div className={`nav-item ${isNavActive('techflow-oversight') ? 'active' : ''}`} onClick={() => showPage('techflow-oversight')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>TechFlow Oversight<span className="nb blue">4</span></div></div>
     <div className="nav-section"><div className="nav-label">Services</div>
       <div className={`nav-item ${isNavActive('marketplace') ? 'active' : ''}`} onClick={() => showPage('marketplace')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a4 4 0 00-8 0v2"/><path d="M12 12v3"/></svg>Service Marketplace</div>
       <div className={`nav-item ${isNavActive('svc-financing') ? 'active' : ''}`} onClick={() => showPage('svc-financing')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>Financing<span className="nb green">3</span></div>
+      <div className={`nav-item ${isNavActive('financing-apps') ? 'active' : ''}`} onClick={() => showPage('financing-apps')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Financing Apps<span className="nb amber">7</span></div>
+      <div className={`nav-item ${isNavActive('parts-catalog') ? 'active' : ''}`} onClick={() => showPage('parts-catalog')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 002 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>Parts Catalog</div>
       <div className={`nav-item ${isNavActive('svc-fi') ? 'active' : ''}`} onClick={() => showPage('svc-fi')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>F&I Services<span className="nb green">2</span></div>
       <div className={`nav-item ${isNavActive('svc-warranty') ? 'active' : ''}`} onClick={() => showPage('svc-warranty')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 12l2 2 4-4"/></svg>Warranty Plans<span className="nb blue">14</span></div>
       <div className={`nav-item ${isNavActive('svc-parts') ? 'active' : ''}`} onClick={() => showPage('svc-parts')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>Parts & Accessories<span className="nb blue">8</span></div></div>
@@ -622,16 +626,18 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
       <div className={`nav-item ${isNavActive('mkt-auctions') ? 'active' : ''}`} onClick={() => showPage('mkt-auctions')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>Live Auctions<span className="nb amber">3</span></div>
       <div className={`nav-item ${isNavActive('mkt-public-events') ? 'active' : ''}`} onClick={() => showPage('mkt-public-events')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Public Auctions<span className="nb blue">14</span></div>
     </div>
-    <div className="nav-section"><div className="nav-label">Finance</div>
+    {isOperatorAdmin && <div className="nav-section"><div className="nav-label">Finance</div>
       <div className={`nav-item ${isNavActive('billing') ? 'active' : ''}`} onClick={() => showPage('billing')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>Billing & Invoices</div>
       <div className={`nav-item ${isNavActive('products') ? 'active' : ''}`} onClick={() => showPage('products')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>Products & Services</div>
-      <div className={`nav-item ${isNavActive('reports') ? 'active' : ''}`} onClick={() => showPage('reports')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Revenue Reports</div></div>
+      <div className={`nav-item ${isNavActive('reports') ? 'active' : ''}`} onClick={() => showPage('reports')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Revenue Reports</div>
+      <div className={`nav-item ${isNavActive('financing-partners') ? 'active' : ''}`} onClick={() => showPage('financing-partners')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>Financing Partners</div></div>}
     <div className="nav-section"><div className="nav-label">CRM</div>
       <div className={`nav-item ${isNavActive('crm') ? 'active' : ''}`} onClick={() => showPage('crm')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Dealer Directory</div></div>
     <div className="nav-section"><div className="nav-label">System</div>
       <div className={`nav-item ${isNavActive('notifications') ? 'active' : ''}`} onClick={() => showPage('notifications')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>Notifications</div>
-      <div className={`nav-item ${isNavActive('users') ? 'active' : ''}`} onClick={() => showPage('users')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Users & Roles</div>
-      <div className={`nav-item ${isNavActive('settings') ? 'active' : ''}`} onClick={() => showPage('settings')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>Settings</div>
+      <div className={`nav-item ${isNavActive('communications') ? 'active' : ''}`} onClick={() => showPage('communications')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Communications<span className="nb green">New</span></div>
+      {isOperatorAdmin && <div className={`nav-item ${isNavActive('users') ? 'active' : ''}`} onClick={() => showPage('users')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Users & Roles</div>}
+      {isOperatorAdmin && <div className={`nav-item ${isNavActive('settings') ? 'active' : ''}`} onClick={() => showPage('settings')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>Settings</div>}
       <div className={`nav-item ${isNavActive('changelog') ? 'active' : ''}`} onClick={() => showPage('changelog')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Changelog</div>
       <div className={`nav-item ${isNavActive('blog') ? 'active' : ''}`} onClick={() => showPage('blog')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>Blog</div></div>
   </div>
@@ -1771,6 +1777,135 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
   </div><div className="btn-bar"><button className="btn btn-p" onClick={handleSubmitFeatureRequest} disabled={featureReqSaving}>{featureReqSaving ? 'Submitting…' : 'Submit Request'}</button><button className="btn btn-o" onClick={() => showPage('changelog')}>Cancel</button></div></div>
 </div>
 
+<div className={`page ${activePage === 'mfr-portals' ? 'active' : ''}`} id="page-mfr-portals">
+  <div style={{fontSize:13,color:'#666',marginBottom:20}}>Quick-launch manufacturer claim portals. Open in a new tab to submit or check claim status directly with the manufacturer.</div>
+  <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:16,marginBottom:24}}>
+    {[{name:'Jayco',url:'https://www.jayco.com/dealer',claims:32,color:'#d32f2f'},{name:'Forest River',url:'https://www.forestriverinc.com/dealer',claims:18,color:'#1565c0'},{name:'Heartland RV',url:'https://www.heartlandrvs.com/dealer',claims:11,color:'#2e7d32'},{name:'Keystone RV',url:'https://www.keystonerv.com/dealer',claims:9,color:'#6a1b9a'},{name:'Columbia NW',url:'https://www.columbianw.com',claims:4,color:'#ef6c00'},{name:'Midwest Automotive',url:'https://www.midwestauto.com',claims:2,color:'#00838f'}].map(m=>(
+      <div key={m.name} className="pn" style={{padding:20}}>
+        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12}}>
+          <div style={{fontWeight:700,fontSize:16,color:m.color}}>{m.name}</div>
+          <span className="bg in-progress" style={{fontSize:11}}>{m.claims} claims</span>
+        </div>
+        <div style={{display:'flex',gap:8}}>
+          <button className="btn btn-p" style={{fontSize:12}} onClick={()=>window.open(m.url,'_blank')}>Open Portal</button>
+          <button className="btn" style={{fontSize:12}} onClick={()=>showPage('claims')}>View Claims</button>
+        </div>
+      </div>
+    ))}
+  </div>
+  <div className="pn">
+    <div className="pn-h"><span className="pn-t">Recent Manufacturer Submissions</span></div>
+    <div className="tw"><table><thead><tr><th>Claim #</th><th>Manufacturer</th><th>Submitted Via Portal</th><th>Mfr Ref #</th><th>Status</th></tr></thead><tbody>
+      <tr><td><span className="cid" onClick={()=>showPage('claim-detail')}>CLM-0248</span></td><td>Jayco</td><td>Apr 24, 2026</td><td>JAY-2026-18831</td><td><span className="bg in-progress">Under Review</span></td></tr>
+      <tr><td><span className="cid" onClick={()=>showPage('claim-detail')}>CLM-0246</span></td><td>Forest River</td><td>Apr 22, 2026</td><td>FR-26-004412</td><td><span className="bg active">Approved</span></td></tr>
+      <tr><td><span className="cid" onClick={()=>showPage('claim-detail')}>CLM-0244</span></td><td>Heartland</td><td>Apr 20, 2026</td><td>HTL-20260419</td><td><span className="bg denied">Denied — Missing Photos</span></td></tr>
+    </tbody></table></div>
+  </div>
+</div>
+
+<div className={`page ${activePage === 'techflow-oversight' ? 'active' : ''}`} id="page-techflow-oversight">
+  <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:16,marginBottom:20}}>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Open Work Orders</div><div className="sc-v" style={{color:'#2563eb'}}>28</div></div>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>In Progress</div><div className="sc-v" style={{color:'#f59e0b'}}>11</div></div>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Completed (Week)</div><div className="sc-v" style={{color:'#22c55e'}}>43</div></div>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Active Dealers Using</div><div className="sc-v">8</div></div>
+  </div>
+  <div className="filter-bar"><input type="text" placeholder="Search work orders..." /><select><option>All Dealers</option><option>Smith's RV</option><option>Atlantic RV</option></select><select><option>All Statuses</option><option>Open</option><option>In Progress</option><option>Complete</option></select></div>
+  <div className="pn">
+    <div className="tw"><table><thead><tr><th>WO #</th><th>Dealer</th><th>Unit</th><th>Description</th><th>Technician</th><th>Status</th><th>Due</th></tr></thead><tbody>
+      <tr><td>WO-0041</td><td>Smith's RV</td><td>2024 Jayco Jay Flight</td><td>Slide-out seal replacement</td><td>Mike T.</td><td><span className="bg in-progress">In Progress</span></td><td>Apr 28</td></tr>
+      <tr><td>WO-0040</td><td>Smith's RV</td><td>2024 Forest River Rockwood</td><td>AC unit not cooling</td><td>Unassigned</td><td><span className="bg pending">Open</span></td><td>Apr 29</td></tr>
+      <tr><td>WO-0039</td><td>Atlantic RV</td><td>2023 Keystone Montana</td><td>PDI inspection</td><td>Jason R.</td><td><span className="bg active">Complete</span></td><td>Apr 25</td></tr>
+      <tr><td>WO-0038</td><td>Prairie Wind RV</td><td>2022 Heartland Bighorn</td><td>Awning motor replacement</td><td>Carlos P.</td><td><span className="bg in-progress">In Progress</span></td><td>Apr 30</td></tr>
+    </tbody></table></div>
+  </div>
+</div>
+
+<div className={`page ${activePage === 'financing-apps' ? 'active' : ''}`} id="page-financing-apps">
+  <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:16,marginBottom:20}}>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Pending Review</div><div className="sc-v" style={{color:'#f59e0b'}}>7</div></div>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Submitted to Lender</div><div className="sc-v" style={{color:'#2563eb'}}>4</div></div>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Approved (MTD)</div><div className="sc-v" style={{color:'#22c55e'}}>12</div></div>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Total Value (MTD)</div><div className="sc-v">$847K</div></div>
+  </div>
+  <div className="filter-bar"><input type="text" placeholder="Search by name, dealer, or lender..." /><select><option>All Dealers</option><option>Smith's RV</option></select><select><option>All Statuses</option><option>Received</option><option>Submitted</option><option>Approved</option><option>Declined</option></select><select><option>All Lenders</option><option>RBC</option><option>TD Auto Finance</option><option>National Bank</option><option>iA Auto Finance</option></select></div>
+  <div className="pn">
+    <div className="pn-h"><span className="pn-t">Financing Applications</span><button className="btn btn-p" style={{fontSize:12,padding:'6px 14px'}} onClick={()=>showPage('svc-financing-new')}>+ New Application</button></div>
+    <div className="tw"><table><thead><tr><th>App #</th><th>Customer</th><th>Dealer</th><th>Unit</th><th>Amount</th><th>Lender</th><th>Status</th><th>Submitted</th></tr></thead><tbody>
+      <tr><td>FIN-0026</td><td>Marc Bouchard</td><td>Smith's RV</td><td>2024 Keystone Montana</td><td style={{fontWeight:600}}>$68,000</td><td>RBC</td><td><span className="bg pending">Received</span></td><td>Apr 25</td></tr>
+      <tr><td>FIN-0025</td><td>Stephanie Wong</td><td>Atlantic RV</td><td>2024 Jayco Eagle HT</td><td style={{fontWeight:600}}>$89,000</td><td>TD Auto Finance</td><td><span className="bg in-progress">Submitted</span></td><td>Apr 22</td></tr>
+      <tr><td>FIN-0023</td><td>Daniel Tremblay</td><td>Smith's RV</td><td>2024 Forest River Rockwood</td><td style={{fontWeight:600}}>$42,500</td><td>RBC</td><td><span className="bg active">Approved 4.99%</span></td><td>Apr 18</td></tr>
+    </tbody></table></div>
+  </div>
+</div>
+
+<div className={`page ${activePage === 'financing-partners' ? 'active' : ''}`} id="page-financing-partners">
+  <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:16,marginBottom:20}}>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Active Lenders</div><div className="sc-v" style={{color:'#22c55e'}}>6</div></div>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Avg. Approval Rate</div><div className="sc-v" style={{color:'#2563eb'}}>84%</div></div>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Total Funded (YTD)</div><div className="sc-v">$4.2M</div></div>
+  </div>
+  <div className="pn">
+    <div className="pn-h"><span className="pn-t">Financing Lenders</span><button className="btn btn-p" style={{fontSize:12,padding:'6px 14px'}}>+ Add Lender</button></div>
+    <div className="tw"><table><thead><tr><th>Lender</th><th>Type</th><th>Rate Range</th><th>Max Term</th><th>Approval Rate</th><th>Status</th><th></th></tr></thead><tbody>
+      <tr><td><strong>RBC Royal Bank</strong></td><td>Bank</td><td>4.99% – 8.99%</td><td>144 months</td><td>88%</td><td><span className="bg active">Active</span></td><td><span className="cid">Edit</span></td></tr>
+      <tr><td><strong>TD Auto Finance</strong></td><td>Captive</td><td>5.49% – 9.49%</td><td>120 months</td><td>82%</td><td><span className="bg active">Active</span></td><td><span className="cid">Edit</span></td></tr>
+      <tr><td><strong>National Bank</strong></td><td>Bank</td><td>5.99% – 10.99%</td><td>120 months</td><td>79%</td><td><span className="bg active">Active</span></td><td><span className="cid">Edit</span></td></tr>
+      <tr><td><strong>iA Auto Finance</strong></td><td>Specialty</td><td>6.49% – 14.99%</td><td>84 months</td><td>76%</td><td><span className="bg active">Active</span></td><td><span className="cid">Edit</span></td></tr>
+    </tbody></table></div>
+  </div>
+</div>
+
+<div className={`page ${activePage === 'parts-catalog' ? 'active' : ''}`} id="page-parts-catalog">
+  <div style={{marginBottom:16,display:'flex',gap:12,alignItems:'center'}}>
+    <input placeholder="Search parts by name, part number, or manufacturer..." style={{flex:1,padding:'10px 14px',border:'1px solid #e0e0e0',borderRadius:8,fontSize:13,fontFamily:'inherit'}} />
+    <select style={{padding:'10px 12px',border:'1px solid #e0e0e0',borderRadius:8,fontSize:13,fontFamily:'inherit'}}><option>All Manufacturers</option><option>Jayco</option><option>Forest River</option><option>Heartland</option><option>Keystone</option></select>
+    <select style={{padding:'10px 12px',border:'1px solid #e0e0e0',borderRadius:8,fontSize:13,fontFamily:'inherit'}}><option>All Categories</option><option>Structural</option><option>Electrical</option><option>Plumbing</option><option>Appliances</option><option>Slides</option></select>
+    <button className="btn btn-p" style={{whiteSpace:'nowrap'}}>+ Add Part</button>
+  </div>
+  <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:16,marginBottom:20}}>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Total SKUs</div><div className="sc-v">2,847</div></div>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Active Orders</div><div className="sc-v" style={{color:'#2563eb'}}>8</div></div>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Avg. Fulfillment</div><div className="sc-v">6.2d</div></div>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Parts Revenue (MTD)</div><div className="sc-v" style={{color:'#22c55e'}}>$18,400</div></div>
+  </div>
+  <div className="pn">
+    <div className="tw"><table><thead><tr><th>Part #</th><th>Name</th><th>Manufacturer</th><th>Category</th><th>Cost</th><th>Avg Delivery</th><th>Orders YTD</th></tr></thead><tbody>
+      <tr><td>JAY-12844-A</td><td>Slide-out Seal Kit (Main)</td><td>Jayco</td><td>Structural</td><td>$124.00</td><td>5d</td><td>28</td></tr>
+      <tr><td>FR-ROOF-7711</td><td>TPO Roof Patch Kit</td><td>Forest River</td><td>Structural</td><td>$89.00</td><td>7d</td><td>14</td></tr>
+      <tr><td>KST-WATER-224</td><td>Fresh Water Pump 12V 3.0GPM</td><td>Keystone</td><td>Plumbing</td><td>$188.00</td><td>4d</td><td>19</td></tr>
+      <tr><td>HTL-ELEC-503</td><td>30A Shore Power Converter</td><td>Heartland</td><td>Electrical</td><td>$245.00</td><td>6d</td><td>11</td></tr>
+    </tbody></table></div>
+  </div>
+</div>
+
+<div className={`page ${activePage === 'communications' ? 'active' : ''}`} id="page-communications">
+  <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:20,marginBottom:20}}>
+    <div className="pn" style={{padding:24}}>
+      <div style={{fontWeight:600,fontSize:14,marginBottom:16}}>Broadcast Message</div>
+      <div className="form-grid" style={{padding:0}}>
+        <div className="form-group"><label>Recipients</label><select><option>All Dealers</option><option>Plan A Dealers</option><option>Plan B Dealers</option><option>Specific Dealer</option></select></div>
+        <div className="form-group"><label>Channel</label><select><option>In-App + Email</option><option>In-App Only</option><option>Email Only</option><option>SMS (coming soon)</option></select></div>
+        <div className="form-group"><label>Type</label><select><option>General Announcement</option><option>Maintenance Alert</option><option>Feature Release</option><option>Billing Notice</option><option>Urgent</option></select></div>
+        <div className="form-group"><label>Priority</label><select><option>Normal</option><option>High</option><option>Critical</option></select></div>
+        <div className="form-group full"><label>Subject</label><input placeholder="Message subject..." /></div>
+        <div className="form-group full"><label>Message</label><textarea placeholder="Write your broadcast message..." style={{minHeight:100}}></textarea></div>
+      </div>
+      <div className="btn-bar" style={{padding:'16px 0 0'}}><button className="btn btn-p">Send Broadcast</button><button className="btn" style={{marginLeft:8}}>Schedule</button></div>
+    </div>
+    <div className="pn" style={{padding:24}}>
+      <div style={{fontWeight:600,fontSize:14,marginBottom:16}}>Recent Broadcasts</div>
+      <div style={{display:'flex',flexDirection:'column',gap:10}}>
+        {[{title:'TechFlow Work Orders Now Available',sent:'Apr 24, 2026',recipients:'All Dealers',type:'Feature Release'},{title:'Scheduled Maintenance — May 1, 2AM–4AM EST',sent:'Apr 20, 2026',recipients:'All Dealers',type:'Maintenance Alert'},{title:'Q1 Claims Report Ready for Download',sent:'Apr 1, 2026',recipients:'All Dealers',type:'General'},{title:'New Manufacturer: Columbia NW Added',sent:'Mar 15, 2026',recipients:'All Dealers',type:'Feature Release'}].map((b,i)=>(
+          <div key={i} style={{padding:'10px 14px',border:'1px solid #f0f0f0',borderRadius:8}}>
+            <div style={{fontWeight:600,fontSize:13,marginBottom:4}}>{b.title}</div>
+            <div style={{fontSize:12,color:'#888'}}>{b.sent} &middot; {b.recipients} &middot; <span style={{color:'#2563eb'}}>{b.type}</span></div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</div>
 <OperatorMarketplacePages activePage={activePage} showPage={showPage} />
 <OperatorPublicAuctionPages activePage={activePage} showPage={showPage} />
 

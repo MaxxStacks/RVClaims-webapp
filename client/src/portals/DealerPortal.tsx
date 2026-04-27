@@ -28,6 +28,33 @@ export default function DealerPortal() {
   const { user, logout } = useAuth();
   // Show owner-only items to everyone when not yet authenticated (prototype mode)
   const isDealerOwner = !user || user.role === 'dealer_owner';
+  const isDealerStaff = user?.role === 'dealer_staff';
+  const isTechnician = user?.role === 'technician';
+  const isPublicBidder = user?.role === 'public_bidder';
+  const isConsignor = user?.role === 'consignor';
+
+  // Nav/page visibility per role
+  const showClaims = !isTechnician && !isPublicBidder && !isConsignor;
+  const showUnits = !isPublicBidder && !isConsignor;
+  const showFinancing = !isTechnician && !isPublicBidder && !isConsignor;
+  const showFI = !isTechnician && !isPublicBidder && !isConsignor;
+  const showWarranty = !isTechnician && !isPublicBidder && !isConsignor;
+  const showParts = !isPublicBidder && !isConsignor;
+  const showBrowse = !isTechnician && !isConsignor;
+  const showListings = !isTechnician && !isPublicBidder;
+  const showTransactions = !isTechnician && !isPublicBidder && !isConsignor;
+  const showAuctions = !isTechnician && !isConsignor;
+  const showShowcase = !isTechnician && !isPublicBidder;
+  const showCustomers = !isTechnician && !isPublicBidder && !isConsignor;
+  const showClients = !isTechnician && !isPublicBidder && !isConsignor;
+  const showMessages = !isPublicBidder && !isConsignor;
+  const showDocuments = !isTechnician && !isPublicBidder && !isConsignor;
+  const showTechflow = !isPublicBidder && !isConsignor;
+  const showConsignment = !isTechnician && !isPublicBidder && !isConsignor;
+  const showMarketing = !isTechnician && !isPublicBidder && !isConsignor;
+  const showSalesServices = !isTechnician && !isPublicBidder && !isConsignor;
+  const showMyBids = !isTechnician && !isConsignor;
+  const showEscrow = isDealerOwner || isPublicBidder || isConsignor;
 
   // ─── API data state ────────────────────────────────────────────────────────
   const [dlrClaims, setDlrClaims] = useState<any[]>([]);
@@ -63,7 +90,12 @@ export default function DealerPortal() {
 'svc-warranty':['Warranty Plans','4 active plans'],'svc-parts':['Parts Orders','My parts orders'],'svc-parts-new':['Order Parts','Request parts'],
 'mkt-gate':['Dealer Marketplace','Membership required'],'mkt-browse':['Browse Marketplace','142 units available'],'mkt-listing-view':['Unit Details','Marketplace listing'],'mkt-post-unit':['Post a Unit','List on marketplace'],'mkt-my-listings':['My Listings','Units you have listed'],'mkt-my-transactions':['My Transactions','Purchases & sales'],'mkt-live-auctions':['Live Auctions','Bid on units'],'mkt-auction-room':['Auction Room','Live bidding'],'mkt-showcase':['Public Showcase','$299/year add-on'],'mkt-showcase-submit':['Submit Unit','Public auction showcase'],
 invoices:['Invoices \u0026 Billing','Payment history'],customers:['Customer Portal','Manage customer access'],'invite-customer':['Invite Customer','Send portal invitation'],'cust-tickets':['Customer Tickets','Support tickets from customers'],'cust-ticket-detail':['TKT-0042','Robert Martin \u00b7 Warranty claim'],
-staff:['Staff Management','Manage team access'],'add-staff':['Add Staff','Invite team member'],branding:['Branding \u0026 Domain','Customer portal appearance'],notifications:['Notifications','Updates from operator'],'dealer-settings':['Settings','Account and profile settings'],'dealer-changelog':['What\u0027s New','Platform updates \u0026 roadmap']};
+staff:['Staff Management','Manage team access'],'add-staff':['Add Staff','Invite team member'],branding:['Branding \u0026 Domain','Customer portal appearance'],notifications:['Notifications','Updates from operator'],'dealer-settings':['Settings','Account and profile settings'],'dealer-changelog':['What\u0027s New','Platform updates \u0026 roadmap'],
+clients:['Client Files','Your customer accounts'],messages:['Messages','Inbox from DS360 \u0026 claim threads'],documents:['Documents','Invoices, contracts \u0026 reports'],techflow:['TechFlow','Work orders \u0026 dispatch'],consignment:['Consignment','Manage consigned units'],marketing:['Marketing','Campaigns \u0026 lead capture'],'sales-services':['Sales \u0026 Services','Sell products, warranty plans \u0026 F\u0026I'],
+'my-subscription':['My Subscription','Plan details \u0026 billing'],'portal-settings':['Portal Settings','Staff, branding, domain \u0026 notifications'],
+'consignor-units':['My Consigned Units','Units listed on your behalf'],'consignor-offers':['Offers Received','Buyer offers on your units'],'consignor-payouts':['Payouts','Earnings \u0026 payment history'],
+'bidder-my-bids':['My Bids','Active \u0026 past bids'],'bidder-verification':['Verification','Buyer identity \u0026 deposit'],
+'mkt-my-bids':['My Bids','Marketplace bid history'],'mkt-escrow-payments':['Escrow \u0026 Payments','Transaction escrow \u0026 release']};
 
   const parents: Record<string, string> = {'claim-detail':'claims','unit-detail':'units','add-unit':'units','invite-customer':'customers','add-staff':'staff','svc-financing-det':'svc-financing','svc-financing-new':'svc-financing','svc-fi-new':'svc-fi','svc-parts-new':'svc-parts','cust-ticket-detail':'cust-tickets','mkt-listing-view':'mkt-browse','mkt-post-unit':'mkt-my-listings','mkt-auction-room':'mkt-live-auctions','mkt-showcase-submit':'mkt-showcase'};
 
@@ -75,32 +107,32 @@ staff:['Staff Management','Manage team access'],'add-staff':['Add Staff','Invite
     const fetch = async () => {
       try {
         if (activePage === 'dashboard' || activePage === 'claims') {
-          const d = await apiFetch<any>('/api/claims');
-          setDlrClaims(d.claims || []);
+          const d = await apiFetch<any>('/api/v6/claims');
+          setDlrClaims(Array.isArray(d) ? d : []);
         }
         if (activePage === 'dashboard' || activePage === 'units' || activePage === 'upload') {
-          const d = await apiFetch<any>('/api/units');
-          setDlrUnits(d.units || []);
+          const d = await apiFetch<any>('/api/v6/units');
+          setDlrUnits(Array.isArray(d) ? d : []);
         }
         if (activePage === 'invoices') {
           const d = await apiFetch<any>('/api/invoices');
           setDlrInvoices(d.invoices || []);
         }
         if (activePage === 'staff') {
-          const d = await apiFetch<any>('/api/users');
-          setDlrStaff(d.users || []);
+          const d = await apiFetch<any>('/api/v6/users');
+          setDlrStaff(Array.isArray(d) ? d : []);
         }
         if (activePage === 'cust-tickets') {
           const d = await apiFetch<any>('/api/tickets');
           setDlrTickets(d.tickets || []);
         }
         if (activePage === 'notifications') {
-          const d = await apiFetch<any>('/api/notifications');
-          setDlrNotifications(d.notifications || []);
+          const d = await apiFetch<any>('/api/v6/notifications');
+          setDlrNotifications(Array.isArray(d) ? d : []);
         }
         if (activePage === 'svc-parts') {
-          const d = await apiFetch<any>('/api/parts-orders');
-          setDlrPartsOrders(d.partsOrders || []);
+          const d = await apiFetch<any>('/api/v6/parts-orders');
+          setDlrPartsOrders(Array.isArray(d) ? d : []);
         }
       } catch (err: any) {
         setDataError(err?.message || 'Failed to load data');
@@ -114,7 +146,7 @@ staff:['Staff Management','Manage team access'],'add-staff':['Add Staff','Invite
     wsClient.connect();
     const unsubClaim = wsClient.on('claim:updated', () => {
       if (activePage === 'claims' || activePage === 'dashboard') {
-        apiFetch<any>('/api/claims').then(d => setDlrClaims(d.claims || [])).catch(() => {});
+        apiFetch<any>('/api/v6/claims').then(d => setDlrClaims(Array.isArray(d) ? d : [])).catch(() => {});
       }
     });
     const unsubTicket = wsClient.on('ticket:message', () => {
@@ -130,7 +162,7 @@ staff:['Staff Management','Manage team access'],'add-staff':['Add Staff','Invite
     if (!addUnitForm.vin) return;
     setAddUnitSaving(true);
     try {
-      await apiFetch('/api/units', {
+      await apiFetch('/api/v6/units', {
         method: 'POST',
         body: JSON.stringify({
           vin: addUnitForm.vin,
@@ -141,8 +173,8 @@ staff:['Staff Management','Manage team access'],'add-staff':['Add Staff','Invite
         }),
       });
       setAddUnitForm({ vin: '', year: '', manufacturer: '', model: '', stockNumber: '' });
-      const d = await apiFetch<any>('/api/units');
-      setDlrUnits(d.units || []);
+      const d = await apiFetch<any>('/api/v6/units');
+      setDlrUnits(Array.isArray(d) ? d : []);
       showPage('units');
     } catch { /* ignore */ } finally { setAddUnitSaving(false); }
   };
@@ -159,14 +191,20 @@ staff:['Staff Management','Manage team access'],'add-staff':['Add Staff','Invite
 
   const handleMarkNotificationRead = async (id: string) => {
     try {
-      await apiFetch(`/api/notifications/${id}/read`, { method: 'PUT' });
+      await apiFetch(`/api/v6/notifications/${id}/read`, { method: 'POST' });
       setDlrNotifications(prev => prev.map(n => n.id === id ? { ...n, isRead: true } : n));
     } catch { /* ignore */ }
   };
 
   const showPage = (id: string) => {
-    const ownerOnlyPages = ['invoices', 'staff', 'add-staff', 'branding'];
+    const ownerOnlyPages = ['invoices', 'staff', 'add-staff', 'branding', 'my-subscription', 'portal-settings'];
     if (ownerOnlyPages.includes(id) && !isDealerOwner) id = 'dashboard';
+    const technicianPages = ['dashboard', 'units', 'add-unit', 'unit-detail', 'svc-parts', 'svc-parts-new', 'techflow', 'messages', 'notifications', 'dealer-settings', 'dealer-changelog'];
+    if (isTechnician && !technicianPages.includes(id)) id = 'units';
+    const bidderPages = ['dashboard', 'mkt-browse', 'mkt-listing-view', 'mkt-live-auctions', 'mkt-auction-room', 'mkt-my-bids', 'bidder-my-bids', 'bidder-verification', 'mkt-escrow-payments', 'notifications', 'dealer-settings', 'dealer-changelog'];
+    if (isPublicBidder && !bidderPages.includes(id)) id = 'mkt-browse';
+    const consignorPages = ['dashboard', 'mkt-my-listings', 'mkt-post-unit', 'mkt-showcase', 'mkt-showcase-submit', 'consignor-units', 'consignor-offers', 'consignor-payouts', 'mkt-escrow-payments', 'notifications', 'dealer-settings', 'dealer-changelog'];
+    if (isConsignor && !consignorPages.includes(id)) id = 'mkt-my-listings';
     setActivePage(id);
     if (titles[id]) { setPageTitle(titles[id][0]); setPageSub(titles[id][1]); }
     window.scrollTo(0, 0);
@@ -287,28 +325,52 @@ staff:['Staff Management','Manage team access'],'add-staff':['Add Staff','Invite
   <div className="sidebar-nav">
     <div className="nav-section"><div className="nav-label">Overview</div>
       <div className={`nav-item ${isNavActive('dashboard') ? 'active' : ''}`} onClick={() => showPage('dashboard')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</div></div>
-    <div className="nav-section"><div className="nav-label">Claims</div>
+    {showClaims && <div className="nav-section"><div className="nav-label">Claims</div>
       <div className={`nav-item ${isNavActive('upload') ? 'active' : ''}`} onClick={() => showPage('upload')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Upload Photos<span className="nb green">New</span></div>
-      <div className={`nav-item ${isNavActive('claims') ? 'active' : ''}`} onClick={() => showPage('claims')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>My Claims<span className="nb blue">14</span></div></div>
-    <div className="nav-section"><div className="nav-label">Units</div>
-      <div className={`nav-item ${isNavActive('units') ? 'active' : ''}`} onClick={() => showPage('units')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4a2 2 0 012 2v6a2 2 0 01-2 2h-4"/><circle cx="5.5" cy="18" r="2.5"/><circle cx="18.5" cy="18" r="2.5"/></svg>My Units<span className="nb blue">12</span></div></div>
-    <div className="nav-section"><div className="nav-label">Services</div>
-      <div className={`nav-item ${isNavActive('svc-financing') ? 'active' : ''}`} onClick={() => showPage('svc-financing')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>Financing<span className="nb blue">1</span></div>
-      <div className={`nav-item ${isNavActive('svc-fi') ? 'active' : ''}`} onClick={() => showPage('svc-fi')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>F&I Products</div>
-      <div className={`nav-item ${isNavActive('svc-warranty') ? 'active' : ''}`} onClick={() => showPage('svc-warranty')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 12l2 2 4-4"/></svg>Warranty Plans<span className="nb blue">4</span></div>
-      <div className={`nav-item ${isNavActive('svc-parts') ? 'active' : ''}`} onClick={() => showPage('svc-parts')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>Parts Orders<span className="nb amber">2</span></div></div>
-    <div className="nav-section"><div className="nav-label">Marketplace</div>
-      <div className={`nav-item ${isNavActive('mkt-browse') ? 'active' : ''}`} onClick={() => showPage('mkt-browse')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Browse Units<span className="nb green">142</span></div>
-      <div className={`nav-item ${isNavActive('mkt-my-listings') ? 'active' : ''}`} onClick={() => showPage('mkt-my-listings')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>My Listings</div>
-      <div className={`nav-item ${isNavActive('mkt-my-transactions') ? 'active' : ''}`} onClick={() => showPage('mkt-my-transactions')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>My Transactions</div>
-      <div className={`nav-item ${isNavActive('mkt-live-auctions') ? 'active' : ''}`} onClick={() => showPage('mkt-live-auctions')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>Live Auctions<span className="nb red">1</span></div>
-      <div className={`nav-item ${isNavActive('mkt-showcase') ? 'active' : ''}`} onClick={() => showPage('mkt-showcase')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Public Showcase</div>
-    </div>
+      <div className={`nav-item ${isNavActive('claims') ? 'active' : ''}`} onClick={() => showPage('claims')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>My Claims<span className="nb blue">14</span></div></div>}
+    {showUnits && <div className="nav-section"><div className="nav-label">Units</div>
+      <div className={`nav-item ${isNavActive('units') ? 'active' : ''}`} onClick={() => showPage('units')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4a2 2 0 012 2v6a2 2 0 01-2 2h-4"/><circle cx="5.5" cy="18" r="2.5"/><circle cx="18.5" cy="18" r="2.5"/></svg>My Units<span className="nb blue">12</span></div></div>}
+    {(showFinancing || showFI || showWarranty || showParts) && <div className="nav-section"><div className="nav-label">Services</div>
+      {showFinancing && <div className={`nav-item ${isNavActive('svc-financing') ? 'active' : ''}`} onClick={() => showPage('svc-financing')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>Financing<span className="nb blue">1</span></div>}
+      {showFI && <div className={`nav-item ${isNavActive('svc-fi') ? 'active' : ''}`} onClick={() => showPage('svc-fi')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>F&I Products</div>}
+      {showWarranty && <div className={`nav-item ${isNavActive('svc-warranty') ? 'active' : ''}`} onClick={() => showPage('svc-warranty')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 12l2 2 4-4"/></svg>Warranty Plans<span className="nb blue">4</span></div>}
+      {showParts && <div className={`nav-item ${isNavActive('svc-parts') ? 'active' : ''}`} onClick={() => showPage('svc-parts')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>Parts Orders<span className="nb amber">2</span></div>}
+    </div>}
+    {!isTechnician && <div className="nav-section"><div className="nav-label">Marketplace</div>
+      {showBrowse && <div className={`nav-item ${isNavActive('mkt-browse') ? 'active' : ''}`} onClick={() => showPage('mkt-browse')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Browse Units<span className="nb green">142</span></div>}
+      {showListings && <div className={`nav-item ${isNavActive('mkt-my-listings') ? 'active' : ''}`} onClick={() => showPage('mkt-my-listings')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>My Listings</div>}
+      {showTransactions && <div className={`nav-item ${isNavActive('mkt-my-transactions') ? 'active' : ''}`} onClick={() => showPage('mkt-my-transactions')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>My Transactions</div>}
+      {showAuctions && <div className={`nav-item ${isNavActive('mkt-live-auctions') ? 'active' : ''}`} onClick={() => showPage('mkt-live-auctions')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>Live Auctions<span className="nb red">1</span></div>}
+      {showShowcase && <div className={`nav-item ${isNavActive('mkt-showcase') ? 'active' : ''}`} onClick={() => showPage('mkt-showcase')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Public Showcase</div>}
+      {showMyBids && <div className={`nav-item ${isNavActive('mkt-my-bids') ? 'active' : ''}`} onClick={() => showPage('mkt-my-bids')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>My Bids</div>}
+      {showEscrow && <div className={`nav-item ${isNavActive('mkt-escrow-payments') ? 'active' : ''}`} onClick={() => showPage('mkt-escrow-payments')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>Escrow &amp; Payments</div>}
+    </div>}
+    {(showClients || showMessages || showDocuments || showTechflow || showConsignment || showMarketing || showSalesServices) && <div className="nav-section"><div className="nav-label">Operations</div>
+      {showClients && <div className={`nav-item ${isNavActive('clients') ? 'active' : ''}`} onClick={() => showPage('clients')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>Client Files</div>}
+      {showMessages && <div className={`nav-item ${isNavActive('messages') ? 'active' : ''}`} onClick={() => showPage('messages')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Messages<span className="nb blue">2</span></div>}
+      {showDocuments && <div className={`nav-item ${isNavActive('documents') ? 'active' : ''}`} onClick={() => showPage('documents')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Documents</div>}
+      {showTechflow && <div className={`nav-item ${isNavActive('techflow') ? 'active' : ''}`} onClick={() => showPage('techflow')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>TechFlow<span className="nb green">New</span></div>}
+      {showConsignment && <div className={`nav-item ${isNavActive('consignment') ? 'active' : ''}`} onClick={() => showPage('consignment')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4a2 2 0 012 2v6a2 2 0 01-2 2h-4"/><circle cx="5.5" cy="18" r="2.5"/><circle cx="18.5" cy="18" r="2.5"/></svg>Consignment</div>}
+      {showMarketing && <div className={`nav-item ${isNavActive('marketing') ? 'active' : ''}`} onClick={() => showPage('marketing')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Marketing</div>}
+      {showSalesServices && <div className={`nav-item ${isNavActive('sales-services') ? 'active' : ''}`} onClick={() => showPage('sales-services')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 001.95-1.57l1.65-7.43H6"/></svg>Sales &amp; Services</div>}
+    </div>}
+    {isConsignor && <div className="nav-section"><div className="nav-label">My Consignment</div>
+      <div className={`nav-item ${isNavActive('consignor-units') ? 'active' : ''}`} onClick={() => showPage('consignor-units')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4a2 2 0 012 2v6a2 2 0 01-2 2h-4"/><circle cx="5.5" cy="18" r="2.5"/><circle cx="18.5" cy="18" r="2.5"/></svg>My Consigned Units</div>
+      <div className={`nav-item ${isNavActive('consignor-offers') ? 'active' : ''}`} onClick={() => showPage('consignor-offers')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Offers Received<span className="nb amber">1</span></div>
+      <div className={`nav-item ${isNavActive('consignor-payouts') ? 'active' : ''}`} onClick={() => showPage('consignor-payouts')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>Payouts</div>
+    </div>}
+    {isPublicBidder && <div className="nav-section"><div className="nav-label">My Account</div>
+      <div className={`nav-item ${isNavActive('bidder-my-bids') ? 'active' : ''}`} onClick={() => showPage('bidder-my-bids')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>My Bids</div>
+      <div className={`nav-item ${isNavActive('bidder-verification') ? 'active' : ''}`} onClick={() => showPage('bidder-verification')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Verification</div>
+    </div>}
     {isDealerOwner && <div className="nav-section"><div className="nav-label">Billing</div>
-      <div className={`nav-item ${isNavActive('invoices') ? 'active' : ''}`} onClick={() => showPage('invoices')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>Invoices & Billing</div></div>}
-    <div className="nav-section"><div className="nav-label">Customers</div>
+      <div className={`nav-item ${isNavActive('invoices') ? 'active' : ''}`} onClick={() => showPage('invoices')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>Invoices &amp; Billing</div>
+      <div className={`nav-item ${isNavActive('my-subscription') ? 'active' : ''}`} onClick={() => showPage('my-subscription')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 002 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>My Subscription</div>
+      <div className={`nav-item ${isNavActive('portal-settings') ? 'active' : ''}`} onClick={() => showPage('portal-settings')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>Portal Settings</div>
+    </div>}
+    {showCustomers && <div className="nav-section"><div className="nav-label">Customers</div>
       <div className={`nav-item ${isNavActive('customers') ? 'active' : ''}`} onClick={() => showPage('customers')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Customer Portal<span className="nb blue">8</span></div>
-      <div className={`nav-item ${isNavActive('cust-tickets') ? 'active' : ''}`} onClick={() => showPage('cust-tickets')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Customer Tickets<span className="nb amber">3</span></div></div>
+      <div className={`nav-item ${isNavActive('cust-tickets') ? 'active' : ''}`} onClick={() => showPage('cust-tickets')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Customer Tickets<span className="nb amber">3</span></div></div>}
     <div className="nav-section"><div className="nav-label">Settings</div>
       {isDealerOwner && <div className={`nav-item ${isNavActive('staff') ? 'active' : ''}`} onClick={() => showPage('staff')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>Staff</div>}
       {isDealerOwner && <div className={`nav-item ${isNavActive('branding') ? 'active' : ''}`} onClick={() => showPage('branding')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>Branding & Domain</div>}
@@ -1016,6 +1078,305 @@ staff:['Staff Management','Manage team access'],'add-staff':['Add Staff','Invite
   </div>
 </div>
 
+<div className={`page ${activePage === 'clients' ? 'active' : ''}`} id="page-clients">
+  <div style={{marginBottom:20,display:'flex',gap:12,alignItems:'center'}}>
+    <input placeholder="Search clients by name, email or unit..." style={{flex:1,padding:'10px 14px',border:'1px solid #e0e0e0',borderRadius:8,fontSize:13,fontFamily:'inherit'}} />
+    <button className="btn btn-p" style={{whiteSpace:'nowrap'}}>+ Invite Client</button>
+  </div>
+  <div className="pn">
+    <div className="pn-h"><span className="pn-t">Client Accounts</span><span style={{fontSize:12,color:'#888'}}>8 total</span></div>
+    <div className="tw"><table><thead><tr><th>Name</th><th>Email</th><th>Unit</th><th>Portal Status</th><th>Joined</th><th></th></tr></thead><tbody>
+      <tr><td><strong>Robert Martin</strong></td><td>robert.martin@email.com</td><td>2024 Jayco Jay Flight</td><td><span className="bg active">Active</span></td><td>Mar 2, 2026</td><td><span className="cid" onClick={() => showPage('customers')}>View Portal</span></td></tr>
+      <tr><td><strong>Sarah Johnson</strong></td><td>sarah.j@email.com</td><td>2023 Forest River Rockwood</td><td><span className="bg active">Active</span></td><td>Feb 14, 2026</td><td><span className="cid" onClick={() => showPage('customers')}>View Portal</span></td></tr>
+      <tr><td><strong>Daniel Tremblay</strong></td><td>d.tremblay@gmail.com</td><td>2024 Keystone Montana</td><td><span className="bg pending">Pending</span></td><td>Mar 10, 2026</td><td><span className="cid">Resend Invite</span></td></tr>
+    </tbody></table></div>
+  </div>
+</div>
+
+<div className={`page ${activePage === 'messages' ? 'active' : ''}`} id="page-messages">
+  <div style={{display:'grid',gridTemplateColumns:'280px 1fr',gap:16,height:560}}>
+    <div className="pn" style={{padding:0,overflow:'hidden'}}>
+      <div style={{padding:'12px 16px',borderBottom:'1px solid #f0f0f0',fontWeight:600,fontSize:13}}>Inbox</div>
+      {[{name:'DS360 Team',msg:'Your claim CLM-0248 has been submitted to Jayco.',time:'2h ago',unread:true},{name:'CLM-0243 Thread',msg:'Payment of $3,920 has been processed.',time:'1d ago',unread:false},{name:'DS360 Team',msg:'New feature: TechFlow work orders.',time:'3d ago',unread:false}].map((m,i)=>(
+        <div key={i} style={{padding:'12px 16px',borderBottom:'1px solid #f8f8f8',cursor:'pointer',background:m.unread?'#f0f4ff':'white',display:'flex',gap:10}}>
+          <div style={{width:36,height:36,borderRadius:'50%',background:'#08235d',color:'white',display:'flex',alignItems:'center',justifyContent:'center',fontSize:12,flexShrink:0}}>{m.name[0]}</div>
+          <div style={{flex:1,minWidth:0}}><div style={{fontWeight:m.unread?600:400,fontSize:13,marginBottom:2}}>{m.name}</div><div style={{fontSize:12,color:'#888',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{m.msg}</div><div style={{fontSize:11,color:'#aaa',marginTop:2}}>{m.time}</div></div>
+          {m.unread && <div style={{width:8,height:8,borderRadius:'50%',background:'#2563eb',flexShrink:0,marginTop:4}}></div>}
+        </div>
+      ))}
+    </div>
+    <div className="pn" style={{display:'flex',flexDirection:'column'}}>
+      <div style={{padding:'12px 20px',borderBottom:'1px solid #f0f0f0',fontWeight:600,fontSize:14}}>DS360 Team</div>
+      <div style={{flex:1,padding:20,overflowY:'auto'}}>
+        <div style={{background:'#f0f4ff',borderRadius:12,padding:'12px 16px',maxWidth:'80%',marginBottom:12,fontSize:13}}>Your claim CLM-0248 has been submitted to Jayco for review. Expected turnaround: 5-7 business days.</div>
+      </div>
+      <div style={{padding:'12px 16px',borderTop:'1px solid #f0f0f0',display:'flex',gap:8}}>
+        <input placeholder="Reply..." style={{flex:1,padding:'8px 14px',border:'1px solid #e0e0e0',borderRadius:20,fontSize:13,fontFamily:'inherit'}} />
+        <button className="btn btn-p" style={{borderRadius:20}}>Send</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div className={`page ${activePage === 'documents' ? 'active' : ''}`} id="page-documents">
+  <div style={{marginBottom:16,display:'flex',gap:8}}>
+    {['All','Invoices','Contracts','Reports','Correspondence'].map((t,i)=>(
+      <button key={t} onClick={(e)=>switchTab(e)} className={`tab${i===0?' active':''}`}>{t}</button>
+    ))}
+  </div>
+  <div className="pn">
+    <div className="tw"><table><thead><tr><th>Document</th><th>Type</th><th>Date</th><th>Size</th><th></th></tr></thead><tbody>
+      <tr><td><div style={{display:'flex',alignItems:'center',gap:8}}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><strong>INV-2026-0042.pdf</strong></div></td><td>Invoice</td><td>Mar 15, 2026</td><td>124 KB</td><td><span className="cid">Download</span></td></tr>
+      <tr><td><div style={{display:'flex',alignItems:'center',gap:8}}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><strong>Service-Agreement-2026.pdf</strong></div></td><td>Contract</td><td>Jan 1, 2026</td><td>890 KB</td><td><span className="cid">Download</span></td></tr>
+      <tr><td><div style={{display:'flex',alignItems:'center',gap:8}}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><strong>Q1-2026-Claims-Report.xlsx</strong></div></td><td>Report</td><td>Apr 1, 2026</td><td>256 KB</td><td><span className="cid">Download</span></td></tr>
+    </tbody></table></div>
+  </div>
+</div>
+
+<div className={`page ${activePage === 'techflow' ? 'active' : ''}`} id="page-techflow">
+  <div className="al-g" style={{marginBottom:20}}>
+    <div className="al"><div className="al-i in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg></div><div className="al-c"><div className="al-t">4 open work orders</div><div className="al-d">2 awaiting technician assignment</div></div></div>
+  </div>
+  <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:16,marginBottom:20}}>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Open Orders</div><div className="sc-v" style={{color:'#2563eb'}}>4</div></div>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>In Progress</div><div className="sc-v" style={{color:'#f59e0b'}}>2</div></div>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Completed This Week</div><div className="sc-v" style={{color:'#22c55e'}}>7</div></div>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Avg. Completion</div><div className="sc-v">2.4d</div></div>
+  </div>
+  <div className="pn">
+    <div className="pn-h"><span className="pn-t">Work Orders</span><button className="btn btn-p" style={{fontSize:12,padding:'6px 14px'}}>+ New Work Order</button></div>
+    <div className="tw"><table><thead><tr><th>WO #</th><th>Unit</th><th>Description</th><th>Assigned To</th><th>Status</th><th>Due</th></tr></thead><tbody>
+      <tr><td><span className="cid">WO-0041</span></td><td>2024 Jayco Jay Flight</td><td>Slide-out seal replacement</td><td>Mike T.</td><td><span className="bg in-progress">In Progress</span></td><td>Apr 28</td></tr>
+      <tr><td><span className="cid">WO-0040</span></td><td>2024 Forest River Rockwood</td><td>AC unit not cooling — warranty</td><td>Unassigned</td><td><span className="bg pending">Open</span></td><td>Apr 29</td></tr>
+      <tr><td><span className="cid">WO-0039</span></td><td>2023 Keystone Montana</td><td>PDI inspection — pre-delivery</td><td>Jason R.</td><td><span className="bg active">Complete</span></td><td>Apr 25</td></tr>
+      <tr><td><span className="cid">WO-0038</span></td><td>2022 Heartland Bighorn</td><td>Awning motor replacement</td><td>Carlos P.</td><td><span className="bg in-progress">In Progress</span></td><td>Apr 30</td></tr>
+    </tbody></table></div>
+  </div>
+</div>
+
+<div className={`page ${activePage === 'consignment' ? 'active' : ''}`} id="page-consignment">
+  <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:16,marginBottom:20}}>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Active Consignments</div><div className="sc-v" style={{color:'#2563eb'}}>3</div></div>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Pending Photos</div><div className="sc-v" style={{color:'#f59e0b'}}>1</div></div>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Units Sold (YTD)</div><div className="sc-v" style={{color:'#22c55e'}}>8</div></div>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Pending Payouts</div><div className="sc-v">$12,400</div></div>
+  </div>
+  <div className="pn">
+    <div className="pn-h"><span className="pn-t">Consigned Units</span><button className="btn btn-p" style={{fontSize:12,padding:'6px 14px'}}>+ Add Consignment</button></div>
+    <div className="tw"><table><thead><tr><th>Unit</th><th>Consignor</th><th>List Price</th><th>Days Listed</th><th>Offers</th><th>Status</th><th></th></tr></thead><tbody>
+      <tr><td>2022 Jayco Eagle HT 284BHOK</td><td>Paul Gagnon</td><td>$68,500</td><td>14</td><td>2</td><td><span className="bg active">Listed</span></td><td><span className="cid">Manage</span></td></tr>
+      <tr><td>2021 Forest River Salem 27DBK</td><td>Marie-Claude B.</td><td>$34,900</td><td>32</td><td>0</td><td><span className="bg active">Listed</span></td><td><span className="cid">Manage</span></td></tr>
+      <tr><td>2023 Heartland Bighorn 3995FL</td><td>Tom Wilson</td><td>$89,000</td><td>5</td><td>1</td><td><span className="bg pending">Pending Photos</span></td><td><span className="cid">Manage</span></td></tr>
+    </tbody></table></div>
+  </div>
+</div>
+
+<div className={`page ${activePage === 'marketing' ? 'active' : ''}`} id="page-marketing">
+  <div className="al-g" style={{marginBottom:20}}>
+    <div className="al"><div className="al-i gr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div className="al-c"><div className="al-t">Marketing Services — Launching Q2 2026</div><div className="al-d">Campaigns, lead capture, SEO & PPC managed by DS360</div></div></div>
+  </div>
+  <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:16,marginBottom:20}}>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Active Campaigns</div><div className="sc-v">—</div></div>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Leads This Month</div><div className="sc-v">—</div></div>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Avg. Cost per Lead</div><div className="sc-v">—</div></div>
+  </div>
+  <div className="pn" style={{padding:40,textAlign:'center'}}>
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="1.5" style={{margin:'0 auto 16px'}}><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+    <div style={{fontSize:16,fontWeight:600,color:'#1a1a2e',marginBottom:8}}>Digital Marketing Services — Coming Q2 2026</div>
+    <div style={{fontSize:13,color:'#666',maxWidth:500,margin:'0 auto',lineHeight:1.6}}>SEO, PPC, social media management, lead generation, and CRM integration — all managed by the DS360 team on your behalf. More leads. Less work.</div>
+    <button className="btn btn-p" style={{marginTop:20}}>Learn More</button>
+  </div>
+</div>
+
+<div className={`page ${activePage === 'sales-services' ? 'active' : ''}`} id="page-sales-services">
+  <div style={{marginBottom:16,display:'flex',gap:8}}>
+    {['Warranty Plans','F&I Products','Parts & Accessories'].map((t,i)=>(
+      <button key={t} onClick={(e)=>switchTab(e)} className={`tab${i===0?' active':''}`}>{t}</button>
+    ))}
+  </div>
+  <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:16,marginBottom:20}}>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Plans Sold (YTD)</div><div className="sc-v" style={{color:'#22c55e'}}>24</div></div>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>F&I Deals (YTD)</div><div className="sc-v" style={{color:'#2563eb'}}>11</div></div>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Parts Revenue</div><div className="sc-v" style={{color:'#f59e0b'}}>$8,240</div></div>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Total Revenue</div><div className="sc-v">$47,200</div></div>
+  </div>
+  <div className="pn">
+    <div className="pn-h"><span className="pn-t">Sell a Product to a Customer</span></div>
+    <div style={{padding:20,display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:16}}>
+      {[{name:'Extended Warranty',price:'from $1,200',nav:'svc-warranty'},{name:'GAP Insurance',price:'from $395',nav:'svc-fi-new'},{name:'Tire & Wheel Protection',price:'from $295',nav:'svc-fi-new'},{name:'F&I Package',price:'Custom',nav:'svc-fi-new'},{name:'Parts Order',price:'Per quote',nav:'svc-parts-new'},{name:'Roadside Assist',price:'from $149/yr',nav:'svc-warranty'}].map(p=>(
+        <div key={p.name} className="pn" style={{padding:20,textAlign:'center',cursor:'pointer'}} onClick={()=>showPage(p.nav)}>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#08235d" strokeWidth="1.5" style={{margin:'0 auto 12px'}}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <div style={{fontWeight:600,fontSize:14,marginBottom:4}}>{p.name}</div>
+          <div style={{fontSize:12,color:'#888'}}>{p.price}</div>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+<div className={`page ${activePage === 'my-subscription' ? 'active' : ''}`} id="page-my-subscription">
+  <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:20,marginBottom:24}}>
+    <div className="pn" style={{padding:24,border:'2px solid #08235d'}}>
+      <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:16}}>
+        <div><div style={{fontSize:11,color:'#888',marginBottom:4,textTransform:'uppercase',letterSpacing:1}}>Current Plan</div><div style={{fontSize:20,fontWeight:700,color:'#08235d'}}>Plan A — Subscription</div></div>
+        <span className="bg active">Active</span>
+      </div>
+      <div style={{fontSize:13,color:'#555',lineHeight:1.6,marginBottom:20}}>Monthly recurring. Up to 50 claims/month, dedicated operator, priority support.</div>
+      <div style={{display:'flex',gap:24,marginBottom:20}}>
+        <div><div style={{fontSize:11,color:'#888'}}>Monthly Fee</div><div style={{fontSize:22,fontWeight:700,color:'#1a1a2e'}}>$299<span style={{fontSize:13,fontWeight:400,color:'#888'}}>/mo</span></div></div>
+        <div><div style={{fontSize:11,color:'#888'}}>Per-Claim Fee</div><div style={{fontSize:22,fontWeight:700,color:'#1a1a2e'}}>$35</div></div>
+        <div><div style={{fontSize:11,color:'#888'}}>Next Billing</div><div style={{fontSize:15,fontWeight:600,color:'#1a1a2e'}}>May 1, 2026</div></div>
+      </div>
+      <div style={{display:'flex',gap:8}}><button className="btn" style={{fontSize:12}}>Manage Card</button><button className="btn" style={{fontSize:12,color:'#ef4444',borderColor:'#ef4444'}}>Cancel Plan</button></div>
+    </div>
+    <div className="pn" style={{padding:24}}>
+      <div style={{fontSize:11,color:'#888',marginBottom:4,textTransform:'uppercase',letterSpacing:1}}>Alternate Plan</div>
+      <div style={{fontSize:20,fontWeight:700,color:'#333',marginBottom:12}}>Plan B — Pre-Funded Wallet</div>
+      <div style={{fontSize:13,color:'#555',lineHeight:1.6,marginBottom:20}}>No monthly fee. Lower per-claim rates. Load balance and fees auto-deduct per claim processed.</div>
+      <div style={{display:'flex',gap:24,marginBottom:20}}>
+        <div><div style={{fontSize:11,color:'#888'}}>Monthly Fee</div><div style={{fontSize:22,fontWeight:700,color:'#888'}}>$0</div></div>
+        <div><div style={{fontSize:11,color:'#888'}}>Per-Claim Fee</div><div style={{fontSize:22,fontWeight:700,color:'#888'}}>$25</div></div>
+      </div>
+      <button className="btn" style={{fontSize:12}}>Switch to Plan B</button>
+    </div>
+  </div>
+  <div className="pn">
+    <div className="pn-h"><span className="pn-t">Payment Method</span></div>
+    <div style={{padding:20,display:'flex',alignItems:'center',gap:12,flexWrap:'wrap'}}>
+      <div style={{padding:'10px 16px',border:'2px solid #08235d',borderRadius:8,display:'flex',alignItems:'center',gap:8,fontSize:13}}><svg width="20" height="14" viewBox="0 0 32 22" fill="none"><rect width="32" height="22" rx="3" fill="#1a1f71"/><rect y="5" width="32" height="6" fill="#f7a600"/></svg>Visa ending 4242 &nbsp;<span style={{color:'#22c55e',fontSize:11,fontWeight:600}}>Primary</span></div>
+      <button className="btn" style={{fontSize:12}}>Update Card</button>
+      <button className="btn" style={{fontSize:12}}>Add Interac e-Transfer</button>
+    </div>
+  </div>
+</div>
+
+<div className={`page ${activePage === 'portal-settings' ? 'active' : ''}`} id="page-portal-settings">
+  <div style={{marginBottom:16,display:'flex',gap:8,flexWrap:'wrap'}}>
+    {['Staff','Technicians','Partners','Branding','Domain','Notifications'].map((t,i)=>(
+      <button key={t} onClick={(e)=>switchTab(e)} className={`tab${i===0?' active':''}`}>{t}</button>
+    ))}
+  </div>
+  <div className="pn">
+    <div className="pn-h"><span className="pn-t">Staff Members</span><button className="btn btn-p" style={{fontSize:12,padding:'6px 14px'}} onClick={()=>showPage('add-staff')}>+ Invite Staff</button></div>
+    <div className="tw"><table><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Last Active</th><th></th></tr></thead><tbody>
+      <tr><td><strong>Mike Smith</strong></td><td>mike@smithsrv.com</td><td><span className="bg active">Owner</span></td><td><span className="bg active">Active</span></td><td>Today</td><td></td></tr>
+      <tr><td><strong>Janet Lee</strong></td><td>janet@smithsrv.com</td><td><span className="bg pending">Staff</span></td><td><span className="bg active">Active</span></td><td>2h ago</td><td><span className="cid">Edit</span></td></tr>
+      <tr><td><strong>Carlos Perez</strong></td><td>carlos@smithsrv.com</td><td><span className="bg pending">Technician</span></td><td><span className="bg active">Active</span></td><td>Yesterday</td><td><span className="cid">Edit</span></td></tr>
+    </tbody></table></div>
+  </div>
+</div>
+
+<div className={`page ${activePage === 'consignor-units' ? 'active' : ''}`} id="page-consignor-units">
+  <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:16,marginBottom:20}}>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Listed Units</div><div className="sc-v" style={{color:'#2563eb'}}>2</div></div>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Active Offers</div><div className="sc-v" style={{color:'#f59e0b'}}>3</div></div>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Sold (YTD)</div><div className="sc-v" style={{color:'#22c55e'}}>1</div></div>
+  </div>
+  <div className="pn">
+    <div className="pn-h"><span className="pn-t">My Consigned Units</span><button className="btn btn-p" style={{fontSize:12,padding:'6px 14px'}} onClick={()=>showPage('mkt-post-unit')}>+ List a Unit</button></div>
+    <div className="tw"><table><thead><tr><th>Unit</th><th>VIN</th><th>List Price</th><th>Days Listed</th><th>Offers</th><th>Status</th></tr></thead><tbody>
+      <tr><td>2022 Jayco Eagle HT 284BHOK</td><td>1UJBJ0BN1N2TJ8801</td><td>$68,500</td><td>14</td><td><span className="cid" onClick={()=>showPage('consignor-offers')}>2</span></td><td><span className="bg active">Listed</span></td></tr>
+      <tr><td>2021 Forest River Salem 27DBK</td><td>4X4FCKB21ME029912</td><td>$34,900</td><td>32</td><td><span className="cid" onClick={()=>showPage('consignor-offers')}>1</span></td><td><span className="bg active">Listed</span></td></tr>
+    </tbody></table></div>
+  </div>
+</div>
+
+<div className={`page ${activePage === 'consignor-offers' ? 'active' : ''}`} id="page-consignor-offers">
+  <div className="pn">
+    <div className="pn-h"><span className="pn-t">Offers Received</span><span style={{fontSize:12,color:'#888'}}>3 active offers</span></div>
+    <div style={{padding:16,display:'flex',flexDirection:'column',gap:12}}>
+      {[{unit:'2022 Jayco Eagle HT 284BHOK',list:68500,offer:65000,buyer:'Dealer — Maple RV Centre',exp:'Apr 30'},{unit:'2022 Jayco Eagle HT 284BHOK',list:68500,offer:66500,buyer:'Public Buyer',exp:'May 1'},{unit:'2021 Forest River Salem 27DBK',list:34900,offer:33000,buyer:'Dealer — Coast RV',exp:'Apr 28'}].map((o,i)=>(
+        <div key={i} style={{border:'1px solid #e8e8e8',borderRadius:10,padding:16,display:'flex',justifyContent:'space-between',alignItems:'center',gap:16}}>
+          <div style={{flex:1}}><div style={{fontWeight:600,fontSize:14,marginBottom:6}}>{o.unit}</div><div style={{fontSize:13,color:'#555'}}>Offer: <strong style={{color:'#22c55e'}}>${o.offer.toLocaleString()}</strong> &nbsp;&middot;&nbsp; List: ${o.list.toLocaleString()} &nbsp;&middot;&nbsp; {o.buyer}</div><div style={{fontSize:12,color:'#888',marginTop:4}}>Expires: {o.exp}</div></div>
+          <div style={{display:'flex',gap:8,flexShrink:0}}><button className="btn btn-p" style={{fontSize:12}}>Accept</button><button className="btn" style={{fontSize:12}}>Counter</button><button className="btn" style={{fontSize:12}}>Decline</button></div>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+<div className={`page ${activePage === 'consignor-payouts' ? 'active' : ''}`} id="page-consignor-payouts">
+  <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:16,marginBottom:20}}>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Lifetime Earnings</div><div className="sc-v" style={{color:'#22c55e'}}>$42,750</div></div>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Pending Payout</div><div className="sc-v" style={{color:'#f59e0b'}}>$0</div></div>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Next Payout Date</div><div className="sc-v">May 15</div></div>
+  </div>
+  <div className="pn">
+    <div className="pn-h"><span className="pn-t">Payout History</span></div>
+    <div className="tw"><table><thead><tr><th>Date</th><th>Unit</th><th>Sale Price</th><th>Dealer Fee</th><th>Your Payout</th><th>Method</th><th>Status</th></tr></thead><tbody>
+      <tr><td>Mar 2, 2026</td><td>2020 Keystone Cougar 29BHS</td><td>$45,000</td><td>$2,250 (5%)</td><td style={{color:'#22c55e',fontWeight:600}}>$42,750</td><td>Interac e-Transfer</td><td><span className="bg active">Paid</span></td></tr>
+    </tbody></table></div>
+  </div>
+</div>
+
+<div className={`page ${activePage === 'bidder-my-bids' ? 'active' : ''}`} id="page-bidder-my-bids">
+  <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:16,marginBottom:20}}>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Active Bids</div><div className="sc-v" style={{color:'#2563eb'}}>2</div></div>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Currently Winning</div><div className="sc-v" style={{color:'#22c55e'}}>1</div></div>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Outbid</div><div className="sc-v" style={{color:'#ef4444'}}>1</div></div>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Won (All Time)</div><div className="sc-v">3</div></div>
+  </div>
+  <div className="pn">
+    <div className="pn-h"><span className="pn-t">My Bid History</span><span className="pn-a" onClick={()=>showPage('mkt-live-auctions')}>Browse Auctions</span></div>
+    <div className="tw"><table><thead><tr><th>Unit</th><th>My Bid</th><th>High Bid</th><th>Status</th><th>Auction Ends</th></tr></thead><tbody>
+      <tr><td>2023 Forest River Rockwood 2882WS</td><td>$41,000</td><td>$43,000</td><td><span className="bg denied">Outbid</span></td><td>Apr 27 2:00 PM</td></tr>
+      <tr><td>2022 Keystone Montana 3855BR</td><td>$67,000</td><td>$67,000</td><td><span className="bg active">Winning</span></td><td>Apr 28 10:00 AM</td></tr>
+    </tbody></table></div>
+  </div>
+</div>
+
+<div className={`page ${activePage === 'bidder-verification' ? 'active' : ''}`} id="page-bidder-verification">
+  <div className="pn" style={{padding:24,maxWidth:680}}>
+    <div style={{fontSize:15,fontWeight:600,marginBottom:4}}>Buyer Verification</div>
+    <div style={{fontSize:13,color:'#666',marginBottom:24,lineHeight:1.6}}>Complete verification to participate in live auctions and make binding offers on marketplace units. Your information is encrypted and stored securely.</div>
+    <div style={{display:'flex',flexDirection:'column',gap:12}}>
+      {[{label:'Identity Verification',desc:'Government-issued ID uploaded and verified',status:'complete'},{label:'Deposit on File',desc:'$5,000 refundable deposit — required for live auctions',status:'complete'},{label:'Business Registration',desc:'Optional — unlocks dealer wholesale pricing',status:'pending'}].map((s,i)=>(
+        <div key={i} style={{display:'flex',alignItems:'center',gap:16,padding:'14px 16px',border:'1px solid #e8e8e8',borderRadius:10}}>
+          <div style={{width:36,height:36,borderRadius:'50%',background:s.status==='complete'?'#22c55e':'#f0f0f0',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+            {s.status==='complete'?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>:<span style={{fontSize:12,color:'#888',fontWeight:600}}>{i+1}</span>}
+          </div>
+          <div style={{flex:1}}><div style={{fontWeight:600,fontSize:13,marginBottom:2}}>{s.label}</div><div style={{fontSize:12,color:'#888'}}>{s.desc}</div></div>
+          {s.status==='pending'&&<button className="btn btn-p" style={{fontSize:12,flexShrink:0}}>Complete</button>}
+          {s.status==='complete'&&<span style={{fontSize:12,color:'#22c55e',fontWeight:600,flexShrink:0}}>Verified</span>}
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+<div className={`page ${activePage === 'mkt-my-bids' ? 'active' : ''}`} id="page-mkt-my-bids">
+  <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:16,marginBottom:20}}>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Active Bids</div><div className="sc-v" style={{color:'#2563eb'}}>4</div></div>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Winning</div><div className="sc-v" style={{color:'#22c55e'}}>2</div></div>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Outbid</div><div className="sc-v" style={{color:'#ef4444'}}>2</div></div>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Won (YTD)</div><div className="sc-v">6</div></div>
+  </div>
+  <div className="pn">
+    <div className="pn-h"><span className="pn-t">All Bids</span><span className="pn-a" onClick={()=>showPage('mkt-live-auctions')}>Browse Auctions</span></div>
+    <div className="tw"><table><thead><tr><th>Unit</th><th>Bid Type</th><th>My Bid</th><th>High Bid</th><th>Status</th><th>Deadline</th></tr></thead><tbody>
+      <tr><td>2023 Forest River Rockwood 2882WS</td><td>Auction</td><td>$41,000</td><td>$43,000</td><td><span className="bg denied">Outbid</span></td><td>Apr 27</td></tr>
+      <tr><td>2022 Keystone Montana 3855BR</td><td>Auction</td><td>$67,000</td><td>$67,000</td><td><span className="bg active">Winning</span></td><td>Apr 28</td></tr>
+      <tr><td>2024 Heartland Bighorn 3995FL</td><td>Offer</td><td>$88,000</td><td>—</td><td><span className="bg pending">Pending</span></td><td>Apr 30</td></tr>
+      <tr><td>2023 Jayco Eagle HT 284BHOK</td><td>Auction</td><td>$72,000</td><td>$74,500</td><td><span className="bg denied">Outbid</span></td><td>Apr 26</td></tr>
+    </tbody></table></div>
+  </div>
+</div>
+
+<div className={`page ${activePage === 'mkt-escrow-payments' ? 'active' : ''}`} id="page-mkt-escrow-payments">
+  <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:16,marginBottom:20}}>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>In Escrow</div><div className="sc-v" style={{color:'#f59e0b'}}>$67,000</div></div>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Released (YTD)</div><div className="sc-v" style={{color:'#22c55e'}}>$241,500</div></div>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Transactions (YTD)</div><div className="sc-v">6</div></div>
+  </div>
+  <div className="pn">
+    <div className="pn-h"><span className="pn-t">Escrow Transactions</span></div>
+    <div className="tw"><table><thead><tr><th>ESC #</th><th>Unit</th><th>Amount</th><th>Counterparty</th><th>Status</th><th>Date</th></tr></thead><tbody>
+      <tr><td>ESC-0008</td><td>2022 Keystone Montana 3855BR</td><td style={{fontWeight:600}}>$67,000</td><td>Smith's RV (Buyer)</td><td><span className="bg pending">Held</span></td><td>Apr 28, 2026</td></tr>
+      <tr><td>ESC-0007</td><td>2023 Forest River Rockwood</td><td style={{fontWeight:600}}>$43,000</td><td>Coast RV (Seller)</td><td><span className="bg active">Released</span></td><td>Apr 20, 2026</td></tr>
+      <tr><td>ESC-0006</td><td>2021 Jayco Eagle HT</td><td style={{fontWeight:600}}>$59,500</td><td>Maple RV (Seller)</td><td><span className="bg active">Released</span></td><td>Mar 15, 2026</td></tr>
+    </tbody></table></div>
+  </div>
+</div>
 <DealerMarketplacePages activePage={activePage} showPage={showPage} />
 <DealerShowcasePages activePage={activePage} showPage={showPage} />
 

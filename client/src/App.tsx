@@ -210,18 +210,6 @@ function Router() {
         <Route path="/client">{() => <Redirect to="/login" />}</Route>
         <Route path="/bidder">{() => <Redirect to="/login" />}</Route>
         <Route path="/bidder-login">{() => <Redirect to="/login" />}</Route>
-        {/* v6 portal shells — side-by-side with existing portals for validation */}
-        <Route path="/operator-v6/dealerships/new" component={NewDealershipPageRoute} />
-        <Route path="/operator-v6/dealerships/:id" component={DealershipDetailPage} />
-        <Route path="/operator-v6/dealerships" component={DealerAccountsListPageRoute} />
-        <Route path="/operator-v6/units/:id" component={UnitProfilePageOperator} />
-        <Route path="/dealer-v6/units/:unitId/claims/new" component={NewClaimPageRoute} />
-        <Route path="/dealer-v6/units/new" component={NewUnitPageRoute} />
-        <Route path="/dealer-v6/units/:id" component={UnitProfilePageDealer} />
-        <Route path="/client-v6/units/:id" component={UnitProfilePageClient} />
-        <Route path="/operator-v6" component={OperatorPortalV6} />
-        <Route path="/dealer-v6" component={DealerPortalV6} />
-        <Route path="/client-v6" component={ClientPortalV6} />
         <Route path="/bidder-v6" component={BidderPortalV6} />
         <Route path="/portal-select-v6" component={PortalSelectV6} />
         <Route path="/book-demo" component={BookDemo} />
@@ -276,8 +264,11 @@ function App() {
   // /operator, /dealer, /client, /bidder (exact) serve login pages in the marketing Switch.
   // Only sub-paths (/:rest*) trigger portal mode.
   const isPortal = location.startsWith('/operator/') ||
+                   location.startsWith('/operator-v6') ||
                    location.startsWith('/dealer/') ||
+                   location.startsWith('/dealer-v6') ||
                    location.startsWith('/client/') ||
+                   location.startsWith('/client-v6') ||
                    location.startsWith('/bidder/');
 
   // portal.css sets body{display:flex;background:...} globally.
@@ -300,6 +291,23 @@ function App() {
         <AuthProvider>
           <Suspense fallback={null}>
             <Switch>
+              {/* v6 standalone sub-pages — specific routes before catch-alls */}
+              <Route path="/operator-v6/dealerships/new" component={NewDealershipPageRoute} />
+              <Route path="/operator-v6/dealerships/:id" component={DealershipDetailPage} />
+              <Route path="/operator-v6/dealerships" component={DealerAccountsListPageRoute} />
+              <Route path="/operator-v6/units/:id" component={UnitProfilePageOperator} />
+              <Route path="/dealer-v6/units/:unitId/claims/new" component={NewClaimPageRoute} />
+              <Route path="/dealer-v6/units/new" component={NewUnitPageRoute} />
+              <Route path="/dealer-v6/units/:id" component={UnitProfilePageDealer} />
+              <Route path="/client-v6/units/:id" component={UnitProfilePageClient} />
+              {/* v6 portal catch-alls → old portals (v6 endpoints) */}
+              <Route path="/operator-v6/:rest*" component={OperatorPortal} />
+              <Route path="/operator-v6" component={OperatorPortal} />
+              <Route path="/dealer-v6/:rest*" component={DealerPortal} />
+              <Route path="/dealer-v6" component={DealerPortal} />
+              <Route path="/client-v6/:rest*" component={CustomerPortal} />
+              <Route path="/client-v6" component={CustomerPortal} />
+              {/* Legacy portal paths */}
               <Route path="/operator/:rest*" component={OperatorPortal} />
               <Route path="/dealer/:rest*" component={DealerPortal} />
               <Route path="/client/:rest*" component={CustomerPortal} />
