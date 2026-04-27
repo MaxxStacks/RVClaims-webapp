@@ -10,7 +10,6 @@ import { initMobileSidebar, registerServiceWorker } from './lib/mobile';
 import { initMobileApp } from './lib/mobile-init';
 import toyHaulerUrl from "@assets/generated_images/Modern_luxury_toy_hauler_2050a416.webp";
 import { ClerkProvider } from "@clerk/clerk-react";
-import { clerkAppearance } from './lib/clerk-appearance';
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 if (!PUBLISHABLE_KEY) throw new Error("Missing VITE_CLERK_PUBLISHABLE_KEY");
@@ -28,7 +27,11 @@ createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <ClerkProvider
       publishableKey={PUBLISHABLE_KEY}
-      appearance={clerkAppearance}
+      appearance={{
+        variables: {
+          colorPrimary: "#033280",
+        },
+      }}
     >
       <App />
     </ClerkProvider>

@@ -1,5 +1,4 @@
 import { SignIn } from "@clerk/clerk-react";
-import { clerkAppearance } from "@/lib/clerk-appearance";
 
 export default function LoginPage() {
   return (
@@ -12,7 +11,12 @@ export default function LoginPage() {
       padding: 20,
     }}>
       <SignIn
-        appearance={clerkAppearance}
+        appearance={{
+          variables: { colorPrimary: "#033280" },
+          elements: {
+            card: { boxShadow: "0 4px 20px rgba(3,50,128,0.08)" },
+          },
+        }}
         routing="path"
         path="/login"
         signUpUrl="/signup"
