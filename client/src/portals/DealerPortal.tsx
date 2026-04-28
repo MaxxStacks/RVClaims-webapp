@@ -84,20 +84,28 @@ export default function DealerPortal() {
   const [uploadFiles, setUploadFiles] = useState<File[]>([]);
   const [uploadSaving, setUploadSaving] = useState(false);
 
+  const [toastMsg, setToastMsg] = useState('');
+  const [toastVisible, setToastVisible] = useState(false);
+  const handleToast = (msg: string) => {
+    setToastMsg(msg);
+    setToastVisible(true);
+    setTimeout(() => setToastVisible(false), 2800);
+  };
+
   const titles: Record<string, [string, string]> = {dashboard:['Dashboard','Smith\u0027s RV Centre'],upload:['Upload Photos','Push to Claim'],claims:['My Claims','14 total claims'],'claim-detail':['CLM-2026-0248','Warranty \u00b7 2024 Jayco Jay Flight'],units:['My Units','12 units'],'add-unit':['Add New Unit','Register unit'],'unit-detail':['2024 Jayco Jay Flight 264BH','VIN: 1UJBJ0BN8M1TJ4K1'],
 'svc-financing':['Financing','My financing requests'],'svc-financing-det':['FIN-0023','Daniel Tremblay'],'svc-financing-new':['Request Financing','Submit to lenders'],
-'svc-fi':['F\u0026I Products','My F\u0026I deals'],'svc-fi-new':['Flag Deal for F\u0026I','Request product recommendations'],
-'svc-warranty':['Warranty Plans','4 active plans'],'svc-parts':['Parts Orders','My parts orders'],'svc-parts-new':['Order Parts','Request parts'],
+'svc-fi':['F\u0026I Products','My F\u0026I deals'],'svc-fi-new':['Flag Deal for F\u0026I','Request product recommendations'],'svc-fi-detail':['F\u0026I Deal','Deal details \u0026 products'],
+'svc-warranty':['Warranty Plans','4 active plans'],'svc-warranty-detail':['Warranty Plan','Plan details \u0026 coverage'],'svc-parts':['Parts Orders','My parts orders'],'svc-parts-new':['Order Parts','Request parts'],'svc-parts-det':['Parts Order','Order status \u0026 tracking'],
 'mkt-gate':['Dealer Marketplace','Membership required'],'mkt-browse':['Browse Marketplace','142 units available'],'mkt-listing-view':['Unit Details','Marketplace listing'],'mkt-post-unit':['Post a Unit','List on marketplace'],'mkt-my-listings':['My Listings','Units you have listed'],'mkt-my-transactions':['My Transactions','Purchases & sales'],'mkt-live-auctions':['Live Auctions','Bid on units'],'mkt-auction-room':['Auction Room','Live bidding'],'mkt-showcase':['Public Showcase','$299/year add-on'],'mkt-showcase-submit':['Submit Unit','Public auction showcase'],
 invoices:['Invoices \u0026 Billing','Payment history'],customers:['Customer Portal','Manage customer access'],'invite-customer':['Invite Customer','Send portal invitation'],'cust-tickets':['Customer Tickets','Support tickets from customers'],'cust-ticket-detail':['TKT-0042','Robert Martin \u00b7 Warranty claim'],
 staff:['Staff Management','Manage team access'],'add-staff':['Add Staff','Invite team member'],branding:['Branding \u0026 Domain','Customer portal appearance'],notifications:['Notifications','Updates from operator'],'dealer-settings':['Settings','Account and profile settings'],'dealer-changelog':['What\u0027s New','Platform updates \u0026 roadmap'],
-clients:['Client Files','Your customer accounts'],messages:['Messages','Inbox from DS360 \u0026 claim threads'],documents:['Documents','Invoices, contracts \u0026 reports'],techflow:['TechFlow','Work orders \u0026 dispatch'],consignment:['Consignment','Manage consigned units'],marketing:['Marketing','Campaigns \u0026 lead capture'],'sales-services':['Sales \u0026 Services','Sell products, warranty plans \u0026 F\u0026I'],
+clients:['Client Files','Your customer accounts'],messages:['Messages','Inbox from DS360 \u0026 claim threads'],documents:['Documents','Invoices, contracts \u0026 reports'],techflow:['TechFlow','Work orders \u0026 dispatch'],'wo-new':['New Work Order','Create a work order'],'wo-detail':['WO-0041','Slide-out seal replacement'],consignment:['Consignment','Manage consigned units'],marketing:['Marketing','Campaigns \u0026 lead capture'],'sales-services':['Sales \u0026 Services','Sell products, warranty plans \u0026 F\u0026I'],
 'my-subscription':['My Subscription','Plan details \u0026 billing'],'portal-settings':['Portal Settings','Staff, branding, domain \u0026 notifications'],
 'consignor-units':['My Consigned Units','Units listed on your behalf'],'consignor-offers':['Offers Received','Buyer offers on your units'],'consignor-payouts':['Payouts','Earnings \u0026 payment history'],
 'bidder-my-bids':['My Bids','Active \u0026 past bids'],'bidder-verification':['Verification','Buyer identity \u0026 deposit'],
 'mkt-my-bids':['My Bids','Marketplace bid history'],'mkt-escrow-payments':['Escrow \u0026 Payments','Transaction escrow \u0026 release']};
 
-  const parents: Record<string, string> = {'claim-detail':'claims','unit-detail':'units','add-unit':'units','invite-customer':'customers','add-staff':'staff','svc-financing-det':'svc-financing','svc-financing-new':'svc-financing','svc-fi-new':'svc-fi','svc-parts-new':'svc-parts','cust-ticket-detail':'cust-tickets','mkt-listing-view':'mkt-browse','mkt-post-unit':'mkt-my-listings','mkt-auction-room':'mkt-live-auctions','mkt-showcase-submit':'mkt-showcase'};
+  const parents: Record<string, string> = {'claim-detail':'claims','unit-detail':'units','add-unit':'units','invite-customer':'customers','add-staff':'staff','svc-financing-det':'svc-financing','svc-financing-new':'svc-financing','svc-fi-new':'svc-fi','svc-parts-new':'svc-parts','cust-ticket-detail':'cust-tickets','mkt-listing-view':'mkt-browse','mkt-post-unit':'mkt-my-listings','mkt-auction-room':'mkt-live-auctions','mkt-showcase-submit':'mkt-showcase','svc-fi-detail':'svc-fi','svc-warranty-detail':'svc-warranty','svc-parts-det':'svc-parts','wo-new':'techflow','wo-detail':'techflow'};
 
   useEffect(() => { if (theme === 'dark') document.documentElement.setAttribute('data-theme', 'dark'); }, []);
 
@@ -453,7 +461,7 @@ clients:['Client Files','Your customer accounts'],messages:['Messages','Inbox fr
     <div style={{padding: '0 20px 20px'}}><div style={{fontSize: 12, fontWeight: 500, color: '#555', marginBottom: 6}}>Describe what you see (optional but helpful)</div>
       <textarea placeholder="e.g. Sidewall damage on passenger side, roof leak near front vent, slide-out seal torn..." style={{width: '100%', padding: '10px 12px', border: '1px solid #e0e0e0', borderRadius: 8, fontSize: 13, fontFamily: 'inherit', minHeight: 70, resize: 'vertical', outline: 'none', background: '#fafafa'}}></textarea>
     </div>
-    <div className="btn-bar" style={{borderTop: '2px solid #f0f0f0', background: '#fafbfe'}}><button className="btn btn-s" style={{fontSize: 14, padding: '12px 32px'}} onClick={() => showPage('claims')}>Push to Claim →</button><button className="btn btn-o">Save as Draft</button><div style={{marginLeft: 'auto', fontSize: 12, color: '#888'}}>24 photos · Jayco Warranty · VIN ...4K1</div></div>
+    <div className="btn-bar" style={{borderTop: '2px solid #f0f0f0', background: '#fafbfe'}}><button className="btn btn-s" style={{fontSize: 14, padding: '12px 32px'}} onClick={() => showPage('claims')}>Push to Claim →</button><button className="btn btn-o" onClick={() => handleToast('Draft saved')}>Save as Draft</button><div style={{marginLeft: 'auto', fontSize: 12, color: '#888'}}>24 photos · Jayco Warranty · VIN ...4K1</div></div>
   </div>
 </div>
 
@@ -558,13 +566,13 @@ clients:['Client Files','Your customer accounts'],messages:['Messages','Inbox fr
   </div></div>
 
   <div className={`pn utab ${unitTab === "utab-u-docs" ? "active" : ""}`} id="utab-u-docs" style={{display: unitTab === "utab-u-docs" ? "block" : "none"}}>
-    <div className="pn-h"><span className="pn-t">Documents</span><span className="pn-a">+ Upload Document</span></div>
+    <div className="pn-h"><span className="pn-t">Documents</span><span className="pn-a" onClick={() => handleToast('Upload coming soon')}>+ Upload Document</span></div>
     <div className="tw"><table><thead><tr><th>Document</th><th>Type</th><th>Uploaded</th><th>Size</th><th>Action</th></tr></thead><tbody>
-      <tr><td style={{fontWeight: 500}}>Warranty Certificate</td><td>Warranty</td><td>Feb 10, 2026</td><td>245 KB</td><td><button className="btn btn-o btn-sm">View</button></td></tr>
-      <tr><td style={{fontWeight: 500}}>DAF Inspection Report</td><td>Inspection</td><td>Jan 22, 2026</td><td>1.2 MB</td><td><button className="btn btn-o btn-sm">View</button></td></tr>
-      <tr><td style={{fontWeight: 500}}>PDI Report</td><td>Inspection</td><td>Feb 5, 2026</td><td>890 KB</td><td><button className="btn btn-o btn-sm">View</button></td></tr>
-      <tr><td style={{fontWeight: 500}}>Purchase Agreement</td><td>Contract</td><td>Feb 8, 2026</td><td>340 KB</td><td><button className="btn btn-o btn-sm">View</button></td></tr>
-      <tr><td style={{fontWeight: 500}}>Ext. Warranty — Guardsman RV</td><td>Warranty</td><td>Feb 10, 2026</td><td>510 KB</td><td><button className="btn btn-o btn-sm">View</button></td></tr>
+      <tr><td style={{fontWeight: 500}}>Warranty Certificate</td><td>Warranty</td><td>Feb 10, 2026</td><td>245 KB</td><td><button className="btn btn-o btn-sm" onClick={() => handleToast('Document viewer coming soon')}>View</button></td></tr>
+      <tr><td style={{fontWeight: 500}}>DAF Inspection Report</td><td>Inspection</td><td>Jan 22, 2026</td><td>1.2 MB</td><td><button className="btn btn-o btn-sm" onClick={() => handleToast('Document viewer coming soon')}>View</button></td></tr>
+      <tr><td style={{fontWeight: 500}}>PDI Report</td><td>Inspection</td><td>Feb 5, 2026</td><td>890 KB</td><td><button className="btn btn-o btn-sm" onClick={() => handleToast('Document viewer coming soon')}>View</button></td></tr>
+      <tr><td style={{fontWeight: 500}}>Purchase Agreement</td><td>Contract</td><td>Feb 8, 2026</td><td>340 KB</td><td><button className="btn btn-o btn-sm" onClick={() => handleToast('Document viewer coming soon')}>View</button></td></tr>
+      <tr><td style={{fontWeight: 500}}>Ext. Warranty — Guardsman RV</td><td>Warranty</td><td>Feb 10, 2026</td><td>510 KB</td><td><button className="btn btn-o btn-sm" onClick={() => handleToast('Document viewer coming soon')}>View</button></td></tr>
     </tbody></table></div>
   </div>
 
@@ -572,17 +580,17 @@ clients:['Client Files','Your customer accounts'],messages:['Messages','Inbox fr
     <div style={{padding: '16px 20px', borderBottom: '1px solid #f0f0f0'}}><div style={{fontSize: 13, fontWeight: 600, marginBottom: 8}}>DAF Photos (18) <span className="bg authorized">Jan 22</span></div><div style={{display: 'grid', gridTemplateColumns: 'repeat(9,1fr)', gap: 6}}><div style={{aspectRatio: 1, background: '#e8e8e8', borderRadius: 6, fontSize: 9, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#888'}}>01</div><div style={{aspectRatio: 1, background: '#e8e8e8', borderRadius: 6, fontSize: 9, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#888'}}>02</div><div style={{aspectRatio: 1, background: '#e8e8e8', borderRadius: 6, fontSize: 9, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#888'}}>+16</div></div></div>
     <div style={{padding: '16px 20px', borderBottom: '1px solid #f0f0f0'}}><div style={{fontSize: 13, fontWeight: 600, marginBottom: 8}}>PDI Photos (8) <span className="bg authorized">Feb 5</span></div><div style={{display: 'grid', gridTemplateColumns: 'repeat(9,1fr)', gap: 6}}><div style={{aspectRatio: 1, background: '#e8e8e8', borderRadius: 6, fontSize: 9, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#888'}}>01</div><div style={{aspectRatio: 1, background: '#e8e8e8', borderRadius: 6, fontSize: 9, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#888'}}>+7</div></div></div>
     <div style={{padding: '16px 20px'}}><div style={{fontSize: 13, fontWeight: 600, marginBottom: 8}}>Warranty Photos (24) <span className="bg submitted">Mar 16</span></div><div style={{display: 'grid', gridTemplateColumns: 'repeat(9,1fr)', gap: 6}}><div style={{aspectRatio: 1, background: '#e8e8e8', borderRadius: 6, fontSize: 9, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#888'}}>01</div><div style={{aspectRatio: 1, background: '#e8e8e8', borderRadius: 6, fontSize: 9, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#888'}}>02</div><div style={{aspectRatio: 1, background: '#e8e8e8', borderRadius: 6, fontSize: 9, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#888'}}>+22</div></div></div>
-    <div className="btn-bar"><button className="btn btn-o btn-sm">+ Upload General Photos</button></div>
+    <div className="btn-bar"><button className="btn btn-o btn-sm" onClick={() => showPage('upload')}>+ Upload General Photos</button></div>
   </div>
 
-  <div className={`pn utab ${unitTab === "utab-u-claims" ? "active" : ""}`} id="utab-u-claims" style={{display: unitTab === "utab-u-claims" ? "block" : "none"}}><div className="tw"><table><thead><tr><th>Claim #</th><th>Type</th><th>Status</th><th>Value</th><th>Submitted</th></tr></thead><tbody><tr><td><span className="cid" onClick={() => showPage('claim-detail')}>CLM-0248</span></td><td>Warranty</td><td><span className="bg submitted">Processing</span></td><td>$1,240</td><td>Mar 16</td></tr><tr><td><span className="cid">CLM-0237</span></td><td>DAF</td><td><span className="bg pay-recv">Paid</span></td><td>$4,200</td><td>Feb 12</td></tr><tr><td><span className="cid">CLM-0225</span></td><td>PDI</td><td><span className="bg pay-recv">Paid</span></td><td>$920</td><td>Jan 25</td></tr></tbody></table></div></div>
+  <div className={`pn utab ${unitTab === "utab-u-claims" ? "active" : ""}`} id="utab-u-claims" style={{display: unitTab === "utab-u-claims" ? "block" : "none"}}><div className="tw"><table><thead><tr><th>Claim #</th><th>Type</th><th>Status</th><th>Value</th><th>Submitted</th></tr></thead><tbody><tr><td><span className="cid" onClick={() => showPage('claim-detail')}>CLM-0248</span></td><td>Warranty</td><td><span className="bg submitted">Processing</span></td><td>$1,240</td><td>Mar 16</td></tr><tr><td><span className="cid" onClick={() => showPage('claim-detail')}>CLM-0237</span></td><td>DAF</td><td><span className="bg pay-recv">Paid</span></td><td>$4,200</td><td>Feb 12</td></tr><tr><td><span className="cid" onClick={() => showPage('claim-detail')}>CLM-0225</span></td><td>PDI</td><td><span className="bg pay-recv">Paid</span></td><td>$920</td><td>Jan 25</td></tr></tbody></table></div></div>
 </div>
 
 <div className={`page ${activePage === 'svc-financing' ? 'active' : ''}`} id="page-svc-financing">
   <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20}}><div style={{fontSize: 13, color: '#666'}}>Submit financing requests. We shop to lenders and find the best rate for your customer.</div><button className="btn btn-p btn-sm" onClick={() => showPage('svc-financing-new')}>+ Request Financing</button></div>
   <div className="pn"><div className="tw"><table><thead><tr><th>Request #</th><th>Customer</th><th>Unit</th><th>Amount</th><th>Best Rate</th><th>Status</th><th>Updated</th><th>Action</th></tr></thead><tbody>
     <tr><td style={{fontWeight: 500, color: 'var(--brand)'}}><span className="cid" onClick={() => showPage('svc-financing-det')}>FIN-0023</span></td><td>Daniel Tremblay</td><td>2024 Jayco Eagle HT</td><td>$42,500</td><td>—</td><td><span className="bg in-progress">Shopping Lenders</span></td><td>2h ago</td><td><button className="btn btn-o btn-sm" onClick={() => showPage('svc-financing-det')}>View</button></td></tr>
-    <tr><td style={{fontWeight: 500, color: 'var(--brand)'}}>FIN-0022</td><td>Julie Fournier</td><td>2024 Forest River Wildwood</td><td>$38,900</td><td style={{color: '#22c55e', fontWeight: 600}}>4.99%</td><td><span className="bg authorized">Approved</span></td><td>Yesterday</td><td><button className="btn btn-o btn-sm">View</button></td></tr>
+    <tr><td style={{fontWeight: 500, color: 'var(--brand)'}}>FIN-0022</td><td>Julie Fournier</td><td>2024 Forest River Wildwood</td><td>$38,900</td><td style={{color: '#22c55e', fontWeight: 600}}>4.99%</td><td><span className="bg authorized">Approved</span></td><td>Yesterday</td><td><button className="btn btn-o btn-sm" onClick={() => showPage('svc-financing-det')}>View</button></td></tr>
   </tbody></table></div></div>
 </div>
 
@@ -616,8 +624,8 @@ clients:['Client Files','Your customer accounts'],messages:['Messages','Inbox fr
 <div className={`page ${activePage === 'svc-fi' ? 'active' : ''}`} id="page-svc-fi">
   <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20}}><div style={{fontSize: 13, color: '#666'}}>We recommend F&I products for your deals. Track what's offered and sold.</div><button className="btn btn-p btn-sm" onClick={() => showPage('svc-fi-new')}>+ Flag a Deal for F&I</button></div>
   <div className="pn"><div className="tw"><table><thead><tr><th>Deal #</th><th>Customer</th><th>Unit</th><th>Products Offered</th><th>Sold</th><th>Revenue</th><th>Status</th><th>Action</th></tr></thead><tbody>
-    <tr><td style={{fontWeight: 500, color: 'var(--brand)'}}>FI-0014</td><td>Julie Fournier</td><td>2024 FR Wildwood</td><td>4</td><td>—</td><td>—</td><td><span className="bg in-progress">Recommending</span></td><td><button className="btn btn-o btn-sm">View</button></td></tr>
-    <tr><td style={{fontWeight: 500, color: 'var(--brand)'}}>FI-0013</td><td>Robert Martin</td><td>2024 Jayco Jay Flight</td><td>3</td><td>2</td><td>$2,800</td><td><span className="bg completed">Completed</span></td><td><button className="btn btn-o btn-sm">View</button></td></tr>
+    <tr><td style={{fontWeight: 500, color: 'var(--brand)'}}>FI-0014</td><td>Julie Fournier</td><td>2024 FR Wildwood</td><td>4</td><td>—</td><td>—</td><td><span className="bg in-progress">Recommending</span></td><td><button className="btn btn-o btn-sm" onClick={() => showPage('svc-fi-detail')}>View</button></td></tr>
+    <tr><td style={{fontWeight: 500, color: 'var(--brand)'}}>FI-0013</td><td>Robert Martin</td><td>2024 Jayco Jay Flight</td><td>3</td><td>2</td><td>$2,800</td><td><span className="bg completed">Completed</span></td><td><button className="btn btn-o btn-sm" onClick={() => showPage('svc-fi-detail')}>View</button></td></tr>
   </tbody></table></div></div>
 </div>
 
@@ -631,11 +639,11 @@ clients:['Client Files','Your customer accounts'],messages:['Messages','Inbox fr
 <div className={`page ${activePage === 'svc-warranty' ? 'active' : ''}`} id="page-svc-warranty">
   <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20}}><div style={{fontSize: 13, color: '#666'}}>Warranty and extended service plans for your units. Plans can be purchased directly through the platform.</div></div>
   <div className="pn"><div className="filter-bar"><input type="text" placeholder="Search by customer or VIN..." /><select><option>All Statuses</option><option>Active</option><option>Expiring</option><option>Expired</option></select></div>
-    <div className="tw"><table><thead><tr><th>Plan</th><th>Customer</th><th>VIN</th><th>Provider</th><th>Coverage</th><th>Expiry</th><th>Claims</th><th>Status</th></tr></thead><tbody>
-      <tr><td style={{fontWeight: 500}}>WP-0041</td><td>Robert Martin</td><td><span className="vin">...4K1</span></td><td>Guardsman RV</td><td>Comprehensive</td><td>Feb 10, 2031</td><td>1</td><td><span className="bg active">Active</span></td></tr>
-      <tr><td style={{fontWeight: 500}}>WP-0038</td><td>Marie Bouchard</td><td><span className="vin">...1N4</span></td><td>XtraRide</td><td>Powertrain+</td><td>Jan 15, 2029</td><td>0</td><td><span className="bg active">Active</span></td></tr>
-      <tr><td style={{fontWeight: 500}}>WP-0035</td><td>Daniel Tremblay</td><td><span className="vin">...8R2</span></td><td>Jayco OEM</td><td>OEM 2-Year</td><td style={{color: '#dc2626'}}>Apr 15, 2026</td><td>1</td><td><span className="bg pending">Expiring</span></td></tr>
-      <tr><td style={{fontWeight: 500}}>WP-0033</td><td>Lisa Wong</td><td><span className="vin">...2K8</span></td><td>Wholesale Warranties</td><td>Gold</td><td>Dec 1, 2030</td><td>2</td><td><span className="bg active">Active</span></td></tr>
+    <div className="tw"><table><thead><tr><th>Plan</th><th>Customer</th><th>VIN</th><th>Provider</th><th>Coverage</th><th>Expiry</th><th>Claims</th><th>Status</th><th>Action</th></tr></thead><tbody>
+      <tr><td style={{fontWeight: 500}}>WP-0041</td><td>Robert Martin</td><td><span className="vin">...4K1</span></td><td>Guardsman RV</td><td>Comprehensive</td><td>Feb 10, 2031</td><td>1</td><td><span className="bg active">Active</span></td><td><button className="btn btn-o btn-sm" onClick={() => showPage('svc-warranty-detail')}>View</button></td></tr>
+      <tr><td style={{fontWeight: 500}}>WP-0038</td><td>Marie Bouchard</td><td><span className="vin">...1N4</span></td><td>XtraRide</td><td>Powertrain+</td><td>Jan 15, 2029</td><td>0</td><td><span className="bg active">Active</span></td><td><button className="btn btn-o btn-sm" onClick={() => showPage('svc-warranty-detail')}>View</button></td></tr>
+      <tr><td style={{fontWeight: 500}}>WP-0035</td><td>Daniel Tremblay</td><td><span className="vin">...8R2</span></td><td>Jayco OEM</td><td>OEM 2-Year</td><td style={{color: '#dc2626'}}>Apr 15, 2026</td><td>1</td><td><span className="bg pending">Expiring</span></td><td><button className="btn btn-o btn-sm" onClick={() => showPage('svc-warranty-detail')}>View</button></td></tr>
+      <tr><td style={{fontWeight: 500}}>WP-0033</td><td>Lisa Wong</td><td><span className="vin">...2K8</span></td><td>Wholesale Warranties</td><td>Gold</td><td>Dec 1, 2030</td><td>2</td><td><span className="bg active">Active</span></td><td><button className="btn btn-o btn-sm" onClick={() => showPage('svc-warranty-detail')}>View</button></td></tr>
     </tbody></table></div></div>
 </div>
 
@@ -643,9 +651,9 @@ clients:['Client Files','Your customer accounts'],messages:['Messages','Inbox fr
 <div className={`page ${activePage === 'svc-parts' ? 'active' : ''}`} id="page-svc-parts">
   <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20}}><div style={{fontSize: 13, color: '#666'}}>Request parts for claims or customer orders. We source, price, and track delivery.</div><button className="btn btn-p btn-sm" onClick={() => showPage('svc-parts-new')}>+ Order Parts</button></div>
   <div className="pn"><div className="tw"><table><thead><tr><th>Order #</th><th>Items</th><th>Claim</th><th>Est. Cost</th><th>Status</th><th>ETA</th><th>Updated</th><th>Action</th></tr></thead><tbody>
-    <tr><td style={{fontWeight: 500, color: 'var(--brand)'}}>PO-0038</td><td>Sidewall panel, adhesive, sealant</td><td>CLM-0248</td><td>—</td><td><span className="bg new-req">Sourcing</span></td><td>—</td><td>2h ago</td><td><button className="btn btn-o btn-sm">View</button></td></tr>
-    <tr><td style={{fontWeight: 500, color: 'var(--brand)'}}>PO-0034</td><td>Slide seal, slide motor</td><td>CLM-0246</td><td>$420</td><td><span className="bg shipped">Shipped</span></td><td>Mar 18</td><td>Mar 14</td><td><button className="btn btn-o btn-sm">Track</button></td></tr>
-    <tr><td style={{fontWeight: 500, color: 'var(--brand)'}}>PO-0031</td><td>Hinge set, screws</td><td>CLM-0243</td><td>$45</td><td><span className="bg delivered-st">Delivered</span></td><td>—</td><td>Mar 10</td><td><button className="btn btn-o btn-sm">View</button></td></tr>
+    <tr><td style={{fontWeight: 500, color: 'var(--brand)'}}>PO-0038</td><td>Sidewall panel, adhesive, sealant</td><td>CLM-0248</td><td>—</td><td><span className="bg new-req">Sourcing</span></td><td>—</td><td>2h ago</td><td><button className="btn btn-o btn-sm" onClick={() => showPage('svc-parts-det')}>View</button></td></tr>
+    <tr><td style={{fontWeight: 500, color: 'var(--brand)'}}>PO-0034</td><td>Slide seal, slide motor</td><td>CLM-0246</td><td>$420</td><td><span className="bg shipped">Shipped</span></td><td>Mar 18</td><td>Mar 14</td><td><button className="btn btn-o btn-sm" onClick={() => showPage('svc-parts-det')}>Track</button></td></tr>
+    <tr><td style={{fontWeight: 500, color: 'var(--brand)'}}>PO-0031</td><td>Hinge set, screws</td><td>CLM-0243</td><td>$45</td><td><span className="bg delivered-st">Delivered</span></td><td>—</td><td>Mar 10</td><td><button className="btn btn-o btn-sm" onClick={() => showPage('svc-parts-det')}>View</button></td></tr>
   </tbody></table></div></div>
 </div>
 
@@ -679,7 +687,7 @@ clients:['Client Files','Your customer accounts'],messages:['Messages','Inbox fr
             <td style={{fontWeight: 600}}>{inv.total ? `$${Number(inv.total).toFixed(2)}` : '—'}</td>
             <td><span className={`bg ${inv.status === 'paid' ? 'pay-recv' : inv.status}`}>{inv.status}</span></td>
             <td>{inv.issuedAt || inv.createdAt ? new Date(inv.issuedAt || inv.createdAt).toLocaleDateString('en-CA',{month:'short',day:'numeric'}) : '—'}</td>
-            <td>{inv.status === 'pending' || inv.status === 'overdue' ? <button className="btn btn-s btn-sm">Pay Now</button> : <button className="btn btn-o btn-sm">View</button>}</td>
+            <td>{inv.status === 'pending' || inv.status === 'overdue' ? <button className="btn btn-s btn-sm" onClick={() => handleToast('Payment portal coming soon')}>Pay Now</button> : <button className="btn btn-o btn-sm" onClick={() => handleToast('Invoice viewer coming soon')}>View</button>}</td>
           </tr>
         ))
       }
@@ -691,10 +699,10 @@ clients:['Client Files','Your customer accounts'],messages:['Messages','Inbox fr
   <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20}}><div><div style={{fontSize: 16, fontWeight: 700, marginBottom: 4}}>Customer Portal</div><div style={{fontSize: 13, color: '#888'}}>Invite customers to their own portal. They can track claims, view warranty info, and submit issues.</div></div><button className="btn btn-p btn-sm" onClick={() => showPage('invite-customer')}>+ Invite Customer</button></div>
   <div className="pn"><div className="filter-bar"><input type="text" placeholder="Search customers..." /><select><option>All Statuses</option><option>Active</option><option>Invited</option><option>Inactive</option></select></div>
     <div className="tw"><table><thead><tr><th>Customer</th><th>Email</th><th>Unit</th><th>Claims</th><th>Portal Status</th><th>Last Login</th><th>Action</th></tr></thead><tbody>
-      <tr><td style={{fontWeight: 500}}>Robert Martin</td><td>robert.martin@gmail.com</td><td>2024 Jayco Jay Flight</td><td>3</td><td><span className="bg active">Active</span></td><td>Yesterday</td><td><button className="btn btn-o btn-sm">Manage</button></td></tr>
-      <tr><td style={{fontWeight: 500}}>Daniel Tremblay</td><td>daniel.t@outlook.com</td><td>2024 Jayco Eagle HT</td><td>1</td><td><span className="bg active">Active</span></td><td>3 days ago</td><td><button className="btn btn-o btn-sm">Manage</button></td></tr>
-      <tr><td style={{fontWeight: 500}}>Marie Bouchard</td><td>m.bouchard@gmail.com</td><td>2024 FR Rockwood</td><td>1</td><td><span className="bg active">Active</span></td><td>1 week ago</td><td><button className="btn btn-o btn-sm">Manage</button></td></tr>
-      <tr><td style={{fontWeight: 500}}>Lisa Wong</td><td>lisa.w@hotmail.com</td><td>2024 Jayco Jay Feather</td><td>2</td><td><span className="bg pending">Invited</span></td><td>—</td><td><button className="btn btn-o btn-sm">Resend</button></td></tr>
+      <tr><td style={{fontWeight: 500}}>Robert Martin</td><td>robert.martin@gmail.com</td><td>2024 Jayco Jay Flight</td><td>3</td><td><span className="bg active">Active</span></td><td>Yesterday</td><td><button className="btn btn-o btn-sm" onClick={() => handleToast('Customer management coming soon')}>Manage</button></td></tr>
+      <tr><td style={{fontWeight: 500}}>Daniel Tremblay</td><td>daniel.t@outlook.com</td><td>2024 Jayco Eagle HT</td><td>1</td><td><span className="bg active">Active</span></td><td>3 days ago</td><td><button className="btn btn-o btn-sm" onClick={() => handleToast('Customer management coming soon')}>Manage</button></td></tr>
+      <tr><td style={{fontWeight: 500}}>Marie Bouchard</td><td>m.bouchard@gmail.com</td><td>2024 FR Rockwood</td><td>1</td><td><span className="bg active">Active</span></td><td>1 week ago</td><td><button className="btn btn-o btn-sm" onClick={() => handleToast('Customer management coming soon')}>Manage</button></td></tr>
+      <tr><td style={{fontWeight: 500}}>Lisa Wong</td><td>lisa.w@hotmail.com</td><td>2024 Jayco Jay Feather</td><td>2</td><td><span className="bg pending">Invited</span></td><td>—</td><td><button className="btn btn-o btn-sm" onClick={() => handleToast('Invitation resent')}>Resend</button></td></tr>
     </tbody></table></div></div>
 </div>
 
@@ -794,7 +802,7 @@ clients:['Client Files','Your customer accounts'],messages:['Messages','Inbox fr
             <td><span className="bg" style={{background: isOwner ? '#eff6ff' : '#f0fdf4', color: isOwner ? 'var(--brand)' : '#16a34a'}}>{isOwner ? 'Owner' : 'Staff'}</span></td>
             <td><span className={`bg ${s.status === 'active' ? 'active' : 'pending'}`}>{s.status || 'active'}</span></td>
             <td>{s.lastLoginAt ? new Date(s.lastLoginAt).toLocaleDateString('en-CA',{month:'short',day:'numeric'}) : '—'}</td>
-            <td>{isCurrentUser ? <span style={{fontSize: 12, color: '#888'}}>You</span> : <><button className="btn btn-o btn-sm">Edit</button> <button className="btn btn-o btn-sm" style={{color: '#dc2626', borderColor: '#fca5a5'}}>Remove</button></>}</td>
+            <td>{isCurrentUser ? <span style={{fontSize: 12, color: '#888'}}>You</span> : <><button className="btn btn-o btn-sm" onClick={() => handleToast('Staff editing coming soon')}>Edit</button> <button className="btn btn-o btn-sm" style={{color: '#dc2626', borderColor: '#fca5a5'}} onClick={() => handleToast('Staff management coming soon')}>Remove</button></>}</td>
           </tr>
         );
       })
@@ -831,7 +839,7 @@ clients:['Client Files','Your customer accounts'],messages:['Messages','Inbox fr
             <strong>TTL:</strong> 3600
           </div></div>
         </div>
-      </div><div className="btn-bar"><button className="btn btn-p">Verify Domain</button><button className="btn btn-o">Save</button></div></div>
+      </div><div className="btn-bar"><button className="btn btn-p" onClick={() => handleToast('DNS check initiated')}>Verify Domain</button><button className="btn btn-o" onClick={() => handleToast('Domain settings saved')}>Save</button></div></div>
   </div>
 </div>
 
@@ -888,7 +896,7 @@ clients:['Client Files','Your customer accounts'],messages:['Messages','Inbox fr
           <div className="form-group"><label>Date Format</label><select><option defaultSelected>MMM DD, YYYY</option><option>DD/MM/YYYY</option><option>YYYY-MM-DD</option></select></div>
           <div className="form-group full"><label>Bio</label><textarea placeholder="Optional bio..."></textarea></div>
         </div>
-        <div className="btn-bar"><button className="btn btn-p">Save Profile</button><button className="btn btn-o">Cancel</button></div>
+        <div className="btn-bar"><button className="btn btn-p" onClick={() => handleToast('Profile saved')}>Save Profile</button><button className="btn btn-o">Cancel</button></div>
       </div>
 
       
@@ -900,11 +908,11 @@ clients:['Client Files','Your customer accounts'],messages:['Messages','Inbox fr
           <div className="form-group"><label>New Password</label><input type="password" placeholder="New password" /></div>
           <div className="form-group"><label>Confirm Password</label><input type="password" placeholder="Confirm" /></div>
           <div className="form-group full" style={{borderTop: '1px solid #f0f0f0', paddingTop: 16}}><label style={{fontWeight: 600, fontSize: 13}}>Two-Factor Authentication</label></div>
-          <div className="form-group"><label>2FA Status</label><div style={{display: 'flex', alignItems: 'center', gap: 8, marginTop: 4}}><span className="bg pending">Not Enabled</span><button className="btn btn-o btn-sm">Enable 2FA</button></div></div>
+          <div className="form-group"><label>2FA Status</label><div style={{display: 'flex', alignItems: 'center', gap: 8, marginTop: 4}}><span className="bg pending">Not Enabled</span><button className="btn btn-o btn-sm" onClick={() => handleToast('2FA setup coming soon')}>Enable 2FA</button></div></div>
           <div className="form-group full" style={{borderTop: '1px solid #f0f0f0', paddingTop: 16}}><label style={{fontWeight: 600, fontSize: 13}}>Active Sessions</label></div>
-          <div className="form-group full"><div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderBottom: '1px solid #f5f5f5'}}><div><div style={{fontSize: 13, fontWeight: 500}}>Chrome on Windows</div><div style={{fontSize: 12, color: '#888'}}>Hamilton, ON · Current session</div></div><span className="bg active">Active</span></div><div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0'}}><div><div style={{fontSize: 13, fontWeight: 500}}>Safari on iPhone</div><div style={{fontSize: 12, color: '#888'}}>Hamilton, ON · 2 days ago</div></div><button className="btn btn-o btn-sm" style={{color: '#dc2626', borderColor: '#fca5a5'}}>Revoke</button></div></div>
+          <div className="form-group full"><div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderBottom: '1px solid #f5f5f5'}}><div><div style={{fontSize: 13, fontWeight: 500}}>Chrome on Windows</div><div style={{fontSize: 12, color: '#888'}}>Hamilton, ON · Current session</div></div><span className="bg active">Active</span></div><div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0'}}><div><div style={{fontSize: 13, fontWeight: 500}}>Safari on iPhone</div><div style={{fontSize: 12, color: '#888'}}>Hamilton, ON · 2 days ago</div></div><button className="btn btn-o btn-sm" style={{color: '#dc2626', borderColor: '#fca5a5'}} onClick={() => handleToast('Session revoked')}>Revoke</button></div></div>
         </div>
-        <div className="btn-bar"><button className="btn btn-p">Update Password</button><button className="btn btn-o">Cancel</button></div>
+        <div className="btn-bar"><button className="btn btn-p" onClick={() => handleToast('Password updated')}>Update Password</button><button className="btn btn-o">Cancel</button></div>
       </div>
 
       
@@ -937,10 +945,10 @@ clients:['Client Files','Your customer accounts'],messages:['Messages','Inbox fr
           <div className="form-group full"><div style={{display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 4}}>
             <span className="mfr" style={{padding: '6px 12px', fontSize: 12}}>Jayco</span>
             <span className="mfr" style={{padding: '6px 12px', fontSize: 12}}>Forest River</span>
-            <span className="mfr" style={{padding: '6px 12px', fontSize: 12, opacity: '0.4', border: '1px dashed #ccc', cursor: 'pointer'}}>+ Add manufacturer</span>
+            <span className="mfr" style={{padding: '6px 12px', fontSize: 12, opacity: '0.4', border: '1px dashed #ccc', cursor: 'pointer'}} onClick={() => handleToast('Manufacturer added')}>+ Add manufacturer</span>
           </div></div>
         </div>
-        <div className="btn-bar"><button className="btn btn-p">Save Dealership Info</button><button className="btn btn-o">Cancel</button></div>
+        <div className="btn-bar"><button className="btn btn-p" onClick={() => handleToast('Dealership info saved')}>Save Dealership Info</button><button className="btn btn-o">Cancel</button></div>
       </div>
 
       
@@ -969,7 +977,7 @@ clients:['Client Files','Your customer accounts'],messages:['Messages','Inbox fr
           <div style={{display: 'flex', alignItems: 'center', gap: 12, padding: '12px 16px', background: '#fafafa', borderRadius: 8, border: '1px solid #e5e7eb'}}>
             <svg width="32" height="20" viewBox="0 0 32 20"><rect width="32" height="20" rx="4" fill="#1a1f71"/><text x="16" y="13" textAnchor="middle" fill="white" font-size="8" font-weight="bold" font-family="Arial">VISA</text></svg>
             <div style={{flex: 1}}><div style={{fontSize: 13, fontWeight: 500}}>Visa ending in 4242</div><div style={{fontSize: 12, color: '#888'}}>Expires 09/2028</div></div>
-            <button className="btn btn-o btn-sm">Update Card</button>
+            <button className="btn btn-o btn-sm" onClick={() => handleToast('Card management coming soon')}>Update Card</button>
           </div>
         </div>
         <div style={{padding: '12px 20px', background: '#f5f6f8', borderTop: '1px solid #f0f0f0', fontSize: 12, color: '#888', borderRadius: '0 0 8px 8px'}}>Subscription plan and fee schedule are managed by your operator. Contact them to make changes.</div>
@@ -987,7 +995,7 @@ clients:['Client Files','Your customer accounts'],messages:['Messages','Inbox fr
           <div className="form-group"><label>Warranty expiry reminders</label><select><option defaultSelected>Push + Email</option><option>Push only</option><option>Email only</option><option>Off</option></select></div>
           <div className="form-group"><label>Customer portal activity</label><select><option>Push + Email</option><option defaultSelected>Push only</option><option>Email only</option><option>Off</option></select></div>
         </div>
-        <div className="btn-bar"><button className="btn btn-p">Save Preferences</button><button className="btn btn-o">Reset to Defaults</button></div>
+        <div className="btn-bar"><button className="btn btn-p" onClick={() => handleToast('Preferences saved')}>Save Preferences</button><button className="btn btn-o" onClick={() => handleToast('Preferences reset')}>Reset to Defaults</button></div>
       </div>
     </div>
   </div>
@@ -1073,7 +1081,7 @@ clients:['Client Files','Your customer accounts'],messages:['Messages','Inbox fr
         <div className="form-group full"><label>Tell us more</label><textarea placeholder="How would this feature help your dealership? What problem does it solve? Be as detailed as you like..." style={{minHeight: 120}}></textarea></div>
         <div className="form-group"><label>Priority to you</label><select><option>Nice to have</option><option defaultSelected>Would really help</option><option>Critical for my business</option></select></div>
       </div>
-      <div className="btn-bar" style={{padding: '16px 0'}}><button className="btn btn-p">Submit Request</button></div>
+      <div className="btn-bar" style={{padding: '16px 0'}}><button className="btn btn-p" onClick={() => handleToast('Feature request submitted!')}>Submit Request</button></div>
     </div>
   </div>
 </div>
@@ -1081,14 +1089,14 @@ clients:['Client Files','Your customer accounts'],messages:['Messages','Inbox fr
 <div className={`page ${activePage === 'clients' ? 'active' : ''}`} id="page-clients">
   <div style={{marginBottom:20,display:'flex',gap:12,alignItems:'center'}}>
     <input placeholder="Search clients by name, email or unit..." style={{flex:1,padding:'10px 14px',border:'1px solid #e0e0e0',borderRadius:8,fontSize:13,fontFamily:'inherit'}} />
-    <button className="btn btn-p" style={{whiteSpace:'nowrap'}}>+ Invite Client</button>
+    <button className="btn btn-p" style={{whiteSpace:'nowrap'}} onClick={() => showPage('invite-customer')}>+ Invite Client</button>
   </div>
   <div className="pn">
     <div className="pn-h"><span className="pn-t">Client Accounts</span><span style={{fontSize:12,color:'#888'}}>8 total</span></div>
     <div className="tw"><table><thead><tr><th>Name</th><th>Email</th><th>Unit</th><th>Portal Status</th><th>Joined</th><th></th></tr></thead><tbody>
       <tr><td><strong>Robert Martin</strong></td><td>robert.martin@email.com</td><td>2024 Jayco Jay Flight</td><td><span className="bg active">Active</span></td><td>Mar 2, 2026</td><td><span className="cid" onClick={() => showPage('customers')}>View Portal</span></td></tr>
       <tr><td><strong>Sarah Johnson</strong></td><td>sarah.j@email.com</td><td>2023 Forest River Rockwood</td><td><span className="bg active">Active</span></td><td>Feb 14, 2026</td><td><span className="cid" onClick={() => showPage('customers')}>View Portal</span></td></tr>
-      <tr><td><strong>Daniel Tremblay</strong></td><td>d.tremblay@gmail.com</td><td>2024 Keystone Montana</td><td><span className="bg pending">Pending</span></td><td>Mar 10, 2026</td><td><span className="cid">Resend Invite</span></td></tr>
+      <tr><td><strong>Daniel Tremblay</strong></td><td>d.tremblay@gmail.com</td><td>2024 Keystone Montana</td><td><span className="bg pending">Pending</span></td><td>Mar 10, 2026</td><td><span className="cid" onClick={() => handleToast('Invitation resent')}>Resend Invite</span></td></tr>
     </tbody></table></div>
   </div>
 </div>
@@ -1112,7 +1120,7 @@ clients:['Client Files','Your customer accounts'],messages:['Messages','Inbox fr
       </div>
       <div style={{padding:'12px 16px',borderTop:'1px solid #f0f0f0',display:'flex',gap:8}}>
         <input placeholder="Reply..." style={{flex:1,padding:'8px 14px',border:'1px solid #e0e0e0',borderRadius:20,fontSize:13,fontFamily:'inherit'}} />
-        <button className="btn btn-p" style={{borderRadius:20}}>Send</button>
+        <button className="btn btn-p" style={{borderRadius:20}} onClick={() => handleToast('Message sent')}>Send</button>
       </div>
     </div>
   </div>
@@ -1126,9 +1134,9 @@ clients:['Client Files','Your customer accounts'],messages:['Messages','Inbox fr
   </div>
   <div className="pn">
     <div className="tw"><table><thead><tr><th>Document</th><th>Type</th><th>Date</th><th>Size</th><th></th></tr></thead><tbody>
-      <tr><td><div style={{display:'flex',alignItems:'center',gap:8}}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><strong>INV-2026-0042.pdf</strong></div></td><td>Invoice</td><td>Mar 15, 2026</td><td>124 KB</td><td><span className="cid">Download</span></td></tr>
-      <tr><td><div style={{display:'flex',alignItems:'center',gap:8}}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><strong>Service-Agreement-2026.pdf</strong></div></td><td>Contract</td><td>Jan 1, 2026</td><td>890 KB</td><td><span className="cid">Download</span></td></tr>
-      <tr><td><div style={{display:'flex',alignItems:'center',gap:8}}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><strong>Q1-2026-Claims-Report.xlsx</strong></div></td><td>Report</td><td>Apr 1, 2026</td><td>256 KB</td><td><span className="cid">Download</span></td></tr>
+      <tr><td><div style={{display:'flex',alignItems:'center',gap:8}}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><strong>INV-2026-0042.pdf</strong></div></td><td>Invoice</td><td>Mar 15, 2026</td><td>124 KB</td><td><span className="cid" onClick={() => handleToast('Download coming soon')}>Download</span></td></tr>
+      <tr><td><div style={{display:'flex',alignItems:'center',gap:8}}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><strong>Service-Agreement-2026.pdf</strong></div></td><td>Contract</td><td>Jan 1, 2026</td><td>890 KB</td><td><span className="cid" onClick={() => handleToast('Download coming soon')}>Download</span></td></tr>
+      <tr><td><div style={{display:'flex',alignItems:'center',gap:8}}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><strong>Q1-2026-Claims-Report.xlsx</strong></div></td><td>Report</td><td>Apr 1, 2026</td><td>256 KB</td><td><span className="cid" onClick={() => handleToast('Download coming soon')}>Download</span></td></tr>
     </tbody></table></div>
   </div>
 </div>
@@ -1144,12 +1152,12 @@ clients:['Client Files','Your customer accounts'],messages:['Messages','Inbox fr
     <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Avg. Completion</div><div className="sc-v">2.4d</div></div>
   </div>
   <div className="pn">
-    <div className="pn-h"><span className="pn-t">Work Orders</span><button className="btn btn-p" style={{fontSize:12,padding:'6px 14px'}}>+ New Work Order</button></div>
+    <div className="pn-h"><span className="pn-t">Work Orders</span><button className="btn btn-p" style={{fontSize:12,padding:'6px 14px'}} onClick={() => showPage('wo-new')}>+ New Work Order</button></div>
     <div className="tw"><table><thead><tr><th>WO #</th><th>Unit</th><th>Description</th><th>Assigned To</th><th>Status</th><th>Due</th></tr></thead><tbody>
-      <tr><td><span className="cid">WO-0041</span></td><td>2024 Jayco Jay Flight</td><td>Slide-out seal replacement</td><td>Mike T.</td><td><span className="bg in-progress">In Progress</span></td><td>Apr 28</td></tr>
-      <tr><td><span className="cid">WO-0040</span></td><td>2024 Forest River Rockwood</td><td>AC unit not cooling — warranty</td><td>Unassigned</td><td><span className="bg pending">Open</span></td><td>Apr 29</td></tr>
-      <tr><td><span className="cid">WO-0039</span></td><td>2023 Keystone Montana</td><td>PDI inspection — pre-delivery</td><td>Jason R.</td><td><span className="bg active">Complete</span></td><td>Apr 25</td></tr>
-      <tr><td><span className="cid">WO-0038</span></td><td>2022 Heartland Bighorn</td><td>Awning motor replacement</td><td>Carlos P.</td><td><span className="bg in-progress">In Progress</span></td><td>Apr 30</td></tr>
+      <tr><td><span className="cid" onClick={() => showPage('wo-detail')}>WO-0041</span></td><td>2024 Jayco Jay Flight</td><td>Slide-out seal replacement</td><td>Mike T.</td><td><span className="bg in-progress">In Progress</span></td><td>Apr 28</td></tr>
+      <tr><td><span className="cid" onClick={() => showPage('wo-detail')}>WO-0040</span></td><td>2024 Forest River Rockwood</td><td>AC unit not cooling — warranty</td><td>Unassigned</td><td><span className="bg pending">Open</span></td><td>Apr 29</td></tr>
+      <tr><td><span className="cid" onClick={() => showPage('wo-detail')}>WO-0039</span></td><td>2023 Keystone Montana</td><td>PDI inspection — pre-delivery</td><td>Jason R.</td><td><span className="bg active">Complete</span></td><td>Apr 25</td></tr>
+      <tr><td><span className="cid" onClick={() => showPage('wo-detail')}>WO-0038</span></td><td>2022 Heartland Bighorn</td><td>Awning motor replacement</td><td>Carlos P.</td><td><span className="bg in-progress">In Progress</span></td><td>Apr 30</td></tr>
     </tbody></table></div>
   </div>
 </div>
@@ -1162,11 +1170,11 @@ clients:['Client Files','Your customer accounts'],messages:['Messages','Inbox fr
     <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Pending Payouts</div><div className="sc-v">$12,400</div></div>
   </div>
   <div className="pn">
-    <div className="pn-h"><span className="pn-t">Consigned Units</span><button className="btn btn-p" style={{fontSize:12,padding:'6px 14px'}}>+ Add Consignment</button></div>
+    <div className="pn-h"><span className="pn-t">Consigned Units</span><button className="btn btn-p" style={{fontSize:12,padding:'6px 14px'}} onClick={() => showPage('mkt-post-unit')}>+ Add Consignment</button></div>
     <div className="tw"><table><thead><tr><th>Unit</th><th>Consignor</th><th>List Price</th><th>Days Listed</th><th>Offers</th><th>Status</th><th></th></tr></thead><tbody>
-      <tr><td>2022 Jayco Eagle HT 284BHOK</td><td>Paul Gagnon</td><td>$68,500</td><td>14</td><td>2</td><td><span className="bg active">Listed</span></td><td><span className="cid">Manage</span></td></tr>
-      <tr><td>2021 Forest River Salem 27DBK</td><td>Marie-Claude B.</td><td>$34,900</td><td>32</td><td>0</td><td><span className="bg active">Listed</span></td><td><span className="cid">Manage</span></td></tr>
-      <tr><td>2023 Heartland Bighorn 3995FL</td><td>Tom Wilson</td><td>$89,000</td><td>5</td><td>1</td><td><span className="bg pending">Pending Photos</span></td><td><span className="cid">Manage</span></td></tr>
+      <tr><td>2022 Jayco Eagle HT 284BHOK</td><td>Paul Gagnon</td><td>$68,500</td><td>14</td><td>2</td><td><span className="bg active">Listed</span></td><td><span className="cid" onClick={() => handleToast('Consignment detail coming soon')}>Manage</span></td></tr>
+      <tr><td>2021 Forest River Salem 27DBK</td><td>Marie-Claude B.</td><td>$34,900</td><td>32</td><td>0</td><td><span className="bg active">Listed</span></td><td><span className="cid" onClick={() => handleToast('Consignment detail coming soon')}>Manage</span></td></tr>
+      <tr><td>2023 Heartland Bighorn 3995FL</td><td>Tom Wilson</td><td>$89,000</td><td>5</td><td>1</td><td><span className="bg pending">Pending Photos</span></td><td><span className="cid" onClick={() => handleToast('Consignment detail coming soon')}>Manage</span></td></tr>
     </tbody></table></div>
   </div>
 </div>
@@ -1184,7 +1192,7 @@ clients:['Client Files','Your customer accounts'],messages:['Messages','Inbox fr
     <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="1.5" style={{margin:'0 auto 16px'}}><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
     <div style={{fontSize:16,fontWeight:600,color:'#1a1a2e',marginBottom:8}}>Digital Marketing Services — Coming Q2 2026</div>
     <div style={{fontSize:13,color:'#666',maxWidth:500,margin:'0 auto',lineHeight:1.6}}>SEO, PPC, social media management, lead generation, and CRM integration — all managed by the DS360 team on your behalf. More leads. Less work.</div>
-    <button className="btn btn-p" style={{marginTop:20}}>Learn More</button>
+    <button className="btn btn-p" style={{marginTop:20}} onClick={() => showPage('sales-services')}>Learn More</button>
   </div>
 </div>
 
@@ -1227,7 +1235,7 @@ clients:['Client Files','Your customer accounts'],messages:['Messages','Inbox fr
         <div><div style={{fontSize:11,color:'#888'}}>Per-Claim Fee</div><div style={{fontSize:22,fontWeight:700,color:'#1a1a2e'}}>$35</div></div>
         <div><div style={{fontSize:11,color:'#888'}}>Next Billing</div><div style={{fontSize:15,fontWeight:600,color:'#1a1a2e'}}>May 1, 2026</div></div>
       </div>
-      <div style={{display:'flex',gap:8}}><button className="btn" style={{fontSize:12}}>Manage Card</button><button className="btn" style={{fontSize:12,color:'#ef4444',borderColor:'#ef4444'}}>Cancel Plan</button></div>
+      <div style={{display:'flex',gap:8}}><button className="btn" style={{fontSize:12}} onClick={() => handleToast('Card management coming soon')}>Manage Card</button><button className="btn" style={{fontSize:12,color:'#ef4444',borderColor:'#ef4444'}} onClick={() => handleToast('Please contact your operator to cancel')}>Cancel Plan</button></div>
     </div>
     <div className="pn" style={{padding:24}}>
       <div style={{fontSize:11,color:'#888',marginBottom:4,textTransform:'uppercase',letterSpacing:1}}>Alternate Plan</div>
@@ -1237,15 +1245,15 @@ clients:['Client Files','Your customer accounts'],messages:['Messages','Inbox fr
         <div><div style={{fontSize:11,color:'#888'}}>Monthly Fee</div><div style={{fontSize:22,fontWeight:700,color:'#888'}}>$0</div></div>
         <div><div style={{fontSize:11,color:'#888'}}>Per-Claim Fee</div><div style={{fontSize:22,fontWeight:700,color:'#888'}}>$25</div></div>
       </div>
-      <button className="btn" style={{fontSize:12}}>Switch to Plan B</button>
+      <button className="btn" style={{fontSize:12}} onClick={() => handleToast('Please contact your operator to change plans')}>Switch to Plan B</button>
     </div>
   </div>
   <div className="pn">
     <div className="pn-h"><span className="pn-t">Payment Method</span></div>
     <div style={{padding:20,display:'flex',alignItems:'center',gap:12,flexWrap:'wrap'}}>
       <div style={{padding:'10px 16px',border:'2px solid #08235d',borderRadius:8,display:'flex',alignItems:'center',gap:8,fontSize:13}}><svg width="20" height="14" viewBox="0 0 32 22" fill="none"><rect width="32" height="22" rx="3" fill="#1a1f71"/><rect y="5" width="32" height="6" fill="#f7a600"/></svg>Visa ending 4242 &nbsp;<span style={{color:'#22c55e',fontSize:11,fontWeight:600}}>Primary</span></div>
-      <button className="btn" style={{fontSize:12}}>Update Card</button>
-      <button className="btn" style={{fontSize:12}}>Add Interac e-Transfer</button>
+      <button className="btn" style={{fontSize:12}} onClick={() => handleToast('Card management coming soon')}>Update Card</button>
+      <button className="btn" style={{fontSize:12}} onClick={() => handleToast('Interac setup coming soon')}>Add Interac e-Transfer</button>
     </div>
   </div>
 </div>
@@ -1260,8 +1268,8 @@ clients:['Client Files','Your customer accounts'],messages:['Messages','Inbox fr
     <div className="pn-h"><span className="pn-t">Staff Members</span><button className="btn btn-p" style={{fontSize:12,padding:'6px 14px'}} onClick={()=>showPage('add-staff')}>+ Invite Staff</button></div>
     <div className="tw"><table><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Last Active</th><th></th></tr></thead><tbody>
       <tr><td><strong>Mike Smith</strong></td><td>mike@smithsrv.com</td><td><span className="bg active">Owner</span></td><td><span className="bg active">Active</span></td><td>Today</td><td></td></tr>
-      <tr><td><strong>Janet Lee</strong></td><td>janet@smithsrv.com</td><td><span className="bg pending">Staff</span></td><td><span className="bg active">Active</span></td><td>2h ago</td><td><span className="cid">Edit</span></td></tr>
-      <tr><td><strong>Carlos Perez</strong></td><td>carlos@smithsrv.com</td><td><span className="bg pending">Technician</span></td><td><span className="bg active">Active</span></td><td>Yesterday</td><td><span className="cid">Edit</span></td></tr>
+      <tr><td><strong>Janet Lee</strong></td><td>janet@smithsrv.com</td><td><span className="bg pending">Staff</span></td><td><span className="bg active">Active</span></td><td>2h ago</td><td><span className="cid" onClick={() => handleToast('Staff editing coming soon')}>Edit</span></td></tr>
+      <tr><td><strong>Carlos Perez</strong></td><td>carlos@smithsrv.com</td><td><span className="bg pending">Technician</span></td><td><span className="bg active">Active</span></td><td>Yesterday</td><td><span className="cid" onClick={() => handleToast('Staff editing coming soon')}>Edit</span></td></tr>
     </tbody></table></div>
   </div>
 </div>
@@ -1288,7 +1296,7 @@ clients:['Client Files','Your customer accounts'],messages:['Messages','Inbox fr
       {[{unit:'2022 Jayco Eagle HT 284BHOK',list:68500,offer:65000,buyer:'Dealer — Maple RV Centre',exp:'Apr 30'},{unit:'2022 Jayco Eagle HT 284BHOK',list:68500,offer:66500,buyer:'Public Buyer',exp:'May 1'},{unit:'2021 Forest River Salem 27DBK',list:34900,offer:33000,buyer:'Dealer — Coast RV',exp:'Apr 28'}].map((o,i)=>(
         <div key={i} style={{border:'1px solid #e8e8e8',borderRadius:10,padding:16,display:'flex',justifyContent:'space-between',alignItems:'center',gap:16}}>
           <div style={{flex:1}}><div style={{fontWeight:600,fontSize:14,marginBottom:6}}>{o.unit}</div><div style={{fontSize:13,color:'#555'}}>Offer: <strong style={{color:'#22c55e'}}>${o.offer.toLocaleString()}</strong> &nbsp;&middot;&nbsp; List: ${o.list.toLocaleString()} &nbsp;&middot;&nbsp; {o.buyer}</div><div style={{fontSize:12,color:'#888',marginTop:4}}>Expires: {o.exp}</div></div>
-          <div style={{display:'flex',gap:8,flexShrink:0}}><button className="btn btn-p" style={{fontSize:12}}>Accept</button><button className="btn" style={{fontSize:12}}>Counter</button><button className="btn" style={{fontSize:12}}>Decline</button></div>
+          <div style={{display:'flex',gap:8,flexShrink:0}}><button className="btn btn-p" style={{fontSize:12}} onClick={() => handleToast('Offer accepted — escrow process initiated')}>Accept</button><button className="btn" style={{fontSize:12}} onClick={() => handleToast('Counter offer sent')}>Counter</button><button className="btn" style={{fontSize:12}} onClick={() => handleToast('Offer declined')}>Decline</button></div>
         </div>
       ))}
     </div>
@@ -1336,7 +1344,7 @@ clients:['Client Files','Your customer accounts'],messages:['Messages','Inbox fr
             {s.status==='complete'?<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>:<span style={{fontSize:12,color:'#888',fontWeight:600}}>{i+1}</span>}
           </div>
           <div style={{flex:1}}><div style={{fontWeight:600,fontSize:13,marginBottom:2}}>{s.label}</div><div style={{fontSize:12,color:'#888'}}>{s.desc}</div></div>
-          {s.status==='pending'&&<button className="btn btn-p" style={{fontSize:12,flexShrink:0}}>Complete</button>}
+          {s.status==='pending'&&<button className="btn btn-p" style={{fontSize:12,flexShrink:0}} onClick={() => handleToast('Verification coming soon')}>Complete</button>}
           {s.status==='complete'&&<span style={{fontSize:12,color:'#22c55e',fontWeight:600,flexShrink:0}}>Verified</span>}
         </div>
       ))}
@@ -1377,6 +1385,90 @@ clients:['Client Files','Your customer accounts'],messages:['Messages','Inbox fr
     </tbody></table></div>
   </div>
 </div>
+
+<div className={`page ${activePage === 'wo-new' ? 'active' : ''}`} id="page-wo-new">
+  <div className="detail-header"><button className="detail-back" onClick={() => showPage('techflow')}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6"/></svg></button><div className="detail-info"><div className="detail-title">New Work Order</div><div className="detail-meta">Create a work order for your service department</div></div></div>
+  <div className="pn"><div className="form-grid">
+    <div className="form-group"><label>Unit</label><select><option>Select unit...</option><option>2024 Jayco Jay Flight 264BH</option><option>2024 Forest River Rockwood</option><option>2023 Keystone Montana</option><option>2022 Heartland Bighorn</option></select></div>
+    <div className="form-group"><label>Assigned Technician</label><select><option>Unassigned</option><option>Mike T.</option><option>Jason R.</option><option>Carlos P.</option></select></div>
+    <div className="form-group"><label>Priority</label><select><option>Normal</option><option>Urgent</option><option>Low</option></select></div>
+    <div className="form-group"><label>Due Date</label><input type="date" /></div>
+    <div className="form-group full"><label>Description</label><textarea placeholder="Describe the work to be done..."></textarea></div>
+    <div className="form-group full"><label>Related Claim</label><select><option>None</option><option>CLM-0248 — Warranty</option><option>CLM-0246 — PDI</option></select></div>
+  </div><div className="btn-bar"><button className="btn btn-p" onClick={() => { handleToast('Work order created'); showPage('techflow'); }}>Create Work Order</button><button className="btn btn-o" onClick={() => showPage('techflow')}>Cancel</button></div></div>
+</div>
+
+<div className={`page ${activePage === 'wo-detail' ? 'active' : ''}`} id="page-wo-detail">
+  <div className="detail-header"><button className="detail-back" onClick={() => showPage('techflow')}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6"/></svg></button><div className="detail-info"><div className="detail-title">WO-0041</div><div className="detail-meta">2024 Jayco Jay Flight · Slide-out seal replacement</div></div><span className="bg in-progress" style={{fontSize:13,padding:'6px 16px'}}>In Progress</span></div>
+  <div style={{display:'grid',gridTemplateColumns:'2fr 1fr',gap:20}}>
+    <div>
+      <div className="pn" style={{marginBottom:16}}><div className="pn-h"><span className="pn-t">Work Details</span></div>
+        <div className="cd-row"><span className="cd-label">Unit</span><span className="cd-value">2024 Jayco Jay Flight 264BH</span></div>
+        <div className="cd-row"><span className="cd-label">Description</span><span className="cd-value">Slide-out seal replacement — full perimeter seal worn</span></div>
+        <div className="cd-row"><span className="cd-label">Assigned To</span><span className="cd-value">Mike T.</span></div>
+        <div className="cd-row"><span className="cd-label">Due</span><span className="cd-value">Apr 28, 2026</span></div>
+        <div className="cd-row"><span className="cd-label">Related Claim</span><span className="cd-value cid" onClick={() => showPage('claim-detail')}>CLM-0248</span></div>
+      </div>
+      <div className="pn"><div className="pn-h"><span className="pn-t">Notes</span></div>
+        <div style={{padding:'16px 20px',fontSize:13,color:'#555',lineHeight:1.6}}>Seal kit on order (PO-0038). Expected delivery Mar 18. Schedule repair after parts arrive.</div>
+        <div style={{padding:'0 20px 16px'}}><textarea placeholder="Add a note..." style={{width:'100%',padding:'10px 12px',border:'1px solid #e0e0e0',borderRadius:8,fontSize:13,fontFamily:'inherit',minHeight:50,resize:'vertical',outline:'none'}}></textarea><div style={{textAlign:'right',marginTop:8}}><button className="btn btn-p btn-sm" onClick={() => handleToast('Note added')}>Add Note</button></div></div>
+      </div>
+    </div>
+    <div><div className="cd-section"><div className="cd-section-h">Work Order Info</div><div className="cd-row"><span className="cd-label">WO #</span><span className="cd-value">WO-0041</span></div><div className="cd-row"><span className="cd-label">Created</span><span className="cd-value">Apr 22, 2026</span></div><div className="cd-row"><span className="cd-label">Priority</span><span className="cd-value">Normal</span></div><div className="cd-row"><span className="cd-label">Status</span><span className="cd-value"><span className="bg in-progress">In Progress</span></span></div></div>
+      <div className="cd-section" style={{marginTop:12}}><div className="cd-section-h">Update Status</div><div style={{padding:'12px 16px',display:'flex',flexDirection:'column',gap:8}}><select style={{padding:'8px 12px',border:'1px solid #e0e0e0',borderRadius:6,fontSize:13,fontFamily:'inherit'}}><option>Open</option><option>In Progress</option><option>Waiting on Parts</option><option>Complete</option><option>Cancelled</option></select><button className="btn btn-p btn-sm" onClick={() => handleToast('Status updated')}>Update</button></div></div>
+    </div>
+  </div>
+</div>
+
+<div className={`page ${activePage === 'svc-fi-detail' ? 'active' : ''}`} id="page-svc-fi-detail">
+  <div className="detail-header"><button className="detail-back" onClick={() => showPage('svc-fi')}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6"/></svg></button><div className="detail-info"><div className="detail-title">FI-0014 — Julie Fournier</div><div className="detail-meta">2024 FR Wildwood · 4 products recommended</div></div><span className="bg in-progress" style={{fontSize:13,padding:'6px 16px'}}>Recommending</span></div>
+  <div style={{display:'grid',gridTemplateColumns:'2fr 1fr',gap:20}}>
+    <div>
+      <div className="pn" style={{marginBottom:16}}><div className="pn-h"><span className="pn-t">Recommended Products</span></div>
+        <div className="tw"><table><thead><tr><th>Product</th><th>Price</th><th>Provider</th><th>Status</th></tr></thead><tbody>
+          <tr><td style={{fontWeight:500}}>Extended Warranty — 5 Year</td><td>$2,450</td><td>Guardsman RV</td><td><span className="bg pending">Offered</span></td></tr>
+          <tr><td style={{fontWeight:500}}>GAP Insurance</td><td>$395</td><td>DS360 Partner</td><td><span className="bg pending">Offered</span></td></tr>
+          <tr><td style={{fontWeight:500}}>Tire & Wheel Protection</td><td>$295</td><td>DS360 Partner</td><td><span className="bg pending">Offered</span></td></tr>
+          <tr><td style={{fontWeight:500}}>Paint & Fabric Protection</td><td>$599</td><td>Protekto</td><td><span className="bg pending">Offered</span></td></tr>
+        </tbody></table></div></div>
+      <div className="pn"><div className="pn-h"><span className="pn-t">Messages</span></div>
+        <div className="comm-box"><div className="comm-msg"><div className="comm-avatar op">DS</div><div className="comm-content"><div className="comm-name">DS360 F&I Team</div><div className="comm-text">Recommendations ready for Julie Fournier. Extended warranty and GAP are the strongest fits based on unit value.</div><div className="comm-time">Mar 15, 9:00 AM</div></div></div></div>
+        <div style={{padding:'16px 20px'}}><textarea placeholder="Message DS360 team..." style={{width:'100%',padding:'10px 12px',border:'1px solid #e0e0e0',borderRadius:8,fontSize:13,fontFamily:'inherit',minHeight:50,resize:'vertical',outline:'none'}}></textarea><div style={{textAlign:'right',marginTop:8}}><button className="btn btn-p btn-sm" onClick={() => handleToast('Message sent')}>Send</button></div></div>
+      </div>
+    </div>
+    <div><div className="cd-section"><div className="cd-section-h">Deal Info</div><div className="cd-row"><span className="cd-label">Deal #</span><span className="cd-value">FI-0014</span></div><div className="cd-row"><span className="cd-label">Customer</span><span className="cd-value">Julie Fournier</span></div><div className="cd-row"><span className="cd-label">Unit</span><span className="cd-value">2024 FR Wildwood</span></div><div className="cd-row"><span className="cd-label">Products</span><span className="cd-value">4 offered</span></div><div className="cd-row"><span className="cd-label">Sold</span><span className="cd-value">—</span></div></div></div>
+  </div>
+</div>
+
+<div className={`page ${activePage === 'svc-warranty-detail' ? 'active' : ''}`} id="page-svc-warranty-detail">
+  <div className="detail-header"><button className="detail-back" onClick={() => showPage('svc-warranty')}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6"/></svg></button><div className="detail-info"><div className="detail-title">WP-0041 — Guardsman RV</div><div className="detail-meta">Robert Martin · 2024 Jayco Jay Flight · Comprehensive</div></div><span className="bg active" style={{fontSize:13,padding:'6px 16px'}}>Active</span></div>
+  <div style={{display:'grid',gridTemplateColumns:'2fr 1fr',gap:20}}>
+    <div className="pn"><div className="pn-h"><span className="pn-t">Coverage Details</span></div>
+      <div className="cd-row"><span className="cd-label">Plan</span><span className="cd-value">Comprehensive — 5 Year</span></div>
+      <div className="cd-row"><span className="cd-label">Provider</span><span className="cd-value">Guardsman RV</span></div>
+      <div className="cd-row"><span className="cd-label">Start Date</span><span className="cd-value">Feb 10, 2026</span></div>
+      <div className="cd-row"><span className="cd-label">Expiry</span><span className="cd-value">Feb 10, 2031</span></div>
+      <div className="cd-row"><span className="cd-label">Deductible</span><span className="cd-value">$100 per claim</span></div>
+      <div className="cd-row"><span className="cd-label">Claims Used</span><span className="cd-value">1 of unlimited</span></div>
+      <div style={{padding:'16px 20px',fontSize:13,color:'#555',lineHeight:1.6}}><strong>Covered:</strong> Slide mechanisms, electrical systems, appliances, water systems, roof, HVAC, awnings, leveling systems.</div>
+    </div>
+    <div><div className="cd-section"><div className="cd-section-h">Plan Info</div><div className="cd-row"><span className="cd-label">Plan #</span><span className="cd-value">WP-0041</span></div><div className="cd-row"><span className="cd-label">Customer</span><span className="cd-value">Robert Martin</span></div><div className="cd-row"><span className="cd-label">VIN</span><span className="cd-value" style={{fontFamily:'monospace',fontSize:12}}>...4K1</span></div><div className="cd-row"><span className="cd-label">Status</span><span className="cd-value"><span className="bg active">Active</span></span></div></div></div>
+  </div>
+</div>
+
+<div className={`page ${activePage === 'svc-parts-det' ? 'active' : ''}`} id="page-svc-parts-det">
+  <div className="detail-header"><button className="detail-back" onClick={() => showPage('svc-parts')}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6"/></svg></button><div className="detail-info"><div className="detail-title">PO-0038</div><div className="detail-meta">CLM-0248 · Sidewall panel, adhesive, sealant</div></div><span className="bg new-req" style={{fontSize:13,padding:'6px 16px'}}>Sourcing</span></div>
+  <div style={{display:'grid',gridTemplateColumns:'2fr 1fr',gap:20}}>
+    <div className="pn"><div className="pn-h"><span className="pn-t">Order Items</span></div>
+      <div className="tw"><table><thead><tr><th>Item</th><th>Qty</th><th>Part #</th><th>Status</th></tr></thead><tbody>
+        <tr><td style={{fontWeight:500}}>Sidewall panel (2x3 section)</td><td>1</td><td>—</td><td><span className="bg new-req">Sourcing</span></td></tr>
+        <tr><td style={{fontWeight:500}}>Panel adhesive (1 gal)</td><td>1</td><td>—</td><td><span className="bg new-req">Sourcing</span></td></tr>
+        <tr><td style={{fontWeight:500}}>Lap sealant</td><td>2</td><td>—</td><td><span className="bg new-req">Sourcing</span></td></tr>
+      </tbody></table></div>
+    </div>
+    <div><div className="cd-section"><div className="cd-section-h">Order Info</div><div className="cd-row"><span className="cd-label">Order #</span><span className="cd-value">PO-0038</span></div><div className="cd-row"><span className="cd-label">Related Claim</span><span className="cd-value cid" onClick={() => showPage('claim-detail')}>CLM-0248</span></div><div className="cd-row"><span className="cd-label">Submitted</span><span className="cd-value">Mar 16, 2026</span></div><div className="cd-row"><span className="cd-label">Status</span><span className="cd-value"><span className="bg new-req">Sourcing</span></span></div><div className="cd-row"><span className="cd-label">ETA</span><span className="cd-value">—</span></div></div></div>
+  </div>
+</div>
 <DealerMarketplacePages activePage={activePage} showPage={showPage} />
 <DealerShowcasePages activePage={activePage} showPage={showPage} />
 
@@ -1385,6 +1477,11 @@ clients:['Client Files','Your customer accounts'],messages:['Messages','Inbox fr
 
 </div>
 </div>
+    {toastVisible && (
+      <div style={{position:'fixed',bottom:24,left:'50%',transform:'translateX(-50%)',background:'#1a1a2e',color:'white',padding:'10px 20px',borderRadius:8,fontSize:13,fontWeight:500,zIndex:9999,boxShadow:'0 4px 12px rgba(0,0,0,0.3)',pointerEvents:'none'}}>
+        {toastMsg}
+      </div>
+    )}
     <MobileBottomNav portalType="dealer" activePage={activePage} onNavigate={showPage} parents={parents} />
     <OfflineBanner />
     </>
