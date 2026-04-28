@@ -64,7 +64,13 @@ function getBlockedPagesForRole(role: string): string[] {
 // ============================================================================
 
 export default function DealerPortalV6() {
-  const [currentPage, setCurrentPage] = useState<string>("dealer.ops.dashboard");
+  const [currentPage, setCurrentPage] = useState<string>(() => {
+    const devRole = localStorage.getItem("ds360-dev-role");
+    if (devRole === "service_manager") return "service.ops.dashboard";
+    if (devRole === "shop_manager")    return "shop.ops.dashboard";
+    if (devRole === "parts_dept")      return "parts.ops.dashboard";
+    return "dealer.ops.dashboard";
+  });
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const { user: clerkUser, isLoaded } = useUser();
   const { signOut } = useClerk();
