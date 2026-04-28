@@ -305,8 +305,8 @@ function App() {
               {/* v6 portal catch-alls → old portals (v6 endpoints) */}
               <Route path="/operator-v6/:rest*" component={OperatorPortal} />
               <Route path="/operator-v6" component={OperatorPortal} />
-              <Route path="/dealer-v6/:rest*" component={DealerPortal} />
-              <Route path="/dealer-v6" component={DealerPortal} />
+              <Route path="/dealer-v6/:rest*" component={DealerPortalV6} />
+              <Route path="/dealer-v6" component={DealerPortalV6} />
               <Route path="/client-v6/:rest*" component={CustomerPortal} />
               <Route path="/client-v6" component={CustomerPortal} />
               {/* Legacy portal paths */}
