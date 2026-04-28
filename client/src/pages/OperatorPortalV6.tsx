@@ -55,7 +55,7 @@ export default function OperatorPortalV6() {
     roles: ((clerkUser.publicMetadata as any)?.roles || []) as string[],
   } : null;
   const logout = async () => { await signOut(); window.location.href = "/login"; };
-  const userRole: string = user?.role || "operator_admin";
+  const userRole: string = localStorage.getItem("ds360-dev-role") || user?.role || "operator_admin";
 
   // If user role is not hosted by this portal, redirect or show message
   const roleAllowedOnPortal = HOSTS_ROLES.includes(userRole);

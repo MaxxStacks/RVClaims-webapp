@@ -23,7 +23,7 @@ export default function BidderMainNav({ currentPage, onShowPage }: Props) {
     role: localStorage.getItem("ds360-dev-role") || (clerkUser.publicMetadata as any)?.role,
   } : null;
 
-  const userRole: string = user?.role || "independent_bidder";
+  const userRole: string = localStorage.getItem("ds360-dev-role") || user?.role || "independent_bidder";
   const userInitials = (user?.name || "Bidder").split(" ").map((s: string) => s[0]).join("").slice(0, 2).toUpperCase();
   const userDisplayName = user?.name || "Bidder";
   const roleLabel = ROLES[userRole]?.label || "Bidder";

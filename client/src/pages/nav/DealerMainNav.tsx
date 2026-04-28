@@ -78,7 +78,7 @@ export default function DealerMainNav({ currentPage, onShowPage }: Props) {
     role: localStorage.getItem("ds360-dev-role") || (clerkUser.publicMetadata as any)?.role,
   } : null;
 
-  const userRole: string = user?.role || "dealer_owner";
+  const userRole: string = localStorage.getItem("ds360-dev-role") || user?.role || "dealer_owner";
   const userInitials = (user?.name || "Dealer").split(" ").map((s: string) => s[0]).join("").slice(0, 2).toUpperCase();
   const userDisplayName = user?.name || "Dealer";
   const roleLabel = ROLES[userRole]?.label || "Dealer";

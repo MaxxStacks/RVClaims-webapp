@@ -25,7 +25,7 @@ export default function OperatorMainNav({ currentPage, onShowPage }: Props) {
     role: localStorage.getItem("ds360-dev-role") || (clerkUser.publicMetadata as any)?.role,
   } : null;
 
-  const userRole: string = user?.role || "operator_admin";
+  const userRole: string = localStorage.getItem("ds360-dev-role") || user?.role || "operator_admin";
   const userInitials = (user?.name || "Operator").split(" ").map((s: string) => s[0]).join("").slice(0, 2).toUpperCase();
   const userDisplayName = user?.name || "Operator";
   const roleLabel = ROLES[userRole]?.label || "Operator";

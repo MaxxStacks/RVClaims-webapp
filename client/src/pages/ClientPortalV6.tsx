@@ -52,7 +52,7 @@ export default function ClientPortalV6() {
     roles: ((clerkUser.publicMetadata as any)?.roles || []) as string[],
   } : null;
   const logout = async () => { await signOut(); window.location.href = "/login"; };
-  const userRole: string = user?.role || "client";
+  const userRole: string = localStorage.getItem("ds360-dev-role") || user?.role || "client";
 
   // If user role is not hosted by this portal, redirect or show message
   const roleAllowedOnPortal = HOSTS_ROLES.includes(userRole);

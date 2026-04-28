@@ -82,7 +82,8 @@ export default function DealerPortalV6() {
     roles: ((clerkUser.publicMetadata as any)?.roles || []) as string[],
   } : null;
   const logout = async () => { await signOut(); window.location.href = "/login"; };
-  const userRole: string = user?.role || "dealer_owner";
+  // Read dev role directly from localStorage so it applies even when not signed in
+  const userRole: string = localStorage.getItem("ds360-dev-role") || user?.role || "dealer_owner";
 
   // If user role is not hosted by this portal, redirect or show message
   const roleAllowedOnPortal = HOSTS_ROLES.includes(userRole);

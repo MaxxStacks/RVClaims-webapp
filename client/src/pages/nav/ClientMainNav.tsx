@@ -27,7 +27,7 @@ export default function ClientMainNav({ currentPage, onShowPage }: Props) {
     role: localStorage.getItem("ds360-dev-role") || (clerkUser.publicMetadata as any)?.role,
   } : null;
 
-  const userRole: string = user?.role || "client";
+  const userRole: string = localStorage.getItem("ds360-dev-role") || user?.role || "client";
   const userInitials = (user?.name || "Client").split(" ").map((s: string) => s[0]).join("").slice(0, 2).toUpperCase();
   const userDisplayName = user?.name || "Client";
   const roleLabel = ROLES[userRole]?.label || "Client";
