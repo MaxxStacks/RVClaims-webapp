@@ -22,7 +22,7 @@ export default function OperatorMainNav({ currentPage, onShowPage }: Props) {
 
   const user = clerkUser ? {
     name: [clerkUser.firstName, clerkUser.lastName].filter(Boolean).join(" ") || clerkUser.username || "User",
-    role: ((clerkUser.unsafeMetadata as any)?.devRoleOverride as string) || (clerkUser.publicMetadata as any)?.role,
+    role: localStorage.getItem("ds360-dev-role") || (clerkUser.publicMetadata as any)?.role,
   } : null;
 
   const userRole: string = user?.role || "operator_admin";

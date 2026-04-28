@@ -82,7 +82,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         lastName: clerkUser.lastName ?? "",
         phone: null,
         avatarUrl: clerkUser.imageUrl ?? null,
-        role: (((clerkUser.unsafeMetadata as any)?.devRoleOverride as UserRole) || (clerkUser.publicMetadata?.role as UserRole) || "client"),
+        role: ((localStorage.getItem("ds360-dev-role") as UserRole) || (clerkUser.publicMetadata?.role as UserRole) || "client"),
         dealershipId: (clerkUser.publicMetadata?.dealershipId as string) ?? null,
         timezone: null,
         language: null,

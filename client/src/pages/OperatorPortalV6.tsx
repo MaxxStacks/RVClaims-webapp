@@ -51,7 +51,7 @@ export default function OperatorPortalV6() {
   // Map Clerk user to local-shape user object expected by the rest of this component
   const user = clerkUser ? {
     name: [clerkUser.firstName, clerkUser.lastName].filter(Boolean).join(" ") || clerkUser.username || "User",
-    role: ((clerkUser.unsafeMetadata as any)?.devRoleOverride as string) || (clerkUser.publicMetadata as any)?.role,
+    role: localStorage.getItem("ds360-dev-role") || (clerkUser.publicMetadata as any)?.role,
     roles: ((clerkUser.publicMetadata as any)?.roles || []) as string[],
   } : null;
   const logout = async () => { await signOut(); window.location.href = "/login"; };
