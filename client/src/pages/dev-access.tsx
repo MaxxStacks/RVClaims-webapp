@@ -7,6 +7,9 @@ const PORTAL_TARGETS: Record<string, string> = {
   operator_staff:  "/operator-v6",
   dealer_owner:    "/dealer-v6",
   dealer_staff:    "/dealer-v6",
+  service_manager: "/dealer-v6",
+  shop_manager:    "/dealer-v6",
+  parts_dept:      "/dealer-v6",
   technician:      "/dealer-v6",
   public_bidder:   "/dealer-v6",
   consignor:       "/dealer-v6",
@@ -37,9 +40,19 @@ const SECTIONS: { label: string; color: string; bg: string; roles: RoleCard[] }[
     roles: [
       { role: "dealer_owner",  label: "Dealer Owner",   desc: "Full dealership control — claims, units, staff, billing, subscription" },
       { role: "dealer_staff",  label: "Dealer Staff",   desc: "Claims and units only — no billing, no staff management" },
-      { role: "technician",    label: "Technician",     desc: "Service workflow, parts, and unit access only" },
       { role: "public_bidder", label: "Public Bidder",  desc: "Marketplace browsing, auction bidding, escrow payments" },
       { role: "consignor",     label: "Consignor",      desc: "Consignment listings, offer management, payout tracking" },
+    ],
+  },
+  {
+    label: "Service Portal (Dealer-v6)",
+    color: "#0891b2",
+    bg: "#f0f9ff",
+    roles: [
+      { role: "service_manager", label: "Service Manager", desc: "Work orders, dispatch scheduler, technician management, parts, full unit bio" },
+      { role: "shop_manager",    label: "Shop Manager",    desc: "All shop WOs, dispatch board (if enabled by Dealer Admin), parts access" },
+      { role: "technician",      label: "Technician",      desc: "Assigned work orders only — no WO creation, no billing, no admin" },
+      { role: "parts_dept",      label: "Parts Department", desc: "Parts department portal — menu items configured by Dealer Admin" },
     ],
   },
   {

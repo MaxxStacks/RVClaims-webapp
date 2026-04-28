@@ -21,6 +21,14 @@ export default function CustomerPortal() {
   const [custSettingsTab, setCustSettingsTab] = useState('cs-profile');
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
+  const [toastMsg, setToastMsg] = useState('');
+  const [toastVisible, setToastVisible] = useState(false);
+  const handleToast = (msg: string) => {
+    setToastMsg(msg);
+    setToastVisible(true);
+    setTimeout(() => setToastVisible(false), 2800);
+  };
+
   // ─── Auth ──────────────────────────────────────────────────────────────────
   const { user, logout } = useAuth();
 
@@ -298,11 +306,11 @@ export default function CustomerPortal() {
 <div className={`page ${activePage === 'documents' ? 'active' : ''}`} id="page-documents">
   <div className="pn"><div className="pn-h"><span className="pn-t">My Documents</span></div>
     <div className="tw"><table><thead><tr><th>Document</th><th>Type</th><th>Date</th><th>Action</th></tr></thead><tbody>
-      <tr><td style={{fontWeight: 500}}>Warranty Certificate</td><td>Warranty</td><td>Feb 10, 2026</td><td><button className="btn btn-o btn-sm">Download</button></td></tr>
-      <tr><td style={{fontWeight: 500}}>Extended Warranty — Guardsman RV</td><td>Warranty</td><td>Feb 10, 2026</td><td><button className="btn btn-o btn-sm">Download</button></td></tr>
-      <tr><td style={{fontWeight: 500}}>DAF Inspection Report</td><td>Inspection</td><td>Jan 22, 2026</td><td><button className="btn btn-o btn-sm">Download</button></td></tr>
-      <tr><td style={{fontWeight: 500}}>PDI Inspection Report</td><td>Inspection</td><td>Feb 5, 2026</td><td><button className="btn btn-o btn-sm">Download</button></td></tr>
-      <tr><td style={{fontWeight: 500}}>Purchase Agreement</td><td>Contract</td><td>Feb 8, 2026</td><td><button className="btn btn-o btn-sm">Download</button></td></tr>
+      <tr><td style={{fontWeight: 500}}>Warranty Certificate</td><td>Warranty</td><td>Feb 10, 2026</td><td><button className="btn btn-o btn-sm" onClick={() => handleToast('Download coming soon')}>Download</button></td></tr>
+      <tr><td style={{fontWeight: 500}}>Extended Warranty — Guardsman RV</td><td>Warranty</td><td>Feb 10, 2026</td><td><button className="btn btn-o btn-sm" onClick={() => handleToast('Download coming soon')}>Download</button></td></tr>
+      <tr><td style={{fontWeight: 500}}>DAF Inspection Report</td><td>Inspection</td><td>Jan 22, 2026</td><td><button className="btn btn-o btn-sm" onClick={() => handleToast('Download coming soon')}>Download</button></td></tr>
+      <tr><td style={{fontWeight: 500}}>PDI Inspection Report</td><td>Inspection</td><td>Feb 5, 2026</td><td><button className="btn btn-o btn-sm" onClick={() => handleToast('Download coming soon')}>Download</button></td></tr>
+      <tr><td style={{fontWeight: 500}}>Purchase Agreement</td><td>Contract</td><td>Feb 8, 2026</td><td><button className="btn btn-o btn-sm" onClick={() => handleToast('Download coming soon')}>Download</button></td></tr>
     </tbody></table></div>
   </div>
 </div>
@@ -350,7 +358,7 @@ export default function CustomerPortal() {
       </div>
       <div className="pn"><div className="pn-h"><span className="pn-t">Messages</span><span className="pn-a" onClick={() => showPage('ticket-detail')}>View full ticket →</span></div>
         <div className="comm-box"><div className="comm-msg"><div className="comm-avatar dl">SR</div><div className="comm-content"><div className="comm-name">Smith's RV Centre</div><div className="comm-text">Hi Robert, we've submitted your warranty claim. 4 issues documented with 24 photos. We'll update you as soon as the manufacturer responds.</div><div className="comm-time">Mar 16, 10:30 AM</div></div></div></div>
-        <div style={{padding: '16px 20px'}}><textarea placeholder="Send a message to your dealer..." style={{width: '100%', padding: '10px 12px', border: '1px solid #e0e0e0', borderRadius: 8, fontSize: 13, fontFamily: 'inherit', minHeight: 50, resize: 'vertical', outline: 'none'}}></textarea><div style={{textAlign: 'right', marginTop: 8}}><button className="btn btn-p btn-sm">Send</button></div></div>
+        <div style={{padding: '16px 20px'}}><textarea placeholder="Send a message to your dealer..." style={{width: '100%', padding: '10px 12px', border: '1px solid #e0e0e0', borderRadius: 8, fontSize: 13, fontFamily: 'inherit', minHeight: 50, resize: 'vertical', outline: 'none'}}></textarea><div style={{textAlign: 'right', marginTop: 8}}><button className="btn btn-p btn-sm" onClick={() => handleToast('Message sent')}>Send</button></div></div>
       </div>
     </div>
     <div><div className="cd-section"><div className="cd-section-h">Claim Info</div><div className="cd-row"><span className="cd-label">Claim #</span><span className="cd-value">CLM-0248</span></div><div className="cd-row"><span className="cd-label">Type</span><span className="cd-value">Warranty</span></div><div className="cd-row"><span className="cd-label">Items</span><span className="cd-value">4</span></div><div className="cd-row"><span className="cd-label">Submitted</span><span className="cd-value">Mar 16, 2026</span></div><div className="cd-row"><span className="cd-label">Status</span><span className="cd-value"><span className="bg submitted">Processing</span></span></div></div></div>
@@ -368,7 +376,7 @@ export default function CustomerPortal() {
       </div>
       <div className="upload-zone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg><div style={{fontSize: 15, fontWeight: 600, color: '#333', marginBottom: 4}}>Upload Photos</div><div style={{fontSize: 13, color: '#888'}}>Take photos of the issue and upload them here. The more photos, the better.</div></div>
     </div>
-    <div className="btn-bar"><button className="btn btn-p" onClick={() => showPage('claims')}>Submit Issue</button><button className="btn btn-o">Save Draft</button></div>
+    <div className="btn-bar"><button className="btn btn-p" onClick={() => showPage('claims')}>Submit Issue</button><button className="btn btn-o" onClick={() => handleToast('Draft saved')}>Save Draft</button></div>
   </div>
 </div>
 
@@ -397,13 +405,13 @@ export default function CustomerPortal() {
   <div className="fi-card">
     <div className="fi-card-title">Protect Your Investment</div>
     <div className="fi-card-desc">Your RV is one of your biggest investments. Explore protection plans designed to keep you covered on the road and at camp.</div>
-    <button className="btn" style={{background: 'white', color: 'var(--brand)', fontWeight: 600, padding: '10px 24px'}}>Talk to an Expert →</button>
+    <button className="btn" style={{background: 'white', color: 'var(--brand)', fontWeight: 600, padding: '10px 24px'}} onClick={() => showPage('tickets')}>Talk to an Expert →</button>
   </div>
   <div style={{fontSize: 13, color: '#888', marginBottom: 16}}>Products available for your 2024 Jayco Jay Flight 264BH:</div>
   <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16}}>
-    <div className="pn" style={{padding: 20}}><div style={{fontSize: 15, fontWeight: 700, color: '#111', marginBottom: 4}}>GAP Insurance</div><div style={{fontSize: 12, color: '#888', marginBottom: 12, lineHeight: '1.5'}}>Covers the difference between your RV's value and what you owe if it's totaled or stolen.</div><div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}><span style={{fontSize: 18, fontWeight: 700, color: 'var(--brand)'}}>$995</span><button className="btn btn-p btn-sm">Learn More</button></div></div>
-    <div className="pn" style={{padding: 20}}><div style={{fontSize: 15, fontWeight: 700, color: '#111', marginBottom: 4}}>Paint & Fabric Protection</div><div style={{fontSize: 12, color: '#888', marginBottom: 12, lineHeight: '1.5'}}>Professional-grade protection for your RV's exterior paint and interior fabrics.</div><div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}><span style={{fontSize: 18, fontWeight: 700, color: 'var(--brand)'}}>$695</span><button className="btn btn-p btn-sm">Learn More</button></div></div>
-    <div className="pn" style={{padding: 20}}><div style={{fontSize: 15, fontWeight: 700, color: '#111', marginBottom: 4}}>Roadside Assistance (3yr)</div><div style={{fontSize: 12, color: '#888', marginBottom: 12, lineHeight: '1.5'}}>24/7 emergency towing, tire changes, lockout service, and mobile mechanic dispatch.</div><div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}><span style={{fontSize: 18, fontWeight: 700, color: 'var(--brand)'}}>$395</span><button className="btn btn-p btn-sm">Learn More</button></div></div>
+    <div className="pn" style={{padding: 20}}><div style={{fontSize: 15, fontWeight: 700, color: '#111', marginBottom: 4}}>GAP Insurance</div><div style={{fontSize: 12, color: '#888', marginBottom: 12, lineHeight: '1.5'}}>Covers the difference between your RV's value and what you owe if it's totaled or stolen.</div><div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}><span style={{fontSize: 18, fontWeight: 700, color: 'var(--brand)'}}>$995</span><button className="btn btn-p btn-sm" onClick={() => showPage('new-ticket')}>Learn More</button></div></div>
+    <div className="pn" style={{padding: 20}}><div style={{fontSize: 15, fontWeight: 700, color: '#111', marginBottom: 4}}>Paint & Fabric Protection</div><div style={{fontSize: 12, color: '#888', marginBottom: 12, lineHeight: '1.5'}}>Professional-grade protection for your RV's exterior paint and interior fabrics.</div><div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}><span style={{fontSize: 18, fontWeight: 700, color: 'var(--brand)'}}>$695</span><button className="btn btn-p btn-sm" onClick={() => showPage('new-ticket')}>Learn More</button></div></div>
+    <div className="pn" style={{padding: 20}}><div style={{fontSize: 15, fontWeight: 700, color: '#111', marginBottom: 4}}>Roadside Assistance (3yr)</div><div style={{fontSize: 12, color: '#888', marginBottom: 12, lineHeight: '1.5'}}>24/7 emergency towing, tire changes, lockout service, and mobile mechanic dispatch.</div><div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}><span style={{fontSize: 18, fontWeight: 700, color: 'var(--brand)'}}>$395</span><button className="btn btn-p btn-sm" onClick={() => showPage('roadside')}>Learn More</button></div></div>
     <div className="pn" style={{padding: 20, position: 'relative', overflow: 'hidden'}}><div style={{position: 'absolute', top: 12, right: '-28px', background: 'var(--accent)', color: 'white', fontSize: 10, fontWeight: 600, padding: '4px 32px', transform: 'rotate(45deg)'}}>OWNED</div><div style={{fontSize: 15, fontWeight: 700, color: '#111', marginBottom: 4}}>Extended Warranty</div><div style={{fontSize: 12, color: '#888', marginBottom: 12, lineHeight: '1.5'}}>Comprehensive coverage from Guardsman RV through Feb 2031.</div><div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}><span style={{fontSize: 14, fontWeight: 600, color: '#22c55e'}}>✓ You own this plan</span><button className="btn btn-o btn-sm" onClick={() => showPage('warranty')}>View Coverage</button></div></div>
   </div>
 </div>
@@ -414,7 +422,7 @@ export default function CustomerPortal() {
     <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#d0d0d0" strokeWidth="1.5" style={{marginBottom: 16}}><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.362 1.903.7 2.81"/></svg>
     <div style={{fontSize: 20, fontWeight: 700, color: '#333', marginBottom: 8}}>Roadside Assistance</div>
     <div style={{fontSize: 14, color: '#888', maxWidth: 400, margin: '0 auto', lineHeight: '1.6'}}>24/7 emergency roadside assistance is coming soon. Get help with towing, tire changes, lockouts, and more — anywhere you travel.</div>
-    <div style={{marginTop: 24}}><button className="btn btn-o">Notify Me When Available</button></div>
+    <div style={{marginTop: 24}}><button className="btn btn-o" onClick={() => handleToast('Roadside assistance coming soon')}>Notify Me When Available</button></div>
   </div>
 </div>
 
@@ -476,8 +484,8 @@ export default function CustomerPortal() {
         <div style={{padding: '16px 20px', borderTop: '1px solid #f0f0f0'}}>
           <textarea placeholder="Reply to this ticket..." style={{width: '100%', padding: '10px 12px', border: '1px solid #e0e0e0', borderRadius: 8, fontSize: 13, fontFamily: 'inherit', minHeight: 50, resize: 'vertical', outline: 'none'}}></textarea>
           <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 8}}>
-            <button className="btn btn-o btn-sm" style={{fontSize: 11}}>Attach Photo</button>
-            <button className="btn btn-p btn-sm">Send Reply</button>
+            <button className="btn btn-o btn-sm" style={{fontSize: 11}} onClick={() => handleToast('Photo attachment coming soon')}>Attach Photo</button>
+            <button className="btn btn-p btn-sm" onClick={() => handleToast('Reply sent')}>Send Reply</button>
           </div>
         </div>
       </div>
@@ -497,7 +505,7 @@ export default function CustomerPortal() {
         <div className="cd-row"><span className="cd-label">Parts Order</span><span className="cd-value">PO-0038</span></div>
         <div className="cd-row"><span className="cd-label">Unit</span><span className="cd-value" style={{fontSize: 12}}>2024 Jayco Jay Flight</span></div>
       </div>
-      <div style={{padding: 12}}><button className="btn btn-o btn-sm" style={{width: '100%', justifyContent: 'center', color: '#d97706', borderColor: '#fde68a'}}>Mark as Resolved</button></div>
+      <div style={{padding: 12}}><button className="btn btn-o btn-sm" style={{width: '100%', justifyContent: 'center', color: '#d97706', borderColor: '#fde68a'}} onClick={() => handleToast('Ticket marked as resolved')}>Mark as Resolved</button></div>
     </div>
   </div>
 </div>
@@ -595,7 +603,7 @@ export default function CustomerPortal() {
           <div className="form-group"><label>City</label><input value="Hamilton, ON" /></div>
           <div className="form-group"><label>Language</label><select><option defaultSelected>English</option><option>French</option></select></div>
         </div>
-        <div className="btn-bar"><button className="btn btn-p">Save Profile</button><button className="btn btn-o">Cancel</button></div>
+        <div className="btn-bar"><button className="btn btn-p" onClick={() => handleToast('Profile saved')}>Save Profile</button><button className="btn btn-o">Cancel</button></div>
       </div>
       <div className={`pn cstab ${custSettingsTab === "cstab-cs-security" ? "active" : ""}`} id="cstab-cs-security" style={{display: custSettingsTab === "cstab-cs-security" ? "block" : "none"}}><div className="pn-h"><span className="pn-t">Security</span></div>
         <div className="form-grid">
@@ -603,7 +611,7 @@ export default function CustomerPortal() {
           <div className="form-group"><label>New Password</label><input type="password" placeholder="New password" /></div>
           <div className="form-group"><label>Confirm</label><input type="password" placeholder="Confirm" /></div>
         </div>
-        <div className="btn-bar"><button className="btn btn-p">Update Password</button><button className="btn btn-o">Cancel</button></div>
+        <div className="btn-bar"><button className="btn btn-p" onClick={() => handleToast('Password updated')}>Update Password</button><button className="btn btn-o">Cancel</button></div>
       </div>
       <div className={`pn cstab ${custSettingsTab === "cstab-cs-notif" ? "active" : ""}`} id="cstab-cs-notif" style={{display: custSettingsTab === "cstab-cs-notif" ? "block" : "none"}}><div className="pn-h"><span className="pn-t">Notification Preferences</span></div>
         <div className="form-grid">
@@ -612,7 +620,7 @@ export default function CustomerPortal() {
           <div className="form-group"><label>Parts order updates</label><select><option defaultSelected>Email</option><option>Off</option></select></div>
           <div className="form-group"><label>Warranty reminders</label><select><option defaultSelected>Email</option><option>Off</option></select></div>
         </div>
-        <div className="btn-bar"><button className="btn btn-p">Save</button><button className="btn btn-o">Reset</button></div>
+        <div className="btn-bar"><button className="btn btn-p" onClick={() => handleToast('Preferences saved')}>Save</button><button className="btn btn-o" onClick={() => handleToast('Preferences reset')}>Reset</button></div>
       </div>
     </div>
   </div>
@@ -637,7 +645,7 @@ export default function CustomerPortal() {
     <div className="pn" style={{padding:24}}>
       <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:16}}>
         <div style={{fontWeight:600,fontSize:14}}>Payment History</div>
-        <button className="btn btn-p" style={{fontSize:12}}>Make a Payment</button>
+        <button className="btn btn-p" style={{fontSize:12}} onClick={() => handleToast('Payment processing coming soon')}>Make a Payment</button>
       </div>
       <div style={{display:'flex',flexDirection:'column',gap:8}}>
         {[{date:'Apr 1, 2026',amount:1148,status:'paid'},{date:'Mar 1, 2026',amount:1148,status:'paid'},{date:'Feb 1, 2026',amount:1148,status:'paid'},{date:'Jan 1, 2026',amount:1148,status:'paid'}].map((p,i)=>(
@@ -661,7 +669,7 @@ export default function CustomerPortal() {
         <div><label style={{fontSize:12,color:'#888',display:'block',marginBottom:4}}>Preferred Date</label><input type="date" style={{width:'100%',padding:'10px 12px',border:'1px solid #e0e0e0',borderRadius:8,fontSize:13,fontFamily:'inherit'}} /></div>
         <div><label style={{fontSize:12,color:'#888',display:'block',marginBottom:4}}>Preferred Time</label><select style={{width:'100%',padding:'10px 12px',border:'1px solid #e0e0e0',borderRadius:8,fontSize:13,fontFamily:'inherit'}}><option>Morning (8AM–12PM)</option><option>Afternoon (12PM–4PM)</option><option>Any time</option></select></div>
         <div><label style={{fontSize:12,color:'#888',display:'block',marginBottom:4}}>Notes</label><textarea placeholder="Describe the issue or what you need done..." style={{width:'100%',padding:'10px 12px',border:'1px solid #e0e0e0',borderRadius:8,fontSize:13,fontFamily:'inherit',minHeight:80}}></textarea></div>
-        <button className="btn btn-p">Request Appointment</button>
+        <button className="btn btn-p" onClick={() => showPage('new-ticket')}>Request Appointment</button>
       </div>
     </div>
     <div className="pn" style={{padding:24}}>
@@ -718,7 +726,7 @@ export default function CustomerPortal() {
       </div>
       <div style={{padding:'12px 16px',borderTop:'1px solid #f0f0f0',display:'flex',gap:8}}>
         <input placeholder="Reply to Smith's RV Centre..." style={{flex:1,padding:'8px 14px',border:'1px solid #e0e0e0',borderRadius:20,fontSize:13,fontFamily:'inherit'}} />
-        <button className="btn btn-p" style={{borderRadius:20}}>Send</button>
+        <button className="btn btn-p" style={{borderRadius:20}} onClick={() => handleToast('Message sent')}>Send</button>
       </div>
     </div>
   </div>
@@ -744,6 +752,11 @@ export default function CustomerPortal() {
   </div>
 </div>
 
+    {toastVisible && (
+      <div style={{position:'fixed',bottom:24,left:'50%',transform:'translateX(-50%)',background:'#1a1a2e',color:'white',padding:'10px 20px',borderRadius:8,fontSize:13,fontWeight:500,zIndex:9999,boxShadow:'0 4px 12px rgba(0,0,0,0.3)',pointerEvents:'none'}}>
+        {toastMsg}
+      </div>
+    )}
     <MobileBottomNav portalType="client" activePage={activePage} onNavigate={showPage} parents={parents} />
     <OfflineBanner />
     </>
