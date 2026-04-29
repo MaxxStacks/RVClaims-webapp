@@ -86,7 +86,9 @@ export async function apiFetch<T = unknown>(
     // returns 401. Don't redirect — let the portal's try/catch handle it.
     const isDevMode = typeof window !== "undefined" && !!localStorage.getItem("ds360-dev-role");
     if (!isDevMode) window.location.href = "/login";
-    throw new Error("Session expired");
+    let msg = "Session expired";
+    try { const body = await res.json(); if (body?.message) msg = body.message; } catch { /* non-JSON body */ }
+    throw new Error(msg);
   }
 
   if (!res.ok) throw new Error(`${res.status}: ${res.statusText}`);

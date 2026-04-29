@@ -6,9 +6,7 @@ const PAGE_META: Record<string, { menu_item: string; section: string; scoped_rol
 
 const ROLES: Record<string, any> = {"operator_admin": {"label": "Operator Admin", "blocked_pages": []}, "operator_staff": {"label": "Operator Staff", "blocked_pages": ["master.mgmt.revenue_billing", "master.mgmt.campaign_templates", "master.mgmt.communications", "master.mgmt.blog", "master.mgmt.staff_permissions", "master.mgmt.platform_settings", "master.marketplace.transactions", "master.marketplace.escrow_admin", "master.marketplace.members"]}};
 
-const URL_MAP: Record<string, string> = {
-  "master.mgmt.dealer_accounts": "/operator-v6/dealerships",
-};
+const URL_MAP: Record<string, string> = {};
 
 interface Props {
   currentPage?: string;
