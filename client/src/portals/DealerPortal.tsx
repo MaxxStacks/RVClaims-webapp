@@ -12,6 +12,7 @@ import { DealerMarketplacePages } from '../components/DealerMarketplace';
 import { DealerShowcasePages } from '../components/PublicAuctionPages';
 import { apiFetch } from '@/lib/api';
 import { wsClient } from '@/lib/websocket';
+import DispatchBoard from '../components/service/DispatchBoard';
 
 export default function DealerPortal() {
   const [activePage, setActivePage] = useState('dashboard');
@@ -32,28 +33,32 @@ export default function DealerPortal() {
   const isTechnician = user?.role === 'technician';
   const isPublicBidder = user?.role === 'public_bidder';
   const isConsignor = user?.role === 'consignor';
+  const isServiceManager = user?.role === 'service_manager';
+  const isShopManager = user?.role === 'shop_manager';
+  const isPartsDept = user?.role === 'parts_dept';
+  const isServiceRole = isServiceManager || isShopManager || isPartsDept;
 
   // Nav/page visibility per role
-  const showClaims = !isTechnician && !isPublicBidder && !isConsignor;
-  const showUnits = !isPublicBidder && !isConsignor;
-  const showFinancing = !isTechnician && !isPublicBidder && !isConsignor;
-  const showFI = !isTechnician && !isPublicBidder && !isConsignor;
-  const showWarranty = !isTechnician && !isPublicBidder && !isConsignor;
-  const showParts = !isPublicBidder && !isConsignor;
-  const showBrowse = !isTechnician && !isConsignor;
-  const showListings = !isTechnician && !isPublicBidder;
-  const showTransactions = !isTechnician && !isPublicBidder && !isConsignor;
-  const showAuctions = !isTechnician && !isConsignor;
-  const showShowcase = !isTechnician && !isPublicBidder;
-  const showCustomers = !isTechnician && !isPublicBidder && !isConsignor;
-  const showClients = !isTechnician && !isPublicBidder && !isConsignor;
-  const showMessages = !isPublicBidder && !isConsignor;
-  const showDocuments = !isTechnician && !isPublicBidder && !isConsignor;
-  const showTechflow = !isPublicBidder && !isConsignor;
-  const showConsignment = !isTechnician && !isPublicBidder && !isConsignor;
-  const showMarketing = !isTechnician && !isPublicBidder && !isConsignor;
-  const showSalesServices = !isTechnician && !isPublicBidder && !isConsignor;
-  const showMyBids = !isTechnician && !isConsignor;
+  const showClaims = !isTechnician && !isPublicBidder && !isConsignor && !isServiceRole;
+  const showUnits = !isPublicBidder && !isConsignor && !isServiceRole;
+  const showFinancing = !isTechnician && !isPublicBidder && !isConsignor && !isServiceRole;
+  const showFI = !isTechnician && !isPublicBidder && !isConsignor && !isServiceRole;
+  const showWarranty = !isTechnician && !isPublicBidder && !isConsignor && !isServiceRole;
+  const showParts = !isPublicBidder && !isConsignor && !isServiceRole;
+  const showBrowse = !isTechnician && !isConsignor && !isServiceRole;
+  const showListings = !isTechnician && !isPublicBidder && !isServiceRole;
+  const showTransactions = !isTechnician && !isPublicBidder && !isConsignor && !isServiceRole;
+  const showAuctions = !isTechnician && !isConsignor && !isServiceRole;
+  const showShowcase = !isTechnician && !isPublicBidder && !isServiceRole;
+  const showCustomers = !isTechnician && !isPublicBidder && !isConsignor && !isServiceRole;
+  const showClients = !isTechnician && !isPublicBidder && !isConsignor && !isServiceRole;
+  const showMessages = !isPublicBidder && !isConsignor && !isServiceRole;
+  const showDocuments = !isTechnician && !isPublicBidder && !isConsignor && !isServiceRole;
+  const showTechflow = !isPublicBidder && !isConsignor && !isServiceRole;
+  const showConsignment = !isTechnician && !isPublicBidder && !isConsignor && !isServiceRole;
+  const showMarketing = !isTechnician && !isPublicBidder && !isConsignor && !isServiceRole;
+  const showSalesServices = !isTechnician && !isPublicBidder && !isConsignor && !isServiceRole;
+  const showMyBids = !isTechnician && !isConsignor && !isServiceRole;
   const showEscrow = isDealerOwner || isPublicBidder || isConsignor;
 
   // ─── API data state ────────────────────────────────────────────────────────
@@ -103,7 +108,8 @@ clients:['Client Files','Your customer accounts'],messages:['Messages','Inbox fr
 'my-subscription':['My Subscription','Plan details \u0026 billing'],'portal-settings':['Portal Settings','Staff, branding, domain \u0026 notifications'],
 'consignor-units':['My Consigned Units','Units listed on your behalf'],'consignor-offers':['Offers Received','Buyer offers on your units'],'consignor-payouts':['Payouts','Earnings \u0026 payment history'],
 'bidder-my-bids':['My Bids','Active \u0026 past bids'],'bidder-verification':['Verification','Buyer identity \u0026 deposit'],
-'mkt-my-bids':['My Bids','Marketplace bid history'],'mkt-escrow-payments':['Escrow \u0026 Payments','Transaction escrow \u0026 release']};
+'mkt-my-bids':['My Bids','Marketplace bid history'],'mkt-escrow-payments':['Escrow & Payments','Transaction escrow & release'],
+'svc-dispatch':['Dispatch Scheduler','Assign work orders to technicians'],'svc-technicians':['Technician Management','Team schedule & performance']};
 
   const parents: Record<string, string> = {'claim-detail':'claims','unit-detail':'units','add-unit':'units','invite-customer':'customers','add-staff':'staff','svc-financing-det':'svc-financing','svc-financing-new':'svc-financing','svc-fi-new':'svc-fi','svc-parts-new':'svc-parts','cust-ticket-detail':'cust-tickets','mkt-listing-view':'mkt-browse','mkt-post-unit':'mkt-my-listings','mkt-auction-room':'mkt-live-auctions','mkt-showcase-submit':'mkt-showcase','svc-fi-detail':'svc-fi','svc-warranty-detail':'svc-warranty','svc-parts-det':'svc-parts','wo-new':'techflow','wo-detail':'techflow'};
 
@@ -213,6 +219,12 @@ clients:['Client Files','Your customer accounts'],messages:['Messages','Inbox fr
     if (isPublicBidder && !bidderPages.includes(id)) id = 'mkt-browse';
     const consignorPages = ['dashboard', 'mkt-my-listings', 'mkt-post-unit', 'mkt-showcase', 'mkt-showcase-submit', 'consignor-units', 'consignor-offers', 'consignor-payouts', 'mkt-escrow-payments', 'notifications', 'dealer-settings', 'dealer-changelog'];
     if (isConsignor && !consignorPages.includes(id)) id = 'mkt-my-listings';
+    const serviceManagerPages = ['dashboard', 'units', 'add-unit', 'unit-detail', 'techflow', 'wo-new', 'wo-detail', 'svc-dispatch', 'svc-technicians', 'svc-parts', 'svc-parts-new', 'svc-parts-det', 'messages', 'notifications', 'dealer-settings', 'dealer-changelog'];
+    if (isServiceManager && !serviceManagerPages.includes(id)) id = 'techflow';
+    const shopManagerPages = ['dashboard', 'techflow', 'wo-new', 'wo-detail', 'svc-dispatch', 'svc-parts', 'svc-parts-new', 'svc-parts-det', 'notifications', 'dealer-settings', 'dealer-changelog'];
+    if (isShopManager && !shopManagerPages.includes(id)) id = 'techflow';
+    const partsDeptPages = ['dashboard', 'svc-parts', 'svc-parts-new', 'svc-parts-det', 'notifications', 'dealer-settings', 'dealer-changelog'];
+    if (isPartsDept && !partsDeptPages.includes(id)) id = 'svc-parts';
     setActivePage(id);
     if (titles[id]) { setPageTitle(titles[id][0]); setPageSub(titles[id][1]); }
     window.scrollTo(0, 0);
@@ -344,7 +356,7 @@ clients:['Client Files','Your customer accounts'],messages:['Messages','Inbox fr
       {showWarranty && <div className={`nav-item ${isNavActive('svc-warranty') ? 'active' : ''}`} onClick={() => showPage('svc-warranty')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 12l2 2 4-4"/></svg>Warranty Plans<span className="nb blue">4</span></div>}
       {showParts && <div className={`nav-item ${isNavActive('svc-parts') ? 'active' : ''}`} onClick={() => showPage('svc-parts')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>Parts Orders<span className="nb amber">2</span></div>}
     </div>}
-    {!isTechnician && <div className="nav-section"><div className="nav-label">Marketplace</div>
+    {!isTechnician && !isServiceRole && <div className="nav-section"><div className="nav-label">Marketplace</div>
       {showBrowse && <div className={`nav-item ${isNavActive('mkt-browse') ? 'active' : ''}`} onClick={() => showPage('mkt-browse')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Browse Units<span className="nb green">142</span></div>}
       {showListings && <div className={`nav-item ${isNavActive('mkt-my-listings') ? 'active' : ''}`} onClick={() => showPage('mkt-my-listings')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>My Listings</div>}
       {showTransactions && <div className={`nav-item ${isNavActive('mkt-my-transactions') ? 'active' : ''}`} onClick={() => showPage('mkt-my-transactions')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>My Transactions</div>}
@@ -370,6 +382,24 @@ clients:['Client Files','Your customer accounts'],messages:['Messages','Inbox fr
     {isPublicBidder && <div className="nav-section"><div className="nav-label">My Account</div>
       <div className={`nav-item ${isNavActive('bidder-my-bids') ? 'active' : ''}`} onClick={() => showPage('bidder-my-bids')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>My Bids</div>
       <div className={`nav-item ${isNavActive('bidder-verification') ? 'active' : ''}`} onClick={() => showPage('bidder-verification')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Verification</div>
+    </div>}
+    {isServiceManager && <><div className="nav-section"><div className="nav-label">Service</div>
+      <div className={`nav-item ${isNavActive('techflow') ? 'active' : ''}`} onClick={() => showPage('techflow')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>Work Orders<span className="nb blue">4</span></div>
+      <div className={`nav-item ${isNavActive('svc-dispatch') ? 'active' : ''}`} onClick={() => showPage('svc-dispatch')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Dispatch Scheduler</div>
+      <div className={`nav-item ${isNavActive('svc-technicians') ? 'active' : ''}`} onClick={() => showPage('svc-technicians')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>Technician Mgmt</div>
+    </div>
+    <div className="nav-section"><div className="nav-label">Operations</div>
+      <div className={`nav-item ${isNavActive('units') ? 'active' : ''}`} onClick={() => showPage('units')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4a2 2 0 012 2v6a2 2 0 01-2 2h-4"/><circle cx="5.5" cy="18" r="2.5"/><circle cx="18.5" cy="18" r="2.5"/></svg>Unit Lookup</div>
+      <div className={`nav-item ${isNavActive('svc-parts') ? 'active' : ''}`} onClick={() => showPage('svc-parts')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>Parts Orders<span className="nb amber">2</span></div>
+      <div className={`nav-item ${isNavActive('messages') ? 'active' : ''}`} onClick={() => showPage('messages')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Messages<span className="nb blue">2</span></div>
+    </div></>}
+    {isShopManager && <div className="nav-section"><div className="nav-label">Shop</div>
+      <div className={`nav-item ${isNavActive('techflow') ? 'active' : ''}`} onClick={() => showPage('techflow')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>Work Orders<span className="nb blue">4</span></div>
+      <div className={`nav-item ${isNavActive('svc-dispatch') ? 'active' : ''}`} onClick={() => showPage('svc-dispatch')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Dispatch Scheduler<span className="nb green">New</span></div>
+      <div className={`nav-item ${isNavActive('svc-parts') ? 'active' : ''}`} onClick={() => showPage('svc-parts')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>Parts Orders<span className="nb amber">2</span></div>
+    </div>}
+    {isPartsDept && <div className="nav-section"><div className="nav-label">Parts</div>
+      <div className={`nav-item ${isNavActive('svc-parts') ? 'active' : ''}`} onClick={() => showPage('svc-parts')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>Parts Orders<span className="nb amber">2</span></div>
     </div>}
     {isDealerOwner && <div className="nav-section"><div className="nav-label">Billing</div>
       <div className={`nav-item ${isNavActive('invoices') ? 'active' : ''}`} onClick={() => showPage('invoices')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>Invoices &amp; Billing</div>
@@ -1471,6 +1501,27 @@ clients:['Client Files','Your customer accounts'],messages:['Messages','Inbox fr
 </div>
 <DealerMarketplacePages activePage={activePage} showPage={showPage} />
 <DealerShowcasePages activePage={activePage} showPage={showPage} />
+
+<div className={`page ${activePage === 'svc-dispatch' ? 'active' : ''}`} id="page-svc-dispatch">
+  <DispatchBoard />
+</div>
+
+<div className={`page ${activePage === 'svc-technicians' ? 'active' : ''}`} id="page-svc-technicians">
+  <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:16,marginBottom:20}}>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Active Techs</div><div className="sc-v" style={{color:'#22c55e'}}>3</div></div>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>On Leave</div><div className="sc-v" style={{color:'#f59e0b'}}>0</div></div>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>WOs Assigned Today</div><div className="sc-v" style={{color:'#2563eb'}}>7</div></div>
+    <div className="sc"><div className="sc-l" style={{marginBottom:8}}>Avg. Completion Rate</div><div className="sc-v">94%</div></div>
+  </div>
+  <div className="pn">
+    <div className="pn-h"><span className="pn-t">Technicians</span><button className="btn btn-p" style={{fontSize:12,padding:'6px 14px'}} onClick={() => handleToast('Invite sent to technician')}>+ Add Technician</button></div>
+    <div className="tw"><table><thead><tr><th>Name</th><th>Specialty</th><th>Active WOs</th><th>Completed (MTD)</th><th>Status</th><th></th></tr></thead><tbody>
+      <tr><td style={{fontWeight:500}}>Mike T.</td><td>Electrical / Slides</td><td>2</td><td>12</td><td><span className="bg active">Active</span></td><td><button className="btn btn-o btn-sm" onClick={() => showPage('svc-dispatch')}>View Schedule</button></td></tr>
+      <tr><td style={{fontWeight:500}}>Jason R.</td><td>Warranty Repair</td><td>2</td><td>9</td><td><span className="bg active">Active</span></td><td><button className="btn btn-o btn-sm" onClick={() => showPage('svc-dispatch')}>View Schedule</button></td></tr>
+      <tr><td style={{fontWeight:500}}>Carlos P.</td><td>PDI / Inspections</td><td>1</td><td>14</td><td><span className="bg active">Active</span></td><td><button className="btn btn-o btn-sm" onClick={() => showPage('svc-dispatch')}>View Schedule</button></td></tr>
+    </tbody></table></div>
+  </div>
+</div>
 
 
 

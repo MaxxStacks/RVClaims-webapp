@@ -9,8 +9,8 @@ import { z } from "zod";
 
 // ==================== ROLE & STATUS ENUMS ====================
 
-export const USER_ROLES = ["operator_admin", "operator_staff", "dealer_owner", "dealer_staff", "technician", "public_bidder", "consignor", "client", "bidder"] as const;
-export const INVITE_ROLES = ["operator_staff", "dealer_owner", "dealer_staff", "technician", "public_bidder", "consignor", "client"] as const;
+export const USER_ROLES = ["operator_admin", "operator_staff", "dealer_owner", "dealer_staff", "technician", "service_manager", "shop_manager", "parts_dept", "public_bidder", "consignor", "client", "bidder"] as const;
+export const INVITE_ROLES = ["operator_staff", "dealer_owner", "dealer_staff", "technician", "service_manager", "shop_manager", "parts_dept", "public_bidder", "consignor", "client"] as const;
 export const DEALERSHIP_PLANS = ["plan_a", "plan_b", "custom"] as const;
 export const DEALERSHIP_STATUSES = ["active", "suspended", "pending"] as const;
 export const RV_TYPES = ["travel_trailer", "fifth_wheel", "class_a", "class_c", "toy_hauler", "pop_up", "van_camper", "truck_camper"] as const;
