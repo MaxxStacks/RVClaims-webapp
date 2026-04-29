@@ -38,6 +38,26 @@ export default function DealerPortal() {
   const isPartsDept = user?.role === 'parts_dept';
   const isServiceRole = isServiceManager || isShopManager || isPartsDept;
 
+  // Human-readable role label shown in sidebar
+  const roleLabel = isDealerOwner ? 'Dealer Owner'
+    : isDealerStaff ? 'Dealer Staff'
+    : isTechnician ? 'Technician'
+    : isServiceManager ? 'Service Manager'
+    : isShopManager ? 'Shop Manager'
+    : isPartsDept ? 'Parts Dept'
+    : isPublicBidder ? 'Public Bidder'
+    : isConsignor ? 'Consignor'
+    : 'Dealer';
+  const roleBadge = isDealerOwner ? 'Owner'
+    : isDealerStaff ? 'Staff'
+    : isTechnician ? 'Tech'
+    : isServiceManager ? 'Svc Mgr'
+    : isShopManager ? 'Shop Mgr'
+    : isPartsDept ? 'Parts'
+    : isPublicBidder ? 'Bidder'
+    : isConsignor ? 'Consignor'
+    : 'Dealer';
+
   // Nav/page visibility per role
   const showClaims = !isTechnician && !isPublicBidder && !isConsignor && !isServiceRole;
   const showUnits = !isPublicBidder && !isConsignor && !isServiceRole;
@@ -341,7 +361,7 @@ clients:['Client Files','Your customer accounts'],messages:['Messages','Inbox fr
   return (
     <>
 <nav className={`sidebar${sidebarCollapsed ? ' collapsed' : ''}`}>
-  <div className="sidebar-logo" id="sidebar-header"><img src={ds360Icon} id="sidebar-logo-svg" width="36" height="36" style={{borderRadius:8}} alt="DS360" /><div className="sidebar-logo-text"><div className="sidebar-logo-name" id="sidebar-name">Smith's RV Centre</div><div className="sidebar-logo-sub">Dealership Portal</div></div><span className="sidebar-badge">Dealer</span></div>
+  <div className="sidebar-logo" id="sidebar-header"><img src={ds360Icon} id="sidebar-logo-svg" width="36" height="36" style={{borderRadius:8}} alt="DS360" /><div className="sidebar-logo-text"><div className="sidebar-logo-name" id="sidebar-name">Smith's RV Centre</div><div className="sidebar-logo-sub">Dealership Portal</div></div><span className="sidebar-badge">{roleBadge}</span></div>
   <div className="sidebar-nav">
     <div className="nav-section"><div className="nav-label">Overview</div>
       <div className={`nav-item ${isNavActive('dashboard') ? 'active' : ''}`} onClick={() => showPage('dashboard')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</div></div>
@@ -416,7 +436,7 @@ clients:['Client Files','Your customer accounts'],messages:['Messages','Inbox fr
       <div className={`nav-item ${isNavActive('notifications') ? 'active' : ''}`} onClick={() => showPage('notifications')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>Notifications<span className="nb red">3</span></div>
       <div className={`nav-item ${isNavActive('dealer-changelog') ? 'active' : ''}`} onClick={() => showPage('dealer-changelog')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>What&apos;s New</div></div>
   </div>
-  <div className="sidebar-footer"><div className="user-info" style={{cursor: 'pointer'}} onClick={() => showPage('dealer-settings')}><div className="user-avatar" id="user-avatar">MS</div><div><div className="user-name">Mike Smith</div><div className="user-role">Smith's RV Centre</div></div></div><button onClick={async () => { await logout(); window.location.href = '/'; }} style={{width:'100%',marginTop:8,padding:'7px 12px',background:'none',border:'1px solid #e0e0e0',borderRadius:6,fontSize:12,color:'#888',cursor:'pointer',fontFamily:'inherit',textAlign:'left' as const,display:'flex',alignItems:'center',gap:6}}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sign Out</button></div>
+  <div className="sidebar-footer"><div className="user-info" style={{cursor: 'pointer'}} onClick={() => showPage('dealer-settings')}><div className="user-avatar" id="user-avatar">MS</div><div><div className="user-name">Mike Smith</div><div className="user-role">{roleLabel}</div></div></div><button onClick={async () => { await logout(); window.location.href = '/'; }} style={{width:'100%',marginTop:8,padding:'7px 12px',background:'none',border:'1px solid #e0e0e0',borderRadius:6,fontSize:12,color:'#888',cursor:'pointer',fontFamily:'inherit',textAlign:'left' as const,display:'flex',alignItems:'center',gap:6}}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sign Out</button></div>
 </nav>
 <div className={`main${sidebarCollapsed ? ' collapsed-main' : ''}`}>
 <header className="header"><div className="header-left"><button className="hbtn" onClick={() => setSidebarCollapsed(c => !c)} title="Toggle sidebar" style={{flexShrink:0}}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button><img src={ds360Icon} width="28" height="28" style={{borderRadius:6,flexShrink:0,marginRight:4}} alt="DS360" /><div><div className="header-title" id="page-title">{pageTitle}</div><div className="header-sub" id="page-sub">{pageSub}</div></div></div><div className="header-right"><div className="lang-toggle" id="lang-toggle"><button className={`lang-btn-opt ${lang === "en" ? "active" : ""}`} id="lang-en" onClick={() => handleSetLang('en')}>EN</button><button className={`lang-btn-opt ${lang === "fr" ? "active" : ""}`} id="lang-fr" onClick={() => handleSetLang('fr')}>FR</button></div><button className="theme-toggle" onClick={() => toggleTheme()} id="theme-btn" title="Toggle dark mode"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button><button className="hbtn" onClick={() => showPage('notifications')}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg><span className="ndot"></span></button></div></header>
@@ -1503,7 +1523,7 @@ clients:['Client Files','Your customer accounts'],messages:['Messages','Inbox fr
 <DealerShowcasePages activePage={activePage} showPage={showPage} />
 
 <div className={`page ${activePage === 'svc-dispatch' ? 'active' : ''}`} id="page-svc-dispatch">
-  <DispatchBoard />
+  <DispatchBoard canDrag={isDealerOwner || isShopManager} canEditNotes={isDealerOwner || isDealerStaff || isServiceManager || isShopManager} />
 </div>
 
 <div className={`page ${activePage === 'svc-technicians' ? 'active' : ''}`} id="page-svc-technicians">
