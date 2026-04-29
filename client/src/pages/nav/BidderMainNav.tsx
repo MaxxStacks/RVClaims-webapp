@@ -75,6 +75,7 @@ export default function BidderMainNav({ currentPage, onShowPage }: Props) {
           {canSeePage("bidder.account.verification") && <div className={`nav-item ${isNavActive("bidder.account.verification") ? "active" : ""}`} onClick={() => go("bidder.account.verification")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>Verification</div>}
           {canSeePage("bidder.account.payment_methods") && <div className={`nav-item ${isNavActive("bidder.account.payment_methods") ? "active" : ""}`} onClick={() => go("bidder.account.payment_methods")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>Payment Methods</div>}
           {canSeePage("bidder.account.settings") && <div className={`nav-item ${isNavActive("bidder.account.settings") ? "active" : ""}`} onClick={() => go("bidder.account.settings")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>Settings</div>}
+          <div className="nav-item" onClick={() => window.open('/system-status', '_blank')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>System Status</div>
         </div>}
         {anyVisible(["bidder.main.dashboard"]) && <div className="nav-section">
           <div className="nav-label">Overview</div>
