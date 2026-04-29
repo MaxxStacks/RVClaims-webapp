@@ -605,7 +605,7 @@ billing:['Billing \u0026 Invoices','Revenue tracking'],products:['Products \u002
   return (
     <>
 <nav className={`sidebar${sidebarCollapsed ? ' collapsed' : ''}`}>
-  <div className="sidebar-logo"><img src={ds360Icon} width="36" height="36" style={{borderRadius:8}} alt="DS360" /><div className="sidebar-logo-text"><div className="sidebar-logo-sub" style={{fontSize:12,fontWeight:600}}>Command Centre</div></div><span className="sidebar-badge">Operator</span></div>
+  <div className="sidebar-logo"><img src={ds360Icon} width="36" height="36" style={{borderRadius:8}} alt="DS360" /><div className="sidebar-logo-text"><div className="sidebar-logo-sub" style={{fontSize:12,fontWeight:600}}>Command Centre</div><span className="sidebar-badge" style={{marginTop:4}}>Operator</span></div></div>
   <div className="sidebar-nav">
     <div className="nav-section"><div className="nav-label">Overview</div>
       <div className={`nav-item ${isNavActive('dashboard') ? 'active' : ''}`} onClick={() => showPage('dashboard')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</div></div>

@@ -195,8 +195,8 @@ export default function BidderPortal() {
     <img src={ds360Icon} width="36" height="36" style={{borderRadius:8}} alt="DS360" />
     <div className="sidebar-logo-text">
       <div className="sidebar-logo-sub" style={{fontSize:12,fontWeight:600}}>Bidder Portal</div>
+      <span className="sidebar-badge" style={{marginTop:4}}>Bidder</span>
     </div>
-    <span className="sidebar-badge">Bidder</span>
   </div>
 
   <div className="sidebar-nav">
