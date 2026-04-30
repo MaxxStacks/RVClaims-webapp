@@ -68,9 +68,6 @@ const OperatorPortal = lazy(() => import("./portals/OperatorPortal"));
 const DealerPortal = lazy(() => import("./portals/DealerPortal"));
 const CustomerPortal = lazy(() => import("./portals/CustomerPortal"));
 const BidderPortal = lazy(() => import("./portals/BidderPortal"));
-const OperatorPortalV6 = lazy(() => import("@/pages/OperatorPortalV6"));
-const DealerPortalV6 = lazy(() => import("@/pages/DealerPortalV6"));
-const ClientPortalV6 = lazy(() => import("@/pages/ClientPortalV6"));
 const BidderPortalV6 = lazy(() => import("@/pages/BidderPortalV6"));
 const PortalSelectV6 = lazy(() => import("@/pages/PortalSelectV6"));
 const UnitProfilePageOperator = lazy(async () => {
