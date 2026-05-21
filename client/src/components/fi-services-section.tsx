@@ -64,55 +64,15 @@ export function FIServicesSection() {
           </div>
           
           <div className="relative">
-            <svg
-              viewBox="0 0 576 432"
-              xmlns="http://www.w3.org/2000/svg"
-              className="rounded-2xl shadow-2xl w-full h-auto block"
-              aria-label="Finance and Insurance product suite including GAP, extended warranty, and compliance"
+            <img
+              src="/images/fi-services-contract-signing.jpg"
+              alt="Professional Finance and Insurance contract signing at a dealership"
+              className="rounded-2xl shadow-2xl w-full h-auto"
+              width={576}
+              height={432}
+              loading="lazy"
               data-testid="img-fi"
-            >
-              <rect width="576" height="432" fill="#f8fafc"/>
-              <ellipse cx="500" cy="60" rx="160" ry="160" fill="#dbeafe" opacity="0.35"/>
-              <rect x="24" y="24" width="528" height="76" rx="16" fill="#1e3a8a"/>
-              <rect x="44" y="38" width="124" height="16" rx="5" fill="white" opacity="0.9"/>
-              <rect x="44" y="61" width="260" height="10" rx="4" fill="white" opacity="0.4"/>
-              <rect x="452" y="42" width="84" height="34" rx="17" fill="#2563eb"/>
-              <rect x="464" y="53" width="60" height="12" rx="6" fill="white"/>
-              <rect x="24" y="116" width="252" height="144" rx="16" fill="white"/>
-              <rect x="44" y="132" width="52" height="52" rx="12" fill="#dbeafe"/>
-              <path d="M70 140 L90 148 L90 162 Q90 172 70 178 Q50 172 50 162 L50 148 Z" fill="#2563eb" opacity="0.85"/>
-              <rect x="66" y="156" width="8" height="3" rx="1" fill="white"/>
-              <rect x="66" y="162" width="8" height="5" rx="2" fill="white"/>
-              <rect x="44" y="194" width="104" height="14" rx="5" fill="#1e3a8a"/>
-              <rect x="44" y="216" width="200" height="9" rx="4" fill="#94a3b8"/>
-              <rect x="44" y="231" width="176" height="9" rx="4" fill="#94a3b8"/>
-              <rect x="44" y="246" width="76" height="6" rx="3" fill="#2563eb"/>
-              <rect x="300" y="116" width="252" height="144" rx="16" fill="white"/>
-              <rect x="320" y="132" width="52" height="52" rx="12" fill="#dcfce7"/>
-              <rect x="332" y="140" width="28" height="36" rx="4" fill="#16a34a" opacity="0.85"/>
-              <rect x="338" y="148" width="16" height="3" rx="1" fill="white"/>
-              <rect x="338" y="154" width="16" height="3" rx="1" fill="white"/>
-              <rect x="338" y="160" width="12" height="3" rx="1" fill="white"/>
-              <rect x="320" y="194" width="144" height="14" rx="5" fill="#1e3a8a"/>
-              <rect x="320" y="216" width="200" height="9" rx="4" fill="#94a3b8"/>
-              <rect x="320" y="231" width="180" height="9" rx="4" fill="#94a3b8"/>
-              <rect x="320" y="246" width="76" height="6" rx="3" fill="#16a34a"/>
-              <rect x="24" y="276" width="252" height="132" rx="16" fill="white"/>
-              <rect x="44" y="292" width="52" height="52" rx="12" fill="#fef3c7"/>
-              <polygon points="70,300 74,311 86,311 77,318 80,329 70,322 60,329 63,318 54,311 66,311" fill="#d97706" opacity="0.9"/>
-              <rect x="44" y="352" width="124" height="14" rx="5" fill="#1e3a8a"/>
-              <rect x="44" y="372" width="200" height="9" rx="4" fill="#94a3b8"/>
-              <rect x="44" y="387" width="76" height="6" rx="3" fill="#d97706"/>
-              <rect x="300" y="276" width="252" height="132" rx="16" fill="white"/>
-              <rect x="320" y="292" width="52" height="52" rx="12" fill="#ede9fe"/>
-              <rect x="332" y="300" width="28" height="36" rx="4" fill="#7c3aed" opacity="0.85"/>
-              <rect x="338" y="308" width="16" height="3" rx="1" fill="white"/>
-              <rect x="338" y="314" width="12" height="3" rx="1" fill="white"/>
-              <rect x="338" y="320" width="14" height="3" rx="1" fill="white"/>
-              <rect x="320" y="352" width="144" height="14" rx="5" fill="#1e3a8a"/>
-              <rect x="320" y="372" width="200" height="9" rx="4" fill="#94a3b8"/>
-              <rect x="320" y="387" width="76" height="6" rx="3" fill="#7c3aed"/>
-            </svg>
+            />
             <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent rounded-2xl"></div>
           </div>
         </div>
