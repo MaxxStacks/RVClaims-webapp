@@ -3,7 +3,7 @@ import { LanguageToggle } from "@/components/language-toggle";
 import { MobileMenu } from "@/components/mobile-menu";
 import { ServiceBadge } from "@/components/service-badge";
 import { Link, useLocation } from "wouter";
-import { ChevronDown, Shield, Truck, TrendingUp, CheckCircle2, ArrowRight, CreditCard, Briefcase, ShieldCheck, Zap, Wrench, MapPin } from "lucide-react";
+import { ChevronDown, Shield, Truck, TrendingUp, CheckCircle2, ArrowRight, CreditCard, Briefcase, ShieldCheck, Zap, Wrench, MapPin, Store, Gavel } from "lucide-react";
 import { useState } from "react";
 import logoLight from "@assets/DS360_logo_light.png";
 import travelTrailerIcon from "@assets/Travel Trailer_1756847838647.webp";
@@ -469,26 +469,70 @@ export function Navigation() {
               </div>
 
               {marketplaceOpen && (
-                <div className="absolute top-full left-0 mt-1 w-80 bg-white border border-border rounded-lg shadow-xl py-3 z-50">
-                  <Link
-                    href="/network-marketplace"
-                    className="block px-5 py-3 text-sm hover:bg-blue-50 hover:text-blue-700 transition-colors"
-                    data-testid="link-network-marketplace"
-                  >
-                    <div className="font-medium">{t('navigation.networkMarketplace')}</div>
-                    <div className="text-xs text-muted-foreground mt-1">Dealer-to-dealer inventory with escrow</div>
-                  </Link>
-                  <Link
-                    href="/live-auctions"
-                    className="block px-5 py-3 text-sm hover:bg-blue-50 hover:text-blue-700 transition-colors"
-                    data-testid="link-live-auctions"
-                  >
-                    <div className="font-medium flex items-center gap-2">
-                      {t('navigation.liveAuctions')}
-                      <ServiceBadge quarter="Q3" />
+                <div className="absolute top-full left-0 mt-1 w-[700px] bg-white border border-border rounded-lg shadow-xl z-50 overflow-hidden">
+                  <div className="flex">
+                    {/* Left: Service Links */}
+                    <div className="flex-1 py-3 px-2">
+                      <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide px-3 pt-1 pb-2">
+                        Marketplace & Auctions
+                      </div>
+                      <Link
+                        href="/network-marketplace"
+                        className="flex items-start gap-3 px-3 py-3 rounded-lg hover:bg-indigo-50 hover:text-indigo-700 transition-colors group"
+                        data-testid="link-network-marketplace"
+                      >
+                        <Store size={17} className="text-indigo-600 flex-shrink-0 mt-1" />
+                        <div>
+                          <div className="font-medium text-sm">{t('navigation.networkMarketplace')}</div>
+                          <div className="text-xs text-muted-foreground mt-0.5">Verified dealer-to-dealer RV inventory with escrow</div>
+                        </div>
+                      </Link>
+                      <Link
+                        href="/live-auctions"
+                        className="flex items-start gap-3 px-3 py-3 rounded-lg hover:bg-indigo-50 hover:text-indigo-700 transition-colors group"
+                        data-testid="link-live-auctions"
+                      >
+                        <Gavel size={17} className="text-indigo-600 flex-shrink-0 mt-1" />
+                        <div>
+                          <div className="font-medium text-sm flex items-center gap-2">
+                            {t('navigation.liveAuctions')}
+                            <ServiceBadge quarter="Q3" />
+                          </div>
+                          <div className="text-xs text-muted-foreground mt-0.5">Monthly 48-hour live auctions at wholesale pricing</div>
+                        </div>
+                      </Link>
                     </div>
-                    <div className="text-xs text-muted-foreground mt-1">Monthly 48-hour public auctions</div>
-                  </Link>
+
+                    {/* Divider */}
+                    <div className="w-px bg-border my-4" />
+
+                    {/* Right: Description Panel */}
+                    <div className="w-60 bg-gradient-to-br from-indigo-50 to-blue-50 px-5 py-5 flex flex-col flex-shrink-0">
+                      <div className="text-xs font-bold text-indigo-700 uppercase tracking-widest mb-2">Coming Q3 2026</div>
+                      <h3 className="font-bold text-foreground text-sm leading-snug mb-2">
+                        Buy, Sell & Trade RVs
+                      </h3>
+                      <p className="text-xs text-muted-foreground leading-relaxed mb-4">
+                        A dealer-to-dealer marketplace with verified inventory and live auction events — the most efficient way to move units at the right price.
+                      </p>
+                      <div className="space-y-1.5 mb-5">
+                        {['Verified Inventory', 'Live Bidding Events', 'Dealer Network Access', 'Escrow Protection'].map((item) => (
+                          <div key={item} className="flex items-center gap-2 text-xs text-foreground">
+                            <CheckCircle2 size={12} className="text-indigo-600 flex-shrink-0" />
+                            <span>{item}</span>
+                          </div>
+                        ))}
+                      </div>
+                      <Link
+                        href="/marketplace"
+                        className="flex items-center justify-center gap-1.5 px-4 py-2 bg-indigo-600 text-white rounded-lg text-xs font-semibold hover:bg-indigo-700 transition-colors mt-auto"
+                        data-testid="link-marketplace-explore"
+                      >
+                        Explore Marketplace
+                        <ArrowRight size={12} />
+                      </Link>
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
