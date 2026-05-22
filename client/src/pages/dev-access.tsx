@@ -3,18 +3,19 @@ import { useUser } from "@clerk/clerk-react";
 import logoLight from "@assets/DS360_logo_light.png";
 
 const PORTAL_TARGETS: Record<string, string> = {
-  operator_admin:  "/operator-v6",
-  operator_staff:  "/operator-v6",
-  dealer_owner:    "/dealer-v6",
-  dealer_staff:    "/dealer-v6",
-  service_manager: "/dealer-v6",
-  shop_manager:    "/dealer-v6",
-  parts_dept:      "/dealer-v6",
-  technician:      "/dealer-v6",
-  public_bidder:   "/dealer-v6",
-  consignor:       "/dealer-v6",
-  client:          "/client-v6",
-  bidder:          "/bidder-v6",
+  operator_admin:       "/operator-v6",
+  operator_staff:       "/operator-v6",
+  dealer_owner:         "/dealer-v6",
+  dealer_staff:         "/dealer-v6",
+  client:               "/client-v6",
+  service_manager:      "/dealer-v6",
+  shop_manager:         "/dealer-v6",
+  parts_manager:        "/dealer-v6",
+  financial_manager:    "/dealer-v6",
+  shop_technician:      "/dealer-v6",
+  on_site_technician:   "/dealer-v6",
+  public_bidder:        "/bidder-v6",
+  consignor:            "/bidder-v6",
 };
 
 interface RoleCard {
@@ -38,37 +39,31 @@ const SECTIONS: { label: string; color: string; bg: string; roles: RoleCard[] }[
     color: "#059669",
     bg: "#f0fdf4",
     roles: [
-      { role: "dealer_owner",  label: "Dealer Owner",   desc: "Full dealership control — claims, units, staff, billing, subscription" },
-      { role: "dealer_staff",  label: "Dealer Staff",   desc: "Claims and units only — no billing, no staff management" },
-      { role: "public_bidder", label: "Public Bidder",  desc: "Marketplace browsing, auction bidding, escrow payments" },
-      { role: "consignor",     label: "Consignor",      desc: "Consignment listings, offer management, payout tracking" },
+      { role: "dealer_owner", label: "Dealer Owner", desc: "Full dealership control — claims, units, staff, billing, subscription" },
+      { role: "dealer_staff", label: "Dealer Staff", desc: "Claims and units only — no billing, no staff management" },
+      { role: "client",       label: "Client",       desc: "RV owner — warranty tracking, claim status, documents, tickets, roadside" },
     ],
   },
   {
-    label: "Service Portal (Dealer-v6)",
+    label: "Dealer Service Portal",
     color: "#0891b2",
     bg: "#f0f9ff",
     roles: [
-      { role: "service_manager", label: "Service Manager", desc: "Work orders, dispatch scheduler, technician management, parts, full unit bio" },
-      { role: "shop_manager",    label: "Shop Manager",    desc: "All shop WOs, dispatch board (if enabled by Dealer Admin), parts access" },
-      { role: "technician",      label: "Technician",      desc: "Assigned work orders only — no WO creation, no billing, no admin" },
-      { role: "parts_dept",      label: "Parts Department", desc: "Parts department portal — menu items configured by Dealer Admin" },
+      { role: "service_manager",    label: "Service Manager",    desc: "Work orders, dispatch scheduler, technician management, parts, full unit bio" },
+      { role: "shop_manager",       label: "Shop Manager",       desc: "All shop WOs, dispatch board (if enabled by Dealer Admin), parts access" },
+      { role: "parts_manager",      label: "Parts Manager",      desc: "Parts inventory, orders, supplier management — configured by Dealer Admin" },
+      { role: "financial_manager",  label: "Financial Manager",  desc: "Financial reporting, invoicing, billing, revenue dashboards" },
+      { role: "shop_technician",    label: "Shop Technician",    desc: "Assigned shop work orders only — no WO creation, no billing, no admin" },
+      { role: "on_site_technician", label: "On-Site Technician", desc: "Mobile/field work orders, on-site dispatch — no billing, no admin" },
     ],
   },
   {
-    label: "Client Portal",
-    color: "#7c3aed",
-    bg: "#faf5ff",
-    roles: [
-      { role: "client", label: "Client (RV Owner)", desc: "Warranty tracking, claim status, documents, tickets, roadside" },
-    ],
-  },
-  {
-    label: "Bidder Portal",
+    label: "Marketplace Portal",
     color: "#b45309",
     bg: "#fffbeb",
     roles: [
-      { role: "bidder", label: "Independent Bidder", desc: "Auction room, live bidding, my bids, verification, escrow" },
+      { role: "public_bidder", label: "Public Bidder", desc: "Marketplace browsing, auction bidding, escrow payments" },
+      { role: "consignor",     label: "Consignor",     desc: "Consignment listings, offer management, payout tracking" },
     ],
   },
 ];
