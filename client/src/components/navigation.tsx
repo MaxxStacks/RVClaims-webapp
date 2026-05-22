@@ -109,7 +109,7 @@ export function Navigation() {
                       </div>
                       <Link
                         href="/claims-processing"
-                        className="flex items-start gap-3 px-3 py-3 rounded-lg hover:bg-primary/5 hover:text-primary transition-colors group"
+                        className="flex items-start gap-3 px-3 py-3 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors group"
                         data-testid="link-claims-processing"
                       >
                         <Shield size={17} className="text-primary flex-shrink-0 mt-1" />
@@ -120,7 +120,7 @@ export function Navigation() {
                       </Link>
                       <Link
                         href="/rv-types"
-                        className="flex items-start gap-3 px-3 py-3 rounded-lg hover:bg-primary/5 hover:text-primary transition-colors group"
+                        className="flex items-start gap-3 px-3 py-3 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors group"
                         data-testid="link-rv-types"
                       >
                         <Truck size={17} className="text-primary flex-shrink-0 mt-1" />
@@ -131,7 +131,7 @@ export function Navigation() {
                       </Link>
                       <Link
                         href="/revenue-optimization"
-                        className="flex items-start gap-3 px-3 py-3 rounded-lg hover:bg-primary/5 hover:text-primary transition-colors group"
+                        className="flex items-start gap-3 px-3 py-3 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors group"
                         data-testid="link-revenue-optimization"
                       >
                         <TrendingUp size={17} className="text-primary flex-shrink-0 mt-1" />
