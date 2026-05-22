@@ -268,7 +268,8 @@ function App() {
                    location.startsWith('/dealer-v6') ||
                    location.startsWith('/client/') ||
                    location.startsWith('/client-v6') ||
-                   location.startsWith('/bidder/');
+                   location.startsWith('/bidder/') ||
+                   location.startsWith('/bidder-v6');
 
   // portal.css sets body{display:flex;background:...} globally.
   // Reset those overrides on marketing/login pages.
