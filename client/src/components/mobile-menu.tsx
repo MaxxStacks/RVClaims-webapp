@@ -60,23 +60,23 @@ export function MobileMenu() {
     setExpandedMenu(expandedMenu === menuKey ? null : menuKey);
   };
 
-  const mainServicesItems = [
-    { href: "/claims-processing", label: t('mainServices.claims.title'), desc: "A-Z warranty claims" },
-    { href: "/financing-services", label: t('mainServices.financing.title'), desc: "Dealership financing" },
-    { href: "/warranty-extended-services", label: t('mainServices.warranty.title'), desc: "Protection packages" },
-    { href: "/fi-services", label: t('mainServices.fiServices.title'), desc: "F&I solutions" }
+  const claimsItems = [
+    { href: "/claims-processing", label: t('mainServices.claims.title'), desc: "DAF, PDI, Warranty, Extended Warranty, Insurance", badge: null },
+    { href: "/rv-types", label: t('navigation.rvCoverage'), desc: "All 10 RV types, 6 manufacturers", badge: null },
+    { href: "/revenue-optimization", label: "Revenue Optimization", desc: "Maximize labor & parts recovery", badge: null },
   ];
 
-  const supportingServicesItems = [
-    { href: "/parts", label: t('navigation.parts'), desc: "Parts & components" },
-    { href: "/marketing-services", label: t('navigation.marketing'), desc: "Digital marketing" },
-    { href: "/consignment-services", label: t('navigation.consignment'), desc: "Trade-in programs" }
+  const financialItems = [
+    { href: "/financing", label: t('mainServices.financing.title'), desc: "Lender integration & approval optimization", badge: "Q2" as const },
+    { href: "/fi-services", label: t('mainServices.fiServices.title'), desc: "Finance & Insurance outsourcing", badge: "Q2" as const },
+    { href: "/warranty-plans", label: t('mainServices.warranty.title'), desc: "OEM & aftermarket protection packages", badge: "Q2" as const },
   ];
 
-  const findDealerItems = [
-    { href: "/roadside-assistance", label: t('navigation.roadsideAssistance'), desc: "24/7 support" },
-    { href: "/extended-warranty", label: t('navigation.extendedWarranty'), desc: "Protection plans" },
-    { href: "/protection-plans", label: t('navigation.protectionPlans'), desc: "Coverage options" }
+  const growthItems = [
+    { href: "/revenue-services", label: t('navigation.revenueServices'), desc: "Marketing, parts & trade-in programs", badge: "Q3" as const },
+    { href: "/technology", label: t('navigation.technology'), desc: "AI-powered dealership tools", badge: "Q3" as const },
+    { href: "/on-site-repairs", label: t('navigation.onSiteRepairs'), desc: "Technician dispatched to your location", badge: "Q3" as const },
+    { href: "/roadside-assistance", label: t('navigation.roadsideAssistance'), desc: "24/7 emergency towing & roadside support", badge: "Q4" as const },
   ];
 
   return (
@@ -184,20 +184,49 @@ export function MobileMenu() {
               backgroundColor: '#f8fafc'
             }}
           >
-            {/* Main Services with Submenu */}
+            {/* Claims Submenu */}
             <div>
               <button
-                onClick={() => toggleSubmenu('mainServices')}
+                onClick={() => toggleSubmenu('claims')}
                 className="w-full flex items-center justify-between px-4 py-2 rounded-lg text-base font-medium hover:bg-primary/10 hover:text-primary transition-colors"
                 style={{ color: '#1e293b' }}
-                data-testid="button-main-services"
+                data-testid="button-claims-services"
               >
-                <span>{t('navigation.mainServices')}</span>
-                <ChevronRight size={16} className={`transition-transform ${expandedMenu === 'mainServices' ? 'rotate-90' : ''}`} />
+                <span>Claims</span>
+                <ChevronRight size={16} className={`transition-transform ${expandedMenu === 'claims' ? 'rotate-90' : ''}`} />
               </button>
-              {expandedMenu === 'mainServices' && (
+              {expandedMenu === 'claims' && (
                 <div className="ml-4 mt-1 space-y-0.5">
-                  {mainServicesItems.map((item) => (
+                  {claimsItems.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={closeMenu}
+                      className="block px-4 py-2 rounded-lg text-sm hover:bg-primary/5 hover:text-primary transition-colors"
+                      data-testid={`link-${item.href.slice(1)}`}
+                    >
+                      <div className="font-medium">{item.label}</div>
+                      <div className="text-xs text-muted-foreground">{item.desc}</div>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Financial Services Submenu */}
+            <div>
+              <button
+                onClick={() => toggleSubmenu('financial')}
+                className="w-full flex items-center justify-between px-4 py-2 rounded-lg text-base font-medium hover:bg-primary/10 hover:text-primary transition-colors"
+                style={{ color: '#1e293b' }}
+                data-testid="button-financial-services"
+              >
+                <span>Financial Services</span>
+                <ChevronRight size={16} className={`transition-transform ${expandedMenu === 'financial' ? 'rotate-90' : ''}`} />
+              </button>
+              {expandedMenu === 'financial' && (
+                <div className="ml-4 mt-1 space-y-0.5">
+                  {financialItems.map((item) => (
                     <Link
                       key={item.href}
                       href={item.href}
@@ -207,9 +236,7 @@ export function MobileMenu() {
                     >
                       <div className="font-medium flex items-center gap-2 flex-wrap">
                         {item.label}
-                        {(item.href === '/financing-services' || item.href === '/fi-services') && (
-                          <ServiceBadge quarter="Q2" />
-                        )}
+                        {item.badge && <ServiceBadge quarter={item.badge} />}
                       </div>
                       <div className="text-xs text-muted-foreground">{item.desc}</div>
                     </Link>
@@ -218,20 +245,20 @@ export function MobileMenu() {
               )}
             </div>
 
-            {/* Supporting Services with Submenu */}
+            {/* Revenue Growth Submenu */}
             <div>
               <button
-                onClick={() => toggleSubmenu('supportingServices')}
+                onClick={() => toggleSubmenu('growth')}
                 className="w-full flex items-center justify-between px-4 py-2 rounded-lg text-base font-medium hover:bg-primary/10 hover:text-primary transition-colors"
                 style={{ color: '#1e293b' }}
-                data-testid="button-supporting-services"
+                data-testid="button-growth-services"
               >
-                <span>{t('navigation.supportingServices')}</span>
-                <ChevronRight size={16} className={`transition-transform ${expandedMenu === 'supportingServices' ? 'rotate-90' : ''}`} />
+                <span>Revenue Growth</span>
+                <ChevronRight size={16} className={`transition-transform ${expandedMenu === 'growth' ? 'rotate-90' : ''}`} />
               </button>
-              {expandedMenu === 'supportingServices' && (
+              {expandedMenu === 'growth' && (
                 <div className="ml-4 mt-1 space-y-0.5">
-                  {supportingServicesItems.map((item) => (
+                  {growthItems.map((item) => (
                     <Link
                       key={item.href}
                       href={item.href}
@@ -239,36 +266,10 @@ export function MobileMenu() {
                       className="block px-4 py-2 rounded-lg text-sm hover:bg-primary/5 hover:text-primary transition-colors"
                       data-testid={`link-${item.href.slice(1)}`}
                     >
-                      <div className="font-medium">{item.label}</div>
-                      <div className="text-xs text-muted-foreground">{item.desc}</div>
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Find a Dealer with Submenu */}
-            <div>
-              <button
-                onClick={() => toggleSubmenu('findDealer')}
-                className="w-full flex items-center justify-between px-4 py-2 rounded-lg text-base font-medium hover:bg-primary/10 hover:text-primary transition-colors"
-                style={{ color: '#1e293b' }}
-                data-testid="button-find-dealer"
-              >
-                <span>{t('navigation.ownerServices')}</span>
-                <ChevronRight size={16} className={`transition-transform ${expandedMenu === 'findDealer' ? 'rotate-90' : ''}`} />
-              </button>
-              {expandedMenu === 'findDealer' && (
-                <div className="ml-4 mt-1 space-y-0.5">
-                  {findDealerItems.map((item) => (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      onClick={closeMenu}
-                      className="block px-4 py-2 rounded-lg text-sm hover:bg-primary/5 hover:text-primary transition-colors"
-                      data-testid={`link-${item.href.slice(1)}`}
-                    >
-                      <div className="font-medium">{item.label}</div>
+                      <div className="font-medium flex items-center gap-2 flex-wrap">
+                        {item.label}
+                        {item.badge && <ServiceBadge quarter={item.badge} />}
+                      </div>
                       <div className="text-xs text-muted-foreground">{item.desc}</div>
                     </Link>
                   ))}

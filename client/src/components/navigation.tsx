@@ -3,7 +3,7 @@ import { LanguageToggle } from "@/components/language-toggle";
 import { MobileMenu } from "@/components/mobile-menu";
 import { ServiceBadge } from "@/components/service-badge";
 import { Link, useLocation } from "wouter";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Shield, Truck, TrendingUp, CheckCircle2, ArrowRight } from "lucide-react";
 import { useState } from "react";
 import logoLight from "@assets/DS360_logo_light.png";
 import travelTrailerIcon from "@assets/Travel Trailer_1756847838647.webp";
@@ -20,7 +20,9 @@ import destinationTrailerIcon from "@assets/Destination Trailer_1756847838644.we
 export function Navigation() {
   const { t, language } = useLanguage();
   const [location] = useLocation();
-  const [servicesOpen, setServicesOpen] = useState(false);
+  const [claimsOpen, setClaimsOpen] = useState(false);
+  const [financialOpen, setFinancialOpen] = useState(false);
+  const [growthOpen, setGrowthOpen] = useState(false);
   const [rvCoverageOpen, setRvCoverageOpen] = useState(false);
   const [marketplaceOpen, setMarketplaceOpen] = useState(false);
 
@@ -74,146 +76,249 @@ export function Navigation() {
           {/* Desktop Menu */}
           <div className="hidden lg:flex items-center space-x-6">
 
-            {/* Services Dropdown — 3-column mega-menu */}
+            {/* Claims Dropdown — links left, description panel right */}
             <div
               className="relative"
-              onMouseEnter={() => setServicesOpen(true)}
-              onMouseLeave={() => setServicesOpen(false)}
+              onMouseEnter={() => setClaimsOpen(true)}
+              onMouseLeave={() => setClaimsOpen(false)}
             >
               <div className="flex items-center gap-0.5">
                 <Link
-                  href="/services"
-                  className={`text-muted-foreground hover:text-foreground transition-colors py-2 ${location === '/services' ? 'text-foreground' : ''}`}
-                  data-testid="link-services-nav"
+                  href="/claims-processing"
+                  className={`text-muted-foreground hover:text-foreground transition-colors py-2 ${location === '/claims-processing' ? 'text-foreground' : ''}`}
+                  data-testid="link-claims-nav"
                 >
-                  {t('navigation.services')}
+                  Claims
                 </Link>
                 <button
                   className="flex items-center text-muted-foreground hover:text-foreground transition-colors py-2 px-1"
-                  data-testid="button-services-dropdown"
-                  onClick={() => setServicesOpen(!servicesOpen)}
+                  data-testid="button-claims-dropdown"
+                  onClick={() => setClaimsOpen(!claimsOpen)}
                 >
-                  <ChevronDown size={16} className={`transition-transform ${servicesOpen ? 'rotate-180' : ''}`} />
+                  <ChevronDown size={16} className={`transition-transform ${claimsOpen ? 'rotate-180' : ''}`} />
                 </button>
               </div>
 
-              {servicesOpen && (
-                <div className="absolute top-full left-0 mt-1 w-[900px] bg-white border border-border rounded-lg shadow-xl py-3 z-50">
-                  <div className="grid grid-cols-3">
-                    {/* Column 1: Core Claims */}
-                    <div>
-                      <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide px-5 pt-3 pb-1">
-                        Core Claims
+              {claimsOpen && (
+                <div className="absolute top-full left-0 mt-1 w-[760px] bg-white border border-border rounded-lg shadow-xl z-50 overflow-hidden">
+                  <div className="flex">
+                    {/* Left: Service Links */}
+                    <div className="flex-1 py-3 px-2">
+                      <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide px-3 pt-1 pb-2">
+                        Claims & Coverage
                       </div>
                       <Link
                         href="/claims-processing"
-                        className="block px-5 py-3 text-sm hover:bg-primary/10 hover:text-primary transition-colors"
+                        className="flex items-start gap-3 px-3 py-3 rounded-lg hover:bg-primary/5 hover:text-primary transition-colors group"
                         data-testid="link-claims-processing"
                       >
-                        <div className="font-medium">{t('mainServices.claims.title')}</div>
-                        <div className="text-xs text-muted-foreground mt-1">A-Z warranty claims management</div>
+                        <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-primary/20 transition-colors">
+                          <Shield size={15} className="text-primary" />
+                        </div>
+                        <div>
+                          <div className="font-medium text-sm">{t('mainServices.claims.title')}</div>
+                          <div className="text-xs text-muted-foreground mt-0.5">DAF, PDI, Warranty, Extended Warranty, Insurance</div>
+                        </div>
                       </Link>
                       <Link
                         href="/rv-types"
-                        className="block px-5 py-3 text-sm hover:bg-primary/10 hover:text-primary transition-colors"
+                        className="flex items-start gap-3 px-3 py-3 rounded-lg hover:bg-primary/5 hover:text-primary transition-colors group"
                         data-testid="link-rv-types"
                       >
-                        <div className="font-medium">{t('navigation.rvCoverage')}</div>
-                        <div className="text-xs text-muted-foreground mt-1">10 RV types, all manufacturers</div>
+                        <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-primary/20 transition-colors">
+                          <Truck size={15} className="text-primary" />
+                        </div>
+                        <div>
+                          <div className="font-medium text-sm">{t('navigation.rvCoverage')}</div>
+                          <div className="text-xs text-muted-foreground mt-0.5">All 10 RV types across 6 major manufacturers</div>
+                        </div>
+                      </Link>
+                      <Link
+                        href="/revenue-optimization"
+                        className="flex items-start gap-3 px-3 py-3 rounded-lg hover:bg-primary/5 hover:text-primary transition-colors group"
+                        data-testid="link-revenue-optimization"
+                      >
+                        <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-primary/20 transition-colors">
+                          <TrendingUp size={15} className="text-primary" />
+                        </div>
+                        <div>
+                          <div className="font-medium text-sm">Revenue Optimization</div>
+                          <div className="text-xs text-muted-foreground mt-0.5">Maximize labor & parts recovery on every claim</div>
+                        </div>
                       </Link>
                     </div>
 
-                    {/* Column 2: Financial Services */}
-                    <div>
-                      <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide px-5 pt-3 pb-1">
-                        Financial Services
-                      </div>
-                      <Link
-                        href="/financing"
-                        className="block px-5 py-3 text-sm hover:bg-primary/10 hover:text-primary transition-colors"
-                        data-testid="link-financing-services"
-                      >
-                        <div className="font-medium flex items-center gap-2">
-                          {t('mainServices.financing.title')}
-                          <ServiceBadge quarter="Q2" />
-                        </div>
-                        <div className="text-xs text-muted-foreground mt-1">Dealership financing support</div>
-                      </Link>
-                      <Link
-                        href="/fi-services"
-                        className="block px-5 py-3 text-sm hover:bg-primary/10 hover:text-primary transition-colors"
-                        data-testid="link-fi-services"
-                      >
-                        <div className="font-medium flex items-center gap-2">
-                          {t('mainServices.fiServices.title')}
-                          <ServiceBadge quarter="Q2" />
-                        </div>
-                        <div className="text-xs text-muted-foreground mt-1">Finance & Insurance solutions</div>
-                      </Link>
-                      <Link
-                        href="/warranty-plans"
-                        className="block px-5 py-3 text-sm hover:bg-primary/10 hover:text-primary transition-colors"
-                        data-testid="link-warranty-extended"
-                      >
-                        <div className="font-medium flex items-center gap-2">
-                          {t('mainServices.warranty.title')}
-                          <ServiceBadge quarter="Q2" />
-                        </div>
-                        <div className="text-xs text-muted-foreground mt-1">Protection packages</div>
-                      </Link>
-                    </div>
+                    {/* Divider */}
+                    <div className="w-px bg-border my-4" />
 
-                    {/* Column 3: Revenue Growth */}
-                    <div>
-                      <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide px-5 pt-3 pb-1">
-                        Revenue Growth
+                    {/* Right: Description Panel */}
+                    <div className="w-60 bg-gradient-to-br from-primary/10 to-primary/5 px-5 py-5 flex flex-col flex-shrink-0">
+                      <div className="text-xs font-bold text-primary uppercase tracking-widest mb-2">Live Now</div>
+                      <h3 className="font-bold text-foreground text-sm leading-snug mb-2">
+                        End-to-End RV Claims Processing
+                      </h3>
+                      <p className="text-xs text-muted-foreground leading-relaxed mb-4">
+                        Our expert team handles every claim type across all major manufacturers — maximizing your approval rates and recovering every dollar.
+                      </p>
+                      <div className="space-y-1.5 mb-5">
+                        {['6 Major Manufacturers', 'All 10 RV Types', 'AI-Assisted Review', 'A-Z Management'].map((item) => (
+                          <div key={item} className="flex items-center gap-2 text-xs text-foreground">
+                            <CheckCircle2 size={12} className="text-primary flex-shrink-0" />
+                            <span>{item}</span>
+                          </div>
+                        ))}
                       </div>
                       <Link
-                        href="/revenue-services"
-                        className="block px-5 py-3 text-sm hover:bg-primary/10 hover:text-primary transition-colors"
-                        data-testid="link-revenue-services"
+                        href="/sign-up"
+                        className="flex items-center justify-center gap-1.5 px-4 py-2 bg-primary text-white rounded-lg text-xs font-semibold hover:bg-primary/90 transition-colors mt-auto"
+                        data-testid="link-claims-get-started"
                       >
-                        <div className="font-medium flex items-center gap-2">
-                          {t('navigation.revenueServices')}
-                          <ServiceBadge quarter="Q3" />
-                        </div>
-                        <div className="text-xs text-muted-foreground mt-1">Marketing, parts & trade-in programs</div>
-                      </Link>
-                      <Link
-                        href="/technology"
-                        className="block px-5 py-3 text-sm hover:bg-primary/10 hover:text-primary transition-colors"
-                        data-testid="link-technology"
-                      >
-                        <div className="font-medium flex items-center gap-2">
-                          {t('navigation.technology')}
-                          <ServiceBadge quarter="Q3" />
-                        </div>
-                        <div className="text-xs text-muted-foreground mt-1">AI-powered dealership tools</div>
-                      </Link>
-                      <Link
-                        href="/on-site-repairs"
-                        className="block px-5 py-3 text-sm hover:bg-primary/10 hover:text-primary transition-colors"
-                        data-testid="link-on-site-repairs"
-                      >
-                        <div className="font-medium flex items-center gap-2">
-                          {t('navigation.onSiteRepairs')}
-                          <ServiceBadge quarter="Q3" />
-                        </div>
-                        <div className="text-xs text-muted-foreground mt-1">Technician dispatched to your location</div>
-                      </Link>
-                      <Link
-                        href="/roadside-assistance"
-                        className="block px-5 py-3 text-sm hover:bg-primary/10 hover:text-primary transition-colors"
-                        data-testid="link-roadside-assistance"
-                      >
-                        <div className="font-medium flex items-center gap-2">
-                          {t('navigation.roadsideAssistance')}
-                          <ServiceBadge quarter="Q4" />
-                        </div>
-                        <div className="text-xs text-muted-foreground mt-1">24/7 emergency towing & roadside support</div>
+                        Get Started
+                        <ArrowRight size={12} />
                       </Link>
                     </div>
                   </div>
+                </div>
+              )}
+            </div>
+
+            {/* Financial Services Dropdown */}
+            <div
+              className="relative"
+              onMouseEnter={() => setFinancialOpen(true)}
+              onMouseLeave={() => setFinancialOpen(false)}
+            >
+              <div className="flex items-center gap-0.5">
+                <Link
+                  href="/financing"
+                  className={`text-muted-foreground hover:text-foreground transition-colors py-2 ${['/financing', '/fi-services', '/warranty-plans'].includes(location) ? 'text-foreground' : ''}`}
+                  data-testid="link-financial-nav"
+                >
+                  Financial
+                </Link>
+                <button
+                  className="flex items-center text-muted-foreground hover:text-foreground transition-colors py-2 px-1"
+                  data-testid="button-financial-dropdown"
+                  onClick={() => setFinancialOpen(!financialOpen)}
+                >
+                  <ChevronDown size={16} className={`transition-transform ${financialOpen ? 'rotate-180' : ''}`} />
+                </button>
+              </div>
+
+              {financialOpen && (
+                <div className="absolute top-full left-0 mt-1 w-72 bg-white border border-border rounded-lg shadow-xl py-3 z-50">
+                  <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide px-5 pt-1 pb-2">
+                    Financial Services
+                  </div>
+                  <Link
+                    href="/financing"
+                    className="block px-5 py-3 text-sm hover:bg-primary/10 hover:text-primary transition-colors"
+                    data-testid="link-financing-services"
+                  >
+                    <div className="font-medium flex items-center gap-2">
+                      {t('mainServices.financing.title')}
+                      <ServiceBadge quarter="Q2" />
+                    </div>
+                    <div className="text-xs text-muted-foreground mt-0.5">Lender integration & approval optimization</div>
+                  </Link>
+                  <Link
+                    href="/fi-services"
+                    className="block px-5 py-3 text-sm hover:bg-primary/10 hover:text-primary transition-colors"
+                    data-testid="link-fi-services"
+                  >
+                    <div className="font-medium flex items-center gap-2">
+                      {t('mainServices.fiServices.title')}
+                      <ServiceBadge quarter="Q2" />
+                    </div>
+                    <div className="text-xs text-muted-foreground mt-0.5">Finance & Insurance outsourcing solutions</div>
+                  </Link>
+                  <Link
+                    href="/warranty-plans"
+                    className="block px-5 py-3 text-sm hover:bg-primary/10 hover:text-primary transition-colors"
+                    data-testid="link-warranty-extended"
+                  >
+                    <div className="font-medium flex items-center gap-2">
+                      {t('mainServices.warranty.title')}
+                      <ServiceBadge quarter="Q2" />
+                    </div>
+                    <div className="text-xs text-muted-foreground mt-0.5">OEM & aftermarket protection packages</div>
+                  </Link>
+                </div>
+              )}
+            </div>
+
+            {/* Revenue Growth Dropdown */}
+            <div
+              className="relative"
+              onMouseEnter={() => setGrowthOpen(true)}
+              onMouseLeave={() => setGrowthOpen(false)}
+            >
+              <div className="flex items-center gap-0.5">
+                <Link
+                  href="/revenue-services"
+                  className={`text-muted-foreground hover:text-foreground transition-colors py-2 ${['/revenue-services', '/technology', '/on-site-repairs', '/roadside-assistance'].includes(location) ? 'text-foreground' : ''}`}
+                  data-testid="link-growth-nav"
+                >
+                  Growth
+                </Link>
+                <button
+                  className="flex items-center text-muted-foreground hover:text-foreground transition-colors py-2 px-1"
+                  data-testid="button-growth-dropdown"
+                  onClick={() => setGrowthOpen(!growthOpen)}
+                >
+                  <ChevronDown size={16} className={`transition-transform ${growthOpen ? 'rotate-180' : ''}`} />
+                </button>
+              </div>
+
+              {growthOpen && (
+                <div className="absolute top-full left-0 mt-1 w-72 bg-white border border-border rounded-lg shadow-xl py-3 z-50">
+                  <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide px-5 pt-1 pb-2">
+                    Revenue Growth
+                  </div>
+                  <Link
+                    href="/revenue-services"
+                    className="block px-5 py-3 text-sm hover:bg-primary/10 hover:text-primary transition-colors"
+                    data-testid="link-revenue-services"
+                  >
+                    <div className="font-medium flex items-center gap-2">
+                      {t('navigation.revenueServices')}
+                      <ServiceBadge quarter="Q3" />
+                    </div>
+                    <div className="text-xs text-muted-foreground mt-0.5">Marketing, parts & trade-in programs</div>
+                  </Link>
+                  <Link
+                    href="/technology"
+                    className="block px-5 py-3 text-sm hover:bg-primary/10 hover:text-primary transition-colors"
+                    data-testid="link-technology"
+                  >
+                    <div className="font-medium flex items-center gap-2">
+                      {t('navigation.technology')}
+                      <ServiceBadge quarter="Q3" />
+                    </div>
+                    <div className="text-xs text-muted-foreground mt-0.5">AI-powered dealership tools</div>
+                  </Link>
+                  <Link
+                    href="/on-site-repairs"
+                    className="block px-5 py-3 text-sm hover:bg-primary/10 hover:text-primary transition-colors"
+                    data-testid="link-on-site-repairs"
+                  >
+                    <div className="font-medium flex items-center gap-2">
+                      {t('navigation.onSiteRepairs')}
+                      <ServiceBadge quarter="Q3" />
+                    </div>
+                    <div className="text-xs text-muted-foreground mt-0.5">Technician dispatched to your location</div>
+                  </Link>
+                  <Link
+                    href="/roadside-assistance"
+                    className="block px-5 py-3 text-sm hover:bg-primary/10 hover:text-primary transition-colors"
+                    data-testid="link-roadside-assistance"
+                  >
+                    <div className="font-medium flex items-center gap-2">
+                      {t('navigation.roadsideAssistance')}
+                      <ServiceBadge quarter="Q4" />
+                    </div>
+                    <div className="text-xs text-muted-foreground mt-0.5">24/7 emergency towing & roadside support</div>
+                  </Link>
                 </div>
               )}
             </div>
