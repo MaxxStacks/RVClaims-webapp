@@ -109,7 +109,7 @@ export function Navigation() {
                       </div>
                       <Link
                         href="/claims-processing"
-                        className="flex items-start gap-3 px-3 py-3 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors group"
+                        className="flex items-start gap-3 px-3 py-3 rounded-lg hover:bg-blue-50 hover:text-blue-700 transition-colors group"
                         data-testid="link-claims-processing"
                       >
                         <Shield size={17} className="text-primary flex-shrink-0 mt-1" />
@@ -120,7 +120,7 @@ export function Navigation() {
                       </Link>
                       <Link
                         href="/rv-types"
-                        className="flex items-start gap-3 px-3 py-3 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors group"
+                        className="flex items-start gap-3 px-3 py-3 rounded-lg hover:bg-blue-50 hover:text-blue-700 transition-colors group"
                         data-testid="link-rv-types"
                       >
                         <Truck size={17} className="text-primary flex-shrink-0 mt-1" />
@@ -131,7 +131,7 @@ export function Navigation() {
                       </Link>
                       <Link
                         href="/revenue-optimization"
-                        className="flex items-start gap-3 px-3 py-3 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors group"
+                        className="flex items-start gap-3 px-3 py-3 rounded-lg hover:bg-blue-50 hover:text-blue-700 transition-colors group"
                         data-testid="link-revenue-optimization"
                       >
                         <TrendingUp size={17} className="text-primary flex-shrink-0 mt-1" />
@@ -472,7 +472,7 @@ export function Navigation() {
                 <div className="absolute top-full left-0 mt-1 w-80 bg-white border border-border rounded-lg shadow-xl py-3 z-50">
                   <Link
                     href="/network-marketplace"
-                    className="block px-5 py-3 text-sm hover:bg-primary/10 hover:text-primary transition-colors"
+                    className="block px-5 py-3 text-sm hover:bg-blue-50 hover:text-blue-700 transition-colors"
                     data-testid="link-network-marketplace"
                   >
                     <div className="font-medium">{t('navigation.networkMarketplace')}</div>
@@ -480,7 +480,7 @@ export function Navigation() {
                   </Link>
                   <Link
                     href="/live-auctions"
-                    className="block px-5 py-3 text-sm hover:bg-primary/10 hover:text-primary transition-colors"
+                    className="block px-5 py-3 text-sm hover:bg-blue-50 hover:text-blue-700 transition-colors"
                     data-testid="link-live-auctions"
                   >
                     <div className="font-medium flex items-center gap-2">
