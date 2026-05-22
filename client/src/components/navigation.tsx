@@ -112,9 +112,7 @@ export function Navigation() {
                         className="flex items-start gap-3 px-3 py-3 rounded-lg hover:bg-primary/5 hover:text-primary transition-colors group"
                         data-testid="link-claims-processing"
                       >
-                        <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-primary/20 transition-colors">
-                          <Shield size={15} className="text-primary" />
-                        </div>
+                        <Shield size={17} className="text-primary flex-shrink-0 mt-1" />
                         <div>
                           <div className="font-medium text-sm">{t('mainServices.claims.title')}</div>
                           <div className="text-xs text-muted-foreground mt-0.5">DAF, PDI, Warranty, Extended Warranty, Insurance</div>
@@ -125,9 +123,7 @@ export function Navigation() {
                         className="flex items-start gap-3 px-3 py-3 rounded-lg hover:bg-primary/5 hover:text-primary transition-colors group"
                         data-testid="link-rv-types"
                       >
-                        <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-primary/20 transition-colors">
-                          <Truck size={15} className="text-primary" />
-                        </div>
+                        <Truck size={17} className="text-primary flex-shrink-0 mt-1" />
                         <div>
                           <div className="font-medium text-sm">{t('navigation.rvCoverage')}</div>
                           <div className="text-xs text-muted-foreground mt-0.5">All 10 RV types across 6 major manufacturers</div>
@@ -138,9 +134,7 @@ export function Navigation() {
                         className="flex items-start gap-3 px-3 py-3 rounded-lg hover:bg-primary/5 hover:text-primary transition-colors group"
                         data-testid="link-revenue-optimization"
                       >
-                        <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-primary/20 transition-colors">
-                          <TrendingUp size={15} className="text-primary" />
-                        </div>
+                        <TrendingUp size={17} className="text-primary flex-shrink-0 mt-1" />
                         <div>
                           <div className="font-medium text-sm">Revenue Optimization</div>
                           <div className="text-xs text-muted-foreground mt-0.5">Maximize labor & parts recovery on every claim</div>
@@ -215,12 +209,10 @@ export function Navigation() {
                       </div>
                       <Link
                         href="/financing"
-                        className="flex items-start gap-3 px-3 py-3 rounded-lg hover:bg-amber-50 hover:text-amber-700 transition-colors group"
+                        className="flex items-start gap-3 px-3 py-3 rounded-lg hover:bg-emerald-50 hover:text-emerald-700 transition-colors group"
                         data-testid="link-financing-services"
                       >
-                        <div className="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-amber-200 transition-colors">
-                          <CreditCard size={15} className="text-amber-600" />
-                        </div>
+                        <CreditCard size={17} className="text-emerald-600 flex-shrink-0 mt-1" />
                         <div>
                           <div className="font-medium text-sm flex items-center gap-2">
                             {t('mainServices.financing.title')}
@@ -231,12 +223,10 @@ export function Navigation() {
                       </Link>
                       <Link
                         href="/fi-services"
-                        className="flex items-start gap-3 px-3 py-3 rounded-lg hover:bg-amber-50 hover:text-amber-700 transition-colors group"
+                        className="flex items-start gap-3 px-3 py-3 rounded-lg hover:bg-emerald-50 hover:text-emerald-700 transition-colors group"
                         data-testid="link-fi-services"
                       >
-                        <div className="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-amber-200 transition-colors">
-                          <Briefcase size={15} className="text-amber-600" />
-                        </div>
+                        <Briefcase size={17} className="text-emerald-600 flex-shrink-0 mt-1" />
                         <div>
                           <div className="font-medium text-sm flex items-center gap-2">
                             {t('mainServices.fiServices.title')}
@@ -247,12 +237,10 @@ export function Navigation() {
                       </Link>
                       <Link
                         href="/warranty-plans"
-                        className="flex items-start gap-3 px-3 py-3 rounded-lg hover:bg-amber-50 hover:text-amber-700 transition-colors group"
+                        className="flex items-start gap-3 px-3 py-3 rounded-lg hover:bg-emerald-50 hover:text-emerald-700 transition-colors group"
                         data-testid="link-warranty-extended"
                       >
-                        <div className="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-amber-200 transition-colors">
-                          <ShieldCheck size={15} className="text-amber-600" />
-                        </div>
+                        <ShieldCheck size={17} className="text-emerald-600 flex-shrink-0 mt-1" />
                         <div>
                           <div className="font-medium text-sm flex items-center gap-2">
                             {t('mainServices.warranty.title')}
@@ -267,8 +255,8 @@ export function Navigation() {
                     <div className="w-px bg-border my-4" />
 
                     {/* Right: Description Panel */}
-                    <div className="w-60 bg-gradient-to-br from-amber-50 to-orange-50 px-5 py-5 flex flex-col flex-shrink-0">
-                      <div className="text-xs font-bold text-amber-700 uppercase tracking-widest mb-2">Coming Q2 2026</div>
+                    <div className="w-60 bg-gradient-to-br from-emerald-50 to-green-50 px-5 py-5 flex flex-col flex-shrink-0">
+                      <div className="text-xs font-bold text-emerald-700 uppercase tracking-widest mb-2">Coming Q2 2026</div>
                       <h3 className="font-bold text-foreground text-sm leading-snug mb-2">
                         Full-Service Financial Management
                       </h3>
@@ -278,14 +266,14 @@ export function Navigation() {
                       <div className="space-y-1.5 mb-5">
                         {['Lender Integration', 'F&I Outsourcing', 'Warranty Management', 'Revenue Reporting'].map((item) => (
                           <div key={item} className="flex items-center gap-2 text-xs text-foreground">
-                            <CheckCircle2 size={12} className="text-amber-600 flex-shrink-0" />
+                            <CheckCircle2 size={12} className="text-emerald-600 flex-shrink-0" />
                             <span>{item}</span>
                           </div>
                         ))}
                       </div>
                       <Link
                         href="/financing"
-                        className="flex items-center justify-center gap-1.5 px-4 py-2 bg-amber-600 text-white rounded-lg text-xs font-semibold hover:bg-amber-700 transition-colors mt-auto"
+                        className="flex items-center justify-center gap-1.5 px-4 py-2 bg-emerald-600 text-white rounded-lg text-xs font-semibold hover:bg-emerald-700 transition-colors mt-auto"
                         data-testid="link-financial-learn-more"
                       >
                         Learn More
@@ -330,12 +318,10 @@ export function Navigation() {
                       </div>
                       <Link
                         href="/revenue-services"
-                        className="flex items-start gap-3 px-3 py-2.5 rounded-lg hover:bg-violet-50 hover:text-violet-700 transition-colors group"
+                        className="flex items-start gap-3 px-3 py-2.5 rounded-lg hover:bg-teal-50 hover:text-teal-700 transition-colors group"
                         data-testid="link-revenue-services"
                       >
-                        <div className="w-8 h-8 rounded-lg bg-violet-100 flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-violet-200 transition-colors">
-                          <TrendingUp size={15} className="text-violet-600" />
-                        </div>
+                        <TrendingUp size={17} className="text-teal-600 flex-shrink-0 mt-1" />
                         <div>
                           <div className="font-medium text-sm flex items-center gap-2">
                             {t('navigation.revenueServices')}
@@ -346,12 +332,10 @@ export function Navigation() {
                       </Link>
                       <Link
                         href="/technology"
-                        className="flex items-start gap-3 px-3 py-2.5 rounded-lg hover:bg-violet-50 hover:text-violet-700 transition-colors group"
+                        className="flex items-start gap-3 px-3 py-2.5 rounded-lg hover:bg-teal-50 hover:text-teal-700 transition-colors group"
                         data-testid="link-technology"
                       >
-                        <div className="w-8 h-8 rounded-lg bg-violet-100 flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-violet-200 transition-colors">
-                          <Zap size={15} className="text-violet-600" />
-                        </div>
+                        <Zap size={17} className="text-teal-600 flex-shrink-0 mt-1" />
                         <div>
                           <div className="font-medium text-sm flex items-center gap-2">
                             {t('navigation.technology')}
@@ -362,12 +346,10 @@ export function Navigation() {
                       </Link>
                       <Link
                         href="/on-site-repairs"
-                        className="flex items-start gap-3 px-3 py-2.5 rounded-lg hover:bg-violet-50 hover:text-violet-700 transition-colors group"
+                        className="flex items-start gap-3 px-3 py-2.5 rounded-lg hover:bg-teal-50 hover:text-teal-700 transition-colors group"
                         data-testid="link-on-site-repairs"
                       >
-                        <div className="w-8 h-8 rounded-lg bg-violet-100 flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-violet-200 transition-colors">
-                          <Wrench size={15} className="text-violet-600" />
-                        </div>
+                        <Wrench size={17} className="text-teal-600 flex-shrink-0 mt-1" />
                         <div>
                           <div className="font-medium text-sm flex items-center gap-2">
                             {t('navigation.onSiteRepairs')}
@@ -378,12 +360,10 @@ export function Navigation() {
                       </Link>
                       <Link
                         href="/roadside-assistance"
-                        className="flex items-start gap-3 px-3 py-2.5 rounded-lg hover:bg-violet-50 hover:text-violet-700 transition-colors group"
+                        className="flex items-start gap-3 px-3 py-2.5 rounded-lg hover:bg-teal-50 hover:text-teal-700 transition-colors group"
                         data-testid="link-roadside-assistance"
                       >
-                        <div className="w-8 h-8 rounded-lg bg-violet-100 flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-violet-200 transition-colors">
-                          <MapPin size={15} className="text-violet-600" />
-                        </div>
+                        <MapPin size={17} className="text-teal-600 flex-shrink-0 mt-1" />
                         <div>
                           <div className="font-medium text-sm flex items-center gap-2">
                             {t('navigation.roadsideAssistance')}
@@ -398,8 +378,8 @@ export function Navigation() {
                     <div className="w-px bg-border my-4" />
 
                     {/* Right: Description Panel */}
-                    <div className="w-60 bg-gradient-to-br from-violet-50 to-purple-50 px-5 py-5 flex flex-col flex-shrink-0">
-                      <div className="text-xs font-bold text-violet-700 uppercase tracking-widest mb-2">Coming Q3 2026</div>
+                    <div className="w-60 bg-gradient-to-br from-teal-50 to-cyan-50 px-5 py-5 flex flex-col flex-shrink-0">
+                      <div className="text-xs font-bold text-teal-700 uppercase tracking-widest mb-2">Coming Q3 2026</div>
                       <h3 className="font-bold text-foreground text-sm leading-snug mb-2">
                         Your Complete Revenue Growth Engine
                       </h3>
@@ -409,14 +389,14 @@ export function Navigation() {
                       <div className="space-y-1.5 mb-5">
                         {['Digital Marketing & SEO', 'AI-Powered Tools', 'Mobile Service Dispatch', '24/7 Roadside Support'].map((item) => (
                           <div key={item} className="flex items-center gap-2 text-xs text-foreground">
-                            <CheckCircle2 size={12} className="text-violet-600 flex-shrink-0" />
+                            <CheckCircle2 size={12} className="text-teal-600 flex-shrink-0" />
                             <span>{item}</span>
                           </div>
                         ))}
                       </div>
                       <Link
                         href="/revenue-services"
-                        className="flex items-center justify-center gap-1.5 px-4 py-2 bg-violet-600 text-white rounded-lg text-xs font-semibold hover:bg-violet-700 transition-colors mt-auto"
+                        className="flex items-center justify-center gap-1.5 px-4 py-2 bg-teal-600 text-white rounded-lg text-xs font-semibold hover:bg-teal-700 transition-colors mt-auto"
                         data-testid="link-growth-see-roadmap"
                       >
                         See Roadmap
