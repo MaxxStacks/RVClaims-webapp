@@ -1023,7 +1023,7 @@ _Generated from PORTAL-UI-INVENTORY.json_
   - Role: client (new customer user)
   - Page: Customer Portal — full portal accessible (Dashboard, My Unit, Warranty, Claim Status, Support Tickets, etc.)
   - Section: Customer Portal dashboard — unit card, dealer info, active claims
-- **Notifications triggered:** External email → Customer inbox: "You've been invited to access your RV Claims portal by [Dealer Name]. Click to create your account." — [REVIEW: NOTIFICATION] Email sending depends on SendGrid/SES integration, which is not confirmed as implemented.
+- **Notifications triggered:** External email → Customer inbox: "You've been invited to access your Dealer Suite 360 portal by [Dealer Name]. Click to create your account." — [REVIEW: NOTIFICATION] Email sending depends on SendGrid/SES integration, which is not confirmed as implemented.
 - **Status changes:** New user record created with `status=pending_invite` (or `active` if no email confirmation required)
 - **KPI impact:** None (no dashboard KPI tracks customer portal users in current spec)
 - **Role restrictions:** Both dealer_owner and dealer_staff can send invites. **[REVIEW: BUSINESS LOGIC]** Consider whether staff should be able to invite customers — this is an access-grant action.

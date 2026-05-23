@@ -17,7 +17,7 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m'
 
-log() { echo -e "${GREEN}[RVClaims]${NC} $1"; }
+log() { echo -e "${GREEN}[DealerSuite360]${NC} $1"; }
 warn() { echo -e "${YELLOW}[Warning]${NC} $1"; }
 error() { echo -e "${RED}[Error]${NC} $1"; exit 1; }
 
@@ -31,7 +31,7 @@ case $COMMAND in
     npm install @capacitor/network @capacitor/share @capacitor/local-notifications
 
     log "Initializing Capacitor..."
-    npx cap init "RV Claims" "ca.rvclaims.app" --web-dir dist/public
+    npx cap init "Dealer Suite 360" "com.dealersuite360.app" --web-dir dist/public
 
     log "Adding platforms..."
     npx cap add ios
@@ -76,7 +76,7 @@ case $COMMAND in
     log ""
     log "In Xcode:"
     log "  1. Select your Team in Signing & Capabilities"
-    log "  2. Set Bundle Identifier: ca.rvclaims.app"
+    log "  2. Set Bundle Identifier: com.dealersuite360.app"
     log "  3. Product → Archive → Distribute to App Store"
     ;;
 

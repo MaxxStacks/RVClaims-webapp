@@ -1,5 +1,5 @@
 // server/db/schema-marketplace.ts — Database schema for Dealer Marketplace + Live Auctions
-// Dealers pay $499/year to access. RV Claims mediates all transactions.
+// Dealers pay $499/year to access. Dealer Suite 360 mediates all transactions.
 // Dealer identity is HIDDEN in listings. $500 Stripe escrow hold. $250 flat commission.
 
 import { pgTable, text, integer, boolean, timestamp, decimal, jsonb, uuid, pgEnum } from 'drizzle-orm/pg-core';
@@ -10,11 +10,11 @@ import { z } from 'zod';
 
 export const membershipStatusEnum = pgEnum('membership_status', [
   'pending',        // Form submitted, awaiting verification
-  'under_review',   // RV Claims staff is verifying
+  'under_review',   // Dealer Suite 360 staff is verifying
   'approved',       // Verified, payment pending
   'active',         // Paid and active
   'expired',        // Annual fee lapsed
-  'suspended',      // Suspended by RV Claims
+  'suspended',      // Suspended by Dealer Suite 360
   'rejected',       // Application denied
 ]);
 
@@ -26,7 +26,7 @@ export const listingStatusEnum = pgEnum('listing_status', [
   'sold',           // Transaction completed
   'expired',        // Listing TTL reached
   'withdrawn',      // Seller pulled the listing
-  'rejected',       // RV Claims rejected the listing
+  'rejected',       // Dealer Suite 360 rejected the listing
 ]);
 
 export const inquiryTypeEnum = pgEnum('inquiry_type', [
@@ -36,8 +36,8 @@ export const inquiryTypeEnum = pgEnum('inquiry_type', [
 
 export const inquiryStatusEnum = pgEnum('inquiry_status', [
   'new',            // Just submitted
-  'forwarded',      // RV Claims forwarded to seller (anonymized)
-  'responded',      // Seller responded through RV Claims
+  'forwarded',      // Dealer Suite 360 forwarded to seller (anonymized)
+  'responded',      // Seller responded through Dealer Suite 360
   'accepted',       // Offer accepted
   'declined',       // Offer declined
   'expired',        // No response within timeframe
@@ -68,7 +68,7 @@ export const auctionStatusEnum = pgEnum('auction_status', [
   'ended',          // Bidding closed
   'sold',           // Winner confirmed, transaction started
   'no_sale',        // Reserve not met or no bids
-  'cancelled',      // Cancelled by seller or RV Claims
+  'cancelled',      // Cancelled by seller or Dealer Suite 360
 ]);
 
 export const bidStatusEnum = pgEnum('bid_status', [
@@ -229,7 +229,7 @@ export const marketplaceInquiries = pgTable('marketplace_inquiries', {
   
   offerAmount: decimal('offer_amount', { precision: 10, scale: 2 }),
   
-  // Messages mediated by RV Claims
+  // Messages mediated by Dealer Suite 360
   messages: jsonb('messages').notNull().default('[]'),
   
   resolvedAt: timestamp('resolved_at'),

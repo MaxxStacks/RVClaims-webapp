@@ -1,4 +1,4 @@
-# RV Claims Canada Website Design Guidelines
+# Dealer Suite 360 Website Design Guidelines
 
 ## Design Approach
 
