@@ -1,7 +1,9 @@
-// Shared page: Warranty
-// Used by: client
-// Source: Will be populated from CustomerPortal.tsx (285-306) in Session 2
-
 export default function Warranty() {
-  return <div>Warranty -- pending build</div>;
+  return (
+    <div style={{ padding: 32, textAlign: 'center' }}>
+      <div style={{ fontSize: 48, marginBottom: 16 }}>🚧</div>
+      <h2 style={{ fontSize: 20, fontWeight: 600, color: '#033280', marginBottom: 8 }}>Warranty</h2>
+      <p style={{ color: '#666', fontSize: 14 }}>This feature is coming soon. Stay tuned for updates.</p>
+    </div>
+  );
 }
