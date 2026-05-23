@@ -104,6 +104,9 @@ export default function PortalSelectV6() {
         The v6 portals read this override before falling back to publicMetadata.role.
         In production, role changes happen through invitations or admin actions — not this page.
       </p>
+      <a href="/dev-access-v7" style={{fontSize: 12, color: "#666", textDecoration: "none", display: "inline-block", marginTop: 12}}>
+        View New Portals (V7) →
+      </a>
     </div>
   );
 }
