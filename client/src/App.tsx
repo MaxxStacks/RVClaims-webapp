@@ -20,7 +20,7 @@ const PrivacyPolicy = lazy(() => import("@/pages/privacy-policy"));
 const LoginPage = lazy(() => import("@/pages/login"));
 const Signup = lazy(() => import("@/pages/signup"));
 const PortalRouter = lazy(() => import("@/pages/portal-router"));
-const Financing = lazy(() => import("@/pages/financing"));
+const FinancingServices = lazy(() => import("@/pages/financing-services"));
 const WarrantyExtendedService = lazy(() => import("@/pages/warranty-extended-service"));
 const FIServices = lazy(() => import("@/pages/fi-services"));
 const NetworkMarketplace = lazy(() => import("@/pages/network-marketplace"));
@@ -200,7 +200,7 @@ function Router() {
         <Route path="/dev-access" component={DevAccess} />
         <Route path="/dealer">{() => <Redirect to="/login" />}</Route>
         <Route path="/client-login">{() => <Redirect to="/login" />}</Route>
-        <Route path="/financing" component={Financing} />
+        <Route path="/financing" component={FinancingServices} />
         <Route path="/fi-services" component={FIServices} />
         <Route path="/network-marketplace" component={NetworkMarketplace} />
         <Route path="/live-auctions" component={LiveAuctions} />
