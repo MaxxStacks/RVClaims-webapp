@@ -70,6 +70,23 @@ const CustomerPortal = lazy(() => import("./portals/CustomerPortal"));
 const BidderPortal = lazy(() => import("./portals/BidderPortal"));
 const BidderPortalV6 = lazy(() => import("@/pages/BidderPortalV6"));
 const PortalSelectV6 = lazy(() => import("@/pages/PortalSelectV6"));
+
+// Session 3: 13-portal route sections
+import {
+  OperatorAdminPortalSection,
+  OperatorStaffPortalSection,
+  DealerOwnerPortalSection,
+  DealerStaffPortalSection,
+  ClientPortalSection,
+  ServiceManagerPortalSection,
+  ShopManagerPortalSection,
+  PartsManagerPortalSection,
+  FinancialManagerPortalSection,
+  ShopTechPortalSection,
+  OnSiteTechPortalSection,
+  PublicBidderPortalSection,
+  ConsignorPortalSection,
+} from './portals/PortalRoutes';
 const UnitProfilePageOperator = lazy(async () => {
   const { default: Comp } = await import("@/components/units/UnitProfilePage");
   return { default: () => <Comp context="operator" /> };
@@ -257,6 +274,18 @@ function Router() {
   );
 }
 
+// Dealer portal role types — second URL segment identifies the role
+const DEALER_PORTAL_ROLES = new Set([
+  'owner', 'staff', 'client',
+  'service-manager', 'shop-manager', 'parts-manager',
+  'financial-manager', 'shop-tech', 'on-site-tech',
+]);
+
+function isDealerPortalPath(path: string): boolean {
+  const seg = path.split('/')[2];
+  return seg !== undefined && DEALER_PORTAL_ROLES.has(seg);
+}
+
 function App() {
   const [location] = useLocation();
   // Portal sub-paths are isolated from the marketing layout.
@@ -269,7 +298,10 @@ function App() {
                    location.startsWith('/client/') ||
                    location.startsWith('/client-v6') ||
                    location.startsWith('/bidder/') ||
-                   location.startsWith('/bidder-v6');
+                   location.startsWith('/bidder-v6') ||
+                   location.startsWith('/marketplace/bidder') ||
+                   location.startsWith('/marketplace/consignor') ||
+                   isDealerPortalPath(location);
 
   // portal.css sets body{display:flex;background:...} globally.
   // Reset those overrides on marketing/login pages.
@@ -300,6 +332,13 @@ function App() {
               <Route path="/dealer-v6/units/new" component={NewUnitPageRoute} />
               <Route path="/dealer-v6/units/:id" component={UnitProfilePageDealer} />
               <Route path="/client-v6/units/:id" component={UnitProfilePageClient} />
+
+              {/* Session 3: Operator portals — BEFORE /operator/:rest* catch-all */}
+              <Route path="/operator/admin/:rest*" component={OperatorAdminPortalSection} />
+              <Route path="/operator/admin" component={OperatorAdminPortalSection} />
+              <Route path="/operator/staff/:rest*" component={OperatorStaffPortalSection} />
+              <Route path="/operator/staff" component={OperatorStaffPortalSection} />
+
               {/* v6 portal catch-alls → old portals (v6 endpoints) */}
               <Route path="/operator-v6/:rest*" component={OperatorPortal} />
               <Route path="/operator-v6" component={OperatorPortal} />
@@ -312,6 +351,32 @@ function App() {
               <Route path="/dealer/:rest*" component={DealerPortal} />
               <Route path="/client/:rest*" component={CustomerPortal} />
               <Route path="/bidder/:rest*" component={BidderPortal} />
+
+              {/* Session 3: Marketplace portals */}
+              <Route path="/marketplace/bidder/:rest*" component={PublicBidderPortalSection} />
+              <Route path="/marketplace/bidder" component={PublicBidderPortalSection} />
+              <Route path="/marketplace/consignor/:rest*" component={ConsignorPortalSection} />
+              <Route path="/marketplace/consignor" component={ConsignorPortalSection} />
+
+              {/* Session 3: Dealer role portals — dynamic :dealerId prefix, last in Switch */}
+              <Route path="/:dealerId/owner/:rest*" component={DealerOwnerPortalSection} />
+              <Route path="/:dealerId/owner" component={DealerOwnerPortalSection} />
+              <Route path="/:dealerId/staff/:rest*" component={DealerStaffPortalSection} />
+              <Route path="/:dealerId/staff" component={DealerStaffPortalSection} />
+              <Route path="/:dealerId/client/:rest*" component={ClientPortalSection} />
+              <Route path="/:dealerId/client" component={ClientPortalSection} />
+              <Route path="/:dealerId/service-manager/:rest*" component={ServiceManagerPortalSection} />
+              <Route path="/:dealerId/service-manager" component={ServiceManagerPortalSection} />
+              <Route path="/:dealerId/shop-manager/:rest*" component={ShopManagerPortalSection} />
+              <Route path="/:dealerId/shop-manager" component={ShopManagerPortalSection} />
+              <Route path="/:dealerId/parts-manager/:rest*" component={PartsManagerPortalSection} />
+              <Route path="/:dealerId/parts-manager" component={PartsManagerPortalSection} />
+              <Route path="/:dealerId/financial-manager/:rest*" component={FinancialManagerPortalSection} />
+              <Route path="/:dealerId/financial-manager" component={FinancialManagerPortalSection} />
+              <Route path="/:dealerId/shop-tech/:rest*" component={ShopTechPortalSection} />
+              <Route path="/:dealerId/shop-tech" component={ShopTechPortalSection} />
+              <Route path="/:dealerId/on-site-tech/:rest*" component={OnSiteTechPortalSection} />
+              <Route path="/:dealerId/on-site-tech" component={OnSiteTechPortalSection} />
             </Switch>
           </Suspense>
         </AuthProvider>
