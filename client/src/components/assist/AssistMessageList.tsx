@@ -1,6 +1,6 @@
 // client/src/components/assist/AssistMessageList.tsx
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export interface ChatMessage {
   id: string;
@@ -11,6 +11,8 @@ export interface ChatMessage {
 interface Props {
   messages: ChatMessage[];
   isTyping?: boolean;
+  conversationId?: string;
+  onFeedback?: (messageId: string, feedback: "up" | "down") => void;
 }
 
 function renderMarkdown(text: string): string {
@@ -26,12 +28,57 @@ function renderMarkdown(text: string): string {
     .replace(/\n/g, "<br/>");
 }
 
-export default function AssistMessageList({ messages, isTyping = false }: Props) {
+function ThumbsButton({
+  type,
+  active,
+  disabled,
+  onClick,
+}: {
+  type: "up" | "down";
+  active: boolean;
+  disabled: boolean;
+  onClick: () => void;
+}) {
+  const isUp = type === "up";
+  return (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      title={isUp ? "Helpful" : "Not helpful"}
+      style={{
+        background: active ? (isUp ? "#dcfce7" : "#fee2e2") : "none",
+        border: "none",
+        cursor: disabled ? "default" : "pointer",
+        padding: "2px 4px",
+        borderRadius: 4,
+        opacity: disabled && !active ? 0.35 : 1,
+        lineHeight: 1,
+        fontSize: 13,
+      }}
+    >
+      {isUp ? "👍" : "👎"}
+    </button>
+  );
+}
+
+export default function AssistMessageList({
+  messages,
+  isTyping = false,
+  conversationId,
+  onFeedback,
+}: Props) {
   const bottomRef = useRef<HTMLDivElement>(null);
+  const [feedbackState, setFeedbackState] = useState<Record<string, "up" | "down">>({});
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isTyping]);
+
+  const handleFeedback = (messageId: string, vote: "up" | "down") => {
+    if (feedbackState[messageId]) return; // already voted
+    setFeedbackState((prev) => ({ ...prev, [messageId]: vote }));
+    onFeedback?.(messageId, vote);
+  };
 
   return (
     <div
@@ -61,24 +108,6 @@ export default function AssistMessageList({ messages, isTyping = false }: Props)
           <strong style={{ color: "#033280" }}>Hi, I'm DS360 Assist.</strong>
           <br />
           I can help you navigate the platform, answer questions about claims, units, billing, and more.
-          <div style={{ marginTop: 10, display: "flex", flexWrap: "wrap", gap: 6 }}>
-            {["How do I file a claim?", "What does PDI mean?", "Talk to support"].map((q) => (
-              <span
-                key={q}
-                style={{
-                  background: "#033280",
-                  color: "#fff",
-                  padding: "4px 10px",
-                  borderRadius: 12,
-                  fontSize: 11,
-                  cursor: "pointer",
-                  opacity: 0.85,
-                }}
-              >
-                {q}
-              </span>
-            ))}
-          </div>
         </div>
       )}
 
@@ -101,7 +130,7 @@ export default function AssistMessageList({ messages, isTyping = false }: Props)
             </div>
           </div>
         ) : (
-          <div key={msg.id} style={{ display: "flex", justifyContent: "flex-start" }}>
+          <div key={msg.id} style={{ display: "flex", justifyContent: "flex-start", flexDirection: "column", maxWidth: "88%", gap: 4 }}>
             <div
               style={{
                 background: "#fff",
@@ -111,12 +140,28 @@ export default function AssistMessageList({ messages, isTyping = false }: Props)
                 fontSize: 13,
                 color: "#374151",
                 lineHeight: 1.5,
-                maxWidth: "88%",
                 wordBreak: "break-word",
                 boxShadow: "0 1px 3px rgba(0,0,0,0.06)",
               }}
               dangerouslySetInnerHTML={{ __html: `<p style="margin:0">${renderMarkdown(msg.content)}</p>` }}
             />
+            {/* Feedback buttons */}
+            {conversationId && onFeedback && (
+              <div style={{ display: "flex", gap: 2, paddingLeft: 6 }}>
+                <ThumbsButton
+                  type="up"
+                  active={feedbackState[msg.id] === "up"}
+                  disabled={!!feedbackState[msg.id]}
+                  onClick={() => handleFeedback(msg.id, "up")}
+                />
+                <ThumbsButton
+                  type="down"
+                  active={feedbackState[msg.id] === "down"}
+                  disabled={!!feedbackState[msg.id]}
+                  onClick={() => handleFeedback(msg.id, "down")}
+                />
+              </div>
+            )}
           </div>
         )
       )}

@@ -57,6 +57,7 @@ export const assistConversations = pgTable("assist_conversations", {
   thumbsUpCount: integer("thumbs_up_count").default(0),
   thumbsDownCount: integer("thumbs_down_count").default(0),
   messageCount: integer("message_count").default(0),
+  metadata: jsonb("metadata"),
   resolvedAt: timestamp("resolved_at"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
@@ -114,6 +115,7 @@ export const assistKnowledgeGaps = pgTable("assist_knowledge_gaps", {
   status: varchar("status", { length: 20 }).default("new"),
   kbArticleId: uuid("kb_article_id"),
   reviewedBy: varchar("reviewed_by", { length: 255 }),
+  autoDetected: boolean("auto_detected").default(false),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 }, (table) => [
