@@ -100,6 +100,7 @@ import ConsignmentOversight from '@/pages/exclusive/operator-admin/ConsignmentOv
 import PartsMgmt from '@/pages/exclusive/operator-admin/PartsMgmt';
 import PartsOrders from '@/pages/exclusive/operator-admin/PartsOrders';
 import EscrowAdmin from '@/pages/exclusive/operator-admin/EscrowAdmin';
+import Roadmap from '@/pages/exclusive/operator-admin/Roadmap';
 
 // ─── Exclusive: Dealer Owner ───────────────────────────────────────────────
 import PhotoUpload from '@/pages/exclusive/dealer-owner/PhotoUpload';
@@ -246,6 +247,7 @@ export function OperatorAdminPortalSection() {
       <Route path="/operator/admin/consignment">{() => <OperatorAdminLayout><ConsignmentOversight /></OperatorAdminLayout>}</Route>
       <Route path="/operator/admin/escrow">{() => <OperatorAdminLayout><EscrowAdmin /></OperatorAdminLayout>}</Route>
       <Route path="/operator/admin/import">{() => <OperatorAdminLayout><ImportData /></OperatorAdminLayout>}</Route>
+      <Route path="/operator/admin/roadmap">{() => <OperatorAdminLayout><Roadmap /></OperatorAdminLayout>}</Route>
       {/* Default */}
       <Route>{() => <Redirect to="/operator/admin/dashboard" />}</Route>
     </Switch>
