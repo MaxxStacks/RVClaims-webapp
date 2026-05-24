@@ -28,6 +28,66 @@ const ENTITY_TYPES = [
   { value: 'fi_deals',       label: 'F&I Deals' },
 ];
 
+const TEMPLATES: Record<string, { filename: string; content: string }> = {
+  units: {
+    filename: 'units_import_template.csv',
+    content: [
+      'VIN,Year,Make,Model,Trim,Type,Stock_Number,Status,Length,Weight,Slides,Sleeps,Color,MSRP,Cost,Lot_Location',
+      '1UJBJ0BN8M1TJ4K1,2024,Jayco,Jay Flight 264BH,SL,Travel Trailer,STK-0891,in_stock,28,6200,2,8,Arctic White,42900,34500,Lot B Row 3',
+      '4X4FCKB21NE021N4,2024,Forest River,Rockwood 2614BS,,Fifth Wheel,STK-0892,in_stock,31,8400,3,6,Sable Brown,54900,44200,Lot A Row 1',
+      '1UJCJ0BT4N1KQ8R2,2025,Keystone,Cougar 290RLS,Half-Ton,Fifth Wheel,STK-0893,in_transit,34,9100,3,4,Linen,62500,50100,',
+    ].join('\r\n'),
+  },
+  customers: {
+    filename: 'customers_import_template.csv',
+    content: [
+      'Name,Email,Phone,Address,City,Province,Postal_Code',
+      'Robert Martin,robert.martin@email.com,905-555-0147,123 Lakeshore Rd,Hamilton,ON,L8P 1A1',
+      'Marie Bouchard,marie.b@email.com,514-555-0234,456 Rue St-Denis,Montreal,QC,H2X 1K4',
+      'James Wilson,jwilson@email.com,604-555-0189,789 Marine Drive,Vancouver,BC,V6P 5T1',
+    ].join('\r\n'),
+  },
+  claims: {
+    filename: 'claims_import_template.csv',
+    content: [
+      'VIN,Claim_Type,Status,Description,Labor_Hours,Labor_Rate,Parts_Cost,Date_Submitted',
+      '1UJBJ0BN8M1TJ4K1,Warranty,submitted,Water leak around bedroom slide seal,3.5,140,385,2026-03-15',
+      '4X4FCKB21NE021N4,DAF,draft,Damaged exterior panel - delivery,1.5,140,0,2026-04-01',
+      '1UJCJ0BT4N1KQ8R2,PDI,submitted,Pre-delivery inspection - standard checklist,2.0,140,45,2026-04-10',
+    ].join('\r\n'),
+  },
+  warranty_plans: {
+    filename: 'warranty_import_template.csv',
+    content: [
+      'VIN,Provider,Plan_Name,Coverage_Type,Start_Date,End_Date,Cost',
+      '1UJBJ0BN8M1TJ4K1,Jayco,Factory Warranty,Basic,2024-02-10,2026-02-10,0',
+      '1UJBJ0BN8M1TJ4K1,Guardsman RV,Extended Coverage,Comprehensive,2024-02-10,2029-02-10,2800',
+      '4X4FCKB21NE021N4,Forest River,Factory Warranty,Basic,2024-03-05,2026-03-05,0',
+    ].join('\r\n'),
+  },
+  fi_deals: {
+    filename: 'fi_products_import_template.csv',
+    content: [
+      'VIN,Product_Name,Provider,Category,Cost,Term_Months,Status',
+      '1UJBJ0BN8M1TJ4K1,GAP Insurance,TD Insurance,GAP,899,60,active',
+      '1UJBJ0BN8M1TJ4K1,Roadside Assistance,CAA,Roadside,299,24,active',
+      '4X4FCKB21NE021N4,Extended Warranty,Guardsman RV,Warranty,3200,60,active',
+    ].join('\r\n'),
+  },
+};
+
+function downloadTemplate(entityType: string) {
+  const t = TEMPLATES[entityType];
+  if (!t) return;
+  const blob = new Blob([t.content], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = t.filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
 export default function ImportData() {
   const [step, setStep] = useState<Step>('upload');
   const [entityType, setEntityType] = useState('units');
@@ -150,6 +210,25 @@ export default function ImportData() {
                   <option key={et.value} value={et.value}>{et.label}</option>
                 ))}
               </select>
+            </div>
+
+            <div style={{ marginBottom: 16, padding: '12px 14px', background: '#f8f9fb', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
+              <div>
+                <div style={{ fontSize: 12, fontWeight: 600, color: '#444', marginBottom: 2 }}>Need a starting point?</div>
+                <div style={{ fontSize: 12, color: '#888' }}>Download a sample CSV with the correct headers and example data</div>
+              </div>
+              <button
+                className="btn-o"
+                onClick={() => downloadTemplate(entityType)}
+                style={{ whiteSpace: 'nowrap', flexShrink: 0, display: 'flex', alignItems: 'center', gap: 6, fontSize: 12 }}
+              >
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                  <polyline points="7 10 12 15 17 10"/>
+                  <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                Download Template
+              </button>
             </div>
 
             <div
