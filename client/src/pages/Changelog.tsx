@@ -11,6 +11,10 @@ export default function Changelog() {
     apiFetch<any>('/api/feature-requests').then(d => setOpFeatureRequests(Array.isArray(d) ? d : [])).catch(() => {});
   }, []);
 
+  const dot = (color: string) => (
+    <span style={{display: 'inline-block', width: 6, height: 6, borderRadius: '50%', background: color, marginRight: 8}}></span>
+  );
+
   return (
     <div className="page active">
       <div className="tabs"><div className={`tab ${clTab === 'cltab-cl-current' ? 'active' : ''}`} onClick={() => setClTab('cltab-cl-current')}>Current Release</div><div className={`tab ${clTab === 'cltab-cl-past' ? 'active' : ''}`} onClick={() => setClTab('cltab-cl-past')}>Past Updates</div><div className={`tab ${clTab === 'cltab-cl-upcoming' ? 'active' : ''}`} onClick={() => setClTab('cltab-cl-upcoming')}>Upcoming</div><div className={`tab ${clTab === 'cltab-cl-requests' ? 'active' : ''}`} onClick={() => setClTab('cltab-cl-requests')}>Feature Requests</div></div>
@@ -18,29 +22,48 @@ export default function Changelog() {
       <div style={{display: clTab === 'cltab-cl-current' ? 'block' : 'none'}} className="pn">
         <div style={{padding: '24px 20px', borderBottom: '1px solid #f0f0f0'}}>
           <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start'}}>
-            <div><div style={{fontSize: 24, fontWeight: 700, color: 'var(--brand)', marginBottom: 4}}>v2.0.0</div><div style={{fontSize: 14, color: '#888'}}>Released March 17, 2026</div></div>
+            <div><div style={{fontSize: 24, fontWeight: 700, color: 'var(--brand)', marginBottom: 4}}>v2.1.0</div><div style={{fontSize: 14, color: '#888'}}>Released May 23, 2026</div></div>
             <span className="bg active" style={{fontSize: 13, padding: '6px 16px'}}>Latest</span>
           </div>
-          <div style={{fontSize: 14, color: '#333', marginTop: 12, lineHeight: '1.6'}}>Complete platform rebuild — GEN2 architecture with three-portal system (Operator, Dealer, Customer), service marketplace, ticket-based communication, and white-label customer portals.</div>
+          <div style={{fontSize: 14, color: '#333', marginTop: 12, lineHeight: '1.6'}}>Complete 13-portal architecture with full route registration, 157 page components, and a production-ready data import system with CSV templates, API endpoints, and custom field passthrough.</div>
         </div>
         <div style={{padding: 20}}>
           <div style={{marginBottom: 24}}>
             <div style={{fontSize: 13, fontWeight: 600, color: '#22c55e', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 12}}>New Features</div>
             <div style={{fontSize: 13, color: '#333', lineHeight: 2}}>
-              <div><span style={{display: 'inline-block', width: 6, height: 6, borderRadius: '50%', background: '#22c55e', marginRight: 8}}></span><strong>Three-Portal System</strong> — Operator (36 pages), Dealer (25 pages), Customer (14 pages)</div>
-              <div><span style={{display: 'inline-block', width: 6, height: 6, borderRadius: '50%', background: '#22c55e', marginRight: 8}}></span><strong>Service Marketplace</strong> — Financing, F&I, Warranty Plans, Parts & Accessories</div>
-              <div><span style={{display: 'inline-block', width: 6, height: 6, borderRadius: '50%', background: '#22c55e', marginRight: 8}}></span><strong>Wave-style Invoice Builder</strong> — Line items, part search, tax calculation</div>
-              <div><span style={{display: 'inline-block', width: 6, height: 6, borderRadius: '50%', background: '#22c55e', marginRight: 8}}></span><strong>RBAC</strong> — 4 roles: Operator Admin, Operator Staff, Dealer Owner, Dealer Staff</div>
-              <div><span style={{display: 'inline-block', width: 6, height: 6, borderRadius: '50%', background: '#22c55e', marginRight: 8}}></span><strong>Dark Mode + EN/FR</strong> — Persisted via localStorage across all portals</div>
-              <div><span style={{display: 'inline-block', width: 6, height: 6, borderRadius: '50%', background: '#22c55e', marginRight: 8}}></span><strong>Changelog System</strong> — Version tracking with current, past, upcoming, and feature requests</div>
+              <div>{dot('#22c55e')}<strong>13-Portal Architecture</strong> — Dedicated layout + page components for every role: Operator Admin/Staff, Dealer Owner/Staff, Customer, Client, Service Tech, Lender, Insurance, Fleet Manager, Public Bidder, Auction Admin, Marketing</div>
+              <div>{dot('#22c55e')}<strong>215 Routes Live</strong> — Full route registration across all 13 portals via centralized PortalRoutes.tsx</div>
+              <div>{dot('#22c55e')}<strong>157 Page Components</strong> — All portal pages built with UI content, tables, forms, and interactions</div>
+              <div>{dot('#22c55e')}<strong>DevAccess Portal Selector</strong> — Role-based entry point listing all 13 portal types for development and QA access</div>
+              <div>{dot('#22c55e')}<strong>Data Import System</strong> — 4-step wizard (entity select → file upload → column mapping → review) supporting Units, Customers, Claims, Warranty Plans, and F&I Deals</div>
+              <div>{dot('#22c55e')}<strong>Downloadable CSV Templates</strong> — Client-side template generation with correct headers and sample rows for all 5 entity types</div>
+              <div>{dot('#22c55e')}<strong>Custom Data Passthrough</strong> — Unmapped import columns stored as <code>custom_data</code> JSON and surfaced on Unit Detail and Claim Detail pages</div>
+            </div>
+          </div>
+          <div style={{marginBottom: 24}}>
+            <div style={{fontSize: 13, fontWeight: 600, color: '#3b82f6', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 12}}>API & Backend</div>
+            <div style={{fontSize: 13, color: '#333', lineHeight: 2}}>
+              <div>{dot('#3b82f6')}5 import endpoints: <code>GET/POST /api/import/templates</code>, <code>DELETE /api/import/templates/:id</code>, <code>POST /api/import/preview</code>, <code>POST /api/import/run</code>, <code>GET /api/import/history</code></div>
+              <div>{dot('#3b82f6')}File parsing via multer (memory storage) + SheetJS (xlsx) — supports CSV and XLSX uploads</div>
+              <div>{dot('#3b82f6')}Fuzzy header detection maps common column name variants to standard fields automatically</div>
+              <div>{dot('#3b82f6')}Atomic import transactions with per-row error capture and partial-success support</div>
+              <div>{dot('#3b82f6')}Import history logged with row counts, error details, status, and timestamps</div>
+            </div>
+          </div>
+          <div style={{marginBottom: 24}}>
+            <div style={{fontSize: 13, fontWeight: 600, color: '#8b5cf6', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 12}}>Schema Changes</div>
+            <div style={{fontSize: 13, color: '#333', lineHeight: 2}}>
+              <div>{dot('#8b5cf6')}<code>custom_data jsonb</code> column added to: <code>units</code>, <code>claims</code>, <code>fi_deals</code>, <code>warranty_plans</code>, <code>users</code></div>
+              <div>{dot('#8b5cf6')}New <code>import_templates</code> table — reusable column mapping configurations per dealer and entity type</div>
+              <div>{dot('#8b5cf6')}New <code>import_history</code> table — audit trail for every import run with row-level error tracking</div>
             </div>
           </div>
           <div>
-            <div style={{fontSize: 13, fontWeight: 600, color: '#3b82f6', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 12}}>Architecture</div>
+            <div style={{fontSize: 13, fontWeight: 600, color: '#f59e0b', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 12}}>Improvements</div>
             <div style={{fontSize: 13, color: '#333', lineHeight: 2}}>
-              <div><span style={{display: 'inline-block', width: 6, height: 6, borderRadius: '50%', background: '#3b82f6', marginRight: 8}}></span>13-portal architecture with shared page components</div>
-              <div><span style={{display: 'inline-block', width: 6, height: 6, borderRadius: '50%', background: '#3b82f6', marginRight: 8}}></span>React 18 + Express + TypeScript + Vite + Tailwind + shadcn/ui + PostgreSQL</div>
-              <div><span style={{display: 'inline-block', width: 6, height: 6, borderRadius: '50%', background: '#3b82f6', marginRight: 8}}></span>Multi-tenant design: dealers see their own data only</div>
+              <div>{dot('#f59e0b')}Import Data nav link added to Operator Admin, Dealer Owner, and Dealer Staff sidebars</div>
+              <div>{dot('#f59e0b')}VIN dependency warning shown on import template banner for Claims, Warranty, and F&I entity types</div>
+              <div>{dot('#f59e0b')}Dynamic template banner headings reflect the selected entity type in real time</div>
             </div>
           </div>
         </div>
@@ -48,6 +71,18 @@ export default function Changelog() {
 
       <div style={{display: clTab === 'cltab-cl-past' ? 'block' : 'none'}} className="pn">
         <div style={{padding: 20}}>
+          <div style={{borderLeft: '3px solid #e5e7eb', paddingLeft: 20, marginBottom: 32}}>
+            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8}}><div style={{fontSize: 18, fontWeight: 700}}>v2.0.0</div><span style={{fontSize: 12, color: '#888'}}>March 17, 2026</span></div>
+            <div style={{fontSize: 13, color: '#888', marginBottom: 12}}>GEN2 platform — three-portal system (Operator, Dealer, Customer), dark mode, EN/FR bilingual</div>
+            <div style={{fontSize: 13, color: '#555', lineHeight: '1.8'}}>
+              <div>• Three-Portal System — Operator (36 pages), Dealer (25 pages), Customer (14 pages)</div>
+              <div>• Service Marketplace — Financing, F&I, Warranty Plans, Parts & Accessories</div>
+              <div>• Wave-style Invoice Builder with line items, part search, and tax calculation</div>
+              <div>• RBAC — 4 roles: Operator Admin, Operator Staff, Dealer Owner, Dealer Staff</div>
+              <div>• Dark Mode + EN/FR persisted via localStorage across all portals</div>
+              <div>• Changelog system with current, past, upcoming, and feature request tabs</div>
+            </div>
+          </div>
           <div style={{borderLeft: '3px solid #e5e7eb', paddingLeft: 20, marginBottom: 32}}>
             <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8}}><div style={{fontSize: 18, fontWeight: 700}}>v1.0.0</div><span style={{fontSize: 12, color: '#888'}}>November 2025</span></div>
             <div style={{fontSize: 13, color: '#888', marginBottom: 12}}>Original dealersuite360.com portal — single-portal claims tracking system</div>
@@ -69,25 +104,40 @@ export default function Changelog() {
       <div style={{display: clTab === 'cltab-cl-upcoming' ? 'block' : 'none'}} className="pn">
         <div style={{padding: 20}}>
           <div style={{marginBottom: 28}}>
-            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8}}><div style={{fontSize: 18, fontWeight: 700, color: 'var(--brand)'}}>v2.1.0 — Phase 1</div><span className="bg pending" style={{padding: '4px 12px'}}>In Development</span></div>
-            <div style={{fontSize: 13, color: '#888', marginBottom: 12}}>Foundation & Authentication — Target: April 2026</div>
+            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8}}><div style={{fontSize: 18, fontWeight: 700, color: 'var(--brand)'}}>v2.2.0 — Phase 2</div><span className="bg pending" style={{padding: '4px 12px'}}>In Development</span></div>
+            <div style={{fontSize: 13, color: '#888', marginBottom: 12}}>Authentication & Payments — Target: June 2026</div>
             <div style={{fontSize: 13, color: '#555', lineHeight: '1.8'}}>
-              <div>• JWT authentication with refresh tokens</div>
-              <div>• PostgreSQL database with full schema</div>
-              <div>• Real API endpoints for all CRUD operations</div>
-              <div>• RBAC middleware enforcement</div>
-              <div>• File upload to cloud storage (S3/Cloudflare R2)</div>
+              <div>• JWT authentication with refresh tokens and session management</div>
+              <div>• RBAC middleware enforcement on all API routes</div>
+              <div>• Stripe integration — subscriptions, one-time invoices, pre-funded wallet</div>
+              <div>• Interac e-Transfer reconciliation (Canadian market)</div>
+              <div>• Real-time WebSocket messaging between operators and dealers</div>
+              <div>• Email notifications via SendGrid/SES</div>
             </div>
           </div>
           <div style={{marginBottom: 28}}>
-            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8}}><div style={{fontSize: 18, fontWeight: 700, color: '#555'}}>v2.2.0 — Phase 2</div><span className="bg draft" style={{padding: '4px 12px'}}>Planned</span></div>
-            <div style={{fontSize: 13, color: '#888', marginBottom: 12}}>Payments & Communication — Target: May 2026</div>
-            <div style={{fontSize: 13, color: '#555', lineHeight: '1.8'}}><div>• Stripe integration (subscriptions, one-time charges)</div><div>• Real-time WebSocket messaging</div><div>• Email notifications (SendGrid/SES)</div></div>
+            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8}}><div style={{fontSize: 18, fontWeight: 700, color: '#555'}}>v2.3.0 — Phase 3</div><span className="bg draft" style={{padding: '4px 12px'}}>Planned</span></div>
+            <div style={{fontSize: 13, color: '#888', marginBottom: 12}}>AI Integration & Mobile — Target: Q3 2026</div>
+            <div style={{fontSize: 13, color: '#555', lineHeight: '1.8'}}>
+              <div>• AI Document Scanner (OCR + field extraction)</div>
+              <div>• AI FRC Code Suggestions from claim descriptions and photos</div>
+              <div>• Photo Quality Gatekeeper with flagging and recommendations</div>
+              <div>• Claim Readiness Score (0–100% confidence before submission)</div>
+              <div>• PWA mobile app for dealers and technicians</div>
+              <div>• AI F&I Presenter (Tavus/D-ID live video avatar)</div>
+            </div>
           </div>
           <div>
-            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8}}><div style={{fontSize: 18, fontWeight: 700, color: '#555'}}>v2.3.0 — Phase 3</div><span className="bg draft" style={{padding: '4px 12px'}}>Planned</span></div>
-            <div style={{fontSize: 13, color: '#888', marginBottom: 12}}>AI Integration & Mobile — Target: June 2026</div>
-            <div style={{fontSize: 13, color: '#555', lineHeight: '1.8'}}><div>• AI Document Scanner (OCR + field extraction)</div><div>• AI FRC Code Suggestions from photos</div><div>• PWA mobile app</div><div>• AI F&I Presenter (Tavus/D-ID video avatar)</div></div>
+            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8}}><div style={{fontSize: 18, fontWeight: 700, color: '#555'}}>v3.0.0 — Full Launch</div><span className="bg draft" style={{padding: '4px 12px'}}>Planned</span></div>
+            <div style={{fontSize: 13, color: '#888', marginBottom: 12}}>Dealer Suite 360 North American Launch — Target: Q4 2026</div>
+            <div style={{fontSize: 13, color: '#555', lineHeight: '1.8'}}>
+              <div>• dealersuite360.com full public launch (US market)</div>
+              <div>• Multi-currency support (CAD / USD)</div>
+              <div>• Dealer-to-dealer marketplace and live auctions</div>
+              <div>• Consumer direct services (roadside, extended warranty, protection)</div>
+              <div>• Advanced analytics and revenue reporting dashboard</div>
+              <div>• White-label deployment framework for RVClaims.ca and future markets</div>
+            </div>
           </div>
         </div>
       </div>
