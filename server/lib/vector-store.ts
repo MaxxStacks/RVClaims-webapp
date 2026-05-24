@@ -5,7 +5,12 @@ import { db } from "../db";
 import { sql, eq } from "drizzle-orm";
 import { kbArticles, type KbArticle } from "@shared/schema-assist";
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+let openai: OpenAI | null = null;
+if (process.env.OPENAI_API_KEY) {
+  openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+} else {
+  console.warn('[AI] OPENAI_API_KEY not set — OpenAI features disabled');
+}
 
 const EMBEDDING_MODEL = "text-embedding-3-small";
 const CHUNK_SIZE = 1000;
@@ -14,6 +19,7 @@ const CHUNK_OVERLAP = 100;
 // ==================== EMBED TEXT ====================
 
 export async function embedText(text: string): Promise<number[]> {
+  if (!openai) throw new Error('OpenAI client not initialized — OPENAI_API_KEY missing');
   const response = await openai.embeddings.create({
     model: EMBEDDING_MODEL,
     input: text.slice(0, 8192),
