@@ -11,6 +11,7 @@ import AssistFAB from "@/components/assist/AssistFAB";
 import ScreenShareBanner from "@/components/remote-support/ScreenShareBanner";
 import ScreenShareRequestToast from "@/components/remote-support/ScreenShareRequestToast";
 import { RemoteSupportProvider } from "@/contexts/RemoteSupportContext";
+import { wsClient } from "@/lib/websocket";
 
 const Home = lazy(() => import("@/pages/home"));
 const About = lazy(() => import("@/pages/about"));
@@ -181,13 +182,18 @@ const NewClaimPageRoute = lazy(async () => {
   return { default: Route };
 });
 
-function ScreenShareRequestToastWrapper() {
+// Connects the shared wsClient with the dealer's Clerk token so the
+// ScreenShareRequestToast can receive remote:share-request events.
+function DealerWSConnector() {
   const { getToken } = useClerkAuth();
-  const [wsToken, setWsToken] = useState<string | null>(null);
   useEffect(() => {
-    getToken().then(setWsToken).catch(() => {});
+    let active = true;
+    getToken()
+      .then((token) => { if (token && active) wsClient.connectWithToken(token); })
+      .catch(() => {});
+    return () => { active = false; };
   }, [getToken]);
-  return <ScreenShareRequestToast wsToken={wsToken} />;
+  return null;
 }
 
 function ScrollToTop() {
@@ -399,8 +405,9 @@ function App() {
               <Route path="/:dealerId/on-site-tech/:rest*" component={OnSiteTechPortalSection} />
               <Route path="/:dealerId/on-site-tech" component={OnSiteTechPortalSection} />
             </Switch>
+            {isDealerAssistPath(location) && <DealerWSConnector />}
             {isDealerAssistPath(location) && <AssistFAB />}
-            {isDealerAssistPath(location) && <ScreenShareRequestToastWrapper />}
+            {isDealerAssistPath(location) && <ScreenShareRequestToast />}
             <ScreenShareBanner />
           </Suspense>
           </RemoteSupportProvider>

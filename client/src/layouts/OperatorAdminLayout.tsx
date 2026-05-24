@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'wouter';
 import { useAuth } from '@/hooks/use-auth';
 import { apiFetch } from '@/lib/api';
+import { wsClient } from '@/lib/websocket';
 import ds360Icon from '@assets/ds360_favicon.png';
 
 interface Props { children?: React.ReactNode; }
@@ -29,6 +30,16 @@ export default function OperatorAdminLayout({ children }: Props) {
   const [notifItems, setNotifItems] = useState<any[]>([]);
   const [notifLoading, setNotifLoading] = useState(false);
   const notifRef = useRef<HTMLDivElement>(null);
+
+  // Remote Support — screen share request
+  const [rsOpen, setRsOpen] = useState(false);
+  const [rsDealers, setRsDealers] = useState<{ id: string; name: string }[]>([]);
+  const [rsDealerId, setRsDealerId] = useState('');
+  const [rsMessage, setRsMessage] = useState('');
+  const [rsRequesting, setRsRequesting] = useState(false);
+  const [rsStatus, setRsStatus] = useState<'idle' | 'waiting' | 'declined'>('idle');
+  const [rsPendingId, setRsPendingId] = useState<string | null>(null);
+  const rsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (theme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
@@ -69,6 +80,46 @@ export default function OperatorAdminLayout({ children }: Props) {
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (searchRef.current && !searchRef.current.contains(e.target as Node)) setSearchOpen(false);
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  // Connect wsClient with operator token for real-time screen-share events
+  useEffect(() => {
+    (async () => {
+      const token = await (window as any).Clerk?.session?.getToken?.();
+      if (token) wsClient.connectWithToken(token);
+    })();
+  }, []);
+
+  // Listen for screen share accepted/declined
+  useEffect(() => {
+    const u1 = wsClient.on('remote:share-accepted', () => {
+      setRsStatus('idle'); setRsPendingId(null); setRsOpen(false);
+      navigate('/operator/admin/remote-support');
+    });
+    const u2 = wsClient.on('remote:share-declined', () => {
+      setRsStatus('declined'); setRsPendingId(null);
+    });
+    return () => { u1(); u2(); };
+  }, [navigate]);
+
+  // Load dealer list when RS dropdown opens
+  useEffect(() => {
+    if (!rsOpen || rsDealers.length > 0) return;
+    apiFetch<any>('/api/v6/dealerships?limit=100')
+      .then(data => {
+        const list = Array.isArray(data) ? data : (data?.dealerships ?? []);
+        setRsDealers(list.map((d: any) => ({ id: d.id, name: d.name })));
+      })
+      .catch(() => {});
+  }, [rsOpen, rsDealers.length]);
+
+  // Click outside RS dropdown
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (rsRef.current && !rsRef.current.contains(e.target as Node)) setRsOpen(false);
     };
     document.addEventListener('mousedown', handler);
     return () => document.removeEventListener('mousedown', handler);
@@ -127,6 +178,19 @@ export default function OperatorAdminLayout({ children }: Props) {
 
   const isActive = (path: string) => location.endsWith('/' + path) || location.includes('/' + path + '/');
   const unreadCount = notifItems.filter(n => !n.isRead).length;
+
+  const handleRsRequest = async () => {
+    if (!rsDealerId || rsRequesting) return;
+    setRsRequesting(true);
+    try {
+      const data = await apiFetch<{ success: boolean; sessionId: string }>(
+        '/api/remote/sessions/request',
+        { method: 'POST', body: JSON.stringify({ dealerId: rsDealerId, message: rsMessage.trim() || undefined }) }
+      );
+      if (data.success) { setRsPendingId(data.sessionId); setRsStatus('waiting'); }
+    } catch {}
+    setRsRequesting(false);
+  };
   const hasResults = searchResults && (
     (searchResults.dealers?.length > 0) ||
     (searchResults.units?.length > 0) ||
@@ -229,6 +293,74 @@ export default function OperatorAdminLayout({ children }: Props) {
               <button className={`lang-btn-opt ${lang === 'fr' ? 'active' : ''}`} onClick={() => handleSetLang('fr')}>FR</button>
             </div>
             <button className="theme-toggle" onClick={toggleTheme} title="Toggle dark mode"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button>
+
+            {/* Remote Support — screen share request button */}
+            <div ref={rsRef} style={{position:'relative'}}>
+              <button
+                className="hbtn"
+                title={rsStatus === 'waiting' ? 'Waiting for dealer…' : 'Request Screen Share'}
+                onClick={() => { setRsOpen(o => !o); if (rsStatus === 'declined') setRsStatus('idle'); }}
+                style={rsStatus === 'waiting' ? {background:'rgba(59,130,246,0.12)',position:'relative'} : {position:'relative'}}
+              >
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke={rsStatus === 'waiting' ? '#3b82f6' : 'currentColor'} strokeWidth="2">
+                  <rect x="2" y="3" width="20" height="14" rx="2"/>
+                  <line x1="8" y1="21" x2="16" y2="21"/>
+                  <line x1="12" y1="17" x2="12" y2="21"/>
+                </svg>
+                {rsStatus === 'waiting' && (
+                  <span style={{position:'absolute',top:3,right:3,width:6,height:6,borderRadius:'50%',background:'#3b82f6',border:'1.5px solid #fff'}} />
+                )}
+              </button>
+              {rsOpen && (
+                <div style={{position:'absolute',top:'calc(100% + 8px)',right:0,width:290,background:'var(--bg-card, #fff)',border:'1px solid var(--border, #e5e7eb)',borderRadius:10,boxShadow:'0 8px 32px rgba(0,0,0,.12)',zIndex:1000,padding:'14px 16px',fontFamily:'Inter,sans-serif'}}>
+                  <div style={{fontSize:12,fontWeight:700,color:'var(--text,#111)',marginBottom:10,letterSpacing:'0.01em'}}>Request Screen Share</div>
+
+                  {rsStatus === 'waiting' && (
+                    <div style={{background:'#eff6ff',border:'1px solid #bfdbfe',borderRadius:7,padding:'10px 12px',display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8}}>
+                      <div style={{display:'flex',alignItems:'center',gap:6}}>
+                        <span style={{width:7,height:7,borderRadius:'50%',background:'#3b82f6',display:'inline-block',flexShrink:0}} />
+                        <span style={{fontSize:11,color:'#1e40af',fontWeight:500}}>Waiting for dealer to accept…</span>
+                      </div>
+                      <button onClick={() => {setRsStatus('idle');setRsPendingId(null);}} style={{fontSize:10,background:'none',border:'1px solid #93c5fd',borderRadius:4,padding:'2px 7px',cursor:'pointer',color:'#1e40af',flexShrink:0}}>Cancel</button>
+                    </div>
+                  )}
+
+                  {rsStatus === 'declined' && (
+                    <div style={{background:'#fef2f2',border:'1px solid #fecaca',borderRadius:7,padding:'8px 12px',marginBottom:8,display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+                      <span style={{fontSize:11,color:'#b91c1c'}}>Request was declined.</span>
+                      <button onClick={() => setRsStatus('idle')} style={{fontSize:10,background:'none',border:'1px solid #fca5a5',borderRadius:4,padding:'2px 7px',cursor:'pointer',color:'#b91c1c'}}>Try Again</button>
+                    </div>
+                  )}
+
+                  {rsStatus === 'idle' && (
+                    <>
+                      <select
+                        value={rsDealerId}
+                        onChange={e => setRsDealerId(e.target.value)}
+                        style={{width:'100%',padding:'7px 10px',border:'1px solid var(--border,#e5e7eb)',borderRadius:6,fontSize:12,color:'var(--text,#374151)',background:'var(--bg-card,#fff)',marginBottom:8,outline:'none',cursor:'pointer'}}
+                      >
+                        <option value="">Select dealer…</option>
+                        {rsDealers.map(d => <option key={d.id} value={d.id}>{d.name}</option>)}
+                      </select>
+                      <input
+                        type="text"
+                        value={rsMessage}
+                        onChange={e => setRsMessage(e.target.value.slice(0, 200))}
+                        placeholder="Describe the issue (optional)"
+                        style={{width:'100%',padding:'7px 10px',border:'1px solid var(--border,#e5e7eb)',borderRadius:6,fontSize:12,marginBottom:10,outline:'none',background:'var(--bg-card,#fff)',color:'var(--text,#374151)',boxSizing:'border-box' as const}}
+                      />
+                      <button
+                        onClick={handleRsRequest}
+                        disabled={!rsDealerId || rsRequesting}
+                        style={{width:'100%',background:(!rsDealerId || rsRequesting) ? '#e5e7eb' : '#033280',color:(!rsDealerId || rsRequesting) ? '#9ca3af' : '#fff',border:'none',borderRadius:7,padding:'8px 0',fontSize:12,fontWeight:600,cursor:(!rsDealerId || rsRequesting) ? 'default' : 'pointer',fontFamily:'inherit'}}
+                      >
+                        {rsRequesting ? 'Sending…' : 'Send Request'}
+                      </button>
+                    </>
+                  )}
+                </div>
+              )}
+            </div>
 
             {/* Item 16: Search dropdown */}
             <div ref={searchRef} style={{position:'relative'}}>

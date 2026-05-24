@@ -286,6 +286,7 @@ export function OperatorStaffPortalSection() {
       <Route path="/operator/staff/parts">{() => <OperatorStaffLayout><Parts /></OperatorStaffLayout>}</Route>
       <Route path="/operator/staff/notifications">{() => <OperatorStaffLayout><Notifications /></OperatorStaffLayout>}</Route>
       <Route path="/operator/staff/changelog">{() => <OperatorStaffLayout><Changelog /></OperatorStaffLayout>}</Route>
+      <Route path="/operator/staff/remote-support">{() => <OperatorStaffLayout><RemoteDashboard /></OperatorStaffLayout>}</Route>
       <Route path="/operator/staff/dashboard">{() => <OperatorStaffLayout><Dashboard /></OperatorStaffLayout>}</Route>
       <Route>{() => <Redirect to="/operator/staff/dashboard" />}</Route>
     </Switch>

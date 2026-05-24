@@ -1,9 +1,11 @@
 // client/src/components/remote-support/ScreenShareRequestToast.tsx
-// Slide-in toast shown when an operator requests a screen share
+// Slide-in toast shown when an operator requests a screen share.
+// Listens on the shared wsClient singleton — no per-component WebSocket.
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { apiFetch } from "@/lib/api";
 import { useRemoteSupport } from "@/contexts/RemoteSupportContext";
+import { wsClient } from "@/lib/websocket";
 
 interface PendingRequest {
   sessionId: string;
@@ -27,7 +29,6 @@ function RequestToast({ request, onDismiss }: Props) {
     timerRef.current = setInterval(() => {
       setCountdown((c) => {
         if (c <= 1) {
-          // Auto-decline
           fetch(`/api/remote/sessions/${request.sessionId}/decline`, { method: "POST" }).catch(() => {});
           onDismiss();
           return 0;
@@ -50,7 +51,7 @@ function RequestToast({ request, onDismiss }: Props) {
         startSession(data.sessionId, data.accessCode, new Date(Date.now() + 10 * 60 * 1000).toISOString(), false);
       }
     } catch {
-      // Session may have already expired
+      // Session may have expired
     } finally {
       setAccepting(false);
       onDismiss();
@@ -140,38 +141,24 @@ function RequestToast({ request, onDismiss }: Props) {
   );
 }
 
-interface ScreenShareRequestToastProps {
-  wsToken: string | null;
-}
-
-export default function ScreenShareRequestToast({ wsToken }: ScreenShareRequestToastProps) {
+// No props needed — listens on the shared wsClient singleton
+export default function ScreenShareRequestToast() {
   const [pendingRequests, setPendingRequests] = useState<PendingRequest[]>([]);
-  const wsRef = useRef<WebSocket | null>(null);
 
   useEffect(() => {
-    if (!wsToken) return;
-
-    const proto = window.location.protocol === "https:" ? "wss" : "ws";
-    const url = `${proto}://${window.location.host}/ws?token=${encodeURIComponent(wsToken)}`;
-    const ws = new WebSocket(url);
-    wsRef.current = ws;
-
-    ws.onmessage = (event) => {
-      try {
-        const msg = JSON.parse(event.data);
-        if (msg.type === "remote:share-request") {
-          const { sessionId, operatorName, message } = msg.payload ?? {};
-          if (sessionId) {
-            setPendingRequests((prev) => [...prev.filter((r) => r.sessionId !== sessionId), { sessionId, operatorName: operatorName ?? "Support Agent", message: message ?? null }]);
-          }
+    return wsClient.on<{ sessionId?: string; operatorName?: string; message?: string | null }>(
+      "remote:share-request",
+      (payload) => {
+        const { sessionId, operatorName, message } = payload ?? {};
+        if (sessionId) {
+          setPendingRequests((prev) => [
+            ...prev.filter((r) => r.sessionId !== sessionId),
+            { sessionId, operatorName: operatorName ?? "Support Agent", message: message ?? null },
+          ]);
         }
-      } catch {}
-    };
-
-    ws.onerror = () => ws.close();
-
-    return () => { ws.close(); wsRef.current = null; };
-  }, [wsToken]);
+      }
+    );
+  }, []);
 
   const dismiss = useCallback((sessionId: string) => {
     setPendingRequests((prev) => prev.filter((r) => r.sessionId !== sessionId));
