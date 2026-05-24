@@ -264,7 +264,9 @@ async function checkAuctionTimers() {
         }
       }
     }
-  } catch (err) {
+  } catch (err: any) {
+    // 42P01 = table does not exist — suppress until db:push has run
+    if (err?.code === '42P01') return;
     console.error("[Auction] Timer check error:", err);
   }
 }
