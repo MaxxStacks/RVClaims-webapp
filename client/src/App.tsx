@@ -8,6 +8,8 @@ import { AuthProvider } from "@/hooks/use-auth";
 import { AuthenticateWithRedirectCallback } from "@clerk/clerk-react";
 import { useEffect, lazy, Suspense } from "react";
 import AssistFAB from "@/components/assist/AssistFAB";
+import ScreenShareBanner from "@/components/remote-support/ScreenShareBanner";
+import { RemoteSupportProvider } from "@/contexts/RemoteSupportContext";
 
 const Home = lazy(() => import("@/pages/home"));
 const About = lazy(() => import("@/pages/about"));
@@ -329,6 +331,7 @@ function App() {
     return (
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
+          <RemoteSupportProvider>
           <Suspense fallback={null}>
             <Switch>
               {/* v6 standalone sub-pages — specific routes before catch-alls */}
@@ -387,7 +390,9 @@ function App() {
               <Route path="/:dealerId/on-site-tech" component={OnSiteTechPortalSection} />
             </Switch>
             {isDealerAssistPath(location) && <AssistFAB />}
+            <ScreenShareBanner />
           </Suspense>
+          </RemoteSupportProvider>
         </AuthProvider>
       </QueryClientProvider>
     );

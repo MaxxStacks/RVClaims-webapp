@@ -1,6 +1,6 @@
 // client/src/components/assist/AssistPanel.tsx
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import AssistMessageList, { type ChatMessage } from "./AssistMessageList";
 import AssistInput from "./AssistInput";
 import AssistQuickReplies from "./AssistQuickReplies";
@@ -10,6 +10,8 @@ import AssistEscalation, { type EscalationType } from "./AssistEscalation";
 import TicketForm from "./TicketForm";
 import AccountManagerCard from "./AccountManagerCard";
 import AssistLiveChat from "./AssistLiveChat";
+import ScreenShareGenerator from "@/components/remote-support/ScreenShareGenerator";
+import ScreenShareActive from "@/components/remote-support/ScreenShareActive";
 import { apiFetch } from "@/lib/api";
 import { useAuth } from "@clerk/clerk-react";
 
@@ -51,7 +53,7 @@ interface AccountManager {
 }
 
 type Tab = "chat" | "past";
-type EscalationView = "menu" | "ticket" | "am" | "live" | null;
+type EscalationView = "menu" | "ticket" | "am" | "live" | "screen_gen" | "screen_active" | null;
 
 const THIRTY_MINUTES = 30 * 60 * 1000;
 
@@ -72,6 +74,28 @@ export default function AssistPanel({ onClose }: Props) {
   const [ticketSuccess, setTicketSuccess] = useState<string | null>(null); // ticket number
   const [liveSummary, setLiveSummary] = useState<string>("");
   const [wsToken, setWsToken] = useState<string | null>(null);
+  const [screenSessionId, setScreenSessionId] = useState<string | null>(null);
+  const [proactiveSuggestion, setProactiveSuggestion] = useState<{ text: string; quickReplies: string[] } | null>(null);
+  const [rateLimitSeconds, setRateLimitSeconds] = useState<number>(0);
+  const rateLimitTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // Fetch proactive suggestion on open (once per session)
+  useEffect(() => {
+    const dismissed = sessionStorage.getItem("assist_proactive_dismissed");
+    if (dismissed) return;
+    const params = new URLSearchParams({
+      page: window.location.pathname,
+    });
+    apiFetch<{ success: boolean; suggestion: { text: string; quickReplies: string[] } | null }>(
+      `/api/assist/proactive?${params.toString()}`
+    )
+      .then((res) => {
+        if (res.success && res.suggestion) {
+          setProactiveSuggestion(res.suggestion);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   // Restore active conversation on open (< 30 min idle)
   useEffect(() => {
@@ -119,6 +143,7 @@ export default function AssistPanel({ onClose }: Props) {
     setEscalationView(null);
     setTicketSuccess(null);
     setLiveSummary("");
+    setScreenSessionId(null);
     sessionStorage.removeItem("assist_convo_id");
     sessionStorage.removeItem("assist_convo_at");
     setTab("chat");
@@ -172,8 +197,26 @@ export default function AssistPanel({ onClose }: Props) {
           setError("Failed to get a response. Please try again.");
         }
       } catch (err: unknown) {
-        const e = err as { message?: string };
-        if (e?.message?.includes("401") || e?.message?.includes("Session expired")) {
+        const e = err as { message?: string; status?: number; retryAfter?: number };
+        if (e?.status === 429) {
+          const secs = e.retryAfter ?? 60;
+          setRateLimitSeconds(secs);
+          setError(e.message ?? "Too many messages. Please wait.");
+          // Remove optimistic user message since it won't be processed
+          setMessages((prev) => prev.filter((m) => m.id !== userMsg.id));
+          if (rateLimitTimerRef.current) clearInterval(rateLimitTimerRef.current);
+          rateLimitTimerRef.current = setInterval(() => {
+            setRateLimitSeconds((s) => {
+              if (s <= 1) {
+                clearInterval(rateLimitTimerRef.current!);
+                rateLimitTimerRef.current = null;
+                setError(null);
+                return 0;
+              }
+              return s - 1;
+            });
+          }, 1000);
+        } else if (e?.message?.includes("401") || e?.message?.includes("Session expired")) {
           setError("Please log in to use DS360 Assist.");
         } else {
           setError("Connection error. Please check your network and try again.");
@@ -268,6 +311,8 @@ export default function AssistPanel({ onClose }: Props) {
         } catch {
           setError("Failed to start live chat. Please try another option.");
         }
+      } else if (type === "screen_share") {
+        setEscalationView("screen_gen");
       } else if (type === "contact") {
         window.open("mailto:support@dealersuite360.com", "_blank");
         setEscalationView(null);
@@ -290,25 +335,45 @@ export default function AssistPanel({ onClose }: Props) {
   }, []);
 
   const isLiveChatMode = escalationView === "live";
+  const isScreenMode = escalationView === "screen_active";
 
   return (
-    <div
-      style={{
-        position: "fixed",
-        bottom: 84,
-        right: 24,
-        width: 400,
-        height: 600,
-        background: "#fff",
-        borderRadius: 12,
-        boxShadow: "0 8px 32px rgba(3,50,128,0.18), 0 2px 8px rgba(0,0,0,0.1)",
-        display: "flex",
-        flexDirection: "column",
-        zIndex: 9999,
-        overflow: "hidden",
-        animation: "assistSlideUp 0.2s ease-out",
-      }}
-    >
+    <>
+      <style>{`
+        .assist-panel {
+          position: fixed;
+          bottom: 84px;
+          right: 24px;
+          width: 400px;
+          height: 600px;
+          background: #fff;
+          border-radius: 12px;
+          box-shadow: 0 8px 32px rgba(3,50,128,0.18), 0 2px 8px rgba(0,0,0,0.1);
+          display: flex;
+          flex-direction: column;
+          z-index: 9999;
+          overflow: hidden;
+          animation: assistSlideUp 0.2s ease-out;
+        }
+        @media (max-width: 767px) {
+          .assist-panel {
+            bottom: 0;
+            right: 0;
+            left: 0;
+            width: 100%;
+            height: 90dvh;
+            border-radius: 12px 12px 0 0;
+          }
+        }
+        @media (min-width: 768px) and (max-width: 1023px) {
+          .assist-panel {
+            width: 380px;
+            height: 70vh;
+            max-height: 580px;
+          }
+        }
+      `}</style>
+    <div className="assist-panel">
       {/* Header */}
       <div
         style={{
@@ -425,15 +490,15 @@ export default function AssistPanel({ onClose }: Props) {
       {error && (
         <div
           style={{
-            background: "#fef2f2",
-            color: "#b91c1c",
+            background: rateLimitSeconds > 0 ? "#fff7ed" : "#fef2f2",
+            color: rateLimitSeconds > 0 ? "#c2410c" : "#b91c1c",
             fontSize: 12,
             padding: "8px 14px",
-            borderBottom: "1px solid #fecaca",
+            borderBottom: `1px solid ${rateLimitSeconds > 0 ? "#fed7aa" : "#fecaca"}`,
             flexShrink: 0,
           }}
         >
-          {error}
+          {error}{rateLimitSeconds > 0 ? ` Retry in ${rateLimitSeconds}s.` : ""}
         </div>
       )}
 
@@ -469,6 +534,52 @@ export default function AssistPanel({ onClose }: Props) {
         <AssistPastChats onContinue={handleContinuePastChat} />
       ) : (
         <>
+          {/* Proactive suggestion banner */}
+          {proactiveSuggestion && messages.length === 0 && (
+            <div style={{
+              margin: "10px 14px 0",
+              background: "#f0f4ff",
+              border: "1px solid #c7d4f0",
+              borderRadius: 8,
+              padding: "10px 12px",
+              flexShrink: 0,
+            }}>
+              <div style={{ fontSize: 12, color: "#374151", lineHeight: 1.5, marginBottom: 8, fontFamily: "Inter, sans-serif" }}>
+                <span style={{ marginRight: 6 }}>💡</span>{proactiveSuggestion.text}
+              </div>
+              <div style={{ display: "flex", gap: 6, flexWrap: "wrap", alignItems: "center" }}>
+                {proactiveSuggestion.quickReplies.map((r) => (
+                  <button
+                    key={r}
+                    onClick={() => {
+                      setProactiveSuggestion(null);
+                      sessionStorage.setItem("assist_proactive_dismissed", "1");
+                      if (r !== "Not now") handleSend(r);
+                    }}
+                    style={{
+                      fontSize: 11, padding: "4px 10px", borderRadius: 12,
+                      background: r === "Not now" ? "#f9fafb" : "#fff",
+                      color: r === "Not now" ? "#9ca3af" : "#033280",
+                      border: `1px solid ${r === "Not now" ? "#e5e7eb" : "#c7d4f0"}`,
+                      cursor: "pointer", fontFamily: "Inter, sans-serif",
+                    }}
+                  >
+                    {r}
+                  </button>
+                ))}
+                <button
+                  onClick={() => {
+                    setProactiveSuggestion(null);
+                    sessionStorage.setItem("assist_proactive_dismissed", "1");
+                  }}
+                  style={{ fontSize: 10, color: "#9ca3af", background: "none", border: "none", cursor: "pointer", marginLeft: "auto" }}
+                >
+                  Dismiss
+                </button>
+              </div>
+            </div>
+          )}
+
           <AssistMessageList
             messages={messages}
             isTyping={isTyping}
@@ -520,7 +631,29 @@ export default function AssistPanel({ onClose }: Props) {
             />
           )}
 
-          <AssistInput onSend={handleSend} disabled={isTyping} />
+          {/* Screen share — code generator */}
+          {escalationView === "screen_gen" && (
+            <ScreenShareGenerator
+              onConnected={(sid) => {
+                setScreenSessionId(sid);
+                setEscalationView("screen_active");
+              }}
+              onCancel={() => setEscalationView("menu")}
+            />
+          )}
+
+          {/* Screen share — active session */}
+          {escalationView === "screen_active" && screenSessionId && (
+            <ScreenShareActive
+              sessionId={screenSessionId}
+              onEnd={() => {
+                setScreenSessionId(null);
+                setEscalationView(null);
+              }}
+            />
+          )}
+
+          <AssistInput onSend={handleSend} disabled={isTyping || rateLimitSeconds > 0} />
         </>
       )}
 
@@ -531,5 +664,6 @@ export default function AssistPanel({ onClose }: Props) {
         }
       `}</style>
     </div>
+    </>
   );
 }

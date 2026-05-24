@@ -11,12 +11,13 @@ import { kbArticles, insertKbArticleSchema, updateKbArticleSchema } from "@share
 import { eq, and, desc } from "drizzle-orm";
 import { requireAuth } from "../../middleware/auth";
 import { requireOperator } from "../../middleware/rbac";
+import { kbOpsRateLimit } from "../../middleware/assist-rate-limit";
 import { upsertArticleEmbedding } from "../../lib/vector-store";
 
 const router = Router();
 
 // POST /api/assist/kb/articles — create article
-router.post("/", requireAuth, requireOperator, async (req: Request, res: Response) => {
+router.post("/", requireAuth, requireOperator, kbOpsRateLimit, async (req: Request, res: Response) => {
   try {
     const parsed = insertKbArticleSchema.safeParse(req.body);
     if (!parsed.success) {
@@ -87,7 +88,7 @@ router.get("/:id", requireAuth, requireOperator, async (req: Request, res: Respo
 });
 
 // PUT /api/assist/kb/articles/:id — update article
-router.put("/:id", requireAuth, requireOperator, async (req: Request, res: Response) => {
+router.put("/:id", requireAuth, requireOperator, kbOpsRateLimit, async (req: Request, res: Response) => {
   try {
     const parsed = updateKbArticleSchema.safeParse(req.body);
     if (!parsed.success) {

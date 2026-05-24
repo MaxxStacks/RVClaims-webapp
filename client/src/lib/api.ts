@@ -91,6 +91,20 @@ export async function apiFetch<T = unknown>(
     throw new Error(msg);
   }
 
+  if (res.status === 429) {
+    let retryAfter = 60;
+    let message = "Too many requests. Please wait before trying again.";
+    try {
+      const body = await res.json();
+      if (body?.retryAfter) retryAfter = body.retryAfter;
+      if (body?.message) message = body.message;
+    } catch { /* non-JSON body */ }
+    const err = new Error(message) as Error & { status: 429; retryAfter: number };
+    err.status = 429;
+    err.retryAfter = retryAfter;
+    throw err;
+  }
+
   if (!res.ok) throw new Error(`${res.status}: ${res.statusText}`);
   return res.json() as Promise<T>;
 }

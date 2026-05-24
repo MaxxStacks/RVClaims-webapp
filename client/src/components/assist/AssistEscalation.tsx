@@ -12,7 +12,7 @@ const OPTIONS: {
   { type: "ticket",       emoji: "🎫", label: "Open a Support Ticket", desc: "We'll follow up within 2 hours" },
   { type: "live_chat",    emoji: "💬", label: "Start Live Chat",         desc: "Chat with a support agent now" },
   { type: "email_am",     emoji: "✉️", label: "Email Account Manager",   desc: "Contact your dedicated AM" },
-  { type: "screen_share", emoji: "🖥️", label: "Share My Screen",         desc: "Let support see your screen", comingSoon: true },
+  { type: "screen_share", emoji: "🖥️", label: "Share My Screen",         desc: "Let support see your screen" },
   { type: "contact",      emoji: "📞", label: "Contact Support",          desc: "support@dealersuite360.com" },
 ];
 
@@ -77,6 +77,7 @@ export default function AssistEscalation({ onSelect, onDismiss }: Props) {
               alignItems: "center",
               gap: 10,
               padding: "7px 10px",
+              minHeight: 44,
               background: "#fff",
               border: "1px solid #e5e7eb",
               borderRadius: 7,

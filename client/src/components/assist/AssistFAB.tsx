@@ -18,27 +18,39 @@ export default function AssistFAB() {
     <>
       {open && <AssistPanel onClose={() => setOpen(false)} />}
 
+      <style>{`
+        .assist-fab {
+          position: fixed;
+          bottom: 24px;
+          right: 24px;
+          width: 56px;
+          height: 56px;
+          border-radius: 50%;
+          background: #033280;
+          border: none;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 4px 16px rgba(3,50,128,0.35);
+          z-index: 10000;
+          transition: transform 0.15s, box-shadow 0.15s;
+        }
+        @media (max-width: 767px) {
+          .assist-fab {
+            bottom: 16px;
+            right: 16px;
+            width: 48px;
+            height: 48px;
+          }
+        }
+      `}</style>
       <button
         onClick={() => setOpen((o) => !o)}
         title="DS360 Assist"
         aria-label="Open DS360 Assist"
-        style={{
-          position: "fixed",
-          bottom: 24,
-          right: 24,
-          width: 56,
-          height: 56,
-          borderRadius: "50%",
-          background: "#033280",
-          border: "none",
-          cursor: "pointer",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          boxShadow: "0 4px 16px rgba(3,50,128,0.35)",
-          zIndex: 10000,
-          transition: "transform 0.15s, box-shadow 0.15s",
-        }}
+        className="assist-fab"
+        style={{}}
         onMouseEnter={(e) => {
           (e.currentTarget as HTMLButtonElement).style.transform = "scale(1.07)";
           (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 6px 20px rgba(3,50,128,0.45)";

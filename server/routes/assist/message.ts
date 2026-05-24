@@ -7,6 +7,7 @@ import { assistConversations, assistMessages, assistKnowledgeGaps } from "@share
 import { eq, and, desc, sql } from "drizzle-orm";
 import { requireAuth } from "../../middleware/auth";
 import { requireDealer } from "../../middleware/rbac";
+import { assistMessageRateLimit } from "../../middleware/assist-rate-limit";
 import { getAssistResponse, containsHedging } from "../../lib/assist-engine";
 import { searchSimilar, formatKbContext } from "../../lib/vector-store";
 import { buildAssistContext } from "../../lib/assist-context";
@@ -26,7 +27,7 @@ import {
 const router = Router();
 
 // POST /api/assist/message
-router.post("/", requireAuth, requireDealer, async (req: Request, res: Response) => {
+router.post("/", requireAuth, requireDealer, assistMessageRateLimit, async (req: Request, res: Response) => {
   try {
     const { message, conversationId, currentPage } = req.body as {
       message: string;

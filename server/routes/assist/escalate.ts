@@ -15,6 +15,7 @@ import {
 import { eq, desc, sql } from "drizzle-orm";
 import { requireAuth } from "../../middleware/auth";
 import { requireDealer, requireOperator } from "../../middleware/rbac";
+import { liveChatRateLimit } from "../../middleware/assist-rate-limit";
 import {
   broadcastToOperators,
   startAssistLiveSession,
@@ -112,7 +113,7 @@ router.post("/ticket", requireAuth, requireDealer, async (req: Request, res: Res
 });
 
 // ── POST /api/assist/escalate/live-chat ───────────────────────────────────
-router.post("/live-chat", requireAuth, requireDealer, async (req: Request, res: Response) => {
+router.post("/live-chat", requireAuth, requireDealer, liveChatRateLimit, async (req: Request, res: Response) => {
   try {
     const { conversationId } = req.body as { conversationId?: string };
     const user = req.user!;

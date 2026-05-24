@@ -38,6 +38,8 @@ import assistConversationsRouter from './assist/conversations';
 import assistFeedbackRouter from './assist/feedback';
 import assistEscalateRouter from './assist/escalate';
 import assistAnalyticsRouter from './assist/analytics';
+import assistProactiveRouter from './assist/proactive';
+import remoteSessionsRouter from './remote/sessions';
 
 // Import existing routes for backward compat
 import { storage } from "../storage";
@@ -110,6 +112,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.use('/api/assist/conversations', assistFeedbackRouter);
   app.use('/api/assist/escalate', assistEscalateRouter);
   app.use('/api/assist/analytics', assistAnalyticsRouter);
+  app.use('/api/assist/proactive', assistProactiveRouter);
+  app.use('/api/remote', remoteSessionsRouter);
 
   // ==================== EXISTING ROUTES (backward compat) ====================
 
