@@ -89,7 +89,6 @@ router.post("/", requireAuth, requireDealer, async (req: Request, res: Response)
     const assistResponse = await getAssistResponse(message, history, kbContext, {
       dealerId: user.dealershipId,
       userRole: user.role,
-      userId: user.clerkUserId,
     });
 
     // ── 5. Save both messages ───────────────────────────────────────────────

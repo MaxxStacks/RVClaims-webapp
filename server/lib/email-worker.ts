@@ -4,7 +4,12 @@ import { db } from "../db";
 import { notificationDeliveries, emailEvents, users } from "@shared/schema";
 import { eq, and } from "drizzle-orm";
 
-const resend = new Resend(process.env.RESEND_API_KEY!);
+let resend: Resend | null = null;
+if (process.env.RESEND_API_KEY) {
+  resend = new Resend(process.env.RESEND_API_KEY);
+} else {
+  console.warn('[email] RESEND_API_KEY not set — email delivery disabled');
+}
 const FROM = process.env.EMAIL_FROM || "notifications@dealersuite360.com";
 const APP_URL = process.env.APP_URL || "https://dealersuite360.com";
 const POLL_INTERVAL_MS = 30_000;
@@ -92,6 +97,7 @@ async function processBatch(): Promise<{ sent: number; failed: number }> {
         recipientName: user.firstName || undefined,
       });
 
+      if (!resend) { failed++; continue; }
       const result = await resend.emails.send({
         from: FROM,
         to: user.email,

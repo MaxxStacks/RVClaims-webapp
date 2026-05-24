@@ -7,6 +7,7 @@ import { LanguageProvider } from "@/hooks/use-language";
 import { AuthProvider } from "@/hooks/use-auth";
 import { AuthenticateWithRedirectCallback } from "@clerk/clerk-react";
 import { useEffect, lazy, Suspense } from "react";
+import AssistFAB from "@/components/assist/AssistFAB";
 
 const Home = lazy(() => import("@/pages/home"));
 const About = lazy(() => import("@/pages/about"));
@@ -288,6 +289,11 @@ function isDealerPortalPath(path: string): boolean {
   return seg !== undefined && DEALER_PORTAL_ROLES.has(seg);
 }
 
+function isDealerAssistPath(path: string): boolean {
+  const seg = path.split('/')[2];
+  return seg === 'owner' || seg === 'staff';
+}
+
 function App() {
   const [location] = useLocation();
   // Portal sub-paths are isolated from the marketing layout.
@@ -380,6 +386,7 @@ function App() {
               <Route path="/:dealerId/on-site-tech/:rest*" component={OnSiteTechPortalSection} />
               <Route path="/:dealerId/on-site-tech" component={OnSiteTechPortalSection} />
             </Switch>
+            {isDealerAssistPath(location) && <AssistFAB />}
           </Suspense>
         </AuthProvider>
       </QueryClientProvider>
