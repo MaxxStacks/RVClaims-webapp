@@ -106,7 +106,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logout = async () => {
     if (devRole) {
       localStorage.removeItem("ds360-dev-role");
-      window.location.href = "/dev-access";
+      window.location.href = "/dev-access-v7";
       return;
     }
     await signOut();
