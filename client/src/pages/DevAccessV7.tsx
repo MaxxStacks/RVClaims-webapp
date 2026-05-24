@@ -4,19 +4,18 @@ import logoLight from "@assets/DS360_logo_light.png";
 import type { UserRole } from "@shared/schema";
 
 // V7 URL targets — new route structure from Session 3
-// Dealer routes use "demo" as the placeholder dealerId
 const PORTAL_TARGETS: Record<string, string> = {
   operator_admin:    "/operator/admin/dashboard",
   operator_staff:    "/operator/staff/dashboard",
-  dealer_owner:      "/demo/owner/dashboard",
-  dealer_staff:      "/demo/staff/dashboard",
-  client:            "/demo/client/dashboard",
-  service_manager:   "/demo/service-manager/dashboard",
-  shop_manager:      "/demo/shop-manager/dashboard",
-  parts_dept:        "/demo/parts-manager/dashboard",
-  financial_manager: "/demo/financial-manager/dashboard",
-  shop_tech:         "/demo/shop-tech/dashboard",
-  on_site_tech:      "/demo/on-site-tech/dashboard",
+  dealer_owner:      "/dealer/owner/dashboard",
+  dealer_staff:      "/dealer/staff/dashboard",
+  client:            "/dealer/client/dashboard",
+  service_manager:   "/dealer/service-manager/dashboard",
+  shop_manager:      "/dealer/shop-manager/dashboard",
+  parts_dept:        "/dealer/parts-manager/dashboard",
+  financial_manager: "/dealer/financial-manager/dashboard",
+  shop_tech:         "/dealer/shop-tech/dashboard",
+  on_site_tech:      "/dealer/on-site-tech/dashboard",
   public_bidder:     "/marketplace/bidder/dashboard",
   consignor:         "/marketplace/consignor/dashboard",
 };
