@@ -90,6 +90,12 @@ import OA_CRMKanban from '@/pages/exclusive/operator-admin/CRMKanban';
 import OA_CRMDealerDetail from '@/pages/exclusive/operator-admin/CRMDealerDetail';
 import OA_Communications from '@/pages/exclusive/operator-admin/Communications';
 import OA_Blog from '@/pages/exclusive/operator-admin/Blog';
+import OA_BlogCreate from '@/pages/exclusive/operator-admin/BlogCreate';
+import OA_InviteUser from '@/pages/exclusive/operator-admin/InviteUser';
+import OA_Notifications from '@/pages/exclusive/operator-admin/Notifications';
+import OA_UsersRoles from '@/pages/exclusive/operator-admin/UsersRoles';
+import OA_Settings from '@/pages/exclusive/operator-admin/Settings';
+import OA_PlatformSettings from '@/pages/exclusive/operator-admin/PlatformSettings';
 import TechFlowOversight from '@/pages/exclusive/operator-admin/TechFlowOversight';
 import FinancingApps from '@/pages/exclusive/operator-admin/FinancingApps';
 import FinancingPartners from '@/pages/exclusive/operator-admin/FinancingPartners';
@@ -227,17 +233,19 @@ export function OperatorAdminPortalSection() {
       <Route path="/operator/admin/crm">{() => <OperatorAdminLayout><OA_CRM /></OperatorAdminLayout>}</Route>
       {/* Finance & reports */}
       <Route path="/operator/admin/reports">{() => <OperatorAdminLayout><Reports /></OperatorAdminLayout>}</Route>
-      <Route path="/operator/admin/users">{() => <OperatorAdminLayout><UsersRoles /></OperatorAdminLayout>}</Route>
+      <Route path="/operator/admin/users/invite">{() => <OperatorAdminLayout><OA_InviteUser /></OperatorAdminLayout>}</Route>
+      <Route path="/operator/admin/users">{() => <OperatorAdminLayout><OA_UsersRoles /></OperatorAdminLayout>}</Route>
       {/* Products */}
       <Route path="/operator/admin/products/new">{() => <OperatorAdminLayout><AddProduct /></OperatorAdminLayout>}</Route>
       <Route path="/operator/admin/products/:productId/edit">{() => <OperatorAdminLayout><EditProduct /></OperatorAdminLayout>}</Route>
       <Route path="/operator/admin/products">{() => <OperatorAdminLayout><Products /></OperatorAdminLayout>}</Route>
       {/* System */}
       <Route path="/operator/admin/communications">{() => <OperatorAdminLayout><OA_Communications /></OperatorAdminLayout>}</Route>
+      <Route path="/operator/admin/blog/new">{() => <OperatorAdminLayout><OA_BlogCreate /></OperatorAdminLayout>}</Route>
       <Route path="/operator/admin/blog">{() => <OperatorAdminLayout><OA_Blog /></OperatorAdminLayout>}</Route>
-      <Route path="/operator/admin/notifications">{() => <OperatorAdminLayout><Notifications /></OperatorAdminLayout>}</Route>
-      <Route path="/operator/admin/settings">{() => <OperatorAdminLayout><Settings /></OperatorAdminLayout>}</Route>
-      <Route path="/operator/admin/platform-settings">{() => <OperatorAdminLayout><Settings /></OperatorAdminLayout>}</Route>
+      <Route path="/operator/admin/notifications">{() => <OperatorAdminLayout><OA_Notifications /></OperatorAdminLayout>}</Route>
+      <Route path="/operator/admin/settings">{() => <OperatorAdminLayout><OA_Settings /></OperatorAdminLayout>}</Route>
+      <Route path="/operator/admin/platform-settings">{() => <OperatorAdminLayout><OA_PlatformSettings /></OperatorAdminLayout>}</Route>
       <Route path="/operator/admin/changelog/feature-request">{() => <OperatorAdminLayout><AddFeatureReq /></OperatorAdminLayout>}</Route>
       <Route path="/operator/admin/changelog">{() => <OperatorAdminLayout><Changelog /></OperatorAdminLayout>}</Route>
       <Route path="/operator/admin/mfr-portals">{() => <OperatorAdminLayout><MfrPortals /></OperatorAdminLayout>}</Route>

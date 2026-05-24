@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
+import { useLocation } from 'wouter';
 import { apiFetch } from '@/lib/api';
 
 export default function Blog() {
+  const [, navigate] = useLocation();
   const [blogTab, setBlogTab] = useState<'queue' | 'drafts' | 'published'>('queue');
   const [blogSearch, setBlogSearch] = useState('');
   const [blogQueue, setBlogQueue] = useState<any[]>([]);
@@ -63,16 +65,7 @@ export default function Blog() {
         <div className="pn" style={{ borderTop: 'none', borderRadius: '0 0 8px 8px' }}>
           <div className="pn-h">
             <span className="pn-t">Content Queue</span>
-            <span className="pn-a" onClick={() => {
-              const t = prompt('Topic title:');
-              const k = prompt('Target keyword:');
-              const c = prompt('Category (Warranty Guides, Inspections, Dealership Operations, Industry, Guides):') || 'Warranty Guides';
-              const p = prompt('Prompt template (manufacturer-warranty-guide, dealership-operations, pdi-inspection, industry-trends, how-to):') || 'manufacturer-warranty-guide';
-              if (t && k) {
-                apiFetch('/api/blog/admin/queue', { method: 'POST', body: JSON.stringify({ title: t, targetKeyword: k, category: c, promptTemplate: p, scheduledGeneration: new Date().toISOString() }) })
-                  .then(() => apiFetch<any>('/api/blog/admin/queue').then(d => setBlogQueue(Array.isArray(d) ? d : [])));
-              }
-            }}>+ Add Topic</span>
+            <button className="btn btn-p btn-sm" onClick={() => navigate('/operator/admin/blog/new')}>+ Add Topic</button>
           </div>
           <div className="filter-bar">
             <input type="text" placeholder="Search topics..." value={blogSearch} onChange={e => setBlogSearch(e.target.value)} />

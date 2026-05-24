@@ -8,12 +8,6 @@ export default function Communications() {
   const [subject, setSubject] = useState('');
   const [body, setBody] = useState('');
 
-  const recentBroadcasts = [
-    { title: 'TechFlow Work Orders Now Available', sent: 'Apr 24, 2026', recipients: 'All Dealers', type: 'Feature Release' },
-    { title: 'Scheduled Maintenance — May 1, 2AM–4AM EST', sent: 'Apr 20, 2026', recipients: 'All Dealers', type: 'Maintenance Alert' },
-    { title: 'Q1 Claims Report Ready for Download', sent: 'Apr 1, 2026', recipients: 'All Dealers', type: 'General' },
-    { title: 'New Manufacturer: Columbia NW Added', sent: 'Mar 15, 2026', recipients: 'All Dealers', type: 'Feature Release' },
-  ];
 
   return (
     <div className="page active">
@@ -61,13 +55,12 @@ export default function Communications() {
         </div>
         <div className="pn" style={{ padding: 24 }}>
           <div style={{ fontWeight: 600, fontSize: 14, marginBottom: 16 }}>Recent Broadcasts</div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            {recentBroadcasts.map((b, i) => (
-              <div key={i} style={{ padding: '10px 14px', border: '1px solid #f0f0f0', borderRadius: 8 }}>
-                <div style={{ fontWeight: 600, fontSize: 13, marginBottom: 4 }}>{b.title}</div>
-                <div style={{ fontSize: 12, color: '#888' }}>{b.sent} &middot; {b.recipients} &middot; <span style={{ color: '#2563eb' }}>{b.type}</span></div>
-              </div>
-            ))}
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px 20px', color: 'var(--text-muted)', gap: 10 }}>
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.95 11.5 19.79 19.79 0 01.88 2.81 2 2 0 012.86.66h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L7.09 8.35a16 16 0 006.29 6.29l1.01-.97a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 15.92z"/>
+            </svg>
+            <div style={{ fontSize: 13 }}>No recent broadcasts</div>
+            <div style={{ fontSize: 12 }}>Messages sent to dealers will appear here</div>
           </div>
         </div>
       </div>

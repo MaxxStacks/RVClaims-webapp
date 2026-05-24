@@ -31,7 +31,7 @@ export default function Changelog() {
           <div style={{marginBottom: 24}}>
             <div style={{fontSize: 13, fontWeight: 600, color: '#22c55e', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 12}}>New Features</div>
             <div style={{fontSize: 13, color: '#333', lineHeight: 2}}>
-              <div>{dot('#22c55e')}<strong>13-Portal Architecture</strong> — Dedicated layout + page components for every role: Operator Admin/Staff, Dealer Owner/Staff, Customer, Client, Service Tech, Lender, Insurance, Fleet Manager, Public Bidder, Auction Admin, Marketing</div>
+              <div>{dot('#22c55e')}<strong>13-Portal Architecture</strong> — Dedicated layout + page components for every role: Operator Admin, Operator Staff, Dealer Owner, Dealer Staff, Client, Service Manager, Shop Manager, Parts Manager, Financial Manager, Shop Technician, On-Site Technician, Public Bidder, Consignor</div>
               <div>{dot('#22c55e')}<strong>215 Routes Live</strong> — Full route registration across all 13 portals via centralized PortalRoutes.tsx</div>
               <div>{dot('#22c55e')}<strong>157 Page Components</strong> — All portal pages built with UI content, tables, forms, and interactions</div>
               <div>{dot('#22c55e')}<strong>DevAccess Portal Selector</strong> — Role-based entry point listing all 13 portal types for development and QA access</div>

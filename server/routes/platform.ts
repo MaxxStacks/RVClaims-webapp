@@ -2,7 +2,7 @@
 
 import { Router, type Request, type Response } from "express";
 import { db } from "../db";
-import { platformSettings, featureRequests, notifications, insertFeatureRequestSchema, insertNotificationSchema } from "@shared/schema";
+import { platformSettings, featureRequests, notifications, users, insertFeatureRequestSchema, insertNotificationSchema } from "@shared/schema";
 import { eq, and, desc } from "drizzle-orm";
 import { requireAuth } from "../middleware/auth";
 import { requireRole, requireOperator, scopeToDealership } from "../middleware/rbac";
@@ -43,6 +43,38 @@ router.put("/settings/:key", requireAuth, requireRole("operator_admin"), async (
     console.error("Update setting error:", error);
     res.status(500).json({ success: false, message: "Internal server error" });
   }
+});
+
+// PUT /api/user/profile
+router.put("/user/profile", requireAuth, async (req: Request, res: Response) => {
+  try {
+    const { firstName, lastName, phone, timezone } = req.body;
+    const [updated] = await db
+      .update(users)
+      .set({ firstName, lastName, phone, timezone, updatedAt: new Date() })
+      .where(eq(users.id, req.user!.id))
+      .returning();
+    if (!updated) return res.status(404).json({ success: false, message: "User not found" });
+    res.json({ success: true, user: updated });
+  } catch (error) {
+    console.error("Update profile error:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+});
+
+// GET /api/settings/connection-status
+router.get("/settings/connection-status", requireAuth, requireRole("operator_admin"), async (_req: Request, res: Response) => {
+  res.json({
+    success: true,
+    status: {
+      stripe: !!(process.env.STRIPE_SECRET_KEY),
+      sendgrid: !!(process.env.SENDGRID_API_KEY),
+      anthropic: !!(process.env.ANTHROPIC_API_KEY),
+      tavus: !!(process.env.TAVUS_API_KEY),
+      clerk: !!(process.env.CLERK_SECRET_KEY),
+      neon: !!(process.env.DATABASE_URL),
+    },
+  });
 });
 
 // ==================== FEATURE REQUESTS ====================
@@ -106,6 +138,22 @@ router.put("/feature-requests/:id", requireAuth, requireOperator, async (req: Re
 
 // ==================== NOTIFICATIONS ====================
 
+// GET /api/notifications/inbox — bell dropdown: latest 20 notifications for current user
+router.get("/notifications/inbox", requireAuth, async (req: Request, res: Response) => {
+  try {
+    const items = await db
+      .select()
+      .from(notifications)
+      .where(eq(notifications.userId, req.user!.id))
+      .orderBy(desc(notifications.createdAt))
+      .limit(20);
+    res.json({ success: true, notifications: items });
+  } catch (error) {
+    console.error("Notifications inbox error:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+});
+
 // GET /api/notifications
 router.get("/notifications", requireAuth, async (req: Request, res: Response) => {
   try {
@@ -135,6 +183,17 @@ router.put("/notifications/:id/read", requireAuth, async (req: Request, res: Res
     res.json({ success: true, notification: updated });
   } catch (error) {
     console.error("Mark notification read error:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+});
+
+// PUT /api/notifications/read-all
+router.put("/notifications/read-all", requireAuth, async (req: Request, res: Response) => {
+  try {
+    await db.update(notifications).set({ isRead: true }).where(eq(notifications.userId, req.user!.id));
+    res.json({ success: true });
+  } catch (error) {
+    console.error("Read-all notifications error:", error);
     res.status(500).json({ success: false, message: "Internal server error" });
   }
 });

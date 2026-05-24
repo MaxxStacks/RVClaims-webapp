@@ -232,7 +232,7 @@ export default function ImportData() {
                       )}
                     </div>
                     <button
-                      className="btn-o"
+                      className="btn btn-p"
                       onClick={() => downloadTemplate(entityType)}
                       style={{ whiteSpace: 'nowrap', flexShrink: 0, display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, marginTop: 2 }}
                     >
