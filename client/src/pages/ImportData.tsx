@@ -21,12 +21,14 @@ interface ImportResult {
 }
 
 const ENTITY_TYPES = [
-  { value: 'units',          label: 'Units (RV Inventory)' },
-  { value: 'customers',      label: 'Customers / Users' },
-  { value: 'claims',         label: 'Claims' },
-  { value: 'warranty_plans', label: 'Warranty Plans' },
-  { value: 'fi_deals',       label: 'F&I Deals' },
+  { value: 'units',          label: 'Units (RV Inventory)',  templateLabel: 'Units' },
+  { value: 'customers',      label: 'Customers / Users',     templateLabel: 'Customers' },
+  { value: 'claims',         label: 'Claims',                templateLabel: 'Claims' },
+  { value: 'warranty_plans', label: 'Warranty Plans',        templateLabel: 'Warranty' },
+  { value: 'fi_deals',       label: 'F&I Deals',             templateLabel: 'F&I' },
 ];
+
+const VIN_DEPENDENT = new Set(['claims', 'warranty_plans', 'fi_deals']);
 
 const TEMPLATES: Record<string, { filename: string; content: string }> = {
   units: {
@@ -212,24 +214,39 @@ export default function ImportData() {
               </select>
             </div>
 
-            <div style={{ marginBottom: 16, padding: '12px 14px', background: '#f8f9fb', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
-              <div>
-                <div style={{ fontSize: 12, fontWeight: 600, color: '#444', marginBottom: 2 }}>Need a starting point?</div>
-                <div style={{ fontSize: 12, color: '#888' }}>Download a sample CSV with the correct headers and example data</div>
-              </div>
-              <button
-                className="btn-o"
-                onClick={() => downloadTemplate(entityType)}
-                style={{ whiteSpace: 'nowrap', flexShrink: 0, display: 'flex', alignItems: 'center', gap: 6, fontSize: 12 }}
-              >
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
-                  <polyline points="7 10 12 15 17 10"/>
-                  <line x1="12" y1="15" x2="12" y2="3"/>
-                </svg>
-                Download Template
-              </button>
-            </div>
+            {(() => {
+              const et = ENTITY_TYPES.find(e => e.value === entityType)!;
+              const tl = et.templateLabel;
+              return (
+                <div style={{ marginBottom: 16, padding: '12px 14px', background: '#f8f9fb', borderRadius: 8 }}>
+                  <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12 }}>
+                    <div>
+                      <div style={{ fontSize: 12, fontWeight: 600, color: '#444', marginBottom: 2 }}>Download {tl} Template</div>
+                      <div style={{ fontSize: 12, color: '#888' }}>
+                        Download a sample {tl} CSV with the correct column headers and 3 rows of example data. Fill it in with your data and upload it back.
+                      </div>
+                      {VIN_DEPENDENT.has(entityType) && (
+                        <div style={{ fontSize: 11, color: '#b45309', marginTop: 6 }}>
+                          Note: VINs in this file must match units already in your inventory. Import your units first.
+                        </div>
+                      )}
+                    </div>
+                    <button
+                      className="btn-o"
+                      onClick={() => downloadTemplate(entityType)}
+                      style={{ whiteSpace: 'nowrap', flexShrink: 0, display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, marginTop: 2 }}
+                    >
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                        <polyline points="7 10 12 15 17 10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                      </svg>
+                      Download {tl} Template
+                    </button>
+                  </div>
+                </div>
+              );
+            })()}
 
             <div
               style={{
