@@ -93,6 +93,7 @@ export const users = pgTable("users", {
   language: text("language").default("en"),
   lastLoginAt: timestamp("last_login_at"),
   isActive: boolean("is_active").default(true).notNull(),
+  customData: jsonb("custom_data").default(sql`'{}'`),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 }, (table) => [
@@ -275,6 +276,7 @@ export const units = pgTable("units", {
   extendedWarrantyStart: date("extended_warranty_start"),
   serviceContractActive: boolean("service_contract_active").default(false),
   serviceContractEnd: date("service_contract_end"),
+  customData: jsonb("custom_data").default(sql`'{}'`),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 }, (table) => [
@@ -313,6 +315,7 @@ export const claims = pgTable("claims", {
   stuckSince: timestamp("stuck_since"),
   submittedToMfrAt: timestamp("submitted_to_mfr_at"),
   approvedAt: timestamp("approved_at"),
+  customData: jsonb("custom_data").default(sql`'{}'`),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 }, (table) => [
@@ -487,6 +490,7 @@ export const fiDeals = pgTable("fi_deals", {
   revenue: decimal("revenue", { precision: 10, scale: 2 }),
   dealerNotes: text("dealer_notes"),
   status: text("status", { enum: FI_DEAL_STATUSES }).default("flagged"),
+  customData: jsonb("custom_data").default(sql`'{}'`),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
@@ -504,6 +508,7 @@ export const warrantyPlans = pgTable("warranty_plans", {
   endDate: date("end_date"),
   soldByPlatform: boolean("sold_by_platform").default(false),
   status: text("status", { enum: WARRANTY_PLAN_STATUSES }).default("active"),
+  customData: jsonb("custom_data").default(sql`'{}'`),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
@@ -1612,3 +1617,44 @@ export type Campaign = typeof campaigns.$inferSelect;
 export type EmailEvent = typeof emailEvents.$inferSelect;
 export type Lead = typeof leads.$inferSelect;
 export type LandingPage = typeof landingPages.$inferSelect;
+
+// ==================== IMPORT SYSTEM ====================
+
+export const importTemplates = pgTable("import_templates", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  dealerId: uuid("dealer_id"),
+  name: text("name").notNull(),
+  entityType: text("entity_type").notNull(),
+  columnMappings: jsonb("column_mappings").notNull().default(sql`'{}'`),
+  createdBy: text("created_by").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+}, (table) => [
+  index("import_templates_dealer_idx").on(table.dealerId),
+  index("import_templates_entity_idx").on(table.entityType),
+]);
+
+export const importHistory = pgTable("import_history", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  dealerId: uuid("dealer_id").notNull(),
+  entityType: text("entity_type").notNull(),
+  templateId: uuid("template_id"),
+  filename: text("filename").notNull(),
+  totalRows: integer("total_rows").default(0).notNull(),
+  importedRows: integer("imported_rows").default(0).notNull(),
+  skippedRows: integer("skipped_rows").default(0).notNull(),
+  errorRows: integer("error_rows").default(0).notNull(),
+  errors: jsonb("errors").default(sql`'[]'`),
+  importedBy: text("imported_by").notNull(),
+  importedAt: timestamp("imported_at").defaultNow().notNull(),
+  status: text("status").default("completed").notNull(),
+}, (table) => [
+  index("import_history_dealer_idx").on(table.dealerId),
+  index("import_history_entity_idx").on(table.entityType),
+  index("import_history_status_idx").on(table.status),
+]);
+
+export type ImportTemplate = typeof importTemplates.$inferSelect;
+export type ImportHistory = typeof importHistory.$inferSelect;
+export type InsertImportTemplate = typeof importTemplates.$inferInsert;
+export type InsertImportHistory = typeof importHistory.$inferInsert;

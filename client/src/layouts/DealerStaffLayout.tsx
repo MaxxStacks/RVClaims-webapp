@@ -58,6 +58,7 @@ export default function DealerStaffLayout({ children }: Props) {
           <div className="nav-section">
             <div className="nav-label">System</div>
             <Link className={`nav-item ${isActive('notifications') ? 'active' : ''}`} to="notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>Notifications</Link>
+            <Link className={`nav-item ${isActive('import') ? 'active' : ''}`} to="import"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Import Data</Link>
             <Link className={`nav-item ${isActive('whats-new') ? 'active' : ''}`} to="whats-new"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>What&apos;s New</Link>
           </div>
         </div>

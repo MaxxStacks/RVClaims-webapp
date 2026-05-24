@@ -27,6 +27,14 @@ export default function ClaimDetail() {
           <div className="cd-section"><div className="cd-section-h">Unit</div><div className="cd-row"><span className="cd-label">VIN</span><span className="cd-value" style={{fontFamily: "monospace", fontSize: 12}}>{selectedClaimDetail?.vin ?? "—"}</span></div><div className="cd-row"><span className="cd-label">Unit</span><span className="cd-value">{selectedClaimDetail?.unitDescription ?? "—"}</span></div></div>
           <div className="cd-section"><div className="cd-section-h">Dealer</div><div className="cd-row"><span className="cd-label">Name</span><span className="cd-value cid" onClick={() => navigate("dealer-detail")}>{selectedClaimDetail?.dealerName ?? "—"}</span></div><div className="cd-row"><span className="cd-label">Plan</span><span className="cd-value">{selectedClaimDetail?.dealerPlan ?? "—"}</span></div></div>
           <div className="cd-section"><div className="cd-section-h">Financials</div><div className="cd-row"><span className="cd-label">Labor (5.5 hrs)</span><span className="cd-value">$770</span></div><div className="cd-row"><span className="cd-label">Parts</span><span className="cd-value">$385</span></div><div className="cd-row"><span className="cd-label">Transport</span><span className="cd-value">$85</span></div><div className="cd-row" style={{fontWeight: 600}}><span className="cd-label" style={{color: '#111'}}>Total</span><span className="cd-value" style={{fontSize: 15}}>$1,240</span></div><div className="cd-row"><span className="cd-label">Claim Fee (10%)</span><span className="cd-value" style={{color: 'var(--brand)'}}>$124</span></div></div>
+          {selectedClaimDetail?.customData && Object.keys(selectedClaimDetail.customData).length > 0 && (
+            <div className="cd-section">
+              <div className="cd-section-h">Imported Custom Fields</div>
+              {Object.entries(selectedClaimDetail.customData as Record<string, string>).map(([key, val]) => (
+                <div key={key} className="cd-row"><span className="cd-label">{key}</span><span className="cd-value">{String(val)}</span></div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

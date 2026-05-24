@@ -69,6 +69,7 @@ import Messages from '@/pages/Messages';
 import Auctions from '@/pages/Auctions';
 import AuctionDetail from '@/pages/AuctionDetail';
 import ServiceAppointments from '@/pages/ServiceAppointments';
+import ImportData from '@/pages/ImportData';
 
 // ─── Exclusive: Operator Admin ─────────────────────────────────────────────
 import DealerClaims from '@/pages/exclusive/operator-admin/DealerClaims';
@@ -244,6 +245,7 @@ export function OperatorAdminPortalSection() {
       <Route path="/operator/admin/campaign-templates">{() => <OperatorAdminLayout><CampaignTemplates /></OperatorAdminLayout>}</Route>
       <Route path="/operator/admin/consignment">{() => <OperatorAdminLayout><ConsignmentOversight /></OperatorAdminLayout>}</Route>
       <Route path="/operator/admin/escrow">{() => <OperatorAdminLayout><EscrowAdmin /></OperatorAdminLayout>}</Route>
+      <Route path="/operator/admin/import">{() => <OperatorAdminLayout><ImportData /></OperatorAdminLayout>}</Route>
       {/* Default */}
       <Route>{() => <Redirect to="/operator/admin/dashboard" />}</Route>
     </Switch>
@@ -320,6 +322,7 @@ export function DealerOwnerPortalSection() {
       <Route path="/:dealerId/owner/billing">{() => <DealerOwnerLayout><BillingSettings /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/portal-settings">{() => <DealerOwnerLayout><PortalSettings /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/settings">{() => <DealerOwnerLayout><Settings /></DealerOwnerLayout>}</Route>
+      <Route path="/:dealerId/owner/import">{() => <DealerOwnerLayout><ImportData /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/whats-new">{() => <DealerOwnerLayout><Changelog /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/dashboard">{() => <DealerOwnerLayout><Dashboard /></DealerOwnerLayout>}</Route>
       <Route>{() => <DealerFallback role="owner" />}</Route>
@@ -345,6 +348,7 @@ export function DealerStaffPortalSection() {
       <Route path="/:dealerId/staff/documents">{() => <DealerStaffLayout><Documents /></DealerStaffLayout>}</Route>
       <Route path="/:dealerId/staff/messages">{() => <DealerStaffLayout><Messages /></DealerStaffLayout>}</Route>
       <Route path="/:dealerId/staff/notifications">{() => <DealerStaffLayout><Notifications /></DealerStaffLayout>}</Route>
+      <Route path="/:dealerId/staff/import">{() => <DealerStaffLayout><ImportData /></DealerStaffLayout>}</Route>
       <Route path="/:dealerId/staff/whats-new">{() => <DealerStaffLayout><Changelog /></DealerStaffLayout>}</Route>
       <Route path="/:dealerId/staff/dashboard">{() => <DealerStaffLayout><Dashboard /></DealerStaffLayout>}</Route>
       <Route>{() => <DealerFallback role="staff" />}</Route>
