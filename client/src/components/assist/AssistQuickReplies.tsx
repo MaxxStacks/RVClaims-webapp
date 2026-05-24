@@ -11,38 +11,55 @@ export default function AssistQuickReplies({ replies, onSelect }: Props) {
   return (
     <div
       style={{
-        padding: "4px 12px 12px",
-        overflowX: "auto",
+        padding: "4px 14px 10px",
         display: "flex",
-        gap: 6,
+        flexWrap: "wrap",
+        gap: 8,
         flexShrink: 0,
-        scrollbarWidth: "none",
+        background: "#F8F9FB",
+        borderTop: "1px solid #E8ECF1",
       }}
     >
-      {replies.map((reply) => (
+      <style>{`
+        .assist-qr-btn {
+          display: inline-flex;
+          align-items: center;
+          background: #FFFFFF;
+          border: 1px solid #D1D9E6;
+          border-radius: 20px;
+          padding: 6px 14px;
+          font-size: 13px;
+          font-weight: 500;
+          font-family: Inter, sans-serif;
+          color: #033280;
+          cursor: pointer;
+          transition: background 150ms ease, border-color 150ms ease, transform 100ms ease;
+          white-space: nowrap;
+        }
+        .assist-qr-btn:hover {
+          background: #F0F4FF;
+          border-color: #033280;
+        }
+        .assist-qr-btn:active {
+          transform: scale(0.97);
+        }
+        @keyframes assistQrFadeIn {
+          from { opacity: 0; transform: translateY(4px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .assist-qr-btn { transition: none; }
+          .assist-qr-btn:active { transform: none; }
+        }
+      `}</style>
+
+      {replies.map((reply, i) => (
         <button
           key={reply}
           onClick={() => onSelect(reply)}
+          className="assist-qr-btn"
           style={{
-            whiteSpace: "nowrap",
-            background: "#fff",
-            border: "1.5px solid #033280",
-            color: "#033280",
-            borderRadius: 20,
-            padding: "5px 12px",
-            fontSize: 12,
-            fontFamily: "Inter, sans-serif",
-            cursor: "pointer",
-            transition: "background 0.15s, color 0.15s",
-            flexShrink: 0,
-          }}
-          onMouseEnter={(e) => {
-            (e.target as HTMLButtonElement).style.background = "#033280";
-            (e.target as HTMLButtonElement).style.color = "#fff";
-          }}
-          onMouseLeave={(e) => {
-            (e.target as HTMLButtonElement).style.background = "#fff";
-            (e.target as HTMLButtonElement).style.color = "#033280";
+            animation: `assistQrFadeIn 200ms ${i * 50}ms ease-out both`,
           }}
         >
           {reply}

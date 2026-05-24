@@ -1,6 +1,6 @@
 // shared/schema-remote-support.ts — Remote Support / Screen Share database schema
 
-import { pgTable, text, varchar, timestamp, boolean, uuid, jsonb, index } from "drizzle-orm/pg-core";
+import { pgTable, text, varchar, timestamp, boolean, uuid, jsonb, integer, index } from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
 
 // ==================== REMOTE SESSIONS ====================
@@ -42,7 +42,31 @@ export const remoteSessionEvents = pgTable("remote_session_events", {
   index("remote_events_session_idx").on(table.sessionId),
 ]);
 
+// ==================== DOCUMENT TRANSFERS ====================
+
+export const documentTransfers = pgTable("document_transfers", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  dealerId: uuid("dealer_id").notNull(),
+  senderType: varchar("sender_type", { length: 20 }).notNull(), // 'dealer' | 'operator'
+  senderUserId: varchar("sender_user_id", { length: 255 }).notNull(),
+  senderName: varchar("sender_name", { length: 255 }),
+  recipientType: varchar("recipient_type", { length: 20 }).notNull(), // 'dealer' | 'operator'
+  fileName: varchar("file_name", { length: 255 }).notNull(),
+  fileType: varchar("file_type", { length: 100 }).notNull(),
+  fileSize: integer("file_size").notNull(),
+  fileUrl: varchar("file_url", { length: 500 }).notNull(),
+  message: text("message"),
+  status: varchar("status", { length: 20 }).default("sent"),
+  downloadedAt: timestamp("downloaded_at"),
+  expiresAt: timestamp("expires_at").default(sql`NOW() + INTERVAL '30 days'`),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+}, (table) => [
+  index("doc_transfers_dealer_idx").on(table.dealerId),
+  index("doc_transfers_sender_idx").on(table.senderUserId),
+]);
+
 // ==================== TYPE EXPORTS ====================
 
 export type RemoteSession = typeof remoteSessions.$inferSelect;
 export type RemoteSessionEvent = typeof remoteSessionEvents.$inferSelect;
+export type DocumentTransfer = typeof documentTransfers.$inferSelect;

@@ -57,6 +57,10 @@ app.use(cookieParser());
 const assetsPath = path.resolve(import.meta.dirname, "..", "attached_assets");
 app.use("/attached_assets", express.static(assetsPath));
 
+// Serve uploaded transfer files
+const transfersPath = path.resolve(process.cwd(), "uploads", "transfers");
+app.use("/api/files/transfers", express.static(transfersPath));
+
 app.use((req, res, next) => {
   const start = Date.now();
   const path = req.path;

@@ -1,4 +1,4 @@
-// client/src/components/assist/AssistWorkflow.tsx — Renders the current workflow step UI
+// client/src/components/assist/AssistWorkflow.tsx
 
 interface WorkflowStepDef {
   stepNumber: number;
@@ -24,39 +24,70 @@ export default function AssistWorkflow({ step, onSubmit, onCancel, disabled = fa
   return (
     <div
       style={{
-        margin: "8px 12px",
-        border: "1.5px solid #033280",
-        borderRadius: 8,
+        margin: "0 14px 10px",
+        border: "1px solid #D1D9E6",
+        borderRadius: 12,
         overflow: "hidden",
         flexShrink: 0,
+        background: "#FFFFFF",
+        boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
       }}
     >
-      {/* Progress bar */}
-      <div style={{ background: "#e8eef8", height: 3 }}>
+      <style>{`
+        .assist-wf-select-opt {
+          display: block;
+          width: 100%;
+          text-align: left;
+          background: #F8F9FB;
+          border: 1px solid #E0E4EA;
+          border-radius: 8px;
+          padding: 9px 13px;
+          font-size: 13px;
+          font-family: Inter, sans-serif;
+          cursor: pointer;
+          color: #1F2937;
+          transition: border-color 150ms ease, background 150ms ease;
+        }
+        .assist-wf-select-opt:hover:not(:disabled) {
+          border-color: #033280;
+          background: #F0F4FF;
+        }
+        .assist-wf-select-opt:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .assist-wf-select-opt { transition: none; }
+        }
+      `}</style>
+
+      {/* Progress bar — green fill */}
+      <div style={{ background: "#E8ECF1", height: 4 }}>
         <div
           style={{
             height: "100%",
             width: `${progress}%`,
-            background: "#033280",
-            transition: "width 0.3s ease",
+            background: "#0cb22c",
+            borderRadius: "0 2px 2px 0",
+            transition: "width 400ms ease",
           }}
         />
       </div>
 
-      <div style={{ padding: "10px 14px" }}>
+      <div style={{ padding: "10px 14px 12px" }}>
         {/* Step label */}
-        <div
-          style={{
-            fontSize: 11,
-            color: "#6b7280",
-            fontFamily: "Inter, sans-serif",
-            marginBottom: 6,
-          }}
-        >
+        <div style={{
+          fontSize: 11,
+          fontWeight: 500,
+          color: "#6B7280",
+          fontFamily: "Inter, sans-serif",
+          marginBottom: 8,
+          letterSpacing: "0.01em",
+        }}>
           Step {step.stepNumber} of {step.totalSteps} — {step.title}
         </div>
 
-        {/* Input based on type */}
+        {/* Confirm */}
         {step.inputType === "confirm" && (
           <div style={{ display: "flex", gap: 8 }}>
             <button
@@ -64,15 +95,16 @@ export default function AssistWorkflow({ step, onSubmit, onCancel, disabled = fa
               disabled={disabled}
               style={{
                 flex: 1,
-                background: disabled ? "#9ca3af" : "#033280",
+                background: disabled ? "#D1D5DB" : "#033280",
                 color: "#fff",
                 border: "none",
-                borderRadius: 6,
-                padding: "8px 0",
+                borderRadius: 8,
+                padding: "9px 0",
                 fontSize: 13,
                 fontFamily: "Inter, sans-serif",
                 cursor: disabled ? "not-allowed" : "pointer",
                 fontWeight: 600,
+                transition: "background 150ms",
               }}
             >
               {step.inputLabel ?? "Confirm"}
@@ -82,13 +114,13 @@ export default function AssistWorkflow({ step, onSubmit, onCancel, disabled = fa
               disabled={disabled}
               style={{
                 background: "none",
-                border: "1px solid #d1d5db",
-                borderRadius: 6,
-                padding: "8px 12px",
+                border: "1px solid #E0E4EA",
+                borderRadius: 8,
+                padding: "9px 14px",
                 fontSize: 13,
                 fontFamily: "Inter, sans-serif",
                 cursor: disabled ? "not-allowed" : "pointer",
-                color: "#6b7280",
+                color: "#6B7280",
               }}
             >
               Cancel
@@ -96,51 +128,31 @@ export default function AssistWorkflow({ step, onSubmit, onCancel, disabled = fa
           </div>
         )}
 
+        {/* Select options */}
         {step.inputType === "select" && step.options && (
-          <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
             {step.options.map((opt) => (
               <button
                 key={opt}
                 onClick={() => onSubmit(opt)}
                 disabled={disabled}
-                style={{
-                  textAlign: "left",
-                  background: "#f9fafb",
-                  border: "1px solid #d1d5db",
-                  borderRadius: 6,
-                  padding: "8px 12px",
-                  fontSize: 13,
-                  fontFamily: "Inter, sans-serif",
-                  cursor: disabled ? "not-allowed" : "pointer",
-                  color: "#111827",
-                  transition: "border-color 0.15s, background 0.15s",
-                }}
-                onMouseEnter={(e) => {
-                  if (!disabled) {
-                    (e.target as HTMLButtonElement).style.borderColor = "#033280";
-                    (e.target as HTMLButtonElement).style.background = "#f0f4ff";
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  (e.target as HTMLButtonElement).style.borderColor = "#d1d5db";
-                  (e.target as HTMLButtonElement).style.background = "#f9fafb";
-                }}
+                className="assist-wf-select-opt"
               >
                 {opt}
               </button>
             ))}
             <button
               onClick={onCancel}
-              disabled={disabled}
               style={{
                 background: "none",
                 border: "none",
                 fontSize: 11,
-                color: "#9ca3af",
+                color: "#9CA3AF",
                 cursor: "pointer",
-                marginTop: 2,
+                marginTop: 4,
                 textAlign: "left",
                 fontFamily: "Inter, sans-serif",
+                textDecoration: "underline",
               }}
             >
               Cancel workflow
@@ -148,10 +160,11 @@ export default function AssistWorkflow({ step, onSubmit, onCancel, disabled = fa
           </div>
         )}
 
+        {/* Text / none — type in main input */}
         {(step.inputType === "text" || step.inputType === "none") && (
-          <div style={{ display: "flex", gap: 4, alignItems: "center" }}>
-            <span style={{ fontSize: 11, color: "#9ca3af", fontFamily: "Inter, sans-serif" }}>
-              Type your answer above ↑
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <span style={{ fontSize: 12, color: "#9CA3AF", fontFamily: "Inter, sans-serif" }}>
+              Type your answer in the box below ↓
             </span>
             <button
               onClick={onCancel}
@@ -160,9 +173,10 @@ export default function AssistWorkflow({ step, onSubmit, onCancel, disabled = fa
                 background: "none",
                 border: "none",
                 fontSize: 11,
-                color: "#9ca3af",
+                color: "#9CA3AF",
                 cursor: "pointer",
                 fontFamily: "Inter, sans-serif",
+                textDecoration: "underline",
               }}
             >
               Cancel

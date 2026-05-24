@@ -16,6 +16,9 @@ import { requireDealer, requireOperator } from "../../middleware/rbac";
 import { remoteSessionRateLimit } from "../../middleware/assist-rate-limit";
 import { generateAccessCode } from "../../lib/access-code";
 import { generateAccessToken, createRoom, closeRoom, startRoomRecording, stopRoomRecording } from "../../lib/livekit-server";
+import { notifyDealership } from "../../lib/notifications";
+import { broadcastToDealership, sendToUser, broadcastToOperators } from "../../lib/websocket";
+import { users } from "@shared/schema";
 import takeoverRouter from "./takeover";
 
 const router = Router();
@@ -354,6 +357,203 @@ router.get("/session-history", requireAuth, requireOperator, async (_req: Reques
     return res.json({ success: true, sessions });
   } catch (err) {
     console.error("[remote/session-history]", err);
+    return res.status(500).json({ success: false, message: "Internal server error" });
+  }
+});
+
+// ── GET /api/remote/dealer/session-history ───────────────────────────────────
+// Dealer — list their own completed sessions
+router.get("/dealer/session-history", requireAuth, requireDealer, async (req: Request, res: Response) => {
+  try {
+    const user = req.user!;
+    if (!user.dealershipId) return res.status(403).json({ success: false, message: "No dealership assigned" });
+
+    const sessions = await db
+      .select()
+      .from(remoteSessions)
+      .where(and(
+        eq(remoteSessions.dealerId, user.dealershipId),
+        or(eq(remoteSessions.status, "ended"), eq(remoteSessions.status, "expired"))
+      ))
+      .orderBy(desc(remoteSessions.createdAt))
+      .limit(10);
+
+    return res.json({ success: true, sessions });
+  } catch (err) {
+    console.error("[remote/dealer/session-history]", err);
+    return res.status(500).json({ success: false, message: "Internal server error" });
+  }
+});
+
+// ── POST /api/remote/sessions/request ────────────────────────────────────────
+// Operator requests a screen share from a dealer
+router.post("/sessions/request", requireAuth, requireOperator, async (req: Request, res: Response) => {
+  try {
+    const user = req.user!;
+    const { dealerId, message } = req.body;
+
+    if (!dealerId) return res.status(400).json({ success: false, message: "dealerId is required" });
+
+    // Use a placeholder access code — replaced when dealer accepts
+    const placeholderCode = `REQ-${Date.now().toString(36).toUpperCase().slice(-4)}`;
+    const expiresAt = new Date(Date.now() + 30 * 60 * 1000); // 30 min to accept
+
+    const [session] = await db
+      .insert(remoteSessions)
+      .values({
+        accessCode: placeholderCode,
+        dealerId,
+        dealerUserId: "",
+        operatorUserId: user.clerkUserId,
+        status: "requested",
+        codeExpiresAt: expiresAt,
+      })
+      .returning();
+
+    await logEvent(session.id, "operator_requested", "operator", {
+      operatorUserId: user.clerkUserId,
+      operatorName: `${user.firstName} ${user.lastName}`.trim(),
+      message: message ?? null,
+    });
+
+    const operatorName = `${user.firstName} ${user.lastName}`.trim() || "Support Agent";
+
+    // Notify dealer users in-app
+    await notifyDealership(dealerId, {
+      type: "system",
+      title: `${operatorName} wants to view your screen`,
+      message: message ?? "A support agent is requesting a screen share session.",
+      linkTo: "/dealer",
+    });
+
+    // Push real-time WS event to dealer
+    broadcastToDealership(dealerId, {
+      type: "remote:share-request",
+      payload: { sessionId: session.id, operatorName, message: message ?? null },
+    });
+
+    return res.json({ success: true, sessionId: session.id, status: "requested" });
+  } catch (err) {
+    console.error("[remote/sessions/request]", err);
+    return res.status(500).json({ success: false, message: "Internal server error" });
+  }
+});
+
+// ── POST /api/remote/sessions/:id/accept ─────────────────────────────────────
+// Dealer accepts an operator-initiated request
+router.post("/sessions/:id/accept", requireAuth, requireDealer, async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const user = req.user!;
+
+    if (!user.dealershipId) return res.status(403).json({ success: false, message: "No dealership assigned" });
+
+    const [session] = await db
+      .select()
+      .from(remoteSessions)
+      .where(eq(remoteSessions.id, id))
+      .limit(1);
+
+    if (!session) return res.status(404).json({ success: false, message: "Session not found" });
+    if (session.dealerId !== user.dealershipId) return res.status(403).json({ success: false, message: "Not authorized" });
+    if (session.status !== "requested") return res.status(409).json({ success: false, message: `Session is ${session.status}` });
+
+    const code = generateAccessCode();
+    const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
+    const roomName = `remote-${session.id}`;
+
+    await createRoom(roomName);
+
+    const [updated] = await db
+      .update(remoteSessions)
+      .set({
+        status: "pending",
+        accessCode: code,
+        codeExpiresAt: expiresAt,
+        dealerUserId: user.clerkUserId,
+        livekitRoomName: roomName,
+      })
+      .where(eq(remoteSessions.id, id))
+      .returning();
+
+    await logEvent(id, "dealer_accepted", "dealer", {
+      dealerUserId: user.clerkUserId,
+      dealerName: `${user.firstName} ${user.lastName}`.trim(),
+    });
+
+    // Generate both tokens
+    const dealerIdentity = `dealer-${user.clerkUserId}`;
+    const operatorIdentity = session.operatorUserId ? `operator-${session.operatorUserId}` : "operator-pending";
+
+    const dealerToken = await generateAccessToken(roomName, dealerIdentity, `${user.firstName} ${user.lastName}`.trim(), true, false);
+    const operatorToken = await generateAccessToken(roomName, operatorIdentity, "Support Agent", false, true);
+
+    // Notify operator via WS
+    if (session.operatorUserId) {
+      const [operatorUser] = await db.select({ id: users.id }).from(users).where(eq(users.clerkUserId, session.operatorUserId)).limit(1);
+      if (operatorUser) {
+        sendToUser(operatorUser.id, {
+          type: "remote:share-accepted",
+          payload: {
+            sessionId: id,
+            accessCode: code,
+            operatorToken: operatorToken?.token ?? null,
+            livekitUrl: operatorToken?.url ?? null,
+            roomName,
+          },
+        });
+      }
+    }
+
+    return res.json({
+      success: true,
+      sessionId: id,
+      accessCode: code,
+      dealerToken: dealerToken?.token ?? null,
+      livekitUrl: dealerToken?.url ?? null,
+      roomName,
+    });
+  } catch (err) {
+    console.error("[remote/sessions/:id/accept]", err);
+    return res.status(500).json({ success: false, message: "Internal server error" });
+  }
+});
+
+// ── POST /api/remote/sessions/:id/decline ────────────────────────────────────
+// Dealer declines an operator-initiated request
+router.post("/sessions/:id/decline", requireAuth, requireDealer, async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const user = req.user!;
+
+    if (!user.dealershipId) return res.status(403).json({ success: false, message: "No dealership assigned" });
+
+    const [session] = await db
+      .select()
+      .from(remoteSessions)
+      .where(eq(remoteSessions.id, id))
+      .limit(1);
+
+    if (!session) return res.status(404).json({ success: false, message: "Session not found" });
+    if (session.dealerId !== user.dealershipId) return res.status(403).json({ success: false, message: "Not authorized" });
+
+    await db.update(remoteSessions).set({ status: "declined", endedAt: new Date(), endedBy: "dealer" }).where(eq(remoteSessions.id, id));
+    await logEvent(id, "dealer_declined", "dealer", { dealerUserId: user.clerkUserId });
+
+    // Notify operator
+    if (session.operatorUserId) {
+      const [operatorUser] = await db.select({ id: users.id }).from(users).where(eq(users.clerkUserId, session.operatorUserId)).limit(1);
+      if (operatorUser) {
+        sendToUser(operatorUser.id, {
+          type: "remote:share-declined",
+          payload: { sessionId: id },
+        });
+      }
+    }
+
+    return res.json({ success: true, sessionId: id, status: "declined" });
+  } catch (err) {
+    console.error("[remote/sessions/:id/decline]", err);
     return res.status(500).json({ success: false, message: "Internal server error" });
   }
 });

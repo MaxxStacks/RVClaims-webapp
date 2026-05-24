@@ -1,7 +1,14 @@
-import { useState } from 'react';
+import { useState, lazy, Suspense } from 'react';
+
+const ScreenShareGenerator = lazy(() => import('@/components/remote-support/ScreenShareGenerator'));
+const DocumentTransfer = lazy(() => import('@/components/remote-support/DocumentTransfer'));
 
 export default function DealerSettings() {
-  const [tab, setTab] = useState<'ds-profile'|'ds-security'|'ds-dealership'|'ds-subscription'|'ds-notifpref'>('ds-profile');
+  const [tab, setTab] = useState<'ds-profile'|'ds-security'|'ds-dealership'|'ds-subscription'|'ds-notifpref'|'ds-remote'>('ds-profile');
+  const [showShare, setShowShare] = useState(false);
+  const [shareSessionId, setShareSessionId] = useState<string | null>(null);
+  const [howItWorksOpen, setHowItWorksOpen] = useState(false);
+  const [sessionHistory, setSessionHistory] = useState<any[]>([]);
 
   return (
     <div className="page active">
@@ -14,6 +21,8 @@ export default function DealerSettings() {
           <div className={`settings-link ${tab === 'ds-dealership' ? 'active' : ''}`} onClick={() => setTab('ds-dealership')}>Dealership Account</div>
           <div className={`settings-link ${tab === 'ds-subscription' ? 'active' : ''}`} onClick={() => setTab('ds-subscription')}>Subscription & Billing</div>
           <div className={`settings-link ${tab === 'ds-notifpref' ? 'active' : ''}`} onClick={() => setTab('ds-notifpref')}>Notification Preferences</div>
+          <div style={{fontSize: 11, textTransform: 'uppercase', letterSpacing: 1, color: '#bbb', fontWeight: 600, padding: '16px 0 8px', borderTop: '1px solid #f0f0f0', marginTop: 8}}>Support</div>
+          <div className={`settings-link ${tab === 'ds-remote' ? 'active' : ''}`} onClick={() => { setTab('ds-remote'); fetch('/api/remote/dealer/session-history').then(r => r.json()).then(d => { if (d.success) setSessionHistory(d.sessions ?? []); }).catch(() => {}); }}>Remote Support</div>
         </div>
         <div>
 
@@ -154,6 +163,131 @@ export default function DealerSettings() {
                 ))}
               </div>
               <div className="btn-bar"><button className="btn btn-p" onClick={() => alert('Preferences saved')}>Save Preferences</button><button className="btn btn-o" onClick={() => alert('Preferences reset')}>Reset to Defaults</button></div>
+            </div>
+          )}
+
+          {tab === 'ds-remote' && (
+            <div className="pn">
+              <div className="pn-h">
+                <span className="pn-t">Remote Support</span>
+                <span style={{fontSize: 12, color: '#888'}}>Share your screen with DS360 support for real-time assistance.</span>
+              </div>
+
+              {/* Screen Share section */}
+              <div style={{padding: '16px 20px', borderBottom: '1px solid #f0f0f0'}}>
+                <div style={{fontSize: 13, fontWeight: 600, color: '#111827', marginBottom: 4}}>Start Screen Share</div>
+                <div style={{fontSize: 12, color: '#6b7280', marginBottom: 12}}>Generate a 6-digit code to share with your support agent. They'll enter it to view your screen.</div>
+
+                {shareSessionId && (
+                  <div style={{background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 8, padding: '10px 14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12}}>
+                    <div style={{display: 'flex', alignItems: 'center', gap: 8}}>
+                      <span style={{width: 8, height: 8, borderRadius: '50%', background: '#22c55e', display: 'inline-block'}} />
+                      <span style={{fontSize: 12, fontWeight: 600, color: '#15803d'}}>Session Active</span>
+                    </div>
+                    <button
+                      onClick={async () => {
+                        try { await fetch(`/api/remote/sessions/${shareSessionId}/end`, {method: 'POST'}); } catch {}
+                        setShareSessionId(null);
+                        setShowShare(false);
+                      }}
+                      style={{fontSize: 11, color: '#b91c1c', background: 'none', border: '1px solid #fca5a5', borderRadius: 5, padding: '3px 8px', cursor: 'pointer'}}
+                    >
+                      End Session
+                    </button>
+                  </div>
+                )}
+
+                {!shareSessionId && !showShare && (
+                  <button
+                    onClick={() => setShowShare(true)}
+                    className="btn btn-p"
+                    style={{fontSize: 12}}
+                  >
+                    Start Screen Share
+                  </button>
+                )}
+
+                {showShare && !shareSessionId && (
+                  <Suspense fallback={<div style={{fontSize: 12, color: '#6b7280'}}>Loading…</div>}>
+                    <ScreenShareGenerator
+                      onConnected={(sid) => { setShareSessionId(sid); setShowShare(false); }}
+                      onCancel={() => setShowShare(false)}
+                    />
+                  </Suspense>
+                )}
+
+                {/* How it works */}
+                <div style={{marginTop: 16, border: '1px solid #e5e7eb', borderRadius: 8, overflow: 'hidden'}}>
+                  <button
+                    onClick={() => setHowItWorksOpen(o => !o)}
+                    style={{width: '100%', padding: '10px 14px', background: '#f9fafb', border: 0, display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer', fontSize: 12, fontWeight: 600, color: '#374151'}}
+                  >
+                    How it works
+                    <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth={2} style={{transform: howItWorksOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.15s'}}>
+                      <path d="M6 9l6 6 6-6"/>
+                    </svg>
+                  </button>
+                  {howItWorksOpen && (
+                    <div style={{padding: '12px 14px', background: 'white'}}>
+                      {[
+                        {n: 1, text: 'Click "Start Screen Share" to generate a 6-digit access code.'},
+                        {n: 2, text: 'Share the code with your DS360 support agent via phone or chat.'},
+                        {n: 3, text: 'The agent enters the code in their dashboard to connect.'},
+                        {n: 4, text: 'Your screen is visible to the agent. End the session anytime.'},
+                      ].map(s => (
+                        <div key={s.n} style={{display: 'flex', gap: 10, marginBottom: 8, alignItems: 'flex-start'}}>
+                          <span style={{width: 20, height: 20, borderRadius: '50%', background: '#eff6ff', color: '#033280', fontSize: 11, fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0}}>{s.n}</span>
+                          <span style={{fontSize: 12, color: '#374151', lineHeight: 1.5}}>{s.text}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Document Transfer section */}
+              <div style={{padding: '16px 20px', borderBottom: '1px solid #f0f0f0'}}>
+                <div style={{fontSize: 13, fontWeight: 600, color: '#111827', marginBottom: 4}}>Document Transfer</div>
+                <div style={{fontSize: 12, color: '#6b7280', marginBottom: 12}}>Send documents to DS360 support or download files they've shared with you.</div>
+                <Suspense fallback={<div style={{fontSize: 12, color: '#6b7280'}}>Loading…</div>}>
+                  <DocumentTransfer />
+                </Suspense>
+              </div>
+
+              {/* Recent Sessions */}
+              <div style={{padding: '16px 20px'}}>
+                <div style={{fontSize: 13, fontWeight: 600, color: '#111827', marginBottom: 12}}>Recent Sessions</div>
+                {sessionHistory.length === 0 ? (
+                  <div style={{fontSize: 12, color: '#9ca3af', textAlign: 'center', padding: '16px 0'}}>No sessions yet.</div>
+                ) : (
+                  <table style={{width: '100%', borderCollapse: 'collapse', fontSize: 12}}>
+                    <thead>
+                      <tr style={{background: '#f9fafb'}}>
+                        {['Date', 'Duration', 'Status'].map(h => (
+                          <th key={h} style={{padding: '6px 12px', textAlign: 'left', fontSize: 10, fontWeight: 600, color: '#6b7280', textTransform: 'uppercase'}}>{h}</th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {sessionHistory.map((s: any) => {
+                        const ms = (s.endedAt ? new Date(s.endedAt).getTime() : Date.now()) - (s.connectedAt ? new Date(s.connectedAt).getTime() : new Date(s.createdAt).getTime());
+                        const mins = Math.floor(ms / 60000);
+                        const secs = Math.floor((ms % 60000) / 1000);
+                        const dur = s.connectedAt ? (mins > 0 ? `${mins}m ${secs}s` : `${secs}s`) : '—';
+                        return (
+                          <tr key={s.id} style={{borderTop: '1px solid #f3f4f6'}}>
+                            <td style={{padding: '8px 12px', color: '#374151'}}>{new Date(s.createdAt).toLocaleDateString()}</td>
+                            <td style={{padding: '8px 12px', color: '#374151'}}>{dur}</td>
+                            <td style={{padding: '8px 12px'}}>
+                              <span style={{fontSize: 10, fontWeight: 600, padding: '2px 6px', borderRadius: 8, background: s.status === 'ended' ? '#f0fdf4' : '#f3f4f6', color: s.status === 'ended' ? '#15803d' : '#9ca3af', textTransform: 'uppercase'}}>{s.status}</span>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                )}
+              </div>
             </div>
           )}
 

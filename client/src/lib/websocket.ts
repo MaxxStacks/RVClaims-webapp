@@ -16,7 +16,11 @@ export type WsEventType =
   | "ticket:message"
   | "auction:bid"
   | "connected"
-  | "disconnected";
+  | "disconnected"
+  | "remote:share-request"
+  | "remote:share-accepted"
+  | "remote:share-declined"
+  | "transfer:new-file";
 
 export interface WsEvent<T = unknown> {
   type: WsEventType;
@@ -38,6 +42,42 @@ class WebSocketClient {
     // Derive WS URL from current host
     const proto = window.location.protocol === "https:" ? "wss:" : "ws:";
     this.url = `${proto}//${window.location.host}/ws`;
+  }
+
+  connectWithToken(token: string): void {
+    const urlWithToken = `${this.url}?token=${encodeURIComponent(token)}`;
+    if (this.ws && this.ws.readyState === WebSocket.OPEN) return;
+
+    try {
+      this.ws = new WebSocket(urlWithToken);
+
+      this.ws.onopen = () => {
+        this._connected = true;
+        this.reconnectDelay = 1000;
+        this.emit("connected", {});
+      };
+
+      this.ws.onmessage = (event) => {
+        try {
+          const msg = JSON.parse(event.data) as WsEvent;
+          this.emit(msg.type, msg.payload);
+        } catch {
+          // Ignore malformed messages
+        }
+      };
+
+      this.ws.onclose = () => {
+        this._connected = false;
+        this.emit("disconnected", {});
+        // No auto-reconnect for token-based connections
+      };
+
+      this.ws.onerror = () => {
+        this.ws?.close();
+      };
+    } catch {
+      // Silently fail
+    }
   }
 
   connect(): void {

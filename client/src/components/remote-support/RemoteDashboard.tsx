@@ -1,9 +1,10 @@
 // client/src/components/remote-support/RemoteDashboard.tsx
-// Operator-side remote support dashboard: code entry, active sessions, history
+// Operator-side remote support dashboard: request/code entry, active sessions, history, transfers
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { apiFetch } from "@/lib/api";
 import ScreenShareViewer from "./ScreenShareViewer";
+import DocumentTransfer from "./DocumentTransfer";
 
 interface RemoteSession {
   id: string;
@@ -17,6 +18,11 @@ interface RemoteSession {
   connectedAt: string | null;
   endedAt: string | null;
   endedBy: string | null;
+}
+
+interface Dealer {
+  id: string;
+  name: string;
 }
 
 function formatDuration(start: string, end: string | null): string {
@@ -37,6 +43,7 @@ function timeAgo(dateStr: string): string {
 }
 
 export default function RemoteDashboard() {
+  const [activeTab, setActiveTab] = useState<"sessions" | "transfers">("sessions");
   const [code, setCode] = useState("");
   const [codeError, setCodeError] = useState<string | null>(null);
   const [connecting, setConnecting] = useState(false);
@@ -45,6 +52,15 @@ export default function RemoteDashboard() {
   const [historyLoading, setHistoryLoading] = useState(true);
   const [takeoverGranted, setTakeoverGranted] = useState(false);
   const [sessionEvents, setSessionEvents] = useState<{ eventType: string; actor: string; createdAt: string }[]>([]);
+
+  // Request section
+  const [dealers, setDealers] = useState<Dealer[]>([]);
+  const [requestDealerId, setRequestDealerId] = useState("");
+  const [requestMessage, setRequestMessage] = useState("");
+  const [requesting, setRequesting] = useState(false);
+  const [requestStatus, setRequestStatus] = useState<"idle" | "waiting" | "declined">("idle");
+  const [pendingRequestId, setPendingRequestId] = useState<string | null>(null);
+  const wsRef = useRef<WebSocket | null>(null);
 
   const loadHistory = useCallback(async () => {
     try {
@@ -56,6 +72,13 @@ export default function RemoteDashboard() {
 
   useEffect(() => {
     loadHistory();
+    // Load dealer list for request section
+    apiFetch<any>("/api/v6/dealerships?limit=100")
+      .then((data) => {
+        const list = Array.isArray(data) ? data : data?.dealerships ?? [];
+        setDealers(list.map((d: any) => ({ id: d.id, name: d.name })));
+      })
+      .catch(() => {});
   }, [loadHistory]);
 
   // Poll active session status
@@ -77,6 +100,64 @@ export default function RemoteDashboard() {
     }, 6000);
     return () => clearInterval(iv);
   }, [activeSession, loadHistory]);
+
+  const handleSendRequest = useCallback(async () => {
+    if (!requestDealerId) return;
+    setRequesting(true);
+    try {
+      const data = await apiFetch<{ success: boolean; sessionId: string }>(
+        "/api/remote/sessions/request",
+        { method: "POST", body: JSON.stringify({ dealerId: requestDealerId, message: requestMessage.trim() || undefined }) }
+      );
+      if (data.success) {
+        setPendingRequestId(data.sessionId);
+        setRequestStatus("waiting");
+      }
+    } catch {
+      setRequestStatus("idle");
+    } finally {
+      setRequesting(false);
+    }
+  }, [requestDealerId, requestMessage]);
+
+  // Listen for accept/decline WS events
+  useEffect(() => {
+    if (!pendingRequestId) return;
+
+    const connectWS = async () => {
+      const token = await window.Clerk?.session?.getToken();
+      if (!token) return;
+      const proto = window.location.protocol === "https:" ? "wss" : "ws";
+      const ws = new WebSocket(`${proto}://${window.location.host}/ws?token=${encodeURIComponent(token)}`);
+      wsRef.current = ws;
+
+      ws.onmessage = (event) => {
+        try {
+          const msg = JSON.parse(event.data);
+          if (msg.type === "remote:share-accepted" && msg.payload?.sessionId === pendingRequestId) {
+            // Auto-connect: load session
+            const { sessionId, operatorToken, livekitUrl, roomName } = msg.payload;
+            setActiveSession({
+              id: sessionId, accessCode: "", dealerId: requestDealerId,
+              dealerUserId: "", operatorUserId: null, status: "connected",
+              takeoverGranted: false, createdAt: new Date().toISOString(),
+              connectedAt: new Date().toISOString(), endedAt: null, endedBy: null,
+            });
+            setRequestStatus("idle");
+            setPendingRequestId(null);
+          }
+          if (msg.type === "remote:share-declined" && msg.payload?.sessionId === pendingRequestId) {
+            setRequestStatus("declined");
+            setPendingRequestId(null);
+          }
+        } catch {}
+      };
+      ws.onerror = () => ws.close();
+    };
+
+    connectWS();
+    return () => { wsRef.current?.close(); wsRef.current = null; };
+  }, [pendingRequestId, requestDealerId]);
 
   const handleConnect = useCallback(async () => {
     const trimmed = code.trim().toUpperCase();
@@ -167,11 +248,92 @@ export default function RemoteDashboard() {
 
   return (
     <div style={{ padding: "24px", fontFamily: "Inter, sans-serif", maxWidth: 800 }}>
-      <div style={{ marginBottom: 24 }}>
+      <div style={{ marginBottom: 20 }}>
         <h1 style={{ margin: 0, fontSize: 22, fontWeight: 700, color: "#111827" }}>Remote Support</h1>
-        <div style={{ fontSize: 13, color: "#6b7280", marginTop: 4 }}>
-          Enter a dealer's access code to view their screen
+        <div style={{ fontSize: 13, color: "#6b7280", marginTop: 4 }}>Manage screen share sessions and document transfers</div>
+      </div>
+
+      {/* Main tabs */}
+      <div style={{ display: "flex", borderBottom: "1px solid #e5e7eb", marginBottom: 20 }}>
+        {(["sessions", "transfers"] as const).map((t) => (
+          <button key={t} onClick={() => setActiveTab(t)} style={{
+            padding: "10px 20px", background: "none", border: 0, cursor: "pointer",
+            borderBottom: activeTab === t ? "2px solid #033280" : "2px solid transparent",
+            color: activeTab === t ? "#033280" : "#6b7280", fontSize: 13, fontWeight: activeTab === t ? 600 : 400,
+          }}>
+            {t === "sessions" ? "Screen Share" : "Document Transfers"}
+          </button>
+        ))}
+      </div>
+
+      {activeTab === "transfers" && (
+        <div style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 12, overflow: "hidden", maxWidth: 520 }}>
+          <div style={{ padding: "14px 20px", borderBottom: "1px solid #f3f4f6", fontSize: 13, fontWeight: 600, color: "#374151" }}>Document Transfers</div>
+          <DocumentTransfer operatorMode={true} />
         </div>
+      )}
+
+      {activeTab === "sessions" && (
+        <>
+      {/* Request Screen Share section */}
+      <div style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 12, padding: "20px 24px", marginBottom: 20 }}>
+        <div style={{ fontSize: 14, fontWeight: 600, color: "#111827", marginBottom: 4 }}>Request Screen Share</div>
+        <div style={{ fontSize: 12, color: "#6b7280", marginBottom: 14 }}>Send a request to a dealer — they'll receive a notification to accept or decline.</div>
+
+        {requestStatus === "waiting" && (
+          <div style={{ background: "#eff6ff", border: "1px solid #bfdbfe", borderRadius: 8, padding: "12px 14px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#3b82f6", display: "inline-block" }} />
+              <span style={{ fontSize: 12, color: "#1e40af", fontWeight: 500 }}>Request sent — waiting for dealer to accept…</span>
+            </div>
+            <button
+              onClick={() => { setRequestStatus("idle"); setPendingRequestId(null); wsRef.current?.close(); }}
+              style={{ fontSize: 11, color: "#6b7280", background: "none", border: "1px solid #d1d5db", borderRadius: 5, padding: "3px 8px", cursor: "pointer" }}
+            >
+              Cancel
+            </button>
+          </div>
+        )}
+
+        {requestStatus === "declined" && (
+          <div style={{ background: "#fef2f2", border: "1px solid #fecaca", borderRadius: 8, padding: "10px 14px", display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+            <span style={{ fontSize: 12, color: "#b91c1c" }}>Request declined by dealer.</span>
+            <button onClick={() => setRequestStatus("idle")} style={{ fontSize: 11, color: "#b91c1c", background: "none", border: "1px solid #fca5a5", borderRadius: 5, padding: "3px 8px", cursor: "pointer" }}>Try Again</button>
+          </div>
+        )}
+
+        {requestStatus === "idle" && (
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            <select
+              value={requestDealerId}
+              onChange={(e) => setRequestDealerId(e.target.value)}
+              style={{ padding: "9px 12px", border: "1px solid #d1d5db", borderRadius: 7, fontSize: 13, color: "#374151", outline: "none" }}
+            >
+              <option value="">Select a dealer…</option>
+              {dealers.map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}
+            </select>
+            <input
+              type="text"
+              value={requestMessage}
+              onChange={(e) => setRequestMessage(e.target.value.slice(0, 200))}
+              placeholder="Describe what you need help with… (optional)"
+              maxLength={200}
+              style={{ padding: "9px 12px", border: "1px solid #d1d5db", borderRadius: 7, fontSize: 12, outline: "none" }}
+            />
+            <button
+              onClick={handleSendRequest}
+              disabled={requesting || !requestDealerId}
+              style={{
+                background: requesting || !requestDealerId ? "#e5e7eb" : "#033280",
+                color: requesting || !requestDealerId ? "#9ca3af" : "#fff",
+                border: "none", borderRadius: 7, padding: "10px 0", fontSize: 13, fontWeight: 600,
+                cursor: requesting || !requestDealerId ? "default" : "pointer",
+              }}
+            >
+              {requesting ? "Sending…" : "Send Request"}
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Code entry */}
@@ -185,7 +347,7 @@ export default function RemoteDashboard() {
         }}
       >
         <div style={{ fontSize: 14, fontWeight: 600, color: "#111827", marginBottom: 12 }}>
-          Connect to Session
+          Enter Access Code
         </div>
         <div style={{ display: "flex", gap: 10 }}>
           <input
@@ -390,6 +552,8 @@ export default function RemoteDashboard() {
             </button>
           </div>
         </div>
+      )}
+        </>
       )}
     </div>
   );

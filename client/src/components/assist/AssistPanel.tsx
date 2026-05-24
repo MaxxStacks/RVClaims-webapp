@@ -71,7 +71,7 @@ export default function AssistPanel({ onClose }: Props) {
   const [escalationView, setEscalationView] = useState<EscalationView>(null);
   const [accountManager, setAccountManager] = useState<AccountManager | null>(null);
   const [amLoading, setAmLoading] = useState(false);
-  const [ticketSuccess, setTicketSuccess] = useState<string | null>(null); // ticket number
+  const [ticketSuccess, setTicketSuccess] = useState<string | null>(null);
   const [liveSummary, setLiveSummary] = useState<string>("");
   const [wsToken, setWsToken] = useState<string | null>(null);
   const [screenSessionId, setScreenSessionId] = useState<string | null>(null);
@@ -79,20 +79,18 @@ export default function AssistPanel({ onClose }: Props) {
   const [rateLimitSeconds, setRateLimitSeconds] = useState<number>(0);
   const rateLimitTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
+  const conversationStarted = messages.length > 0;
+
   // Fetch proactive suggestion on open (once per session)
   useEffect(() => {
     const dismissed = sessionStorage.getItem("assist_proactive_dismissed");
     if (dismissed) return;
-    const params = new URLSearchParams({
-      page: window.location.pathname,
-    });
+    const params = new URLSearchParams({ page: window.location.pathname });
     apiFetch<{ success: boolean; suggestion: { text: string; quickReplies: string[] } | null }>(
       `/api/assist/proactive?${params.toString()}`
     )
       .then((res) => {
-        if (res.success && res.suggestion) {
-          setProactiveSuggestion(res.suggestion);
-        }
+        if (res.success && res.suggestion) setProactiveSuggestion(res.suggestion);
       })
       .catch(() => {});
   }, []);
@@ -111,11 +109,7 @@ export default function AssistPanel({ onClose }: Props) {
             setMessages(
               data.messages
                 .filter((m) => m.role === "user" || m.role === "assistant")
-                .map((m) => ({
-                  id: m.id,
-                  role: m.role as "user" | "assistant",
-                  content: m.content,
-                }))
+                .map((m) => ({ id: m.id, role: m.role as "user" | "assistant", content: m.content }))
             );
           }
         })
@@ -153,7 +147,6 @@ export default function AssistPanel({ onClose }: Props) {
     async (text: string) => {
       if (isTyping) return;
 
-      // Clear escalation UI when user sends a new message
       setEscalationView(null);
       setTicketSuccess(null);
       setQuickReplies([]);
@@ -190,9 +183,7 @@ export default function AssistPanel({ onClose }: Props) {
           setQuickReplies(data.quickReplies ?? []);
           setActiveWorkflowStep(data.workflowStep ?? null);
 
-          if (data.escalate) {
-            setEscalationView("menu");
-          }
+          if (data.escalate) setEscalationView("menu");
         } else {
           setError("Failed to get a response. Please try again.");
         }
@@ -202,7 +193,6 @@ export default function AssistPanel({ onClose }: Props) {
           const secs = e.retryAfter ?? 60;
           setRateLimitSeconds(secs);
           setError(e.message ?? "Too many messages. Please wait.");
-          // Remove optimistic user message since it won't be processed
           setMessages((prev) => prev.filter((m) => m.id !== userMsg.id));
           if (rateLimitTimerRef.current) clearInterval(rateLimitTimerRef.current);
           rateLimitTimerRef.current = setInterval(() => {
@@ -216,7 +206,12 @@ export default function AssistPanel({ onClose }: Props) {
               return s - 1;
             });
           }, 1000);
-        } else if (e?.message?.includes("401") || e?.message?.includes("Session expired")) {
+        } else if (
+          e?.message?.includes("401") ||
+          e?.message?.includes("Session expired") ||
+          e?.message?.includes("Authentication required") ||
+          e?.message?.includes("No dealership")
+        ) {
           setError("Please log in to use DS360 Assist.");
         } else {
           setError("Connection error. Please check your network and try again.");
@@ -261,11 +256,7 @@ export default function AssistPanel({ onClose }: Props) {
           setMessages(
             data.messages
               .filter((m) => m.role === "user" || m.role === "assistant")
-              .map((m) => ({
-                id: m.id,
-                role: m.role as "user" | "assistant",
-                content: m.content,
-              }))
+              .map((m) => ({ id: m.id, role: m.role as "user" | "assistant", content: m.content }))
           );
         }
       })
@@ -276,7 +267,6 @@ export default function AssistPanel({ onClose }: Props) {
     handleSend("cancel");
   }, [handleSend]);
 
-  // Escalation handlers
   const handleEscalationSelect = useCallback(
     async (type: EscalationType) => {
       if (type === "ticket") {
@@ -299,10 +289,7 @@ export default function AssistPanel({ onClose }: Props) {
           setWsToken(token);
           const data = await apiFetch<{ success: boolean; summary: string }>(
             "/api/assist/escalate/live-chat",
-            {
-              method: "POST",
-              body: JSON.stringify({ conversationId }),
-            }
+            { method: "POST", body: JSON.stringify({ conversationId }) }
           );
           if (data.success) {
             setLiveSummary(data.summary ?? "");
@@ -335,335 +322,421 @@ export default function AssistPanel({ onClose }: Props) {
   }, []);
 
   const isLiveChatMode = escalationView === "live";
-  const isScreenMode = escalationView === "screen_active";
 
   return (
-    <>
+    <div className="assist-panel-root">
       <style>{`
-        .assist-panel {
+        .assist-panel-root {
+          --ap-navy: #033280;
+          --ap-navy-grad: #044BA0;
+          --ap-green: #0cb22c;
+          --ap-bg: #F8F9FB;
+          --ap-border: #E8ECF1;
+          --ap-text: #1F2937;
+          --ap-muted: #6B7280;
+          --ap-radius: 16px;
+          --ap-shadow: 0 24px 80px rgba(0,0,0,0.15), 0 0 0 1px rgba(3,50,128,0.08);
+        }
+
+        .assist-panel-container {
           position: fixed;
-          bottom: 84px;
+          bottom: 88px;
           right: 24px;
-          width: 400px;
-          height: 600px;
-          background: #fff;
-          border-radius: 12px;
-          box-shadow: 0 8px 32px rgba(3,50,128,0.18), 0 2px 8px rgba(0,0,0,0.1);
+          width: 420px;
+          height: 620px;
+          border-radius: var(--ap-radius);
+          box-shadow: var(--ap-shadow);
           display: flex;
           flex-direction: column;
-          z-index: 9999;
+          z-index: 9998;
           overflow: hidden;
-          animation: assistSlideUp 0.2s ease-out;
+          background: #FFFFFF;
+          transform-origin: bottom right;
+          animation: assistPanelOpen 300ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
         }
+
+        @keyframes assistPanelOpen {
+          from { opacity: 0; transform: scale(0.9); }
+          to   { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes assistPanelSlideUp {
+          from { opacity: 0; transform: translateY(100%); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+
         @media (max-width: 767px) {
-          .assist-panel {
+          .assist-panel-container {
             bottom: 0;
             right: 0;
             left: 0;
             width: 100%;
-            height: 90dvh;
-            border-radius: 12px 12px 0 0;
+            height: 100dvh;
+            border-radius: 0;
+            transform-origin: bottom center;
+            animation: assistPanelSlideUp 300ms ease-out both;
           }
         }
+
         @media (min-width: 768px) and (max-width: 1023px) {
-          .assist-panel {
+          .assist-panel-container {
             width: 380px;
             height: 70vh;
-            max-height: 580px;
+            max-height: 600px;
           }
         }
+
+        @media (prefers-reduced-motion: reduce) {
+          .assist-panel-container {
+            animation: none;
+          }
+        }
+
+        /* Header icon button */
+        .ap-icon-btn {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 32px;
+          height: 32px;
+          min-width: 44px;
+          min-height: 44px;
+          background: rgba(255,255,255,0.12);
+          border: none;
+          border-radius: 8px;
+          color: rgba(255,255,255,0.85);
+          cursor: pointer;
+          transition: background 150ms ease;
+          padding: 0;
+        }
+        .ap-icon-btn:hover {
+          background: rgba(255,255,255,0.22);
+          color: #fff;
+        }
+
+        /* Tab bar */
+        .ap-tab-bar {
+          display: flex;
+          background: var(--ap-bg);
+          border-bottom: 1px solid var(--ap-border);
+          flex-shrink: 0;
+        }
+        .ap-tab-btn {
+          flex: 1;
+          padding: 10px 0;
+          background: none;
+          border: none;
+          border-bottom: 2px solid transparent;
+          color: var(--ap-muted);
+          font-size: 12px;
+          font-family: Inter, sans-serif;
+          font-weight: 500;
+          cursor: pointer;
+          transition: color 150ms, border-color 150ms;
+          letter-spacing: 0.01em;
+        }
+        .ap-tab-btn--active {
+          color: var(--ap-navy) !important;
+          border-bottom-color: var(--ap-green) !important;
+          font-weight: 600 !important;
+        }
+        .ap-tab-btn:hover:not(.ap-tab-btn--active) {
+          color: #374151;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .ap-tab-btn { transition: none; }
+          .ap-icon-btn { transition: none; }
+        }
       `}</style>
-    <div className="assist-panel">
-      {/* Header */}
-      <div
-        style={{
-          background: isLiveChatMode ? "#15803d" : "#033280",
-          color: "#fff",
-          padding: "12px 16px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          flexShrink: 0,
-          transition: "background 0.3s",
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <div
-            style={{
-              width: 28,
-              height: 28,
+
+      <div className="assist-panel-container">
+        {/* Header */}
+        <div
+          style={{
+            background: isLiveChatMode
+              ? "linear-gradient(135deg, #15803d 0%, #16a34a 100%)"
+              : "linear-gradient(135deg, #033280 0%, #044BA0 100%)",
+            color: "#fff",
+            padding: "0 16px",
+            minHeight: 64,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            flexShrink: 0,
+            transition: "background 300ms ease",
+          }}
+        >
+          {/* Left: icon + title */}
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <div style={{
+              width: 36,
+              height: 36,
               background: "rgba(255,255,255,0.15)",
               borderRadius: "50%",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-            }}
-          >
-            {isLiveChatMode ? (
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="#fff">
-                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-              </svg>
-            ) : (
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="#fff">
-                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-              </svg>
+              flexShrink: 0,
+            }}>
+              {isLiveChatMode ? (
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="#fff">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                </svg>
+              ) : (
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="#fff">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                </svg>
+              )}
+            </div>
+            <div>
+              <div style={{ fontWeight: 700, fontSize: 15, fontFamily: "Inter, sans-serif", letterSpacing: "-0.01em" }}>
+                {isLiveChatMode ? "Live Support" : "DS360 Assist"}
+              </div>
+              {!conversationStarted && (
+                <div style={{ fontSize: 11, opacity: 0.75, fontFamily: "Inter, sans-serif", marginTop: 1 }}>
+                  {isLiveChatMode ? "Human Support Agent" : "AI-powered support"}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Right: action buttons */}
+          <div style={{ display: "flex", gap: 4, alignItems: "center" }}>
+            {tab === "chat" && conversationStarted && !isLiveChatMode && (
+              <button
+                onClick={startNewChat}
+                title="New conversation"
+                style={{
+                  background: "rgba(255,255,255,0.15)",
+                  border: "none",
+                  color: "#fff",
+                  cursor: "pointer",
+                  padding: "5px 10px",
+                  borderRadius: 6,
+                  fontSize: 11,
+                  fontFamily: "Inter, sans-serif",
+                  fontWeight: 500,
+                  whiteSpace: "nowrap",
+                }}
+              >
+                New Chat
+              </button>
             )}
-          </div>
-          <div>
-            <div style={{ fontWeight: 600, fontSize: 14, fontFamily: "Inter, sans-serif" }}>
-              {isLiveChatMode ? "Live Support" : "DS360 Assist"}
-            </div>
-            <div style={{ fontSize: 10, opacity: 0.7, fontFamily: "Inter, sans-serif" }}>
-              {isLiveChatMode ? "Human Support Agent" : "AI Support Agent"}
-            </div>
-          </div>
-        </div>
-        <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
-          {tab === "chat" && conversationId && !isLiveChatMode && (
+            {/* Minimize — chevron down */}
             <button
-              onClick={startNewChat}
-              title="New conversation"
-              style={{
-                background: "rgba(255,255,255,0.15)",
-                border: "none",
-                color: "#fff",
-                cursor: "pointer",
-                padding: "4px 8px",
-                borderRadius: 6,
-                fontSize: 11,
-                fontFamily: "Inter, sans-serif",
-              }}
+              onClick={onClose}
+              title="Minimize"
+              className="ap-icon-btn"
+              style={{ minWidth: "unset", minHeight: "unset", width: 32, height: 32 }}
             >
-              New Chat
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
             </button>
-          )}
-          <button
-            onClick={onClose}
-            title="Close"
-            style={{
-              background: "none",
-              border: "none",
-              color: "rgba(255,255,255,0.8)",
-              cursor: "pointer",
-              padding: 4,
-              borderRadius: 4,
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <line x1="18" y1="6" x2="6" y2="18" />
-              <line x1="6" y1="6" x2="18" y2="18" />
-            </svg>
-          </button>
-        </div>
-      </div>
-
-      {/* Tab bar (hidden in live chat mode) */}
-      {!isLiveChatMode && (
-        <div style={{ display: "flex", borderBottom: "1px solid #e5e7eb", flexShrink: 0 }}>
-          {(["chat", "past"] as Tab[]).map((t) => (
+            {/* Close — X */}
             <button
-              key={t}
-              onClick={() => setTab(t)}
-              style={{
-                flex: 1,
-                padding: "8px 0",
-                background: "none",
-                border: "none",
-                borderBottom: tab === t ? "2px solid #033280" : "2px solid transparent",
-                color: tab === t ? "#033280" : "#6b7280",
-                fontSize: 12,
-                fontFamily: "Inter, sans-serif",
-                fontWeight: tab === t ? 600 : 400,
-                cursor: "pointer",
-                transition: "color 0.15s",
-              }}
+              onClick={onClose}
+              title="Close"
+              className="ap-icon-btn"
+              style={{ minWidth: "unset", minHeight: "unset", width: 32, height: 32 }}
             >
-              {t === "chat" ? "New Chat" : "Past Chats"}
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
             </button>
-          ))}
+          </div>
         </div>
-      )}
 
-      {/* Error banner */}
-      {error && (
-        <div
-          style={{
+        {/* Tab bar (hidden in live chat mode) */}
+        {!isLiveChatMode && (
+          <div className="ap-tab-bar">
+            {(["chat", "past"] as Tab[]).map((t) => (
+              <button
+                key={t}
+                onClick={() => setTab(t)}
+                className={`ap-tab-btn${tab === t ? " ap-tab-btn--active" : ""}`}
+              >
+                {t === "chat" ? "Chat" : "Past Chats"}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* Error banner */}
+        {error && (
+          <div style={{
             background: rateLimitSeconds > 0 ? "#fff7ed" : "#fef2f2",
             color: rateLimitSeconds > 0 ? "#c2410c" : "#b91c1c",
             fontSize: 12,
-            padding: "8px 14px",
+            padding: "8px 16px",
             borderBottom: `1px solid ${rateLimitSeconds > 0 ? "#fed7aa" : "#fecaca"}`,
             flexShrink: 0,
-          }}
-        >
-          {error}{rateLimitSeconds > 0 ? ` Retry in ${rateLimitSeconds}s.` : ""}
-        </div>
-      )}
+            fontFamily: "Inter, sans-serif",
+            lineHeight: 1.5,
+          }}>
+            {error}{rateLimitSeconds > 0 ? ` Retry in ${rateLimitSeconds}s.` : ""}
+          </div>
+        )}
 
-      {/* Ticket success banner */}
-      {ticketSuccess && (
-        <div
-          style={{
+        {/* Ticket success banner */}
+        {ticketSuccess && (
+          <div style={{
             background: "#f0fdf4",
             color: "#15803d",
             fontSize: 12,
-            padding: "8px 14px",
+            padding: "8px 16px",
             borderBottom: "1px solid #bbf7d0",
             flexShrink: 0,
             fontFamily: "Inter, sans-serif",
-          }}
-        >
-          ✅ Ticket <strong>{ticketSuccess}</strong> created. We'll follow up within 2 hours.
-        </div>
-      )}
+          }}>
+            Ticket <strong>{ticketSuccess}</strong> created — we'll follow up within 2 hours.
+          </div>
+        )}
 
-      {/* Live chat mode */}
-      {isLiveChatMode && conversationId ? (
-        <AssistLiveChat
-          conversationId={conversationId}
-          userName="You"
-          wsToken={wsToken}
-          onEnd={() => {
-            setEscalationView(null);
-            setLiveSummary("");
-          }}
-        />
-      ) : tab === "past" ? (
-        <AssistPastChats onContinue={handleContinuePastChat} />
-      ) : (
-        <>
-          {/* Proactive suggestion banner */}
-          {proactiveSuggestion && messages.length === 0 && (
-            <div style={{
-              margin: "10px 14px 0",
-              background: "#f0f4ff",
-              border: "1px solid #c7d4f0",
-              borderRadius: 8,
-              padding: "10px 12px",
-              flexShrink: 0,
-            }}>
-              <div style={{ fontSize: 12, color: "#374151", lineHeight: 1.5, marginBottom: 8, fontFamily: "Inter, sans-serif" }}>
-                <span style={{ marginRight: 6 }}>💡</span>{proactiveSuggestion.text}
-              </div>
-              <div style={{ display: "flex", gap: 6, flexWrap: "wrap", alignItems: "center" }}>
-                {proactiveSuggestion.quickReplies.map((r) => (
+        {/* Live chat mode */}
+        {isLiveChatMode && conversationId ? (
+          <AssistLiveChat
+            conversationId={conversationId}
+            userName="You"
+            wsToken={wsToken}
+            onEnd={() => {
+              setEscalationView(null);
+              setLiveSummary("");
+            }}
+          />
+        ) : tab === "past" ? (
+          <AssistPastChats onContinue={handleContinuePastChat} />
+        ) : (
+          <>
+            {/* Proactive suggestion banner */}
+            {proactiveSuggestion && messages.length === 0 && (
+              <div style={{
+                margin: "10px 14px 0",
+                background: "#F0F4FF",
+                border: "1px solid #C7D4F0",
+                borderRadius: 10,
+                padding: "10px 12px",
+                flexShrink: 0,
+              }}>
+                <div style={{ fontSize: 12, color: "#374151", lineHeight: 1.5, marginBottom: 8, fontFamily: "Inter, sans-serif" }}>
+                  <span style={{ marginRight: 6 }}>💡</span>{proactiveSuggestion.text}
+                </div>
+                <div style={{ display: "flex", gap: 6, flexWrap: "wrap", alignItems: "center" }}>
+                  {proactiveSuggestion.quickReplies.map((r) => (
+                    <button
+                      key={r}
+                      onClick={() => {
+                        setProactiveSuggestion(null);
+                        sessionStorage.setItem("assist_proactive_dismissed", "1");
+                        if (r !== "Not now") handleSend(r);
+                      }}
+                      style={{
+                        fontSize: 11,
+                        padding: "4px 10px",
+                        borderRadius: 12,
+                        background: r === "Not now" ? "#F9FAFB" : "#FFFFFF",
+                        color: r === "Not now" ? "#9CA3AF" : "#033280",
+                        border: `1px solid ${r === "Not now" ? "#E5E7EB" : "#C7D4F0"}`,
+                        cursor: "pointer",
+                        fontFamily: "Inter, sans-serif",
+                      }}
+                    >
+                      {r}
+                    </button>
+                  ))}
                   <button
-                    key={r}
                     onClick={() => {
                       setProactiveSuggestion(null);
                       sessionStorage.setItem("assist_proactive_dismissed", "1");
-                      if (r !== "Not now") handleSend(r);
                     }}
-                    style={{
-                      fontSize: 11, padding: "4px 10px", borderRadius: 12,
-                      background: r === "Not now" ? "#f9fafb" : "#fff",
-                      color: r === "Not now" ? "#9ca3af" : "#033280",
-                      border: `1px solid ${r === "Not now" ? "#e5e7eb" : "#c7d4f0"}`,
-                      cursor: "pointer", fontFamily: "Inter, sans-serif",
-                    }}
+                    style={{ fontSize: 10, color: "#9CA3AF", background: "none", border: "none", cursor: "pointer", marginLeft: "auto", fontFamily: "Inter, sans-serif" }}
                   >
-                    {r}
+                    Dismiss
                   </button>
-                ))}
-                <button
-                  onClick={() => {
-                    setProactiveSuggestion(null);
-                    sessionStorage.setItem("assist_proactive_dismissed", "1");
-                  }}
-                  style={{ fontSize: 10, color: "#9ca3af", background: "none", border: "none", cursor: "pointer", marginLeft: "auto" }}
-                >
-                  Dismiss
-                </button>
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
-          <AssistMessageList
-            messages={messages}
-            isTyping={isTyping}
-            conversationId={conversationId}
-            onFeedback={handleFeedback}
-          />
-
-          {/* Quick replies */}
-          {!isTyping && quickReplies.length > 0 && !escalationView && (
-            <AssistQuickReplies
-              replies={quickReplies}
-              onSelect={(reply) => handleSend(reply)}
-            />
-          )}
-
-          {/* Active workflow step */}
-          {activeWorkflowStep && !isTyping && !escalationView && (
-            <AssistWorkflow
-              step={activeWorkflowStep}
-              onSubmit={(value) => handleSend(value)}
-              onCancel={handleCancelWorkflow}
-              disabled={isTyping}
-            />
-          )}
-
-          {/* Escalation menu */}
-          {escalationView === "menu" && (
-            <AssistEscalation
-              onSelect={handleEscalationSelect}
-              onDismiss={() => setEscalationView(null)}
-            />
-          )}
-
-          {/* Ticket form */}
-          {escalationView === "ticket" && (
-            <TicketForm
+            <AssistMessageList
+              messages={messages}
+              isTyping={isTyping}
               conversationId={conversationId}
-              onSuccess={handleTicketSuccess}
-              onCancel={() => setEscalationView("menu")}
+              onFeedback={handleFeedback}
+              onStarterSelect={handleSend}
             />
-          )}
 
-          {/* Account manager card */}
-          {escalationView === "am" && (
-            <AccountManagerCard
-              manager={accountManager}
-              loading={amLoading}
-              onCancel={() => setEscalationView("menu")}
-            />
-          )}
+            {/* Quick replies */}
+            {!isTyping && quickReplies.length > 0 && !escalationView && (
+              <AssistQuickReplies
+                replies={quickReplies}
+                onSelect={(reply) => handleSend(reply)}
+              />
+            )}
 
-          {/* Screen share — code generator */}
-          {escalationView === "screen_gen" && (
-            <ScreenShareGenerator
-              onConnected={(sid) => {
-                setScreenSessionId(sid);
-                setEscalationView("screen_active");
-              }}
-              onCancel={() => setEscalationView("menu")}
-            />
-          )}
+            {/* Active workflow step */}
+            {activeWorkflowStep && !isTyping && !escalationView && (
+              <AssistWorkflow
+                step={activeWorkflowStep}
+                onSubmit={(value) => handleSend(value)}
+                onCancel={handleCancelWorkflow}
+                disabled={isTyping}
+              />
+            )}
 
-          {/* Screen share — active session */}
-          {escalationView === "screen_active" && screenSessionId && (
-            <ScreenShareActive
-              sessionId={screenSessionId}
-              onEnd={() => {
-                setScreenSessionId(null);
-                setEscalationView(null);
-              }}
-            />
-          )}
+            {/* Escalation menu */}
+            {escalationView === "menu" && (
+              <AssistEscalation
+                onSelect={handleEscalationSelect}
+                onDismiss={() => setEscalationView(null)}
+              />
+            )}
 
-          <AssistInput onSend={handleSend} disabled={isTyping || rateLimitSeconds > 0} />
-        </>
-      )}
+            {/* Ticket form */}
+            {escalationView === "ticket" && (
+              <TicketForm
+                conversationId={conversationId}
+                onSuccess={handleTicketSuccess}
+                onCancel={() => setEscalationView("menu")}
+              />
+            )}
 
-      <style>{`
-        @keyframes assistSlideUp {
-          from { opacity: 0; transform: translateY(16px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-      `}</style>
+            {/* Account manager card */}
+            {escalationView === "am" && (
+              <AccountManagerCard
+                manager={accountManager}
+                loading={amLoading}
+                onCancel={() => setEscalationView("menu")}
+              />
+            )}
+
+            {/* Screen share — code generator */}
+            {escalationView === "screen_gen" && (
+              <ScreenShareGenerator
+                onConnected={(sid) => {
+                  setScreenSessionId(sid);
+                  setEscalationView("screen_active");
+                }}
+                onCancel={() => setEscalationView("menu")}
+              />
+            )}
+
+            {/* Screen share — active session */}
+            {escalationView === "screen_active" && screenSessionId && (
+              <ScreenShareActive
+                sessionId={screenSessionId}
+                onEnd={() => {
+                  setScreenSessionId(null);
+                  setEscalationView(null);
+                }}
+              />
+            )}
+
+            <AssistInput onSend={handleSend} disabled={isTyping || rateLimitSeconds > 0} />
+          </>
+        )}
+      </div>
     </div>
-    </>
   );
 }

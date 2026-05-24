@@ -5,10 +5,11 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { LanguageProvider } from "@/hooks/use-language";
 import { AuthProvider } from "@/hooks/use-auth";
-import { AuthenticateWithRedirectCallback } from "@clerk/clerk-react";
-import { useEffect, lazy, Suspense } from "react";
+import { AuthenticateWithRedirectCallback, useAuth as useClerkAuth } from "@clerk/clerk-react";
+import { useEffect, useState, lazy, Suspense } from "react";
 import AssistFAB from "@/components/assist/AssistFAB";
 import ScreenShareBanner from "@/components/remote-support/ScreenShareBanner";
+import ScreenShareRequestToast from "@/components/remote-support/ScreenShareRequestToast";
 import { RemoteSupportProvider } from "@/contexts/RemoteSupportContext";
 
 const Home = lazy(() => import("@/pages/home"));
@@ -179,6 +180,15 @@ const NewClaimPageRoute = lazy(async () => {
   }
   return { default: Route };
 });
+
+function ScreenShareRequestToastWrapper() {
+  const { getToken } = useClerkAuth();
+  const [wsToken, setWsToken] = useState<string | null>(null);
+  useEffect(() => {
+    getToken().then(setWsToken).catch(() => {});
+  }, [getToken]);
+  return <ScreenShareRequestToast wsToken={wsToken} />;
+}
 
 function ScrollToTop() {
   const [location] = useLocation();
@@ -390,6 +400,7 @@ function App() {
               <Route path="/:dealerId/on-site-tech" component={OnSiteTechPortalSection} />
             </Switch>
             {isDealerAssistPath(location) && <AssistFAB />}
+            {isDealerAssistPath(location) && <ScreenShareRequestToastWrapper />}
             <ScreenShareBanner />
           </Suspense>
           </RemoteSupportProvider>

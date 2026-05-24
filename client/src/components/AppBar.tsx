@@ -1,7 +1,10 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, lazy, Suspense } from "react";
 import { useUser, useClerk } from "@clerk/clerk-react";
 import { useLocation } from "wouter";
 import { useApiFetch } from "@/lib/api";
+
+const ScreenShareGenerator = lazy(() => import("@/components/remote-support/ScreenShareGenerator"));
+const DocumentTransfer = lazy(() => import("@/components/remote-support/DocumentTransfer"));
 
 interface AppBarProps {
   context: "operator" | "dealer" | "client" | "bidder";
@@ -29,11 +32,17 @@ export default function AppBar({ context, contextLabel }: AppBarProps) {
   const apiFetch = useApiFetch();
   const [bellOpen, setBellOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [remoteOpen, setRemoteOpen] = useState(false);
+  const [remoteView, setRemoteView] = useState<"menu" | "share" | "transfer">("menu");
+  const [shareSessionId, setShareSessionId] = useState<string | null>(null);
   const [notifications, setNotifications] = useState<any[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [resolvedLabel, setResolvedLabel] = useState<string | undefined>(contextLabel);
   const bellRef = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+  const remoteRef = useRef<HTMLDivElement>(null);
+
+  const isDealerContext = context === "dealer";
 
   // Resolve dealership name for dealer/client context
   useEffect(() => {
@@ -65,6 +74,7 @@ export default function AppBar({ context, contextLabel }: AppBarProps) {
     function handler(e: MouseEvent) {
       if (bellRef.current && !bellRef.current.contains(e.target as Node)) setBellOpen(false);
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) setMenuOpen(false);
+      if (remoteRef.current && !remoteRef.current.contains(e.target as Node)) setRemoteOpen(false);
     }
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
@@ -101,8 +111,111 @@ export default function AppBar({ context, contextLabel }: AppBarProps) {
       {/* Left: portal label */}
       <div style={{ fontSize: 13, fontWeight: 600, color: "#033280" }}>{portalLabel}</div>
 
-      {/* Right: bell + avatar */}
+      {/* Right: remote support + bell + avatar */}
       <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+
+        {/* Remote Support (dealer only) */}
+        {isDealerContext && (
+          <div ref={remoteRef} style={{ position: "relative" }}>
+            <button
+              onClick={() => { setRemoteOpen(o => !o); setRemoteView("menu"); setBellOpen(false); setMenuOpen(false); }}
+              title="Remote Support"
+              style={{
+                width: 36, height: 36, borderRadius: 8, border: "1px solid #e5e7eb",
+                background: remoteOpen ? "#eff6ff" : "white",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                cursor: "pointer", color: remoteOpen ? "#033280" : "#555",
+              }}
+            >
+              <svg width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                <line x1="8" y1="21" x2="16" y2="21"/>
+                <line x1="12" y1="17" x2="12" y2="21"/>
+              </svg>
+            </button>
+            {remoteOpen && (
+              <div style={{
+                position: "absolute", right: 0, top: 44, width: 320,
+                background: "white", border: "1px solid #e5e7eb", borderRadius: 10,
+                boxShadow: "0 8px 24px rgba(0,0,0,0.10)", zIndex: 300, overflow: "hidden",
+              }}>
+                <div style={{ padding: "12px 16px", borderBottom: "1px solid #f0f0f0" }}>
+                  <span style={{ fontSize: 13, fontWeight: 600, color: "#111827" }}>Remote Support</span>
+                </div>
+
+                {remoteView === "menu" && !shareSessionId && (
+                  <div>
+                    <button
+                      onClick={() => setRemoteView("share")}
+                      style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%", padding: "12px 16px", background: "white", border: 0, borderBottom: "1px solid #f5f5f5", cursor: "pointer", textAlign: "left" }}
+                    >
+                      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                        <div style={{ width: 32, height: 32, borderRadius: 8, background: "rgba(139,92,246,0.08)", display: "flex", alignItems: "center", justifyContent: "center", color: "#8B5CF6" }}>
+                          <svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                        </div>
+                        <div>
+                          <div style={{ fontSize: 13, fontWeight: 600, color: "#111827" }}>Share My Screen</div>
+                          <div style={{ fontSize: 11, color: "#6b7280" }}>Let support see your screen</div>
+                        </div>
+                      </div>
+                      <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="#d1d5db" strokeWidth={2.5}><path d="M9 18l6-6-6-6"/></svg>
+                    </button>
+                    <button
+                      onClick={() => setRemoteView("transfer")}
+                      style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%", padding: "12px 16px", background: "white", border: 0, cursor: "pointer", textAlign: "left" }}
+                    >
+                      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                        <div style={{ width: 32, height: 32, borderRadius: 8, background: "rgba(59,130,246,0.08)", display: "flex", alignItems: "center", justifyContent: "center", color: "#3B82F6" }}>
+                          <svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+                        </div>
+                        <div>
+                          <div style={{ fontSize: 13, fontWeight: 600, color: "#111827" }}>Transfer Documents</div>
+                          <div style={{ fontSize: 11, color: "#6b7280" }}>Send files to DS360 support</div>
+                        </div>
+                      </div>
+                      <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="#d1d5db" strokeWidth={2.5}><path d="M9 18l6-6-6-6"/></svg>
+                    </button>
+                  </div>
+                )}
+
+                {remoteView === "share" && (
+                  <Suspense fallback={<div style={{ padding: 20, textAlign: "center", fontSize: 12, color: "#6b7280" }}>Loading…</div>}>
+                    <ScreenShareGenerator
+                      onConnected={(sid) => { setShareSessionId(sid); setRemoteView("menu"); }}
+                      onCancel={() => setRemoteView("menu")}
+                    />
+                  </Suspense>
+                )}
+
+                {remoteView === "transfer" && (
+                  <Suspense fallback={<div style={{ padding: 20, textAlign: "center", fontSize: 12, color: "#6b7280" }}>Loading…</div>}>
+                    <DocumentTransfer dealerId={null} />
+                  </Suspense>
+                )}
+
+                {shareSessionId && remoteView === "menu" && (
+                  <div style={{ padding: "12px 16px", background: "#f0fdf4", borderTop: "1px solid #bbf7d0" }}>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                        <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#22c55e", display: "inline-block" }} />
+                        <span style={{ fontSize: 12, fontWeight: 600, color: "#15803d" }}>Session Active</span>
+                      </div>
+                      <button
+                        onClick={async () => {
+                          try { await fetch(`/api/remote/sessions/${shareSessionId}/end`, { method: "POST" }); } catch {}
+                          setShareSessionId(null);
+                        }}
+                        style={{ fontSize: 11, color: "#b91c1c", background: "none", border: "1px solid #fca5a5", borderRadius: 5, padding: "3px 8px", cursor: "pointer" }}
+                      >
+                        End
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Notification Bell */}
         <div ref={bellRef} style={{ position: "relative" }}>
