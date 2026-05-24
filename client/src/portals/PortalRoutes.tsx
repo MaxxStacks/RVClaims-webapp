@@ -107,6 +107,8 @@ import PartsMgmt from '@/pages/exclusive/operator-admin/PartsMgmt';
 import PartsOrders from '@/pages/exclusive/operator-admin/PartsOrders';
 import EscrowAdmin from '@/pages/exclusive/operator-admin/EscrowAdmin';
 import Roadmap from '@/pages/exclusive/operator-admin/Roadmap';
+import AssistLiveChatPage from '@/pages/exclusive/operator-admin/AssistLiveChat';
+import AssistAnalyticsPage from '@/pages/exclusive/operator-admin/AssistAnalytics';
 
 // ─── Exclusive: Dealer Owner ───────────────────────────────────────────────
 import PhotoUpload from '@/pages/exclusive/dealer-owner/PhotoUpload';
@@ -256,6 +258,8 @@ export function OperatorAdminPortalSection() {
       <Route path="/operator/admin/escrow">{() => <OperatorAdminLayout><EscrowAdmin /></OperatorAdminLayout>}</Route>
       <Route path="/operator/admin/import">{() => <OperatorAdminLayout><ImportData /></OperatorAdminLayout>}</Route>
       <Route path="/operator/admin/roadmap">{() => <OperatorAdminLayout><Roadmap /></OperatorAdminLayout>}</Route>
+      <Route path="/operator/admin/assist-live-chat">{() => <OperatorAdminLayout><AssistLiveChatPage /></OperatorAdminLayout>}</Route>
+      <Route path="/operator/admin/assist-analytics">{() => <OperatorAdminLayout><AssistAnalyticsPage /></OperatorAdminLayout>}</Route>
       {/* Default */}
       <Route>{() => <Redirect to="/operator/admin/dashboard" />}</Route>
     </Switch>

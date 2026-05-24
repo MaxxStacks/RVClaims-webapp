@@ -246,7 +246,7 @@ router.post("/", requireAuth, requireDealer, async (req: Request, res: Response)
     }
 
     // ── 8. Call Claude ────────────────────────────────────────────────────
-    const { response: assistResponse, quickReplies } = await getAssistResponse(
+    const { response: assistResponse, quickReplies, escalate } = await getAssistResponse(
       message,
       history,
       kbContext,
@@ -291,6 +291,7 @@ router.post("/", requireAuth, requireDealer, async (req: Request, res: Response)
       conversationId: convoId,
       response: assistResponse,
       quickReplies,
+      escalate: escalate ?? false,
       messageId: savedAssist.id,
     });
   } catch (err) {

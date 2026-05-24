@@ -26,6 +26,21 @@ interface WSMessage {
 // Global connection registry
 const connections = new Map<string, Set<AuthenticatedSocket>>();  // userId → sockets
 const dealershipRooms = new Map<string, Set<AuthenticatedSocket>>();  // dealershipId → sockets
+const conversationRooms = new Map<string, Set<AuthenticatedSocket>>(); // conversationId → sockets (live chat)
+
+// Assist live chat session registry
+export interface AssistLiveSession {
+  conversationId: string;
+  dealerId: string;
+  dealerUserId: string;
+  dealerClerkId: string;
+  operatorUserId: string | null;
+  operatorName: string | null;
+  summary: string;
+  userName: string;
+  requestedAt: string;
+}
+const assistLiveSessions = new Map<string, AssistLiveSession>(); // conversationId → session
 
 let wss: WebSocketServer | null = null;
 
@@ -107,6 +122,11 @@ export function initWebSocket(server: Server): WebSocketServer {
         dealershipRooms.get(ws.dealershipId)?.delete(ws);
         if (dealershipRooms.get(ws.dealershipId)?.size === 0) dealershipRooms.delete(ws.dealershipId);
       }
+      // Remove from all conversation rooms
+      conversationRooms.forEach((sockets, convId) => {
+        sockets.delete(ws);
+        if (sockets.size === 0) conversationRooms.delete(convId);
+      });
       console.log(`[WS] Disconnected: ${ws.userId}`);
     });
   });
@@ -133,7 +153,6 @@ function handleMessage(ws: AuthenticatedSocket, msg: WSMessage) {
       break;
 
     case "typing":
-      // Broadcast typing indicator to ticket/chat participants
       if (msg.channel && ws.dealershipId) {
         broadcastToDealership(ws.dealershipId, {
           type: "typing",
@@ -142,6 +161,93 @@ function handleMessage(ws: AuthenticatedSocket, msg: WSMessage) {
         }, ws.userId);
       }
       break;
+
+    // ── Assist live chat ─────────────────────────────────────────────────
+
+    case "assist:join-room": {
+      const { conversationId } = msg.payload ?? {};
+      if (!conversationId) break;
+      if (!conversationRooms.has(conversationId)) conversationRooms.set(conversationId, new Set());
+      conversationRooms.get(conversationId)!.add(ws);
+      break;
+    }
+
+    case "assist:leave-room": {
+      const { conversationId } = msg.payload ?? {};
+      if (!conversationId) break;
+      conversationRooms.get(conversationId)?.delete(ws);
+      break;
+    }
+
+    case "assist:message": {
+      const { conversationId, content, senderName } = msg.payload ?? {};
+      if (!conversationId || !content || !ws.userId) break;
+      const isOperator = ws.role === "operator_admin" || ws.role === "operator_staff";
+      const role = isOperator ? "operator" : "user";
+      // Save to DB async (fire-and-forget)
+      import("../db").then(({ db }) =>
+        import("@shared/schema-assist").then(({ assistMessages }) =>
+          db.insert(assistMessages).values({
+            conversationId,
+            role,
+            content,
+            metadata: { senderName, liveChatMessage: true },
+          }).catch((e: unknown) => console.error("[WS] assist:message DB save:", e))
+        )
+      );
+      // Broadcast to all in conversation room
+      const outbound = JSON.stringify({
+        type: "assist:message",
+        payload: { conversationId, content, role, senderName: senderName ?? ws.userId, sentAt: new Date().toISOString() },
+      });
+      conversationRooms.get(conversationId)?.forEach((sock) => {
+        if (sock.readyState === WebSocket.OPEN) sock.send(outbound);
+      });
+      break;
+    }
+
+    case "assist:operator-join": {
+      const { conversationId, operatorName } = msg.payload ?? {};
+      if (!conversationId || !ws.userId) break;
+      // Update session record
+      const session = assistLiveSessions.get(conversationId);
+      if (session) {
+        session.operatorUserId = ws.userId;
+        session.operatorName = operatorName ?? "Support Agent";
+      }
+      // Add operator to conversation room
+      if (!conversationRooms.has(conversationId)) conversationRooms.set(conversationId, new Set());
+      conversationRooms.get(conversationId)!.add(ws);
+      // Notify all in room
+      broadcastToConversation(conversationId, {
+        type: "assist:operator-joined",
+        payload: { conversationId, operatorName: operatorName ?? "Support Agent" },
+      });
+      break;
+    }
+
+    case "assist:close": {
+      const { conversationId } = msg.payload ?? {};
+      if (!conversationId) break;
+      assistLiveSessions.delete(conversationId);
+      broadcastToConversation(conversationId, {
+        type: "assist:session-closed",
+        payload: { conversationId },
+      });
+      conversationRooms.delete(conversationId);
+      // Update conversation status in DB
+      import("../db").then(({ db }) =>
+        import("@shared/schema-assist").then(({ assistConversations }) =>
+          import("drizzle-orm").then(({ eq }) =>
+            db.update(assistConversations)
+              .set({ status: "resolved", resolvedAt: new Date(), updatedAt: new Date() })
+              .where(eq(assistConversations.id, conversationId))
+              .catch((e: unknown) => console.error("[WS] assist:close DB update:", e))
+          )
+        )
+      );
+      break;
+    }
 
     default:
       break;
@@ -322,6 +428,30 @@ export function emitNotification(userId: string, notification: {
   sendToUser(userId, {
     type: "notification",
     payload: notification,
+  });
+}
+
+// ==================== ASSIST LIVE CHAT EXPORTS ====================
+
+export function startAssistLiveSession(session: AssistLiveSession) {
+  assistLiveSessions.set(session.conversationId, session);
+}
+
+export function endAssistLiveSession(conversationId: string) {
+  assistLiveSessions.delete(conversationId);
+  conversationRooms.delete(conversationId);
+}
+
+export function getAssistLiveSessions(): AssistLiveSession[] {
+  return Array.from(assistLiveSessions.values());
+}
+
+function broadcastToConversation(conversationId: string, message: WSMessage) {
+  const sockets = conversationRooms.get(conversationId);
+  if (!sockets) return;
+  const data = JSON.stringify(message);
+  sockets.forEach((ws) => {
+    if (ws.readyState === WebSocket.OPEN) ws.send(data);
   });
 }
 

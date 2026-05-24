@@ -69,10 +69,19 @@ When a dealer asks to DO something (not just learn about it), offer to walk them
 - Add a staff member
 
 ## Escalation
-If you cannot answer a question or the dealer explicitly asks for human help, present the escalation options: Open a Ticket, Live Chat, Email Account Manager, Share Screen, or Contact Support directly.
+When the dealer explicitly asks for a human, says they need help you cannot provide, expresses frustration, or you have genuinely exhausted your knowledge on their issue — end your response with EXACTLY this marker on its own line BEFORE the quick replies:
+[ESCALATE]
+
+Only add [ESCALATE] when:
+- The dealer says "speak to someone", "talk to a human", "I need support", "get me help"
+- You cannot find the answer after trying and have said so
+- The issue involves billing disputes, account suspensions, or legal/compliance matters
+- Technical issues requiring direct hands-on operator access to the platform
+
+Do NOT add [ESCALATE] for questions you can confidently answer.
 
 ## Quick Replies
-After EVERY response, on the very last line, include 1-3 suggested follow-up questions or actions the dealer might want. Format exactly as:
+After EVERY response, on the very last line (after [ESCALATE] if present), include 1-3 suggested follow-up questions or actions. Format exactly as:
 [QUICK_REPLIES: "Reply 1" | "Reply 2" | "Reply 3"]
 Keep each reply under 40 characters. Make them specific to what was just discussed.`;
 }
@@ -87,24 +96,33 @@ export interface ConversationMessage {
 export interface AssistResponse {
   response: string;
   quickReplies: string[];
+  escalate: boolean;
 }
 
-// ==================== QUICK REPLY PARSER ====================
+// ==================== RESPONSE PARSER ====================
 
-function parseQuickReplies(text: string): { response: string; quickReplies: string[] } {
+function parseResponse(text: string): { response: string; quickReplies: string[]; escalate: boolean } {
+  let working = text.trim();
+
+  // Detect and strip [ESCALATE] marker
+  const escalate = /\[ESCALATE\]/.test(working);
+  working = working.replace(/\s*\[ESCALATE\]\s*/g, " ").trim();
+
+  // Parse [QUICK_REPLIES: ...] at end
   const re = /\[QUICK_REPLIES:\s*([\s\S]*?)\]\s*$/;
-  const match = text.match(re);
-  if (!match) return { response: text.trim(), quickReplies: [] };
+  const match = working.match(re);
+  let quickReplies: string[] = [];
+  if (match) {
+    const raw = match[1];
+    quickReplies = raw
+      .split("|")
+      .map((s) => s.trim().replace(/^"|"$/g, ""))
+      .filter((s) => s.length > 0)
+      .slice(0, 3);
+    working = working.slice(0, match.index).trim();
+  }
 
-  const raw = match[1];
-  const quickReplies = raw
-    .split("|")
-    .map((s) => s.trim().replace(/^"|"$/g, ""))
-    .filter((s) => s.length > 0)
-    .slice(0, 3);
-
-  const response = text.slice(0, match.index).trim();
-  return { response, quickReplies };
+  return { response: working, quickReplies, escalate };
 }
 
 // ==================== HEDGING DETECTION ====================
@@ -156,19 +174,21 @@ export async function getAssistResponse(
         ? block.text
         : "I encountered an issue generating a response. Please try again.";
 
-    return parseQuickReplies(rawText);
+    return parseResponse(rawText);
   } catch (err: unknown) {
     const error = err as { status?: number; message?: string };
     if (error?.status === 429) {
       return {
         response: "I'm receiving too many requests right now. Please wait a moment and try again.",
         quickReplies: [],
+        escalate: false,
       };
     }
     if (error?.status === 529 || error?.message?.includes("overloaded")) {
       return {
         response: "DS360 Assist is temporarily busy. Please try again in a few moments.",
         quickReplies: [],
+        escalate: false,
       };
     }
     console.error("[assist-engine] Anthropic API error:", error);
@@ -176,6 +196,36 @@ export async function getAssistResponse(
       response:
         "I'm having trouble connecting right now. Please try again or contact DS360 Support directly.",
       quickReplies: [],
+      escalate: false,
     };
+  }
+}
+
+// ==================== CONVERSATION SUMMARY ====================
+
+export async function generateConversationSummary(
+  messages: ConversationMessage[]
+): Promise<string> {
+  if (messages.length === 0) return "";
+
+  const transcript = messages
+    .filter((m) => m.role === "user" || m.role === "assistant")
+    .slice(-16)
+    .map((m) => `${m.role === "user" ? "Dealer" : "Assistant"}: ${m.content.slice(0, 300)}`)
+    .join("\n\n");
+
+  if (!transcript.trim()) return "";
+
+  try {
+    const res = await client.messages.create({
+      model: "claude-haiku-4-5-20251001",
+      max_tokens: 150,
+      system: "Summarize this support conversation in 2-3 sentences. Focus on the dealer's main issue and what was discussed. Be concise and factual.",
+      messages: [{ role: "user", content: transcript }],
+    });
+    const block = res.content[0];
+    return block.type === "text" ? block.text.trim() : "";
+  } catch {
+    return "";
   }
 }

@@ -6,7 +6,12 @@ import AssistInput from "./AssistInput";
 import AssistQuickReplies from "./AssistQuickReplies";
 import AssistWorkflow from "./AssistWorkflow";
 import AssistPastChats from "./AssistPastChats";
+import AssistEscalation, { type EscalationType } from "./AssistEscalation";
+import TicketForm from "./TicketForm";
+import AccountManagerCard from "./AccountManagerCard";
+import AssistLiveChat from "./AssistLiveChat";
 import { apiFetch } from "@/lib/api";
+import { useAuth } from "@clerk/clerk-react";
 
 interface Props {
   onClose: () => void;
@@ -28,6 +33,7 @@ interface MessageApiResponse {
   conversationId: string;
   response: string;
   quickReplies?: string[];
+  escalate?: boolean;
   messageId?: string;
   workflowStep?: WorkflowStepDef;
 }
@@ -38,11 +44,19 @@ interface ConversationMessage {
   content: string;
 }
 
+interface AccountManager {
+  name: string;
+  email: string;
+  phone?: string | null;
+}
+
 type Tab = "chat" | "past";
+type EscalationView = "menu" | "ticket" | "am" | "live" | null;
 
 const THIRTY_MINUTES = 30 * 60 * 1000;
 
 export default function AssistPanel({ onClose }: Props) {
+  const { getToken } = useAuth();
   const [tab, setTab] = useState<Tab>("chat");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isTyping, setIsTyping] = useState(false);
@@ -51,13 +65,20 @@ export default function AssistPanel({ onClose }: Props) {
   const [quickReplies, setQuickReplies] = useState<string[]>([]);
   const [activeWorkflowStep, setActiveWorkflowStep] = useState<WorkflowStepDef | null>(null);
 
+  // Escalation state
+  const [escalationView, setEscalationView] = useState<EscalationView>(null);
+  const [accountManager, setAccountManager] = useState<AccountManager | null>(null);
+  const [amLoading, setAmLoading] = useState(false);
+  const [ticketSuccess, setTicketSuccess] = useState<string | null>(null); // ticket number
+  const [liveSummary, setLiveSummary] = useState<string>("");
+  const [wsToken, setWsToken] = useState<string | null>(null);
+
   // Restore active conversation on open (< 30 min idle)
   useEffect(() => {
     const saved = sessionStorage.getItem("assist_convo_id");
     const savedAt = sessionStorage.getItem("assist_convo_at");
     if (saved && savedAt && Date.now() - parseInt(savedAt, 10) < THIRTY_MINUTES) {
       setConversationId(saved);
-      // Load messages for this conversation
       apiFetch<{ success: boolean; conversation: unknown; messages: ConversationMessage[] }>(
         `/api/assist/conversations/${saved}`
       )
@@ -66,12 +87,15 @@ export default function AssistPanel({ onClose }: Props) {
             setMessages(
               data.messages
                 .filter((m) => m.role === "user" || m.role === "assistant")
-                .map((m) => ({ id: m.id, role: m.role as "user" | "assistant", content: m.content }))
+                .map((m) => ({
+                  id: m.id,
+                  role: m.role as "user" | "assistant",
+                  content: m.content,
+                }))
             );
           }
         })
         .catch(() => {
-          // Silently fail — start fresh
           sessionStorage.removeItem("assist_convo_id");
           sessionStorage.removeItem("assist_convo_at");
           setConversationId(undefined);
@@ -79,7 +103,6 @@ export default function AssistPanel({ onClose }: Props) {
     }
   }, []);
 
-  // Persist conversationId to sessionStorage
   useEffect(() => {
     if (conversationId) {
       sessionStorage.setItem("assist_convo_id", conversationId);
@@ -93,6 +116,9 @@ export default function AssistPanel({ onClose }: Props) {
     setQuickReplies([]);
     setActiveWorkflowStep(null);
     setError(null);
+    setEscalationView(null);
+    setTicketSuccess(null);
+    setLiveSummary("");
     sessionStorage.removeItem("assist_convo_id");
     sessionStorage.removeItem("assist_convo_at");
     setTab("chat");
@@ -102,7 +128,10 @@ export default function AssistPanel({ onClose }: Props) {
     async (text: string) => {
       if (isTyping) return;
 
-      setQuickReplies([]); // Clear quick replies on any new send
+      // Clear escalation UI when user sends a new message
+      setEscalationView(null);
+      setTicketSuccess(null);
+      setQuickReplies([]);
 
       const userMsg: ChatMessage = {
         id: crypto.randomUUID(),
@@ -135,6 +164,10 @@ export default function AssistPanel({ onClose }: Props) {
           setMessages((prev) => [...prev, assistMsg]);
           setQuickReplies(data.quickReplies ?? []);
           setActiveWorkflowStep(data.workflowStep ?? null);
+
+          if (data.escalate) {
+            setEscalationView("menu");
+          }
         } else {
           setError("Failed to get a response. Please try again.");
         }
@@ -161,41 +194,102 @@ export default function AssistPanel({ onClose }: Props) {
           body: JSON.stringify({ messageId, feedback }),
         });
       } catch {
-        // Non-critical — silently ignore
+        // Non-critical
       }
     },
     [conversationId]
   );
 
-  const handleContinuePastChat = useCallback(
-    (id: string) => {
-      setConversationId(id);
-      setMessages([]);
-      setQuickReplies([]);
-      setActiveWorkflowStep(null);
-      setError(null);
-      setTab("chat");
+  const handleContinuePastChat = useCallback((id: string) => {
+    setConversationId(id);
+    setMessages([]);
+    setQuickReplies([]);
+    setActiveWorkflowStep(null);
+    setError(null);
+    setEscalationView(null);
+    setTicketSuccess(null);
+    setTab("chat");
 
-      apiFetch<{ success: boolean; messages: ConversationMessage[] }>(
-        `/api/assist/conversations/${id}`
-      )
-        .then((data) => {
-          if (data.success) {
-            setMessages(
-              data.messages
-                .filter((m) => m.role === "user" || m.role === "assistant")
-                .map((m) => ({ id: m.id, role: m.role as "user" | "assistant", content: m.content }))
-            );
-          }
-        })
-        .catch(() => setError("Failed to load conversation."));
-    },
-    []
-  );
+    apiFetch<{ success: boolean; messages: ConversationMessage[] }>(
+      `/api/assist/conversations/${id}`
+    )
+      .then((data) => {
+        if (data.success) {
+          setMessages(
+            data.messages
+              .filter((m) => m.role === "user" || m.role === "assistant")
+              .map((m) => ({
+                id: m.id,
+                role: m.role as "user" | "assistant",
+                content: m.content,
+              }))
+          );
+        }
+      })
+      .catch(() => setError("Failed to load conversation."));
+  }, []);
 
   const handleCancelWorkflow = useCallback(() => {
     handleSend("cancel");
   }, [handleSend]);
+
+  // Escalation handlers
+  const handleEscalationSelect = useCallback(
+    async (type: EscalationType) => {
+      if (type === "ticket") {
+        setEscalationView("ticket");
+      } else if (type === "email_am") {
+        setEscalationView("am");
+        if (!accountManager) {
+          setAmLoading(true);
+          try {
+            const data = await apiFetch<{ success: boolean; accountManager: AccountManager | null }>(
+              "/api/assist/escalate/account-manager"
+            );
+            if (data.success) setAccountManager(data.accountManager);
+          } catch {}
+          setAmLoading(false);
+        }
+      } else if (type === "live_chat") {
+        try {
+          const token = await getToken();
+          setWsToken(token);
+          const data = await apiFetch<{ success: boolean; summary: string }>(
+            "/api/assist/escalate/live-chat",
+            {
+              method: "POST",
+              body: JSON.stringify({ conversationId }),
+            }
+          );
+          if (data.success) {
+            setLiveSummary(data.summary ?? "");
+            setEscalationView("live");
+          }
+        } catch {
+          setError("Failed to start live chat. Please try another option.");
+        }
+      } else if (type === "contact") {
+        window.open("mailto:support@dealersuite360.com", "_blank");
+        setEscalationView(null);
+      }
+    },
+    [accountManager, conversationId, getToken]
+  );
+
+  const handleTicketSuccess = useCallback((ticketNumber: string) => {
+    setTicketSuccess(ticketNumber);
+    setEscalationView(null);
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: crypto.randomUUID(),
+        role: "assistant",
+        content: `Your support ticket **${ticketNumber}** has been created. Our team will follow up within 2 hours. Is there anything else I can help you with?`,
+      },
+    ]);
+  }, []);
+
+  const isLiveChatMode = escalationView === "live";
 
   return (
     <div
@@ -218,13 +312,14 @@ export default function AssistPanel({ onClose }: Props) {
       {/* Header */}
       <div
         style={{
-          background: "#033280",
+          background: isLiveChatMode ? "#15803d" : "#033280",
           color: "#fff",
           padding: "12px 16px",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
           flexShrink: 0,
+          transition: "background 0.3s",
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
@@ -239,17 +334,27 @@ export default function AssistPanel({ onClose }: Props) {
               justifyContent: "center",
             }}
           >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="#fff">
-              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-            </svg>
+            {isLiveChatMode ? (
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="#fff">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+              </svg>
+            ) : (
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="#fff">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+              </svg>
+            )}
           </div>
           <div>
-            <div style={{ fontWeight: 600, fontSize: 14, fontFamily: "Inter, sans-serif" }}>DS360 Assist</div>
-            <div style={{ fontSize: 10, opacity: 0.7, fontFamily: "Inter, sans-serif" }}>AI Support Agent</div>
+            <div style={{ fontWeight: 600, fontSize: 14, fontFamily: "Inter, sans-serif" }}>
+              {isLiveChatMode ? "Live Support" : "DS360 Assist"}
+            </div>
+            <div style={{ fontSize: 10, opacity: 0.7, fontFamily: "Inter, sans-serif" }}>
+              {isLiveChatMode ? "Human Support Agent" : "AI Support Agent"}
+            </div>
           </div>
         </div>
         <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
-          {tab === "chat" && conversationId && (
+          {tab === "chat" && conversationId && !isLiveChatMode && (
             <button
               onClick={startNewChat}
               title="New conversation"
@@ -289,36 +394,32 @@ export default function AssistPanel({ onClose }: Props) {
         </div>
       </div>
 
-      {/* Tab bar */}
-      <div
-        style={{
-          display: "flex",
-          borderBottom: "1px solid #e5e7eb",
-          flexShrink: 0,
-        }}
-      >
-        {(["chat", "past"] as Tab[]).map((t) => (
-          <button
-            key={t}
-            onClick={() => setTab(t)}
-            style={{
-              flex: 1,
-              padding: "8px 0",
-              background: "none",
-              border: "none",
-              borderBottom: tab === t ? "2px solid #033280" : "2px solid transparent",
-              color: tab === t ? "#033280" : "#6b7280",
-              fontSize: 12,
-              fontFamily: "Inter, sans-serif",
-              fontWeight: tab === t ? 600 : 400,
-              cursor: "pointer",
-              transition: "color 0.15s",
-            }}
-          >
-            {t === "chat" ? "New Chat" : "Past Chats"}
-          </button>
-        ))}
-      </div>
+      {/* Tab bar (hidden in live chat mode) */}
+      {!isLiveChatMode && (
+        <div style={{ display: "flex", borderBottom: "1px solid #e5e7eb", flexShrink: 0 }}>
+          {(["chat", "past"] as Tab[]).map((t) => (
+            <button
+              key={t}
+              onClick={() => setTab(t)}
+              style={{
+                flex: 1,
+                padding: "8px 0",
+                background: "none",
+                border: "none",
+                borderBottom: tab === t ? "2px solid #033280" : "2px solid transparent",
+                color: tab === t ? "#033280" : "#6b7280",
+                fontSize: 12,
+                fontFamily: "Inter, sans-serif",
+                fontWeight: tab === t ? 600 : 400,
+                cursor: "pointer",
+                transition: "color 0.15s",
+              }}
+            >
+              {t === "chat" ? "New Chat" : "Past Chats"}
+            </button>
+          ))}
+        </div>
+      )}
 
       {/* Error banner */}
       {error && (
@@ -336,8 +437,35 @@ export default function AssistPanel({ onClose }: Props) {
         </div>
       )}
 
-      {/* Content */}
-      {tab === "past" ? (
+      {/* Ticket success banner */}
+      {ticketSuccess && (
+        <div
+          style={{
+            background: "#f0fdf4",
+            color: "#15803d",
+            fontSize: 12,
+            padding: "8px 14px",
+            borderBottom: "1px solid #bbf7d0",
+            flexShrink: 0,
+            fontFamily: "Inter, sans-serif",
+          }}
+        >
+          ✅ Ticket <strong>{ticketSuccess}</strong> created. We'll follow up within 2 hours.
+        </div>
+      )}
+
+      {/* Live chat mode */}
+      {isLiveChatMode && conversationId ? (
+        <AssistLiveChat
+          conversationId={conversationId}
+          userName="You"
+          wsToken={wsToken}
+          onEnd={() => {
+            setEscalationView(null);
+            setLiveSummary("");
+          }}
+        />
+      ) : tab === "past" ? (
         <AssistPastChats onContinue={handleContinuePastChat} />
       ) : (
         <>
@@ -349,20 +477,46 @@ export default function AssistPanel({ onClose }: Props) {
           />
 
           {/* Quick replies */}
-          {!isTyping && quickReplies.length > 0 && (
+          {!isTyping && quickReplies.length > 0 && !escalationView && (
             <AssistQuickReplies
               replies={quickReplies}
               onSelect={(reply) => handleSend(reply)}
             />
           )}
 
-          {/* Active workflow step UI */}
-          {activeWorkflowStep && !isTyping && (
+          {/* Active workflow step */}
+          {activeWorkflowStep && !isTyping && !escalationView && (
             <AssistWorkflow
               step={activeWorkflowStep}
               onSubmit={(value) => handleSend(value)}
               onCancel={handleCancelWorkflow}
               disabled={isTyping}
+            />
+          )}
+
+          {/* Escalation menu */}
+          {escalationView === "menu" && (
+            <AssistEscalation
+              onSelect={handleEscalationSelect}
+              onDismiss={() => setEscalationView(null)}
+            />
+          )}
+
+          {/* Ticket form */}
+          {escalationView === "ticket" && (
+            <TicketForm
+              conversationId={conversationId}
+              onSuccess={handleTicketSuccess}
+              onCancel={() => setEscalationView("menu")}
+            />
+          )}
+
+          {/* Account manager card */}
+          {escalationView === "am" && (
+            <AccountManagerCard
+              manager={accountManager}
+              loading={amLoading}
+              onCancel={() => setEscalationView("menu")}
             />
           )}
 

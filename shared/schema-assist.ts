@@ -58,6 +58,7 @@ export const assistConversations = pgTable("assist_conversations", {
   thumbsDownCount: integer("thumbs_down_count").default(0),
   messageCount: integer("message_count").default(0),
   metadata: jsonb("metadata"),
+  summary: text("summary"),
   resolvedAt: timestamp("resolved_at"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),

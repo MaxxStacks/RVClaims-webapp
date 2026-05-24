@@ -36,6 +36,8 @@ import assistKbRouter from './assist/kb';
 import assistMessageRouter from './assist/message';
 import assistConversationsRouter from './assist/conversations';
 import assistFeedbackRouter from './assist/feedback';
+import assistEscalateRouter from './assist/escalate';
+import assistAnalyticsRouter from './assist/analytics';
 
 // Import existing routes for backward compat
 import { storage } from "../storage";
@@ -106,6 +108,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.use('/api/assist/message', assistMessageRouter);
   app.use('/api/assist/conversations', assistConversationsRouter);
   app.use('/api/assist/conversations', assistFeedbackRouter);
+  app.use('/api/assist/escalate', assistEscalateRouter);
+  app.use('/api/assist/analytics', assistAnalyticsRouter);
 
   // ==================== EXISTING ROUTES (backward compat) ====================
 
