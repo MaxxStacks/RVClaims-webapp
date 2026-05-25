@@ -105,7 +105,14 @@ export async function apiFetch<T = unknown>(
     throw err;
   }
 
-  if (!res.ok) throw new Error(`${res.status}: ${res.statusText}`);
+  if (!res.ok) {
+    let message = `${res.status}: ${res.statusText}`;
+    try {
+      const errBody = await res.json();
+      if (errBody?.message) message = errBody.message;
+    } catch { /* not JSON */ }
+    throw new Error(message);
+  }
   return res.json() as Promise<T>;
 }
 

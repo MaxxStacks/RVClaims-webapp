@@ -19,7 +19,7 @@ export default function Settings() {
   const [profile, setProfile] = useState({ firstName: '', lastName: '', email: '', phone: '', timezone: 'Eastern (ET)' });
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [profileSaving, setProfileSaving] = useState(false);
-  const [profileFeedback, setProfileFeedback] = useState<'saved' | 'error' | ''>('');
+  const [profileFeedback, setProfileFeedback] = useState('');
 
   const [notifPrefs, setNotifPrefs] = useState<Record<string, string>>({});
   const [notifLoading, setNotifLoading] = useState(false);
@@ -58,12 +58,21 @@ export default function Settings() {
     try {
       await apiFetch('/api/user/profile', {
         method: 'PUT',
-        body: JSON.stringify({ firstName: profile.firstName, lastName: profile.lastName, phone: profile.phone, timezone: profile.timezone }),
+        body: JSON.stringify({ firstName: profile.firstName, lastName: profile.lastName, email: profile.email, phone: profile.phone, timezone: profile.timezone }),
       });
       setProfileFeedback('saved');
       setTimeout(() => window.location.reload(), 1500);
-    } catch {
-      setProfileFeedback('error');
+    } catch (err: any) {
+      const msg = err?.message || '';
+      if (msg === 'Session expired' || msg.includes('not synced')) {
+        setProfileFeedback('Session expired — please log in again.');
+      } else if (msg.includes('403') || msg.toLowerCase().includes('permission')) {
+        setProfileFeedback('You do not have permission to update this profile.');
+      } else if (!msg || msg.includes('fetch') || msg.includes('Network')) {
+        setProfileFeedback('Network error — please try again.');
+      } else {
+        setProfileFeedback(msg);
+      }
       setProfileSaving(false);
     }
   };
@@ -154,7 +163,7 @@ export default function Settings() {
             <div className="form-grid">
               <div className="form-group"><label>First Name</label><input value={profile.firstName} onChange={e => setProfile(p => ({ ...p, firstName: e.target.value }))} /></div>
               <div className="form-group"><label>Last Name</label><input value={profile.lastName} onChange={e => setProfile(p => ({ ...p, lastName: e.target.value }))} /></div>
-              <div className="form-group"><label>Email</label><input value={profile.email} readOnly style={{ background: '#f3f4f6', color: '#888' }} /></div>
+              <div className="form-group"><label>Email</label><input value={profile.email} onChange={e => setProfile(p => ({ ...p, email: e.target.value }))} placeholder="you@example.com" /></div>
               <div className="form-group"><label>Phone</label><input value={profile.phone} onChange={e => setProfile(p => ({ ...p, phone: e.target.value }))} placeholder="(555) 000-0000" /></div>
               <div className="form-group"><label>Role</label><input value={(user as any)?.role === 'operator_admin' ? 'Operator Admin' : 'Operator Staff'} readOnly style={{ background: '#f3f4f6', color: '#888' }} /></div>
               <div className="form-group">
@@ -165,7 +174,7 @@ export default function Settings() {
               </div>
             </div>
             {profileFeedback === 'saved' && <div style={{ padding: '0 20px 8px', color: '#0cb22c', fontSize: 13 }}>Saved ✓ Refreshing…</div>}
-            {profileFeedback === 'error' && <div style={{ padding: '0 20px 8px', color: '#dc2626', fontSize: 13 }}>Failed to save. Please try again.</div>}
+            {profileFeedback && profileFeedback !== 'saved' && <div style={{ padding: '0 20px 8px', color: '#dc2626', fontSize: 13 }}>{profileFeedback}</div>}
             <div className="btn-bar">
               <button className="btn btn-p" onClick={handleSaveProfile} disabled={profileSaving}>{profileSaving ? 'Saving…' : 'Save Profile'}</button>
               <button className="btn btn-o">Cancel</button>

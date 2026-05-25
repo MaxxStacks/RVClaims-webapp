@@ -8,6 +8,7 @@ import { requireAuth } from "../middleware/auth";
 import { requireRole, requireOperator, scopeToDealership } from "../middleware/rbac";
 import { validateBody } from "../middleware/validate";
 import { OPERATOR_ROLES } from "@shared/constants";
+import { clerkClient } from "@clerk/express";
 
 const router = Router();
 
@@ -48,17 +49,52 @@ router.put("/settings/:key", requireAuth, requireRole("operator_admin"), async (
 // PUT /api/user/profile
 router.put("/user/profile", requireAuth, async (req: Request, res: Response) => {
   try {
-    const { firstName, lastName, phone, timezone } = req.body;
+    const { firstName, lastName, phone, timezone, email } = req.body;
+    const clerkUserId = req.user!.clerkUserId;
+
+    // Sync name fields to Clerk so webhook doesn't overwrite them on next event
+    const clerkUpdate: Record<string, string> = {};
+    if (firstName !== undefined) clerkUpdate.firstName = firstName;
+    if (lastName !== undefined) clerkUpdate.lastName = lastName;
+    if (Object.keys(clerkUpdate).length > 0) {
+      await clerkClient.users.updateUser(clerkUserId, clerkUpdate);
+    }
+
+    // Email changes must go through Clerk (creates a verified address and sets it primary)
+    if (email && email !== req.user!.email) {
+      await clerkClient.emailAddresses.createEmailAddress({
+        userId: clerkUserId,
+        emailAddress: email,
+        primary: true,
+        verified: true,
+      } as any);
+    }
+
+    // Update local DB
+    const dbUpdate: Record<string, any> = { updatedAt: new Date() };
+    if (firstName !== undefined) dbUpdate.firstName = firstName;
+    if (lastName !== undefined) dbUpdate.lastName = lastName;
+    if (phone !== undefined) dbUpdate.phone = phone;
+    if (timezone !== undefined) dbUpdate.timezone = timezone;
+    if (email) dbUpdate.email = email;
+
     const [updated] = await db
       .update(users)
-      .set({ firstName, lastName, phone, timezone, updatedAt: new Date() })
+      .set(dbUpdate)
       .where(eq(users.id, req.user!.id))
       .returning();
     if (!updated) return res.status(404).json({ success: false, message: "User not found" });
     res.json({ success: true, user: updated });
-  } catch (error) {
+  } catch (error: any) {
     console.error("Update profile error:", error);
-    res.status(500).json({ success: false, message: "Internal server error" });
+    const msg = error?.errors?.[0]?.longMessage
+      || error?.errors?.[0]?.message
+      || error?.message
+      || "Internal server error";
+    const status = (typeof error?.status === "number" && error.status >= 400 && error.status < 600)
+      ? error.status
+      : 500;
+    res.status(status).json({ success: false, message: msg });
   }
 });
 
@@ -295,7 +331,7 @@ router.get("/notifications/preferences", requireAuth, async (req: Request, res: 
       .from(userNotificationPreferences)
       .where(eq(userNotificationPreferences.userId, req.user!.id))
       .limit(1);
-    res.json({ success: true, preferences: prefs || { preferences: {}, smsPhone: null, smsVerified: false } });
+    res.json({ success: true, preferences: prefs?.preferences || {} });
   } catch (error) {
     console.error("Get preferences error:", error);
     res.status(500).json({ success: false, message: "Internal server error" });
