@@ -98,6 +98,7 @@ export default function ClaimDetail() {
   const [mfrClaimNumber, setMfrClaimNumber] = useState('');
   const [denialReason, setDenialReason] = useState('');
   const [statusSaving, setStatusSaving] = useState(false);
+  const [closingClaim, setClosingClaim] = useState(false);
 
   // Toast
   const [toastMsg, setToastMsg] = useState('');
@@ -199,6 +200,22 @@ export default function ClaimDetail() {
       showToast(`Failed to send note: ${err?.message || 'Unknown error'}`);
     } finally {
       setNoteSending(false);
+    }
+  };
+
+  const handleCloseClaim = async () => {
+    setClosingClaim(true);
+    try {
+      await apiFetch(`/api/v6/claims/${claimId}`, {
+        method: 'PATCH',
+        body: JSON.stringify({ status: 'closed' }),
+      });
+      await loadClaim();
+      showToast('Claim closed');
+    } catch (err: any) {
+      showToast(`Failed to close claim: ${err?.message || 'Unknown error'}`);
+    } finally {
+      setClosingClaim(false);
     }
   };
 
@@ -627,6 +644,22 @@ export default function ClaimDetail() {
                   disabled={statusSaving || !statusTo}
                 >
                   {statusSaving ? t('common.saving') : t('claims.updateStatus')}
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Close Claim — operator only */}
+          {isOperator && claim.status !== 'closed' && (
+            <div className="cd-section">
+              <div style={{ padding: '14px 20px' }}>
+                <button
+                  className="btn btn-o btn-sm"
+                  onClick={handleCloseClaim}
+                  disabled={closingClaim}
+                  style={{ width: '100%', justifyContent: 'center' }}
+                >
+                  {closingClaim ? 'Closing...' : 'Close Claim'}
                 </button>
               </div>
             </div>

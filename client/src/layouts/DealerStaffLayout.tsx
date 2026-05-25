@@ -6,6 +6,7 @@ import ds360Icon from '@assets/ds360_favicon.png';
 import { useLanguage } from '@/hooks/use-language';
 import type { Language } from '@/lib/i18n';
 import { MobileBottomNav } from '@/components/MobileBottomNav';
+import { useEnabledModules, hasModule } from '@/hooks/useEnabledModules';
 
 interface Props { children?: React.ReactNode; }
 
@@ -63,6 +64,8 @@ export default function DealerStaffLayout({ children }: Props) {
     } catch {}
   };
   const unreadCount = notifItems.filter(n => !n.isRead).length;
+  const { modules: enabledModules, loading: modulesLoading } = useEnabledModules();
+  const mod = (key: string) => modulesLoading || hasModule(enabledModules, key);
 
   return (
     <>
@@ -84,7 +87,7 @@ export default function DealerStaffLayout({ children }: Props) {
             <Link className={`nav-item ${isActive('upload') ? 'active' : ''}`} to="upload"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>{t('nav.uploadPhotos')}</Link>
             <Link className={`nav-item ${isActive('claims') ? 'active' : ''}`} to="claims"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>{t('nav.claims')}</Link>
             <Link className={`nav-item ${isActive('units') ? 'active' : ''}`} to="units"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4a2 2 0 012 2v6a2 2 0 01-2 2h-4"/><circle cx="5.5" cy="18" r="2.5"/><circle cx="18.5" cy="18" r="2.5"/></svg>{t('nav.units')}</Link>
-            <Link className={`nav-item ${isActive('parts') ? 'active' : ''}`} to="parts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>{t('nav.parts')}</Link>
+            {mod('parts') && <Link className={`nav-item ${isActive('parts') ? 'active' : ''}`} to="parts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>{t('nav.parts')}</Link>}
           </div>
           <div className="nav-section">
             <div className="nav-label">{t('nav.customers')}</div>

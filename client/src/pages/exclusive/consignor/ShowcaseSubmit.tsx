@@ -1,7 +1,10 @@
+import { useState } from 'react';
 import { useLocation } from 'wouter';
 
 export default function ShowcaseSubmit() {
   const [, navigate] = useLocation();
+  const [toast, setToast] = useState('');
+  const showToast = (msg: string) => { setToast(msg); setTimeout(() => setToast(''), 2800); };
 
   return (
     <div className="page active">
@@ -28,10 +31,11 @@ export default function ShowcaseSubmit() {
           <div className="form-group full" style={{borderTop: '1px solid #f0f0f0', paddingTop: 16}}><label>Public Description</label><textarea placeholder="This description is shown to public bidders. Highlight condition, features, options, warranty status..." style={{minHeight: 100}} /></div>
         </div>
         <div className="btn-bar">
-          <button className="btn btn-s" onClick={() => { alert('Unit submitted for review! Dealer Suite 360 will approve within 24 hours.'); navigate('showcase'); }}>Submit for Review</button>
+          <button className="btn btn-s" onClick={() => { showToast('Unit submitted for review! Dealer Suite 360 will approve within 24 hours.'); setTimeout(() => navigate('showcase'), 1200); }}>Submit for Review</button>
           <button className="btn btn-o" onClick={() => navigate('showcase')}>Save Draft</button>
           <button className="btn btn-o" onClick={() => navigate('showcase')}>Cancel</button>
         </div>
+      {toast && <div style={{position:'fixed',bottom:24,left:'50%',transform:'translateX(-50%)',background:'#1e293b',color:'#fff',padding:'10px 20px',borderRadius:8,fontSize:13,zIndex:9999,boxShadow:'0 4px 12px rgba(0,0,0,.2)'}}>{toast}</div>}
       </div>
     </div>
   );

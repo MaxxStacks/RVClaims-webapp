@@ -77,7 +77,10 @@ export function ProtectedRoute({
   }
 
   // ── Dealership isolation check ────────────────────────────────────────────
-  if (requireDealershipId) {
+  // In development with an active role override the URL uses a placeholder
+  // segment ("dealer", "client", etc.) rather than a real dealershipId, so
+  // the segment-vs-id comparison would always fail. Skip the check entirely.
+  if (requireDealershipId && !(import.meta.env.DEV && isDevMode)) {
     // The dealerId is always the FIRST non-empty path segment for dealer
     // portals (e.g. /dev-dealer-001/owner/dashboard).
     const urlDealerId = location.split('/').filter(Boolean)[0];

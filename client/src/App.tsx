@@ -353,6 +353,7 @@ function App() {
     return (
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
+          <LanguageProvider>
           <RemoteSupportProvider>
           <Suspense fallback={null}>
             <Switch>
@@ -423,6 +424,7 @@ function App() {
             <ScreenShareBanner />
           </Suspense>
           </RemoteSupportProvider>
+          </LanguageProvider>
         </AuthProvider>
       </QueryClientProvider>
     );

@@ -37,6 +37,10 @@ export default function BidderPortal() {
     return () => clearInterval(id);
   }, []);
 
+  // Toast
+  const [toast, setToast] = useState('');
+  const showToast = (msg: string) => { setToast(msg); setTimeout(() => setToast(''), 2800); };
+
   // Settings sub-tab
   const [settingsTab, setSettingsTab] = useState('st-profile');
 
@@ -170,12 +174,12 @@ export default function BidderPortal() {
 
   const handleAddCard = () => {
     if (!cardName || !cardNum || !cardExp || !cardCvv) {
-      alert('Please fill in all card fields.');
+      showToast('Please fill in all card fields.');
       return;
     }
     setCardAdded(true);
     setShowCardForm(false);
-    alert('Card added successfully. You are ready to bid!');
+    showToast('Card added successfully. You are ready to bid!');
   };
 
   const handleSaveProfile = () => {
@@ -572,7 +576,7 @@ export default function BidderPortal() {
             </div>
             <div style={{display: 'flex', gap: 8}}>
               <button className="btn btn-o btn-sm" onClick={() => { setCardAdded(false); setShowCardForm(true); }}>Replace Card</button>
-              <button className="btn btn-o btn-sm" style={{color: '#dc2626', borderColor: '#fca5a5'}} onClick={() => { if (confirm('Remove card? You will not be able to bid without a card on file.')) setCardAdded(false); }}>Remove</button>
+              <button className="btn btn-o btn-sm" style={{color: '#dc2626', borderColor: '#fca5a5'}} onClick={() => setCardAdded(false)}>Remove</button>
             </div>
           </div>
         ) : (
@@ -755,8 +759,8 @@ export default function BidderPortal() {
                 </>
               ) : (
                 <>
-                  <button className="btn btn-s btn-sm" style={{justifyContent: 'center'}} onClick={async () => { try { await apiFetch('/api/payments/pay-invoice', { method: 'POST', body: JSON.stringify({ bidId: w.id }) }); } catch { alert('Payment failed. Please try again.'); } }}>Complete Payment</button>
-                  <button className="btn btn-o btn-sm" style={{justifyContent: 'center'}} onClick={() => alert('Financing application will be available when connected to lender API.')}>Apply for Financing</button>
+                  <button className="btn btn-s btn-sm" style={{justifyContent: 'center'}} onClick={async () => { try { await apiFetch('/api/payments/pay-invoice', { method: 'POST', body: JSON.stringify({ bidId: w.id }) }); } catch { showToast('Payment failed. Please try again.'); } }}>Complete Payment</button>
+                  <button className="btn btn-o btn-sm" style={{justifyContent: 'center'}} onClick={() => showToast('Financing coming in v2.2')}>Apply for Financing</button>
                 </>
               )}
             </div>
@@ -789,7 +793,7 @@ export default function BidderPortal() {
           <div className="form-group full"><label>New Password</label><input type="password" placeholder="••••••••" /></div>
           <div className="form-group full"><label>Confirm New Password</label><input type="password" placeholder="••••••••" /></div>
           <div className="form-group full">
-            <button className="btn btn-s" onClick={() => alert('Password updated.')}>Update Password</button>
+            <button className="btn btn-s" onClick={() => showToast('Password updated.')}>Update Password</button>
           </div>
         </div>
       )}
@@ -816,7 +820,7 @@ export default function BidderPortal() {
             </div>
           ))}
           <div style={{marginTop: 16}}>
-            <button className="btn btn-s" onClick={() => alert('Notification preferences saved.')}>Save Preferences</button>
+            <button className="btn btn-s" onClick={() => showToast('Notification preferences saved.')}>Save Preferences</button>
           </div>
         </div>
       )}
@@ -828,8 +832,8 @@ export default function BidderPortal() {
           <div className="cd-row" style={{paddingBottom: 12}}><span className="cd-label">Account Type</span><span className="cd-value"><span className="bg active">Public Bidder</span></span></div>
           <div className="cd-row" style={{paddingBottom: 12}}><span className="cd-label">Member Since</span><span className="cd-value">March 2026</span></div>
           <div style={{marginTop: 20, paddingTop: 16, borderTop: '1px solid var(--border-light)', display: 'flex', gap: 8}}>
-            <button className="btn btn-o" onClick={() => { if(confirm('Log out?')) window.location.href = '/live-auctions'; }}>Log Out</button>
-            <button className="btn btn-o" style={{color: '#dc2626', borderColor: '#fca5a5'}} onClick={() => alert('Please contact support@dealersuite360.com to delete your account.')}>Delete Account</button>
+            <button className="btn btn-o" onClick={async () => { await logout(); window.location.href = '/live-auctions'; }}>Log Out</button>
+            <button className="btn btn-o" style={{color: '#dc2626', borderColor: '#fca5a5'}} onClick={() => showToast('Contact support@dealersuite360.com to delete your account.')}>Delete Account</button>
           </div>
         </div>
       )}
@@ -861,6 +865,7 @@ export default function BidderPortal() {
 
 </div>{/* end .content */}
 </div>{/* end .main */}
+{toast && <div style={{position:'fixed',bottom:24,left:'50%',transform:'translateX(-50%)',background:'#1e293b',color:'#fff',padding:'10px 20px',borderRadius:8,fontSize:13,zIndex:9999,boxShadow:'0 4px 12px rgba(0,0,0,.2)'}}>{toast}</div>}
     </>
   );
 }

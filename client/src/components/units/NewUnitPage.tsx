@@ -7,6 +7,8 @@ export default function NewUnitPage() {
   const [, navigate] = useLocation();
   const [recentUnits, setRecentUnits] = useState<any[]>([]);
   const [submitting, setSubmitting] = useState(false);
+  const [toast, setToast] = useState('');
+  const showToast = (msg: string) => { setToast(msg); setTimeout(() => setToast(''), 2800); };
   const [form, setForm] = useState({
     vin: "", year: new Date().getFullYear(), make: "", model: "", stockNumber: "", status: "in_inventory",
     intakeDate: "", lotLocation: "",
@@ -19,13 +21,13 @@ export default function NewUnitPage() {
   }, []);
 
   async function submit() {
-    if (!form.vin || !form.make) { alert("VIN and make required"); return; }
+    if (!form.vin || !form.make) { showToast("VIN and make required"); return; }
     setSubmitting(true);
     try {
       const created = await apiFetch<any>("/api/v6/units", { method: "POST", body: JSON.stringify(form) });
       navigate(`/dealer-v6/units/${created.id}`);
     } catch (err: any) {
-      alert("Failed: " + (err.message || err));
+      showToast("Failed: " + (err.message || err));
     } finally { setSubmitting(false); }
   }
 
@@ -90,6 +92,7 @@ export default function NewUnitPage() {
             {submitting ? "Creating..." : "Create Unit"}
           </button>
         </div>
+        {toast && <div style={{position:'fixed',bottom:24,left:'50%',transform:'translateX(-50%)',background:'#1e293b',color:'#fff',padding:'10px 20px',borderRadius:8,fontSize:13,zIndex:9999,boxShadow:'0 4px 12px rgba(0,0,0,.2)'}}>{toast}</div>}
       </div>
     </div>
   );

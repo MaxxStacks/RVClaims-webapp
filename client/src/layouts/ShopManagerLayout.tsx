@@ -6,6 +6,7 @@ import ds360Icon from '@assets/ds360_favicon.png';
 import { useLanguage } from '@/hooks/use-language';
 import type { Language } from '@/lib/i18n';
 import { MobileBottomNav } from '@/components/MobileBottomNav';
+import { useEnabledModules, hasModule } from '@/hooks/useEnabledModules';
 
 interface Props { children?: React.ReactNode; }
 
@@ -63,6 +64,8 @@ export default function ShopManagerLayout({ children }: Props) {
     } catch {}
   };
   const unreadCount = notifItems.filter(n => !n.isRead).length;
+  const { modules: enabledModules, loading: modulesLoading } = useEnabledModules();
+  const mod = (key: string) => modulesLoading || hasModule(enabledModules, key);
 
   return (
     <>
@@ -81,10 +84,10 @@ export default function ShopManagerLayout({ children }: Props) {
           </div>
           <div className="nav-section">
             <div className="nav-label">{t('nav.shop')}</div>
-            <Link className={`nav-item ${isActive('work-orders') ? 'active' : ''}`} to="work-orders"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>{t('nav.workOrders')}</Link>
-            <Link className={`nav-item ${isActive('dispatch') ? 'active' : ''}`} to="dispatch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>{t('nav.dispatchBoard')}</Link>
+            {mod('techflow') && <Link className={`nav-item ${isActive('work-orders') ? 'active' : ''}`} to="work-orders"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>{t('nav.workOrders')}</Link>}
+            {mod('techflow') && <Link className={`nav-item ${isActive('dispatch') ? 'active' : ''}`} to="dispatch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>{t('nav.dispatchBoard')}</Link>}
             <Link className={`nav-item ${isActive('units') ? 'active' : ''}`} to="units"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4a2 2 0 012 2v6a2 2 0 01-2 2h-4"/><circle cx="5.5" cy="18" r="2.5"/><circle cx="18.5" cy="18" r="2.5"/></svg>{t('nav.units')}</Link>
-            <Link className={`nav-item ${isActive('parts') ? 'active' : ''}`} to="parts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>{t('nav.partsStatus')}</Link>
+            {mod('parts') && <Link className={`nav-item ${isActive('parts') ? 'active' : ''}`} to="parts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>{t('nav.partsStatus')}</Link>}
           </div>
         </div>
         <div className="sidebar-footer">

@@ -15,6 +15,8 @@ export default function NewDealershipPage() {
   const [, navigate] = useLocation();
   const [step, setStep] = useState(0);
   const [submitting, setSubmitting] = useState(false);
+  const [toast, setToast] = useState('');
+  const showToast = (msg: string) => { setToast(msg); setTimeout(() => setToast(''), 2800); };
   const [biz, setBiz] = useState({
     name: "", email: "", phone: "",
     addressLine1: "", addressLine2: "", city: "", stateProvince: "", postalCode: "", country: "CA",
@@ -29,7 +31,7 @@ export default function NewDealershipPage() {
 
   function next() {
     if (step === 0) {
-      if (!biz.name || !biz.email) { alert("Name and email required"); return; }
+      if (!biz.name || !biz.email) { showToast("Name and email required"); return; }
     }
     setStep(s => Math.min(s + 1, STEPS.length - 1));
   }
@@ -48,7 +50,7 @@ export default function NewDealershipPage() {
       }
       navigate(`/operator-v6/dealerships/${created.id}`);
     } catch (err: any) {
-      alert("Failed: " + (err.message || err));
+      showToast("Failed: " + (err.message || err));
     } finally { setSubmitting(false); }
   }
 
@@ -183,6 +185,7 @@ export default function NewDealershipPage() {
           </div>
         )}
 
+        {toast && <div style={{position:'fixed',bottom:24,left:'50%',transform:'translateX(-50%)',background:'#1e293b',color:'#fff',padding:'10px 20px',borderRadius:8,fontSize:13,zIndex:9999,boxShadow:'0 4px 12px rgba(0,0,0,.2)'}}>{toast}</div>}
         <div style={{display: "flex", justifyContent: "space-between", marginTop: 32}}>
           <button onClick={back} disabled={step === 0}
             style={{padding: "10px 18px", border: "1px solid #e0e0e0", background: "white", borderRadius: 8, cursor: step === 0 ? "default" : "pointer", opacity: step === 0 ? 0.5 : 1}}>

@@ -17,6 +17,8 @@ interface OperatorProps { activePage: string; showPage: (id: string) => void; }
 export function OperatorPublicAuctionPages({ activePage, showPage }: OperatorProps) {
   const [eventTab, setEventTab] = useState<'upcoming'|'past'>('upcoming');
   const [unitReviewTab, setUnitReviewTab] = useState<'pending'|'approved'|'all'>('pending');
+  const [toast, setToast] = useState('');
+  const showToast = (msg: string) => { setToast(msg); setTimeout(() => setToast(''), 2800); };
 
   return (
     <>
@@ -80,7 +82,7 @@ export function OperatorPublicAuctionPages({ activePage, showPage }: OperatorPro
         <div style={{display: unitReviewTab === 'pending' || unitReviewTab === 'all' ? 'block' : 'none'}}>
           {unitReviewTab === 'all' && <div style={{padding: '10px 20px', background: '#fffbeb', borderBottom: '1px solid #fef3c7', fontSize: 12, fontWeight: 600, color: '#92400e'}}>Pending Review</div>}
           <div className="tw"><table><thead><tr><th>Unit</th><th>Dealer</th><th>Starting Bid</th><th>Reserve</th><th>Photos</th><th>Submitted</th><th>Action</th></tr></thead><tbody>
-            <tr><td style={{fontWeight: 500}}>2024 Jayco Eagle HT 312BHOK</td><td style={{fontSize: 12, color: '#888'}}>Smith's RV</td><td>$48,000</td><td>$52,000</td><td>8</td><td>Mar 18</td><td><button className="btn btn-s btn-sm" onClick={() => alert('Unit approved for public auction!')}>Approve</button> <button className="btn btn-o btn-sm" style={{color: '#dc2626', borderColor: '#fca5a5'}} onClick={() => { if (confirm('Reject this submission?')) {} }}>Reject</button></td></tr>
+            <tr><td style={{fontWeight: 500}}>2024 Jayco Eagle HT 312BHOK</td><td style={{fontSize: 12, color: '#888'}}>Smith's RV</td><td>$48,000</td><td>$52,000</td><td>8</td><td>Mar 18</td><td><button className="btn btn-s btn-sm" onClick={() => showToast('Unit approved for public auction!')}>Approve</button> <button className="btn btn-o btn-sm" style={{color: '#dc2626', borderColor: '#fca5a5'}}>Reject</button></td></tr>
             <tr><td style={{fontWeight: 500}}>2023 Forest River Wildwood 31KQBTS</td><td style={{fontSize: 12, color: '#888'}}>Atlantic RV</td><td>$32,000</td><td>$35,000</td><td>6</td><td>Mar 18</td><td><button className="btn btn-s btn-sm">Approve</button> <button className="btn btn-o btn-sm" style={{color: '#dc2626', borderColor: '#fca5a5'}}>Reject</button></td></tr>
           </tbody></table></div>
         </div>
@@ -111,14 +113,15 @@ export function OperatorPublicAuctionPages({ activePage, showPage }: OperatorPro
         <div className="cd-row"><span className="cd-label">Registered Bidders</span><span className="cd-value">—</span></div>
       </div>
       <div style={{padding: 12, display: 'flex', flexDirection: 'column' as const, gap: 8}}>
-        <button className="btn btn-p btn-sm" style={{width: '100%', justifyContent: 'center'}} onClick={() => { if (confirm('Send notification to all showcase dealers about this event?')) alert('Notifications sent!'); }}>Notify Dealers</button>
-        <button className="btn btn-s btn-sm" style={{width: '100%', justifyContent: 'center'}} onClick={() => { if (confirm('Go LIVE? This opens the 24-hour public auction window.')) alert('Event is now LIVE!'); }}>Go Live →</button>
-        <button className="btn btn-o btn-sm" style={{width: '100%', justifyContent: 'center'}} onClick={() => { if (confirm('End the auction and begin settling winners?')) alert('Settling...'); }}>End & Settle</button>
+        <button className="btn btn-p btn-sm" style={{width: '100%', justifyContent: 'center'}} onClick={() => showToast('Notifications sent to all showcase dealers!')}>Notify Dealers</button>
+        <button className="btn btn-s btn-sm" style={{width: '100%', justifyContent: 'center'}} onClick={() => showToast('Event is now LIVE!')}>Go Live →</button>
+        <button className="btn btn-o btn-sm" style={{width: '100%', justifyContent: 'center'}} onClick={() => showToast('Auction ended — settlement in progress')}>End & Settle</button>
       </div>
     </div>
   </div>
 </div>
 
+      {toast && <div style={{position:'fixed',bottom:24,left:'50%',transform:'translateX(-50%)',background:'#1e293b',color:'#fff',padding:'10px 20px',borderRadius:8,fontSize:13,zIndex:9999,boxShadow:'0 4px 12px rgba(0,0,0,.2)'}}>{toast}</div>}
     </>
   );
 }
@@ -136,6 +139,8 @@ interface DealerProps { activePage: string; showPage: (id: string) => void; }
 
 export function DealerShowcasePages({ activePage, showPage }: DealerProps) {
   const [showcaseAccess, setShowcaseAccess] = useState<'none'|'active'>('none');
+  const [toast, setToast] = useState('');
+  const showToast = (msg: string) => { setToast(msg); setTimeout(() => setToast(''), 2800); };
 
   return (
     <>
@@ -227,13 +232,14 @@ export function DealerShowcasePages({ activePage, showPage }: DealerProps) {
       <div className="form-group full" style={{borderTop: '1px solid #f0f0f0', paddingTop: 16}}><label>Public Description</label><textarea placeholder="This description is shown to public bidders. Highlight condition, features, options, warranty status..." style={{minHeight: 100}} /></div>
     </div>
     <div className="btn-bar">
-      <button className="btn btn-s" onClick={() => { alert('Unit submitted for review! Dealer Suite 360 will approve within 24 hours.'); showPage('mkt-showcase'); }}>Submit for Review</button>
+      <button className="btn btn-s" onClick={() => { showToast('Unit submitted for review! Dealer Suite 360 will approve within 24 hours.'); setTimeout(() => showPage('mkt-showcase'), 1200); }}>Submit for Review</button>
       <button className="btn btn-o" onClick={() => showPage('mkt-showcase')}>Save Draft</button>
       <button className="btn btn-o" onClick={() => showPage('mkt-showcase')}>Cancel</button>
     </div>
   </div>
 </div>
 
+      {toast && <div style={{position:'fixed',bottom:24,left:'50%',transform:'translateX(-50%)',background:'#1e293b',color:'#fff',padding:'10px 20px',borderRadius:8,fontSize:13,zIndex:9999,boxShadow:'0 4px 12px rgba(0,0,0,.2)'}}>{toast}</div>}
     </>
   );
 }

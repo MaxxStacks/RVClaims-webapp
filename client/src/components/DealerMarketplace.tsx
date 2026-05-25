@@ -39,6 +39,10 @@ export function DealerMarketplacePages({ activePage, showPage }: Props) {
   // Auction bidding
   const [bidAmount, setBidAmount] = useState('');
 
+  // Toast
+  const [toast, setToast] = useState('');
+  const showToast = (msg: string) => { setToast(msg); setTimeout(() => setToast(''), 2800); };
+
   // Gate check — redirect to gate if not active member
   const gatedPage = (id: string) => {
     if (mktAccess !== 'active') {
@@ -227,7 +231,7 @@ export function DealerMarketplacePages({ activePage, showPage }: Props) {
               <div style={{fontSize: 13, fontWeight: 600, color: '#92400e', marginBottom: 6}}>Confirm $500 Hold</div>
               <div style={{fontSize: 12, color: '#666', lineHeight: '1.5', marginBottom: 10}}>A $500 refundable deposit will be charged to your card. This reserves the unit. Seller identity revealed after hold.</div>
               <div style={{display: 'flex', gap: 8}}>
-                <button className="btn btn-s btn-sm" onClick={() => { alert('Hold placed! Dealer Suite 360 will contact both parties.'); setHoldConfirm(false); }}>Confirm — Charge $500</button>
+                <button className="btn btn-s btn-sm" onClick={() => { showToast('Hold placed! Dealer Suite 360 will contact both parties.'); setHoldConfirm(false); }}>Confirm — Charge $500</button>
                 <button className="btn btn-o btn-sm" onClick={() => setHoldConfirm(false)}>Cancel</button>
               </div>
             </div>
@@ -240,7 +244,7 @@ export function DealerMarketplacePages({ activePage, showPage }: Props) {
               <input placeholder="Offer amount ($)" style={{width: '100%', padding: '8px 10px', border: '1px solid #e0e0e0', borderRadius: 6, fontSize: 13, marginBottom: 8, fontFamily: 'inherit'}} />
               <textarea placeholder="Message to seller (optional)..." style={{width: '100%', padding: '8px 10px', border: '1px solid #e0e0e0', borderRadius: 6, fontSize: 12, minHeight: 50, marginBottom: 8, fontFamily: 'inherit', resize: 'vertical' as const}} />
               <div style={{display: 'flex', gap: 8}}>
-                <button className="btn btn-p btn-sm" onClick={() => { alert('Offer submitted! Dealer Suite 360 will forward to the seller anonymously.'); setShowOfferForm(false); }}>Submit Offer</button>
+                <button className="btn btn-p btn-sm" onClick={() => { showToast('Offer submitted! Dealer Suite 360 will forward to the seller anonymously.'); setShowOfferForm(false); }}>Submit Offer</button>
                 <button className="btn btn-o btn-sm" onClick={() => setShowOfferForm(false)}>Cancel</button>
               </div>
             </div>
@@ -252,7 +256,7 @@ export function DealerMarketplacePages({ activePage, showPage }: Props) {
             <div style={{textAlign: 'left', padding: 12, background: '#fafafa', borderRadius: 8, border: '1px solid #e5e7eb', marginTop: 8}}>
               <textarea placeholder="Your question (sent anonymously through Dealer Suite 360)..." style={{width: '100%', padding: '8px 10px', border: '1px solid #e0e0e0', borderRadius: 6, fontSize: 12, minHeight: 60, marginBottom: 8, fontFamily: 'inherit', resize: 'vertical' as const}} />
               <div style={{display: 'flex', gap: 8}}>
-                <button className="btn btn-p btn-sm" onClick={() => { alert('Question sent! You will be notified when the seller responds.'); setShowQuestionForm(false); }}>Send Question</button>
+                <button className="btn btn-p btn-sm" onClick={() => { showToast('Question sent! You will be notified when the seller responds.'); setShowQuestionForm(false); }}>Send Question</button>
                 <button className="btn btn-o btn-sm" onClick={() => setShowQuestionForm(false)}>Cancel</button>
               </div>
             </div>
@@ -349,7 +353,7 @@ export function DealerMarketplacePages({ activePage, showPage }: Props) {
       <div className="form-group full" style={{borderTop: '1px solid #f0f0f0', paddingTop: 16}}><label>Description</label><textarea placeholder="Condition, features, options, why you're selling..." style={{minHeight: 100}} /></div>
     </div>
     <div className="btn-bar">
-      <button className="btn btn-s" onClick={() => { alert('Listing published!'); showPage('mkt-my-listings'); }}>Publish Listing</button>
+      <button className="btn btn-s" onClick={() => { showToast('Listing published!'); setTimeout(() => showPage('mkt-my-listings'), 1200); }}>Publish Listing</button>
       <button className="btn btn-o" onClick={() => showPage('mkt-my-listings')}>Save Draft</button>
       <button className="btn btn-o" onClick={() => showPage('mkt-my-listings')}>Cancel</button>
     </div>
@@ -375,7 +379,7 @@ export function DealerMarketplacePages({ activePage, showPage }: Props) {
         <td>48</td>
         <td><span className="bg active">Active</span></td>
         <td>Mar 10</td>
-        <td><button className="btn btn-o btn-sm" onClick={() => showPage('mkt-post-unit')}>Edit</button> <button className="btn btn-o btn-sm" style={{color: '#dc2626', borderColor: '#fca5a5'}} onClick={() => { if (confirm('Withdraw this listing from the marketplace?')) {} }}>Withdraw</button></td>
+        <td><button className="btn btn-o btn-sm" onClick={() => showPage('mkt-post-unit')}>Edit</button> <button className="btn btn-o btn-sm" style={{color: '#dc2626', borderColor: '#fca5a5'}} onClick={() => showToast('Listing withdrawn from marketplace')}>Withdraw</button></td>
       </tr>
       <tr>
         <td style={{fontWeight: 500, color: 'var(--brand)'}}>MKT-0270</td>
@@ -398,7 +402,7 @@ export function DealerMarketplacePages({ activePage, showPage }: Props) {
         <td>35</td>
         <td><span className="bg draft">Draft</span></td>
         <td>—</td>
-        <td><button className="btn btn-o btn-sm" onClick={() => showPage('mkt-post-unit')}>Edit</button> <button className="btn btn-p btn-sm" onClick={() => alert('Listing published!')}>Publish</button></td>
+        <td><button className="btn btn-o btn-sm" onClick={() => showPage('mkt-post-unit')}>Edit</button> <button className="btn btn-p btn-sm" onClick={() => showToast('Listing published!')}>Publish</button></td>
       </tr>
     </tbody></table></div>
   </div>
@@ -470,7 +474,7 @@ export function DealerMarketplacePages({ activePage, showPage }: Props) {
           <div style={{display: 'flex', gap: 24, fontSize: 13, color: '#555'}}>
             <span>{auc.specs}</span><span>Starting: {auc.start}</span><span>{auc.watchers} watchers</span>
           </div>
-          <div style={{marginTop: 12}}><button className="btn btn-o btn-sm" onClick={() => alert('You will be notified when this auction starts.')}>Watch This Auction</button></div>
+          <div style={{marginTop: 12}}><button className="btn btn-o btn-sm" onClick={() => showToast('You will be notified when this auction starts.')}>Watch This Auction</button></div>
         </div>
       ))}
     </div>
@@ -524,11 +528,9 @@ export function DealerMarketplacePages({ activePage, showPage }: Props) {
         </div>
         <button className="btn" style={{width: '100%', background: '#22c55e', color: '#fff', justifyContent: 'center', fontSize: 14, padding: '12px 24px'}} onClick={() => {
           const amt = parseInt(bidAmount.replace(/[^0-9]/g, ''));
-          if (!amt || amt < 63000) { alert('Minimum bid is $63,000 ($500 increment above current bid)'); return; }
-          if (confirm(`Place bid of $${amt.toLocaleString()}?`)) {
-            alert(`Bid of $${amt.toLocaleString()} placed!`);
-            setBidAmount('');
-          }
+          if (!amt || amt < 63000) { showToast('Minimum bid is $63,000 ($500 increment above current bid)'); return; }
+          showToast(`Bid of $${amt.toLocaleString()} placed!`);
+          setBidAmount('');
         }}>Place Bid</button>
         <div style={{fontSize: 11, opacity: 0.6, marginTop: 8}}>Minimum increment: $500 · Next bid: $63,000+</div>
       </div>
@@ -548,6 +550,7 @@ export function DealerMarketplacePages({ activePage, showPage }: Props) {
   </div>
 </div>
 
+      {toast && <div style={{position:'fixed',bottom:24,left:'50%',transform:'translateX(-50%)',background:'#1e293b',color:'#fff',padding:'10px 20px',borderRadius:8,fontSize:13,zIndex:9999,boxShadow:'0 4px 12px rgba(0,0,0,.2)'}}>{toast}</div>}
     </>
   );
 }

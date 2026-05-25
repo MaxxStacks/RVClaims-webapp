@@ -15,6 +15,8 @@ export default function Auctions() {
 
   // Live auction tabs
   const [auctionTab, setAuctionTab] = useState<'live'|'upcoming'|'won'>('live');
+  const [toast, setToast] = useState('');
+  const showToast = (msg: string) => { setToast(msg); setTimeout(() => setToast(''), 2800); };
 
   return (
     <div className="page active">
@@ -122,7 +124,7 @@ export default function Auctions() {
                     <div style={{display: 'flex', gap: 24, fontSize: 13, color: '#555'}}>
                       <span>{auc.specs}</span><span>Starting: {auc.start}</span><span>{auc.watchers} watchers</span>
                     </div>
-                    <div style={{marginTop: 12}}><button className="btn btn-o btn-sm" onClick={() => alert('You will be notified when this auction starts.')}>Watch This Auction</button></div>
+                    <div style={{marginTop: 12}}><button className="btn btn-o btn-sm" onClick={() => showToast('You will be notified when this auction starts.')}>Watch This Auction</button></div>
                   </div>
                 ))}
               </div>
@@ -135,6 +137,7 @@ export default function Auctions() {
           </div>
         </div>
       )}
+    {toast && <div style={{position:'fixed',bottom:24,left:'50%',transform:'translateX(-50%)',background:'#1e293b',color:'#fff',padding:'10px 20px',borderRadius:8,fontSize:13,zIndex:9999,boxShadow:'0 4px 12px rgba(0,0,0,.2)'}}>{toast}</div>}
     </div>
   );
 }

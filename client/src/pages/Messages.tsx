@@ -1,4 +1,8 @@
+import { useState } from 'react';
+
 export default function Messages() {
+  const [toast, setToast] = useState('');
+  const showToast = (msg: string) => { setToast(msg); setTimeout(() => setToast(''), 2800); };
   const threads = [
     {name: 'DS360 Team', msg: 'Your claim CLM-0248 has been submitted to Jayco.', time: '2h ago', unread: true},
     {name: 'CLM-0243 Thread', msg: 'Payment of $3,920 has been processed.', time: '1d ago', unread: false},
@@ -29,10 +33,11 @@ export default function Messages() {
           </div>
           <div style={{padding: '12px 16px', borderTop: '1px solid #f0f0f0', display: 'flex', gap: 8}}>
             <input placeholder="Reply..." style={{flex: 1, padding: '8px 14px', border: '1px solid #e0e0e0', borderRadius: 20, fontSize: 13, fontFamily: 'inherit'}} />
-            <button className="btn btn-p" style={{borderRadius: 20}} onClick={() => alert('Message sent')}>Send</button>
+            <button className="btn btn-p" style={{borderRadius: 20}} onClick={() => showToast('Message sent')}>Send</button>
           </div>
         </div>
       </div>
+      {toast && <div style={{position:'fixed',bottom:24,left:'50%',transform:'translateX(-50%)',background:'#1e293b',color:'#fff',padding:'10px 20px',borderRadius:8,fontSize:13,zIndex:9999,boxShadow:'0 4px 12px rgba(0,0,0,.2)'}}>{toast}</div>}
     </div>
   );
 }

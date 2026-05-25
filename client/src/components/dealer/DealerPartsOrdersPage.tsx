@@ -16,6 +16,8 @@ export default function DealerPartsOrdersPage() {
   const [showNew, setShowNew] = useState(false);
   const [form, setForm] = useState({ supplier: "", items: "" });
   const [submitting, setSubmitting] = useState(false);
+  const [toast, setToast] = useState('');
+  const showToast = (msg: string) => { setToast(msg); setTimeout(() => setToast(''), 2800); };
 
   async function refresh() {
     const list = await apiFetch<any[]>("/api/v6/parts-orders");
@@ -28,7 +30,7 @@ export default function DealerPartsOrdersPage() {
       const [partNumber, description, qtyStr] = l.split("|").map(s => s.trim());
       return { partNumber: partNumber || "MISC", description: description || null, quantity: parseInt(qtyStr, 10) || 1 };
     });
-    if (lines.length === 0) { alert("Add at least one item (format: PART-NUM | description | qty)"); return; }
+    if (lines.length === 0) { showToast("Add at least one item (format: PART-NUM | description | qty)"); return; }
     setSubmitting(true);
     try {
       await apiFetch("/api/v6/parts-orders", {
@@ -120,6 +122,7 @@ export default function DealerPartsOrdersPage() {
           </tbody>
         </table>
       )}
+      {toast && <div style={{position:'fixed',bottom:24,left:'50%',transform:'translateX(-50%)',background:'#1e293b',color:'#fff',padding:'10px 20px',borderRadius:8,fontSize:13,zIndex:9999,boxShadow:'0 4px 12px rgba(0,0,0,.2)'}}>{toast}</div>}
     </div>
   );
 }

@@ -1,7 +1,34 @@
 import { useState } from 'react';
+import { useApiFetch } from '@/lib/api';
 
 export default function DealerChangelog() {
+  const apiFetch = useApiFetch();
   const [tab, setTab] = useState<'current'|'past'|'upcoming'|'request'>('current');
+  const [toast, setToast] = useState('');
+  const showToast = (msg: string) => { setToast(msg); setTimeout(() => setToast(''), 2800); };
+  const [featureTitle, setFeatureTitle] = useState('');
+  const [featureDesc, setFeatureDesc] = useState('');
+  const [featurePriority, setFeaturePriority] = useState('Nice to have');
+  const [submittingFeature, setSubmittingFeature] = useState(false);
+
+  async function submitFeatureRequest() {
+    if (!featureTitle.trim()) { showToast('Feature title is required'); return; }
+    setSubmittingFeature(true);
+    try {
+      await apiFetch('/api/feature-requests', {
+        method: 'POST',
+        body: JSON.stringify({ title: featureTitle, description: featureDesc, priority: featurePriority }),
+      });
+      showToast('Feature request submitted!');
+      setFeatureTitle('');
+      setFeatureDesc('');
+      setFeaturePriority('Nice to have');
+    } catch {
+      showToast('Submit failed — please try again');
+    } finally {
+      setSubmittingFeature(false);
+    }
+  }
 
   return (
     <div className="page active">
@@ -81,14 +108,15 @@ export default function DealerChangelog() {
           <div style={{padding: 20}}>
             <div style={{fontSize: 13, color: '#666', marginBottom: 16, lineHeight: '1.5'}}>Have an idea for a feature that would help your dealership? Let us know! We review all requests and prioritize based on dealer feedback.</div>
             <div className="form-grid" style={{padding: 0}}>
-              <div className="form-group full"><label>Feature Title</label><input placeholder="Brief description of what you'd like to see..." /></div>
-              <div className="form-group full"><label>Tell us more</label><textarea placeholder="How would this feature help your dealership? What problem does it solve?" style={{minHeight: 120}}></textarea></div>
-              <div className="form-group"><label>Priority to you</label><select><option>Nice to have</option><option>Would really help</option><option>Critical for my business</option></select></div>
+              <div className="form-group full"><label>Feature Title</label><input value={featureTitle} onChange={e => setFeatureTitle(e.target.value)} placeholder="Brief description of what you'd like to see..." /></div>
+              <div className="form-group full"><label>Tell us more</label><textarea value={featureDesc} onChange={e => setFeatureDesc(e.target.value)} placeholder="How would this feature help your dealership? What problem does it solve?" style={{minHeight: 120}}></textarea></div>
+              <div className="form-group"><label>Priority to you</label><select value={featurePriority} onChange={e => setFeaturePriority(e.target.value)}><option>Nice to have</option><option>Would really help</option><option>Critical for my business</option></select></div>
             </div>
-            <div className="btn-bar" style={{padding: '16px 0'}}><button className="btn btn-p" onClick={() => alert('Feature request submitted!')}>Submit Request</button></div>
+            <div className="btn-bar" style={{padding: '16px 0'}}><button className="btn btn-p" disabled={submittingFeature} onClick={submitFeatureRequest}>{submittingFeature ? 'Submitting...' : 'Submit Request'}</button></div>
           </div>
         </div>
       )}
+      {toast && <div style={{position:'fixed',bottom:24,left:'50%',transform:'translateX(-50%)',background:'#1e293b',color:'#fff',padding:'10px 20px',borderRadius:8,fontSize:13,zIndex:9999,boxShadow:'0 4px 12px rgba(0,0,0,.2)'}}>{toast}</div>}
     </div>
   );
 }

@@ -17,6 +17,8 @@ export default function NewClaimPage() {
   const [photoCount, setPhotoCount] = useState(0);
   const [submitting, setSubmitting] = useState(false);
   const [cancelling, setCancelling] = useState(false);
+  const [toast, setToast] = useState('');
+  const showToast = (msg: string) => { setToast(msg); setTimeout(() => setToast(''), 2800); };
 
   useEffect(() => {
     apiFetch<any>(`/api/v6/units/${params.unitId}`)
@@ -56,8 +58,8 @@ export default function NewClaimPage() {
   }
 
   async function submit() {
-    if (!draftClaimId) { alert("Please select a claim type first"); return; }
-    if (photoCount === 0) { alert("At least 1 photo is required before submitting"); return; }
+    if (!draftClaimId) { showToast("Please select a claim type first"); return; }
+    if (photoCount === 0) { showToast("At least 1 photo is required before submitting"); return; }
     setSubmitting(true);
     try {
       await apiFetch(`/api/v6/claims/${draftClaimId}/submit`, {
@@ -66,7 +68,7 @@ export default function NewClaimPage() {
       });
       navigate(`/dealer-v6/units/${params.unitId}`);
     } catch (err: any) {
-      alert("Submit failed: " + (err.message || err));
+      showToast("Submit failed: " + (err.message || err));
     } finally {
       setSubmitting(false);
     }
@@ -191,6 +193,7 @@ export default function NewClaimPage() {
             Upload at least 1 photo to enable submit
           </div>
         )}
+        {toast && <div style={{position:'fixed',bottom:24,left:'50%',transform:'translateX(-50%)',background:'#1e293b',color:'#fff',padding:'10px 20px',borderRadius:8,fontSize:13,zIndex:9999,boxShadow:'0 4px 12px rgba(0,0,0,.2)'}}>{toast}</div>}
       </div>
     </div>
   );

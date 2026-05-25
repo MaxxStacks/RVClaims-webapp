@@ -6,6 +6,8 @@ const DocumentTransfer = lazy(() => import('@/components/remote-support/Document
 export default function DealerSettings() {
   const [tab, setTab] = useState<'ds-profile'|'ds-security'|'ds-dealership'|'ds-subscription'|'ds-notifpref'|'ds-remote'>('ds-profile');
   const [showShare, setShowShare] = useState(false);
+  const [toast, setToast] = useState('');
+  const showToast = (msg: string) => { setToast(msg); setTimeout(() => setToast(''), 2800); };
   const [shareSessionId, setShareSessionId] = useState<string | null>(null);
   const [howItWorksOpen, setHowItWorksOpen] = useState(false);
   const [sessionHistory, setSessionHistory] = useState<any[]>([]);
@@ -51,7 +53,7 @@ export default function DealerSettings() {
                 <div className="form-group"><label>Date Format</label><select><option>MMM DD, YYYY</option><option>DD/MM/YYYY</option><option>YYYY-MM-DD</option></select></div>
                 <div className="form-group full"><label>Bio</label><textarea placeholder="Optional bio..."></textarea></div>
               </div>
-              <div className="btn-bar"><button className="btn btn-p" onClick={() => alert('Profile saved')}>Save Profile</button><button className="btn btn-o">Cancel</button></div>
+              <div className="btn-bar"><button className="btn btn-p" onClick={() => showToast('Profile saved')}>Save Profile</button><button className="btn btn-o">Cancel</button></div>
             </div>
           )}
 
@@ -65,11 +67,11 @@ export default function DealerSettings() {
                 <div className="form-group"><label>New Password</label><input type="password" placeholder="New password" /></div>
                 <div className="form-group"><label>Confirm Password</label><input type="password" placeholder="Confirm" /></div>
                 <div className="form-group full" style={{borderTop: '1px solid #f0f0f0', paddingTop: 16}}><label style={{fontWeight: 600, fontSize: 13}}>Two-Factor Authentication</label></div>
-                <div className="form-group"><label>2FA Status</label><div style={{display: 'flex', alignItems: 'center', gap: 8, marginTop: 4}}><span className="bg pending">Not Enabled</span><button className="btn btn-o btn-sm" onClick={() => alert('2FA setup coming soon')}>Enable 2FA</button></div></div>
+                <div className="form-group"><label>2FA Status</label><div style={{display: 'flex', alignItems: 'center', gap: 8, marginTop: 4}}><span className="bg pending">Not Enabled</span><button className="btn btn-o btn-sm" onClick={() => showToast('Coming in v2.2')}>Enable 2FA</button></div></div>
                 <div className="form-group full" style={{borderTop: '1px solid #f0f0f0', paddingTop: 16}}><label style={{fontWeight: 600, fontSize: 13}}>Active Sessions</label></div>
-                <div className="form-group full"><div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderBottom: '1px solid #f5f5f5'}}><div><div style={{fontSize: 13, fontWeight: 500}}>Chrome on Windows</div><div style={{fontSize: 12, color: '#888'}}>Hamilton, ON · Current session</div></div><span className="bg active">Active</span></div><div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0'}}><div><div style={{fontSize: 13, fontWeight: 500}}>Safari on iPhone</div><div style={{fontSize: 12, color: '#888'}}>Hamilton, ON · 2 days ago</div></div><button className="btn btn-o btn-sm" style={{color: '#dc2626', borderColor: '#fca5a5'}} onClick={() => alert('Session revoked')}>Revoke</button></div></div>
+                <div className="form-group full"><div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderBottom: '1px solid #f5f5f5'}}><div><div style={{fontSize: 13, fontWeight: 500}}>Chrome on Windows</div><div style={{fontSize: 12, color: '#888'}}>Hamilton, ON · Current session</div></div><span className="bg active">Active</span></div><div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0'}}><div><div style={{fontSize: 13, fontWeight: 500}}>Safari on iPhone</div><div style={{fontSize: 12, color: '#888'}}>Hamilton, ON · 2 days ago</div></div><button className="btn btn-o btn-sm" style={{color: '#dc2626', borderColor: '#fca5a5'}} onClick={() => showToast('Session revoked')}>Revoke</button></div></div>
               </div>
-              <div className="btn-bar"><button className="btn btn-p" onClick={() => alert('Password updated')}>Update Password</button><button className="btn btn-o">Cancel</button></div>
+              <div className="btn-bar"><button className="btn btn-p" onClick={() => showToast('Password updated')}>Update Password</button><button className="btn btn-o">Cancel</button></div>
             </div>
           )}
 
@@ -104,10 +106,10 @@ export default function DealerSettings() {
                 <div className="form-group full"><div style={{display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 4}}>
                   <span className="mfr" style={{padding: '6px 12px', fontSize: 12}}>Jayco</span>
                   <span className="mfr" style={{padding: '6px 12px', fontSize: 12}}>Forest River</span>
-                  <span className="mfr" style={{padding: '6px 12px', fontSize: 12, opacity: 0.4, border: '1px dashed #ccc', cursor: 'pointer'}} onClick={() => alert('Manufacturer added')}>+ Add manufacturer</span>
+                  <span className="mfr" style={{padding: '6px 12px', fontSize: 12, opacity: 0.4, border: '1px dashed #ccc', cursor: 'pointer'}} onClick={() => showToast('Manufacturer added')}>+ Add manufacturer</span>
                 </div></div>
               </div>
-              <div className="btn-bar"><button className="btn btn-p" onClick={() => alert('Dealership info saved')}>Save Dealership Info</button><button className="btn btn-o">Cancel</button></div>
+              <div className="btn-bar"><button className="btn btn-p" onClick={() => showToast('Dealership info saved')}>Save Dealership Info</button><button className="btn btn-o">Cancel</button></div>
             </div>
           )}
 
@@ -138,7 +140,7 @@ export default function DealerSettings() {
                 <div style={{display: 'flex', alignItems: 'center', gap: 12, padding: '12px 16px', background: '#fafafa', borderRadius: 8, border: '1px solid #e5e7eb'}}>
                   <svg width="32" height="20" viewBox="0 0 32 20"><rect width="32" height="20" rx="4" fill="#1a1f71"/><text x="16" y="13" textAnchor="middle" fill="white" fontSize="8" fontWeight="bold" fontFamily="Arial">VISA</text></svg>
                   <div style={{flex: 1}}><div style={{fontSize: 13, fontWeight: 500}}>Visa ending in 4242</div><div style={{fontSize: 12, color: '#888'}}>Expires 09/2028</div></div>
-                  <button className="btn btn-o btn-sm" onClick={() => alert('Card management coming soon')}>Update Card</button>
+                  <button className="btn btn-o btn-sm" onClick={() => showToast('Coming in v2.2')}>Update Card</button>
                 </div>
               </div>
               <div style={{padding: '12px 20px', background: '#f5f6f8', borderTop: '1px solid #f0f0f0', fontSize: 12, color: '#888', borderRadius: '0 0 8px 8px'}}>Subscription plan and fee schedule are managed by your operator. Contact them to make changes.</div>
@@ -162,7 +164,7 @@ export default function DealerSettings() {
                   <div key={n.label} className="form-group"><label>{n.label}</label><select defaultValue={n.default}><option>Push + Email</option><option>Push only</option><option>Email only</option><option>Off</option></select></div>
                 ))}
               </div>
-              <div className="btn-bar"><button className="btn btn-p" onClick={() => alert('Preferences saved')}>Save Preferences</button><button className="btn btn-o" onClick={() => alert('Preferences reset')}>Reset to Defaults</button></div>
+              <div className="btn-bar"><button className="btn btn-p" onClick={() => showToast('Preferences saved')}>Save Preferences</button><button className="btn btn-o" onClick={() => showToast('Preferences reset to defaults')}>Reset to Defaults</button></div>
             </div>
           )}
 
@@ -293,6 +295,7 @@ export default function DealerSettings() {
 
         </div>
       </div>
+      {toast && <div style={{position:'fixed',bottom:24,left:'50%',transform:'translateX(-50%)',background:'#1e293b',color:'#fff',padding:'10px 20px',borderRadius:8,fontSize:13,zIndex:9999,boxShadow:'0 4px 12px rgba(0,0,0,.2)'}}>{toast}</div>}
     </div>
   );
 }

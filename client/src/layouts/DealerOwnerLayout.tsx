@@ -6,6 +6,7 @@ import { apiFetch } from '@/lib/api';
 import ds360Icon from '@assets/ds360_favicon.png';
 import type { Language } from '@/lib/i18n';
 import { MobileBottomNav } from '@/components/MobileBottomNav';
+import { useEnabledModules, hasModule } from '@/hooks/useEnabledModules';
 
 interface Props { children?: React.ReactNode; }
 
@@ -63,6 +64,8 @@ export default function DealerOwnerLayout({ children }: Props) {
     } catch {}
   };
   const unreadCount = notifItems.filter(n => !n.isRead).length;
+  const { modules: enabledModules, loading: modulesLoading } = useEnabledModules();
+  const mod = (key: string) => modulesLoading || hasModule(enabledModules, key);
 
   return (
     <>
@@ -87,24 +90,24 @@ export default function DealerOwnerLayout({ children }: Props) {
           </div>
           <div className="nav-section">
             <div className="nav-label">{t('nav.services')}</div>
-            <Link className={`nav-item ${isActive('financing') ? 'active' : ''}`} to="financing"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>{t('nav.financing')}</Link>
-            <Link className={`nav-item ${isActive('fi') ? 'active' : ''}`} to="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>{t('nav.fi')}</Link>
-            <Link className={`nav-item ${isActive('warranty') ? 'active' : ''}`} to="warranty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 12l2 2 4-4"/></svg>{t('nav.warrantyPlans')}</Link>
-            <Link className={`nav-item ${isActive('parts') ? 'active' : ''}`} to="parts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>{t('nav.parts')}</Link>
+            {mod('financing') && <Link className={`nav-item ${isActive('financing') ? 'active' : ''}`} to="financing"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>{t('nav.financing')}</Link>}
+            {(mod('fi_services') || mod('ai_fi')) && <Link className={`nav-item ${isActive('fi') ? 'active' : ''}`} to="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>{t('nav.fi')}</Link>}
+            {mod('warranty_plans') && <Link className={`nav-item ${isActive('warranty') ? 'active' : ''}`} to="warranty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 12l2 2 4-4"/></svg>{t('nav.warrantyPlans')}</Link>}
+            {mod('parts') && <Link className={`nav-item ${isActive('parts') ? 'active' : ''}`} to="parts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>{t('nav.parts')}</Link>}
           </div>
           <div className="nav-section">
             <div className="nav-label">{t('nav.customers')}</div>
             <Link className={`nav-item ${isActive('customers') ? 'active' : ''}`} to="customers"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>{t('nav.customers')}</Link>
             <Link className={`nav-item ${isActive('customer-tickets') ? 'active' : ''}`} to="customer-tickets"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>{t('nav.customerTickets')}</Link>
             <Link className={`nav-item ${isActive('documents') ? 'active' : ''}`} to="documents"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>{t('nav.documents')}</Link>
-            <Link className={`nav-item ${isActive('techflow') ? 'active' : ''}`} to="techflow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>{t('nav.techflow')}</Link>
+            {mod('techflow') && <Link className={`nav-item ${isActive('techflow') ? 'active' : ''}`} to="techflow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>{t('nav.techflow')}</Link>}
             <Link className={`nav-item ${isActive('messages') ? 'active' : ''}`} to="messages"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>{t('nav.messages')}</Link>
           </div>
           <div className="nav-section">
             <div className="nav-label">{t('nav.market')}</div>
-            <Link className={`nav-item ${isActive('marketplace') ? 'active' : ''}`} to="marketplace"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a4 4 0 00-8 0v2"/></svg>{t('nav.marketplace')}</Link>
-            <Link className={`nav-item ${isActive('consignment') ? 'active' : ''}`} to="consignment"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 014-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>{t('nav.consignment')}</Link>
-            <Link className={`nav-item ${isActive('marketing') ? 'active' : ''}`} to="marketing"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>{t('nav.marketing')}</Link>
+            {mod('marketplace') && <Link className={`nav-item ${isActive('marketplace') ? 'active' : ''}`} to="marketplace"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a4 4 0 00-8 0v2"/></svg>{t('nav.marketplace')}</Link>}
+            {mod('consignment') && <Link className={`nav-item ${isActive('consignment') ? 'active' : ''}`} to="consignment"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 014-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>{t('nav.consignment')}</Link>}
+            {mod('marketing') && <Link className={`nav-item ${isActive('marketing') ? 'active' : ''}`} to="marketing"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>{t('nav.marketing')}</Link>}
             <Link className={`nav-item ${isActive('sales-services') ? 'active' : ''}`} to="sales-services"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>{t('nav.salesServices')}</Link>
           </div>
           <div className="nav-section">

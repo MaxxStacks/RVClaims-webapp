@@ -68,6 +68,17 @@ router.patch("/branding/me", async (req: Request, res: Response) => {
   res.json({ ok: true });
 });
 
+// GET /api/v6/dealerships/my-modules — dealer-accessible, returns own enabled module keys
+router.get("/my-modules", async (req: Request, res: Response) => {
+  const u = req.user!;
+  if (!u.dealershipId) return res.json({ modules: [] });
+  const rows = await db
+    .select({ moduleKey: dealershipModules.moduleKey })
+    .from(dealershipModules)
+    .where(eq(dealershipModules.dealershipId, u.dealershipId));
+  res.json({ modules: rows.map(r => r.moduleKey) });
+});
+
 // GET /api/v6/dealerships — list with filters + KPIs
 router.get("/", async (req: Request, res: Response) => {
   if (!requireOperator(req, res)) return;
