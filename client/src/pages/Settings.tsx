@@ -1,126 +1,308 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { useAuth } from '@/hooks/use-auth';
+import { apiFetch } from '@/lib/api';
+import { useLanguage } from '@/hooks/use-language';
+
+const NOTIF_TYPES = [
+  { key: 'claim_update', label: 'Claim status updates' },
+  { key: 'invoice', label: 'Invoice generated' },
+  { key: 'payment', label: 'Payment received' },
+  { key: 'parts', label: 'Parts order updates' },
+  { key: 'fi', label: 'F&I recommendations' },
+  { key: 'financing', label: 'Financing updates' },
+  { key: 'ticket', label: 'Support ticket updates' },
+  { key: 'system', label: 'Platform announcements' },
+];
+
+const ROLE_LABELS: Record<string, string> = {
+  dealer_owner: 'Dealer Owner',
+  dealer_staff: 'Dealer Staff',
+  client: 'Customer',
+  technician: 'Technician',
+  service_manager: 'Service Manager',
+  shop_manager: 'Shop Manager',
+  parts_dept: 'Parts Department',
+  public_bidder: 'Marketplace Bidder',
+  consignor: 'Consignor',
+  bidder: 'Marketplace Bidder',
+};
 
 export default function Settings() {
-  const [settingsTab, setSettingsTab] = useState('stab-s-profile');
-  const [settingsSaved, setSettingsSaved] = useState('');
+  const { user } = useAuth();
+  const { t } = useLanguage();
+  const [tab, setTab] = useState('profile');
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const saveSettings = (tab: string) => {
-    setSettingsSaved(tab);
-    setTimeout(() => setSettingsSaved(''), 2000);
-  };
+  const isDealerOwner = user?.role === 'dealer_owner';
+  const dealerId = (user as any)?.dealershipId || '';
 
-  function updateOpProfile(e: React.ChangeEvent<HTMLInputElement>) {
+  const [profile, setProfile] = useState({ firstName: '', lastName: '', email: '', phone: '', timezone: 'Eastern (ET)' });
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+  const [profileSaving, setProfileSaving] = useState(false);
+  const [profileFeedback, setProfileFeedback] = useState<'saved' | 'error' | ''>('');
+
+  const [notifPrefs, setNotifPrefs] = useState<Record<string, string>>({});
+  const [notifLoading, setNotifLoading] = useState(false);
+  const [notifSaving, setNotifSaving] = useState(false);
+  const [notifFeedback, setNotifFeedback] = useState<'saved' | 'error' | ''>('');
+
+  const [theme, setTheme] = useState(() => localStorage.getItem('ds360-theme') || '');
+  const [lang, setLang] = useState(() => localStorage.getItem('ds360-lang') || (navigator.language.startsWith('fr') ? 'fr' : 'en'));
+
+  useEffect(() => {
+    if (user) {
+      setProfile({
+        firstName: (user as any).firstName || '',
+        lastName: (user as any).lastName || '',
+        email: (user as any).email || '',
+        phone: (user as any).phone || '',
+        timezone: (user as any).timezone || 'Eastern (ET)',
+      });
+      if ((user as any).avatarUrl) setAvatarPreview((user as any).avatarUrl);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (tab === 'notifications') {
+      setNotifLoading(true);
+      apiFetch<any>('/api/notifications/preferences')
+        .then(d => setNotifPrefs(d.preferences || {}))
+        .catch(() => {})
+        .finally(() => setNotifLoading(false));
+    }
+  }, [tab]);
+
+  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     const reader = new FileReader();
-    reader.onload = ev => {
-      const el = document.getElementById('op-profile-avatar');
-      if (el && ev.target?.result) { el.style.backgroundImage = `url(${ev.target.result})`; el.textContent = ''; }
-    };
+    reader.onload = ev => { if (ev.target?.result) setAvatarPreview(ev.target.result as string); };
     reader.readAsDataURL(file);
-  }
+  };
+
+  const handleSaveProfile = async () => {
+    setProfileSaving(true);
+    setProfileFeedback('');
+    try {
+      await apiFetch('/api/user/profile', {
+        method: 'PUT',
+        body: JSON.stringify({ firstName: profile.firstName, lastName: profile.lastName, phone: profile.phone, timezone: profile.timezone }),
+      });
+      setProfileFeedback('saved');
+      setTimeout(() => window.location.reload(), 1500);
+    } catch {
+      setProfileFeedback('error');
+      setProfileSaving(false);
+    }
+  };
+
+  const handleSaveNotifPrefs = async () => {
+    setNotifSaving(true);
+    setNotifFeedback('');
+    try {
+      await apiFetch('/api/notifications/preferences', {
+        method: 'PATCH',
+        body: JSON.stringify({ preferences: notifPrefs }),
+      });
+      setNotifFeedback('saved');
+      setTimeout(() => setNotifFeedback(''), 2500);
+    } catch {
+      setNotifFeedback('error');
+      setTimeout(() => setNotifFeedback(''), 3000);
+    } finally {
+      setNotifSaving(false);
+    }
+  };
+
+  const toggleTheme = () => {
+    const next = theme === 'dark' ? '' : 'dark';
+    setTheme(next);
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('ds360-theme', next);
+  };
+
+  const setLanguage = (l: string) => {
+    setLang(l);
+    localStorage.setItem('ds360-lang', l);
+  };
+
+  const openClerkSecurity = () => {
+    try {
+      const clerk = (window as any).Clerk;
+      if (clerk?.openUserProfile) { clerk.openUserProfile(); }
+    } catch {}
+  };
+
+  const initials = `${profile.firstName.charAt(0)}${profile.lastName.charAt(0)}`.toUpperCase() || 'U';
+  const roleDisplay = ROLE_LABELS[(user as any)?.role] || (user as any)?.role || 'User';
 
   return (
     <div className="page active">
-      <div style={{display: 'grid', gridTemplateColumns: '200px 1fr', gap: 24}}>
+      <div style={{ display: 'grid', gridTemplateColumns: '200px 1fr', gap: 24 }}>
         <div>
-          <div className={`settings-link${settingsTab === 'stab-s-profile' ? ' active' : ''}`} onClick={() => setSettingsTab('stab-s-profile')}>My Profile</div>
-          <div className={`settings-link${settingsTab === 'stab-s-general' ? ' active' : ''}`} onClick={() => setSettingsTab('stab-s-general')}>General</div>
-          <div className={`settings-link${settingsTab === 'stab-s-fees' ? ' active' : ''}`} onClick={() => setSettingsTab('stab-s-fees')}>Claim Fee Defaults</div>
-          <div className={`settings-link${settingsTab === 'stab-s-billing' ? ' active' : ''}`} onClick={() => setSettingsTab('stab-s-billing')}>Billing Configuration</div>
-          <div className={`settings-link${settingsTab === 'stab-s-notif' ? ' active' : ''}`} onClick={() => setSettingsTab('stab-s-notif')}>Notifications</div>
-          <div className={`settings-link${settingsTab === 'stab-s-integrations' ? ' active' : ''}`} onClick={() => setSettingsTab('stab-s-integrations')}>Integrations</div>
-          <div className={`settings-link${settingsTab === 'stab-s-security' ? ' active' : ''}`} onClick={() => setSettingsTab('stab-s-security')}>Security</div>
+          <div style={{ fontSize: 11, textTransform: 'uppercase', letterSpacing: 1, color: '#bbb', fontWeight: 600, padding: '4px 0 8px' }}>{t('settings.personal')}</div>
+          <div className={`settings-link${tab === 'profile' ? ' active' : ''}`} onClick={() => setTab('profile')}>{t('settings.myProfile')}</div>
+          <div className={`settings-link${tab === 'security' ? ' active' : ''}`} onClick={() => setTab('security')}>{t('settings.security')}</div>
+          <div className={`settings-link${tab === 'notifications' ? ' active' : ''}`} onClick={() => setTab('notifications')}>{t('settings.notificationPreferences')}</div>
+          <div className={`settings-link${tab === 'appearance' ? ' active' : ''}`} onClick={() => setTab('appearance')}>{t('settings.appearance')}</div>
+          {isDealerOwner && (
+            <>
+              <div style={{ fontSize: 11, textTransform: 'uppercase', letterSpacing: 1, color: '#bbb', fontWeight: 600, padding: '16px 0 8px', borderTop: '1px solid #f0f0f0', marginTop: 8 }}>{t('nav.billing')}</div>
+              <div className={`settings-link${tab === 'dealership' ? ' active' : ''}`} onClick={() => setTab('dealership')}>{t('settings.dealershipSettings')}</div>
+            </>
+          )}
         </div>
         <div>
-          <div style={{display: settingsTab === 'stab-s-profile' ? 'block' : 'none'}} className="pn"><div className="pn-h"><span className="pn-t">My Profile</span></div>
-            <div style={{padding: '24px 20px', display: 'flex', gap: 24, alignItems: 'flex-start', borderBottom: '1px solid #f0f0f0'}}>
-              <div style={{textAlign: 'center'}}>
-                <div id="op-profile-avatar" style={{width: 80, height: 80, borderRadius: '50%', background: 'var(--brand)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28, fontWeight: 700, color: '#fff', marginBottom: 8, overflow: 'hidden'}}>JD</div>
-                <input type="file" id="op-profile-input" accept="image/*" style={{display: 'none'}} onChange={updateOpProfile} />
-                <button className="btn btn-o btn-sm" onClick={() => document.getElementById('op-profile-input')?.click()}>Change Photo</button>
+
+          {tab === 'profile' && (
+            <div className="pn">
+              <div className="pn-h"><span className="pn-t">{t('settings.myProfile')}</span></div>
+              <div style={{ padding: '24px 20px', display: 'flex', gap: 24, alignItems: 'flex-start', borderBottom: '1px solid #f0f0f0' }}>
+                <div style={{ position: 'relative', flexShrink: 0 }}>
+                  <div style={{ width: 80, height: 80, borderRadius: '50%', background: avatarPreview ? 'transparent' : 'var(--brand)', backgroundImage: avatarPreview ? `url(${avatarPreview})` : 'none', backgroundSize: 'cover', backgroundPosition: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28, fontWeight: 700, color: '#fff', overflow: 'hidden' }}>
+                    {!avatarPreview && initials}
+                  </div>
+                  <button onClick={() => fileInputRef.current?.click()} style={{ position: 'absolute', bottom: 0, right: 0, width: 28, height: 28, borderRadius: '50%', background: 'var(--brand)', border: '2px solid #fff', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', padding: 0 }}>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  </button>
+                  <input ref={fileInputRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={handleAvatarChange} />
+                </div>
+                <div style={{ flex: 1, paddingTop: 8 }}>
+                  <div style={{ fontSize: 16, fontWeight: 600, marginBottom: 2 }}>{profile.firstName} {profile.lastName}</div>
+                  <div style={{ fontSize: 13, color: 'var(--text-muted)' }}>{roleDisplay} · Dealer Suite 360</div>
+                </div>
               </div>
-              <div style={{flex: 1}}><div style={{fontSize: 16, fontWeight: 600, marginBottom: 2}}>Jonathan Delorme</div><div style={{fontSize: 13, color: '#888'}}>Operator Admin · Dealer Suite 360</div></div>
+              <div className="form-grid">
+                <div className="form-group"><label>{t('settings.firstName')}</label><input value={profile.firstName} onChange={e => setProfile(p => ({ ...p, firstName: e.target.value }))} /></div>
+                <div className="form-group"><label>{t('settings.lastName')}</label><input value={profile.lastName} onChange={e => setProfile(p => ({ ...p, lastName: e.target.value }))} /></div>
+                <div className="form-group"><label>{t('settings.email')}</label><input value={profile.email} readOnly style={{ background: '#f3f4f6', color: '#888' }} /></div>
+                <div className="form-group"><label>{t('settings.phone')}</label><input value={profile.phone} onChange={e => setProfile(p => ({ ...p, phone: e.target.value }))} placeholder="(555) 000-0000" /></div>
+                <div className="form-group"><label>{t('settings.role')}</label><input value={roleDisplay} readOnly style={{ background: '#f3f4f6', color: '#888' }} /></div>
+                <div className="form-group">
+                  <label>{t('settings.timezone')}</label>
+                  <select value={profile.timezone} onChange={e => setProfile(p => ({ ...p, timezone: e.target.value }))}>
+                    <option>Eastern (ET)</option><option>Central (CT)</option><option>Mountain (MT)</option><option>Pacific (PT)</option>
+                  </select>
+                </div>
+              </div>
+              {profileFeedback === 'saved' && <div style={{ padding: '0 20px 8px', color: '#0cb22c', fontSize: 13 }}>Saved ✓ Refreshing…</div>}
+              {profileFeedback === 'error' && <div style={{ padding: '0 20px 8px', color: '#dc2626', fontSize: 13 }}>Failed to save. Please try again.</div>}
+              <div className="btn-bar">
+                <button className="btn btn-p" onClick={handleSaveProfile} disabled={profileSaving}>{profileSaving ? t('common.saving') : t('settings.saveProfile')}</button>
+                <button className="btn btn-o">{t('common.cancel')}</button>
+              </div>
             </div>
-            <div className="form-grid">
-              <div className="form-group"><label>First Name</label><input defaultValue="Jonathan" /></div>
-              <div className="form-group"><label>Last Name</label><input defaultValue="Delorme" /></div>
-              <div className="form-group"><label>Email</label><input defaultValue="jonathan@dealersuite360.com" /></div>
-              <div className="form-group"><label>Phone</label><input defaultValue="(514) 555-0100" /></div>
-              <div className="form-group"><label>Role</label><input defaultValue="Operator Admin" readOnly style={{background: '#f3f4f6', color: '#888'}} /></div>
-              <div className="form-group"><label>Timezone</label><select><option>Eastern (ET)</option><option>Central</option><option>Mountain</option><option>Pacific</option></select></div>
+          )}
+
+          {tab === 'security' && (
+            <div className="pn">
+              <div className="pn-h"><span className="pn-t">{t('settings.security')}</span></div>
+              <div style={{ padding: 20, display: 'flex', flexDirection: 'column', gap: 12 }}>
+                {[
+                  { title: 'Password', desc: 'Update your account password', label: 'Change Password' },
+                  { title: 'Two-Factor Authentication', desc: 'Add an extra layer of security to your account', label: 'Manage 2FA' },
+                  { title: 'Active Sessions', desc: 'View and manage all active login sessions', label: 'View Sessions' },
+                ].map(item => (
+                  <div key={item.title} style={{ padding: '14px 16px', border: '1px solid var(--border)', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <div>
+                      <div style={{ fontWeight: 600, fontSize: 13, marginBottom: 2 }}>{item.title}</div>
+                      <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>{item.desc}</div>
+                    </div>
+                    <button className="btn btn-o btn-sm" onClick={openClerkSecurity}>{item.label}</button>
+                  </div>
+                ))}
+                <div style={{ padding: '14px 16px', border: '1px solid var(--border)', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <div>
+                    <div style={{ fontWeight: 600, fontSize: 13, marginBottom: 2 }}>Sign Out All Devices</div>
+                    <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>Revoke all active sessions on all devices</div>
+                  </div>
+                  <button className="btn btn-d btn-sm" onClick={openClerkSecurity}>Sign Out All</button>
+                </div>
+                <div style={{ fontSize: 12, color: 'var(--text-muted)', paddingTop: 4 }}>
+                  Authentication and security are managed by Clerk. All session data is encrypted and handled securely.
+                </div>
+              </div>
             </div>
-            <div className="btn-bar"><button className="btn btn-p" onClick={() => saveSettings('profile')}>{settingsSaved === 'profile' ? 'Saved ✓' : 'Save Profile'}</button><button className="btn btn-o">Cancel</button></div>
-          </div>
+          )}
 
-          <div style={{display: settingsTab === 'stab-s-general' ? 'block' : 'none'}} className="pn"><div className="pn-h"><span className="pn-t">General Settings</span></div><div className="form-grid">
-            <div className="form-group"><label>Platform Name</label><input defaultValue="Dealer Suite 360" /></div>
-            <div className="form-group"><label>Support Email</label><input defaultValue="support@dealersuite360.com" /></div>
-            <div className="form-group"><label>Support Phone</label><input defaultValue="(888) 443-2204" /></div>
-            <div className="form-group"><label>Default Language</label><select><option>English</option><option>French</option></select></div>
-            <div className="form-group"><label>Currency</label><select><option>CAD ($)</option><option>USD ($)</option></select></div>
-            <div className="form-group"><label>Timezone</label><select><option>Eastern</option><option>Central</option><option>Mountain</option><option>Pacific</option></select></div>
-            <div className="form-group"><label>Stale Claim Threshold (hrs)</label><input defaultValue="36" type="number" /></div>
-            <div className="form-group"><label>Platform URL</label><input defaultValue="https://dealersuite360.com" /></div>
-          </div><div className="btn-bar"><button className="btn btn-p" onClick={() => saveSettings('general')}>{settingsSaved === 'general' ? 'Saved ✓' : 'Save'}</button><button className="btn btn-o">Reset</button></div></div>
-
-          <div style={{display: settingsTab === 'stab-s-fees' ? 'block' : 'none'}} className="pn"><div className="pn-h"><span className="pn-t">Claim Fee Defaults</span><span style={{fontSize: 12, color: '#888'}}>Platform defaults. Override per dealer.</span></div><div className="form-grid">
-            <div className="form-group full" style={{borderBottom: '1px solid #f0f0f0', paddingBottom: 16}}><label style={{fontWeight: 600, fontSize: 13}}>Claim Processing Fee</label></div>
-            <div className="form-group"><label>Default Fee Type</label><select><option>Percentage of approved amount</option><option>Flat fee per claim</option></select></div>
-            <div className="form-group"><label>Default Rate (%)</label><input defaultValue="10" type="number" /></div>
-            <div className="form-group"><label>Minimum Fee</label><input defaultValue="$50.00" /></div>
-            <div className="form-group"><label>Maximum Fee Cap</label><input defaultValue="$500.00" /></div>
-            <div className="form-group full" style={{borderTop: '1px solid #f0f0f0', paddingTop: 16, borderBottom: '1px solid #f0f0f0', paddingBottom: 16}}><label style={{fontWeight: 600, fontSize: 13}}>Inspection Fees</label></div>
-            <div className="form-group"><label>DAF Inspection Fee</label><input defaultValue="$25.00" /></div>
-            <div className="form-group"><label>PDI Processing Fee</label><input defaultValue="$15.00" /></div>
-            <div className="form-group full" style={{borderTop: '1px solid #f0f0f0', paddingTop: 16}}><label style={{fontWeight: 600, fontSize: 13}}>Fee Billing Rules</label></div>
-            <div className="form-group"><label>When to Invoice</label><select><option>Auto on claim close</option><option>Manual only</option><option>Monthly batch</option></select></div>
-          </div><div className="btn-bar"><button className="btn btn-p" onClick={() => saveSettings('fees')}>{settingsSaved === 'fees' ? 'Saved ✓' : 'Save'}</button><button className="btn btn-o">Reset to Defaults</button></div></div>
-
-          <div style={{display: settingsTab === 'stab-s-billing' ? 'block' : 'none'}} className="pn"><div className="pn-h"><span className="pn-t">Billing Configuration</span></div><div className="form-grid">
-            <div className="form-group"><label>Default Tax Rate</label><select><option>HST 13% (Ontario)</option><option>GST 5%</option><option>GST 5% + QST 9.975% (Quebec)</option></select></div>
-            <div className="form-group"><label>Tax Registration #</label><input defaultValue="RT 0001" placeholder="HST/GST number" /></div>
-            <div className="form-group"><label>Payment Processor</label><select><option>Stripe</option><option>Manual / Offline</option></select></div>
-            <div className="form-group"><label>Stripe Mode</label><select><option>Test Mode</option><option>Live Mode</option></select></div>
-            <div className="form-group"><label>Stripe Public Key</label><input defaultValue="pk_live_****" readOnly style={{background: '#f3f4f6'}} /></div>
-            <div className="form-group"><label>Default Payment Terms</label><select><option>On Receipt</option><option>Net 15</option><option>Net 30</option></select></div>
-            <div className="form-group"><label>Invoice Prefix</label><input defaultValue="INV-" /></div>
-            <div className="form-group"><label>Next Invoice #</label><input defaultValue="0090" type="number" /></div>
-            <div className="form-group full"><label>Invoice Footer / Terms</label><textarea defaultValue="Payment is due within 15 days of invoice date. Late payments may incur a 2% monthly service charge."></textarea></div>
-          </div><div className="btn-bar"><button className="btn btn-p" onClick={() => saveSettings('billing')}>{settingsSaved === 'billing' ? 'Saved ✓' : 'Save'}</button><button className="btn btn-o">Reset</button></div></div>
-
-          <div style={{display: settingsTab === 'stab-s-notif' ? 'block' : 'none'}} className="pn"><div className="pn-h"><span className="pn-t">Notification Settings</span></div><div className="form-grid">
-            <div className="form-group full" style={{borderBottom: '1px solid #f0f0f0', paddingBottom: 16}}><label style={{fontWeight: 600, fontSize: 13}}>Operator Notifications</label></div>
-            <div className="form-group"><label>New photo batch uploaded</label><select><option>Push + Email</option><option>Push only</option><option>Off</option></select></div>
-            <div className="form-group"><label>Claim status changed</label><select><option>Push + Email</option><option>Push only</option><option>Off</option></select></div>
-            <div className="form-group"><label>Stale claim alert</label><select><option>Push + Email</option><option>Push only</option><option>Off</option></select></div>
-            <div className="form-group"><label>New dealer signup</label><select><option>Push + Email</option><option>Push only</option><option>Off</option></select></div>
-            <div className="form-group full" style={{borderTop: '1px solid #f0f0f0', paddingTop: 16}}><label style={{fontWeight: 600, fontSize: 13}}>Email Configuration</label></div>
-            <div className="form-group"><label>From Name</label><input defaultValue="Dealer Suite 360" /></div>
-            <div className="form-group"><label>Reply-To Email</label><input defaultValue="support@dealersuite360.com" /></div>
-          </div><div className="btn-bar"><button className="btn btn-p" onClick={() => saveSettings('notif')}>{settingsSaved === 'notif' ? 'Saved ✓' : 'Save'}</button><button className="btn btn-o">Reset</button></div></div>
-
-          <div style={{display: settingsTab === 'stab-s-integrations' ? 'block' : 'none'}} className="pn"><div className="pn-h"><span className="pn-t">Integrations</span></div>
-            <div style={{padding: 20, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16}}>
-              <div className="svc-card"><div className="svc-icon" style={{background: '#eff6ff', color: '#3b82f6'}}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div><div className="svc-body"><div className="svc-title">Stripe</div><div className="svc-desc">Payment processing and billing</div><div className="svc-meta"><span className="bg active">Connected</span></div></div></div>
-              <div className="svc-card"><div className="svc-icon" style={{background: '#fef2f2', color: '#dc2626'}}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div><div className="svc-body"><div className="svc-title">Gmail / SMTP</div><div className="svc-desc">Email sending for invoices and notifications</div><div className="svc-meta"><span className="bg active">Connected</span></div></div></div>
-              <div className="svc-card"><div className="svc-icon" style={{background: '#faf5ff', color: '#a855f7'}}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2a7 7 0 017 7c0 2.38-1.19 4.47-3 5.74V17a2 2 0 01-2 2h-4a2 2 0 01-2-2v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 017-7z"/></svg></div><div className="svc-body"><div className="svc-title">Anthropic API (Claude)</div><div className="svc-desc">AI chatbot, FRC suggestions, document scanning</div><div className="svc-meta"><span className="bg active">Connected</span></div></div></div>
-              <div className="svc-card" style={{opacity: '0.5'}}><div className="svc-icon" style={{background: '#f0f4f8', color: '#64748b'}}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8"/></svg></div><div className="svc-body"><div className="svc-title">Tavus / D-ID</div><div className="svc-desc">AI F&I Video Presenter</div><div className="svc-meta"><span className="bg pending">Coming Soon</span></div></div></div>
+          {tab === 'notifications' && (
+            <div className="pn">
+              <div className="pn-h"><span className="pn-t">{t('settings.notificationPreferences')}</span></div>
+              {notifLoading ? (
+                <div style={{ padding: '24px 20px', color: '#888', fontSize: 13 }}>Loading preferences…</div>
+              ) : (
+                <div className="form-grid">
+                  {NOTIF_TYPES.map(({ key, label }) => (
+                    <div key={key} className="form-group">
+                      <label>{label}</label>
+                      <select value={notifPrefs[key] || 'push+email'} onChange={e => setNotifPrefs(p => ({ ...p, [key]: e.target.value }))}>
+                        <option value="push+email">Push + Email</option>
+                        <option value="push">Push only</option>
+                        <option value="email">Email only</option>
+                        <option value="off">Off</option>
+                      </select>
+                    </div>
+                  ))}
+                </div>
+              )}
+              {notifFeedback === 'saved' && <div style={{ padding: '0 20px 8px', color: '#0cb22c', fontSize: 13 }}>Preferences saved ✓</div>}
+              {notifFeedback === 'error' && <div style={{ padding: '0 20px 8px', color: '#dc2626', fontSize: 13 }}>Failed to save. Please try again.</div>}
+              <div className="btn-bar">
+                <button className="btn btn-p" onClick={handleSaveNotifPrefs} disabled={notifSaving}>{notifSaving ? t('common.saving') : t('settings.savePreferences')}</button>
+                <button className="btn btn-o" onClick={() => setNotifPrefs({})}>{t('settings.resetToDefaults')}</button>
+              </div>
             </div>
-          </div>
+          )}
 
-          <div style={{display: settingsTab === 'stab-s-security' ? 'block' : 'none'}} className="pn"><div className="pn-h"><span className="pn-t">Security Settings</span></div><div className="form-grid">
-            <div className="form-group full" style={{borderBottom: '1px solid #f0f0f0', paddingBottom: 16}}><label style={{fontWeight: 600, fontSize: 13}}>Authentication</label></div>
-            <div className="form-group"><label>Require 2FA for Operators</label><select><option>Yes</option><option>No</option></select></div>
-            <div className="form-group"><label>Require 2FA for Dealers</label><select><option>Yes</option><option>No — optional</option></select></div>
-            <div className="form-group"><label>Session Timeout</label><select><option>30 minutes</option><option>2 hours</option><option>8 hours</option><option>24 hours</option></select></div>
-            <div className="form-group"><label>Password Min Length</label><input defaultValue="8" type="number" /></div>
-            <div className="form-group full" style={{borderTop: '1px solid #f0f0f0', paddingTop: 16}}><label style={{fontWeight: 600, fontSize: 13}}>Access Control</label></div>
-            <div className="form-group"><label>Max Failed Login Attempts</label><input defaultValue="5" type="number" /></div>
-            <div className="form-group"><label>Lockout Duration</label><select><option>15 minutes</option><option>30 minutes</option><option>1 hour</option></select></div>
-            <div className="form-group"><label>Activity Logging</label><select><option>Full (all actions)</option><option>Admin actions only</option><option>Off</option></select></div>
-            <div className="form-group"><label>Log Retention</label><select><option>30 days</option><option>90 days</option><option>1 year</option><option>Indefinite</option></select></div>
-          </div><div className="btn-bar"><button className="btn btn-p" onClick={() => saveSettings('security')}>{settingsSaved === 'security' ? 'Saved ✓' : 'Save'}</button><button className="btn btn-o">Reset</button></div></div>
+          {tab === 'appearance' && (
+            <div className="pn">
+              <div className="pn-h"><span className="pn-t">{t('settings.appearance')}</span></div>
+              <div style={{ padding: 20, display: 'flex', flexDirection: 'column', gap: 16 }}>
+                <div style={{ padding: '14px 16px', border: '1px solid var(--border)', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <div>
+                    <div style={{ fontWeight: 600, fontSize: 13, marginBottom: 2 }}>Dark Mode</div>
+                    <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>Switch between light and dark theme</div>
+                  </div>
+                  <button className={`btn ${theme === 'dark' ? 'btn-p' : 'btn-o'}`} onClick={toggleTheme} style={{ minWidth: 80 }}>
+                    {theme === 'dark' ? 'On' : 'Off'}
+                  </button>
+                </div>
+                <div style={{ padding: '14px 16px', border: '1px solid var(--border)', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <div>
+                    <div style={{ fontWeight: 600, fontSize: 13, marginBottom: 2 }}>Language</div>
+                    <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>Choose your preferred language</div>
+                  </div>
+                  <div style={{ display: 'flex', gap: 6 }}>
+                    <button className={`btn ${lang === 'en' ? 'btn-p' : 'btn-o'} btn-sm`} onClick={() => setLanguage('en')}>English</button>
+                    <button className={`btn ${lang === 'fr' ? 'btn-p' : 'btn-o'} btn-sm`} onClick={() => setLanguage('fr')}>Français</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {tab === 'dealership' && isDealerOwner && (
+            <div className="pn">
+              <div className="pn-h"><span className="pn-t">{t('settings.dealershipSettings')}</span><span style={{ fontSize: 12, color: '#888' }}>{t('settings.manageDealership')}</span></div>
+              <div style={{ padding: 20, display: 'flex', flexDirection: 'column', gap: 12 }}>
+                {[
+                  { label: 'Branding & Domain', desc: 'Customize your customer portal appearance and domain', href: `/${dealerId}/owner/branding` },
+                  { label: 'Billing & Subscription', desc: 'View your plan, invoices, and payment methods', href: `/${dealerId}/owner/billing` },
+                  { label: 'Staff Management', desc: 'Invite and manage your team members', href: `/${dealerId}/owner/staff` },
+                  { label: 'Portal Settings', desc: 'Configure your customer-facing portal', href: `/${dealerId}/owner/portal-settings` },
+                ].map(item => (
+                  <a key={item.label} href={item.href} style={{ padding: '14px 16px', border: '1px solid var(--border)', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'space-between', textDecoration: 'none', color: 'inherit' }}>
+                    <div>
+                      <div style={{ fontWeight: 600, fontSize: 13, marginBottom: 2 }}>{item.label}</div>
+                      <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>{item.desc}</div>
+                    </div>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="2"><polyline points="9 18 15 12 9 6"/></svg>
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+
         </div>
       </div>
     </div>

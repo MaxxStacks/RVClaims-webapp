@@ -1,5 +1,6 @@
 import { useState, useEffect, createContext, useContext } from "react";
 import { Language, translations } from "@/lib/i18n";
+import { portalTranslations } from "@/i18n/portal";
 
 interface LanguageContextType {
   language: Language;
@@ -9,44 +10,44 @@ interface LanguageContextType {
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
+// Resolve a dot-path key in an object, returning the string or undefined
+function resolve(obj: any, keys: string[]): string | undefined {
+  let v = obj;
+  for (const k of keys) {
+    v = v?.[k];
+    if (v === undefined) return undefined;
+  }
+  return typeof v === 'string' ? v : undefined;
+}
+
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [language, setLanguage] = useState<Language>(() => {
-    // Check if user has manually set a language preference
-    const saved = localStorage.getItem('preferred-language');
-    if (saved) {
-      return saved as Language;
-    }
-    
-    // Auto-detect browser language for North American market
-    const detectBrowserLanguage = (): Language => {
-      const browserLang = navigator.language || navigator.languages?.[0] || 'en';
-      const langCode = browserLang.toLowerCase();
-      
-      // Check for French language variants (fr, fr-CA, fr-FR, etc.)
-      if (langCode.startsWith('fr')) {
-        return 'fr';
-      }
-      
-      // Default to English for all other languages
-      return 'en';
-    };
-    
-    return detectBrowserLanguage();
+  const [language, setLang] = useState<Language>(() => {
+    // ds360-lang is the canonical key used across all portal layouts
+    const saved = localStorage.getItem('ds360-lang') || localStorage.getItem('preferred-language');
+    if (saved === 'fr' || saved === 'en') return saved as Language;
+
+    const browserLang = navigator.language || navigator.languages?.[0] || 'en';
+    return browserLang.toLowerCase().startsWith('fr') ? 'fr' : 'en';
   });
 
   const t = (key: string): string => {
     const keys = key.split('.');
-    let value: any = translations[language];
-    
-    for (const k of keys) {
-      value = value?.[k];
-    }
-    
-    return value || key;
+
+    // 1. Check portal translations first
+    const portalResult = resolve((portalTranslations as any)[language], keys);
+    if (portalResult !== undefined) return portalResult;
+
+    // 2. Fall back to marketing/base translations
+    const baseResult = resolve((translations as any)[language], keys);
+    if (baseResult !== undefined) return baseResult;
+
+    // 3. Return the key itself as a last resort (no crashes)
+    return key;
   };
 
-  const updateLanguage = (lang: Language) => {
-    setLanguage(lang);
+  const setLanguage = (lang: Language) => {
+    setLang(lang);
+    localStorage.setItem('ds360-lang', lang);
     localStorage.setItem('preferred-language', lang);
   };
 
@@ -55,7 +56,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   }, [language]);
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage: updateLanguage, t }}>
+    <LanguageContext.Provider value={{ language, setLanguage, t }}>
       {children}
     </LanguageContext.Provider>
   );
@@ -68,3 +69,6 @@ export function useLanguage() {
   }
   return context;
 }
+
+// Alias for page components
+export const useTranslation = useLanguage;

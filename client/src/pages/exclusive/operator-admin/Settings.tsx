@@ -2,6 +2,15 @@ import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '@/hooks/use-auth';
 import { apiFetch } from '@/lib/api';
 
+const NOTIF_TYPES = [
+  { key: 'claim_update', label: 'Claim status updates' },
+  { key: 'invoice', label: 'Invoice generated' },
+  { key: 'payment', label: 'Payment received' },
+  { key: 'parts', label: 'Parts order updates' },
+  { key: 'system', label: 'Platform announcements' },
+  { key: 'ticket', label: 'Support ticket updates' },
+];
+
 export default function Settings() {
   const { user } = useAuth();
   const [tab, setTab] = useState('profile');
@@ -11,6 +20,14 @@ export default function Settings() {
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [profileSaving, setProfileSaving] = useState(false);
   const [profileFeedback, setProfileFeedback] = useState<'saved' | 'error' | ''>('');
+
+  const [notifPrefs, setNotifPrefs] = useState<Record<string, string>>({});
+  const [notifLoading, setNotifLoading] = useState(false);
+  const [notifSaving, setNotifSaving] = useState(false);
+  const [notifFeedback, setNotifFeedback] = useState<'saved' | 'error' | ''>('');
+
+  const [theme, setTheme] = useState(() => localStorage.getItem('ds360-theme') || '');
+  const [lang, setLang] = useState(() => localStorage.getItem('ds360-lang') || (navigator.language.startsWith('fr') ? 'fr' : 'en'));
 
   const isDevMode = !!localStorage.getItem('ds360-dev-role');
 
@@ -51,11 +68,50 @@ export default function Settings() {
     }
   };
 
+  useEffect(() => {
+    if (tab === 'notifications') {
+      setNotifLoading(true);
+      apiFetch<any>('/api/notifications/preferences')
+        .then(d => setNotifPrefs(d.preferences || {}))
+        .catch(() => {})
+        .finally(() => setNotifLoading(false));
+    }
+  }, [tab]);
+
+  const handleSaveNotifPrefs = async () => {
+    setNotifSaving(true);
+    setNotifFeedback('');
+    try {
+      await apiFetch('/api/notifications/preferences', {
+        method: 'PATCH',
+        body: JSON.stringify({ preferences: notifPrefs }),
+      });
+      setNotifFeedback('saved');
+      setTimeout(() => setNotifFeedback(''), 2500);
+    } catch {
+      setNotifFeedback('error');
+      setTimeout(() => setNotifFeedback(''), 3000);
+    } finally {
+      setNotifSaving(false);
+    }
+  };
+
+  const toggleTheme = () => {
+    const next = theme === 'dark' ? '' : 'dark';
+    setTheme(next);
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('ds360-theme', next);
+  };
+
+  const setLanguage = (l: string) => {
+    setLang(l);
+    localStorage.setItem('ds360-lang', l);
+  };
+
   const openClerkSecurity = () => {
     try {
       const clerk = (window as any).Clerk;
       if (clerk?.openUserProfile) { clerk.openUserProfile(); }
-      else { alert('Security settings are managed by Clerk. Available in production environment.'); }
     } catch {}
   };
 
@@ -67,6 +123,8 @@ export default function Settings() {
         <div>
           <div className={`settings-link${tab === 'profile' ? ' active' : ''}`} onClick={() => setTab('profile')}>My Profile</div>
           <div className={`settings-link${tab === 'security' ? ' active' : ''}`} onClick={() => setTab('security')}>Security</div>
+          <div className={`settings-link${tab === 'notifications' ? ' active' : ''}`} onClick={() => setTab('notifications')}>Notification Preferences</div>
+          <div className={`settings-link${tab === 'appearance' ? ' active' : ''}`} onClick={() => setTab('appearance')}>Appearance</div>
         </div>
         <div>
 
@@ -145,6 +203,60 @@ export default function Settings() {
               </div>
               <div style={{ fontSize: 12, color: 'var(--text-muted)', paddingTop: 4 }}>
                 Authentication and security are managed by Clerk. All session data is encrypted and handled securely.
+              </div>
+            </div>
+          </div>
+
+          {/* NOTIFICATION PREFERENCES */}
+          <div style={{ display: tab === 'notifications' ? 'block' : 'none' }} className="pn">
+            <div className="pn-h"><span className="pn-t">Notification Preferences</span></div>
+            {notifLoading ? (
+              <div style={{ padding: '24px 20px', color: '#888', fontSize: 13 }}>Loading preferences…</div>
+            ) : (
+              <div className="form-grid">
+                {NOTIF_TYPES.map(({ key, label }) => (
+                  <div key={key} className="form-group">
+                    <label>{label}</label>
+                    <select value={notifPrefs[key] || 'push+email'} onChange={e => setNotifPrefs(p => ({ ...p, [key]: e.target.value }))}>
+                      <option value="push+email">Push + Email</option>
+                      <option value="push">Push only</option>
+                      <option value="email">Email only</option>
+                      <option value="off">Off</option>
+                    </select>
+                  </div>
+                ))}
+              </div>
+            )}
+            {notifFeedback === 'saved' && <div style={{ padding: '0 20px 8px', color: '#0cb22c', fontSize: 13 }}>Preferences saved ✓</div>}
+            {notifFeedback === 'error' && <div style={{ padding: '0 20px 8px', color: '#dc2626', fontSize: 13 }}>Failed to save. Please try again.</div>}
+            <div className="btn-bar">
+              <button className="btn btn-p" onClick={handleSaveNotifPrefs} disabled={notifSaving}>{notifSaving ? 'Saving…' : 'Save Preferences'}</button>
+              <button className="btn btn-o" onClick={() => setNotifPrefs({})}>Reset to Defaults</button>
+            </div>
+          </div>
+
+          {/* APPEARANCE */}
+          <div style={{ display: tab === 'appearance' ? 'block' : 'none' }} className="pn">
+            <div className="pn-h"><span className="pn-t">Appearance</span></div>
+            <div style={{ padding: 20, display: 'flex', flexDirection: 'column', gap: 16 }}>
+              <div style={{ padding: '14px 16px', border: '1px solid var(--border)', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div>
+                  <div style={{ fontWeight: 600, fontSize: 13, marginBottom: 2 }}>Dark Mode</div>
+                  <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>Switch between light and dark theme</div>
+                </div>
+                <button className={`btn ${theme === 'dark' ? 'btn-p' : 'btn-o'}`} onClick={toggleTheme} style={{ minWidth: 80 }}>
+                  {theme === 'dark' ? 'On' : 'Off'}
+                </button>
+              </div>
+              <div style={{ padding: '14px 16px', border: '1px solid var(--border)', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div>
+                  <div style={{ fontWeight: 600, fontSize: 13, marginBottom: 2 }}>Language</div>
+                  <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>Choose your preferred language</div>
+                </div>
+                <div style={{ display: 'flex', gap: 6 }}>
+                  <button className={`btn ${lang === 'en' ? 'btn-p' : 'btn-o'} btn-sm`} onClick={() => setLanguage('en')}>English</button>
+                  <button className={`btn ${lang === 'fr' ? 'btn-p' : 'btn-o'} btn-sm`} onClick={() => setLanguage('fr')}>Français</button>
+                </div>
               </div>
             </div>
           </div>

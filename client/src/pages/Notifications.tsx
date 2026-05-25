@@ -1,48 +1,184 @@
 import { useState, useEffect } from 'react';
 import { apiFetch } from '@/lib/api';
+import { useAuth } from '@/hooks/use-auth';
+import { useLanguage } from '@/hooks/use-language';
+
+function fmtDate(d: string) {
+  return new Date(d).toLocaleDateString('en-CA', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+}
 
 export default function Notifications() {
+  const { user } = useAuth();
+  const { t } = useLanguage();
+  const isOpAdmin = user?.role === 'operator_admin';
+
   const [opDealers, setOpDealers] = useState<any[]>([]);
   const [notifSending, setNotifSending] = useState(false);
+  const [notifSent, setNotifSent] = useState(false);
   const [notifForm, setNotifForm] = useState({
     recipients: 'all', type: 'general', title: '', message: '',
-    priority: 'normal', delivery: 'push', schedule: 'immediate'
+    priority: 'normal', delivery: 'push', schedule: 'immediate',
   });
 
-  useEffect(() => {
-    apiFetch<any>('/api/v6/dealerships').then(d => setOpDealers(Array.isArray(d) ? d : [])).catch(() => {});
-  }, []);
+  const [inbox, setInbox] = useState<any[]>([]);
+  const [inboxLoading, setInboxLoading] = useState(true);
+  const [filter, setFilter] = useState<'all' | 'unread'>('all');
+  const [markingAll, setMarkingAll] = useState(false);
 
-  const handleSendNotification = async () => {
+  useEffect(() => {
+    if (isOpAdmin) {
+      apiFetch<any>('/api/v6/dealerships?limit=200')
+        .then(d => setOpDealers(Array.isArray(d) ? d : (d?.dealerships ?? [])))
+        .catch(() => {});
+    }
+    apiFetch<any>('/api/notifications')
+      .then(d => setInbox(Array.isArray(d.notifications) ? d.notifications : []))
+      .catch(() => {})
+      .finally(() => setInboxLoading(false));
+  }, [isOpAdmin]);
+
+  const handleSend = async () => {
     if (!notifForm.title || !notifForm.message) return;
     setNotifSending(true);
     try {
       await apiFetch('/api/notifications', { method: 'POST', body: JSON.stringify(notifForm) });
       setNotifForm({ recipients: 'all', type: 'general', title: '', message: '', priority: 'normal', delivery: 'push', schedule: 'immediate' });
-    } catch {} finally {
-      setNotifSending(false);
-    }
+      setNotifSent(true);
+      setTimeout(() => setNotifSent(false), 3000);
+    } catch {} finally { setNotifSending(false); }
   };
+
+  const markRead = async (id: string) => {
+    try {
+      await apiFetch(`/api/notifications/${id}/read`, { method: 'PUT' });
+      setInbox(prev => prev.map(n => n.id === id ? { ...n, isRead: true } : n));
+    } catch {}
+  };
+
+  const markAllRead = async () => {
+    setMarkingAll(true);
+    try {
+      await apiFetch('/api/notifications/read-all', { method: 'PUT' });
+      setInbox(prev => prev.map(n => ({ ...n, isRead: true })));
+    } catch {} finally { setMarkingAll(false); }
+  };
+
+  const displayed = filter === 'unread' ? inbox.filter(n => !n.isRead) : inbox;
+  const unreadCount = inbox.filter(n => !n.isRead).length;
+
+  const InboxPanel = () => (
+    <div className="pn">
+      <div className="pn-h" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <span className="pn-t">
+          {t('notifications.inbox')}
+          {unreadCount > 0 && (
+            <span style={{ marginLeft: 8, background: '#033280', color: '#fff', borderRadius: 10, fontSize: 10, padding: '1px 7px', fontWeight: 600, verticalAlign: 'middle' }}>{unreadCount}</span>
+          )}
+        </span>
+        <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+          <select value={filter} onChange={e => setFilter(e.target.value as 'all' | 'unread')}
+            style={{ padding: '4px 8px', border: '1px solid #e0e0e0', borderRadius: 6, fontSize: 12, fontFamily: 'inherit' }}>
+            <option value="all">All</option>
+            <option value="unread">{t('notifications.unreadOnly')}</option>
+          </select>
+          {unreadCount > 0 && (
+            <button className="btn btn-o btn-sm" onClick={markAllRead} disabled={markingAll}>
+              {markingAll ? 'Marking…' : 'Mark all read'}
+            </button>
+          )}
+        </div>
+      </div>
+      {inboxLoading && <div style={{ padding: '40px 20px', textAlign: 'center', color: '#888', fontSize: 13 }}>Loading…</div>}
+      {!inboxLoading && displayed.length === 0 && (
+        <div style={{ padding: '40px 20px', textAlign: 'center', color: '#aaa', fontSize: 13 }}>
+          {filter === 'unread' ? 'No unread notifications.' : 'No notifications yet.'}
+        </div>
+      )}
+      {!inboxLoading && displayed.map(n => (
+        <div
+          key={n.id}
+          style={{ padding: '14px 20px', borderBottom: '1px solid #f0f0f0', background: n.isRead ? 'transparent' : '#f0f5ff', cursor: n.linkTo ? 'pointer' : 'default', display: 'flex', gap: 12, alignItems: 'flex-start' }}
+          onClick={() => { if (!n.isRead) markRead(n.id); if (n.linkTo) window.location.href = n.linkTo; }}
+        >
+          {!n.isRead && <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#033280', marginTop: 5, flexShrink: 0 }} />}
+          <div style={{ flex: 1 }}>
+            <div style={{ fontSize: 13, fontWeight: n.isRead ? 400 : 600, color: '#222', marginBottom: 3 }}>{n.title}</div>
+            {n.message && <div style={{ fontSize: 12, color: '#666', lineHeight: 1.5 }}>{n.message}</div>}
+            <div style={{ fontSize: 11, color: '#aaa', marginTop: 6 }}>{fmtDate(n.createdAt)}</div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+
+  if (!isOpAdmin) {
+    return (
+      <div className="page active">
+        <InboxPanel />
+      </div>
+    );
+  }
 
   return (
     <div className="page active">
-      <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20}}>
-        <div className="pn"><div className="pn-h"><span className="pn-t">Compose Notification</span></div>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+        <div className="pn">
+          <div className="pn-h"><span className="pn-t">{t('notifications.composeNotification')}</span></div>
           <div className="form-grid">
-            <div className="form-group full"><label>Recipients</label><select value={notifForm.recipients} onChange={e => setNotifForm(f => ({...f, recipients: e.target.value}))}><option value="all">All Dealers</option><option value="active">All Active Dealers</option><option value="plan_a">Plan A Dealers</option><option value="plan_b">Plan B Dealers</option>{opDealers.map(d => <option key={d.id} value={d.id}>{d.name}</option>)}</select></div>
-            <div className="form-group full"><label>Type</label><select value={notifForm.type} onChange={e => setNotifForm(f => ({...f, type: e.target.value}))}><option value="general">General Announcement</option><option value="service">Service Update</option><option value="billing">Billing Reminder</option><option value="feature">New Feature</option><option value="maintenance">Maintenance Notice</option><option value="urgent">Urgent Alert</option></select></div>
-            <div className="form-group full"><label>Title</label><input placeholder="Notification title..." value={notifForm.title} onChange={e => setNotifForm(f => ({...f, title: e.target.value}))} /></div>
-            <div className="form-group full"><label>Message</label><textarea placeholder="Write your message..." style={{minHeight: 120}} value={notifForm.message} onChange={e => setNotifForm(f => ({...f, message: e.target.value}))}></textarea></div>
-            <div className="form-group"><label>Priority</label><select value={notifForm.priority} onChange={e => setNotifForm(f => ({...f, priority: e.target.value}))}><option value="normal">Normal</option><option value="high">High</option><option value="urgent">Urgent</option></select></div>
-            <div className="form-group"><label>Delivery</label><select value={notifForm.delivery} onChange={e => setNotifForm(f => ({...f, delivery: e.target.value}))}><option value="push">Push to Dashboard</option><option value="push_email">Push + Email</option><option value="email">Email Only</option></select></div>
-            <div className="form-group full"><label>Schedule</label><select value={notifForm.schedule} onChange={e => setNotifForm(f => ({...f, schedule: e.target.value}))}><option value="immediate">Send Immediately</option><option value="scheduled">Schedule for Later</option></select></div>
-          </div><div className="btn-bar"><button className="btn btn-p" onClick={handleSendNotification} disabled={notifSending}>{notifSending ? 'Sending…' : 'Send Notification'}</button><button className="btn btn-o">Save Draft</button></div></div>
-        <div className="pn"><div className="pn-h"><span className="pn-t">Sent History</span></div><div className="act">
-          <div className="act-i"><span className="act-dot new"></span><div><div className="act-t"><strong>New: Photo Batch Upload</strong></div><div style={{fontSize: 12, color: '#555', marginTop: 2}}>Upload all photos at once for DAF, PDI, Warranty.</div><div className="act-tm">All Dealers · Mar 15 · Push + Email</div></div></div>
-          <div className="act-i"><span className="act-dot pt"></span><div><div className="act-t"><strong>Billing: March Invoices</strong></div><div style={{fontSize: 12, color: '#555', marginTop: 2}}>March subscription invoices generated.</div><div className="act-tm">All Active · Mar 1 · Push + Email</div></div></div>
-          <div className="act-i"><span className="act-dot ok"></span><div><div className="act-t"><strong>Financing Service Now Live</strong></div><div style={{fontSize: 12, color: '#555', marginTop: 2}}>Submit financing requests directly through the portal.</div><div className="act-tm">All Active · Feb 20 · Push + Email</div></div></div>
-          <div className="act-i"><span className="act-dot pay"></span><div><div className="act-t"><strong>Warranty Plans Available</strong></div><div style={{fontSize: 12, color: '#555', marginTop: 2}}>Extended warranty plans now sold through the platform.</div><div className="act-tm">All Active · Feb 15 · Push + Email</div></div></div>
-        </div></div>
+            <div className="form-group full"><label>{t('notifications.recipients')}</label>
+              <select value={notifForm.recipients} onChange={e => setNotifForm(f => ({...f, recipients: e.target.value}))}>
+                <option value="all">All Dealers</option>
+                <option value="active">All Active Dealers</option>
+                <option value="plan_a">Plan A Dealers</option>
+                <option value="plan_b">Plan B Dealers</option>
+                {opDealers.map(d => <option key={d.id} value={d.id}>{d.name}</option>)}
+              </select>
+            </div>
+            <div className="form-group full"><label>{t('common.type')}</label>
+              <select value={notifForm.type} onChange={e => setNotifForm(f => ({...f, type: e.target.value}))}>
+                <option value="general">General Announcement</option>
+                <option value="service">Service Update</option>
+                <option value="billing">Billing Reminder</option>
+                <option value="feature">New Feature</option>
+                <option value="maintenance">Maintenance Notice</option>
+                <option value="urgent">Urgent Alert</option>
+              </select>
+            </div>
+            <div className="form-group full"><label>{t('notifications.title')}</label>
+              <input placeholder="Notification title..." value={notifForm.title} onChange={e => setNotifForm(f => ({...f, title: e.target.value}))} />
+            </div>
+            <div className="form-group full"><label>{t('notifications.message')}</label>
+              <textarea placeholder="Write your message..." style={{minHeight: 120}} value={notifForm.message} onChange={e => setNotifForm(f => ({...f, message: e.target.value}))} />
+            </div>
+            <div className="form-group"><label>{t('notifications.priority')}</label>
+              <select value={notifForm.priority} onChange={e => setNotifForm(f => ({...f, priority: e.target.value}))}>
+                <option value="normal">Normal</option>
+                <option value="high">High</option>
+                <option value="urgent">Urgent</option>
+              </select>
+            </div>
+            <div className="form-group"><label>{t('notifications.delivery')}</label>
+              <select value={notifForm.delivery} onChange={e => setNotifForm(f => ({...f, delivery: e.target.value}))}>
+                <option value="push">Push to Dashboard</option>
+                <option value="push_email">Push + Email</option>
+                <option value="email">Email Only</option>
+              </select>
+            </div>
+            <div className="form-group full"><label>{t('notifications.schedule')}</label>
+              <select value={notifForm.schedule} onChange={e => setNotifForm(f => ({...f, schedule: e.target.value}))}>
+                <option value="immediate">Send Immediately</option>
+                <option value="scheduled">Schedule for Later</option>
+              </select>
+            </div>
+          </div>
+          <div className="btn-bar">
+            <button className="btn btn-p" onClick={handleSend} disabled={notifSending || !notifForm.title || !notifForm.message}>
+              {notifSending ? t('common.saving') : t('notifications.sendNotification')}
+            </button>
+            {notifSent && <span style={{ fontSize: 12, color: '#16a34a', fontWeight: 500 }}>✓ Sent successfully</span>}
+          </div>
+        </div>
+        <InboxPanel />
       </div>
     </div>
   );

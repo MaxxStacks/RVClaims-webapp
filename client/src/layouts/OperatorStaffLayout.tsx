@@ -4,15 +4,24 @@ import { useAuth } from '@/hooks/use-auth';
 import { apiFetch } from '@/lib/api';
 import { wsClient } from '@/lib/websocket';
 import ds360Icon from '@assets/ds360_favicon.png';
+import { useLanguage } from '@/hooks/use-language';
+import type { Language } from '@/lib/i18n';
+import { MobileBottomNav } from '@/components/MobileBottomNav';
 
 interface Props { children?: React.ReactNode; }
 
 export default function OperatorStaffLayout({ children }: Props) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [theme, setTheme] = useState(() => localStorage.getItem('ds360-theme') || '');
-  const [lang, setLang] = useState(() => localStorage.getItem('ds360-lang') || (navigator.language.startsWith('fr') ? 'fr' : 'en'));
+  const { language: lang, setLanguage, t } = useLanguage();
   const [location, navigate] = useLocation();
   const { user, logout } = useAuth();
+
+  // Notification bell
+  const [notifOpen, setNotifOpen] = useState(false);
+  const [notifItems, setNotifItems] = useState<any[]>([]);
+  const [notifLoading, setNotifLoading] = useState(false);
+  const notifRef = useRef<HTMLDivElement>(null);
 
   // Remote Support — screen share request
   const [rsOpen, setRsOpen] = useState(false);
@@ -26,6 +35,20 @@ export default function OperatorStaffLayout({ children }: Props) {
 
   useEffect(() => {
     if (theme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+  }, []);
+
+  useEffect(() => {
+    apiFetch<any>('/api/notifications/inbox')
+      .then(d => setNotifItems(Array.isArray(d.notifications) ? d.notifications : []))
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (notifRef.current && !notifRef.current.contains(e.target as Node)) setNotifOpen(false);
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
   }, []);
 
   // Connect wsClient with operator token
@@ -75,8 +98,24 @@ export default function OperatorStaffLayout({ children }: Props) {
     localStorage.setItem('ds360-theme', next);
   };
 
-  const handleSetLang = (l: string) => { setLang(l); localStorage.setItem('ds360-lang', l); };
+  const handleSetLang = (l: string) => setLanguage(l as Language);
   const isActive = (path: string) => location.endsWith('/' + path) || location.includes('/' + path + '/');
+
+  const loadNotifications = async () => {
+    setNotifLoading(true);
+    try {
+      const data = await apiFetch<any>('/api/notifications/inbox');
+      setNotifItems(Array.isArray(data.notifications) ? data.notifications : []);
+    } catch { setNotifItems([]); } finally { setNotifLoading(false); }
+  };
+  const toggleNotif = () => { if (!notifOpen) loadNotifications(); setNotifOpen(o => !o); };
+  const markAllRead = async () => {
+    try {
+      await apiFetch('/api/notifications/read-all', { method: 'PUT' });
+      setNotifItems(prev => prev.map(n => ({ ...n, isRead: true })));
+    } catch {}
+  };
+  const unreadCount = notifItems.filter(n => !n.isRead).length;
 
   const handleRsRequest = async () => {
     if (!rsDealerId || rsRequesting) return;
@@ -103,25 +142,25 @@ export default function OperatorStaffLayout({ children }: Props) {
         </div>
         <div className="sidebar-nav">
           <div className="nav-section">
-            <div className="nav-label">Overview</div>
-            <Link className={`nav-item ${isActive('dashboard') ? 'active' : ''}`} to="dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</Link>
+            <div className="nav-label">{t('nav.overview')}</div>
+            <Link className={`nav-item ${isActive('dashboard') ? 'active' : ''}`} to="dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>{t('nav.dashboard')}</Link>
           </div>
           <div className="nav-section">
-            <div className="nav-label">Claims</div>
-            <Link className={`nav-item ${isActive('claims') ? 'active' : ''}`} to="claims"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Claims</Link>
-            <Link className={`nav-item ${isActive('stale') ? 'active' : ''}`} to="stale"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Stale Claims</Link>
-            <Link className={`nav-item ${isActive('queue') ? 'active' : ''}`} to="queue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>Processing Queue</Link>
+            <div className="nav-label">{t('nav.claims')}</div>
+            <Link className={`nav-item ${isActive('claims') ? 'active' : ''}`} to="claims"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>{t('nav.claims')}</Link>
+            <Link className={`nav-item ${isActive('stale') ? 'active' : ''}`} to="stale"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>{t('nav.staleClaims')}</Link>
+            <Link className={`nav-item ${isActive('queue') ? 'active' : ''}`} to="queue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>{t('nav.processingQueue')}</Link>
           </div>
           <div className="nav-section">
-            <div className="nav-label">Management</div>
-            <Link className={`nav-item ${isActive('units') ? 'active' : ''}`} to="units"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4a2 2 0 012 2v6a2 2 0 01-2 2h-4"/><circle cx="5.5" cy="18" r="2.5"/><circle cx="18.5" cy="18" r="2.5"/></svg>Units</Link>
-            <Link className={`nav-item ${isActive('dealers') ? 'active' : ''}`} to="dealers"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Dealers</Link>
-            <Link className={`nav-item ${isActive('parts') ? 'active' : ''}`} to="parts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>Parts</Link>
+            <div className="nav-label">{t('nav.management')}</div>
+            <Link className={`nav-item ${isActive('units') ? 'active' : ''}`} to="units"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4a2 2 0 012 2v6a2 2 0 01-2 2h-4"/><circle cx="5.5" cy="18" r="2.5"/><circle cx="18.5" cy="18" r="2.5"/></svg>{t('nav.units')}</Link>
+            <Link className={`nav-item ${isActive('dealers') ? 'active' : ''}`} to="dealers"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>{t('nav.dealers')}</Link>
+            <Link className={`nav-item ${isActive('parts') ? 'active' : ''}`} to="parts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>{t('nav.parts')}</Link>
           </div>
           <div className="nav-section">
-            <div className="nav-label">System</div>
-            <Link className={`nav-item ${isActive('notifications') ? 'active' : ''}`} to="notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>Notifications</Link>
-            <Link className={`nav-item ${isActive('changelog') ? 'active' : ''}`} to="changelog"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Changelog</Link>
+            <div className="nav-label">{t('nav.system')}</div>
+            <Link className={`nav-item ${isActive('notifications') ? 'active' : ''}`} to="notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>{t('nav.notifications')}</Link>
+            <Link className={`nav-item ${isActive('changelog') ? 'active' : ''}`} to="changelog"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>{t('nav.changelog')}</Link>
           </div>
         </div>
         <div className="sidebar-footer">
@@ -224,12 +263,52 @@ export default function OperatorStaffLayout({ children }: Props) {
             </div>
 
             <button className="hbtn" title="Search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
-            <Link className="hbtn" to="notifications" title="Notifications"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg><span className="ndot"></span></Link>
+            <div ref={notifRef} style={{position:'relative'}}>
+              <button className="hbtn" title="Notifications" onClick={toggleNotif} style={{position:'relative'}}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+                {unreadCount > 0 && <span className="ndot"></span>}
+              </button>
+              {notifOpen && (
+                <div style={{position:'absolute',top:'calc(100% + 8px)',right:0,width:320,background:'var(--bg-card)',border:'1px solid var(--border)',borderRadius:10,boxShadow:'0 8px 32px rgba(0,0,0,.12)',zIndex:1000,overflow:'hidden'}}>
+                  <div style={{padding:'10px 14px',borderBottom:'1px solid var(--border)',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+                    <span style={{fontSize:13,fontWeight:600,color:'var(--text, #333)'}}>Notifications {unreadCount > 0 && <span style={{marginLeft:6,background:'#033280',color:'#fff',borderRadius:10,fontSize:10,padding:'1px 6px',fontWeight:600}}>{unreadCount}</span>}</span>
+                    {unreadCount > 0 && <button onClick={markAllRead} style={{fontSize:11,color:'#033280',background:'none',border:'none',cursor:'pointer',padding:0,fontFamily:'inherit'}}>Mark all read</button>}
+                  </div>
+                  {notifLoading && <div style={{padding:'24px 16px',textAlign:'center',color:'#888',fontSize:12}}>Loading…</div>}
+                  {!notifLoading && notifItems.length === 0 && <div style={{padding:'24px 16px',textAlign:'center',color:'#aaa',fontSize:12}}>No notifications yet</div>}
+                  {!notifLoading && notifItems.length > 0 && (
+                    <div style={{maxHeight:380,overflowY:'auto'}}>
+                      {notifItems.slice(0, 15).map(n => (
+                        <div key={n.id} style={{padding:'10px 14px',borderBottom:'1px solid var(--border)',cursor:n.linkTo?'pointer':'default',background:n.isRead?'transparent':'#f0f5ff'}}
+                          onClick={() => { apiFetch(`/api/notifications/${n.id}/read`, {method:'PUT'}).catch(()=>{}); setNotifItems(prev => prev.map(x => x.id===n.id?{...x,isRead:true}:x)); if (n.linkTo) navigate(n.linkTo); setNotifOpen(false); }}>
+                          <div style={{display:'flex',alignItems:'flex-start',gap:8}}>
+                            {!n.isRead && <div style={{width:6,height:6,borderRadius:'50%',background:'#033280',marginTop:4,flexShrink:0}}></div>}
+                            <div style={{flex:1}}>
+                              <div style={{fontSize:13,fontWeight:n.isRead?400:600,color:'var(--text,#333)',lineHeight:'1.4'}}>{n.title}</div>
+                              {n.message && <div style={{fontSize:11,color:'#888',marginTop:2,lineHeight:'1.4'}}>{n.message}</div>}
+                              <div style={{fontSize:10,color:'#bbb',marginTop:4}}>{new Date(n.createdAt).toLocaleDateString('en-CA',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'})}</div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         </header>
         <div className="content">
           {children}
         </div>
+        <MobileBottomNav
+          portalType="operator"
+          activePage={location.split('/').filter(Boolean)[2] || 'dashboard'}
+          onNavigate={(pageId) => {
+            const p = location.split('/').filter(Boolean);
+            navigate(`/${p[0]}/${p[1]}/${pageId}`);
+          }}
+        />
       </div>
     </>
   );

@@ -1,4 +1,5 @@
 import { Route, Switch, Redirect, useLocation } from 'wouter';
+import { ProtectedRoute } from '@/components/ProtectedRoute';
 
 // ─── Layouts ───────────────────────────────────────────────────────────────
 import OperatorAdminLayout from '@/layouts/OperatorAdminLayout';
@@ -14,6 +15,9 @@ import ShopTechLayout from '@/layouts/ShopTechLayout';
 import OnSiteTechLayout from '@/layouts/OnSiteTechLayout';
 import PublicBidderLayout from '@/layouts/PublicBidderLayout';
 import ConsignorLayout from '@/layouts/ConsignorLayout';
+import IndependentBidderLayout from '@/layouts/IndependentBidderLayout';
+import MarketplaceAdminLayout from '@/layouts/MarketplaceAdminLayout';
+import MarketplaceStaffLayout from '@/layouts/MarketplaceStaffLayout';
 
 // ─── Shared pages ──────────────────────────────────────────────────────────
 import Dashboard from '@/pages/Dashboard';
@@ -45,6 +49,7 @@ import Parts from '@/pages/Parts';
 import PartsNew from '@/pages/PartsNew';
 import PartsDetail from '@/pages/PartsDetail';
 import Invoices from '@/pages/Invoices';
+import InvoiceDetail from '@/pages/InvoiceDetail';
 import CreateInvoice from '@/pages/CreateInvoice';
 import Reports from '@/pages/Reports';
 import UsersRoles from '@/pages/UsersRoles';
@@ -174,6 +179,7 @@ function DealerFallback({ role }: { role: string }) {
 // ═══════════════════════════════════════════════════════════════════════════
 export function OperatorAdminPortalSection() {
   return (
+    <ProtectedRoute allowedRoles={['operator_admin']}>
     <Switch>
       {/* Dealer sub-routes — most specific first */}
       <Route path="/operator/admin/dealers/:dealerId/claims">{() => <OperatorAdminLayout><DealerClaims /></OperatorAdminLayout>}</Route>
@@ -219,6 +225,7 @@ export function OperatorAdminPortalSection() {
       <Route path="/operator/admin/parts">{() => <OperatorAdminLayout><Parts /></OperatorAdminLayout>}</Route>
       {/* Invoices */}
       <Route path="/operator/admin/invoices/new">{() => <OperatorAdminLayout><CreateInvoice /></OperatorAdminLayout>}</Route>
+      <Route path="/operator/admin/invoices/:invoiceId">{() => <OperatorAdminLayout><InvoiceDetail /></OperatorAdminLayout>}</Route>
       <Route path="/operator/admin/invoices">{() => <OperatorAdminLayout><Invoices /></OperatorAdminLayout>}</Route>
       {/* Marketplace sub-routes */}
       <Route path="/operator/admin/marketplace/members/:memberId">{() => <OperatorAdminLayout><MktMemberDetail /></OperatorAdminLayout>}</Route>
@@ -234,6 +241,11 @@ export function OperatorAdminPortalSection() {
       <Route path="/operator/admin/crm/kanban">{() => <OperatorAdminLayout><OA_CRMKanban /></OperatorAdminLayout>}</Route>
       <Route path="/operator/admin/crm/:dealerId">{() => <OperatorAdminLayout><OA_CRMDealerDetail /></OperatorAdminLayout>}</Route>
       <Route path="/operator/admin/crm">{() => <OperatorAdminLayout><OA_CRM /></OperatorAdminLayout>}</Route>
+      {/* Tickets */}
+      <Route path="/operator/admin/tickets/:ticketId">{() => <OperatorAdminLayout><TicketDetail /></OperatorAdminLayout>}</Route>
+      <Route path="/operator/admin/tickets">{() => <OperatorAdminLayout><CustomerTickets /></OperatorAdminLayout>}</Route>
+      <Route path="/operator/admin/customers/:customerId">{() => <OperatorAdminLayout><CustomerDetail /></OperatorAdminLayout>}</Route>
+      <Route path="/operator/admin/customers">{() => <OperatorAdminLayout><Customers /></OperatorAdminLayout>}</Route>
       {/* Finance & reports */}
       <Route path="/operator/admin/reports">{() => <OperatorAdminLayout><Reports /></OperatorAdminLayout>}</Route>
       <Route path="/operator/admin/users/invite">{() => <OperatorAdminLayout><OA_InviteUser /></OperatorAdminLayout>}</Route>
@@ -252,6 +264,8 @@ export function OperatorAdminPortalSection() {
       <Route path="/operator/admin/changelog/feature-request">{() => <OperatorAdminLayout><AddFeatureReq /></OperatorAdminLayout>}</Route>
       <Route path="/operator/admin/changelog">{() => <OperatorAdminLayout><Changelog /></OperatorAdminLayout>}</Route>
       <Route path="/operator/admin/mfr-portals">{() => <OperatorAdminLayout><MfrPortals /></OperatorAdminLayout>}</Route>
+      <Route path="/operator/admin/techflow/new">{() => <OperatorAdminLayout><WorkOrderNew /></OperatorAdminLayout>}</Route>
+      <Route path="/operator/admin/techflow/:workOrderId">{() => <OperatorAdminLayout><WorkOrderDetail /></OperatorAdminLayout>}</Route>
       <Route path="/operator/admin/techflow">{() => <OperatorAdminLayout><TechFlowOversight /></OperatorAdminLayout>}</Route>
       <Route path="/operator/admin/work-by-dealer">{() => <OperatorAdminLayout><WorkByDealer /></OperatorAdminLayout>}</Route>
       <Route path="/operator/admin/campaign-templates">{() => <OperatorAdminLayout><CampaignTemplates /></OperatorAdminLayout>}</Route>
@@ -265,6 +279,7 @@ export function OperatorAdminPortalSection() {
       {/* Default */}
       <Route>{() => <Redirect to="/operator/admin/dashboard" />}</Route>
     </Switch>
+    </ProtectedRoute>
   );
 }
 
@@ -273,6 +288,7 @@ export function OperatorAdminPortalSection() {
 // ═══════════════════════════════════════════════════════════════════════════
 export function OperatorStaffPortalSection() {
   return (
+    <ProtectedRoute allowedRoles={['operator_staff']}>
     <Switch>
       <Route path="/operator/staff/claims/:claimId">{() => <OperatorStaffLayout><ClaimDetail /></OperatorStaffLayout>}</Route>
       <Route path="/operator/staff/claims">{() => <OperatorStaffLayout><Claims /></OperatorStaffLayout>}</Route>
@@ -283,13 +299,18 @@ export function OperatorStaffPortalSection() {
       <Route path="/operator/staff/units">{() => <OperatorStaffLayout><Units /></OperatorStaffLayout>}</Route>
       <Route path="/operator/staff/dealers/:dealerId">{() => <OperatorStaffLayout><DealerDetail /></OperatorStaffLayout>}</Route>
       <Route path="/operator/staff/dealers">{() => <OperatorStaffLayout><DealerManagement /></OperatorStaffLayout>}</Route>
+      <Route path="/operator/staff/parts/new">{() => <OperatorStaffLayout><PartsNew /></OperatorStaffLayout>}</Route>
+      <Route path="/operator/staff/parts/:orderId">{() => <OperatorStaffLayout><PartsDetail /></OperatorStaffLayout>}</Route>
       <Route path="/operator/staff/parts">{() => <OperatorStaffLayout><Parts /></OperatorStaffLayout>}</Route>
+      <Route path="/operator/staff/tickets/:ticketId">{() => <OperatorStaffLayout><TicketDetail /></OperatorStaffLayout>}</Route>
+      <Route path="/operator/staff/tickets">{() => <OperatorStaffLayout><CustomerTickets /></OperatorStaffLayout>}</Route>
       <Route path="/operator/staff/notifications">{() => <OperatorStaffLayout><Notifications /></OperatorStaffLayout>}</Route>
       <Route path="/operator/staff/changelog">{() => <OperatorStaffLayout><Changelog /></OperatorStaffLayout>}</Route>
       <Route path="/operator/staff/remote-support">{() => <OperatorStaffLayout><RemoteDashboard /></OperatorStaffLayout>}</Route>
       <Route path="/operator/staff/dashboard">{() => <OperatorStaffLayout><Dashboard /></OperatorStaffLayout>}</Route>
       <Route>{() => <Redirect to="/operator/staff/dashboard" />}</Route>
     </Switch>
+    </ProtectedRoute>
   );
 }
 
@@ -298,6 +319,7 @@ export function OperatorStaffPortalSection() {
 // ═══════════════════════════════════════════════════════════════════════════
 export function DealerOwnerPortalSection() {
   return (
+    <ProtectedRoute allowedRoles={['dealer_owner']} requireDealershipId={true}>
     <Switch>
       <Route path="/:dealerId/owner/claims/new">{() => <DealerOwnerLayout><ClaimNew /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/claims/:claimId">{() => <DealerOwnerLayout><ClaimDetail /></DealerOwnerLayout>}</Route>
@@ -327,6 +349,7 @@ export function DealerOwnerPortalSection() {
       <Route path="/:dealerId/owner/staff/new">{() => <DealerOwnerLayout><AddStaff /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/staff">{() => <DealerOwnerLayout><StaffManagement /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/upload">{() => <DealerOwnerLayout><PhotoUpload /></DealerOwnerLayout>}</Route>
+      <Route path="/:dealerId/owner/invoices/:invoiceId">{() => <DealerOwnerLayout><InvoiceDetail /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/invoices">{() => <DealerOwnerLayout><Invoices /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/documents">{() => <DealerOwnerLayout><Documents /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/messages">{() => <DealerOwnerLayout><Messages /></DealerOwnerLayout>}</Route>
@@ -344,6 +367,7 @@ export function DealerOwnerPortalSection() {
       <Route path="/:dealerId/owner/dashboard">{() => <DealerOwnerLayout><Dashboard /></DealerOwnerLayout>}</Route>
       <Route>{() => <DealerFallback role="owner" />}</Route>
     </Switch>
+    </ProtectedRoute>
   );
 }
 
@@ -352,6 +376,7 @@ export function DealerOwnerPortalSection() {
 // ═══════════════════════════════════════════════════════════════════════════
 export function DealerStaffPortalSection() {
   return (
+    <ProtectedRoute allowedRoles={['dealer_staff']} requireDealershipId={true}>
     <Switch>
       <Route path="/:dealerId/staff/claims/:claimId">{() => <DealerStaffLayout><ClaimDetail /></DealerStaffLayout>}</Route>
       <Route path="/:dealerId/staff/claims">{() => <DealerStaffLayout><Claims /></DealerStaffLayout>}</Route>
@@ -359,7 +384,9 @@ export function DealerStaffPortalSection() {
       <Route path="/:dealerId/staff/units">{() => <DealerStaffLayout><Units /></DealerStaffLayout>}</Route>
       <Route path="/:dealerId/staff/customer-tickets/:ticketId">{() => <DealerStaffLayout><TicketDetail /></DealerStaffLayout>}</Route>
       <Route path="/:dealerId/staff/customer-tickets">{() => <DealerStaffLayout><CustomerTickets /></DealerStaffLayout>}</Route>
+      <Route path="/:dealerId/staff/staff">{() => <DealerStaffLayout><StaffManagement /></DealerStaffLayout>}</Route>
       <Route path="/:dealerId/staff/upload">{() => <DealerStaffLayout><PhotoUpload /></DealerStaffLayout>}</Route>
+      <Route path="/:dealerId/staff/parts/:orderId">{() => <DealerStaffLayout><PartsDetail /></DealerStaffLayout>}</Route>
       <Route path="/:dealerId/staff/parts">{() => <DealerStaffLayout><Parts /></DealerStaffLayout>}</Route>
       <Route path="/:dealerId/staff/customers">{() => <DealerStaffLayout><Customers /></DealerStaffLayout>}</Route>
       <Route path="/:dealerId/staff/documents">{() => <DealerStaffLayout><Documents /></DealerStaffLayout>}</Route>
@@ -370,6 +397,7 @@ export function DealerStaffPortalSection() {
       <Route path="/:dealerId/staff/dashboard">{() => <DealerStaffLayout><Dashboard /></DealerStaffLayout>}</Route>
       <Route>{() => <DealerFallback role="staff" />}</Route>
     </Switch>
+    </ProtectedRoute>
   );
 }
 
@@ -378,6 +406,7 @@ export function DealerStaffPortalSection() {
 // ═══════════════════════════════════════════════════════════════════════════
 export function ClientPortalSection() {
   return (
+    <ProtectedRoute allowedRoles={['client']} requireDealershipId={true}>
     <Switch>
       <Route path="/:dealerId/client/claims/:claimId">{() => <ClientLayout><ClaimDetail /></ClientLayout>}</Route>
       <Route path="/:dealerId/client/claims">{() => <ClientLayout><Claims /></ClientLayout>}</Route>
@@ -390,6 +419,7 @@ export function ClientPortalSection() {
       <Route path="/:dealerId/client/fi-products">{() => <ClientLayout><FAndI /></ClientLayout>}</Route>
       <Route path="/:dealerId/client/fi-offers">{() => <ClientLayout><FIOffers /></ClientLayout>}</Route>
       <Route path="/:dealerId/client/my-financing">{() => <ClientLayout><Financing /></ClientLayout>}</Route>
+      <Route path="/:dealerId/client/parts/:orderId">{() => <ClientLayout><PartsDetail /></ClientLayout>}</Route>
       <Route path="/:dealerId/client/parts">{() => <ClientLayout><Parts /></ClientLayout>}</Route>
       <Route path="/:dealerId/client/service-appointments">{() => <ClientLayout><ServiceAppointments /></ClientLayout>}</Route>
       <Route path="/:dealerId/client/my-services">{() => <ClientLayout><MyServices /></ClientLayout>}</Route>
@@ -401,6 +431,7 @@ export function ClientPortalSection() {
       <Route path="/:dealerId/client/dashboard">{() => <ClientLayout><Dashboard /></ClientLayout>}</Route>
       <Route>{() => <DealerFallback role="client" />}</Route>
     </Switch>
+    </ProtectedRoute>
   );
 }
 
@@ -409,6 +440,7 @@ export function ClientPortalSection() {
 // ═══════════════════════════════════════════════════════════════════════════
 export function ServiceManagerPortalSection() {
   return (
+    <ProtectedRoute allowedRoles={['service_manager']} requireDealershipId={true}>
     <Switch>
       <Route path="/:dealerId/service-manager/claims/:claimId">{() => <ServiceManagerLayout><ClaimDetail /></ServiceManagerLayout>}</Route>
       <Route path="/:dealerId/service-manager/claims">{() => <ServiceManagerLayout><Claims /></ServiceManagerLayout>}</Route>
@@ -419,12 +451,14 @@ export function ServiceManagerPortalSection() {
       <Route path="/:dealerId/service-manager/work-orders">{() => <ServiceManagerLayout><WorkOrders /></ServiceManagerLayout>}</Route>
       <Route path="/:dealerId/service-manager/scheduling">{() => <ServiceManagerLayout><Scheduling /></ServiceManagerLayout>}</Route>
       <Route path="/:dealerId/service-manager/technicians">{() => <ServiceManagerLayout><TechAssignments /></ServiceManagerLayout>}</Route>
+      <Route path="/:dealerId/service-manager/parts/:orderId">{() => <ServiceManagerLayout><PartsDetail /></ServiceManagerLayout>}</Route>
       <Route path="/:dealerId/service-manager/parts">{() => <ServiceManagerLayout><Parts /></ServiceManagerLayout>}</Route>
       <Route path="/:dealerId/service-manager/service-appointments">{() => <ServiceManagerLayout><ServiceAppointments /></ServiceManagerLayout>}</Route>
       <Route path="/:dealerId/service-manager/settings">{() => <ServiceManagerLayout><ServiceSettings /></ServiceManagerLayout>}</Route>
       <Route path="/:dealerId/service-manager/dashboard">{() => <ServiceManagerLayout><Dashboard /></ServiceManagerLayout>}</Route>
       <Route>{() => <DealerFallback role="service-manager" />}</Route>
     </Switch>
+    </ProtectedRoute>
   );
 }
 
@@ -433,16 +467,19 @@ export function ServiceManagerPortalSection() {
 // ═══════════════════════════════════════════════════════════════════════════
 export function ShopManagerPortalSection() {
   return (
+    <ProtectedRoute allowedRoles={['shop_manager']} requireDealershipId={true}>
     <Switch>
       <Route path="/:dealerId/shop-manager/work-orders/:workOrderId">{() => <ShopManagerLayout><WorkOrderDetail /></ShopManagerLayout>}</Route>
       <Route path="/:dealerId/shop-manager/work-orders">{() => <ShopManagerLayout><WorkOrders /></ShopManagerLayout>}</Route>
       <Route path="/:dealerId/shop-manager/units/:unitId">{() => <ShopManagerLayout><UnitDetail /></ShopManagerLayout>}</Route>
       <Route path="/:dealerId/shop-manager/units">{() => <ShopManagerLayout><Units /></ShopManagerLayout>}</Route>
       <Route path="/:dealerId/shop-manager/dispatch">{() => <ShopManagerLayout><DispatchBoard /></ShopManagerLayout>}</Route>
+      <Route path="/:dealerId/shop-manager/parts/:orderId">{() => <ShopManagerLayout><PartsDetail /></ShopManagerLayout>}</Route>
       <Route path="/:dealerId/shop-manager/parts">{() => <ShopManagerLayout><Parts /></ShopManagerLayout>}</Route>
       <Route path="/:dealerId/shop-manager/dashboard">{() => <ShopManagerLayout><Dashboard /></ShopManagerLayout>}</Route>
       <Route>{() => <DealerFallback role="shop-manager" />}</Route>
     </Switch>
+    </ProtectedRoute>
   );
 }
 
@@ -451,15 +488,18 @@ export function ShopManagerPortalSection() {
 // ═══════════════════════════════════════════════════════════════════════════
 export function PartsManagerPortalSection() {
   return (
+    <ProtectedRoute allowedRoles={['parts_dept']} requireDealershipId={true}>
     <Switch>
       <Route path="/:dealerId/parts-manager/orders/new">{() => <PartsManagerLayout><PartsNew /></PartsManagerLayout>}</Route>
       <Route path="/:dealerId/parts-manager/orders/:orderId">{() => <PartsManagerLayout><PartsDetail /></PartsManagerLayout>}</Route>
       <Route path="/:dealerId/parts-manager/orders">{() => <PartsManagerLayout><Parts /></PartsManagerLayout>}</Route>
       <Route path="/:dealerId/parts-manager/inventory">{() => <PartsManagerLayout><Inventory /></PartsManagerLayout>}</Route>
+      <Route path="/:dealerId/parts-manager/claims/:claimId">{() => <PartsManagerLayout><ClaimDetail /></PartsManagerLayout>}</Route>
       <Route path="/:dealerId/parts-manager/claims">{() => <PartsManagerLayout><Claims /></PartsManagerLayout>}</Route>
       <Route path="/:dealerId/parts-manager/dashboard">{() => <PartsManagerLayout><Dashboard /></PartsManagerLayout>}</Route>
       <Route>{() => <DealerFallback role="parts-manager" />}</Route>
     </Switch>
+    </ProtectedRoute>
   );
 }
 
@@ -468,6 +508,7 @@ export function PartsManagerPortalSection() {
 // ═══════════════════════════════════════════════════════════════════════════
 export function FinancialManagerPortalSection() {
   return (
+    <ProtectedRoute allowedRoles={['dealer_owner']} requireDealershipId={true}>
     <Switch>
       <Route path="/:dealerId/financial-manager/fi/:fiId">{() => <FinancialManagerLayout><FAndIDetail /></FinancialManagerLayout>}</Route>
       <Route path="/:dealerId/financial-manager/fi">{() => <FinancialManagerLayout><FAndI /></FinancialManagerLayout>}</Route>
@@ -475,11 +516,14 @@ export function FinancialManagerPortalSection() {
       <Route path="/:dealerId/financial-manager/warranty">{() => <FinancialManagerLayout><WarrantyPlans /></FinancialManagerLayout>}</Route>
       <Route path="/:dealerId/financial-manager/financing/:finId">{() => <FinancialManagerLayout><FinancingDetail /></FinancialManagerLayout>}</Route>
       <Route path="/:dealerId/financial-manager/financing">{() => <FinancialManagerLayout><Financing /></FinancialManagerLayout>}</Route>
+      <Route path="/:dealerId/financial-manager/invoices/:invoiceId">{() => <FinancialManagerLayout><InvoiceDetail /></FinancialManagerLayout>}</Route>
       <Route path="/:dealerId/financial-manager/invoices">{() => <FinancialManagerLayout><Invoices /></FinancialManagerLayout>}</Route>
+      <Route path="/:dealerId/financial-manager/products">{() => <FinancialManagerLayout><Products /></FinancialManagerLayout>}</Route>
       <Route path="/:dealerId/financial-manager/revenue">{() => <FinancialManagerLayout><RevenueDashboard /></FinancialManagerLayout>}</Route>
       <Route path="/:dealerId/financial-manager/dashboard">{() => <FinancialManagerLayout><Dashboard /></FinancialManagerLayout>}</Route>
       <Route>{() => <DealerFallback role="financial-manager" />}</Route>
     </Switch>
+    </ProtectedRoute>
   );
 }
 
@@ -488,12 +532,14 @@ export function FinancialManagerPortalSection() {
 // ═══════════════════════════════════════════════════════════════════════════
 export function ShopTechPortalSection() {
   return (
+    <ProtectedRoute allowedRoles={['technician']} requireDealershipId={true}>
     <Switch>
       <Route path="/:dealerId/shop-tech/work-orders/:workOrderId">{() => <ShopTechLayout><WorkOrderDetail /></ShopTechLayout>}</Route>
       <Route path="/:dealerId/shop-tech/work-orders">{() => <ShopTechLayout><WorkOrders /></ShopTechLayout>}</Route>
       <Route path="/:dealerId/shop-tech/dashboard">{() => <ShopTechLayout><Dashboard /></ShopTechLayout>}</Route>
       <Route>{() => <DealerFallback role="shop-tech" />}</Route>
     </Switch>
+    </ProtectedRoute>
   );
 }
 
@@ -502,12 +548,14 @@ export function ShopTechPortalSection() {
 // ═══════════════════════════════════════════════════════════════════════════
 export function OnSiteTechPortalSection() {
   return (
+    <ProtectedRoute allowedRoles={['technician']} requireDealershipId={true}>
     <Switch>
       <Route path="/:dealerId/on-site-tech/work-orders/:workOrderId">{() => <OnSiteTechLayout><WorkOrderDetail /></OnSiteTechLayout>}</Route>
       <Route path="/:dealerId/on-site-tech/work-orders">{() => <OnSiteTechLayout><WorkOrders /></OnSiteTechLayout>}</Route>
       <Route path="/:dealerId/on-site-tech/dashboard">{() => <OnSiteTechLayout><Dashboard /></OnSiteTechLayout>}</Route>
       <Route>{() => <DealerFallback role="on-site-tech" />}</Route>
     </Switch>
+    </ProtectedRoute>
   );
 }
 
@@ -516,6 +564,7 @@ export function OnSiteTechPortalSection() {
 // ═══════════════════════════════════════════════════════════════════════════
 export function PublicBidderPortalSection() {
   return (
+    <ProtectedRoute allowedRoles={['public_bidder', 'bidder']}>
     <Switch>
       <Route path="/marketplace/bidder/auctions/:auctionId">{() => <PublicBidderLayout><AuctionDetail /></PublicBidderLayout>}</Route>
       <Route path="/marketplace/bidder/auctions">{() => <PublicBidderLayout><Auctions /></PublicBidderLayout>}</Route>
@@ -529,6 +578,7 @@ export function PublicBidderPortalSection() {
       <Route path="/marketplace/bidder/dashboard">{() => <PublicBidderLayout><Dashboard /></PublicBidderLayout>}</Route>
       <Route>{() => <Redirect to="/marketplace/bidder/dashboard" />}</Route>
     </Switch>
+    </ProtectedRoute>
   );
 }
 
@@ -537,6 +587,7 @@ export function PublicBidderPortalSection() {
 // ═══════════════════════════════════════════════════════════════════════════
 export function ConsignorPortalSection() {
   return (
+    <ProtectedRoute allowedRoles={['consignor']}>
     <Switch>
       <Route path="/marketplace/consignor/auctions/:auctionId">{() => <ConsignorLayout><AuctionDetail /></ConsignorLayout>}</Route>
       <Route path="/marketplace/consignor/auctions">{() => <ConsignorLayout><Auctions /></ConsignorLayout>}</Route>
@@ -550,5 +601,70 @@ export function ConsignorPortalSection() {
       <Route path="/marketplace/consignor/dashboard">{() => <ConsignorLayout><Dashboard /></ConsignorLayout>}</Route>
       <Route>{() => <Redirect to="/marketplace/consignor/dashboard" />}</Route>
     </Switch>
+    </ProtectedRoute>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// 14. INDEPENDENT BIDDER — /marketplace/independent/*
+// ═══════════════════════════════════════════════════════════════════════════
+export function IndependentBidderPortalSection() {
+  return (
+    <ProtectedRoute allowedRoles={['independent_bidder', 'bidder']}>
+    <Switch>
+      <Route path="/marketplace/independent/auctions/:auctionId">{() => <IndependentBidderLayout><AuctionDetail /></IndependentBidderLayout>}</Route>
+      <Route path="/marketplace/independent/auctions">{() => <IndependentBidderLayout><Auctions /></IndependentBidderLayout>}</Route>
+      <Route path="/marketplace/independent/profile">{() => <IndependentBidderLayout><PB_Profile /></IndependentBidderLayout>}</Route>
+      <Route path="/marketplace/independent/verification">{() => <IndependentBidderLayout><PB_Verification /></IndependentBidderLayout>}</Route>
+      <Route path="/marketplace/independent/payment">{() => <IndependentBidderLayout><PB_Payment /></IndependentBidderLayout>}</Route>
+      <Route path="/marketplace/independent/my-bids">{() => <IndependentBidderLayout><PB_MyBids /></IndependentBidderLayout>}</Route>
+      <Route path="/marketplace/independent/won-units">{() => <IndependentBidderLayout><PB_WonUnits /></IndependentBidderLayout>}</Route>
+      <Route path="/marketplace/independent/payment-methods">{() => <IndependentBidderLayout><PB_PaymentMethods /></IndependentBidderLayout>}</Route>
+      <Route path="/marketplace/independent/settings">{() => <IndependentBidderLayout><Settings /></IndependentBidderLayout>}</Route>
+      <Route path="/marketplace/independent/dashboard">{() => <IndependentBidderLayout><Dashboard /></IndependentBidderLayout>}</Route>
+      <Route>{() => <Redirect to="/marketplace/independent/dashboard" />}</Route>
+    </Switch>
+    </ProtectedRoute>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// 15. MARKETPLACE ADMIN — /marketplace/admin/*
+// ═══════════════════════════════════════════════════════════════════════════
+export function MarketplaceAdminPortalSection() {
+  return (
+    <ProtectedRoute allowedRoles={['operator_admin']}>
+    <Switch>
+      <Route path="/marketplace/admin/members/:memberId">{() => <MarketplaceAdminLayout><MktMemberDetail /></MarketplaceAdminLayout>}</Route>
+      <Route path="/marketplace/admin/members">{() => <MarketplaceAdminLayout><MktMembers /></MarketplaceAdminLayout>}</Route>
+      <Route path="/marketplace/admin/listings">{() => <MarketplaceAdminLayout><MktListings /></MarketplaceAdminLayout>}</Route>
+      <Route path="/marketplace/admin/auctions">{() => <MarketplaceAdminLayout><MktAuctions /></MarketplaceAdminLayout>}</Route>
+      <Route path="/marketplace/admin/transactions/:txnId">{() => <MarketplaceAdminLayout><MktTransactionDetail /></MarketplaceAdminLayout>}</Route>
+      <Route path="/marketplace/admin/transactions">{() => <MarketplaceAdminLayout><MktTransactions /></MarketplaceAdminLayout>}</Route>
+      <Route path="/marketplace/admin/escrow">{() => <MarketplaceAdminLayout><EscrowAdmin /></MarketplaceAdminLayout>}</Route>
+      <Route path="/marketplace/admin/reports">{() => <MarketplaceAdminLayout><Reports /></MarketplaceAdminLayout>}</Route>
+      <Route path="/marketplace/admin/settings">{() => <MarketplaceAdminLayout><Settings /></MarketplaceAdminLayout>}</Route>
+      <Route path="/marketplace/admin/dashboard">{() => <MarketplaceAdminLayout><Dashboard /></MarketplaceAdminLayout>}</Route>
+      <Route>{() => <Redirect to="/marketplace/admin/dashboard" />}</Route>
+    </Switch>
+    </ProtectedRoute>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// 16. MARKETPLACE STAFF — /marketplace/staff/*
+// ═══════════════════════════════════════════════════════════════════════════
+export function MarketplaceStaffPortalSection() {
+  return (
+    <ProtectedRoute allowedRoles={['operator_staff']}>
+    <Switch>
+      <Route path="/marketplace/staff/members">{() => <MarketplaceStaffLayout><MktMembers /></MarketplaceStaffLayout>}</Route>
+      <Route path="/marketplace/staff/listings">{() => <MarketplaceStaffLayout><MktListings /></MarketplaceStaffLayout>}</Route>
+      <Route path="/marketplace/staff/auctions">{() => <MarketplaceStaffLayout><MktAuctions /></MarketplaceStaffLayout>}</Route>
+      <Route path="/marketplace/staff/bids">{() => <MarketplaceStaffLayout><MktTransactions /></MarketplaceStaffLayout>}</Route>
+      <Route path="/marketplace/staff/dashboard">{() => <MarketplaceStaffLayout><Dashboard /></MarketplaceStaffLayout>}</Route>
+      <Route>{() => <Redirect to="/marketplace/staff/dashboard" />}</Route>
+    </Switch>
+    </ProtectedRoute>
   );
 }

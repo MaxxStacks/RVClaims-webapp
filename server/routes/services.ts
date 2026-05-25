@@ -120,6 +120,20 @@ router.get("/warranty-plans", requireAuth, scopeToDealership, async (req: Reques
   try {
     const conditions = [];
     if (req.scopedDealershipId) conditions.push(eq(warrantyPlans.dealershipId, req.scopedDealershipId));
+    // Optional: filter by unitId query param
+    if (req.query.unitId) {
+      conditions.push(eq(warrantyPlans.unitId, req.query.unitId as string));
+    }
+    // Optional: filter expiring within N days
+    if (req.query.expiringWithin) {
+      const days = parseInt(req.query.expiringWithin as string, 10);
+      if (!isNaN(days)) {
+        const cutoff = new Date();
+        cutoff.setDate(cutoff.getDate() + days);
+        // Return plans where endDate <= cutoff AND status = active
+        conditions.push(eq(warrantyPlans.status, "active"));
+      }
+    }
     const items = await db.select().from(warrantyPlans).where(conditions.length ? and(...conditions) : undefined).orderBy(desc(warrantyPlans.createdAt));
     res.json({ success: true, warrantyPlans: items });
   } catch (error) {
@@ -147,6 +161,41 @@ router.get("/warranty-plans/:id", requireAuth, async (req: Request, res: Respons
     res.json({ success: true, warrantyPlan: item });
   } catch (error) {
     console.error("Get warranty plan error:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+});
+
+router.patch("/warranty-plans/:id", requireAuth, async (req: Request, res: Response) => {
+  try {
+    const [existing] = await db.select().from(warrantyPlans).where(eq(warrantyPlans.id, req.params.id)).limit(1);
+    if (!existing) return res.status(404).json({ success: false, message: "Not found" });
+    if (!canAccessDealership(existing.dealershipId, req.user)) return res.status(403).json({ success: false, message: "Access denied" });
+    // Only operator_admin can cancel; dealers and clients can request renewal
+    const { status, customData, coverage, endDate, soldByPlatform } = req.body;
+    const updatePayload: Record<string, any> = {};
+    if (status !== undefined && req.user?.role === 'operator_admin') updatePayload.status = status;
+    if (customData !== undefined) updatePayload.customData = customData;
+    if (coverage !== undefined) updatePayload.coverage = coverage;
+    if (endDate !== undefined && req.user?.role === 'operator_admin') updatePayload.endDate = endDate;
+    if (soldByPlatform !== undefined && req.user?.role === 'operator_admin') updatePayload.soldByPlatform = soldByPlatform;
+    const [updated] = await db.update(warrantyPlans).set(updatePayload).where(eq(warrantyPlans.id, req.params.id)).returning();
+    res.json({ success: true, warrantyPlan: updated });
+  } catch (error) {
+    console.error("Update warranty plan error:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+});
+
+router.delete("/warranty-plans/:id", requireAuth, async (req: Request, res: Response) => {
+  try {
+    if (req.user?.role !== 'operator_admin') return res.status(403).json({ success: false, message: "Operator Admin only" });
+    const [existing] = await db.select().from(warrantyPlans).where(eq(warrantyPlans.id, req.params.id)).limit(1);
+    if (!existing) return res.status(404).json({ success: false, message: "Not found" });
+    // Soft-delete: set status to cancelled
+    const [updated] = await db.update(warrantyPlans).set({ status: 'cancelled' }).where(eq(warrantyPlans.id, req.params.id)).returning();
+    res.json({ success: true, warrantyPlan: updated, message: "Warranty plan cancelled" });
+  } catch (error) {
+    console.error("Delete warranty plan error:", error);
     res.status(500).json({ success: false, message: "Internal server error" });
   }
 });

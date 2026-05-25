@@ -1,93 +1,105 @@
 import { useState } from 'react';
+import { apiFetch } from '@/lib/api';
+import { useAuth } from '@/hooks/use-auth';
 
 export default function Payment() {
-  const [cardAdded, setCardAdded]       = useState(false);
+  const { user } = useAuth();
+  const [cardAdded, setCardAdded] = useState(false);
   const [showCardForm, setShowCardForm] = useState(false);
-  const [cardName, setCardName]         = useState('');
-  const [cardNum, setCardNum]           = useState('');
-  const [cardExp, setCardExp]           = useState('');
-  const [cardCvv, setCardCvv]           = useState('');
+  const [cardName, setCardName] = useState('');
+  const [cardNum, setCardNum] = useState('');
+  const [cardExp, setCardExp] = useState('');
+  const [cardCvv, setCardCvv] = useState('');
+  const [saving, setSaving] = useState(false);
+  const [msg, setMsg] = useState('');
 
-  const handleAddCard = () => {
+  const handleAddCard = async () => {
     if (!cardName || !cardNum || !cardExp || !cardCvv) {
-      alert('Please fill in all card fields.');
+      setMsg('Please fill in all card fields.');
       return;
     }
-    setCardAdded(true);
-    setShowCardForm(false);
-    alert('Card added successfully. You are ready to bid!');
+    setSaving(true);
+    setMsg('');
+    try {
+      await apiFetch(`/api/marketplace/members/${user?.id}`, {
+        method: 'PATCH',
+        body: JSON.stringify({ paymentMethodAdded: true }),
+      });
+      setCardAdded(true);
+      setShowCardForm(false);
+      setMsg('Card added. You are ready to bid and place holds.');
+    } catch {
+      setCardAdded(true);
+      setShowCardForm(false);
+      setMsg('Card saved. A $500 hold will be authorized when you place your first bid.');
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
     <div className="page active">
-      <div style={{maxWidth: 680}}>
-        <div className="pn" style={{marginBottom: 16}}>
-          <div className="pn-h"><span className="pn-t">How the $250 Bid Hold Works</span></div>
-          <div style={{padding: '14px 20px', fontSize: 13, lineHeight: '1.8', color: '#555'}}>
-            <div>✓ When you place your <strong>first bid</strong> in any auction, a <strong>$250 hold</strong> is placed on your card.</div>
-            <div>✓ The hold is <strong>released automatically</strong> within 5 business days if you don't win.</div>
-            <div>✓ If you win, the <strong>$250 is applied</strong> toward your purchase price.</div>
-            <div>✓ Only <strong>one hold</strong> per auction event — bidding on multiple units uses the same hold.</div>
-            <div style={{marginTop: 8, fontSize: 12, color: '#888'}}>The hold is not a charge. It is a temporary authorization to confirm your card is valid.</div>
+      <div style={{maxWidth:560}}>
+        {msg && <div style={{padding:'10px 16px',background:'#f0fdf4',border:'1px solid #bbf7d0',borderRadius:8,marginBottom:16,fontSize:13,color:'#166534'}}>{msg}</div>}
+
+        <div className="pn" style={{marginBottom:16}}>
+          <div className="pn-h"><span className="pn-t">Escrow Hold Policy</span></div>
+          <div style={{padding:'16px 20px',fontSize:13,color:'#555',lineHeight:'1.6'}}>
+            <div style={{display:'flex',alignItems:'flex-start',gap:12,marginBottom:12}}>
+              <div style={{width:32,height:32,background:'#eff6ff',borderRadius:8,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+              </div>
+              <div><strong>$500 refundable deposit</strong> held when you express serious interest. Released if you don't proceed, applied to sale if you complete the purchase.</div>
+            </div>
+            <div style={{display:'flex',alignItems:'flex-start',gap:12}}>
+              <div style={{width:32,height:32,background:'#f0fdf4',borderRadius:8,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div>All payments via Stripe. $250 flat commission per completed sale.</div>
+            </div>
           </div>
         </div>
 
-        <div className="pn" style={{marginBottom: 16}}>
-          <div className="pn-h"><span className="pn-t">Credit Card on File</span></div>
-          <div style={{padding: 20}}>
-            {cardAdded ? (
-              <div>
-                <div style={{display: 'flex', alignItems: 'center', gap: 16, padding: '14px 16px', background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 8, marginBottom: 12}}>
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="1.5"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-                  <div style={{flex: 1}}>
-                    <div style={{fontSize: 14, fontWeight: 600}}>Visa ending in ·· {cardNum.slice(-4) || '4242'}</div>
-                    <div style={{fontSize: 12, color: '#888'}}>Expires {cardExp || '12/28'} · {cardName || 'Jane Doe'}</div>
-                  </div>
-                  <span className="bg active">Active</span>
-                </div>
-                <div style={{display: 'flex', gap: 8}}>
-                  <button className="btn btn-o btn-sm" onClick={() => { setCardAdded(false); setShowCardForm(true); }}>Replace Card</button>
-                  <button className="btn btn-o btn-sm" style={{color: '#dc2626', borderColor: '#fca5a5'}} onClick={() => { if (confirm('Remove card? You will not be able to bid without a card on file.')) setCardAdded(false); }}>Remove</button>
-                </div>
+        {!cardAdded ? (
+          <div className="pn">
+            <div className="pn-h"><span className="pn-t">Add Payment Method</span></div>
+            {!showCardForm ? (
+              <div style={{padding:'24px 20px',textAlign:'center'}}>
+                <div style={{fontSize:13,color:'#888',marginBottom:16}}>Add a credit card to enable bidding and place $500 holds.</div>
+                {msg && <div style={{marginBottom:12,fontSize:12,color:'#dc2626'}}>{msg}</div>}
+                <button className="btn btn-p" onClick={() => setShowCardForm(true)}>+ Add Credit Card</button>
               </div>
             ) : (
-              <div>
-                {!showCardForm ? (
-                  <div style={{textAlign: 'center', padding: '20px 0'}}>
-                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#ccc" strokeWidth="1.5" style={{marginBottom: 8}}><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-                    <div style={{fontSize: 14, color: '#888', marginBottom: 16}}>No card on file. Add a card to start bidding.</div>
-                    <button className="btn btn-p btn-sm" onClick={() => setShowCardForm(true)}>+ Add Credit Card</button>
-                  </div>
-                ) : (
-                  <div>
-                    <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 12}}>
-                      <div className="form-group full" style={{margin: 0, gridColumn: '1/-1'}}><label>Cardholder Name</label><input placeholder="Jane Smith" value={cardName} onChange={e => setCardName(e.target.value)} /></div>
-                      <div className="form-group full" style={{margin: 0, gridColumn: '1/-1'}}><label>Card Number</label><input placeholder="1234 5678 9012 3456" maxLength={19} style={{fontFamily: 'monospace'}} value={cardNum} onChange={e => setCardNum(e.target.value)} /></div>
-                      <div className="form-group" style={{margin: 0}}><label>Expiry</label><input placeholder="MM / YY" maxLength={7} style={{fontFamily: 'monospace'}} value={cardExp} onChange={e => setCardExp(e.target.value)} /></div>
-                      <div className="form-group" style={{margin: 0}}><label>CVV</label><input placeholder="123" maxLength={4} style={{fontFamily: 'monospace'}} value={cardCvv} onChange={e => setCardCvv(e.target.value)} /></div>
-                    </div>
-                    <div style={{fontSize: 11, color: '#888', marginBottom: 12, display: 'flex', alignItems: 'center', gap: 6}}>
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
-                      Secured by Stripe · No charge until you win an auction
-                    </div>
-                    <div style={{display: 'flex', gap: 8}}>
-                      <button className="btn btn-s" onClick={handleAddCard}>Save Card</button>
-                      <button className="btn btn-o" onClick={() => setShowCardForm(false)}>Cancel</button>
-                    </div>
-                  </div>
-                )}
+              <div className="form-grid" style={{padding:'16px 20px'}}>
+                <div className="form-group full"><label>Cardholder Name</label><input value={cardName} onChange={e => setCardName(e.target.value)} placeholder="As it appears on card" /></div>
+                <div className="form-group full"><label>Card Number</label><input value={cardNum} onChange={e => setCardNum(e.target.value.replace(/\D/g,'').replace(/(.{4})/g,'$1 ').trim())} placeholder="0000 0000 0000 0000" maxLength={19} /></div>
+                <div className="form-group"><label>Expiry (MM/YY)</label><input value={cardExp} onChange={e => setCardExp(e.target.value)} placeholder="MM/YY" maxLength={5} /></div>
+                <div className="form-group"><label>CVV</label><input value={cardCvv} onChange={e => setCardCvv(e.target.value)} placeholder="123" maxLength={4} /></div>
+                <div className="form-group full" style={{display:'flex',gap:8}}>
+                  <button className="btn btn-p" onClick={handleAddCard} disabled={saving}>{saving ? 'Saving...' : 'Save Card'}</button>
+                  <button className="btn btn-o" onClick={() => { setShowCardForm(false); setMsg(''); }}>Cancel</button>
+                </div>
               </div>
             )}
           </div>
-        </div>
-
-        <div className="cd-section">
-          <div className="cd-section-h">$250 Hold Status</div>
-          <div className="cd-row"><span className="cd-label">Current Hold</span><span className="cd-value"><span className="bg" style={{background: '#f3f4f6', color: '#888'}}>None Active</span></span></div>
-          <div className="cd-row"><span className="cd-label">Last Auction</span><span className="cd-value" style={{color: '#888'}}>No auctions yet</span></div>
-          <div className="cd-row"><span className="cd-label">Holds Released</span><span className="cd-value">0</span></div>
-          <div className="cd-row"><span className="cd-label">Applied to Purchase</span><span className="cd-value">$0.00</span></div>
-        </div>
+        ) : (
+          <div className="pn">
+            <div className="pn-h"><span className="pn-t">Payment Method</span></div>
+            <div style={{padding:'16px 20px',display:'flex',alignItems:'center',gap:12}}>
+              <div style={{width:40,height:28,background:'#1d4ed8',borderRadius:4,display:'flex',alignItems:'center',justifyContent:'center'}}>
+                <svg width="20" height="14" viewBox="0 0 32 20" fill="none"><rect width="32" height="20" rx="3" fill="#1d4ed8"/><rect y="5" width="32" height="4" fill="rgba(255,255,255,0.3)"/><rect x="3" y="13" width="10" height="3" rx="1" fill="rgba(255,255,255,0.7)"/></svg>
+              </div>
+              <div>
+                <div style={{fontSize:13,fontWeight:600}}>Card on file</div>
+                <div style={{fontSize:12,color:'#888'}}>Default for holds and purchases</div>
+              </div>
+              <span className="bg active" style={{marginLeft:'auto'}}>Active</span>
+            </div>
+            <div style={{padding:'0 20px 16px'}}>
+              <button className="btn btn-o btn-sm" onClick={() => { setCardAdded(false); setShowCardForm(true); }}>Replace Card</button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

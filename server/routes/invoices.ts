@@ -3,7 +3,7 @@
 import { Router, type Request, type Response } from "express";
 import { db } from "../db";
 import { invoices, invoiceLineItems, insertInvoiceSchema, insertInvoiceLineItemSchema } from "@shared/schema";
-import { eq, and, desc } from "drizzle-orm";
+import { eq, and, desc, sum, count } from "drizzle-orm";
 import { requireAuth } from "../middleware/auth";
 import { scopeToDealership, canAccessDealership, requireRole } from "../middleware/rbac";
 import { validateBody } from "../middleware/validate";
@@ -119,6 +119,47 @@ router.put("/:id", requireAuth, async (req: Request, res: Response) => {
     res.json({ success: true, invoice: updated });
   } catch (error) {
     console.error("Update invoice error:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+});
+
+// ==================== PATCH /api/invoices/:id ====================
+router.patch("/:id", requireAuth, requireRole("operator_admin"), async (req: Request, res: Response) => {
+  try {
+    const [existing] = await db.select().from(invoices).where(eq(invoices.id, req.params.id)).limit(1);
+    if (!existing) return res.status(404).json({ success: false, message: "Invoice not found" });
+
+    const updates: Record<string, any> = { updatedAt: new Date() };
+    const allowed = ["status", "notes", "paidAt", "dueDate", "paymentMethod", "paymentTerms"];
+    for (const key of allowed) {
+      if (key in req.body) updates[key] = req.body[key];
+    }
+    // When marking paid, set paidAt automatically if not provided
+    if (req.body.status === "paid" && !req.body.paidAt) {
+      updates.paidAt = new Date();
+    }
+
+    const [updated] = await db.update(invoices).set(updates).where(eq(invoices.id, req.params.id)).returning();
+    res.json({ success: true, invoice: updated });
+  } catch (error) {
+    console.error("Patch invoice error:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+});
+
+// ==================== DELETE /api/invoices/:id ====================
+router.delete("/:id", requireAuth, requireRole("operator_admin"), async (req: Request, res: Response) => {
+  try {
+    const [existing] = await db.select().from(invoices).where(eq(invoices.id, req.params.id)).limit(1);
+    if (!existing) return res.status(404).json({ success: false, message: "Invoice not found" });
+    if (existing.status !== "draft") {
+      return res.status(400).json({ success: false, message: "Only draft invoices can be deleted" });
+    }
+    await db.delete(invoiceLineItems).where(eq(invoiceLineItems.invoiceId, req.params.id));
+    await db.delete(invoices).where(eq(invoices.id, req.params.id));
+    res.json({ success: true, message: "Invoice deleted" });
+  } catch (error) {
+    console.error("Delete invoice error:", error);
     res.status(500).json({ success: false, message: "Internal server error" });
   }
 });

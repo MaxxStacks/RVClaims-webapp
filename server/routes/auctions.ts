@@ -9,11 +9,11 @@ import {
   marketplaceListings, marketplaceMembers, marketplaceTransactions, marketplaceHolds,
   insertAuctionSchema, placeBidSchema,
 } from "@shared/schema-marketplace";
+import type { InferInsertModel } from "drizzle-orm";
 import { eq, and, gte, lte, desc, asc, sql, ne } from "drizzle-orm";
 import { authorizeHold } from "../lib/stripe-escrow";
-
-// Import your WebSocket broadcast function from lib-websocket.ts
-// import { broadcastToRoom, broadcastToUser } from "../lib/websocket";
+import { broadcastNewBid, broadcastAuctionStarted, broadcastAuctionEnded } from "../websocket/auctions";
+import { requireAuth } from "../middleware/auth";
 
 const router = Router();
 
@@ -23,27 +23,39 @@ const router = Router();
 router.post("/", async (req: Request, res: Response) => {
   try {
     const data = insertAuctionSchema.parse(req.body);
+    const listingId: string | undefined = req.body.listingId;
+    const sellerId: string | undefined = req.body.sellerId;
 
     // Verify listing exists and belongs to seller
-    const [listing] = await db.select().from(marketplaceListings)
-      .where(eq(marketplaceListings.id, data.listingId)).limit(1);
-    if (!listing) return res.status(404).json({ error: "Listing not found" });
-    if (listing.sellerId !== data.sellerId) return res.status(403).json({ error: "Not your listing" });
+    const [listing] = listingId
+      ? await db.select().from(marketplaceListings)
+          .where(eq(marketplaceListings.id, listingId)).limit(1)
+      : [null];
+    if (listingId && !listing) return res.status(404).json({ error: "Listing not found" });
+    if (listingId && listing && sellerId && listing.sellerId !== sellerId) return res.status(403).json({ error: "Not your listing" });
 
-    // Update listing type
-    await db.update(marketplaceListings).set({
-      listingType: "auction",
-      status: "active",
-      updatedAt: new Date(),
-    }).where(eq(marketplaceListings.id, data.listingId));
+    // Mark listing as in auction
+    if (listingId) {
+      await db.update(marketplaceListings).set({
+        status: "active",
+        updatedAt: new Date(),
+      }).where(eq(marketplaceListings.id, listingId));
+    }
 
+    if (!sellerId) return res.status(400).json({ error: "sellerId required" });
+
+    const auctionNumber = `AUC-${Date.now()}`;
     const [auction] = await db.insert(auctions).values({
       ...data,
+      auctionNumber,
+      sellerId,
+      scheduledStart: new Date(data.scheduledStart),
+      scheduledEnd: new Date(data.scheduledEnd),
       status: "scheduled",
       currentBid: null,
       totalBids: 0,
       uniqueBidders: 0,
-    }).returning();
+    } as unknown as InferInsertModel<typeof auctions>).returning();
 
     res.status(201).json(auction);
   } catch (err: any) {
@@ -57,7 +69,7 @@ router.get("/", async (req: Request, res: Response) => {
     const { status, upcoming, live, sellerId } = req.query;
     const conditions = [];
 
-    if (status) conditions.push(eq(auctions.status, status as string));
+    if (status) conditions.push(eq(auctions.status, status as 'draft' | 'scheduled' | 'live' | 'ending' | 'ended' | 'sold' | 'no_sale' | 'cancelled'));
     if (sellerId) conditions.push(eq(auctions.sellerId, sellerId as string));
     if (upcoming === "true") {
       conditions.push(eq(auctions.status, "scheduled"));
@@ -67,20 +79,7 @@ router.get("/", async (req: Request, res: Response) => {
       conditions.push(eq(auctions.status, "live"));
     }
 
-    const results = await db.select({
-      auction: auctions,
-      listing: {
-        title: marketplaceListings.title,
-        year: marketplaceListings.year,
-        manufacturer: marketplaceListings.manufacturer,
-        model: marketplaceListings.model,
-        rvType: marketplaceListings.rvType,
-        condition: marketplaceListings.condition,
-        askingPrice: marketplaceListings.askingPrice,
-      },
-    })
-      .from(auctions)
-      .innerJoin(marketplaceListings, eq(auctions.listingId, marketplaceListings.id))
+    const results = await db.select().from(auctions)
       .where(conditions.length ? and(...conditions) : undefined)
       .orderBy(asc(auctions.scheduledStart));
 
@@ -97,15 +96,11 @@ router.get("/:id", async (req: Request, res: Response) => {
       .where(eq(auctions.id, req.params.id)).limit(1);
     if (!auction) return res.status(404).json({ error: "Auction not found" });
 
-    // Get listing details (no seller info)
-    const [listing] = await db.select().from(marketplaceListings)
-      .where(eq(marketplaceListings.id, auction.listingId)).limit(1);
-
     // Get bid history (bidder names hidden — just amounts and timestamps)
     const bids = await db.select({
       id: auctionBids.id,
       amount: auctionBids.amount,
-      isAutoBid: auctionBids.isAutoBid,
+      isProxy: auctionBids.isProxy,
       status: auctionBids.status,
       createdAt: auctionBids.createdAt,
       // bidderId intentionally excluded — anonymous bidding
@@ -114,12 +109,10 @@ router.get("/:id", async (req: Request, res: Response) => {
       .where(eq(auctionBids.auctionId, req.params.id))
       .orderBy(desc(auctionBids.amount));
 
-    // Strip seller info from listing
-    const { sellerId, ...publicListing } = listing || {};
+    const { sellerId, ...publicAuction } = auction;
 
     res.json({
-      auction,
-      listing: publicListing,
+      auction: publicAuction,
       bids,
       bidCount: bids.length,
     });
@@ -133,7 +126,7 @@ router.get("/:id", async (req: Request, res: Response) => {
 // POST /api/auctions/:id/bid — Place a bid
 router.post("/:id/bid", async (req: Request, res: Response) => {
   try {
-    const { amount, maxAutoBid } = placeBidSchema.parse({
+    const { amount, maxProxyAmount } = placeBidSchema.parse({
       auctionId: req.params.id,
       ...req.body,
     });
@@ -181,8 +174,8 @@ router.post("/:id/bid", async (req: Request, res: Response) => {
       auctionId: auction.id,
       bidderId: memberId,
       amount: amount.toFixed(2),
-      isAutoBid: false,
-      maxAutoBid: maxAutoBid?.toFixed(2),
+      isProxy: false,
+      maxProxyAmount: maxProxyAmount?.toFixed(2),
       status: "winning",
     }).returning();
 
@@ -205,39 +198,26 @@ router.post("/:id/bid", async (req: Request, res: Response) => {
       auctionUpdates.reserveMet = true;
     }
 
-    // Auto-extend if bid in last 2 minutes
-    if (auction.autoExtend && auction.scheduledEnd) {
+    // Auto-extend if bid in last N minutes
+    if (auction.autoExtendMinutes > 0 && auction.scheduledEnd) {
       const timeLeft = auction.scheduledEnd.getTime() - Date.now();
-      const extensionMs = (auction.extensionMinutes || 2) * 60 * 1000;
+      const extensionMs = auction.autoExtendMinutes * 60 * 1000;
       if (timeLeft < extensionMs) {
         auctionUpdates.scheduledEnd = new Date(Date.now() + extensionMs);
-        auctionUpdates.status = "ending_soon";
+        auctionUpdates.status = "ending";
       }
     }
 
     await db.update(auctions).set(auctionUpdates).where(eq(auctions.id, auction.id));
 
-    // === WEBSOCKET: Broadcast new bid to all watchers ===
-    // broadcastToRoom(`auction:${auction.id}`, {
-    //   type: "auction:new_bid",
-    //   auctionId: auction.id,
-    //   amount,
-    //   totalBids: auctionUpdates.totalBids,
-    //   uniqueBidders: Number(uniqueCount),
-    //   reserveMet: auctionUpdates.reserveMet || auction.reserveMet,
-    //   newEndTime: auctionUpdates.scheduledEnd,
-    //   timestamp: new Date().toISOString(),
-    // });
-
-    // === NOTIFY: Previous high bidder they've been outbid ===
-    // if (auction.currentBidderId && auction.currentBidderId !== memberId) {
-    //   broadcastToUser(auction.currentBidderId, {
-    //     type: "auction:outbid",
-    //     auctionId: auction.id,
-    //     auctionTitle: auction.title,
-    //     newAmount: amount,
-    //   });
-    // }
+    // WebSocket: broadcast new bid to all auction room watchers
+    broadcastNewBid(auction.id, {
+      amount,
+      totalBids: auctionUpdates.totalBids,
+      uniqueBidders: Number(uniqueCount),
+      reserveMet: auctionUpdates.reserveMet || auction.reserveMet,
+      newEndTime: auctionUpdates.scheduledEnd,
+    });
 
     // Process auto-bids from other bidders
     await processAutoBids(auction.id, memberId, amount);
@@ -255,7 +235,7 @@ router.post("/:id/bid", async (req: Request, res: Response) => {
 async function handleBuyNow(req: Request, res: Response, auction: any, memberId: string, amount: number) {
   // End auction immediately
   await db.update(auctions).set({
-    status: "completed",
+    status: "sold",
     actualEnd: new Date(),
     winnerId: memberId,
     winningBid: amount.toFixed(2),
@@ -276,19 +256,17 @@ async function handleBuyNow(req: Request, res: Response, auction: any, memberId:
     .where(and(eq(auctionBids.auctionId, auction.id), ne(auctionBids.id, bid.id)));
 
   // Create transaction
-  const [listing] = await db.select().from(marketplaceListings)
-    .where(eq(marketplaceListings.id, auction.listingId)).limit(1);
-
   await db.insert(marketplaceTransactions).values({
-    listingId: auction.listingId,
+    transactionNumber: `TXN-${Date.now()}`,
     sellerId: auction.sellerId,
     buyerId: memberId,
     auctionId: auction.id,
     salePrice: amount.toFixed(2),
     status: "pending",
+    unitSnapshot: { year: auction.year, manufacturer: auction.manufacturer, model: auction.model },
   });
 
-  // broadcastToRoom(`auction:${auction.id}`, { type: "auction:buy_now", auctionId: auction.id, amount, buyerId: "anonymous" });
+  broadcastAuctionEnded(auction.id, { status: "sold", winningBid: amount.toFixed(2), winnerId: memberId });
 
   res.status(201).json({ bid, buyNow: true, message: "Congratulations! You've purchased this unit." });
 }
@@ -301,15 +279,15 @@ async function processAutoBids(auctionId: string, currentBidderId: string, curre
       eq(auctionBids.auctionId, auctionId),
       ne(auctionBids.bidderId, currentBidderId),
     ))
-    .orderBy(desc(auctionBids.maxAutoBid));
+    .orderBy(desc(auctionBids.maxProxyAmount));
 
   const [auction] = await db.select().from(auctions).where(eq(auctions.id, auctionId)).limit(1);
   if (!auction) return;
   const increment = parseFloat(auction.bidIncrement || "250");
 
   for (const ab of autoBids) {
-    if (!ab.maxAutoBid) continue;
-    const maxAuto = parseFloat(ab.maxAutoBid);
+    if (!ab.maxProxyAmount) continue;
+    const maxAuto = parseFloat(ab.maxProxyAmount);
     const nextBid = currentAmount + increment;
 
     if (maxAuto >= nextBid) {
@@ -324,8 +302,8 @@ async function processAutoBids(auctionId: string, currentBidderId: string, curre
         auctionId,
         bidderId: ab.bidderId,
         amount: autoBidAmount.toFixed(2),
-        isAutoBid: true,
-        maxAutoBid: ab.maxAutoBid,
+        isProxy: true,
+        maxProxyAmount: ab.maxProxyAmount,
         status: "winning",
       });
 
@@ -358,7 +336,7 @@ router.post("/:id/start", async (req: Request, res: Response) => {
       updatedAt: new Date(),
     }).where(eq(auctions.id, req.params.id)).returning();
 
-    // broadcastToRoom(`auction:${auction.id}`, { type: "auction:started", auctionId: auction.id });
+    broadcastAuctionStarted(auction.id);
 
     res.json(updated);
   } catch (err: any) {
@@ -372,17 +350,15 @@ router.post("/:id/end", async (req: Request, res: Response) => {
     const [auction] = await db.select().from(auctions)
       .where(eq(auctions.id, req.params.id)).limit(1);
     if (!auction) return res.status(404).json({ error: "Auction not found" });
-    if (auction.status !== "live" && auction.status !== "ending_soon") {
+    if (auction.status !== "live" && auction.status !== "ending") {
       return res.status(400).json({ error: "Auction is not live" });
     }
 
     const hasWinner = auction.currentBidderId && auction.currentBid;
     const reserveMet = !auction.reservePrice || auction.reserveMet;
 
-    let finalStatus = "no_sale";
+    const finalStatus: 'sold' | 'no_sale' = hasWinner && reserveMet ? "sold" : "no_sale";
     if (hasWinner && reserveMet) {
-      finalStatus = "completed";
-
       // Mark winning bid
       await db.update(auctionBids).set({ status: "won" })
         .where(and(
@@ -392,26 +368,14 @@ router.post("/:id/end", async (req: Request, res: Response) => {
 
       // Create transaction
       await db.insert(marketplaceTransactions).values({
-        listingId: auction.listingId,
+        transactionNumber: `TXN-${Date.now()}`,
         sellerId: auction.sellerId,
         buyerId: auction.currentBidderId!,
         auctionId: auction.id,
         salePrice: auction.currentBid!,
         status: "pending",
+        unitSnapshot: { year: auction.year, manufacturer: auction.manufacturer, model: auction.model },
       });
-
-      // Update listing
-      await db.update(marketplaceListings).set({
-        status: "pending_sale",
-        updatedAt: new Date(),
-      }).where(eq(marketplaceListings.id, auction.listingId));
-    } else {
-      // No sale — re-activate listing
-      await db.update(marketplaceListings).set({
-        status: "active",
-        listingType: "marketplace",
-        updatedAt: new Date(),
-      }).where(eq(marketplaceListings.id, auction.listingId));
     }
 
     const [updated] = await db.update(auctions).set({
@@ -422,7 +386,7 @@ router.post("/:id/end", async (req: Request, res: Response) => {
       updatedAt: new Date(),
     }).where(eq(auctions.id, req.params.id)).returning();
 
-    // broadcastToRoom(`auction:${auction.id}`, { type: "auction:ended", auctionId: auction.id, status: finalStatus, winningBid: updated.winningBid });
+    broadcastAuctionEnded(auction.id, { status: finalStatus, winningBid: updated.winningBid, winnerId: updated.winnerId });
 
     res.json(updated);
   } catch (err: any) {
@@ -438,13 +402,6 @@ router.post("/:id/cancel", async (req: Request, res: Response) => {
       actualEnd: new Date(),
       updatedAt: new Date(),
     }).where(eq(auctions.id, req.params.id)).returning();
-
-    // Re-activate listing
-    await db.update(marketplaceListings).set({
-      status: "active",
-      listingType: "marketplace",
-      updatedAt: new Date(),
-    }).where(eq(marketplaceListings.id, updated.listingId));
 
     res.json(updated);
   } catch (err: any) {
@@ -462,8 +419,8 @@ router.post("/:id/watch", async (req: Request, res: Response) => {
     const [watcher] = await db.insert(auctionWatchers).values({
       auctionId: req.params.id,
       memberId,
-      notifyOnBid: notifyOnBid ?? true,
-      notifyOnEndingSoon: notifyOnEndingSoon ?? true,
+      notifyOnNewBid: notifyOnBid ?? true,
+      notifyOnEnding: notifyOnEndingSoon ?? true,
     }).returning();
 
     await db.update(auctions).set({
@@ -504,7 +461,7 @@ router.get("/:id/bids", async (req: Request, res: Response) => {
       bid: auctionBids,
       bidder: {
         id: marketplaceMembers.id,
-        businessName: marketplaceMembers.businessName,
+        dealershipName: marketplaceMembers.dealershipName,
         city: marketplaceMembers.city,
         province: marketplaceMembers.province,
       },
@@ -515,6 +472,35 @@ router.get("/:id/bids", async (req: Request, res: Response) => {
       .orderBy(desc(auctionBids.amount));
 
     res.json(bids);
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// PATCH /api/auctions/:id/bid/withdraw — Withdraw a bid (only if not winning and auction still live)
+router.patch("/:id/bid/withdraw", requireAuth, async (req: Request, res: Response) => {
+  try {
+    const { memberId } = req.body;
+    if (!memberId) return res.status(400).json({ error: "memberId required" });
+
+    const [auction] = await db.select().from(auctions)
+      .where(eq(auctions.id, req.params.id)).limit(1);
+    if (!auction) return res.status(404).json({ error: "Auction not found" });
+    if (!["live", "scheduled", "ending"].includes(auction.status)) {
+      return res.status(400).json({ error: "Cannot withdraw from a completed auction" });
+    }
+    if (auction.currentBidderId === memberId) {
+      return res.status(400).json({ error: "Cannot withdraw a winning bid" });
+    }
+
+    await db.update(auctionBids).set({ status: "cancelled" })
+      .where(and(
+        eq(auctionBids.auctionId, req.params.id),
+        eq(auctionBids.bidderId, memberId),
+        ne(auctionBids.status, "won"),
+      ));
+
+    res.json({ success: true, message: "Bid withdrawn" });
   } catch (err: any) {
     res.status(500).json({ error: err.message });
   }

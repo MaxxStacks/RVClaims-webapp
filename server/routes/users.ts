@@ -186,9 +186,11 @@ router.delete("/:id", requireAuth, async (req: Request, res: Response) => {
 });
 
 // ==================== POST /api/users/invite ====================
+const ALL_ROLES = ["operator_admin", "operator_staff", "dealer_owner", "dealer_staff", "technician", "service_manager", "shop_manager", "parts_dept", "client"] as const;
+
 const inviteSchema = z.object({
   email: z.string().email(),
-  role: z.enum(["dealer_owner", "dealer_staff", "client"]),
+  role: z.enum(ALL_ROLES),
   dealershipId: z.string().uuid().optional(),
   unitId: z.string().uuid().optional(),
 });
@@ -203,6 +205,12 @@ router.post("/invite", requireAuth, validateBody(inviteSchema), async (req: Requ
 
     if (!isOperator && !isDealerOwner) {
       return res.status(403).json({ success: false, message: "Cannot send invitations" });
+    }
+
+    // Dealer owners can only invite dealer staff, technicians, or clients
+    const dealerAllowedRoles = ["dealer_staff", "technician", "service_manager", "shop_manager", "parts_dept", "client"];
+    if (isDealerOwner && !dealerAllowedRoles.includes(role)) {
+      return res.status(403).json({ success: false, message: "Dealer owners cannot invite operator users" });
     }
 
     // Dealer owners can only invite staff/customers to their own dealership

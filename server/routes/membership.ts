@@ -9,7 +9,7 @@ import Stripe from 'stripe';
 
 const router = Router();
 const stripe = process.env.STRIPE_SECRET_KEY
-  ? new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2024-04-10' })
+  ? new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2025-08-27.basil' })
   : null;
 
 // ==================== PUBLIC: Signup ====================
@@ -54,22 +54,20 @@ router.get('/members', async (req: Request, res: Response) => {
     const { status, search, page = '1', limit = '20' } = req.query;
     const offset = (parseInt(page as string) - 1) * parseInt(limit as string);
     
-    let query = db.select().from(marketplaceMembers);
-    
+    const conditions = [];
     if (status && status !== 'all') {
-      query = query.where(eq(marketplaceMembers.status, status as any));
+      conditions.push(eq(marketplaceMembers.status, status as 'pending' | 'under_review' | 'approved' | 'active' | 'expired' | 'suspended' | 'rejected'));
     }
     if (search) {
-      query = query.where(
-        or(
-          ilike(marketplaceMembers.dealershipName, `%${search}%`),
-          ilike(marketplaceMembers.contactEmail, `%${search}%`),
-          ilike(marketplaceMembers.contactName, `%${search}%`)
-        )
-      );
+      conditions.push(or(
+        ilike(marketplaceMembers.dealershipName, `%${search}%`),
+        ilike(marketplaceMembers.contactEmail, `%${search}%`),
+        ilike(marketplaceMembers.contactName, `%${search}%`)
+      )!);
     }
-    
-    const members = await query
+
+    const members = await db.select().from(marketplaceMembers)
+      .where(conditions.length ? and(...conditions) : undefined)
       .orderBy(desc(marketplaceMembers.createdAt))
       .limit(parseInt(limit as string))
       .offset(offset);
@@ -103,6 +101,7 @@ router.put('/members/:id/verify', async (req: Request, res: Response) => {
     if (!member) return res.status(404).json({ error: 'Member not found' });
     
     if (action === 'approve') {
+      if (!stripe) throw new Error("Stripe not configured");
       // Create Stripe customer
       const customer = await stripe.customers.create({
         email: member.contactEmail,
@@ -179,6 +178,7 @@ router.post('/members/:id/subscribe', async (req: Request, res: Response) => {
     // In production, create this once in Stripe Dashboard and use the price ID
     const ANNUAL_PRICE_ID = process.env.STRIPE_MARKETPLACE_ANNUAL_PRICE_ID || '';
     
+    if (!stripe) return res.status(500).json({ error: "Stripe not configured" });
     const session = await stripe.checkout.sessions.create({
       customer: member.stripeCustomerId!,
       mode: 'subscription',
@@ -203,6 +203,7 @@ router.post('/webhooks/stripe', async (req: Request, res: Response) => {
   const endpointSecret = process.env.STRIPE_MARKETPLACE_WEBHOOK_SECRET || '';
   
   try {
+    if (!stripe) return res.status(500).json({ error: "Stripe not configured" });
     const event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
     
     switch (event.type) {
@@ -231,7 +232,6 @@ router.post('/webhooks/stripe', async (req: Request, res: Response) => {
           const newStatus = subscription.status === 'active' ? 'active' : 'expired';
           await db.update(marketplaceMembers).set({
             status: newStatus,
-            currentPeriodEnd: new Date(subscription.current_period_end * 1000),
             updatedAt: new Date(),
           }).where(eq(marketplaceMembers.id, members[0].id));
         }

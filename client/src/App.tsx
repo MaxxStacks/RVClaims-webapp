@@ -77,7 +77,7 @@ const BidderPortal = lazy(() => import("./portals/BidderPortal"));
 const BidderPortalV6 = lazy(() => import("@/pages/BidderPortalV6"));
 const PortalSelectV6 = lazy(() => import("@/pages/PortalSelectV6"));
 
-// Session 3: 13-portal route sections
+// Session 3: 16-portal route sections
 import {
   OperatorAdminPortalSection,
   OperatorStaffPortalSection,
@@ -92,6 +92,9 @@ import {
   OnSiteTechPortalSection,
   PublicBidderPortalSection,
   ConsignorPortalSection,
+  IndependentBidderPortalSection,
+  MarketplaceAdminPortalSection,
+  MarketplaceStaffPortalSection,
 } from './portals/PortalRoutes';
 const UnitProfilePageOperator = lazy(async () => {
   const { default: Comp } = await import("@/components/units/UnitProfilePage");
@@ -327,6 +330,9 @@ function App() {
                    location.startsWith('/bidder-v6') ||
                    location.startsWith('/marketplace/bidder') ||
                    location.startsWith('/marketplace/consignor') ||
+                   location.startsWith('/marketplace/independent') ||
+                   location.startsWith('/marketplace/admin') ||
+                   location.startsWith('/marketplace/staff') ||
                    isDealerPortalPath(location);
 
   // portal.css sets body{display:flex;background:...} globally.
@@ -384,6 +390,12 @@ function App() {
               <Route path="/marketplace/bidder" component={PublicBidderPortalSection} />
               <Route path="/marketplace/consignor/:rest*" component={ConsignorPortalSection} />
               <Route path="/marketplace/consignor" component={ConsignorPortalSection} />
+              <Route path="/marketplace/independent/:rest*" component={IndependentBidderPortalSection} />
+              <Route path="/marketplace/independent" component={IndependentBidderPortalSection} />
+              <Route path="/marketplace/admin/:rest*" component={MarketplaceAdminPortalSection} />
+              <Route path="/marketplace/admin" component={MarketplaceAdminPortalSection} />
+              <Route path="/marketplace/staff/:rest*" component={MarketplaceStaffPortalSection} />
+              <Route path="/marketplace/staff" component={MarketplaceStaffPortalSection} />
 
               {/* Session 3: Dealer role portals — dynamic :dealerId prefix, last in Switch */}
               <Route path="/:dealerId/owner/:rest*" component={DealerOwnerPortalSection} />

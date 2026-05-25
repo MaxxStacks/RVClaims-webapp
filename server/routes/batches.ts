@@ -167,4 +167,34 @@ router.put("/:id/process", requireAuth, requireOperator, async (req: Request, re
   }
 });
 
+// ==================== PATCH /api/batches/:id — assign or update status ====================
+router.patch("/:id", requireAuth, requireOperator, async (req: Request, res: Response) => {
+  try {
+    const [batch] = await db
+      .select()
+      .from(photoBatches)
+      .where(eq(photoBatches.id, req.params.id))
+      .limit(1);
+
+    if (!batch) {
+      return res.status(404).json({ success: false, message: "Batch not found" });
+    }
+
+    const updates: Record<string, any> = {};
+    if (req.body.status) updates.status = req.body.status;
+    if (req.body.assignedTo) updates.processedBy = req.body.assignedTo;
+
+    const [updated] = await db
+      .update(photoBatches)
+      .set(updates)
+      .where(eq(photoBatches.id, req.params.id))
+      .returning();
+
+    res.json({ success: true, batch: updated });
+  } catch (error) {
+    console.error("Patch batch error:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+});
+
 export default router;

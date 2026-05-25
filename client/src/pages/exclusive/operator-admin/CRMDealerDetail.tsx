@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
+import { useParams } from 'wouter';
 import { apiFetch } from '@/lib/api';
 
 export default function CRMDealerDetail() {
+  const { dealerId } = useParams<{ dealerId: string }>();
   const [dealer, setDealer] = useState<any>(null);
   const [tab, setTab] = useState('overview');
   const [activities, setActivities] = useState<any[]>([]);
@@ -13,17 +15,15 @@ export default function CRMDealerDetail() {
   const [tagSaving, setTagSaving] = useState(false);
 
   useEffect(() => {
-    const id = sessionStorage.getItem('crmDealerId');
-    if (!id) return;
-    apiFetch<any>(`/api/crm/dealers/${id}`).then(d => setDealer(d.dealer || null)).catch(() => {});
-    apiFetch<any>(`/api/crm/activities/${id}`).then(d => setActivities(d.activities || [])).catch(() => {});
+    if (!dealerId) return;
+    apiFetch<any>(`/api/crm/dealers/${dealerId}`).then(d => setDealer(d.dealer || null)).catch(() => {});
+    apiFetch<any>(`/api/crm/activities/${dealerId}`).then(d => setActivities(d.activities || [])).catch(() => {});
     apiFetch<any>('/api/crm/tags').then(d => setTags(d.tags || [])).catch(() => {});
-  }, []);
+  }, [dealerId]);
 
   const refreshDealer = async () => {
-    const id = sessionStorage.getItem('crmDealerId');
-    if (!id) return;
-    const d = await apiFetch<any>(`/api/crm/dealers/${id}`);
+    if (!dealerId) return;
+    const d = await apiFetch<any>(`/api/crm/dealers/${dealerId}`);
     setDealer(d.dealer || null);
   };
 
@@ -110,7 +110,7 @@ export default function CRMDealerDetail() {
               <button className="btn btn-p btn-sm" disabled={activitySaving || !activityForm.summary} onClick={async () => {
                 setActivitySaving(true);
                 try {
-                  await apiFetch('/api/crm/activities', { method: 'POST', body: JSON.stringify({ dealerId: dealer.id, type: activityForm.type, summary: activityForm.summary }) });
+                  await apiFetch('/api/crm/activities', { method: 'POST', body: JSON.stringify({ dealerListingId: dealer.id, activityType: activityForm.type, title: activityForm.summary }) });
                   const d = await apiFetch<any>(`/api/crm/activities/${dealer.id}`);
                   setActivities(d.activities || []);
                   setActivityForm({ type: 'note', summary: '' });

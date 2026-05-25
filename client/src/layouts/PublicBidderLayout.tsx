@@ -2,14 +2,17 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'wouter';
 import { useAuth } from '@/hooks/use-auth';
 import ds360Icon from '@assets/ds360_favicon.png';
+import { useLanguage } from '@/hooks/use-language';
+import type { Language } from '@/lib/i18n';
+import { MobileBottomNav } from '@/components/MobileBottomNav';
 
 interface Props { children?: React.ReactNode; }
 
 export default function PublicBidderLayout({ children }: Props) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [theme, setTheme] = useState(() => localStorage.getItem('ds360-theme') || '');
-  const [lang, setLang] = useState(() => localStorage.getItem('ds360-lang') || (navigator.language.startsWith('fr') ? 'fr' : 'en'));
-  const [location] = useLocation();
+  const { language: lang, setLanguage, t } = useLanguage();
+  const [location, setLocation] = useLocation();
   const { user, logout } = useAuth();
 
   useEffect(() => {
@@ -23,7 +26,7 @@ export default function PublicBidderLayout({ children }: Props) {
     localStorage.setItem('ds360-theme', next);
   };
 
-  const handleSetLang = (l: string) => { setLang(l); localStorage.setItem('ds360-lang', l); };
+  const handleSetLang = (l: string) => setLanguage(l as Language);
   const isActive = (path: string) => location.endsWith('/' + path) || location.includes('/' + path + '/');
 
   return (
@@ -38,22 +41,22 @@ export default function PublicBidderLayout({ children }: Props) {
         </div>
         <div className="sidebar-nav">
           <div className="nav-section">
-            <div className="nav-label">Account</div>
-            <Link className={`nav-item ${isActive('dashboard') ? 'active' : ''}`} to="dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</Link>
-            <Link className={`nav-item ${isActive('profile') ? 'active' : ''}`} to="profile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>My Profile</Link>
-            <Link className={`nav-item ${isActive('verification') ? 'active' : ''}`} to="verification"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>ID Verification</Link>
-            <Link className={`nav-item ${isActive('payment') ? 'active' : ''}`} to="payment"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>Payment &amp; Card</Link>
-            <Link className={`nav-item ${isActive('payment-methods') ? 'active' : ''}`} to="payment-methods"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/><path d="M6 14h4"/><path d="M14 14h4"/></svg>Payment Methods</Link>
+            <div className="nav-label">{t('nav.account')}</div>
+            <Link className={`nav-item ${isActive('dashboard') ? 'active' : ''}`} to="dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>{t('nav.dashboard')}</Link>
+            <Link className={`nav-item ${isActive('profile') ? 'active' : ''}`} to="profile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>{t('nav.myProfile')}</Link>
+            <Link className={`nav-item ${isActive('verification') ? 'active' : ''}`} to="verification"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>{t('nav.idVerification')}</Link>
+            <Link className={`nav-item ${isActive('payment') ? 'active' : ''}`} to="payment"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>{t('nav.paymentCard')}</Link>
+            <Link className={`nav-item ${isActive('payment-methods') ? 'active' : ''}`} to="payment-methods"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/><path d="M6 14h4"/><path d="M14 14h4"/></svg>{t('nav.paymentMethods')}</Link>
           </div>
           <div className="nav-section">
-            <div className="nav-label">Auctions</div>
-            <Link className={`nav-item ${isActive('upcoming') ? 'active' : ''}`} to="upcoming"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Upcoming Auctions</Link>
-            <Link className={`nav-item ${isActive('my-bids') ? 'active' : ''}`} to="my-bids"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2l-2 2-7 7 3 3 7-7 2-2-3-3z"/><path d="M3 21l4-4"/><path d="M17 3l4 4-2 2-4-4 2-2z"/></svg>My Bids</Link>
-            <Link className={`nav-item ${isActive('won-units') ? 'active' : ''}`} to="won-units"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9H4.5a2.5 2.5 0 000 5H6"/><path d="M18 9h1.5a2.5 2.5 0 010 5H18"/><path d="M8 9h8"/><path d="M8 14h8"/><path d="M12 2v7"/><path d="M12 16v6"/><path d="M9 19h6"/></svg>Won Units</Link>
+            <div className="nav-label">{t('nav.auctions')}</div>
+            <Link className={`nav-item ${isActive('upcoming') ? 'active' : ''}`} to="upcoming"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>{t('nav.upcomingAuctions')}</Link>
+            <Link className={`nav-item ${isActive('my-bids') ? 'active' : ''}`} to="my-bids"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2l-2 2-7 7 3 3 7-7 2-2-3-3z"/><path d="M3 21l4-4"/><path d="M17 3l4 4-2 2-4-4 2-2z"/></svg>{t('nav.myBids')}</Link>
+            <Link className={`nav-item ${isActive('won-units') ? 'active' : ''}`} to="won-units"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9H4.5a2.5 2.5 0 000 5H6"/><path d="M18 9h1.5a2.5 2.5 0 010 5H18"/><path d="M8 9h8"/><path d="M8 14h8"/><path d="M12 2v7"/><path d="M12 16v6"/><path d="M9 19h6"/></svg>{t('nav.wonUnits')}</Link>
           </div>
           <div className="nav-section">
-            <div className="nav-label">More</div>
-            <Link className={`nav-item ${isActive('settings') ? 'active' : ''}`} to="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>Settings</Link>
+            <div className="nav-label">{t('nav.more')}</div>
+            <Link className={`nav-item ${isActive('settings') ? 'active' : ''}`} to="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>{t('nav.settings')}</Link>
           </div>
         </div>
         <div className="sidebar-footer">
@@ -91,6 +94,14 @@ export default function PublicBidderLayout({ children }: Props) {
         <div className="content">
           {children}
         </div>
+        <MobileBottomNav
+          portalType="marketplace"
+          activePage={location.split('/').filter(Boolean)[2] || 'dashboard'}
+          onNavigate={(pageId) => {
+            const p = location.split('/').filter(Boolean);
+            setLocation(`/${p[0]}/${p[1]}/${pageId}`);
+          }}
+        />
       </div>
     </>
   );

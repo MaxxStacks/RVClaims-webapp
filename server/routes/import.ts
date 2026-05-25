@@ -8,6 +8,7 @@ import {
   units, claims, users, warrantyPlans, fiDeals,
   importTemplates, importHistory,
 } from "@shared/schema";
+import type { InferInsertModel } from "drizzle-orm";
 import { eq, and, desc } from "drizzle-orm";
 
 const router = Router();
@@ -227,32 +228,32 @@ router.post("/run", upload.single("file"), async (req, res) => {
       try {
         if (entityType === "units") {
           if (!mapped.vin) { skippedRows++; errors.push({ row: i + 2, error: "Missing VIN" }); continue; }
-          await tx.insert(units).values({ dealershipId, ...mapped }).onConflictDoUpdate({
+          await tx.insert(units).values({ dealershipId, ...mapped } as InferInsertModel<typeof units>).onConflictDoUpdate({
             target: units.vin,
-            set: { ...mapped, updatedAt: new Date() },
+            set: { ...mapped, updatedAt: new Date() } as Partial<InferInsertModel<typeof units>>,
           });
         } else if (entityType === "customers") {
           if (!mapped.email) { skippedRows++; errors.push({ row: i + 2, error: "Missing email" }); continue; }
           mapped.role = mapped.role || "client";
           mapped.firstName = mapped.firstName || "";
           mapped.lastName = mapped.lastName || "";
-          await tx.insert(users).values({ dealershipId, ...mapped }).onConflictDoUpdate({
+          await tx.insert(users).values({ dealershipId, ...mapped } as InferInsertModel<typeof users>).onConflictDoUpdate({
             target: users.email,
-            set: { ...mapped, updatedAt: new Date() },
+            set: { ...mapped, updatedAt: new Date() } as Partial<InferInsertModel<typeof users>>,
           });
         } else if (entityType === "warranty_plans") {
           if (!mapped.planNumber) { skippedRows++; errors.push({ row: i + 2, error: "Missing planNumber" }); continue; }
           if (!mapped.unitId && !mapped.provider) { skippedRows++; errors.push({ row: i + 2, error: "Missing provider" }); continue; }
-          await tx.insert(warrantyPlans).values({ dealershipId, unitId: mapped.unitId || "00000000-0000-0000-0000-000000000000", ...mapped }).onConflictDoUpdate({
+          await tx.insert(warrantyPlans).values({ dealershipId, unitId: mapped.unitId || "00000000-0000-0000-0000-000000000000", ...mapped } as InferInsertModel<typeof warrantyPlans>).onConflictDoUpdate({
             target: warrantyPlans.planNumber,
-            set: { ...mapped, customData: mapped.customData },
+            set: { ...mapped, customData: mapped.customData } as Partial<InferInsertModel<typeof warrantyPlans>>,
           });
         } else if (entityType === "fi_deals") {
           if (!mapped.dealNumber) { skippedRows++; errors.push({ row: i + 2, error: "Missing dealNumber" }); continue; }
           if (!mapped.customerName) { skippedRows++; errors.push({ row: i + 2, error: "Missing customerName" }); continue; }
-          await tx.insert(fiDeals).values({ dealershipId, ...mapped }).onConflictDoUpdate({
+          await tx.insert(fiDeals).values({ dealershipId, ...mapped } as InferInsertModel<typeof fiDeals>).onConflictDoUpdate({
             target: fiDeals.dealNumber,
-            set: { ...mapped, updatedAt: new Date() },
+            set: { ...mapped, updatedAt: new Date() } as Partial<InferInsertModel<typeof fiDeals>>,
           });
         } else {
           skippedRows++;

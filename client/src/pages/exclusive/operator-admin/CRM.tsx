@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
+import { useLocation } from 'wouter';
 import { apiFetch } from '@/lib/api';
 
 export default function CRM() {
+  const [, navigate] = useLocation();
   const [crmView, setCrmView] = useState<'list' | 'kanban'>('list');
   const [crmSearch, setCrmSearch] = useState('');
   const [crmStageFilter, setCrmStageFilter] = useState('');
@@ -96,10 +98,7 @@ export default function CRM() {
                     <td>{d.isClaimed ? <span className="bg pay-recv">Yes</span> : <span style={{ color: '#aaa' }}>No</span>}</td>
                     <td>{d.pageViews ?? 0}</td>
                     <td>
-                      <button className="btn btn-p btn-sm" onClick={() => {
-                        sessionStorage.setItem('crmDealerId', String(d.id));
-                        alert('Navigate to CRM Dealer Detail — routes wired in Session 3');
-                      }}>Open</button>
+                      <button className="btn btn-p btn-sm" onClick={() => navigate('/operator/admin/crm/' + d.id)}>Open</button>
                     </td>
                   </tr>
                 ))

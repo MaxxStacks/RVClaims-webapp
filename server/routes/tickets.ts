@@ -34,7 +34,7 @@ router.get("/", requireAuth, scopeToDealership, async (req: Request, res: Respon
 });
 
 // ==================== POST /api/tickets ====================
-router.post("/", requireAuth, scopeToDealership, validateBody(insertTicketSchema), async (req: Request, res: Response) => {
+router.post("/", requireAuth, scopeToDealership, async (req: Request, res: Response) => {
   try {
     const dealershipId = req.scopedDealershipId || req.body.dealershipId;
     const ticketNumber = generateTicketNumber();
@@ -42,12 +42,26 @@ router.post("/", requireAuth, scopeToDealership, validateBody(insertTicketSchema
     const [newTicket] = await db
       .insert(tickets)
       .values({
-        ...req.body,
+        category: req.body.category,
+        subject: req.body.subject,
         ticketNumber,
         dealershipId,
-        customerId: req.user!.role === "client" ? req.user!.id : req.body.customerId,
+        claimId: req.body.claimId || null,
+        partsOrderId: req.body.partsOrderId || null,
+        customerId: req.user!.role === "client" ? req.user!.id : req.body.customerId || null,
       })
       .returning();
+
+    // Create initial message if provided (client creates ticket with description)
+    if (req.body.message?.trim()) {
+      await db.insert(ticketMessages).values({
+        ticketId: newTicket.id,
+        senderId: req.user!.id,
+        message: req.body.message.trim(),
+        isInternal: false,
+        attachmentUrls: req.body.attachmentUrls || null,
+      });
+    }
 
     res.status(201).json({ success: true, ticket: newTicket });
   } catch (error) {
@@ -127,6 +141,63 @@ router.post("/:id/messages", requireAuth, async (req: Request, res: Response) =>
     res.status(201).json({ success: true, message });
   } catch (error) {
     console.error("Add ticket message error:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+});
+
+// ==================== PATCH /api/tickets/:id ====================
+// General-purpose ticket update (status, subject, category) — used by portal pages
+router.patch("/:id", requireAuth, async (req: Request, res: Response) => {
+  try {
+    // Clients cannot change ticket status
+    if (req.user!.role === "client") {
+      return res.status(403).json({ success: false, message: "Insufficient permissions" });
+    }
+
+    const [ticket] = await db.select().from(tickets).where(eq(tickets.id, req.params.id)).limit(1);
+    if (!ticket) return res.status(404).json({ success: false, message: "Ticket not found" });
+    if (!canAccessDealership(ticket.dealershipId, req.user)) {
+      return res.status(403).json({ success: false, message: "Access denied" });
+    }
+
+    const { status, subject, category } = req.body;
+    const updateData: any = { updatedAt: new Date() };
+    if (status) {
+      updateData.status = status;
+      if (status === "resolved" || status === "closed") updateData.resolvedAt = new Date();
+    }
+    if (subject) updateData.subject = subject;
+    if (category) updateData.category = category;
+
+    const [updated] = await db.update(tickets).set(updateData).where(eq(tickets.id, ticket.id)).returning();
+    res.json({ success: true, ticket: updated });
+  } catch (error) {
+    console.error("Patch ticket error:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+});
+
+// ==================== GET /api/tickets/:id/messages ====================
+// Explicit messages endpoint for ticket thread (alternative to GET /:id)
+router.get("/:id/messages", requireAuth, async (req: Request, res: Response) => {
+  try {
+    const [ticket] = await db.select().from(tickets).where(eq(tickets.id, req.params.id)).limit(1);
+    if (!ticket) return res.status(404).json({ success: false, message: "Ticket not found" });
+
+    if (req.user!.role === "client") {
+      if (ticket.customerId !== req.user!.id) {
+        return res.status(403).json({ success: false, message: "Access denied" });
+      }
+    } else if (!canAccessDealership(ticket.dealershipId, req.user)) {
+      return res.status(403).json({ success: false, message: "Access denied" });
+    }
+
+    let messages = await db.select().from(ticketMessages).where(eq(ticketMessages.ticketId, ticket.id)).orderBy(ticketMessages.createdAt);
+    if (req.user!.role === "client") messages = messages.filter((m) => !m.isInternal);
+
+    res.json({ success: true, messages });
+  } catch (error) {
+    console.error("Get ticket messages error:", error);
     res.status(500).json({ success: false, message: "Internal server error" });
   }
 });

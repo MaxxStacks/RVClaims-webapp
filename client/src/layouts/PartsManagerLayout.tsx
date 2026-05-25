@@ -2,14 +2,17 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'wouter';
 import { useAuth } from '@/hooks/use-auth';
 import ds360Icon from '@assets/ds360_favicon.png';
+import { useLanguage } from '@/hooks/use-language';
+import type { Language } from '@/lib/i18n';
+import { MobileBottomNav } from '@/components/MobileBottomNav';
 
 interface Props { children?: React.ReactNode; }
 
 export default function PartsManagerLayout({ children }: Props) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [theme, setTheme] = useState(() => localStorage.getItem('ds360-theme') || '');
-  const [lang, setLang] = useState(() => localStorage.getItem('ds360-lang') || (navigator.language.startsWith('fr') ? 'fr' : 'en'));
-  const [location] = useLocation();
+  const { language: lang, setLanguage, t } = useLanguage();
+  const [location, setLocation] = useLocation();
   const { user, logout } = useAuth();
 
   useEffect(() => {
@@ -23,7 +26,7 @@ export default function PartsManagerLayout({ children }: Props) {
     localStorage.setItem('ds360-theme', next);
   };
 
-  const handleSetLang = (l: string) => { setLang(l); localStorage.setItem('ds360-lang', l); };
+  const handleSetLang = (l: string) => setLanguage(l as Language);
   const isActive = (path: string) => location.endsWith('/' + path) || location.includes('/' + path + '/');
 
   return (
@@ -38,14 +41,14 @@ export default function PartsManagerLayout({ children }: Props) {
         </div>
         <div className="sidebar-nav">
           <div className="nav-section">
-            <div className="nav-label">Overview</div>
-            <Link className={`nav-item ${isActive('dashboard') ? 'active' : ''}`} to="dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</Link>
+            <div className="nav-label">{t('nav.overview')}</div>
+            <Link className={`nav-item ${isActive('dashboard') ? 'active' : ''}`} to="dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>{t('nav.dashboard')}</Link>
           </div>
           <div className="nav-section">
-            <div className="nav-label">Parts</div>
-            <Link className={`nav-item ${isActive('orders') ? 'active' : ''}`} to="orders"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>Parts Orders</Link>
-            <Link className={`nav-item ${isActive('inventory') ? 'active' : ''}`} to="inventory"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 002 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>Inventory</Link>
-            <Link className={`nav-item ${isActive('claims') ? 'active' : ''}`} to="claims"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Claims</Link>
+            <div className="nav-label">{t('nav.parts')}</div>
+            <Link className={`nav-item ${isActive('orders') ? 'active' : ''}`} to="orders"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>{t('nav.partsOrders')}</Link>
+            <Link className={`nav-item ${isActive('inventory') ? 'active' : ''}`} to="inventory"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 002 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>{t('nav.inventory')}</Link>
+            <Link className={`nav-item ${isActive('claims') ? 'active' : ''}`} to="claims"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>{t('nav.claims')}</Link>
           </div>
         </div>
         <div className="sidebar-footer">
@@ -83,6 +86,14 @@ export default function PartsManagerLayout({ children }: Props) {
         <div className="content">
           {children}
         </div>
+        <MobileBottomNav
+          portalType="dealer"
+          activePage={location.split('/').filter(Boolean)[2] || 'dashboard'}
+          onNavigate={(pageId) => {
+            const p = location.split('/').filter(Boolean);
+            setLocation(`/${p[0]}/${p[1]}/${pageId}`);
+          }}
+        />
       </div>
     </>
   );

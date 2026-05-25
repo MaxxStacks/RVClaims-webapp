@@ -34,15 +34,6 @@ export default function PortalRouter() {
       const role = user.publicMetadata?.role as string | undefined;
       const target = role ? ROLE_TARGETS[role] : null;
 
-      console.log("[portal-router]", {
-        isLoaded: true,
-        isSignedIn: true,
-        userId: user.id,
-        publicMetadata: user.publicMetadata,
-        role,
-        target: target ?? "(no role yet — polling)",
-      });
-
       if (target && !redirectedRef.current) {
         redirectedRef.current = true;
         if (pollRef.current) clearInterval(pollRef.current);

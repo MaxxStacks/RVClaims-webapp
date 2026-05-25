@@ -24,6 +24,7 @@ import blogRoutes from './blog';
 import directoryRoutes from './directory';
 import crmRoutes from './crm';
 import claimsV6Router from './claims-v6';
+import frcCodesV6Router from './frc-codes-v6';
 import notificationsV6Router from './notifications-v6';
 import usersV6Router from './users-v6';
 import uploadsV6Router from './uploads-v6';
@@ -41,6 +42,14 @@ import assistAnalyticsRouter from './assist/analytics';
 import assistProactiveRouter from './assist/proactive';
 import remoteSessionsRouter from './remote/sessions';
 import transfersRouter from './remote/transfers';
+import reportsRouter from './reports';
+import fiRouter from './fi';
+import financingRouter from './financing';
+import customersRouter from './customers';
+import workOrdersRouter from './work-orders';
+import serviceAppointmentsRouter from './service-appointments';
+import marketingRouter from './marketing';
+import consignmentRouter from './consignment';
 
 // Import existing routes for backward compat
 import { storage } from "../storage";
@@ -99,6 +108,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.use('/api/dealers', directoryRoutes);
   app.use('/api/crm', crmRoutes);
   app.use('/api/v6/claims', claimsV6Router);
+  app.use('/api/v6/frc-codes', frcCodesV6Router);
+  app.use('/api/frc-codes', frcCodesV6Router);
   app.use('/api/v6/notifications', notificationsV6Router);
   app.use('/api/v6/users', usersV6Router);
   app.use('/api/v6/uploads', uploadsV6Router);
@@ -116,6 +127,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.use('/api/assist/proactive', assistProactiveRouter);
   app.use('/api/remote', remoteSessionsRouter);
   app.use('/api/transfers', transfersRouter);
+  app.use('/api/reports', reportsRouter);
+  app.use('/api/fi', fiRouter);           // /api/fi/products, /api/fi/deals/:id/status, /api/fi/reports/commission
+  app.use('/api/financing', financingRouter); // /api/financing/lenders, /api/financing/applications, /api/financing/reports
+  app.use('/api/customers', customersRouter); // /api/customers — customer (client-role) management
+  app.use('/api/work-orders', workOrdersRouter);
+  app.use('/api/service-appointments', serviceAppointmentsRouter);
+  app.use('/api/marketing', marketingRouter);
+  app.use('/api/consignment', consignmentRouter);
 
   // ==================== EXISTING ROUTES (backward compat) ====================
 

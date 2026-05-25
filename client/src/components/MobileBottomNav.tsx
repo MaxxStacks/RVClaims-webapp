@@ -104,10 +104,103 @@ const customerTabs: NavTab[] = [
   },
 ];
 
+// === MARKETPLACE (Bidder) TABS ===
+const marketplaceTabs: NavTab[] = [
+  {
+    id: 'dashboard',
+    label: 'Home',
+    icon: '<path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>',
+  },
+  {
+    id: 'upcoming',
+    label: 'Auctions',
+    icon: '<path d="M14 2l-2 2-7 7 3 3 7-7 2-2-3-3z"/><path d="M3 21l4-4"/><path d="M17 3l4 4-2 2-4-4 2-2z"/>',
+  },
+  {
+    id: 'my-bids',
+    label: 'Bids',
+    icon: '<path d="M6 9H4.5a2.5 2.5 0 000 5H6"/><path d="M18 9h1.5a2.5 2.5 0 010 5H18"/><path d="M8 9h8"/><path d="M8 14h8"/>',
+  },
+  {
+    id: 'won-units',
+    label: 'Won',
+    icon: '<path d="M6 9H4.5a2.5 2.5 0 000 5H6"/><path d="M18 9h1.5a2.5 2.5 0 010 5H18"/><path d="M8 9h8"/><path d="M8 14h8"/><path d="M12 2v7"/><path d="M12 16v6"/>',
+  },
+  {
+    id: 'marketplace-more',
+    label: 'More',
+    icon: '<circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/>',
+    isMore: true,
+  },
+];
+
+// === CONSIGNOR TABS ===
+const consignorTabs: NavTab[] = [
+  {
+    id: 'dashboard',
+    label: 'Home',
+    icon: '<path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>',
+  },
+  {
+    id: 'my-listings',
+    label: 'Listings',
+    icon: '<line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/>',
+  },
+  {
+    id: 'auctions',
+    label: 'Auctions',
+    icon: '<path d="M14 2l-2 2-7 7 3 3 7-7 2-2-3-3z"/><path d="M3 21l4-4"/><path d="M17 3l4 4-2 2-4-4 2-2z"/>',
+  },
+  {
+    id: 'payout',
+    label: 'Payouts',
+    icon: '<line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>',
+  },
+  {
+    id: 'consignor-more',
+    label: 'More',
+    icon: '<circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/>',
+    isMore: true,
+  },
+];
+
+// === TECHNICIAN TABS ===
+const technicianTabs: NavTab[] = [
+  {
+    id: 'dashboard',
+    label: 'Home',
+    icon: '<path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>',
+  },
+  {
+    id: 'my-work-orders',
+    label: 'Work Orders',
+    icon: '<path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/>',
+  },
+  {
+    id: 'parts-request',
+    label: 'Parts',
+    icon: '<path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/>',
+  },
+  {
+    id: 'time-clock',
+    label: 'Time',
+    icon: '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
+  },
+  {
+    id: 'tech-more',
+    label: 'More',
+    icon: '<circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/>',
+    isMore: true,
+  },
+];
+
 const tabConfigs: Record<string, NavTab[]> = {
   operator: operatorTabs,
   dealer: dealerTabs,
   client: customerTabs,
+  marketplace: marketplaceTabs,
+  consignor: consignorTabs,
+  technician: technicianTabs,
 };
 
 // The settings page id per portal type
@@ -115,10 +208,13 @@ const settingsPageId: Record<string, string> = {
   operator: 'settings',
   dealer: 'dealer-settings',
   client: 'settings',
+  marketplace: 'settings',
+  consignor: 'settings',
+  technician: 'settings',
 };
 
 interface MobileBottomNavProps {
-  portalType: 'operator' | 'dealer' | 'client';
+  portalType: 'operator' | 'dealer' | 'client' | 'marketplace' | 'consignor' | 'technician';
   activePage: string;
   onNavigate: (pageId: string) => void;
   parents?: Record<string, string>;

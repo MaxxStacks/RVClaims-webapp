@@ -8,6 +8,43 @@ import { requireAuth } from "../middleware/auth";
 import { emitEvent } from "../lib/event-bus";
 
 const router = Router();
+
+// ─── FRC codes lookup (static library — no DB table yet) ──────────────────────
+// Mounted at /api/v6/frc-codes (registered separately in index.ts below)
+// However, also accessible via a sub-path on the main claims router for convenience.
+const FRC_CODE_LIBRARY: Record<string, Array<{code: string; description: string; category: string; laborHours: number}>> = {
+  Jayco: [
+    { code: 'JC-WAR-1042', description: 'Delamination, Sidewall', category: 'Structural', laborHours: 2.5 },
+    { code: 'JC-WAR-2018', description: 'Water Leak, Roof Vent', category: 'Plumbing', laborHours: 1.5 },
+    { code: 'JC-WAR-3055', description: 'Slide-Out Seal, Replace', category: 'Exterior', laborHours: 1.0 },
+    { code: 'JC-WAR-4012', description: 'Cabinet Door, Hinge', category: 'Interior', laborHours: 0.5 },
+    { code: 'JC-WAR-5001', description: 'Furnace, No Ignition', category: 'HVAC', laborHours: 2.0 },
+    { code: 'JC-WAR-6001', description: 'Fresh Water Tank, Crack', category: 'Plumbing', laborHours: 1.5 },
+  ],
+  'Forest River': [
+    { code: 'FR-WAR-1001', description: 'Roof Seam, Re-seal', category: 'Structural', laborHours: 2.0 },
+    { code: 'FR-WAR-2005', description: 'Shower Drain Leak', category: 'Plumbing', laborHours: 1.0 },
+    { code: 'FR-WAR-3012', description: 'Awning, Retract Failure', category: 'Exterior', laborHours: 1.5 },
+    { code: 'FR-WAR-4008', description: 'Slide-Out Motor Replace', category: 'Electrical', laborHours: 3.0 },
+  ],
+  Heartland: [
+    { code: 'HL-WAR-1010', description: 'Floor Delamination', category: 'Structural', laborHours: 3.0 },
+    { code: 'HL-WAR-2002', description: 'City Water Inlet Leak', category: 'Plumbing', laborHours: 0.5 },
+    { code: 'HL-WAR-3001', description: 'Slide-Out Topper Tear', category: 'Exterior', laborHours: 1.0 },
+    { code: 'HL-WAR-4001', description: 'A/C Compressor Fail', category: 'HVAC', laborHours: 2.5 },
+  ],
+  Keystone: [
+    { code: 'KS-WAR-1005', description: 'Sidewall Puncture Repair', category: 'Structural', laborHours: 2.0 },
+    { code: 'KS-WAR-2010', description: 'Toilet Valve Replace', category: 'Plumbing', laborHours: 0.5 },
+    { code: 'KS-WAR-3008', description: 'Entry Door Latch', category: 'Exterior', laborHours: 0.5 },
+  ],
+  'Columbia NW': [
+    { code: 'CN-WAR-1001', description: 'Wall Seam Separation', category: 'Structural', laborHours: 2.5 },
+    { code: 'CN-WAR-2001', description: 'Fresh Tank Fitting Leak', category: 'Plumbing', laborHours: 1.0 },
+    { code: 'CN-WAR-3001', description: 'Slide-Out Wiper Seal', category: 'Exterior', laborHours: 0.5 },
+  ],
+};
+
 router.use(requireAuth);
 
 async function nextClaimNumber(): Promise<string> {
@@ -486,6 +523,32 @@ router.post("/:id/transition", async (req: Request, res: Response) => {
     res.json({ ok: true });
   } catch (err) {
     console.error("[claims-v6 POST /:id/transition]", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// PATCH /api/v6/claims/:id — general status/notes update (alias for common field updates)
+router.patch("/:id", async (req: Request, res: Response) => {
+  const u = req.user!;
+  if (!["operator_admin", "operator_staff"].includes(u.role)) {
+    return res.status(403).json({ error: "Operator role required" });
+  }
+  try {
+    const [claim] = await db.select().from(claims).where(eq(claims.id, req.params.id)).limit(1);
+    if (!claim) return res.status(404).json({ error: "Not found" });
+
+    const updates: Record<string, any> = { updatedAt: new Date() };
+    if (req.body.status) updates.status = req.body.status;
+    if (req.body.operatorNotes !== undefined) updates.operatorNotes = req.body.operatorNotes;
+    if (req.body.assignedToUserId !== undefined) updates.assignedToUserId = req.body.assignedToUserId;
+    if (req.body.manufacturerClaimNumber !== undefined) updates.manufacturerClaimNumber = req.body.manufacturerClaimNumber;
+    if (req.body.denialReason !== undefined) updates.denialReason = req.body.denialReason;
+    if (req.body.approvedAmount !== undefined) updates.approvedAmount = req.body.approvedAmount;
+
+    await db.update(claims).set(updates).where(eq(claims.id, req.params.id));
+    res.json({ ok: true });
+  } catch (err) {
+    console.error("[claims-v6 PATCH /:id]", err);
     res.status(500).json({ error: "Internal server error" });
   }
 });

@@ -2,7 +2,7 @@
   "name": "Dealer Suite 360",
   "short_name": "DS360",
   "description": "The all-in-one dealership operating system for Canadian RV dealerships",
-  "start_url": "/dealer",
+  "start_url": "/",
   "display": "standalone",
   "orientation": "any",
   "background_color": "#f5f6f8",

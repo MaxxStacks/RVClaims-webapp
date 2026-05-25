@@ -1,8 +1,9 @@
 import { Router, type Request, type Response } from "express";
 import { db } from "../db";
-import { dealerships, users, units, claims, dealershipModules, moduleCatalog } from "@shared/schema";
+import { dealerships, users, units, claims, dealershipModules, moduleCatalog, invitations } from "@shared/schema";
 import { eq, and, ilike, desc, count } from "drizzle-orm";
 import { requireAuth } from "../middleware/auth";
+import crypto from "crypto";
 
 const router = Router();
 router.use(requireAuth);
@@ -206,6 +207,169 @@ router.delete("/:id/modules/:moduleKey", async (req: Request, res: Response) => 
     .set({ status: "disabled", disabledAt: new Date() })
     .where(and(eq(dealershipModules.dealershipId, id), eq(dealershipModules.moduleKey, moduleKey as any)));
   res.json({ ok: true });
+});
+
+// ─── PATCH /api/v6/dealerships/:id/status — change active/pending/suspended ───
+router.patch("/:id/status", async (req: Request, res: Response) => {
+  const u = req.user!;
+  if (u.role !== "operator_admin") return res.status(403).json({ error: "operator_admin only" });
+  const { status } = req.body;
+  const allowed = ["active", "pending", "suspended"];
+  if (!status || !allowed.includes(status)) return res.status(400).json({ error: "Invalid status" });
+  await db.update(dealerships).set({ status: status as any, updatedAt: new Date() }).where(eq(dealerships.id, req.params.id));
+  const [updated] = await db.select().from(dealerships).where(eq(dealerships.id, req.params.id)).limit(1);
+  res.json(updated);
+});
+
+// ─── GET /api/v6/dealerships/:id/staff — list users for a dealership ──────────
+router.get("/:id/staff", async (req: Request, res: Response) => {
+  const u = req.user!;
+  const isOperator = ["operator_admin", "operator_staff"].includes(u.role);
+  const isDealerAtThisShop = ["dealer_owner", "dealer_staff"].includes(u.role) && u.dealershipId === req.params.id;
+  if (!isOperator && !isDealerAtThisShop) return res.status(403).json({ error: "Access denied" });
+
+  const staff = await db.select({
+    id: users.id,
+    firstName: users.firstName,
+    lastName: users.lastName,
+    email: users.email,
+    role: users.role,
+    isActive: users.isActive,
+    lastLoginAt: users.lastLoginAt,
+    createdAt: users.createdAt,
+  }).from(users).where(eq(users.dealershipId, req.params.id));
+
+  res.json(staff);
+});
+
+// ─── POST /api/v6/dealerships/:id/staff — invite staff member ─────────────────
+router.post("/:id/staff", async (req: Request, res: Response) => {
+  const u = req.user!;
+  const isOperatorAdmin = u.role === "operator_admin";
+  const isDealerOwnerHere = u.role === "dealer_owner" && u.dealershipId === req.params.id;
+  if (!isOperatorAdmin && !isDealerOwnerHere) return res.status(403).json({ error: "Access denied" });
+
+  const { email, role } = req.body;
+  if (!email || !role) return res.status(400).json({ error: "email and role required" });
+
+  // Check if user already exists and is already at this dealership
+  const [existing] = await db.select().from(users).where(eq(users.email, email)).limit(1);
+  if (existing && existing.dealershipId === req.params.id) {
+    return res.status(409).json({ error: "User already a member of this dealership" });
+  }
+
+  // Create an invitation record
+  const token = crypto.randomBytes(32).toString("hex");
+  const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days
+  const [invite] = await db.insert(invitations).values({
+    email,
+    role: role as any,
+    dealershipId: req.params.id,
+    invitedBy: u.id,
+    token,
+    expiresAt,
+  }).returning();
+
+  res.status(201).json({ ok: true, invitationId: invite.id, token, expiresAt });
+});
+
+// ─── DELETE /api/v6/dealerships/:id/staff/:userId — remove staff member ───────
+router.delete("/:id/staff/:userId", async (req: Request, res: Response) => {
+  const u = req.user!;
+  const isOperatorAdmin = u.role === "operator_admin";
+  const isDealerOwnerHere = u.role === "dealer_owner" && u.dealershipId === req.params.id;
+  if (!isOperatorAdmin && !isDealerOwnerHere) return res.status(403).json({ error: "Access denied" });
+
+  const { userId } = req.params;
+  // Cannot remove yourself
+  if (userId === u.id) return res.status(400).json({ error: "Cannot remove yourself" });
+
+  // Verify the user belongs to this dealership
+  const [target] = await db.select().from(users).where(eq(users.id, userId)).limit(1);
+  if (!target || target.dealershipId !== req.params.id) {
+    return res.status(404).json({ error: "Staff member not found at this dealership" });
+  }
+
+  // Disassociate — set dealershipId to null and deactivate
+  await db.update(users).set({ isActive: false, updatedAt: new Date() }).where(eq(users.id, userId));
+  res.json({ ok: true });
+});
+
+// ─── PATCH /api/v6/dealerships/:id/staff/:userId/role — change role ───────────
+router.patch("/:id/staff/:userId/role", async (req: Request, res: Response) => {
+  const u = req.user!;
+  const isOperatorAdmin = u.role === "operator_admin";
+  const isDealerOwnerHere = u.role === "dealer_owner" && u.dealershipId === req.params.id;
+  if (!isOperatorAdmin && !isDealerOwnerHere) return res.status(403).json({ error: "Access denied" });
+
+  const { role } = req.body;
+  if (!role) return res.status(400).json({ error: "role required" });
+
+  const [target] = await db.select().from(users).where(eq(users.id, req.params.userId)).limit(1);
+  if (!target || target.dealershipId !== req.params.id) {
+    return res.status(404).json({ error: "Staff member not found" });
+  }
+
+  await db.update(users).set({ role: role as any, updatedAt: new Date() }).where(eq(users.id, req.params.userId));
+  const [updated] = await db.select().from(users).where(eq(users.id, req.params.userId)).limit(1);
+  res.json(updated);
+});
+
+// ─── GET /api/v6/dealerships/:id/pricing — per-dealer pricing overrides ───────
+router.get("/:id/pricing", async (req: Request, res: Response) => {
+  const u = req.user!;
+  if (u.role !== "operator_admin") return res.status(403).json({ error: "operator_admin only" });
+  const [d] = await db.select({
+    id: dealerships.id,
+    plan: dealerships.plan,
+    monthlyFee: dealerships.monthlyFee,
+    claimFeePercent: dealerships.claimFeePercent,
+    claimFeeMin: dealerships.claimFeeMin,
+    claimFeeMax: dealerships.claimFeeMax,
+    dafFee: dealerships.dafFee,
+    pdiFee: dealerships.pdiFee,
+  }).from(dealerships).where(eq(dealerships.id, req.params.id)).limit(1);
+  if (!d) return res.status(404).json({ error: "Dealership not found" });
+  res.json(d);
+});
+
+// ─── PATCH /api/v6/dealerships/:id/pricing — save pricing overrides ───────────
+router.patch("/:id/pricing", async (req: Request, res: Response) => {
+  const u = req.user!;
+  if (u.role !== "operator_admin") return res.status(403).json({ error: "operator_admin only" });
+  const { monthlyFee, claimFeePercent, claimFeeMin, claimFeeMax, dafFee, pdiFee, plan } = req.body;
+  const updates: Record<string, any> = { updatedAt: new Date() };
+  if (monthlyFee !== undefined) updates.monthlyFee = monthlyFee;
+  if (claimFeePercent !== undefined) updates.claimFeePercent = claimFeePercent;
+  if (claimFeeMin !== undefined) updates.claimFeeMin = claimFeeMin;
+  if (claimFeeMax !== undefined) updates.claimFeeMax = claimFeeMax;
+  if (dafFee !== undefined) updates.dafFee = dafFee;
+  if (pdiFee !== undefined) updates.pdiFee = pdiFee;
+  if (plan !== undefined) updates.plan = plan;
+  await db.update(dealerships).set(updates).where(eq(dealerships.id, req.params.id));
+  const [updated] = await db.select().from(dealerships).where(eq(dealerships.id, req.params.id)).limit(1);
+  res.json(updated);
+});
+
+// ─── PATCH /api/v6/dealerships/:id/branding — update branding ────────────────
+router.patch("/:id/branding", async (req: Request, res: Response) => {
+  const u = req.user!;
+  const isOperatorAdmin = u.role === "operator_admin";
+  const isDealerOwnerHere = u.role === "dealer_owner" && u.dealershipId === req.params.id;
+  if (!isOperatorAdmin && !isDealerOwnerHere) return res.status(403).json({ error: "Access denied" });
+
+  const { logoUrl, primaryColor, secondaryColor, accentColor, customDomain, welcomeMessage, fontFamily } = req.body;
+  const updates: Record<string, any> = { updatedAt: new Date() };
+  if (logoUrl !== undefined) updates.logoUrl = logoUrl;
+  if (primaryColor !== undefined) updates.primaryColor = primaryColor;
+  if (secondaryColor !== undefined) updates.secondaryColor = secondaryColor;
+  if (accentColor !== undefined) updates.accentColor = accentColor;
+  if (customDomain !== undefined) updates.customDomain = customDomain;
+  if (welcomeMessage !== undefined) updates.welcomeMessage = welcomeMessage;
+  if (fontFamily !== undefined) updates.fontFamily = fontFamily;
+  await db.update(dealerships).set(updates).where(eq(dealerships.id, req.params.id));
+  const [updated] = await db.select().from(dealerships).where(eq(dealerships.id, req.params.id)).limit(1);
+  res.json(updated);
 });
 
 export default router;

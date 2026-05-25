@@ -2,14 +2,17 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'wouter';
 import { useAuth } from '@/hooks/use-auth';
 import ds360Icon from '@assets/ds360_favicon.png';
+import { useLanguage } from '@/hooks/use-language';
+import type { Language } from '@/lib/i18n';
+import { MobileBottomNav } from '@/components/MobileBottomNav';
 
 interface Props { children?: React.ReactNode; }
 
 export default function OnSiteTechLayout({ children }: Props) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [theme, setTheme] = useState(() => localStorage.getItem('ds360-theme') || '');
-  const [lang, setLang] = useState(() => localStorage.getItem('ds360-lang') || (navigator.language.startsWith('fr') ? 'fr' : 'en'));
-  const [location] = useLocation();
+  const { language: lang, setLanguage, t } = useLanguage();
+  const [location, setLocation] = useLocation();
   const { user, logout } = useAuth();
 
   useEffect(() => {
@@ -23,7 +26,7 @@ export default function OnSiteTechLayout({ children }: Props) {
     localStorage.setItem('ds360-theme', next);
   };
 
-  const handleSetLang = (l: string) => { setLang(l); localStorage.setItem('ds360-lang', l); };
+  const handleSetLang = (l: string) => setLanguage(l as Language);
   const isActive = (path: string) => location.endsWith('/' + path) || location.includes('/' + path + '/');
 
   return (
@@ -38,15 +41,15 @@ export default function OnSiteTechLayout({ children }: Props) {
         </div>
         <div className="sidebar-nav">
           <div className="nav-section">
-            <div className="nav-label">Overview</div>
-            <Link className={`nav-item ${isActive('dashboard') ? 'active' : ''}`} to="dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</Link>
+            <div className="nav-label">{t('nav.overview')}</div>
+            <Link className={`nav-item ${isActive('dashboard') ? 'active' : ''}`} to="dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>{t('nav.dashboard')}</Link>
           </div>
           <div className="nav-section">
-            <div className="nav-label">My Work</div>
-            <Link className={`nav-item ${isActive('my-work-orders') ? 'active' : ''}`} to="my-work-orders"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>My Work Orders</Link>
-            <Link className={`nav-item ${isActive('route') ? 'active' : ''}`} to="route"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>My Route</Link>
-            <Link className={`nav-item ${isActive('parts-request') ? 'active' : ''}`} to="parts-request"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>Parts Request</Link>
-            <Link className={`nav-item ${isActive('time-clock') ? 'active' : ''}`} to="time-clock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Time Clock</Link>
+            <div className="nav-label">{t('nav.myWork')}</div>
+            <Link className={`nav-item ${isActive('my-work-orders') ? 'active' : ''}`} to="my-work-orders"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>{t('nav.myWorkOrders')}</Link>
+            <Link className={`nav-item ${isActive('route') ? 'active' : ''}`} to="route"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>{t('nav.myRoute')}</Link>
+            <Link className={`nav-item ${isActive('parts-request') ? 'active' : ''}`} to="parts-request"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>{t('nav.partsRequest')}</Link>
+            <Link className={`nav-item ${isActive('time-clock') ? 'active' : ''}`} to="time-clock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>{t('nav.timeClock')}</Link>
           </div>
         </div>
         <div className="sidebar-footer">
@@ -84,6 +87,14 @@ export default function OnSiteTechLayout({ children }: Props) {
         <div className="content">
           {children}
         </div>
+        <MobileBottomNav
+          portalType="technician"
+          activePage={location.split('/').filter(Boolean)[2] || 'dashboard'}
+          onNavigate={(pageId) => {
+            const p = location.split('/').filter(Boolean);
+            setLocation(`/${p[0]}/${p[1]}/${pageId}`);
+          }}
+        />
       </div>
     </>
   );

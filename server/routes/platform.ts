@@ -2,8 +2,8 @@
 
 import { Router, type Request, type Response } from "express";
 import { db } from "../db";
-import { platformSettings, featureRequests, notifications, users, insertFeatureRequestSchema, insertNotificationSchema } from "@shared/schema";
-import { eq, and, desc } from "drizzle-orm";
+import { platformSettings, featureRequests, notifications, users, userNotificationPreferences, insertFeatureRequestSchema, insertNotificationSchema } from "@shared/schema";
+import { eq, and, desc, or, inArray } from "drizzle-orm";
 import { requireAuth } from "../middleware/auth";
 import { requireRole, requireOperator, scopeToDealership } from "../middleware/rbac";
 import { validateBody } from "../middleware/validate";
@@ -138,6 +138,20 @@ router.put("/feature-requests/:id", requireAuth, requireOperator, async (req: Re
 
 // ==================== NOTIFICATIONS ====================
 
+// GET /api/notifications/unread-count
+router.get("/notifications/unread-count", requireAuth, async (req: Request, res: Response) => {
+  try {
+    const items = await db
+      .select({ id: notifications.id })
+      .from(notifications)
+      .where(and(eq(notifications.userId, req.user!.id), eq(notifications.isRead, false)));
+    res.json({ success: true, unread: items.length });
+  } catch (error) {
+    console.error("Unread count error:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+});
+
 // GET /api/notifications/inbox — bell dropdown: latest 20 notifications for current user
 router.get("/notifications/inbox", requireAuth, async (req: Request, res: Response) => {
   try {
@@ -198,15 +212,141 @@ router.put("/notifications/read-all", requireAuth, async (req: Request, res: Res
   }
 });
 
-// POST /api/notifications/broadcast (operator sends to all dealers)
+// DELETE /api/notifications/:id — dismiss (soft-delete via mark read)
+router.delete("/notifications/:id", requireAuth, async (req: Request, res: Response) => {
+  try {
+    await db
+      .update(notifications)
+      .set({ isRead: true })
+      .where(and(eq(notifications.id, req.params.id), eq(notifications.userId, req.user!.id)));
+    res.json({ success: true });
+  } catch (error) {
+    console.error("Delete notification error:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+});
+
+// POST /api/notifications — operator compose-send (targeted or broadcast)
+router.post("/notifications", requireAuth, requireOperator, async (req: Request, res: Response) => {
+  try {
+    const { title, message, type, recipients } = req.body;
+    if (!title) return res.status(400).json({ success: false, message: "title is required" });
+
+    const typeMap: Record<string, string> = {
+      general: "announcement", service: "system", billing: "invoice",
+      feature: "announcement", maintenance: "system", urgent: "system",
+    };
+    const notifType = (typeMap[type] || "announcement") as any;
+
+    const allUsers = await db.select({ id: users.id, role: users.role, isActive: users.isActive, dealershipId: users.dealershipId }).from(users);
+    let targets = allUsers.filter(u => u.isActive && !["operator_admin", "operator_staff"].includes(u.role));
+
+    // Filter by recipient segment
+    if (recipients && recipients !== "all" && recipients !== "active") {
+      // Check if it looks like a UUID (specific dealership)
+      if (recipients.match(/^[0-9a-f-]{36}$/i)) {
+        targets = targets.filter(u => u.dealershipId === recipients);
+      }
+      // plan_a / plan_b targeting: keep all dealers for now (plan lookup not implemented here)
+    }
+
+    for (const u of targets) {
+      await db.insert(notifications).values({ userId: u.id, type: notifType, title, message });
+    }
+
+    res.json({ success: true, sent: targets.length });
+  } catch (error) {
+    console.error("Send notification error:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+});
+
+// POST /api/notifications/broadcast — alias: sends to all active non-operator users
 router.post("/notifications/broadcast", requireAuth, requireOperator, async (req: Request, res: Response) => {
   try {
     const { title, message, type } = req.body;
-    // TODO: Query all active dealer users and create notification for each
-    // For now, placeholder
-    res.json({ success: true, message: "Broadcast queued" });
+    if (!title) return res.status(400).json({ success: false, message: "title is required" });
+
+    const typeMap: Record<string, string> = {
+      general: "announcement", service: "system", billing: "invoice",
+      feature: "announcement", maintenance: "system", urgent: "system",
+    };
+    const notifType = (typeMap[type] || "announcement") as any;
+
+    const allUsers = await db.select({ id: users.id, role: users.role, isActive: users.isActive }).from(users);
+    const targets = allUsers.filter(u => u.isActive && !["operator_admin", "operator_staff"].includes(u.role));
+
+    for (const u of targets) {
+      await db.insert(notifications).values({ userId: u.id, type: notifType, title, message });
+    }
+
+    res.json({ success: true, sent: targets.length });
   } catch (error) {
     console.error("Broadcast error:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+});
+
+// GET /api/notifications/preferences
+router.get("/notifications/preferences", requireAuth, async (req: Request, res: Response) => {
+  try {
+    const [prefs] = await db
+      .select()
+      .from(userNotificationPreferences)
+      .where(eq(userNotificationPreferences.userId, req.user!.id))
+      .limit(1);
+    res.json({ success: true, preferences: prefs || { preferences: {}, smsPhone: null, smsVerified: false } });
+  } catch (error) {
+    console.error("Get preferences error:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+});
+
+// GET /api/notifications/broadcast-log — recent system/announcement notifications, deduplicated by title+message per minute
+router.get("/notifications/broadcast-log", requireAuth, requireOperator, async (req: Request, res: Response) => {
+  try {
+    const rows = await db
+      .select({ id: notifications.id, type: notifications.type, title: notifications.title, message: notifications.message, createdAt: notifications.createdAt })
+      .from(notifications)
+      .where(inArray(notifications.type, ["announcement", "system"] as any[]))
+      .orderBy(desc(notifications.createdAt))
+      .limit(500);
+
+    // Deduplicate: group by title+message within 1-minute windows
+    const seen = new Map<string, any>();
+    for (const r of rows) {
+      const minuteKey = r.createdAt ? Math.floor(new Date(r.createdAt).getTime() / 60000) : 0;
+      const key = `${r.title}||${r.message}||${minuteKey}`;
+      if (!seen.has(key)) {
+        seen.set(key, { ...r, sent: 1 });
+      } else {
+        seen.get(key)!.sent++;
+      }
+    }
+
+    const broadcasts = Array.from(seen.values()).slice(0, 50);
+    res.json({ success: true, broadcasts });
+  } catch (error) {
+    console.error("Broadcast log error:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+});
+
+// PATCH /api/notifications/preferences
+router.patch("/notifications/preferences", requireAuth, async (req: Request, res: Response) => {
+  try {
+    const { preferences, smsPhone } = req.body;
+    const [updated] = await db
+      .insert(userNotificationPreferences)
+      .values({ userId: req.user!.id, preferences: preferences || {}, smsPhone: smsPhone || null })
+      .onConflictDoUpdate({
+        target: userNotificationPreferences.userId,
+        set: { preferences: preferences || {}, smsPhone: smsPhone || null, updatedAt: new Date() },
+      })
+      .returning();
+    res.json({ success: true, preferences: updated });
+  } catch (error) {
+    console.error("Update preferences error:", error);
     res.status(500).json({ success: false, message: "Internal server error" });
   }
 });

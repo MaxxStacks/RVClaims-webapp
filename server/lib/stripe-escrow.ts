@@ -9,7 +9,7 @@ import { marketplaceHolds, marketplaceTransactions, marketplaceMembers, marketpl
 import { eq } from "drizzle-orm";
 
 const stripe = process.env.STRIPE_SECRET_KEY
-  ? new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: "2024-12-18.acacia" })
+  ? new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: "2025-08-27.basil" })
   : null;
 
 const HOLD_AMOUNT = 25000;       // $250.00 in cents — deposit per unit bid (deducted from purchase if won, returned if lost)
@@ -31,8 +31,8 @@ export async function createMembershipSubscription(memberId: string, paymentMeth
   let customerId = member.stripeCustomerId;
   if (!customerId) {
     const customer = await stripe.customers.create({
-      email: member.businessEmail,
-      name: member.businessName,
+      email: member.contactEmail,
+      name: member.dealershipName,
       metadata: { memberId: member.id, platform: "dealersuite360-marketplace" },
     });
     customerId = customer.id;
@@ -81,7 +81,7 @@ export async function createMembershipSubscription(memberId: string, paymentMeth
 
   await db.update(marketplaceMembers).set({
     stripeSubscriptionId: subscription.id,
-    paidUntil,
+    currentPeriodEnd: paidUntil,
     updatedAt: new Date(),
   }).where(eq(marketplaceMembers.id, memberId));
 
@@ -149,9 +149,9 @@ export async function authorizeHold(
   const [hold] = await db.insert(marketplaceHolds).values({
     listingId,
     buyerId,
-    holdAmount: "500.00",
+    amount: "500.00",
     stripePaymentIntentId: paymentIntent.id,
-    status: paymentIntent.status === "requires_capture" ? "authorized" : "pending",
+    status: paymentIntent.status === "requires_capture" ? "active" : "pending",
     authorizedAt: paymentIntent.status === "requires_capture" ? new Date() : null,
     expiresAt,
   }).returning();
@@ -180,7 +180,7 @@ export async function captureHold(holdId: string): Promise<{ success: boolean }>
 
   const [hold] = await db.select().from(marketplaceHolds).where(eq(marketplaceHolds.id, holdId)).limit(1);
   if (!hold) throw new Error("Hold not found");
-  if (hold.status !== "authorized") throw new Error(`Hold is ${hold.status}, cannot capture`);
+  if (hold.status !== "active") throw new Error(`Hold is ${hold.status}, cannot capture`);
   if (!hold.stripePaymentIntentId) throw new Error("No PaymentIntent on hold");
 
   // Capture the payment
@@ -205,7 +205,7 @@ export async function releaseHold(holdId: string, reason?: string): Promise<{ su
 
   const [hold] = await db.select().from(marketplaceHolds).where(eq(marketplaceHolds.id, holdId)).limit(1);
   if (!hold) throw new Error("Hold not found");
-  if (hold.status !== "authorized" && hold.status !== "pending") {
+  if (hold.status !== "active" && hold.status !== "pending") {
     throw new Error(`Hold is ${hold.status}, cannot release`);
   }
 
@@ -220,11 +220,13 @@ export async function releaseHold(holdId: string, reason?: string): Promise<{ su
     updatedAt: new Date(),
   }).where(eq(marketplaceHolds.id, holdId));
 
-  // Re-activate the listing
-  await db.update(marketplaceListings).set({
-    status: "active",
-    updatedAt: new Date(),
-  }).where(eq(marketplaceListings.id, hold.listingId));
+  // Re-activate the listing if hold was on a listing
+  if (hold.listingId) {
+    await db.update(marketplaceListings).set({
+      status: "active",
+      updatedAt: new Date(),
+    }).where(eq(marketplaceListings.id, hold.listingId));
+  }
 
   return { success: true };
 }
@@ -264,7 +266,7 @@ export async function chargeCommission(transactionId: string): Promise<{ payment
 
   // Update transaction with commission payment
   await db.update(marketplaceTransactions).set({
-    stripePaymentIntentId: paymentIntent.id,
+    stripeCommissionChargeId: paymentIntent.id,
     updatedAt: new Date(),
   }).where(eq(marketplaceTransactions.id, transactionId));
 
@@ -286,7 +288,7 @@ export async function handleMarketplaceWebhook(event: Stripe.Event) {
         const holdId = pi.metadata.holdId;
         if (holdId) {
           await db.update(marketplaceHolds).set({
-            status: "authorized",
+            status: "active",
             authorizedAt: new Date(),
             updatedAt: new Date(),
           }).where(eq(marketplaceHolds.id, holdId));

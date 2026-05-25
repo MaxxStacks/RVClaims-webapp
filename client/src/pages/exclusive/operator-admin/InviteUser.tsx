@@ -23,7 +23,7 @@ export default function InviteUser() {
     setError('');
     setSuccess('');
     try {
-      await apiFetch('/api/v6/users/invite', {
+      await apiFetch('/api/users/invite', {
         method: 'POST',
         body: JSON.stringify({
           email: form.email,

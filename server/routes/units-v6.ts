@@ -1,6 +1,6 @@
 import { Router, type Request, type Response } from "express";
 import { db } from "../db";
-import { units, claims, v6Uploads, dealerships, users } from "@shared/schema";
+import { units, claims, v6Uploads, documents, dealerships, users } from "@shared/schema";
 import { eq, and, or, desc, ilike } from "drizzle-orm";
 import { requireAuth } from "../middleware/auth";
 
@@ -184,6 +184,21 @@ router.patch("/:id", async (req: Request, res: Response) => {
   res.json({ ...updated, make: updated.manufacturer });
 });
 
+// DELETE /api/v6/units/:id
+router.delete("/:id", async (req: Request, res: Response) => {
+  const u = req.user!;
+  if (!["operator_admin", "dealer_owner"].includes(u.role)) {
+    return res.status(403).json({ error: "Forbidden — operator_admin or dealer_owner only" });
+  }
+  const [unit] = await db.select().from(units).where(eq(units.id, req.params.id)).limit(1);
+  if (!unit) return res.status(404).json({ error: "Not found" });
+  if (u.role === "dealer_owner" && unit.dealershipId !== u.dealershipId) {
+    return res.status(403).json({ error: "Forbidden" });
+  }
+  await db.delete(units).where(eq(units.id, unit.id));
+  res.json({ ok: true });
+});
+
 // POST /api/v6/units/:id/assign-customer
 router.post("/:id/assign-customer", async (req: Request, res: Response) => {
   const u = req.user!;
@@ -197,6 +212,164 @@ router.post("/:id/assign-customer", async (req: Request, res: Response) => {
     status: "sold",
     updatedAt: new Date(),
   }).where(eq(units.id, req.params.id));
+  res.json({ ok: true });
+});
+
+// GET /api/v6/units/:id/claims
+router.get("/:id/claims", async (req: Request, res: Response) => {
+  const u = req.user!;
+  const [unit] = await db.select().from(units).where(eq(units.id, req.params.id)).limit(1);
+  if (!unit) return res.status(404).json({ error: "Not found" });
+
+  if (["dealer_owner", "dealer_staff", "technician"].includes(u.role)) {
+    if (unit.dealershipId !== u.dealershipId) return res.status(403).json({ error: "Forbidden" });
+  } else if (u.role === "client") {
+    if (unit.customerId !== u.id) return res.status(403).json({ error: "Forbidden" });
+  }
+
+  const rows = await db.select().from(claims)
+    .where(eq(claims.unitId, unit.id))
+    .orderBy(desc(claims.createdAt));
+  res.json(rows);
+});
+
+// GET /api/v6/units/:id/documents
+router.get("/:id/documents", async (req: Request, res: Response) => {
+  const u = req.user!;
+  const [unit] = await db.select().from(units).where(eq(units.id, req.params.id)).limit(1);
+  if (!unit) return res.status(404).json({ error: "Not found" });
+
+  if (["dealer_owner", "dealer_staff", "technician"].includes(u.role)) {
+    if (unit.dealershipId !== u.dealershipId) return res.status(403).json({ error: "Forbidden" });
+  } else if (u.role === "client") {
+    if (unit.customerId !== u.id) return res.status(403).json({ error: "Forbidden" });
+  }
+
+  const rows = await db.select().from(documents)
+    .where(eq(documents.unitId, unit.id))
+    .orderBy(desc(documents.createdAt));
+  res.json(rows);
+});
+
+// POST /api/v6/units/:id/documents
+router.post("/:id/documents", async (req: Request, res: Response) => {
+  const u = req.user!;
+  if (!["operator_admin", "dealer_owner", "dealer_staff"].includes(u.role)) {
+    return res.status(403).json({ error: "Forbidden" });
+  }
+  const [unit] = await db.select().from(units).where(eq(units.id, req.params.id)).limit(1);
+  if (!unit) return res.status(404).json({ error: "Not found" });
+
+  if (["dealer_owner", "dealer_staff"].includes(u.role) && unit.dealershipId !== u.dealershipId) {
+    return res.status(403).json({ error: "Forbidden" });
+  }
+
+  const { name, url, type, sizeBytes, mimeType } = req.body;
+  if (!name || !url || !type) return res.status(400).json({ error: "name, url, and type are required" });
+
+  const [doc] = await db.insert(documents).values({
+    unitId: unit.id,
+    dealershipId: unit.dealershipId,
+    name,
+    url,
+    type,
+    sizeBytes: sizeBytes || null,
+    mimeType: mimeType || null,
+    uploadedBy: u.id,
+  }).returning();
+  res.status(201).json(doc);
+});
+
+// DELETE /api/v6/units/:id/documents/:docId
+router.delete("/:id/documents/:docId", async (req: Request, res: Response) => {
+  const u = req.user!;
+  if (!["operator_admin", "dealer_owner"].includes(u.role)) {
+    return res.status(403).json({ error: "Forbidden — operator_admin or dealer_owner only" });
+  }
+  const [doc] = await db.select().from(documents).where(eq(documents.id, req.params.docId)).limit(1);
+  if (!doc) return res.status(404).json({ error: "Not found" });
+  if (u.role === "dealer_owner") {
+    const [unit] = await db.select().from(units).where(eq(units.id, req.params.id)).limit(1);
+    if (!unit || unit.dealershipId !== u.dealershipId) return res.status(403).json({ error: "Forbidden" });
+  }
+  await db.delete(documents).where(eq(documents.id, doc.id));
+  res.json({ ok: true });
+});
+
+// GET /api/v6/units/:id/photos
+router.get("/:id/photos", async (req: Request, res: Response) => {
+  const u = req.user!;
+  const [unit] = await db.select().from(units).where(eq(units.id, req.params.id)).limit(1);
+  if (!unit) return res.status(404).json({ error: "Not found" });
+
+  if (["dealer_owner", "dealer_staff", "technician"].includes(u.role)) {
+    if (unit.dealershipId !== u.dealershipId) return res.status(403).json({ error: "Forbidden" });
+  } else if (u.role === "client") {
+    return res.status(403).json({ error: "Forbidden — clients cannot view unit photos" });
+  }
+
+  const conditions = [
+    eq(v6Uploads.scope, "units"),
+    eq(v6Uploads.scopeId, unit.id),
+    eq(v6Uploads.uploadStatus, "uploaded"),
+  ] as any[];
+
+  const { category } = req.query as Record<string, string>;
+  if (category) conditions.push(eq(v6Uploads.photoType, category));
+
+  const rows = await db.select().from(v6Uploads)
+    .where(and(...conditions))
+    .orderBy(desc(v6Uploads.createdAt));
+  res.json(rows);
+});
+
+// POST /api/v6/units/:id/photos — presign-based: client POSTs metadata after R2 upload
+router.post("/:id/photos", async (req: Request, res: Response) => {
+  const u = req.user!;
+  if (!["operator_admin", "dealer_owner", "dealer_staff"].includes(u.role)) {
+    return res.status(403).json({ error: "Forbidden" });
+  }
+  const [unit] = await db.select().from(units).where(eq(units.id, req.params.id)).limit(1);
+  if (!unit) return res.status(404).json({ error: "Not found" });
+
+  if (["dealer_owner", "dealer_staff"].includes(u.role) && unit.dealershipId !== u.dealershipId) {
+    return res.status(403).json({ error: "Forbidden" });
+  }
+
+  const { storageKey, publicUrl, contentType, filename, photoType, sizeBytes } = req.body;
+  if (!storageKey || !publicUrl || !contentType) {
+    return res.status(400).json({ error: "storageKey, publicUrl, and contentType are required" });
+  }
+
+  const [photo] = await db.insert(v6Uploads).values({
+    storageKey,
+    publicUrl,
+    contentType,
+    uploadStatus: "uploaded",
+    uploadedById: u.id,
+    uploadedAt: new Date(),
+    photoType: photoType || "general",
+    scope: "units",
+    scopeId: unit.id,
+    filename: filename || null,
+    sizeBytes: sizeBytes || null,
+  }).returning();
+  res.status(201).json(photo);
+});
+
+// DELETE /api/v6/units/:id/photos/:photoId
+router.delete("/:id/photos/:photoId", async (req: Request, res: Response) => {
+  const u = req.user!;
+  if (!["operator_admin", "dealer_owner"].includes(u.role)) {
+    return res.status(403).json({ error: "Forbidden — operator_admin or dealer_owner only" });
+  }
+  const [photo] = await db.select().from(v6Uploads).where(eq(v6Uploads.id, req.params.photoId)).limit(1);
+  if (!photo) return res.status(404).json({ error: "Not found" });
+  if (u.role === "dealer_owner") {
+    const [unit] = await db.select().from(units).where(eq(units.id, req.params.id)).limit(1);
+    if (!unit || unit.dealershipId !== u.dealershipId) return res.status(403).json({ error: "Forbidden" });
+  }
+  await db.delete(v6Uploads).where(eq(v6Uploads.id, photo.id));
   res.json({ ok: true });
 });
 

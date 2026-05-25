@@ -225,7 +225,7 @@ async function checkAuctionTimers() {
         // Trigger end via the route logic (or inline it here)
         const hasWinner = auction.currentBidderId && auction.currentBid;
         const reserveMet = !auction.reservePrice || auction.reserveMet;
-        const finalStatus = hasWinner && reserveMet ? "completed" : "no_sale";
+        const finalStatus = hasWinner && reserveMet ? "sold" : "no_sale";
 
         await db.update(auctions).set({
           status: finalStatus,
@@ -254,8 +254,8 @@ async function checkAuctionTimers() {
         const timeLeft = auction.scheduledEnd.getTime() - now.getTime();
         if (timeLeft > 0 && timeLeft < 120000) {
           // Update status to ending_soon if not already
-          if (auction.status !== "ending_soon") {
-            await db.update(auctions).set({ status: "ending_soon" }).where(eq(auctions.id, auction.id));
+          if (auction.status !== "ending") {
+            await db.update(auctions).set({ status: "ending" }).where(eq(auctions.id, auction.id));
           }
           io?.to(`auction:${auction.id}`).emit("auction:ending_soon", {
             auctionId: auction.id,

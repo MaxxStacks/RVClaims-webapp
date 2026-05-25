@@ -21,6 +21,7 @@ interface AuthUser {
   email: string;
   firstName: string;
   lastName: string;
+  name: string;
   phone: string | null;
   avatarUrl: string | null;
   role: UserRole;
@@ -63,6 +64,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         email: "dev@dealersuite360.com",
         firstName: "Dev",
         lastName: "User",
+        name: "Dev User",
         phone: null,
         avatarUrl: null,
         role: devRole,
@@ -80,6 +82,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         email: clerkUser.primaryEmailAddress?.emailAddress ?? "",
         firstName: clerkUser.firstName ?? "",
         lastName: clerkUser.lastName ?? "",
+        name: `${clerkUser.firstName ?? ""} ${clerkUser.lastName ?? ""}`.trim() || (clerkUser.primaryEmailAddress?.emailAddress ?? ""),
         phone: null,
         avatarUrl: clerkUser.imageUrl ?? null,
         role: ((localStorage.getItem("ds360-dev-role") as UserRole) || (clerkUser.publicMetadata?.role as UserRole) || "client"),

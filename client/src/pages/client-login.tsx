@@ -38,9 +38,8 @@ export default function ClientLogin() {
     return null;
   }
 
-  const handleSocialLogin = (provider: string) => {
+  const handleSocialLogin = (_provider: string) => {
     // OAuth — Phase 2
-    console.log(`Social login with ${provider} not yet configured`);
   };
 
   const handleEmailLogin = async (e: React.FormEvent) => {

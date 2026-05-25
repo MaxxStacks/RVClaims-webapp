@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
+import { useLocation } from 'wouter';
 import { apiFetch } from '@/lib/api';
 
 export default function CRMKanban() {
+  const [, navigate] = useLocation();
   const [crmPipelineData, setCrmPipelineData] = useState<Record<string, any[]>>({});
 
   useEffect(() => {
@@ -48,10 +50,7 @@ export default function CRMKanban() {
                   draggable
                   onDragStart={e => e.dataTransfer.setData('dealerId', String(d.dealerId || d.id))}
                   style={{ background: '#fff', borderRadius: 8, padding: '10px 12px', marginBottom: 8, border: '1px solid #e5e7eb', cursor: 'grab', fontSize: 13 }}
-                  onClick={() => {
-                    sessionStorage.setItem('crmDealerId', String(d.id || d.dealerId));
-                    alert('Navigate to CRM Dealer Detail — routes wired in Session 3');
-                  }}
+                  onClick={() => navigate('/operator/admin/crm/' + (d.dealerId || d.id))}
                 >
                   <div style={{ fontWeight: 600, marginBottom: 2 }}>{d.name || d.dealerName}</div>
                   <div style={{ fontSize: 11, color: '#888' }}>{d.city}{d.stateProvince ? `, ${d.stateProvince}` : ''} · {d.country}</div>

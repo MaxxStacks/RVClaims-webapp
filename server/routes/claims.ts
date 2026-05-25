@@ -193,4 +193,33 @@ router.put("/:id/frc-lines/:lineId", requireAuth, async (req: Request, res: Resp
   }
 });
 
+// ==================== POST /api/claims/:id/notes — append a note ====================
+router.post("/:id/notes", requireAuth, async (req: Request, res: Response) => {
+  try {
+    const [claim] = await db.select().from(claims).where(eq(claims.id, req.params.id)).limit(1);
+    if (!claim) return res.status(404).json({ success: false, message: "Claim not found" });
+    if (!canAccessDealership(claim.dealershipId, req.user)) {
+      return res.status(403).json({ success: false, message: "Access denied" });
+    }
+
+    const { content, visibility } = req.body;
+    if (!content) return res.status(400).json({ success: false, message: "content required" });
+
+    // Append to operatorNotes (internal) or dealerNotes (dealer visible)
+    const existing = visibility === 'internal' ? (claim.operatorNotes || '') : (claim.dealerNotes || '');
+    const ts = new Date().toISOString().slice(0, 16).replace('T', ' ');
+    const appended = existing ? `${existing}\n[${ts}] ${content}` : `[${ts}] ${content}`;
+
+    const updateField = visibility === 'internal'
+      ? { operatorNotes: appended, updatedAt: new Date() }
+      : { dealerNotes: appended, updatedAt: new Date() };
+
+    await db.update(claims).set(updateField).where(eq(claims.id, req.params.id));
+    res.json({ success: true });
+  } catch (error) {
+    console.error("Add note error:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+});
+
 export default router;

@@ -9,6 +9,7 @@ import {
   marketplaceTransactions,
   insertListingSchema, membershipSignupSchema, placeHoldSchema,
 } from "@shared/schema-marketplace";
+import type { InferInsertModel } from "drizzle-orm";
 import { eq, and, or, gte, lte, like, desc, asc, sql, ne } from "drizzle-orm";
 import { authorizeHold, releaseHold, captureHold, chargeCommission, createMembershipSubscription } from "../lib/stripe-escrow";
 import { requireAuth } from "../middleware/auth";
@@ -25,7 +26,7 @@ router.post("/signup", async (req: Request, res: Response) => {
     
     // Check for duplicate email
     const existing = await db.select().from(marketplaceMembers)
-      .where(eq(marketplaceMembers.businessEmail, data.businessEmail)).limit(1);
+      .where(eq(marketplaceMembers.contactEmail, data.contactEmail)).limit(1);
     if (existing.length > 0) return res.status(409).json({ error: "Email already registered" });
 
     const [member] = await db.insert(marketplaceMembers).values({
@@ -60,7 +61,7 @@ router.get("/members", requireAuth, requireOperator, async (req: Request, res: R
   try {
     const { status } = req.query;
     const conditions = [];
-    if (status) conditions.push(eq(marketplaceMembers.status, status as string));
+    if (status) conditions.push(eq(marketplaceMembers.status, status as 'pending' | 'under_review' | 'approved' | 'active' | 'expired' | 'suspended' | 'rejected'));
 
     const members = await db.select().from(marketplaceMembers)
       .where(conditions.length ? and(...conditions) : undefined)
@@ -116,18 +117,23 @@ router.get("/members/:id", requireAuth, async (req: Request, res: Response) => {
 router.post("/listings", requireAuth, async (req: Request, res: Response) => {
   try {
     const data = insertListingSchema.parse(req.body);
+    const sellerId: string | undefined = req.body.sellerId;
+    if (!sellerId) return res.status(400).json({ error: "sellerId required" });
 
     // Verify seller is approved member
     const [seller] = await db.select().from(marketplaceMembers)
-      .where(eq(marketplaceMembers.id, data.sellerId)).limit(1);
+      .where(eq(marketplaceMembers.id, sellerId)).limit(1);
     if (!seller || seller.status !== "approved") {
       return res.status(403).json({ error: "Not an approved marketplace member" });
     }
 
+    const listingNumber = `LST-${Date.now()}`;
     const [listing] = await db.insert(marketplaceListings).values({
       ...data,
+      sellerId,
+      listingNumber,
       status: "draft",
-    }).returning();
+    } as unknown as InferInsertModel<typeof marketplaceListings>).returning();
 
     res.status(201).json(listing);
   } catch (err: any) {
@@ -212,7 +218,7 @@ router.get("/listings", requireAuth, async (req: Request, res: Response) => {
     if (maxPrice) conditions.push(lte(marketplaceListings.askingPrice, maxPrice as string));
     if (minYear) conditions.push(gte(marketplaceListings.year, parseInt(minYear as string)));
     if (maxYear) conditions.push(lte(marketplaceListings.year, parseInt(maxYear as string)));
-    if (slideOuts) conditions.push(gte(marketplaceListings.slideOuts, parseInt(slideOuts as string)));
+    if (slideOuts) conditions.push(gte(marketplaceListings.slides, parseInt(slideOuts as string)));
     if (bunks) conditions.push(gte(marketplaceListings.bunks, parseInt(bunks as string)));
 
     // Sort
@@ -230,16 +236,15 @@ router.get("/listings", requireAuth, async (req: Request, res: Response) => {
       manufacturer: marketplaceListings.manufacturer,
       model: marketplaceListings.model,
       rvType: marketplaceListings.rvType,
-      length: marketplaceListings.length,
-      slideOuts: marketplaceListings.slideOuts,
+      lengthFt: marketplaceListings.lengthFt,
+      slides: marketplaceListings.slides,
       bunks: marketplaceListings.bunks,
       sleeps: marketplaceListings.sleeps,
       condition: marketplaceListings.condition,
       askingPrice: marketplaceListings.askingPrice,
-      priceNegotiable: marketplaceListings.priceNegotiable,
+      obo: marketplaceListings.obo,
       locationCity: marketplaceListings.locationCity,
       locationProvince: marketplaceListings.locationProvince,
-      locationRegion: marketplaceListings.locationRegion,
       status: marketplaceListings.status,
       viewCount: marketplaceListings.viewCount,
       createdAt: marketplaceListings.createdAt,
@@ -412,13 +417,15 @@ router.post("/inquiries", requireAuth, async (req: Request, res: Response) => {
   try {
     const { listingId, buyerId, type, message, offerAmount } = req.body;
 
+    const inquiryNumber = `INQ-${Date.now()}`;
     const [inquiry] = await db.insert(marketplaceInquiries).values({
       listingId,
       buyerId,
-      type: type || "inquiry",
-      message,
+      inquiryNumber,
+      type: (type === "offer" ? "offer" : "question") as "question" | "offer",
+      messages: JSON.stringify([{ text: message || "", createdAt: new Date().toISOString() }]),
       offerAmount,
-      status: "pending",
+      status: "new",
     }).returning();
 
     // Increment inquiry count on listing
@@ -442,7 +449,7 @@ router.get("/inquiries", requireAuth, async (req: Request, res: Response) => {
     const conditions = [];
     if (listingId) conditions.push(eq(marketplaceInquiries.listingId, listingId as string));
     if (buyerId) conditions.push(eq(marketplaceInquiries.buyerId, buyerId as string));
-    if (status) conditions.push(eq(marketplaceInquiries.status, status as string));
+    if (status) conditions.push(eq(marketplaceInquiries.status, status as 'new' | 'forwarded' | 'responded' | 'accepted' | 'declined' | 'expired'));
 
     const inquiries = await db.select().from(marketplaceInquiries)
       .where(conditions.length ? and(...conditions) : undefined)
@@ -457,12 +464,9 @@ router.get("/inquiries", requireAuth, async (req: Request, res: Response) => {
 // PATCH /api/marketplace/inquiries/:id — Respond to inquiry (operator)
 router.patch("/inquiries/:id", requireAuth, requireOperator, async (req: Request, res: Response) => {
   try {
-    const { status, operatorNotes } = req.body;
+    const { status } = req.body;
     const [updated] = await db.update(marketplaceInquiries).set({
       status,
-      operatorNotes,
-      respondedAt: new Date(),
-      respondedBy: req.body.operatorId,
       updatedAt: new Date(),
     }).where(eq(marketplaceInquiries.id, req.params.id)).returning();
 
@@ -481,6 +485,7 @@ router.post("/holds", requireAuth, async (req: Request, res: Response) => {
     const memberId = req.body.memberId;
     if (!memberId) return res.status(400).json({ error: "memberId required" });
 
+    if (!data.listingId) return res.status(400).json({ error: "listingId required" });
     const result = await authorizeHold(data.listingId, memberId, data.paymentMethodId);
     res.status(201).json(result);
   } catch (err: any) {
@@ -515,20 +520,22 @@ router.post("/transactions", requireAuth, requireOperator, async (req: Request, 
   try {
     const { listingId, sellerId, buyerId, holdId, salePrice, auctionId } = req.body;
 
+    const transactionNumber = `TXN-${Date.now()}`;
     const [tx] = await db.insert(marketplaceTransactions).values({
+      transactionNumber,
       listingId,
       sellerId,
       buyerId,
       holdId,
       auctionId,
       salePrice,
-      status: holdId ? "deposit_held" : "pending",
-      depositHeldAt: holdId ? new Date() : null,
+      status: "pending",
+      unitSnapshot: {},
     }).returning();
 
     // Update listing status
     await db.update(marketplaceListings).set({
-      status: "pending_sale",
+      status: "on_hold",
       updatedAt: new Date(),
     }).where(eq(marketplaceListings.id, listingId));
 
@@ -556,7 +563,7 @@ router.patch("/transactions/:id", requireAuth, requireOperator, async (req: Requ
       if (tx?.holdId) await captureHold(tx.holdId);
 
       // Update listing to sold
-      if (tx) {
+      if (tx?.listingId) {
         await db.update(marketplaceListings).set({ status: "sold", updatedAt: new Date() })
           .where(eq(marketplaceListings.id, tx.listingId));
       }
@@ -597,7 +604,7 @@ router.get("/transactions", requireAuth, async (req: Request, res: Response) => 
     const conditions = [];
     if (sellerId) conditions.push(eq(marketplaceTransactions.sellerId, sellerId as string));
     if (buyerId) conditions.push(eq(marketplaceTransactions.buyerId, buyerId as string));
-    if (status) conditions.push(eq(marketplaceTransactions.status, status as string));
+    if (status) conditions.push(eq(marketplaceTransactions.status, status as 'pending' | 'in_transit' | 'inspection' | 'completed' | 'disputed' | 'cancelled'));
 
     const transactions = await db.select().from(marketplaceTransactions)
       .where(conditions.length ? and(...conditions) : undefined)
