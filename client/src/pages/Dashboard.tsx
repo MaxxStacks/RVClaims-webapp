@@ -277,12 +277,158 @@ function OperatorDashboard() {
   );
 }
 
+// ── Dealer / Tech Dashboard ───────────────────────────────────────────────────
+function DealerDashboard() {
+  const [location, navigate] = useLocation();
+  const { user } = useAuth();
+  const { t } = useLanguage();
+  const [claims, setClaims] = useState<any[]>([]);
+  const [units, setUnits] = useState<any[]>([]);
+  const [dataError, setDataError] = useState<string | null>(null);
+
+  // Derive base path from URL (e.g. /dealer-abc/owner)
+  const basePath = (() => {
+    const segs = location.split('/').filter(Boolean);
+    return segs.length >= 2 ? `/${segs[0]}/${segs[1]}` : '';
+  })();
+
+  useEffect(() => {
+    Promise.all([
+      apiFetch<any>('/api/v6/claims').then(d => setClaims(Array.isArray(d) ? d : d.claims || [])).catch(() => {}),
+      apiFetch<any>('/api/v6/units').then(d => setUnits(Array.isArray(d) ? d : d.units || [])).catch(() => {}),
+    ]).catch(err => setDataError(err?.message || 'Failed to load'));
+  }, []);
+
+  const activeClaims = claims.filter((c: any) => c.status !== 'closed' && c.status !== 'paid').length;
+
+  return (
+    <div className="page active">
+      {/* Scan Unit — prominent first card */}
+      <div
+        style={{
+          background: 'linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)',
+          border: '1.5px solid #86efac',
+          borderRadius: 14, padding: '20px 24px',
+          marginBottom: 20, cursor: 'pointer',
+          display: 'flex', alignItems: 'center', gap: 16,
+        }}
+        onClick={() => navigate(`${basePath}/scan`)}
+        onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.borderColor = '#16a34a'; (e.currentTarget as HTMLDivElement).style.boxShadow = '0 4px 16px rgba(22,163,74,0.12)'; }}
+        onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.borderColor = '#86efac'; (e.currentTarget as HTMLDivElement).style.boxShadow = 'none'; }}
+      >
+        <div style={{
+          width: 52, height: 52, borderRadius: 12, background: '#16a34a',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+        }}>
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+            <rect x="3" y="3" width="7" height="7" rx="1" />
+            <rect x="14" y="3" width="7" height="7" rx="1" />
+            <rect x="3" y="14" width="7" height="7" rx="1" />
+            <path d="M14 14h7v7h-7z" />
+          </svg>
+        </div>
+        <div style={{ flex: 1 }}>
+          <div style={{ fontSize: 16, fontWeight: 700, color: '#1e293b', marginBottom: 3 }}>
+            {t('scanner.scanUnit')}
+          </div>
+          <div style={{ fontSize: 13, color: '#16a34a', fontWeight: 500 }}>
+            {t('scanner.scanSubtitle')}
+          </div>
+        </div>
+        <div style={{
+          background: '#16a34a', color: 'white', borderRadius: 8,
+          padding: '8px 16px', fontSize: 13, fontWeight: 700, flexShrink: 0,
+        }}>
+          Scan Now
+        </div>
+      </div>
+
+      {/* Stats */}
+      <div className="stats-grid">
+        <div className="sc" style={{ cursor: 'pointer' }} onClick={() => navigate(`${basePath}/claims`)}>
+          <div className="sc-h"><span className="sc-l">{t('dashboard.activeClaims')}</span><div className="sc-i bl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg></div></div>
+          <div className="sc-v">{activeClaims}</div>
+        </div>
+        <div className="sc" style={{ cursor: 'pointer' }} onClick={() => navigate(`${basePath}/units`)}>
+          <div className="sc-h"><span className="sc-l">{t('nav.units')}</span><div className="sc-i gr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="1" y="3" width="15" height="13" rx="2"/><circle cx="5.5" cy="18" r="2.5"/><circle cx="18.5" cy="18" r="2.5"/></svg></div></div>
+          <div className="sc-v">{units.length}</div>
+        </div>
+      </div>
+
+      {/* Quick actions */}
+      <div className="qg">
+        <div className="qb" onClick={() => navigate(`${basePath}/scan`)}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h7v7h-7z"/></svg>
+          <span className="qb-t">{t('scanner.scanUnit')}</span>
+        </div>
+        <div className="qb" onClick={() => navigate(`${basePath}/claims/new`)}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+          <span className="qb-t">{t('claims.newClaim')}</span>
+        </div>
+        <div className="qb" onClick={() => navigate(`${basePath}/upload`)}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          <span className="qb-t">{t('nav.uploadPhotos')}</span>
+        </div>
+        <div className="qb" onClick={() => navigate(`${basePath}/units`)}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4a2 2 0 012 2v6a2 2 0 01-2 2h-4"/><circle cx="5.5" cy="18" r="2.5"/><circle cx="18.5" cy="18" r="2.5"/></svg>
+          <span className="qb-t">{t('nav.units')}</span>
+        </div>
+      </div>
+
+      {/* Recent claims table */}
+      <div className="pg pg-2">
+        <div className="pn">
+          <div className="pn-h">
+            <span className="pn-t">{t('dashboard.recentClaims')}</span>
+            <span className="pn-a" onClick={() => navigate(`${basePath}/claims`)}>{t('common.viewAll')}</span>
+          </div>
+          <div className="tw">
+            <table>
+              <thead><tr><th>{t('claims.claimNumber')}</th><th>{t('claims.manufacturer')}</th><th>{t('common.type')}</th><th>{t('common.status')}</th><th>{t('claims.submitDate')}</th></tr></thead>
+              <tbody>
+                {claims.length === 0 ? (
+                  <tr><td colSpan={5} style={{ textAlign: 'center', padding: 24, color: '#888' }}>{dataError || 'No claims yet'}</td></tr>
+                ) : claims.slice(0, 4).map((c: any) => (
+                  <tr key={c.id}>
+                    <td><span className="cid" onClick={() => navigate(`${basePath}/claims/${c.id}`)}>{c.claimNumber}</span></td>
+                    <td><span className="mfr">{c.manufacturer}</span></td>
+                    <td>{c.type}</td>
+                    <td><span className={`bg ${c.status?.replace('_', '-')}`}>{c.status}</span></td>
+                    <td>{c.submittedAt ? new Date(c.submittedAt).toLocaleDateString() : new Date(c.createdAt).toLocaleDateString()}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div className="pn">
+          <div className="pn-h"><span className="pn-t">{t('dashboard.activity')}</span></div>
+          <div className="act">
+            <div style={{ textAlign: 'center', padding: '32px 0', color: '#888', fontSize: 13 }}>{t('dashboard.noRecentActivity')}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ── Root component — delegates by role ────────────────────────────────────────
 export default function Dashboard() {
   const { user } = useAuth();
 
   if (user?.role === 'client') {
     return <ClientDashboard />;
+  }
+
+  if (
+    user?.role === 'dealer_owner' ||
+    user?.role === 'dealer_staff' ||
+    user?.role === 'service_manager' ||
+    user?.role === 'shop_manager' ||
+    user?.role === 'technician' ||
+    user?.role === 'parts_dept'
+  ) {
+    return <DealerDashboard />;
   }
 
   return <OperatorDashboard />;

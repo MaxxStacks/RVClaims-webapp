@@ -3,6 +3,7 @@ import { useLocation, useParams } from 'wouter';
 import { apiFetch } from '@/lib/api';
 import { useAuth } from '@/hooks/use-auth';
 import { useLanguage } from '@/hooks/use-language';
+import { BarcodeDisplay, QRCodeDisplay } from '@/lib/barcode';
 
 interface FrcLine {
   id: string;
@@ -296,6 +297,13 @@ export default function ClaimDetail() {
           <button className="btn btn-o btn-sm" onClick={handleAssignToMe}>
             {t('claims.assignToMe')}
           </button>
+        )}
+        {/* Barcode widget */}
+        {claim.id && (
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, marginLeft: 8, flexShrink: 0 }}>
+            <BarcodeDisplay entityType="claim" entityId={claim.id} size="sm" />
+            <QRCodeDisplay entityType="claim" entityId={claim.id} size={56} />
+          </div>
         )}
       </div>
 

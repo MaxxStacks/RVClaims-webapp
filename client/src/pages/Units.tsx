@@ -161,8 +161,28 @@ export default function Units() {
             <option value="in_service">In Service</option>
             <option value="consigned">Consigned</option>
           </select>
+          {/* Scan Unit — visible to all dealer/tech roles */}
+          {isDealer && (
+            <button
+              className="btn btn-o btn-sm"
+              style={{ display: 'flex', alignItems: 'center', gap: 6 }}
+              onClick={() => {
+                const segs = location.split('/').filter(Boolean);
+                const scanPath = segs.length >= 2 ? `/${segs[0]}/${segs[1]}/scan` : '/scan';
+                navigate(scanPath);
+              }}
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <rect x="3" y="3" width="7" height="7" rx="1"/>
+                <rect x="14" y="3" width="7" height="7" rx="1"/>
+                <rect x="3" y="14" width="7" height="7" rx="1"/>
+                <path d="M14 14h7v7h-7z"/>
+              </svg>
+              {t('scanner.scanUnit')}
+            </button>
+          )}
           {canAddUnit && (
-            <div style={{ marginLeft: 'auto' }}>
+            <div style={{ marginLeft: isDealer ? 0 : 'auto' }}>
               <button className="btn btn-p btn-sm" onClick={goToAddUnit}>
                 + {t('units.newUnit')}
               </button>

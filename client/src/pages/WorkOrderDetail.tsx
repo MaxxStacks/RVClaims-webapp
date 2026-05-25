@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useLocation, useParams } from 'wouter';
 import { apiFetch } from '@/lib/api';
 import { useAuth } from '@/hooks/use-auth';
+import { BarcodeDisplay, QRCodeDisplay } from '@/lib/barcode';
 
 const STATUS_LABELS: Record<string, string> = {
   unassigned: 'Unassigned', assigned: 'Assigned', en_route: 'En Route',
@@ -189,6 +190,13 @@ export default function WorkOrderDetail() {
         <span style={{ padding: '6px 16px', borderRadius: 20, fontSize: 13, fontWeight: 600, background: '#f0fdf4', color: '#16a34a' }}>
           {statusInfo}
         </span>
+        {/* Barcode widget */}
+        {wo?.id && (
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, marginLeft: 8, flexShrink: 0 }}>
+            <BarcodeDisplay entityType="workOrder" entityId={wo.id} size="sm" />
+            <QRCodeDisplay entityType="workOrder" entityId={wo.id} size={56} />
+          </div>
+        )}
       </div>
 
       {/* Technician — BIG status buttons */}

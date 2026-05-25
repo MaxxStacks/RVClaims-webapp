@@ -3,6 +3,7 @@
 //             dealer_owner/dealer_staff (view + renewal request), client (view own warranty)
 
 import { useState, useEffect, useCallback } from 'react';
+import { BarcodeDisplay, QRCodeDisplay } from '@/lib/barcode';
 import { useLocation, useParams } from 'wouter';
 import { apiFetch } from '@/lib/api';
 import { useAuth } from '@/hooks/use-auth';
@@ -191,6 +192,13 @@ export default function WarrantyDetail() {
           >
             Cancel Plan
           </button>
+        )}
+        {/* Barcode widget */}
+        {plan.id && (
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, marginLeft: 8, flexShrink: 0 }}>
+            <BarcodeDisplay entityType="warranty" entityId={plan.id} size="sm" />
+            <QRCodeDisplay entityType="warranty" entityId={plan.id} size={56} />
+          </div>
         )}
       </div>
 

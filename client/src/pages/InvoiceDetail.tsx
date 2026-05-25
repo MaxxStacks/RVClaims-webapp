@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useLocation, useParams } from 'wouter';
 import { apiFetch } from '@/lib/api';
 import { useAuth } from '@/hooks/use-auth';
+import { BarcodeDisplay, QRCodeDisplay } from '@/lib/barcode';
 
 interface InvoiceLineItem {
   id: string;
@@ -242,6 +243,13 @@ export default function InvoiceDetail() {
           >
             Pay Now
           </button>
+        )}
+        {/* Barcode widget */}
+        {invoice.id && (
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, marginLeft: 8, flexShrink: 0 }}>
+            <BarcodeDisplay entityType="invoice" entityId={invoice.id} size="sm" />
+            <QRCodeDisplay entityType="invoice" entityId={invoice.id} size={56} />
+          </div>
         )}
       </div>
 

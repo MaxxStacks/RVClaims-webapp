@@ -3,6 +3,7 @@ import { useLocation, useParams } from 'wouter';
 import { apiFetch } from '@/lib/api';
 import { useAuth } from '@/hooks/use-auth';
 import { useLanguage } from '@/hooks/use-language';
+import { BarcodeDisplay, QRCodeDisplay } from '@/lib/barcode';
 
 export default function UnitDetail() {
   const [location, navigate] = useLocation();
@@ -473,6 +474,13 @@ export default function UnitDetail() {
             </button>
             <button className="btn btn-o btn-sm" onClick={() => setEditMode(false)}>{t('common.cancel')}</button>
           </>
+        )}
+        {/* Barcode widget */}
+        {unit.id && (
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, marginLeft: 8, flexShrink: 0 }}>
+            <BarcodeDisplay entityType="unit" entityId={unit.id} size="sm" />
+            <QRCodeDisplay entityType="unit" entityId={unit.id} size={56} />
+          </div>
         )}
       </div>
 
