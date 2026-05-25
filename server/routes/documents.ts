@@ -10,6 +10,39 @@ import { validateBody } from "../middleware/validate";
 
 const router = Router();
 
+// ==================== GET /api/documents ====================
+router.get("/", requireAuth, async (req: Request, res: Response) => {
+  try {
+    const u = req.user!;
+    const { dealershipId, type } = req.query as Record<string, string>;
+
+    let rows: (typeof documents.$inferSelect)[];
+
+    if (["operator_admin", "operator_staff"].includes(u.role)) {
+      const conditions = [];
+      if (dealershipId) conditions.push(eq(documents.dealershipId, dealershipId));
+      if (type) conditions.push(eq(documents.type, type as any));
+      rows = conditions.length
+        ? await db.select().from(documents).where(conditions.length === 1 ? conditions[0] : and(...conditions)).orderBy(desc(documents.createdAt)).limit(200)
+        : await db.select().from(documents).orderBy(desc(documents.createdAt)).limit(200);
+    } else if (u.dealershipId) {
+      // Dealer-side: only own dealership documents
+      const conditions = [eq(documents.dealershipId, u.dealershipId)];
+      if (type) conditions.push(eq(documents.type, type as any));
+      rows = await db.select().from(documents)
+        .where(and(...conditions))
+        .orderBy(desc(documents.createdAt));
+    } else {
+      return res.status(403).json({ success: false, message: "No dealership context" });
+    }
+
+    res.json({ success: true, documents: rows });
+  } catch (error) {
+    console.error("List documents error:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+});
+
 // ==================== POST /api/documents ====================
 router.post("/", requireAuth, validateBody(insertDocumentSchema), async (req: Request, res: Response) => {
   try {
