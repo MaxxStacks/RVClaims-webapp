@@ -1,4 +1,4 @@
-// client/src/pages/WarrantyPlans.tsx — Warranty Plans management
+﻿// client/src/pages/WarrantyPlans.tsx — Warranty Plans management
 // Role-aware: operator_admin (full CRUD + cancel), operator_staff (view),
 //             dealer_owner (view active plans + create assignment), dealer_staff (view),
 //             financial_manager (view + revenue summary)
@@ -237,7 +237,7 @@ export default function WarrantyPlans() {
     <div className="page active">
       {/* Toast */}
       {toastVisible && (
-        <div style={{ position: 'fixed', bottom: 24, right: 24, background: '#08235d', color: '#fff', padding: '10px 18px', borderRadius: 8, fontSize: 13, fontWeight: 500, zIndex: 9999, boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}>
+        <div style={{ position: 'fixed', bottom: 24, right: 24, background: '#033280', color: '#fff', padding: '10px 18px', borderRadius: 8, fontSize: 13, fontWeight: 500, zIndex: 9999, boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}>
           {toastMsg}
         </div>
       )}
@@ -270,7 +270,7 @@ export default function WarrantyPlans() {
 
       {/* Inline create form (operator_admin) */}
       {isOperatorAdmin && showForm && (
-        <div className="pn" style={{ marginBottom: 16, borderLeft: '3px solid #08235d' }}>
+        <div className="pn" style={{ marginBottom: 16, borderLeft: '3px solid #033280' }}>
           <div className="pn-h" style={{ borderBottom: '1px solid #f0f0f0', paddingBottom: 12, marginBottom: 16 }}>
             <span className="pn-t">New Warranty Plan</span>
           </div>

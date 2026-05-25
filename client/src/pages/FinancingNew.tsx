@@ -1,4 +1,4 @@
-// client/src/pages/FinancingNew.tsx — New Financing Application form
+﻿// client/src/pages/FinancingNew.tsx — New Financing Application form
 // Access: dealer_owner and operator_admin only.
 // Both fields customerId and unitId are required per business rules.
 
@@ -193,7 +193,7 @@ export default function FinancingNew() {
       {/* Toast */}
       {toastVisible && (
         <div style={{
-          position: 'fixed', bottom: 24, right: 24, background: '#08235d', color: '#fff',
+          position: 'fixed', bottom: 24, right: 24, background: '#033280', color: '#fff',
           padding: '10px 18px', borderRadius: 8, fontSize: 13, fontWeight: 500,
           zIndex: 9999, boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
         }}>

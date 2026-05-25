@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 
 export default function Messages() {
   const [toast, setToast] = useState('');
@@ -16,7 +16,7 @@ export default function Messages() {
           <div style={{padding: '12px 16px', borderBottom: '1px solid #f0f0f0', fontWeight: 600, fontSize: 13}}>Inbox</div>
           {threads.map((m, i) => (
             <div key={i} style={{padding: '12px 16px', borderBottom: '1px solid #f8f8f8', cursor: 'pointer', background: m.unread ? '#f0f4ff' : 'white', display: 'flex', gap: 10}}>
-              <div style={{width: 36, height: 36, borderRadius: '50%', background: '#08235d', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, flexShrink: 0}}>{m.name[0]}</div>
+              <div style={{width: 36, height: 36, borderRadius: '50%', background: '#033280', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, flexShrink: 0}}>{m.name[0]}</div>
               <div style={{flex: 1, minWidth: 0}}>
                 <div style={{fontWeight: m.unread ? 600 : 400, fontSize: 13, marginBottom: 2}}>{m.name}</div>
                 <div style={{fontSize: 12, color: '#888', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}}>{m.msg}</div>

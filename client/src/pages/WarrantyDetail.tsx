@@ -1,4 +1,4 @@
-// client/src/pages/WarrantyDetail.tsx — Warranty Plan detail view
+﻿// client/src/pages/WarrantyDetail.tsx — Warranty Plan detail view
 // Role-aware: operator_admin (cancel + edit), operator_staff (view),
 //             dealer_owner/dealer_staff (view + renewal request), client (view own warranty)
 
@@ -173,7 +173,7 @@ export default function WarrantyDetail() {
 
       {/* Toast */}
       {toastVisible && (
-        <div style={{ position: 'fixed', bottom: 24, right: 24, background: '#08235d', color: '#fff', padding: '10px 18px', borderRadius: 8, fontSize: 13, fontWeight: 500, zIndex: 9999, boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}>
+        <div style={{ position: 'fixed', bottom: 24, right: 24, background: '#033280', color: '#fff', padding: '10px 18px', borderRadius: 8, fontSize: 13, fontWeight: 500, zIndex: 9999, boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}>
           {toastMsg}
         </div>
       )}
@@ -308,7 +308,7 @@ export default function WarrantyDetail() {
             <div className="cd-row"><span className="cd-label">Expiry</span><span className="cd-value">{plan.endDate ? new Date(plan.endDate).toLocaleDateString('en-CA', { month: 'short', day: 'numeric', year: 'numeric' }) : '—'}</span></div>
             <div className="cd-row"><span className="cd-label">Status</span><span className="cd-value"><span className={statusCls} style={{ fontSize: 11 }}>{statusLabel}</span></span></div>
             {cd.retailPrice && (
-              <div className="cd-row"><span className="cd-label">Plan Price</span><span className="cd-value" style={{ fontWeight: 700, color: '#08235d' }}>${parseFloat(cd.retailPrice).toLocaleString('en-CA')}</span></div>
+              <div className="cd-row"><span className="cd-label">Plan Price</span><span className="cd-value" style={{ fontWeight: 700, color: '#033280' }}>${parseFloat(cd.retailPrice).toLocaleString('en-CA')}</span></div>
             )}
             <div className="cd-row">
               <span className="cd-label">Sold by Platform</span>

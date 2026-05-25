@@ -1,4 +1,4 @@
-// client/src/pages/Warranty.tsx — Client Warranty & Coverage page
+﻿// client/src/pages/Warranty.tsx — Client Warranty & Coverage page
 // This is the customer-facing warranty view. Polished, with progress bar and coverage grid.
 // Role: client (their own warranty), dealer_owner/staff (unit warranty overview), operator (all)
 
@@ -122,7 +122,7 @@ export default function Warranty() {
     return (
       <div className="page active">
         {toastVisible && (
-          <div style={{ position: 'fixed', bottom: 24, right: 24, background: '#08235d', color: '#fff', padding: '10px 18px', borderRadius: 8, fontSize: 13, fontWeight: 500, zIndex: 9999, boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}>
+          <div style={{ position: 'fixed', bottom: 24, right: 24, background: '#033280', color: '#fff', padding: '10px 18px', borderRadius: 8, fontSize: 13, fontWeight: 500, zIndex: 9999, boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}>
             {toastMsg}
           </div>
         )}
@@ -140,7 +140,7 @@ export default function Warranty() {
           <div style={{ fontSize: 14, color: '#666', lineHeight: 1.6, maxWidth: 400, margin: '0 auto 24px' }}>
             No warranty plans are currently linked to your account. Contact your dealer to register an existing plan or enquire about extended coverage options.
           </div>
-          <a href="mailto:support@dealersuite360.com" style={{ display: 'inline-block', padding: '10px 24px', background: '#08235d', color: '#fff', borderRadius: 8, textDecoration: 'none', fontSize: 13, fontWeight: 500 }}>
+          <a href="mailto:support@dealersuite360.com" style={{ display: 'inline-block', padding: '10px 24px', background: '#033280', color: '#fff', borderRadius: 8, textDecoration: 'none', fontSize: 13, fontWeight: 500 }}>
             Contact Your Dealer
           </a>
         </div>
@@ -184,7 +184,7 @@ export default function Warranty() {
     <div className="page active">
       {/* Toast */}
       {toastVisible && (
-        <div style={{ position: 'fixed', bottom: 24, right: 24, background: '#08235d', color: '#fff', padding: '10px 18px', borderRadius: 8, fontSize: 13, fontWeight: 500, zIndex: 9999, boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}>
+        <div style={{ position: 'fixed', bottom: 24, right: 24, background: '#033280', color: '#fff', padding: '10px 18px', borderRadius: 8, fontSize: 13, fontWeight: 500, zIndex: 9999, boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}>
           {toastMsg}
         </div>
       )}

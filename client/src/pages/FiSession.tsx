@@ -1,4 +1,4 @@
-// client/src/pages/FiSession.tsx — Customer-facing AI F&I Presenter
+﻿// client/src/pages/FiSession.tsx — Customer-facing AI F&I Presenter
 // Public page (no auth required). Accessed via session link sent by dealer.
 // Shows dealer branding, F&I product cards, AI chat interface.
 // Fallback: static product cards when AI unavailable.
@@ -114,7 +114,7 @@ export default function FiSession() {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, aiTyping]);
 
-  const brandColor = session?.dealershipInfo.primaryColor || '#08235d';
+  const brandColor = session?.dealershipInfo.primaryColor || '#033280';
 
   const startPresentation = async () => {
     if (!session) return;

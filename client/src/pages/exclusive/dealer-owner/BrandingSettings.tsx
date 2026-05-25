@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { useLocation } from 'wouter';
 import { apiFetch } from '@/lib/api';
 import { useAuth } from '@/hooks/use-auth';
@@ -21,8 +21,8 @@ export default function BrandingSettings() {
 
   const [dealerName, setDealerName] = useState('');
   const [logoUrl, setLogoUrl] = useState('');
-  const [primaryColor, setPrimaryColor] = useState('#08235d');
-  const [primaryColorHex, setPrimaryColorHex] = useState('#08235d');
+  const [primaryColor, setPrimaryColor] = useState('#033280');
+  const [primaryColorHex, setPrimaryColorHex] = useState('#033280');
   const [accentColor, setAccentColor] = useState('#2563eb');
   const [accentColorHex, setAccentColorHex] = useState('#2563eb');
   const [welcomeMessage, setWelcomeMessage] = useState('Welcome to your RV service portal. Track your warranty, claims, and services all in one place.');
@@ -45,7 +45,7 @@ export default function BrandingSettings() {
         const data = d.dealership || d;
         setDealerName(data.name || '');
         setLogoUrl(data.logoUrl || '');
-        const pc = data.primaryColor || '#08235d';
+        const pc = data.primaryColor || '#033280';
         const ac = data.accentColor || data.secondaryColor || '#2563eb';
         setPrimaryColor(pc); setPrimaryColorHex(pc);
         setAccentColor(ac); setAccentColorHex(ac);
@@ -137,8 +137,8 @@ export default function BrandingSettings() {
   };
 
   const handleRestoreDefaults = () => {
-    setPrimaryColor('#08235d');
-    setPrimaryColorHex('#08235d');
+    setPrimaryColor('#033280');
+    setPrimaryColorHex('#033280');
     setAccentColor('#2563eb');
     setAccentColorHex('#2563eb');
     showToast('Defaults restored — click Save to apply');
@@ -210,7 +210,7 @@ export default function BrandingSettings() {
                   value={primaryColorHex}
                   onChange={handlePrimaryHexChange}
                   style={{ width: 100, padding: '10px 12px', border: '1px solid #e0e0e0', borderRadius: 8, fontSize: 13, fontFamily: 'monospace' }}
-                  placeholder="#08235d"
+                  placeholder="#033280"
                 />
               </div>
             </div>

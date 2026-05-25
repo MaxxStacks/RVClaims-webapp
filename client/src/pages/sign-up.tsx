@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import { CheckCircle } from "lucide-react";
 import logoEN from "@assets/DS360_logo_light.png";
@@ -66,7 +66,7 @@ export default function SignUp() {
     <div style={{ fontFamily: "'Inter', -apple-system, sans-serif", minHeight: "100vh", display: "flex" }}>
       {/* Left Panel */}
       <div style={{
-        width: "45%", background: "linear-gradient(145deg, #061b48 0%, #08235d 35%, #0c2f75 100%)",
+        width: "45%", background: "linear-gradient(145deg, #061b48 0%, #033280 35%, #0c2f75 100%)",
         color: "white", padding: "48px 56px", display: "flex", flexDirection: "column", justifyContent: "center",
         position: "relative", overflow: "hidden",
       }}>
@@ -147,7 +147,7 @@ export default function SignUp() {
                 Thank you, <strong>{formData.contactName}</strong>. Our team will review your request and reach out within 24 business hours to schedule your free onboarding consultation.
               </p>
               <Link href="/" style={{
-                display: "inline-block", padding: "12px 28px", background: "#08235d", color: "white",
+                display: "inline-block", padding: "12px 28px", background: "#033280", color: "white",
                 borderRadius: "8px", textDecoration: "none", fontSize: "14px", fontWeight: 600,
               }}>
                 Return to Home
@@ -158,7 +158,7 @@ export default function SignUp() {
               <div style={{ fontSize: "26px", fontWeight: 700, color: "#111", marginBottom: "4px" }}>Request Access</div>
               <p style={{ fontSize: "14px", color: "#888", marginBottom: "28px" }}>
                 No credit card required.{" "}
-                <Link href="/client-login" style={{ color: "#08235d", textDecoration: "none", fontWeight: 500 }}>Already have an account? Sign in</Link>
+                <Link href="/client-login" style={{ color: "#033280", textDecoration: "none", fontWeight: 500 }}>Already have an account? Sign in</Link>
               </p>
 
               <form onSubmit={handleSubmit}>
@@ -205,14 +205,14 @@ export default function SignUp() {
                     {interests.map((interest) => (
                       <label key={interest} style={{
                         display: "flex", alignItems: "center", gap: "10px", padding: "10px 14px",
-                        border: `1px solid ${formData.interests.includes(interest) ? "#08235d" : "#e0e0e0"}`,
+                        border: `1px solid ${formData.interests.includes(interest) ? "#033280" : "#e0e0e0"}`,
                         borderRadius: "8px", cursor: "pointer", fontSize: "13px", color: "#333",
                         background: formData.interests.includes(interest) ? "#f0f4ff" : "#fafafa",
                         transition: "all 0.15s",
                       }}>
                         <input type="checkbox" checked={formData.interests.includes(interest)}
                           onChange={() => handleCheckbox(interest)}
-                          style={{ accentColor: "#08235d", width: "14px", height: "14px" }} />
+                          style={{ accentColor: "#033280", width: "14px", height: "14px" }} />
                         {interest}
                       </label>
                     ))}
@@ -220,7 +220,7 @@ export default function SignUp() {
                 </div>
 
                 <button type="submit" style={{
-                  width: "100%", padding: "14px", background: "#08235d", color: "white", border: "none",
+                  width: "100%", padding: "14px", background: "#033280", color: "white", border: "none",
                   borderRadius: "8px", fontSize: "15px", fontWeight: 600, fontFamily: "inherit",
                   cursor: "pointer",
                 }}>

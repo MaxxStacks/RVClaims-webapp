@@ -1,4 +1,4 @@
-// client/src/pages/exclusive/operator-admin/FinancingPartners.tsx
+﻿// client/src/pages/exclusive/operator-admin/FinancingPartners.tsx
 // Operator-admin-only lender partner management.
 // Full CRUD: add lender, edit (inline), deactivate.
 
@@ -174,7 +174,7 @@ export default function FinancingPartners() {
       {/* Toast */}
       {toastVisible && (
         <div style={{
-          position: 'fixed', bottom: 24, right: 24, background: '#08235d', color: '#fff',
+          position: 'fixed', bottom: 24, right: 24, background: '#033280', color: '#fff',
           padding: '10px 18px', borderRadius: 8, fontSize: 13, fontWeight: 500,
           zIndex: 9999, boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
         }}>
@@ -200,7 +200,7 @@ export default function FinancingPartners() {
 
       {/* Inline add form */}
       {showAddForm && (
-        <div className="pn" style={{ marginBottom: 16, borderLeft: '3px solid #08235d' }}>
+        <div className="pn" style={{ marginBottom: 16, borderLeft: '3px solid #033280' }}>
           <div className="pn-h" style={{ borderBottom: '1px solid #f0f0f0', paddingBottom: 12, marginBottom: 16 }}>
             <span className="pn-t">New Lender Partner</span>
           </div>

@@ -1,4 +1,4 @@
-// client/src/lib/mobile-init.ts — Initialize native app features on startup
+﻿// client/src/lib/mobile-init.ts — Initialize native app features on startup
 // Call this once from App.tsx or main.tsx
 
 export async function initMobileApp() {
@@ -22,7 +22,7 @@ export async function initMobileApp() {
       await StatusBar.setBackgroundColor({ color: '#0f1117' });
     } else {
       await StatusBar.setStyle({ style: Style.Dark });
-      await StatusBar.setBackgroundColor({ color: '#08235d' });
+      await StatusBar.setBackgroundColor({ color: '#033280' });
     }
   } catch {}
 
@@ -107,7 +107,7 @@ export async function syncNativeTheme(isDark: boolean) {
       await StatusBar.setBackgroundColor({ color: '#0f1117' });
     } else {
       await StatusBar.setStyle({ style: Style.Dark });
-      await StatusBar.setBackgroundColor({ color: '#08235d' });
+      await StatusBar.setBackgroundColor({ color: '#033280' });
     }
   } catch {}
 }

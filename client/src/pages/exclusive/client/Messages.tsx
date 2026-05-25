@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+﻿import { useState, useEffect, useRef, useCallback } from 'react';
 import { useLocation } from 'wouter';
 import { apiFetch } from '@/lib/api';
 import { useAuth } from '@/hooks/use-auth';
@@ -96,7 +96,7 @@ export default function Messages() {
         <div className="pn" style={{padding: 0, overflow: 'hidden'}}>
           <div style={{padding: '12px 16px', borderBottom: '1px solid #f0f0f0', fontWeight: 600, fontSize: 13}}>Inbox</div>
           <div style={{padding: '12px 16px', borderBottom: '1px solid #f8f8f8', cursor: 'default', background: '#f0f4ff', display: 'flex', gap: 10}}>
-            <div style={{width: 36, height: 36, borderRadius: '50%', background: '#08235d', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, flexShrink: 0}}>{dealerInitials}</div>
+            <div style={{width: 36, height: 36, borderRadius: '50%', background: '#033280', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, flexShrink: 0}}>{dealerInitials}</div>
             <div style={{flex: 1, minWidth: 0}}>
               <div style={{fontWeight: 600, fontSize: 13, marginBottom: 2}}>{dealerName}</div>
               <div style={{fontSize: 12, color: '#888', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}}>
@@ -126,7 +126,7 @@ export default function Messages() {
               return (
                 <div key={msg.id} style={{display: 'flex', flexDirection: mine ? 'row-reverse' : 'row', gap: 8, alignItems: 'flex-end'}}>
                   <div style={{
-                    background: mine ? '#08235d' : '#f0f4ff',
+                    background: mine ? '#033280' : '#f0f4ff',
                     color: mine ? '#fff' : '#1a1a1a',
                     borderRadius: mine ? '12px 12px 2px 12px' : '12px 12px 12px 2px',
                     padding: '12px 16px',

@@ -70,11 +70,6 @@ const SystemStatus = lazy(() => import("@/pages/system-status"));
 const DealerIntegration = lazy(() => import("@/pages/dealer-integration"));
 const ExpertConsultation = lazy(() => import("@/pages/expert-consultation"));
 const NotFound = lazy(() => import("@/pages/not-found"));
-const OperatorPortal = lazy(() => import("./portals/OperatorPortal"));
-const DealerPortal = lazy(() => import("./portals/DealerPortal"));
-const CustomerPortal = lazy(() => import("./portals/CustomerPortal"));
-const BidderPortal = lazy(() => import("./portals/BidderPortal"));
-const BidderPortalV6 = lazy(() => import("@/pages/BidderPortalV6"));
 const PortalSelectV6 = lazy(() => import("@/pages/PortalSelectV6"));
 const FiSessionPage = lazy(() => import("@/pages/FiSession"));
 
@@ -251,7 +246,6 @@ function Router() {
         <Route path="/client">{() => <Redirect to="/login" />}</Route>
         <Route path="/bidder">{() => <Redirect to="/login" />}</Route>
         <Route path="/bidder-login">{() => <Redirect to="/login" />}</Route>
-        <Route path="/bidder-v6" component={BidderPortalV6} />
         <Route path="/portal-select-v6" component={PortalSelectV6} />
         <Route path="/book-demo" component={BookDemo} />
         <Route path="/on-site-repairs" component={OnSiteRepairs} />
@@ -323,13 +317,9 @@ function App() {
   // /operator, /dealer, /client, /bidder (exact) serve login pages in the marketing Switch.
   // Only sub-paths (/:rest*) trigger portal mode.
   const isPortal = location.startsWith('/operator/') ||
-                   location.startsWith('/operator-v6') ||
                    location.startsWith('/dealer/') ||
-                   location.startsWith('/dealer-v6') ||
                    location.startsWith('/client/') ||
-                   location.startsWith('/client-v6') ||
                    location.startsWith('/bidder/') ||
-                   location.startsWith('/bidder-v6') ||
                    location.startsWith('/marketplace/bidder') ||
                    location.startsWith('/marketplace/consignor') ||
                    location.startsWith('/marketplace/independent') ||
@@ -359,34 +349,11 @@ function App() {
           <RemoteSupportProvider>
           <Suspense fallback={null}>
             <Switch>
-              {/* v6 standalone sub-pages — specific routes before catch-alls */}
-              <Route path="/operator-v6/dealerships/new" component={NewDealershipPageRoute} />
-              <Route path="/operator-v6/dealerships/:id" component={DealershipDetailPage} />
-              <Route path="/operator-v6/dealerships" component={DealerAccountsListPageRoute} />
-              <Route path="/operator-v6/units/:id" component={UnitProfilePageOperator} />
-              <Route path="/dealer-v6/units/:unitId/claims/new" component={NewClaimPageRoute} />
-              <Route path="/dealer-v6/units/new" component={NewUnitPageRoute} />
-              <Route path="/dealer-v6/units/:id" component={UnitProfilePageDealer} />
-              <Route path="/client-v6/units/:id" component={UnitProfilePageClient} />
-
               {/* Session 3: Operator portals — BEFORE /operator/:rest* catch-all */}
               <Route path="/operator/admin/:rest*" component={OperatorAdminPortalSection} />
               <Route path="/operator/admin" component={OperatorAdminPortalSection} />
               <Route path="/operator/staff/:rest*" component={OperatorStaffPortalSection} />
               <Route path="/operator/staff" component={OperatorStaffPortalSection} />
-
-              {/* v6 portal catch-alls → old portals (v6 endpoints) */}
-              <Route path="/operator-v6/:rest*" component={OperatorPortal} />
-              <Route path="/operator-v6" component={OperatorPortal} />
-              <Route path="/dealer-v6/:rest*" component={DealerPortal} />
-              <Route path="/dealer-v6" component={DealerPortal} />
-              <Route path="/client-v6/:rest*" component={CustomerPortal} />
-              <Route path="/client-v6" component={CustomerPortal} />
-              {/* Legacy portal paths */}
-              <Route path="/operator/:rest*" component={OperatorPortal} />
-              <Route path="/dealer/:rest*" component={DealerPortal} />
-              <Route path="/client/:rest*" component={CustomerPortal} />
-              <Route path="/bidder/:rest*" component={BidderPortal} />
 
               {/* Session 3: Marketplace portals */}
               <Route path="/marketplace/bidder/:rest*" component={PublicBidderPortalSection} />

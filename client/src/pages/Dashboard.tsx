@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { useLocation } from 'wouter';
 import { apiFetch } from '@/lib/api';
 import { useAuth } from '@/hooks/use-auth';
@@ -58,7 +58,7 @@ function ClientDashboard() {
   return (
     <div className="page active">
       {/* Welcome banner */}
-      <div style={{background: 'linear-gradient(135deg, #08235d 0%, #1e40af 100%)', borderRadius: 12, padding: '24px 28px', color: '#fff', marginBottom: 24}}>
+      <div style={{background: 'linear-gradient(135deg, #033280 0%, #1e40af 100%)', borderRadius: 12, padding: '24px 28px', color: '#fff', marginBottom: 24}}>
         <div style={{fontSize: 20, fontWeight: 700, marginBottom: 6}}>
           {t('dashboard.welcome')}{user?.firstName ? `, ${user.firstName}` : ''}!
         </div>

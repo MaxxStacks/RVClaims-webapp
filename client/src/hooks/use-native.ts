@@ -1,4 +1,4 @@
-// client/src/hooks/use-native.ts — React hooks for Capacitor native features
+﻿// client/src/hooks/use-native.ts — React hooks for Capacitor native features
 // These hooks detect whether we're running in a native app (Capacitor) or browser,
 // and provide the right implementation for each. In browser, they gracefully fallback.
 
@@ -271,7 +271,7 @@ export function useStatusBar() {
     try {
       const { StatusBar, Style } = await import('@capacitor/status-bar');
       await StatusBar.setStyle({ style: Style.Dark });
-      await StatusBar.setBackgroundColor({ color: '#08235d' });
+      await StatusBar.setBackgroundColor({ color: '#033280' });
     } catch {}
   }, [platform]);
 

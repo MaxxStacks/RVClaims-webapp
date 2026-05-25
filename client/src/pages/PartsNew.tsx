@@ -1,4 +1,4 @@
-// client/src/pages/PartsNew.tsx — Create Parts Order (Module 9)
+﻿// client/src/pages/PartsNew.tsx — Create Parts Order (Module 9)
 // Access: operator_admin, dealer_owner, parts_dept
 
 import { useState, useEffect, useCallback } from 'react';
@@ -172,7 +172,7 @@ export default function PartsNew() {
       {/* Toast */}
       {toastVisible && (
         <div style={{
-          position: 'fixed', bottom: 24, right: 24, background: '#08235d', color: '#fff',
+          position: 'fixed', bottom: 24, right: 24, background: '#033280', color: '#fff',
           padding: '10px 18px', borderRadius: 8, fontSize: 13, fontWeight: 500,
           zIndex: 9999, boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
         }}>

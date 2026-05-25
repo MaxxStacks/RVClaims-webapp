@@ -1,4 +1,4 @@
-// client/src/pages/FinancingDetail.tsx — Financing Application Detail
+﻿// client/src/pages/FinancingDetail.tsx — Financing Application Detail
 // Role-aware:
 //   operator_admin  — full detail + lender submissions + approve/update status + add submissions
 //   operator_staff  — full detail + lender submissions (read-only)
@@ -352,7 +352,7 @@ export default function FinancingDetail() {
       <div className="page active">
         {toastVisible && (
           <div style={{
-            position: 'fixed', bottom: 24, right: 24, background: '#08235d', color: '#fff',
+            position: 'fixed', bottom: 24, right: 24, background: '#033280', color: '#fff',
             padding: '10px 18px', borderRadius: 8, fontSize: 13, fontWeight: 500,
             zIndex: 9999, boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
           }}>
@@ -395,19 +395,19 @@ export default function FinancingDetail() {
                   {terms.approvedAmount && (
                     <div className="sc">
                       <div className="sc-l" style={{ marginBottom: 4 }}>Approved Amount</div>
-                      <div style={{ fontWeight: 700, fontSize: 20, color: '#08235d' }}>{fmtCurrency(terms.approvedAmount)}</div>
+                      <div style={{ fontWeight: 700, fontSize: 20, color: '#033280' }}>{fmtCurrency(terms.approvedAmount)}</div>
                     </div>
                   )}
                   {terms.approvedRate && (
                     <div className="sc">
                       <div className="sc-l" style={{ marginBottom: 4 }}>Interest Rate</div>
-                      <div style={{ fontWeight: 700, fontSize: 20, color: '#08235d' }}>{terms.approvedRate}%</div>
+                      <div style={{ fontWeight: 700, fontSize: 20, color: '#033280' }}>{terms.approvedRate}%</div>
                     </div>
                   )}
                   {terms.approvedTermMonths && (
                     <div className="sc">
                       <div className="sc-l" style={{ marginBottom: 4 }}>Term</div>
-                      <div style={{ fontWeight: 700, fontSize: 20, color: '#08235d' }}>{terms.approvedTermMonths} months</div>
+                      <div style={{ fontWeight: 700, fontSize: 20, color: '#033280' }}>{terms.approvedTermMonths} months</div>
                     </div>
                   )}
                 </div>
@@ -440,7 +440,7 @@ export default function FinancingDetail() {
       {/* Toast */}
       {toastVisible && (
         <div style={{
-          position: 'fixed', bottom: 24, right: 24, background: '#08235d', color: '#fff',
+          position: 'fixed', bottom: 24, right: 24, background: '#033280', color: '#fff',
           padding: '10px 18px', borderRadius: 8, fontSize: 13, fontWeight: 500,
           zIndex: 9999, boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
         }}>
@@ -522,7 +522,7 @@ export default function FinancingDetail() {
                           No lender submissions yet.
                           {isOperatorAdmin && (
                             <span
-                              style={{ marginLeft: 8, color: '#08235d', cursor: 'pointer', textDecoration: 'underline' }}
+                              style={{ marginLeft: 8, color: '#033280', cursor: 'pointer', textDecoration: 'underline' }}
                               onClick={() => setShowSubForm(true)}
                             >
                               Add first lender
@@ -629,7 +629,7 @@ export default function FinancingDetail() {
                   ].map(item => (
                     <div key={item.label} className="sc">
                       <div className="sc-l" style={{ marginBottom: 4 }}>{item.label}</div>
-                      <div style={{ fontWeight: 700, fontSize: 16, color: '#08235d' }}>{item.value}</div>
+                      <div style={{ fontWeight: 700, fontSize: 16, color: '#033280' }}>{item.value}</div>
                     </div>
                   ))}
                 </div>

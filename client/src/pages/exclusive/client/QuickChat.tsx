@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+﻿import { useState, useEffect, useRef, useCallback } from 'react';
 import { useLocation } from 'wouter';
 import { apiFetch } from '@/lib/api';
 import { useAuth } from '@/hooks/use-auth';
@@ -117,7 +117,7 @@ export default function QuickChat() {
             )}
             {!dataError && messages.length === 0 && (
               <div className="comm-msg">
-                <div className="comm-avatar dl" style={{background: '#08235d', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, width: 32, height: 32, borderRadius: '50%', flexShrink: 0}}>
+                <div className="comm-avatar dl" style={{background: '#033280', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, width: 32, height: 32, borderRadius: '50%', flexShrink: 0}}>
                   {dealershipName.slice(0, 2).toUpperCase()}
                 </div>
                 <div className="comm-content">
@@ -135,14 +135,14 @@ export default function QuickChat() {
                 <div key={msg.id} className="comm-msg" style={{flexDirection: mine ? 'row-reverse' : 'row'}}>
                   <div
                     className="comm-avatar"
-                    style={{background: mine ? '#6b7280' : '#08235d', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, width: 32, height: 32, borderRadius: '50%', flexShrink: 0}}
+                    style={{background: mine ? '#6b7280' : '#033280', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, width: 32, height: 32, borderRadius: '50%', flexShrink: 0}}
                   >
                     {mine ? (user?.firstName?.[0] || 'M') : dealershipName.slice(0, 2).toUpperCase()}
                   </div>
                   <div className="comm-content" style={{alignItems: mine ? 'flex-end' : 'flex-start'}}>
                     <div className="comm-name">{mine ? 'You' : dealershipName}</div>
                     <div className="comm-text" style={{
-                      background: mine ? '#08235d' : '#f0f4ff',
+                      background: mine ? '#033280' : '#f0f4ff',
                       color: mine ? '#fff' : '#1a1a1a',
                       borderRadius: mine ? '12px 12px 2px 12px' : '12px 12px 12px 2px',
                       padding: '10px 14px',

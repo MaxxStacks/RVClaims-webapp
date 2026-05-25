@@ -1,4 +1,4 @@
-// client/src/pages/FAndIDetail.tsx — F&I Deal Detail
+﻿// client/src/pages/FAndIDetail.tsx — F&I Deal Detail
 // Role-aware: operator_admin (full actions), operator_staff (view + update notes),
 //             dealer_owner (view + status transitions), dealer_staff (view only),
 //             financial_manager (view only)
@@ -271,7 +271,7 @@ export default function FAndIDetail() {
       {/* Toast */}
       {toastVisible && (
         <div style={{
-          position: 'fixed', bottom: 24, right: 24, background: '#08235d', color: '#fff',
+          position: 'fixed', bottom: 24, right: 24, background: '#033280', color: '#fff',
           padding: '10px 18px', borderRadius: 8, fontSize: 13, fontWeight: 500,
           zIndex: 9999, boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
         }}>
@@ -359,7 +359,7 @@ export default function FAndIDetail() {
               <div style={{ padding: '16px 20px' }}>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
                   <div style={{ textAlign: 'center' }}>
-                    <div style={{ fontSize: 28, fontWeight: 700, color: '#08235d' }}>{deal.productsOffered}</div>
+                    <div style={{ fontSize: 28, fontWeight: 700, color: '#033280' }}>{deal.productsOffered}</div>
                     <div style={{ fontSize: 11, color: '#888', marginTop: 4 }}>Products Offered</div>
                   </div>
                   <div style={{ textAlign: 'center' }}>
@@ -471,7 +471,7 @@ export default function FAndIDetail() {
           onClick={e => { if (e.target === e.currentTarget) { setShowPresenterModal(false); setPresenterSession(null); } }}
         >
           <div style={{ background: '#fff', borderRadius: 16, width: '100%', maxWidth: 500, boxShadow: '0 20px 60px rgba(0,0,0,0.2)', overflow: 'hidden' }}>
-            <div style={{ padding: '18px 24px', borderBottom: '1px solid #f0f0f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#08235d' }}>
+            <div style={{ padding: '18px 24px', borderBottom: '1px solid #f0f0f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#033280' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2">
                   <polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
@@ -504,10 +504,10 @@ export default function FAndIDetail() {
                                   return next;
                                 });
                               }}
-                              style={{ width: 15, height: 15, accentColor: '#08235d' }}
+                              style={{ width: 15, height: 15, accentColor: '#033280' }}
                             />
                             <span style={{ flex: 1, fontSize: 13 }}>{p.name}</span>
-                            {p.price && <span style={{ fontSize: 12, fontWeight: 600, color: '#08235d' }}>${parseFloat(p.price).toLocaleString('en-CA')}</span>}
+                            {p.price && <span style={{ fontSize: 12, fontWeight: 600, color: '#033280' }}>${parseFloat(p.price).toLocaleString('en-CA')}</span>}
                           </label>
                         ))}
                         {presenterProducts.length === 0 && (

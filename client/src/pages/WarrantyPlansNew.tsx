@@ -1,4 +1,4 @@
-// client/src/pages/WarrantyPlansNew.tsx — Add / Sell Warranty Plan (operator_admin only)
+﻿// client/src/pages/WarrantyPlansNew.tsx — Add / Sell Warranty Plan (operator_admin only)
 
 import { useState, useEffect } from 'react';
 import { useLocation } from 'wouter';
@@ -113,7 +113,7 @@ export default function WarrantyPlansNew() {
     <div className="page active">
       {/* Toast */}
       {toastVisible && (
-        <div style={{ position: 'fixed', bottom: 24, right: 24, background: '#08235d', color: '#fff', padding: '10px 18px', borderRadius: 8, fontSize: 13, fontWeight: 500, zIndex: 9999, boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}>
+        <div style={{ position: 'fixed', bottom: 24, right: 24, background: '#033280', color: '#fff', padding: '10px 18px', borderRadius: 8, fontSize: 13, fontWeight: 500, zIndex: 9999, boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}>
           {toastMsg}
         </div>
       )}

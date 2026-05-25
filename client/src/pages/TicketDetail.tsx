@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+﻿import { useState, useEffect, useCallback } from 'react';
 import { useLocation, useParams } from 'wouter';
 import { apiFetch } from '@/lib/api';
 import { useAuth } from '@/hooks/use-auth';
@@ -203,7 +203,7 @@ export default function TicketDetail() {
               const isCustomer = isCustomerMessage(msg);
               return (
                 <div key={msg.id} className={`comm-msg${msg.isInternal ? ' internal-note' : ''}`} style={{background: msg.isInternal ? '#fffbeb' : isCustomer ? '#fff' : '#f0fdf4'}}>
-                  <div className="comm-avatar" style={{background: isCustomer ? '#6b7280' : '#08235d', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, width: 32, height: 32, borderRadius: '50%', flexShrink: 0}}>
+                  <div className="comm-avatar" style={{background: isCustomer ? '#6b7280' : '#033280', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, width: 32, height: 32, borderRadius: '50%', flexShrink: 0}}>
                     {getAuthorInitials(msg)}
                   </div>
                   <div className="comm-content">

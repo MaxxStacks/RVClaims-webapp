@@ -1,4 +1,4 @@
-// client/src/pages/FAndI.tsx — F&I Products & Deals
+﻿// client/src/pages/FAndI.tsx — F&I Products & Deals
 // Role-aware: operator_admin (full CRUD), operator_staff (view),
 //             dealer_owner (view + create deal), dealer_staff (view),
 //             financial_manager (view + commission summary)
@@ -355,7 +355,7 @@ export default function FAndI() {
       {/* Toast */}
       {toastVisible && (
         <div style={{
-          position: 'fixed', bottom: 24, right: 24, background: '#08235d', color: '#fff',
+          position: 'fixed', bottom: 24, right: 24, background: '#033280', color: '#fff',
           padding: '10px 18px', borderRadius: 8, fontSize: 13, fontWeight: 500,
           zIndex: 9999, boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
         }}>
@@ -409,7 +409,7 @@ export default function FAndI() {
 
       {/* Inline product creation form (operator_admin) */}
       {isOperatorAdmin && showProductForm && (
-        <div className="pn" style={{ marginBottom: 16, borderLeft: '3px solid #08235d' }}>
+        <div className="pn" style={{ marginBottom: 16, borderLeft: '3px solid #033280' }}>
           <div className="pn-h" style={{ borderBottom: '1px solid #f0f0f0', paddingBottom: 12, marginBottom: 16 }}>
             <span className="pn-t">New F&amp;I Product</span>
           </div>
@@ -459,8 +459,8 @@ export default function FAndI() {
             style={{
               padding: '10px 20px', border: 'none', background: 'none',
               fontFamily: 'inherit', fontSize: 13, fontWeight: activeTab === tab.id ? 600 : 400,
-              color: activeTab === tab.id ? '#08235d' : '#888',
-              borderBottom: activeTab === tab.id ? '2px solid #08235d' : '2px solid transparent',
+              color: activeTab === tab.id ? '#033280' : '#888',
+              borderBottom: activeTab === tab.id ? '2px solid #033280' : '2px solid transparent',
               marginBottom: -2, cursor: 'pointer',
             }}
           >
@@ -519,7 +519,7 @@ export default function FAndI() {
                   {p.description && (
                     <div style={{ fontSize: 12, color: '#666', lineHeight: 1.5, marginBottom: 12 }}>{p.description}</div>
                   )}
-                  <div style={{ fontSize: 18, fontWeight: 700, color: '#08235d', marginBottom: 4 }}>
+                  <div style={{ fontSize: 18, fontWeight: 700, color: '#033280', marginBottom: 4 }}>
                     {p.price ? `$${parseFloat(p.price).toLocaleString('en-CA')}` : '—'}
                     <span style={{ fontSize: 11, fontWeight: 400, color: '#888', marginLeft: 4 }}>
                       /{p.billingFrequency.replace('_', ' ')}
@@ -726,7 +726,7 @@ export default function FAndI() {
         >
           <div style={{ background: '#fff', borderRadius: 16, width: '100%', maxWidth: 560, boxShadow: '0 20px 60px rgba(0,0,0,0.2)', overflow: 'hidden' }}>
             {/* Modal header */}
-            <div style={{ padding: '18px 24px', borderBottom: '1px solid #f0f0f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#08235d' }}>
+            <div style={{ padding: '18px 24px', borderBottom: '1px solid #f0f0f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#033280' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2">
                   <polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
@@ -774,11 +774,11 @@ export default function FAndI() {
                                   return next;
                                 });
                               }}
-                              style={{ width: 16, height: 16, accentColor: '#08235d', flexShrink: 0 }}
+                              style={{ width: 16, height: 16, accentColor: '#033280', flexShrink: 0 }}
                             />
                             <div style={{ flex: 1, minWidth: 0 }}>
                               <div style={{ fontSize: 13, fontWeight: 600 }}>{p.name}</div>
-                              {p.price && <div style={{ fontSize: 12, color: '#08235d', fontWeight: 600 }}>${parseFloat(p.price).toLocaleString('en-CA')}</div>}
+                              {p.price && <div style={{ fontSize: 12, color: '#033280', fontWeight: 600 }}>${parseFloat(p.price).toLocaleString('en-CA')}</div>}
                             </div>
                           </label>
                         ))}

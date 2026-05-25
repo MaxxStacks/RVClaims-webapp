@@ -1,4 +1,4 @@
-// DispatchBoard — Technician dispatch scheduler
+﻿// DispatchBoard — Technician dispatch scheduler
 // Drag-to-assign: canDrag prop (dealer_owner, shop_manager only).
 // Notes: canEditNotes prop controls write access; all roles can read notes.
 import React, { useState } from "react";
@@ -256,7 +256,7 @@ export default function DispatchBoard({ canDrag = false, canEditNotes = false }:
                   }}
                 >
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
-                    <span style={{ fontSize: 12, fontWeight: 700, color: "#08235d" }}>{w.id}</span>
+                    <span style={{ fontSize: 12, fontWeight: 700, color: "#033280" }}>{w.id}</span>
                     <span style={{ fontSize: 10, fontWeight: 700, color: p.dot, background: p.bg, border: `1px solid ${p.border}`, borderRadius: 4, padding: "1px 5px" }}>{p.label}</span>
                   </div>
                   <div style={{ fontSize: 12, color: "#333", marginBottom: 2 }}>{w.unit}</div>
@@ -287,7 +287,7 @@ export default function DispatchBoard({ canDrag = false, canEditNotes = false }:
               <div style={{ padding: "10px 8px", fontSize: 11, color: "#888", fontWeight: 600, borderRight: "1px solid #e8e8e8" }}>TIME</div>
               {TECHS.map(t => (
                 <div key={t.id} style={{ padding: "8px 12px", borderRight: "1px solid #e8e8e8" }}>
-                  <div style={{ fontSize: 13, fontWeight: 700, color: "#08235d" }}>{t.name}</div>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: "#033280" }}>{t.name}</div>
                   <div style={{ fontSize: 11, color: "#888" }}>{t.specialty}</div>
                 </div>
               ))}
@@ -347,7 +347,7 @@ export default function DispatchBoard({ canDrag = false, canEditNotes = false }:
                           }}
                         >
                           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 2 }}>
-                            <span style={{ fontSize: 11, fontWeight: 700, color: "#08235d" }}>{wo.id}</span>
+                            <span style={{ fontSize: 11, fontWeight: 700, color: "#033280" }}>{wo.id}</span>
                             <span style={{ fontSize: 9, fontWeight: 700, color: p!.dot, background: "white", border: `1px solid ${p!.border}`, borderRadius: 3, padding: "0 4px" }}>{p!.label}</span>
                           </div>
                           <div style={{ fontSize: 11, color: "#555", lineHeight: 1.3, marginBottom: 3 }}>{wo.desc}</div>

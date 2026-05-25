@@ -1,4 +1,4 @@
-// client/src/pages/PartsDetail.tsx — Parts Order Detail (Module 9)
+﻿// client/src/pages/PartsDetail.tsx — Parts Order Detail (Module 9)
 // Operators: full status + tracking update
 // parts_dept / dealer_owner: view + mark received
 // dealer_staff / service_manager / shop_manager / client: read-only
@@ -217,7 +217,7 @@ export default function PartsDetail() {
       {/* Toast */}
       {toastVisible && (
         <div style={{
-          position: 'fixed', bottom: 24, right: 24, background: '#08235d', color: '#fff',
+          position: 'fixed', bottom: 24, right: 24, background: '#033280', color: '#fff',
           padding: '10px 18px', borderRadius: 8, fontSize: 13, fontWeight: 500,
           zIndex: 9999, boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
         }}>
@@ -329,7 +329,7 @@ export default function PartsDetail() {
                   <tfoot>
                     <tr>
                       <td colSpan={4} style={{ textAlign: 'right', fontWeight: 600, padding: '10px 16px', fontSize: 13 }}>Subtotal</td>
-                      <td style={{ textAlign: 'right', fontWeight: 700, padding: '10px 16px', fontSize: 14, color: '#08235d' }}>
+                      <td style={{ textAlign: 'right', fontWeight: 700, padding: '10px 16px', fontSize: 14, color: '#033280' }}>
                         ${subtotal.toFixed(2)}
                       </td>
                     </tr>

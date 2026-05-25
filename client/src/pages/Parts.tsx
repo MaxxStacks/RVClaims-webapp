@@ -1,4 +1,4 @@
-// client/src/pages/Parts.tsx — Parts & Accessories (Module 9)
+﻿// client/src/pages/Parts.tsx — Parts & Accessories (Module 9)
 // Role-aware: operator_admin + operator_staff (all orders, full control)
 //             dealer_owner + dealer_staff (own dealership orders, create)
 //             parts_dept / shop_manager / service_manager (own dealership, scoped)
@@ -207,7 +207,7 @@ export default function Parts() {
       {/* Toast */}
       {toastVisible && (
         <div style={{
-          position: 'fixed', bottom: 24, right: 24, background: '#08235d', color: '#fff',
+          position: 'fixed', bottom: 24, right: 24, background: '#033280', color: '#fff',
           padding: '10px 18px', borderRadius: 8, fontSize: 13, fontWeight: 500,
           zIndex: 9999, boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
         }}>

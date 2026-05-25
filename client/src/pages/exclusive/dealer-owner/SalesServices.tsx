@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { useLocation } from 'wouter';
 
 export default function SalesServices() {
@@ -33,7 +33,7 @@ export default function SalesServices() {
         <div style={{padding: 20, display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 16}}>
           {products.map(p => (
             <div key={p.name} className="pn" style={{padding: 20, textAlign: 'center', cursor: 'pointer'}} onClick={() => navigate(p.nav)}>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#08235d" strokeWidth="1.5" style={{margin: '0 auto 12px'}}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#033280" strokeWidth="1.5" style={{margin: '0 auto 12px'}}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
               <div style={{fontWeight: 600, fontSize: 14, marginBottom: 4}}>{p.name}</div>
               <div style={{fontSize: 12, color: '#888'}}>{p.price}</div>
             </div>

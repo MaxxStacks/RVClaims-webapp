@@ -1,4 +1,4 @@
-// client/src/pages/FAndINew.tsx — Create new F&I Deal
+﻿// client/src/pages/FAndINew.tsx — Create new F&I Deal
 // Access: dealer_owner + operator_admin only.
 // dealer_staff / operator_staff / financial_manager → Access Denied.
 
@@ -155,7 +155,7 @@ export default function FAndINew() {
     <div className="page active">
       {toastVisible && (
         <div style={{
-          position: 'fixed', bottom: 24, right: 24, background: '#08235d', color: '#fff',
+          position: 'fixed', bottom: 24, right: 24, background: '#033280', color: '#fff',
           padding: '10px 18px', borderRadius: 8, fontSize: 13, fontWeight: 500,
           zIndex: 9999, boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
         }}>
@@ -257,7 +257,7 @@ export default function FAndINew() {
                   >
                     {p.name}
                     {p.price && (
-                      <span style={{ color: '#08235d', fontWeight: 600, marginLeft: 6 }}>
+                      <span style={{ color: '#033280', fontWeight: 600, marginLeft: 6 }}>
                         ${parseFloat(p.price).toLocaleString('en-CA')}
                       </span>
                     )}

@@ -1,4 +1,4 @@
-// client/src/pages/exclusive/client/FIOffers.tsx — Protection Plans (client/customer view)
+﻿// client/src/pages/exclusive/client/FIOffers.tsx — Protection Plans (client/customer view)
 // Uses "Protection Plans" language — NOT "F&I".
 // Fetches F&I products from the operator catalog + any deals offered to this customer.
 // Clients can view available plans and see ACTIVE ribbon on accepted/active products.
@@ -83,7 +83,7 @@ export default function FIOffers() {
     <div className="page active">
       {toastVisible && (
         <div style={{
-          position: 'fixed', bottom: 24, right: 24, background: '#08235d', color: '#fff',
+          position: 'fixed', bottom: 24, right: 24, background: '#033280', color: '#fff',
           padding: '10px 18px', borderRadius: 8, fontSize: 13, fontWeight: 500,
           zIndex: 9999, boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
         }}>
@@ -100,7 +100,7 @@ export default function FIOffers() {
       {recommended && (
         <div className="pn" style={{ padding: 20, background: '#f0f4ff', marginBottom: 20 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#08235d" strokeWidth="2">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#033280" strokeWidth="2">
               <circle cx="12" cy="12" r="10"/>
               <path d="M12 8v4l3 3"/>
             </svg>
@@ -140,7 +140,7 @@ export default function FIOffers() {
                 className="pn"
                 style={{
                   padding: 20,
-                  border: isRecommended ? '2px solid #08235d' : '1px solid #e8e8e8',
+                  border: isRecommended ? '2px solid #033280' : '1px solid #e8e8e8',
                   position: 'relative',
                   transition: 'box-shadow 0.2s',
                 }}
@@ -149,7 +149,7 @@ export default function FIOffers() {
                 {isRecommended && (
                   <div style={{
                     position: 'absolute', top: 12, right: 12,
-                    background: '#08235d', color: 'white',
+                    background: '#033280', color: 'white',
                     fontSize: 10, fontWeight: 600, padding: '2px 8px', borderRadius: 4,
                   }}>
                     Recommended
@@ -169,7 +169,7 @@ export default function FIOffers() {
                 )}
 
                 {/* Price */}
-                <div style={{ fontSize: 20, fontWeight: 700, color: '#08235d', marginBottom: 4 }}>
+                <div style={{ fontSize: 20, fontWeight: 700, color: '#033280', marginBottom: 4 }}>
                   {p.price ? `$${parseFloat(p.price).toLocaleString('en-CA')}` : 'Contact dealer for pricing'}
                   {p.price && (
                     <span style={{ fontSize: 12, fontWeight: 400, color: '#888', marginLeft: 4 }}>

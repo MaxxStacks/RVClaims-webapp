@@ -1,4 +1,4 @@
-// client/src/pages/Financing.tsx — Financing Services list page
+﻿// client/src/pages/Financing.tsx — Financing Services list page
 // Role-aware:
 //   operator_admin  — full lender management + all applications + reports
 //   operator_staff  — read-only lenders + all applications
@@ -299,7 +299,7 @@ export default function Financing() {
       {/* Toast */}
       {toastVisible && (
         <div style={{
-          position: 'fixed', bottom: 24, right: 24, background: '#08235d', color: '#fff',
+          position: 'fixed', bottom: 24, right: 24, background: '#033280', color: '#fff',
           padding: '10px 18px', borderRadius: 8, fontSize: 13, fontWeight: 500,
           zIndex: 9999, boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
         }}>
@@ -353,7 +353,7 @@ export default function Financing() {
 
       {/* Inline add-lender form (operator_admin) */}
       {isOperatorAdmin && showLenderForm && (
-        <div className="pn" style={{ marginBottom: 16, borderLeft: '3px solid #08235d' }}>
+        <div className="pn" style={{ marginBottom: 16, borderLeft: '3px solid #033280' }}>
           <div className="pn-h" style={{ borderBottom: '1px solid #f0f0f0', paddingBottom: 12, marginBottom: 16 }}>
             <span className="pn-t">New Lender Partner</span>
           </div>
@@ -405,8 +405,8 @@ export default function Financing() {
             style={{
               padding: '10px 20px', border: 'none', background: 'none',
               fontFamily: 'inherit', fontSize: 13, fontWeight: activeTab === tab.id ? 600 : 400,
-              color: activeTab === tab.id ? '#08235d' : '#888',
-              borderBottom: activeTab === tab.id ? '2px solid #08235d' : '2px solid transparent',
+              color: activeTab === tab.id ? '#033280' : '#888',
+              borderBottom: activeTab === tab.id ? '2px solid #033280' : '2px solid transparent',
               marginBottom: -2, cursor: 'pointer',
             }}
           >

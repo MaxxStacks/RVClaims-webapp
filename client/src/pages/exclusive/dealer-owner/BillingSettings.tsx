@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 
 export default function BillingSettings() {
   const [toast, setToast] = useState('');
@@ -6,9 +6,9 @@ export default function BillingSettings() {
   return (
     <div className="page active">
       <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginBottom: 24}}>
-        <div className="pn" style={{padding: 24, border: '2px solid #08235d'}}>
+        <div className="pn" style={{padding: 24, border: '2px solid #033280'}}>
           <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 16}}>
-            <div><div style={{fontSize: 11, color: '#888', marginBottom: 4, textTransform: 'uppercase', letterSpacing: 1}}>Current Plan</div><div style={{fontSize: 20, fontWeight: 700, color: '#08235d'}}>Plan A — Subscription</div></div>
+            <div><div style={{fontSize: 11, color: '#888', marginBottom: 4, textTransform: 'uppercase', letterSpacing: 1}}>Current Plan</div><div style={{fontSize: 20, fontWeight: 700, color: '#033280'}}>Plan A — Subscription</div></div>
             <span className="bg active">Active</span>
           </div>
           <div style={{fontSize: 13, color: '#555', lineHeight: 1.6, marginBottom: 20}}>Monthly recurring. Up to 50 claims/month, dedicated operator, priority support.</div>
@@ -33,7 +33,7 @@ export default function BillingSettings() {
       <div className="pn">
         <div className="pn-h"><span className="pn-t">Payment Method</span></div>
         <div style={{padding: 20, display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap'}}>
-          <div style={{padding: '10px 16px', border: '2px solid #08235d', borderRadius: 8, display: 'flex', alignItems: 'center', gap: 8, fontSize: 13}}><svg width="20" height="14" viewBox="0 0 32 22" fill="none"><rect width="32" height="22" rx="3" fill="#1a1f71"/><rect y="5" width="32" height="6" fill="#f7a600"/></svg>Visa ending 4242 &nbsp;<span style={{color: '#22c55e', fontSize: 11, fontWeight: 600}}>Primary</span></div>
+          <div style={{padding: '10px 16px', border: '2px solid #033280', borderRadius: 8, display: 'flex', alignItems: 'center', gap: 8, fontSize: 13}}><svg width="20" height="14" viewBox="0 0 32 22" fill="none"><rect width="32" height="22" rx="3" fill="#1a1f71"/><rect y="5" width="32" height="6" fill="#f7a600"/></svg>Visa ending 4242 &nbsp;<span style={{color: '#22c55e', fontSize: 11, fontWeight: 600}}>Primary</span></div>
           <button className="btn" style={{fontSize: 12}} onClick={() => showToast('Coming in v2.2')}>Update Card</button>
           <button className="btn" style={{fontSize: 12}} onClick={() => showToast('Interac e-Transfer setup coming in v2.2')}>Add Interac e-Transfer</button>
         </div>
