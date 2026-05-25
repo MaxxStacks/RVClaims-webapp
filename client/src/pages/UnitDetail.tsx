@@ -69,6 +69,11 @@ export default function UnitDetail() {
   const [docUploading, setDocUploading] = useState(false);
   const [docCategory, setDocCategory] = useState('other');
 
+  // AI Document Scanner (Documents tab)
+  const [scanningDoc, setScanningDoc] = useState(false);
+  const [scanDocResult, setScanDocResult] = useState<any | null>(null);
+  const [scanDocFile, setScanDocFile] = useState<File | null>(null);
+
   // Photo upload
   const [photoUploading, setPhotoUploading] = useState(false);
   const [photoCategory, setPhotoCategory] = useState('general');
@@ -194,6 +199,83 @@ export default function UnitDetail() {
       showToast(`Failed to save: ${err?.message || 'Unknown error'}`);
     } finally {
       setEditSaving(false);
+    }
+  };
+
+  // ─── AI Scan for unit documents ───────────────────────────────────────────────
+  const handleScanDocForUnit = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !unitId) return;
+    e.target.value = '';
+    setScanningDoc(true);
+    setScanDocResult(null);
+    setScanDocFile(file);
+
+    const reader = new FileReader();
+    reader.onload = async (ev) => {
+      const dataUrl = ev.target?.result as string;
+      const base64 = dataUrl.split(',')[1];
+      try {
+        const result = await apiFetch<any>('/api/ai/scan-document', {
+          method: 'POST',
+          body: JSON.stringify({
+            fileBase64: base64,
+            mimeType: file.type || 'application/octet-stream',
+            filename: file.name,
+          }),
+        });
+        setScanDocResult(result.extracted || null);
+        const typeMap: Record<string, string> = {
+          warranty_cert: 'warranty_cert', ext_warranty: 'ext_warranty',
+          inspection: 'inspection', contract: 'contract',
+          invoice: 'invoice', report: 'report', manufacturer_letter: 'report', other: 'other',
+        };
+        if (result.extracted?.documentType) {
+          setDocCategory(typeMap[result.extracted.documentType] || 'other');
+        }
+      } catch (err: any) {
+        showToast(err?.message || 'Scan failed');
+        setScanDocFile(null);
+      } finally {
+        setScanningDoc(false);
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleUploadScannedDoc = async () => {
+    if (!scanDocFile || !unitId) return;
+    setDocUploading(true);
+    try {
+      const presignRes = await apiFetch<any>('/api/v6/uploads/presign', {
+        method: 'POST',
+        body: JSON.stringify({
+          scope: 'units', scopeId: unitId,
+          filename: scanDocFile.name,
+          contentType: scanDocFile.type || 'application/octet-stream',
+          photoType: docCategory,
+        }),
+      });
+      await fetch(presignRes.uploadUrl, {
+        method: 'PUT', body: scanDocFile,
+        headers: { 'Content-Type': scanDocFile.type || 'application/octet-stream' },
+      });
+      await apiFetch(`/api/v6/uploads/confirm/${presignRes.photoId}`, { method: 'POST' });
+      await apiFetch(`/api/v6/units/${unitId}/documents`, {
+        method: 'POST',
+        body: JSON.stringify({
+          name: scanDocFile.name, url: presignRes.publicUrl,
+          type: docCategory, sizeBytes: scanDocFile.size, mimeType: scanDocFile.type,
+        }),
+      });
+      showToast('Document scanned and uploaded');
+      setScanDocResult(null);
+      setScanDocFile(null);
+      loadDocuments();
+    } catch (err: any) {
+      showToast(`Upload failed: ${err?.message || 'Unknown error'}`);
+    } finally {
+      setDocUploading(false);
     }
   };
 
@@ -636,9 +718,70 @@ export default function UnitDetail() {
                     onChange={handleDocUpload}
                   />
                 </label>
+                <label className="btn btn-p btn-sm" style={{ cursor: scanningDoc ? 'wait' : 'pointer', display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 7h8M8 12h8M8 17h5"/>
+                  </svg>
+                  {scanningDoc ? 'Scanning…' : 'Scan & Upload'}
+                  <input
+                    type="file"
+                    accept="image/*,.pdf,.doc,.docx"
+                    style={{ display: 'none' }}
+                    disabled={scanningDoc || docUploading}
+                    onChange={handleScanDocForUnit}
+                  />
+                </label>
               </>
             )}
           </div>
+
+          {/* AI scan result preview */}
+          {scanDocResult && scanDocFile && (
+            <div style={{ padding: '12px 20px', background: '#f0f7ff', borderBottom: '1px solid #dde8f5' }}>
+              <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 6, color: '#1e40af' }}>
+                AI Scan: {scanDocFile.name}
+              </div>
+              <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', fontSize: 12, color: '#444', marginBottom: 12 }}>
+                <span><strong>Type:</strong> {scanDocResult.documentType?.replace(/_/g, ' ') || '—'}</span>
+                {scanDocResult.issueDate && <span><strong>Date:</strong> {scanDocResult.issueDate}</span>}
+                {scanDocResult.expiryDate && <span><strong>Expiry:</strong> {scanDocResult.expiryDate}</span>}
+                {scanDocResult.provider && <span><strong>Provider:</strong> {scanDocResult.provider}</span>}
+                {scanDocResult.totalAmount && <span><strong>Amount:</strong> {scanDocResult.totalAmount}</span>}
+                <span style={{ color: scanDocResult.confidence > 0.7 ? '#059669' : '#d97706' }}>
+                  {Math.round((scanDocResult.confidence || 0) * 100)}% confidence
+                </span>
+              </div>
+              <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                <span style={{ fontSize: 12, color: '#666' }}>Tag as:</span>
+                <select
+                  value={docCategory}
+                  onChange={e => setDocCategory(e.target.value)}
+                  style={{ padding: '4px 8px', border: '1px solid #e0e0e0', borderRadius: 6, fontSize: 12, fontFamily: 'inherit' }}
+                >
+                  <option value="warranty_cert">Warranty Certificate</option>
+                  <option value="contract">Contract</option>
+                  <option value="inspection">Inspection Report</option>
+                  <option value="ext_warranty">Ext. Warranty</option>
+                  <option value="invoice">Invoice</option>
+                  <option value="report">Report</option>
+                  <option value="other">Other</option>
+                </select>
+                <button
+                  className="btn btn-p btn-sm"
+                  onClick={handleUploadScannedDoc}
+                  disabled={docUploading}
+                >
+                  {docUploading ? 'Uploading…' : 'Upload & Tag'}
+                </button>
+                <button
+                  className="btn btn-o btn-sm"
+                  onClick={() => { setScanDocResult(null); setScanDocFile(null); }}
+                >
+                  Discard
+                </button>
+              </div>
+            </div>
+          )}
 
           {documents.length === 0 ? (
             <div style={{ padding: 32, textAlign: 'center', color: '#888', fontSize: 13 }}>{t('units.noDocuments')}</div>

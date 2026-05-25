@@ -76,6 +76,7 @@ const CustomerPortal = lazy(() => import("./portals/CustomerPortal"));
 const BidderPortal = lazy(() => import("./portals/BidderPortal"));
 const BidderPortalV6 = lazy(() => import("@/pages/BidderPortalV6"));
 const PortalSelectV6 = lazy(() => import("@/pages/PortalSelectV6"));
+const FiSessionPage = lazy(() => import("@/pages/FiSession"));
 
 // Session 3: 16-portal route sections
 import {
@@ -292,6 +293,7 @@ function Router() {
         <Route path="/system-status" component={SystemStatus} />
         <Route path="/dealer-integration" component={DealerIntegration} />
         <Route path="/expert-consultation" component={ExpertConsultation} />
+        <Route path="/fi-session/:sessionId" component={FiSessionPage} />
         <Route component={NotFound} />
       </Switch>
     </>

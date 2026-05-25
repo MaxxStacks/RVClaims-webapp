@@ -65,6 +65,15 @@ export default function FAndIDetail() {
   const [notesText, setNotesText]       = useState('');
   const [editingNotes, setEditingNotes] = useState(false);
 
+  // AI Presenter
+  const [showPresenterModal, setShowPresenterModal] = useState(false);
+  const [presenterEmail, setPresenterEmail] = useState('');
+  const [presenterProducts, setPresenterProducts] = useState<any[]>([]);
+  const [presenterSelectedIds, setPresenterSelectedIds] = useState<Set<string>>(new Set());
+  const [presenterLaunching, setPresenterLaunching] = useState(false);
+  const [presenterSession, setPresenterSession] = useState<{ sessionUrl: string } | null>(null);
+  const [presenterLinkCopied, setPresenterLinkCopied] = useState(false);
+
   // Products sold / revenue edit (operator_admin + dealer_owner)
   const [editingMetrics, setEditingMetrics]   = useState(false);
   const [editProductsSold, setEditProductsSold] = useState('');
@@ -98,6 +107,18 @@ export default function FAndIDetail() {
   }, [dealId]);
 
   useEffect(() => { loadDeal(); }, [loadDeal]);
+
+  // Load products when presenter modal opens
+  useEffect(() => {
+    if (!showPresenterModal) return;
+    apiFetch<any>('/api/fi/products')
+      .then(d => {
+        const prods = Array.isArray(d.products) ? d.products.filter((p: any) => p.isActive) : [];
+        setPresenterProducts(prods);
+        setPresenterSelectedIds(new Set(prods.map((p: any) => p.id)));
+      })
+      .catch(() => setPresenterProducts([]));
+  }, [showPresenterModal]);
 
   // ── Handlers ─────────────────────────────────────────────────────────────────
   const handleStatusUpdate = async (status: string) => {
@@ -185,6 +206,44 @@ export default function FAndIDetail() {
     );
   }
 
+  // ── AI Presenter launch ───────────────────────────────────────────────────────
+  const handleLaunchPresenter = async () => {
+    if (!deal) return;
+    if (!presenterEmail.trim()) { showToast('Customer email is required'); return; }
+    if (presenterSelectedIds.size === 0) { showToast('Select at least one product'); return; }
+    setPresenterLaunching(true);
+    try {
+      const selectedProducts = presenterProducts
+        .filter(p => presenterSelectedIds.has(p.id))
+        .map(p => ({
+          id: p.id, name: p.name,
+          description: p.description || '',
+          price: p.price || '0',
+          category: 'other', features: [], objectionHandlers: {},
+        }));
+      const body: Record<string, unknown> = {
+        customerName: deal.customerName,
+        customerEmail: presenterEmail.trim(),
+        products: selectedProducts,
+        dealershipId: deal.dealershipId,
+      };
+      if (deal.unitId) body.unitId = deal.unitId;
+      const data = await apiFetch<any>('/api/ai/fi-session', {
+        method: 'POST',
+        body: JSON.stringify(body),
+      });
+      if (data.success && data.session) {
+        setPresenterSession({ sessionUrl: data.session.sessionUrl });
+      } else {
+        showToast('Failed to create presenter session');
+      }
+    } catch (err: any) {
+      showToast(err?.message || 'Failed to launch presenter');
+    } finally {
+      setPresenterLaunching(false);
+    }
+  };
+
   // ── Status workflow buttons ───────────────────────────────────────────────────
   const nextStatusBtn = () => {
     if (!canEdit) return null;
@@ -241,7 +300,7 @@ export default function FAndIDetail() {
       </div>
 
       {/* Action buttons */}
-      <div style={{ display: 'flex', gap: 8, marginBottom: 20 }}>
+      <div style={{ display: 'flex', gap: 8, marginBottom: 20, flexWrap: 'wrap' }}>
         {nextStatusBtn()}
         {isOperatorAdmin && deal.status !== 'flagged' && (
           <button
@@ -250,6 +309,18 @@ export default function FAndIDetail() {
             disabled={statusSaving}
           >
             Reset to Flagged
+          </button>
+        )}
+        {canEdit && (
+          <button
+            className="btn btn-o btn-sm"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}
+            onClick={() => setShowPresenterModal(true)}
+          >
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+            </svg>
+            Send F&amp;I Presentation
           </button>
         )}
       </div>
@@ -392,6 +463,95 @@ export default function FAndIDetail() {
           </div>
         </div>
       </div>
+
+      {/* ── AI Presenter Modal ── */}
+      {showPresenterModal && (
+        <div
+          style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.45)', zIndex: 10000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }}
+          onClick={e => { if (e.target === e.currentTarget) { setShowPresenterModal(false); setPresenterSession(null); } }}
+        >
+          <div style={{ background: '#fff', borderRadius: 16, width: '100%', maxWidth: 500, boxShadow: '0 20px 60px rgba(0,0,0,0.2)', overflow: 'hidden' }}>
+            <div style={{ padding: '18px 24px', borderBottom: '1px solid #f0f0f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#08235d' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2">
+                  <polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+                </svg>
+                <span style={{ fontWeight: 700, fontSize: 15, color: '#fff' }}>Send F&I Presentation to {deal.customerName}</span>
+              </div>
+              <button onClick={() => { setShowPresenterModal(false); setPresenterSession(null); }} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.7)', fontSize: 22, cursor: 'pointer', lineHeight: 1 }}>×</button>
+            </div>
+
+            <div style={{ padding: 24 }}>
+              {!presenterSession ? (
+                <>
+                  <div className="form-grid">
+                    <div className="form-group full">
+                      <label>Customer Email *</label>
+                      <input type="email" value={presenterEmail} onChange={e => setPresenterEmail(e.target.value)} placeholder="customer@email.com" />
+                    </div>
+                    <div className="form-group full">
+                      <label>Products to Present * <span style={{ fontWeight: 400, color: '#888', fontSize: 11 }}>(all selected by default)</span></label>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 6, maxHeight: 180, overflowY: 'auto', padding: '4px 0' }}>
+                        {presenterProducts.map(p => (
+                          <label key={p.id} style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', padding: '6px 10px', borderRadius: 8, background: presenterSelectedIds.has(p.id) ? '#f0f4ff' : '#f9f9f9', transition: 'all 0.15s' }}>
+                            <input
+                              type="checkbox"
+                              checked={presenterSelectedIds.has(p.id)}
+                              onChange={e => {
+                                setPresenterSelectedIds(prev => {
+                                  const next = new Set(prev);
+                                  if (e.target.checked) next.add(p.id); else next.delete(p.id);
+                                  return next;
+                                });
+                              }}
+                              style={{ width: 15, height: 15, accentColor: '#08235d' }}
+                            />
+                            <span style={{ flex: 1, fontSize: 13 }}>{p.name}</span>
+                            {p.price && <span style={{ fontSize: 12, fontWeight: 600, color: '#08235d' }}>${parseFloat(p.price).toLocaleString('en-CA')}</span>}
+                          </label>
+                        ))}
+                        {presenterProducts.length === 0 && (
+                          <div style={{ fontSize: 13, color: '#888', padding: '8px 0' }}>Loading products…</div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="btn-bar" style={{ marginTop: 16 }}>
+                    <button className="btn btn-p" onClick={handleLaunchPresenter} disabled={presenterLaunching}>
+                      {presenterLaunching ? 'Generating…' : 'Generate Presenter Link'}
+                    </button>
+                    <button className="btn btn-o" onClick={() => setShowPresenterModal(false)}>Cancel</button>
+                  </div>
+                </>
+              ) : (
+                <div style={{ textAlign: 'center' }}>
+                  <div style={{ width: 56, height: 56, borderRadius: '50%', background: '#dcfce7', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 14px', fontSize: 26 }}>✓</div>
+                  <div style={{ fontSize: 15, fontWeight: 700, marginBottom: 6 }}>Link Ready!</div>
+                  <div style={{ fontSize: 13, color: '#666', marginBottom: 16 }}>Share this link with {deal.customerName}.</div>
+                  <div style={{ background: '#f8fafc', borderRadius: 8, padding: '10px 14px', marginBottom: 14, wordBreak: 'break-all', fontSize: 12, color: '#444', textAlign: 'left', border: '1px solid #e2e8f0' }}>
+                    {presenterSession.sessionUrl}
+                  </div>
+                  <div style={{ display: 'flex', gap: 8 }}>
+                    <button
+                      className="btn btn-p btn-sm"
+                      style={{ flex: 1 }}
+                      onClick={() => {
+                        navigator.clipboard.writeText(presenterSession.sessionUrl).then(() => {
+                          setPresenterLinkCopied(true);
+                          setTimeout(() => setPresenterLinkCopied(false), 2000);
+                        });
+                      }}
+                    >
+                      {presenterLinkCopied ? '✓ Copied!' : 'Copy Link'}
+                    </button>
+                    <button className="btn btn-o btn-sm" style={{ flex: 1 }} onClick={() => { setShowPresenterModal(false); setPresenterSession(null); }}>Done</button>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

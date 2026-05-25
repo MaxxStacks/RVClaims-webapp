@@ -16,7 +16,6 @@ const FILE_ICON = (mimeType?: string) => {
   const isExcel = mimeType?.includes('spreadsheet') || mimeType?.includes('excel');
   const isWord  = mimeType?.includes('word') || mimeType?.includes('document');
   const isPdf   = mimeType?.includes('pdf');
-  const isImage = mimeType?.includes('image');
   const color   = isPdf ? '#dc2626' : isExcel ? '#059669' : isWord ? '#2563eb' : '#6b7280';
   return (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2">
@@ -38,6 +37,17 @@ function fmtDate(d?: string | null) {
   return new Date(d).toLocaleDateString('en-CA', { month: 'short', day: 'numeric', year: 'numeric' });
 }
 
+const DOC_TYPE_LABELS: Record<string, string> = {
+  warranty_cert:       'Warranty Certificate',
+  ext_warranty:        'Extended Warranty',
+  inspection:          'Inspection Report',
+  contract:            'Contract',
+  invoice:             'Invoice',
+  report:              'Report',
+  manufacturer_letter: 'Manufacturer Letter',
+  other:               'Other',
+};
+
 export default function Documents() {
   const { user } = useAuth();
   const [docs, setDocs] = useState<any[]>([]);
@@ -46,6 +56,16 @@ export default function Documents() {
   const [activeTab, setActiveTab] = useState(0);
   const [toast, setToast] = useState('');
   const [downloading, setDownloading] = useState<string | null>(null);
+
+  // ── AI Scanner state ─────────────────────────────────────────────────────────
+  const [scanning, setScanning] = useState(false);
+  const [scanResult, setScanResult] = useState<any | null>(null);
+  const [scanFilename, setScanFilename] = useState('');
+  const [scanBase64, setScanBase64] = useState('');
+  const [scanMimeType, setScanMimeType] = useState('');
+  const [unitMatches, setUnitMatches] = useState<any[]>([]);
+  const [selectedUnitId, setSelectedUnitId] = useState('');
+  const [scanFiling, setScanFiling] = useState(false);
 
   const showToast = (msg: string) => { setToast(msg); setTimeout(() => setToast(''), 2800); };
 
@@ -76,6 +96,94 @@ export default function Documents() {
     }
   };
 
+  // ── AI Scan handler ──────────────────────────────────────────────────────────
+  const handleScanFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    e.target.value = '';
+    setScanning(true);
+    setScanResult(null);
+    setUnitMatches([]);
+    setSelectedUnitId('');
+
+    const reader = new FileReader();
+    reader.onload = async (ev) => {
+      const dataUrl = ev.target?.result as string;
+      const base64 = dataUrl.split(',')[1];
+      setScanFilename(file.name);
+      setScanBase64(base64);
+      setScanMimeType(file.type || 'application/octet-stream');
+
+      try {
+        const result = await apiFetch<any>('/api/ai/scan-document', {
+          method: 'POST',
+          body: JSON.stringify({
+            fileBase64: base64,
+            mimeType: file.type || 'application/octet-stream',
+            filename: file.name,
+          }),
+        });
+
+        setScanResult(result.extracted || null);
+
+        if (result.filing?.autoFiled && result.filing.unitId) {
+          showToast(`Auto-filed to unit (VIN: ${result.extracted?.vin})`);
+          setScanResult(null);
+          load();
+        } else if (result.extracted?.vin) {
+          try {
+            const units = await apiFetch<any>(`/api/v6/units?vin=${result.extracted.vin}&limit=5`);
+            setUnitMatches(Array.isArray(units.units) ? units.units : []);
+          } catch {
+            setUnitMatches([]);
+          }
+        }
+      } catch (err: any) {
+        showToast(err?.message || 'Scan failed — check file format');
+        setScanResult(null);
+      } finally {
+        setScanning(false);
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleFileDocument = async () => {
+    if (!selectedUnitId || !scanFilename) return;
+    setScanFiling(true);
+    try {
+      await apiFetch(`/api/v6/units/${selectedUnitId}/documents`, {
+        method: 'POST',
+        body: JSON.stringify({
+          name: scanFilename,
+          url: '',
+          type: scanResult?.documentType || 'other',
+          sizeBytes: null,
+          mimeType: scanMimeType,
+        }),
+      });
+      showToast('Document filed to unit');
+      setScanResult(null);
+      setScanFilename('');
+      setScanBase64('');
+      setUnitMatches([]);
+      setSelectedUnitId('');
+      load();
+    } catch (err: any) {
+      showToast(err?.message || 'Failed to file document');
+    } finally {
+      setScanFiling(false);
+    }
+  };
+
+  const dismissScan = () => {
+    setScanResult(null);
+    setScanFilename('');
+    setScanBase64('');
+    setUnitMatches([]);
+    setSelectedUnitId('');
+  };
+
   const tabFilter = TABS[activeTab];
   const displayed = tabFilter === 'All'
     ? docs
@@ -83,7 +191,8 @@ export default function Documents() {
 
   return (
     <div className="page active">
-      <div style={{ marginBottom: 16, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+      {/* Tab bar + Scan button */}
+      <div style={{ marginBottom: 16, display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
         {TABS.map((t, i) => (
           <button
             key={t}
@@ -93,7 +202,140 @@ export default function Documents() {
             {t}
           </button>
         ))}
+        <div style={{ flex: 1 }} />
+        <label
+          className="btn btn-p btn-sm"
+          style={{ cursor: scanning ? 'wait' : 'pointer', display: 'inline-flex', alignItems: 'center', gap: 6 }}
+        >
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <rect x="3" y="3" width="18" height="18" rx="2"/>
+            <path d="M8 7h8M8 12h8M8 17h5"/>
+          </svg>
+          {scanning ? 'Scanning…' : 'Scan Document'}
+          <input
+            type="file"
+            accept="image/*,.pdf,.doc,.docx"
+            style={{ display: 'none' }}
+            disabled={scanning}
+            onChange={handleScanFile}
+          />
+        </label>
       </div>
+
+      {/* AI Scan results panel */}
+      {scanResult && (
+        <div className="pn" style={{ marginBottom: 16, borderLeft: '3px solid #2563eb' }}>
+          <div className="pn-h" style={{ borderBottom: '1px solid #f0f0f0', paddingBottom: 12, marginBottom: 16 }}>
+            <span className="pn-t" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="2">
+                <circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/>
+              </svg>
+              AI Scan Results — {scanFilename}
+            </span>
+            <span className="pn-a" onClick={dismissScan}>Dismiss</span>
+          </div>
+
+          <div style={{ padding: '0 20px 16px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+            <div>
+              <div style={{ fontSize: 11, color: '#888', marginBottom: 4, fontWeight: 600, textTransform: 'uppercase' as const, letterSpacing: '0.04em' }}>Document Type</div>
+              <div style={{ fontSize: 13, fontWeight: 600 }}>
+                {DOC_TYPE_LABELS[scanResult.documentType] || scanResult.documentType || '—'}
+                <span style={{ marginLeft: 8, fontWeight: 400, fontSize: 11, color: scanResult.confidence > 0.7 ? '#059669' : '#d97706' }}>
+                  {Math.round((scanResult.confidence || 0) * 100)}% confidence
+                </span>
+              </div>
+            </div>
+
+            {scanResult.vin && (
+              <div>
+                <div style={{ fontSize: 11, color: '#888', marginBottom: 4, fontWeight: 600, textTransform: 'uppercase' as const, letterSpacing: '0.04em' }}>VIN Detected</div>
+                <div style={{ fontSize: 13, fontWeight: 600, fontFamily: 'monospace' }}>
+                  {scanResult.vin}
+                  <span style={{ marginLeft: 8, fontWeight: 400, fontSize: 11, color: '#2563eb' }}>
+                    {Math.round((scanResult.vinConfidence || 0) * 100)}% conf.
+                  </span>
+                </div>
+              </div>
+            )}
+
+            {scanResult.issueDate && (
+              <div>
+                <div style={{ fontSize: 11, color: '#888', marginBottom: 4, fontWeight: 600, textTransform: 'uppercase' as const, letterSpacing: '0.04em' }}>Issue Date</div>
+                <div style={{ fontSize: 13 }}>{scanResult.issueDate}</div>
+              </div>
+            )}
+            {scanResult.expiryDate && (
+              <div>
+                <div style={{ fontSize: 11, color: '#888', marginBottom: 4, fontWeight: 600, textTransform: 'uppercase' as const, letterSpacing: '0.04em' }}>Expiry Date</div>
+                <div style={{ fontSize: 13 }}>{scanResult.expiryDate}</div>
+              </div>
+            )}
+            {scanResult.provider && (
+              <div>
+                <div style={{ fontSize: 11, color: '#888', marginBottom: 4, fontWeight: 600, textTransform: 'uppercase' as const, letterSpacing: '0.04em' }}>Provider</div>
+                <div style={{ fontSize: 13 }}>{scanResult.provider}</div>
+              </div>
+            )}
+            {scanResult.totalAmount && (
+              <div>
+                <div style={{ fontSize: 11, color: '#888', marginBottom: 4, fontWeight: 600, textTransform: 'uppercase' as const, letterSpacing: '0.04em' }}>Total Amount</div>
+                <div style={{ fontSize: 13, fontWeight: 600 }}>{scanResult.currency ? `${scanResult.currency} ` : ''}{scanResult.totalAmount}</div>
+              </div>
+            )}
+            {scanResult.approvalStatus && (
+              <div>
+                <div style={{ fontSize: 11, color: '#888', marginBottom: 4, fontWeight: 600, textTransform: 'uppercase' as const, letterSpacing: '0.04em' }}>Approval Status</div>
+                <span className={`bg ${scanResult.approvalStatus === 'approved' ? 'ok' : scanResult.approvalStatus === 'denied' ? 'denied' : 'ow'}`} style={{ fontSize: 11 }}>
+                  {scanResult.approvalStatus}
+                </span>
+              </div>
+            )}
+            {scanResult.summary && (
+              <div style={{ gridColumn: '1 / -1' }}>
+                <div style={{ fontSize: 11, color: '#888', marginBottom: 4, fontWeight: 600, textTransform: 'uppercase' as const, letterSpacing: '0.04em' }}>Summary</div>
+                <div style={{ fontSize: 12, color: '#444', lineHeight: 1.5 }}>{scanResult.summary}</div>
+              </div>
+            )}
+          </div>
+
+          {/* VIN match: file to unit */}
+          {scanResult.vin && (
+            <div style={{ padding: '12px 20px', borderTop: '1px solid #f0f0f0', background: '#f8faff', borderRadius: '0 0 8px 8px' }}>
+              <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 10 }}>
+                File to Unit (VIN: <span style={{ fontFamily: 'monospace' }}>{scanResult.vin}</span>)
+              </div>
+              {unitMatches.length > 0 ? (
+                <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+                  <select
+                    value={selectedUnitId}
+                    onChange={e => setSelectedUnitId(e.target.value)}
+                    style={{ padding: '6px 10px', border: '1px solid #e0e0e0', borderRadius: 6, fontSize: 12, fontFamily: 'inherit', flex: 1, minWidth: 200 }}
+                  >
+                    <option value="">Select unit to file to…</option>
+                    {unitMatches.map((u: any) => (
+                      <option key={u.id} value={u.id}>
+                        {[u.year, u.manufacturer || u.make, u.model].filter(Boolean).join(' ')} — {u.vin}
+                      </option>
+                    ))}
+                  </select>
+                  <button
+                    className="btn btn-p btn-sm"
+                    onClick={handleFileDocument}
+                    disabled={!selectedUnitId || scanFiling}
+                  >
+                    {scanFiling ? 'Filing…' : 'File to Unit'}
+                  </button>
+                  <button className="btn btn-o btn-sm" onClick={dismissScan}>Dismiss</button>
+                </div>
+              ) : (
+                <div style={{ fontSize: 12, color: '#888' }}>
+                  No matching unit found for this VIN. Add the unit first, then scan again.
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
 
       <div className="pn">
         {loading && <div style={{ padding: 40, textAlign: 'center', color: '#888' }}>Loading documents…</div>}
