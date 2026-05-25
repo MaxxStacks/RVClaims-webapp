@@ -3,7 +3,7 @@
 // Creates the operator admin account and sample dealership for development
 
 import { db } from "./db";
-import { users, dealerships, products, platformSettings } from "@shared/schema";
+import { users, dealerships, products, platformSettings, walletFundingTiers } from "@shared/schema";
 import { hashPassword } from "./lib/auth";
 import { eq } from "drizzle-orm";
 import { seedModules } from "./db/seedModules";
@@ -247,6 +247,21 @@ async function seed() {
 
   // ==================== SERVICE MODULES ====================
   await seedModules();
+
+  // ==================== WALLET FUNDING TIERS ====================
+  const existingTiers = await db.select().from(walletFundingTiers).limit(1);
+  if (existingTiers.length === 0) {
+    await db.insert(walletFundingTiers).values([
+      { minAmount: "1000",  maxAmount: "4999",  bonusPercentage: "5",  isActive: true },
+      { minAmount: "5000",  maxAmount: "9999",  bonusPercentage: "10", isActive: true },
+      { minAmount: "10000", maxAmount: "14999", bonusPercentage: "15", isActive: true },
+      { minAmount: "15000", maxAmount: "24999", bonusPercentage: "18", isActive: true },
+      { minAmount: "25000", maxAmount: null,    bonusPercentage: "20", isActive: true },
+    ]);
+    console.log("  ✅ Wallet funding tiers seeded (5 tiers: 5%/10%/15%/18%/20%)");
+  } else {
+    console.log("  ⏭️  Wallet funding tiers already exist");
+  }
 
   console.log("\n🎉 Seed complete!\n");
   console.log("Login credentials:");

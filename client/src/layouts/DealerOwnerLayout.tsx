@@ -8,6 +8,7 @@ import ds360Icon from '@assets/ds360_favicon.png';
 import type { Language } from '@/lib/i18n';
 import { MobileBottomNav } from '@/components/MobileBottomNav';
 import { useEnabledModules, hasModule } from '@/hooks/useEnabledModules';
+import { useWallet } from '@/hooks/useWallet';
 
 interface Props { children?: React.ReactNode; }
 
@@ -66,6 +67,7 @@ export default function DealerOwnerLayout({ children }: Props) {
   };
   const unreadCount = notifItems.filter(n => !n.isRead).length;
   const { modules: enabledModules, loading: modulesLoading, isFailOpen } = useEnabledModules();
+  const { wallet, balance, isLowBalance, isGracePeriod, isPaused } = useWallet();
   const mod = (key: string) => modulesLoading || hasModule(enabledModules, key, isFailOpen);
 
   // DS360 Services section — active subscriptions + total module count
@@ -97,6 +99,39 @@ export default function DealerOwnerLayout({ children }: Props) {
             <span className="sidebar-badge" style={{marginTop:4}}>Owner</span>
           </div>
         </div>
+        {/* ─── Wallet balance widget ─── */}
+        {wallet && !sidebarCollapsed && (
+          <div style={{
+            margin: '6px 12px 2px',
+            padding: '7px 10px',
+            background: isPaused ? '#fef2f2' : isGracePeriod ? '#fff7ed' : isLowBalance ? '#fffbeb' : 'var(--bg-secondary, #f4f6fb)',
+            borderRadius: 8,
+            border: `1px solid ${isPaused ? '#fecaca' : isGracePeriod ? '#fed7aa' : isLowBalance ? '#fde68a' : 'var(--border, #e8e8e8)'}`,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: 6,
+          }}>
+            <div style={{display:'flex',alignItems:'center',gap:5,minWidth:0}}>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke={isPaused || isGracePeriod ? '#dc2626' : isLowBalance ? '#d97706' : '#22c55e'} strokeWidth="2.5" style={{flexShrink:0}}><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a4 4 0 00-8 0v2"/></svg>
+              <div style={{minWidth:0}}>
+                <div style={{fontSize:10,color:'var(--text-muted,#888)',fontWeight:500,lineHeight:1.2}}>{t('wallet.wallet')}</div>
+                <div style={{fontSize:13,fontWeight:700,color: isPaused || isGracePeriod ? '#dc2626' : isLowBalance ? '#d97706' : '#16a34a',lineHeight:1.3,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>
+                  ${balance.toLocaleString('en-CA', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+                </div>
+              </div>
+            </div>
+            <div style={{display:'flex',alignItems:'center',gap:4,flexShrink:0}}>
+              {isPaused && <span style={{fontSize:9,background:'#dc2626',color:'#fff',borderRadius:4,padding:'1px 5px',fontWeight:700}}>{t('wallet.servicesPaused')}</span>}
+              {isGracePeriod && !isPaused && <span style={{fontSize:9,background:'#f97316',color:'#fff',borderRadius:4,padding:'1px 5px',fontWeight:700}}>{t('wallet.gracePeriod')}</span>}
+              {isLowBalance && !isGracePeriod && !isPaused && <span style={{fontSize:9,background:'#d97706',color:'#fff',borderRadius:4,padding:'1px 5px',fontWeight:700}}>{t('wallet.lowBalance')}</span>}
+              <Link
+                to="wallet"
+                style={{fontSize:10,color:'#033280',fontWeight:600,background:'none',border:'1px solid #c7d4f0',borderRadius:4,padding:'2px 6px',textDecoration:'none',display:'inline-block'}}
+              >{t('wallet.fundWallet')}</Link>
+            </div>
+          </div>
+        )}
         <div className="sidebar-nav">
           <div className="nav-section">
             <div className="nav-label">{t('nav.overview')}</div>
@@ -134,6 +169,7 @@ export default function DealerOwnerLayout({ children }: Props) {
             <div className="nav-label">{t('nav.billing')}</div>
             <Link className={`nav-item ${isActive('invoices') ? 'active' : ''}`} to="invoices"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>{t('nav.invoices')}</Link>
             <Link className={`nav-item ${isActive('billing') ? 'active' : ''}`} to="billing"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>{t('nav.billing')}</Link>
+            <Link className={`nav-item ${isActive('wallet') ? 'active' : ''}`} to="wallet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a4 4 0 00-8 0v2"/><circle cx="12" cy="14" r="2"/></svg>{t('wallet.wallet')}</Link>
           </div>
           {/* ─── DS360 Services section ─────────────────────────────── */}
           <div className="nav-section" style={{ borderTop: '1px solid var(--border, #e8e8e8)', paddingTop: 8, marginTop: 4 }}>

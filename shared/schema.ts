@@ -1697,3 +1697,74 @@ export type ImportTemplate = typeof importTemplates.$inferSelect;
 export type ImportHistory = typeof importHistory.$inferSelect;
 export type InsertImportTemplate = typeof importTemplates.$inferInsert;
 export type InsertImportHistory = typeof importHistory.$inferInsert;
+
+// ==================== WALLET SYSTEM ====================
+
+export const WALLET_STATUSES = ["active", "grace_period", "paused"] as const;
+export const WALLET_TRANSACTION_TYPES = [
+  "funding", "bonus", "subscription_fee", "claim_fee", "transaction_fee",
+  "manual_credit", "manual_debit", "refund",
+] as const;
+export const WALLET_REFERENCE_TYPES = [
+  "module_subscription", "claim", "fi_deal", "marketplace", "manual",
+] as const;
+
+export const dealerWallets = pgTable("dealer_wallets", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  dealershipId: uuid("dealership_id").notNull().unique(),
+  balance: decimal("balance", { precision: 12, scale: 2 }).notNull().default("0"),
+  totalFunded: decimal("total_funded", { precision: 12, scale: 2 }).notNull().default("0"),
+  totalBonusEarned: decimal("total_bonus_earned", { precision: 12, scale: 2 }).notNull().default("0"),
+  totalSpent: decimal("total_spent", { precision: 12, scale: 2 }).notNull().default("0"),
+  lowBalanceThreshold: decimal("low_balance_threshold", { precision: 10, scale: 2 }).notNull().default("500"),
+  autoReloadEnabled: boolean("auto_reload_enabled").notNull().default(false),
+  autoReloadAmount: decimal("auto_reload_amount", { precision: 10, scale: 2 }),
+  gracePeriodEnds: timestamp("grace_period_ends"),
+  status: text("status", { enum: WALLET_STATUSES }).notNull().default("active"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+}, (table) => [
+  index("dealer_wallets_dealership_idx").on(table.dealershipId),
+  index("dealer_wallets_status_idx").on(table.status),
+]);
+
+export const walletTransactions = pgTable("wallet_transactions", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  walletId: uuid("wallet_id").notNull(),
+  dealershipId: uuid("dealership_id").notNull(),
+  type: text("type", { enum: WALLET_TRANSACTION_TYPES }).notNull(),
+  amount: decimal("amount", { precision: 12, scale: 2 }).notNull(),
+  balanceAfter: decimal("balance_after", { precision: 12, scale: 2 }).notNull(),
+  description: text("description").notNull(),
+  referenceType: text("reference_type", { enum: WALLET_REFERENCE_TYPES }),
+  referenceId: uuid("reference_id"),
+  stripePaymentIntentId: text("stripe_payment_intent_id"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  createdBy: uuid("created_by"),
+}, (table) => [
+  index("wallet_txn_wallet_idx").on(table.walletId),
+  index("wallet_txn_dealership_idx").on(table.dealershipId),
+  index("wallet_txn_type_idx").on(table.type),
+  index("wallet_txn_created_idx").on(table.createdAt),
+  index("wallet_txn_stripe_idx").on(table.stripePaymentIntentId),
+]);
+
+export const walletFundingTiers = pgTable("wallet_funding_tiers", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  minAmount: decimal("min_amount", { precision: 12, scale: 2 }).notNull(),
+  maxAmount: decimal("max_amount", { precision: 12, scale: 2 }),
+  bonusPercentage: decimal("bonus_percentage", { precision: 5, scale: 2 }).notNull(),
+  isActive: boolean("is_active").notNull().default(true),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+}, (table) => [
+  index("wallet_tiers_active_idx").on(table.isActive),
+  index("wallet_tiers_min_idx").on(table.minAmount),
+]);
+
+export type DealerWallet = typeof dealerWallets.$inferSelect;
+export type WalletTransaction = typeof walletTransactions.$inferSelect;
+export type WalletFundingTier = typeof walletFundingTiers.$inferSelect;
+export type InsertDealerWallet = typeof dealerWallets.$inferInsert;
+export type InsertWalletTransaction = typeof walletTransactions.$inferInsert;
+export type InsertWalletFundingTier = typeof walletFundingTiers.$inferInsert;

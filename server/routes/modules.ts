@@ -15,6 +15,7 @@ import { db } from "../db";
 import { serviceModules, dealerModuleSubscriptions, dealerships } from "@shared/schema";
 import { eq, and, count, sql } from "drizzle-orm";
 import { requireAuth } from "../middleware/auth";
+import { deductFromWallet } from "../lib/wallet";
 
 const router = Router();
 
@@ -249,6 +250,28 @@ router.post("/dealerships/:id/subscriptions", requireAuth, async (req: Request, 
       status: "active",
       monthlyRate: module.monthlyPrice,
     }).returning();
+
+    // Deduct first month's subscription fee from wallet if module has a price
+    const monthlyPrice = parseFloat(module.monthlyPrice || "0");
+    if (monthlyPrice > 0) {
+      const walletResult = await deductFromWallet(
+        id,
+        monthlyPrice,
+        "subscription_fee",
+        `Monthly subscription: ${module.name}`,
+        "module_subscription",
+        sub.id,
+        req.user!.id,
+      );
+      if (!walletResult.success && walletResult.walletPaused) {
+        // Subscription was created but wallet is paused — inform client
+        return res.status(201).json({
+          subscription: sub,
+          module,
+          walletWarning: "Wallet balance is zero and services are paused. Please fund your wallet to activate this module.",
+        });
+      }
+    }
 
     res.status(201).json({ subscription: sub, module });
   } catch (err: any) {

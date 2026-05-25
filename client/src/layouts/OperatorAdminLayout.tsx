@@ -226,6 +226,7 @@ export default function OperatorAdminLayout({ children }: Props) {
             <Link className={`nav-item ${isActive('invoices') ? 'active' : ''}`} to="invoices"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>{t('nav.invoices')}</Link>
             <Link className={`nav-item ${isActive('reports') ? 'active' : ''}`} to="reports"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>{t('nav.reports')}</Link>
             <Link className={`nav-item ${isActive('products') ? 'active' : ''}`} to="products"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg>{t('nav.products')}</Link>
+            <Link className={`nav-item ${isActive('wallets') ? 'active' : ''}`} to="wallets"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a4 4 0 00-8 0v2"/></svg>{t('wallet.wallet')}</Link>
           </div>
           <div className="nav-section">
             <div className="nav-label">{t('nav.crm')}</div>

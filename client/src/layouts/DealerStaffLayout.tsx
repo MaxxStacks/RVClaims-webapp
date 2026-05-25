@@ -8,6 +8,7 @@ import { useLanguage } from '@/hooks/use-language';
 import type { Language } from '@/lib/i18n';
 import { MobileBottomNav } from '@/components/MobileBottomNav';
 import { useEnabledModules, hasModule } from '@/hooks/useEnabledModules';
+import { useWallet } from '@/hooks/useWallet';
 
 interface Props { children?: React.ReactNode; }
 
@@ -67,6 +68,7 @@ export default function DealerStaffLayout({ children }: Props) {
   const unreadCount = notifItems.filter(n => !n.isRead).length;
   const { modules: enabledModules, loading: modulesLoading, isFailOpen } = useEnabledModules();
   const mod = (key: string) => modulesLoading || hasModule(enabledModules, key, isFailOpen);
+  const { wallet, balance, isLowBalance, isGracePeriod, isPaused } = useWallet();
 
   // DS360 Services — show active subscriptions for staff (read-only, no browse link)
   const dealershipId = user?.dealershipId as string | undefined;
@@ -90,6 +92,33 @@ export default function DealerStaffLayout({ children }: Props) {
             <span className="sidebar-badge" style={{marginTop:4}}>Staff</span>
           </div>
         </div>
+        {/* ─── Wallet balance widget (read-only for staff) ─── */}
+        {wallet && !sidebarCollapsed && (
+          <div style={{
+            margin: '6px 12px 2px',
+            padding: '7px 10px',
+            background: isPaused ? '#fef2f2' : isGracePeriod ? '#fff7ed' : isLowBalance ? '#fffbeb' : 'var(--bg-secondary, #f4f6fb)',
+            borderRadius: 8,
+            border: `1px solid ${isPaused ? '#fecaca' : isGracePeriod ? '#fed7aa' : isLowBalance ? '#fde68a' : 'var(--border, #e8e8e8)'}`,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: 6,
+          }}>
+            <div style={{display:'flex',alignItems:'center',gap:5,minWidth:0}}>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke={isPaused || isGracePeriod ? '#dc2626' : isLowBalance ? '#d97706' : '#22c55e'} strokeWidth="2.5" style={{flexShrink:0}}><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a4 4 0 00-8 0v2"/></svg>
+              <div style={{minWidth:0}}>
+                <div style={{fontSize:10,color:'var(--text-muted,#888)',fontWeight:500,lineHeight:1.2}}>{t('wallet.wallet')}</div>
+                <div style={{fontSize:13,fontWeight:700,color: isPaused || isGracePeriod ? '#dc2626' : isLowBalance ? '#d97706' : '#16a34a',lineHeight:1.3}}>
+                  ${balance.toLocaleString('en-CA', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+                </div>
+              </div>
+            </div>
+            {isPaused && <span style={{fontSize:9,background:'#dc2626',color:'#fff',borderRadius:4,padding:'1px 5px',fontWeight:700}}>{t('wallet.servicesPaused')}</span>}
+            {isGracePeriod && !isPaused && <span style={{fontSize:9,background:'#f97316',color:'#fff',borderRadius:4,padding:'1px 5px',fontWeight:700}}>{t('wallet.gracePeriod')}</span>}
+            {isLowBalance && !isGracePeriod && !isPaused && <span style={{fontSize:9,background:'#d97706',color:'#fff',borderRadius:4,padding:'1px 5px',fontWeight:700}}>{t('wallet.lowBalance')}</span>}
+          </div>
+        )}
         <div className="sidebar-nav">
           <div className="nav-section">
             <div className="nav-label">{t('nav.overview')}</div>
