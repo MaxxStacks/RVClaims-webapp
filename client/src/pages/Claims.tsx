@@ -3,6 +3,8 @@ import { useLocation } from 'wouter';
 import { apiFetch } from '@/lib/api';
 import { useAuth } from '@/hooks/use-auth';
 import { useLanguage } from '@/hooks/use-language';
+import PrintButton from '@/components/PrintButton';
+import PrintHeader from '@/components/PrintHeader';
 
 export default function Claims() {
   const [, navigate] = useLocation();
@@ -36,14 +38,27 @@ export default function Claims() {
     return true;
   });
 
+  const printDate = new Date().toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' });
+
   return (
     <div className="page active">
+      {/* Print header — visible only in print output */}
+      <PrintHeader
+        title="Claims Report"
+        subtitle={`${filteredClaims.length} claim${filteredClaims.length !== 1 ? 's' : ''} · ${printDate}`}
+      />
+
       {isPartsManager && (
         <div style={{ fontSize: 13, color: '#666', marginBottom: 12 }}>
           Showing claims with parts requirements for your dealership.
         </div>
       )}
-      <div className="pn"><div className="filter-bar"><input type="text" placeholder="Search claims..." value={claimsSearch} onChange={e => setClaimsSearch(e.target.value)} /><select value={claimsStatus} onChange={e => setClaimsStatus(e.target.value)}><option value="">All Statuses</option><option value="submitted">Submitted</option><option value="authorized">Authorized</option><option value="denied">Denied</option><option value="parts_ordered">Parts Ordered</option><option value="completed">Completed</option><option value="payment_received">Payment Received</option></select><select value={claimsMfr} onChange={e => setClaimsMfr(e.target.value)}><option value="">All Manufacturers</option><option>Jayco</option><option>Forest River</option><option>Heartland</option><option>Keystone</option><option>Columbia NW</option></select>{isOperator && (<select value={claimsDealer} onChange={e => setClaimsDealer(e.target.value)}><option value="">All Dealers</option>{opDealers.map(d => <option key={d.id} value={d.id}>{d.name}</option>)}</select>)}</div>
+      <div className="pn">
+        <div className="pn-h">
+          <span className="pn-t">{t('nav.claims')}</span>
+          <PrintButton title={`Claims Report — ${printDate}`} />
+        </div>
+        <div className="filter-bar"><input type="text" placeholder="Search claims..." value={claimsSearch} onChange={e => setClaimsSearch(e.target.value)} /><select value={claimsStatus} onChange={e => setClaimsStatus(e.target.value)}><option value="">All Statuses</option><option value="submitted">Submitted</option><option value="authorized">Authorized</option><option value="denied">Denied</option><option value="parts_ordered">Parts Ordered</option><option value="completed">Completed</option><option value="payment_received">Payment Received</option></select><select value={claimsMfr} onChange={e => setClaimsMfr(e.target.value)}><option value="">All Manufacturers</option><option>Jayco</option><option>Forest River</option><option>Heartland</option><option>Keystone</option><option>Columbia NW</option></select>{isOperator && (<select value={claimsDealer} onChange={e => setClaimsDealer(e.target.value)}><option value="">All Dealers</option>{opDealers.map(d => <option key={d.id} value={d.id}>{d.name}</option>)}</select>)}</div>
         <div className="tw"><table><thead><tr><th><input type="checkbox" /></th><th>{t('claims.claimNumber')}</th><th>{t('claims.dealer')}</th><th>{t('claims.vin')}</th><th>{t('claims.manufacturer')}</th><th>{t('common.type')}</th><th>{t('claims.lines')}</th><th>{t('common.status')}</th><th>{t('common.amount')}</th><th>{t('claims.updated')}</th></tr></thead><tbody>
           {filteredClaims.length === 0 ? (
             <tr><td colSpan={10} style={{textAlign:'center',padding:24,color:'#888'}}>{dataError ? dataError : opClaims.length === 0 ? 'No claims found' : 'No results match your filters'}</td></tr>

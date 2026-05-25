@@ -9,6 +9,8 @@ import { useLocation } from 'wouter';
 import { apiFetch } from '@/lib/api';
 import { useAuth } from '@/hooks/use-auth';
 import { useLanguage } from '@/hooks/use-language';
+import PrintButton from '@/components/PrintButton';
+import PrintHeader from '@/components/PrintHeader';
 
 interface PartsOrder {
   id: string;
@@ -192,8 +194,16 @@ export default function Parts() {
     return '/operator/admin/parts/new';
   };
 
+  const printDate = new Date().toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' });
+
   return (
     <div className="page active">
+      {/* Print header — visible only in print output */}
+      <PrintHeader
+        title="Parts Orders Report"
+        subtitle={`${filtered.length} order${filtered.length !== 1 ? 's' : ''} · ${printDate}`}
+      />
+
       {/* Toast */}
       {toastVisible && (
         <div style={{
@@ -217,11 +227,14 @@ export default function Parts() {
               : 'Track parts requests, orders, and delivery status for your dealership.'}
           </div>
         </div>
-        {canCreate && (
-          <button className="btn btn-p btn-sm" onClick={() => navigate(getNewPath())}>
-            + {t('parts.newPartsOrder')}
-          </button>
-        )}
+        <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+          <PrintButton title={`Parts Orders Report — ${printDate}`} />
+          {canCreate && (
+            <button className="btn btn-p btn-sm" onClick={() => navigate(getNewPath())}>
+              + {t('parts.newPartsOrder')}
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Stats */}

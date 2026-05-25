@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { apiFetch } from '@/lib/api';
 import { useAuth } from '@/hooks/use-auth';
+import PrintButton from '@/components/PrintButton';
+import PrintHeader from '@/components/PrintHeader';
 
 interface RevenueReport {
   summary: {
@@ -96,9 +98,17 @@ export default function Reports() {
 
   const COLORS = ['var(--brand)', '#3b82f6', '#22c55e', '#a855f7', '#f59e0b', '#ef4444'];
 
+  const printDate = new Date().toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' });
+
   return (
     <div className="page active">
-      {/* Date filters */}
+      {/* Print header — visible only in print output */}
+      <PrintHeader
+        title="Revenue Report"
+        subtitle={`${fromDate && toDate ? `${fromDate} to ${toDate}` : 'All time'} · ${printDate}`}
+      />
+
+      {/* Date filters + Print button */}
       <div style={{ display: 'flex', gap: 12, alignItems: 'center', marginBottom: 20 }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
           <span style={{ fontSize: 11, color: '#888', fontWeight: 500 }}>From</span>
@@ -127,6 +137,9 @@ export default function Reports() {
             Clear Filter
           </button>
         )}
+        <div style={{ marginTop: 16, marginLeft: 8 }}>
+          <PrintButton title={`Revenue Report — ${printDate}`} />
+        </div>
       </div>
 
       {/* Summary cards */}

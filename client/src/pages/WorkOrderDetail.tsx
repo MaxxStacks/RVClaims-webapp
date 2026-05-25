@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react';
 import { useLocation, useParams } from 'wouter';
 import { apiFetch } from '@/lib/api';
 import { useAuth } from '@/hooks/use-auth';
-import { BarcodeDisplay, QRCodeDisplay } from '@/lib/barcode';
+import { BarcodeDisplay, QRCodeDisplay, generateBarcodeString } from '@/lib/barcode';
+import PrintButton from '@/components/PrintButton';
+import PrintHeader from '@/components/PrintHeader';
 
 const STATUS_LABELS: Record<string, string> = {
   unassigned: 'Unassigned', assigned: 'Assigned', en_route: 'En Route',
@@ -172,6 +174,13 @@ export default function WorkOrderDetail() {
 
   return (
     <div className="page active">
+      {/* Print header — visible only in print output */}
+      <PrintHeader
+        title="Work Order"
+        subtitle={wo.workOrderNumber || wo.id?.slice(0, 8).toUpperCase()}
+        barcodeString={wo.id ? generateBarcodeString('workOrder', wo.id) : undefined}
+      />
+
       {msg && (
         <div style={{ padding: '10px 16px', background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 8, marginBottom: 16, fontSize: 13, color: '#166534' }}>
           {msg}
@@ -190,6 +199,7 @@ export default function WorkOrderDetail() {
         <span style={{ padding: '6px 16px', borderRadius: 20, fontSize: 13, fontWeight: 600, background: '#f0fdf4', color: '#16a34a' }}>
           {statusInfo}
         </span>
+        <PrintButton title={`Work Order — ${wo.workOrderNumber || wo.id?.slice(0, 8)}`} />
         {/* Barcode widget */}
         {wo?.id && (
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, marginLeft: 8, flexShrink: 0 }}>
@@ -343,11 +353,28 @@ export default function WorkOrderDetail() {
               <div className="cd-section-h">Parts Needed</div>
               <div style={{ padding: '8px 16px' }}>
                 {wo.partsNeeded.map((p: string, i: number) => (
-                  <div key={i} style={{ fontSize: 12, padding: '4px 0', borderBottom: '1px solid #f0f0f0', color: '#555' }}>{p}</div>
+                  <div key={i} style={{ fontSize: 12, padding: '4px 0', borderBottom: '1px solid #f0f0f0', color: '#555' }}>
+                    <span className="wo-checkbox print-only" />
+                    {p}
+                  </div>
                 ))}
               </div>
             </div>
           )}
+        </div>
+      </div>
+
+      {/* Signature section — visible only in print */}
+      <div className="print-only" style={{ marginTop: 32, display: 'flex', gap: 64 }}>
+        <div>
+          <div style={{ fontSize: '10pt', fontWeight: 600, marginBottom: 4 }}>Technician Signature</div>
+          <span className="signature-line" />
+          <div style={{ fontSize: '9pt', color: '#555', marginTop: 6 }}>Name / Date</div>
+        </div>
+        <div>
+          <div style={{ fontSize: '10pt', fontWeight: 600, marginBottom: 4 }}>Customer Signature</div>
+          <span className="signature-line" />
+          <div style={{ fontSize: '9pt', color: '#555', marginTop: 6 }}>Name / Date</div>
         </div>
       </div>
     </div>

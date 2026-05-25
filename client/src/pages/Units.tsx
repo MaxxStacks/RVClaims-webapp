@@ -3,6 +3,8 @@ import { useLocation } from 'wouter';
 import { apiFetch } from '@/lib/api';
 import { useAuth } from '@/hooks/use-auth';
 import { useLanguage } from '@/hooks/use-language';
+import PrintButton from '@/components/PrintButton';
+import PrintHeader from '@/components/PrintHeader';
 
 export default function Units() {
   const [location, navigate] = useLocation();
@@ -120,8 +122,16 @@ export default function Units() {
     }
   };
 
+  const printDate = new Date().toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' });
+
   return (
     <div className="page active">
+      {/* Print header — visible only in print output */}
+      <PrintHeader
+        title="Unit Inventory Report"
+        subtitle={`${filteredUnits.length} unit${filteredUnits.length !== 1 ? 's' : ''} · ${printDate}`}
+      />
+
       {/* Toast */}
       {toastVisible && (
         <div style={{ position: 'fixed', bottom: 24, left: '50%', transform: 'translateX(-50%)', background: '#1e293b', color: '#fff', padding: '10px 20px', borderRadius: 8, fontSize: 13, zIndex: 9999, boxShadow: '0 4px 12px rgba(0,0,0,0.2)' }}>
@@ -181,6 +191,7 @@ export default function Units() {
               {t('scanner.scanUnit')}
             </button>
           )}
+          <PrintButton title={`Unit Inventory Report — ${printDate}`} />
           {canAddUnit && (
             <div style={{ marginLeft: isDealer ? 0 : 'auto' }}>
               <button className="btn btn-p btn-sm" onClick={goToAddUnit}>

@@ -3,7 +3,9 @@ import { useLocation, useParams } from 'wouter';
 import { apiFetch } from '@/lib/api';
 import { useAuth } from '@/hooks/use-auth';
 import { useLanguage } from '@/hooks/use-language';
-import { BarcodeDisplay, QRCodeDisplay } from '@/lib/barcode';
+import { BarcodeDisplay, QRCodeDisplay, generateBarcodeString } from '@/lib/barcode';
+import PrintButton from '@/components/PrintButton';
+import PrintHeader from '@/components/PrintHeader';
 
 export default function UnitDetail() {
   const [location, navigate] = useLocation();
@@ -413,6 +415,14 @@ export default function UnitDetail() {
 
   return (
     <div className="page active">
+      {/* Print header — visible only in print output */}
+      <PrintHeader
+        title="Unit Profile"
+        subtitle={unitTitle}
+        barcodeString={unit.id ? generateBarcodeString('unit', unit.id) : undefined}
+        dealerName={dealership?.name}
+      />
+
       {/* Toast */}
       {toastVisible && (
         <div style={{ position: 'fixed', bottom: 24, left: '50%', transform: 'translateX(-50%)', background: '#1e293b', color: '#fff', padding: '10px 20px', borderRadius: 8, fontSize: 13, zIndex: 9999, boxShadow: '0 4px 12px rgba(0,0,0,0.2)' }}>
@@ -475,6 +485,7 @@ export default function UnitDetail() {
             <button className="btn btn-o btn-sm" onClick={() => setEditMode(false)}>{t('common.cancel')}</button>
           </>
         )}
+        <PrintButton title={`Unit — ${unit.vin || unit.id?.slice(0, 8)}`} />
         {/* Barcode widget */}
         {unit.id && (
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, marginLeft: 8, flexShrink: 0 }}>

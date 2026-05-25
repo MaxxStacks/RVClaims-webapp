@@ -13,7 +13,7 @@ export default function PortalShell({ context, mainNav, children, contextLabel }
   return (
     <div style={{ display: "flex", height: "100vh", overflow: "hidden", background: LAYOUT.bgPage }}>
       {/* Layer 1a — Main nav sidebar (full height, fixed width) */}
-      <div style={{
+      <div className="no-print" style={{
         width: LAYOUT.mainNavWidth,
         background: LAYOUT.bgWhite,
         borderRight: `1px solid ${LAYOUT.borderLight}`,

@@ -3,7 +3,9 @@
 //             dealer_owner/dealer_staff (view + renewal request), client (view own warranty)
 
 import { useState, useEffect, useCallback } from 'react';
-import { BarcodeDisplay, QRCodeDisplay } from '@/lib/barcode';
+import { BarcodeDisplay, QRCodeDisplay, generateBarcodeString } from '@/lib/barcode';
+import PrintButton from '@/components/PrintButton';
+import PrintHeader from '@/components/PrintHeader';
 import { useLocation, useParams } from 'wouter';
 import { apiFetch } from '@/lib/api';
 import { useAuth } from '@/hooks/use-auth';
@@ -162,6 +164,13 @@ export default function WarrantyDetail() {
 
   return (
     <div className="page active">
+      {/* Print header — visible only in print output */}
+      <PrintHeader
+        title="Warranty Certificate"
+        subtitle={`${plan.planNumber} — ${plan.provider}`}
+        barcodeString={plan.id ? generateBarcodeString('warranty', plan.id) : undefined}
+      />
+
       {/* Toast */}
       {toastVisible && (
         <div style={{ position: 'fixed', bottom: 24, right: 24, background: '#08235d', color: '#fff', padding: '10px 18px', borderRadius: 8, fontSize: 13, fontWeight: 500, zIndex: 9999, boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}>
@@ -193,6 +202,7 @@ export default function WarrantyDetail() {
             Cancel Plan
           </button>
         )}
+        <PrintButton title={`Warranty Certificate — ${plan.planNumber || plan.id?.slice(0, 8)}`} />
         {/* Barcode widget */}
         {plan.id && (
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, marginLeft: 8, flexShrink: 0 }}>
@@ -242,7 +252,7 @@ export default function WarrantyDetail() {
           </div>
 
           {/* Coverage categories grid */}
-          <div className="pn" style={{ marginBottom: 16 }}>
+          <div className="pn certificate-border" style={{ marginBottom: 16 }}>
             <div className="pn-h"><span className="pn-t">Coverage Categories</span></div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 12, padding: 16 }}>
               {COVERAGE_CATEGORIES.map(cat => {

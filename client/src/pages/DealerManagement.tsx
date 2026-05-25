@@ -3,6 +3,8 @@ import { useLocation } from 'wouter';
 import { apiFetch } from '@/lib/api';
 import { useAuth } from '@/hooks/use-auth';
 import { useLanguage } from '@/hooks/use-language';
+import PrintButton from '@/components/PrintButton';
+import PrintHeader from '@/components/PrintHeader';
 
 export default function DealerManagement() {
   const [location, navigate] = useLocation();
@@ -78,8 +80,16 @@ export default function DealerManagement() {
     return true;
   });
 
+  const printDate = new Date().toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' });
+
   return (
     <div className="page active">
+      {/* Print header — visible only in print output */}
+      <PrintHeader
+        title="Dealer Management Report"
+        subtitle={`${filtered.length} dealer${filtered.length !== 1 ? 's' : ''} · ${printDate}`}
+      />
+
       {/* Toast */}
       {toastVisible && (
         <div style={{ position: 'fixed', bottom: 24, right: 24, background: '#1e293b', color: '#fff', padding: '10px 18px', borderRadius: 8, fontSize: 13, fontWeight: 500, zIndex: 9999, boxShadow: '0 4px 16px rgba(0,0,0,0.18)' }}>
@@ -102,13 +112,14 @@ export default function DealerManagement() {
             value={search}
             onChange={e => setSearch(e.target.value)}
           />
-          {isOperatorAdmin && (
-            <div style={{ marginLeft: 'auto' }}>
+          <div style={{ marginLeft: 'auto', display: 'flex', gap: 8, alignItems: 'center' }}>
+            <PrintButton title={`Dealer Management Report — ${printDate}`} />
+            {isOperatorAdmin && (
               <button className="btn btn-p btn-sm" onClick={() => navigate(`${basePath}/dealers/new`)}>
                 + {t('dealers.addDealer')}
               </button>
-            </div>
-          )}
+            )}
+          </div>
         </div>
 
         <div className="tw">

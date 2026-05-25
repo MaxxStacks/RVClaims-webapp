@@ -7,6 +7,9 @@ import { useState, useEffect, useCallback } from 'react';
 import { useLocation, useParams } from 'wouter';
 import { apiFetch } from '@/lib/api';
 import { useAuth } from '@/hooks/use-auth';
+import { generateBarcodeString } from '@/lib/barcode';
+import PrintButton from '@/components/PrintButton';
+import PrintHeader from '@/components/PrintHeader';
 
 interface PartsOrderItem {
   id: string;
@@ -204,6 +207,13 @@ export default function PartsDetail() {
 
   return (
     <div className="page active">
+      {/* Print header — visible only in print output */}
+      <PrintHeader
+        title="Parts Order"
+        subtitle={order.orderNumber}
+        barcodeString={order.id ? generateBarcodeString('partsOrder', order.id) : undefined}
+      />
+
       {/* Toast */}
       {toastVisible && (
         <div style={{
@@ -231,6 +241,7 @@ export default function PartsDetail() {
           </div>
         </div>
         {statusBadge(order.status)}
+        <PrintButton title={`Parts Order — ${order.orderNumber || order.id?.slice(0, 8)}`} />
       </div>
 
       {/* Status timeline */}

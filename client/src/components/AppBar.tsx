@@ -97,7 +97,7 @@ export default function AppBar({ context, contextLabel }: AppBarProps) {
   const portalLabel = resolvedLabel || PORTAL_LABELS[context] || "Portal";
 
   return (
-    <div style={{
+    <div className="no-print" style={{
       height: 60,
       background: "white",
       borderBottom: "1px solid #e5e7eb",

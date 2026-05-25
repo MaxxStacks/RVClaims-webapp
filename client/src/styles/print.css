@@ -1,0 +1,245 @@
+/* ============================================================
+   DS360 PRINT STYLES
+   Applied when user triggers browser Print (Ctrl+P or Print button)
+   ============================================================ */
+
+/* ── HIDE NON-PRINT ELEMENTS ─────────────────────────────── */
+@media print {
+  /* Sidebar / nav — PortalShell uses inline styles, target generic selectors */
+  .sidebar,
+  [class*="sidebar"],
+  nav,
+  .nav-sidebar,
+  .ds360-sidebar { display: none !important; }
+
+  /* Top app bar / header */
+  .app-bar,
+  .top-bar,
+  .header-bar,
+  [class*="appbar"],
+  [class*="topbar"] { display: none !important; }
+
+  /* Mobile bottom nav */
+  .mobile-bottom-nav,
+  [class*="bottom-nav"],
+  [class*="BottomNav"] { display: none !important; }
+
+  /* Print button itself and other action buttons */
+  .print-hide,
+  .no-print,
+  button:not(.print-show),
+  [role="button"]:not(.print-show),
+  .action-bar { display: none !important; }
+
+  /* Filter controls, pagination, tabs */
+  .filter-bar,
+  .filter-controls,
+  .pagination,
+  .tab-list,
+  [role="tablist"] { display: none !important; }
+
+  /* Toast / notification overlays */
+  [data-sonner-toaster],
+  [class*="toast"],
+  .overlay { display: none !important; }
+
+  /* ── LAYOUT RESET ─────────────────────────────────────── */
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  html, body {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background: white !important;
+  }
+
+  /* Remove sidebar offset — content takes full width */
+  .main-content,
+  .page-content,
+  [class*="main-content"],
+  [class*="page-content"],
+  main {
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Page setup */
+  @page {
+    margin: 1.5cm;
+    size: A4 portrait;
+  }
+
+  /* ── TYPOGRAPHY ───────────────────────────────────────── */
+  body {
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 11pt;
+    color: #000 !important;
+    background: white !important;
+  }
+
+  h1 { font-size: 18pt; color: #033280 !important; }
+  h2 { font-size: 14pt; color: #033280 !important; }
+  h3 { font-size: 12pt; color: #033280 !important; }
+  p, td, th, li { font-size: 11pt; color: #000 !important; }
+
+  /* ── TABLES ───────────────────────────────────────────── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    page-break-inside: auto;
+  }
+
+  thead { display: table-header-group; } /* repeat header on each page */
+  tfoot { display: table-footer-group; }
+
+  tr { page-break-inside: avoid; }
+
+  th, td {
+    border: 1px solid #ccc !important;
+    padding: 6px 8px !important;
+    background: white !important;
+    color: #000 !important;
+  }
+
+  th { background: #f0f4ff !important; font-weight: bold; }
+
+  /* ── STATUS BADGES — print as text ───────────────────── */
+  [class*="badge"],
+  [class*="Badge"],
+  [class*="status"],
+  [class*="chip"],
+  span.bg {
+    background: transparent !important;
+    border: 1px solid #999 !important;
+    color: #000 !important;
+    padding: 1px 4px !important;
+    border-radius: 3px !important;
+    font-size: 9pt !important;
+  }
+
+  /* ── BARCODES — must be visible and scannable ─────────── */
+  .barcode-print,
+  .barcode-container,
+  [class*="barcode"],
+  canvas,
+  .qr-code {
+    display: block !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* ── PAGE BREAK HELPERS ───────────────────────────────── */
+  .page-break-before { page-break-before: always; }
+  .page-break-after  { page-break-after: always;  }
+  .avoid-break       { page-break-inside: avoid;  }
+
+  /* ── CARDS — remove shadows, show borders ─────────────── */
+  .pn,
+  .sc,
+  .cd-section,
+  [class*="card"],
+  [class*="Card"] {
+    box-shadow: none !important;
+    border: 1px solid #ddd !important;
+    background: white !important;
+    page-break-inside: avoid;
+  }
+
+  /* ── PRINT HEADER ─────────────────────────────────────── */
+  .print-header {
+    display: flex !important;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 2px solid #033280;
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+  }
+
+  .print-header-brand {
+    font-size: 20pt;
+    font-weight: 700;
+    color: #033280 !important;
+    letter-spacing: -0.5px;
+  }
+
+  .print-header-meta {
+    text-align: right;
+    font-size: 9pt;
+    color: #555 !important;
+  }
+
+  /* ── PRINT FOOTER ─────────────────────────────────────── */
+  .print-footer {
+    display: block !important;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-top: 1px solid #ccc;
+    padding-top: 6px;
+    font-size: 8pt;
+    color: #777 !important;
+    text-align: center;
+  }
+
+  /* ── SPECIAL FORMATS ──────────────────────────────────── */
+  /* Invoice */
+  .invoice-print-header {
+    text-align: center;
+    font-size: 24pt;
+    font-weight: 700;
+    color: #033280 !important;
+    letter-spacing: 3px;
+    margin-bottom: 20px;
+  }
+
+  /* Certificate (warranty) */
+  .certificate-border {
+    border: 3px double #033280 !important;
+    padding: 20px !important;
+  }
+
+  /* Work order checklist */
+  .wo-checkbox {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border: 1px solid #000;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+
+  /* Signature line */
+  .signature-line {
+    display: block !important;
+    border-bottom: 1px solid #000;
+    width: 200px;
+    margin-top: 40px;
+  }
+
+  /* Hide tabs navigation */
+  .tabs {
+    display: none !important;
+  }
+
+  /* Grid adjustments for print */
+  .cd-grid {
+    display: block !important;
+  }
+
+  .cd-grid > * {
+    margin-bottom: 16px;
+  }
+}
+
+/* ── SCREEN: hide print-only elements ─────────────────────── */
+@media screen {
+  .print-header { display: none; }
+  .print-footer { display: none; }
+  .print-only   { display: none !important; }
+}

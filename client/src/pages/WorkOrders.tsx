@@ -3,6 +3,8 @@ import { useLocation } from 'wouter';
 import { apiFetch } from '@/lib/api';
 import { useAuth } from '@/hooks/use-auth';
 import { useLanguage } from '@/hooks/use-language';
+import PrintButton from '@/components/PrintButton';
+import PrintHeader from '@/components/PrintHeader';
 
 const STATUS_COLORS: Record<string, { bg: string; color: string; label: string }> = {
   unassigned:    { bg: '#f3f4f6', color: '#6b7280', label: 'Unassigned' },
@@ -84,8 +86,15 @@ export default function WorkOrders() {
     return d >= week;
   }).length;
 
+  const printDate = new Date().toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' });
+
   return (
     <div className="page active">
+      {/* Print header — visible only in print output */}
+      <PrintHeader
+        title="Work Orders Report"
+        subtitle={`${displayed.length} order${displayed.length !== 1 ? 's' : ''} · ${printDate}`}
+      />
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 16, marginBottom: 20 }}>
         <div className="sc"><div className="sc-l" style={{ marginBottom: 8 }}>{t('workOrders.openOrders')}</div><div className="sc-v" style={{ color: '#2563eb' }}>{openCount}</div></div>
         <div className="sc"><div className="sc-l" style={{ marginBottom: 8 }}>{t('common.inProgress')}</div><div className="sc-v" style={{ color: '#f59e0b' }}>{inProgressCount}</div></div>
@@ -106,6 +115,7 @@ export default function WorkOrders() {
               <option value="completed">Completed</option>
               <option value="cancelled">Cancelled</option>
             </select>
+            <PrintButton title={`Work Orders Report — ${printDate}`} />
             {canCreate && (
               <button className="btn btn-p" style={{ fontSize: 12, padding: '6px 14px' }} onClick={() => navigate(`${basePath}/new`)}>
                 + {t('workOrders.newWorkOrder')}

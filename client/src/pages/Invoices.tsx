@@ -3,6 +3,8 @@ import { useLocation } from 'wouter';
 import { apiFetch } from '@/lib/api';
 import { useAuth } from '@/hooks/use-auth';
 import { useLanguage } from '@/hooks/use-language';
+import PrintButton from '@/components/PrintButton';
+import PrintHeader from '@/components/PrintHeader';
 
 interface Invoice {
   id: string;
@@ -161,8 +163,16 @@ export default function Invoices() {
     );
   });
 
+  const printDate = new Date().toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' });
+
   return (
     <div className="page active">
+      {/* Print header — visible only in print output */}
+      <PrintHeader
+        title="Invoices Report"
+        subtitle={`${filtered.length} invoice${filtered.length !== 1 ? 's' : ''} · ${printDate}`}
+      />
+
       {/* Toast */}
       {toastVisible && (
         <div style={{ position: 'fixed', bottom: 24, left: '50%', transform: 'translateX(-50%)', background: '#1e293b', color: '#fff', padding: '10px 20px', borderRadius: 8, fontSize: 13, zIndex: 9999, boxShadow: '0 4px 12px rgba(0,0,0,0.2)' }}>
@@ -193,9 +203,12 @@ export default function Invoices() {
       <div className="pn">
         <div className="pn-h">
           <span className="pn-t">{t('invoices.allInvoices')}</span>
-          {isOperatorAdmin && (
-            <span className="pn-a" onClick={navigateToCreate}>+ {t('invoices.createInvoice')}</span>
-          )}
+          <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+            <PrintButton title={`Invoices Report — ${printDate}`} />
+            {isOperatorAdmin && (
+              <span className="pn-a" onClick={navigateToCreate}>+ {t('invoices.createInvoice')}</span>
+            )}
+          </div>
         </div>
 
         <div className="filter-bar">

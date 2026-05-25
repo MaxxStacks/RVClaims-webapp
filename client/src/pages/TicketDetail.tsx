@@ -2,6 +2,8 @@ import { useState, useEffect, useCallback } from 'react';
 import { useLocation, useParams } from 'wouter';
 import { apiFetch } from '@/lib/api';
 import { useAuth } from '@/hooks/use-auth';
+import PrintButton from '@/components/PrintButton';
+import PrintHeader from '@/components/PrintHeader';
 
 const CATEGORY_LABELS: Record<string, string> = {
   claim_warranty: 'Claim / Warranty',
@@ -162,6 +164,12 @@ export default function TicketDetail() {
 
   return (
     <div className="page active">
+      {/* Print header — visible only in print output */}
+      <PrintHeader
+        title="Support Ticket"
+        subtitle={`${ticket?.ticketNumber || ''} — ${ticket?.subject || ''}`}
+      />
+
       {toastVisible && (
         <div style={{position: 'fixed', bottom: 24, right: 24, background: '#1a1a1a', color: '#fff', padding: '10px 20px', borderRadius: 8, fontSize: 13, zIndex: 9999, boxShadow: '0 4px 12px rgba(0,0,0,.2)'}}>
           {toastMsg}
@@ -181,6 +189,7 @@ export default function TicketDetail() {
           </div>
         </div>
         <span className={`bg ${statusColor}`} style={{fontSize: 13, padding: '6px 16px'}}>{ticket?.status?.replace(/_/g, ' ')}</span>
+        <PrintButton title={`Ticket — ${ticket?.ticketNumber || ticket?.id?.slice(0, 8) || ''}`} />
       </div>
 
       <div style={{display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 20}}>
