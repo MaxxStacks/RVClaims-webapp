@@ -47,7 +47,11 @@ interface AuthContextValue {
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
-const DEALER_SUB_ROLES: UserRole[] = ["dealer_owner", "dealer_staff", "technician", "public_bidder", "consignor"];
+const DEALER_SUB_ROLES: UserRole[] = [
+  "dealer_owner", "dealer_staff", "technician",
+  "service_manager", "shop_manager", "parts_dept",
+  "client", "public_bidder", "consignor",
+];
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const { user: clerkUser, isLoaded } = useUser();

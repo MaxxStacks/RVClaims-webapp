@@ -39,8 +39,17 @@ export function ProtectedRoute({
   requireDealershipId = false,
   children,
 }: ProtectedRouteProps) {
-  const { user, isLoading, isAuthenticated, isDevMode } = useAuth();
+  // Hooks must be called unconditionally — bypass check happens after.
+  const { user, isLoading, isAuthenticated } = useAuth();
   const [location] = useLocation();
+
+  // ── Dev bypass ───────────────────────────────────────────────────────────
+  // In development with ds360-dev-role set (via DevAccessV7), skip ALL auth
+  // checks — role, dealershipId, and authentication. Read localStorage directly
+  // to avoid any AuthProvider timing/Clerk-loading dependency.
+  if (import.meta.env.DEV && typeof window !== 'undefined' && localStorage.getItem('ds360-dev-role')) {
+    return <>{children}</>;
+  }
 
   // ── Loading ──────────────────────────────────────────────────────────────
   if (isLoading) {
@@ -63,9 +72,6 @@ export function ProtectedRoute({
 
   // ── Not signed in ────────────────────────────────────────────────────────
   if (!isAuthenticated || !user) {
-    // Dev mode: if localStorage has ds360-dev-role set but user is somehow
-    // null, redirect back to the dev selector rather than /login.
-    if (isDevMode) return <Redirect to="/dev-access-v7" />;
     return <Redirect to="/login" />;
   }
 
@@ -77,12 +83,7 @@ export function ProtectedRoute({
   }
 
   // ── Dealership isolation check ────────────────────────────────────────────
-  // In development with an active role override the URL uses a placeholder
-  // segment ("dealer", "client", etc.) rather than a real dealershipId, so
-  // the segment-vs-id comparison would always fail. Skip the check entirely.
-  if (requireDealershipId && !(import.meta.env.DEV && isDevMode)) {
-    // The dealerId is always the FIRST non-empty path segment for dealer
-    // portals (e.g. /dev-dealer-001/owner/dashboard).
+  if (requireDealershipId) {
     const urlDealerId = location.split('/').filter(Boolean)[0];
     if (urlDealerId && user.dealershipId && urlDealerId !== user.dealershipId) {
       return (

@@ -4,20 +4,26 @@ import logoLight from "@assets/DS360_logo_light.png";
 import type { UserRole } from "@shared/schema";
 
 // V7 URL targets — new route structure from Session 3
+// Dealer role portals use /:dealerId/role/... — dev uses the fixed "dev-dealer-001" ID
+// so these URLs bypass the /dealer/:rest* v6 catch-all and hit the v7 portal sections.
+const DEV_DEALER_ID = "dev-dealer-001";
 const PORTAL_TARGETS: Record<string, string> = {
-  operator_admin:    "/operator/admin/dashboard",
-  operator_staff:    "/operator/staff/dashboard",
-  dealer_owner:      "/dealer/owner/dashboard",
-  dealer_staff:      "/dealer/staff/dashboard",
-  client:            "/dealer/client/dashboard",
-  service_manager:   "/dealer/service-manager/dashboard",
-  shop_manager:      "/dealer/shop-manager/dashboard",
-  parts_dept:        "/dealer/parts-manager/dashboard",
-  financial_manager: "/dealer/financial-manager/dashboard",
-  shop_tech:         "/dealer/shop-tech/dashboard",
-  on_site_tech:      "/dealer/on-site-tech/dashboard",
-  public_bidder:     "/marketplace/bidder/dashboard",
-  consignor:         "/marketplace/consignor/dashboard",
+  operator_admin:       "/operator/admin/dashboard",
+  operator_staff:       "/operator/staff/dashboard",
+  dealer_owner:         `/${DEV_DEALER_ID}/owner/dashboard`,
+  dealer_staff:         `/${DEV_DEALER_ID}/staff/dashboard`,
+  client:               `/${DEV_DEALER_ID}/client/dashboard`,
+  service_manager:      `/${DEV_DEALER_ID}/service-manager/dashboard`,
+  shop_manager:         `/${DEV_DEALER_ID}/shop-manager/dashboard`,
+  parts_dept:           `/${DEV_DEALER_ID}/parts-manager/dashboard`,
+  financial_manager:    `/${DEV_DEALER_ID}/financial-manager/dashboard`,
+  shop_tech:            `/${DEV_DEALER_ID}/shop-tech/dashboard`,
+  on_site_tech:         `/${DEV_DEALER_ID}/on-site-tech/dashboard`,
+  public_bidder:        "/marketplace/bidder/dashboard",
+  consignor:            "/marketplace/consignor/dashboard",
+  independent_bidder:   "/marketplace/independent/dashboard",
+  marketplace_admin:    "/marketplace/admin/dashboard",
+  marketplace_staff:    "/marketplace/staff/dashboard",
 };
 
 interface RoleCard {
@@ -65,8 +71,11 @@ const SECTIONS: { label: string; color: string; bg: string; roles: RoleCard[] }[
     color: "#b45309",
     bg: "#fffbeb",
     roles: [
-      { role: "public_bidder", urlRole: "public_bidder", label: "Public Bidder", desc: "Marketplace browsing, auction bidding, escrow payments" },
-      { role: "consignor",     urlRole: "consignor",     label: "Consignor",     desc: "Consignment listings, offer management, payout tracking" },
+      { role: "public_bidder",      urlRole: "public_bidder",  label: "Public Bidder",      desc: "Marketplace browsing, auction bidding, escrow payments" },
+      { role: "consignor",          urlRole: "consignor",      label: "Consignor",           desc: "Consignment listings, offer management, payout tracking" },
+      { role: "independent_bidder", urlRole: "bidder",         label: "Independent Bidder",  desc: "Independent dealer bidding portal — verified dealer accounts only" },
+      { role: "marketplace_admin",  urlRole: "operator_admin", label: "Marketplace Admin",   desc: "Full marketplace oversight — members, listings, auctions, escrow, reports" },
+      { role: "marketplace_staff",  urlRole: "operator_staff", label: "Marketplace Staff",   desc: "Marketplace moderation — listings, bids, member management" },
     ],
   },
 ];
