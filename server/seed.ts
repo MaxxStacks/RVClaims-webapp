@@ -6,6 +6,7 @@ import { db } from "./db";
 import { users, dealerships, products, platformSettings } from "@shared/schema";
 import { hashPassword } from "./lib/auth";
 import { eq } from "drizzle-orm";
+import { seedModules } from "./db/seedModules";
 
 async function seed() {
   console.log("🌱 Seeding database...");
@@ -243,6 +244,9 @@ async function seed() {
     }
   }
   console.log("  ✅ Platform settings initialized");
+
+  // ==================== SERVICE MODULES ====================
+  await seedModules();
 
   console.log("\n🎉 Seed complete!\n");
   console.log("Login credentials:");

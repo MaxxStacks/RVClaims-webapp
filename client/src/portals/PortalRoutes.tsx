@@ -115,6 +115,7 @@ import Roadmap from '@/pages/exclusive/operator-admin/Roadmap';
 import AssistLiveChatPage from '@/pages/exclusive/operator-admin/AssistLiveChat';
 import AssistAnalyticsPage from '@/pages/exclusive/operator-admin/AssistAnalytics';
 import RemoteDashboard from '@/components/remote-support/RemoteDashboard';
+import ModuleManagement from '@/pages/exclusive/operator-admin/ModuleManagement';
 
 // ─── Exclusive: Dealer Owner ───────────────────────────────────────────────
 import PhotoUpload from '@/pages/exclusive/dealer-owner/PhotoUpload';
@@ -127,6 +128,8 @@ import AddStaff from '@/pages/exclusive/dealer-owner/AddStaff';
 import BrandingSettings from '@/pages/exclusive/dealer-owner/BrandingSettings';
 import BillingSettings from '@/pages/exclusive/dealer-owner/BillingSettings';
 import PortalSettings from '@/pages/exclusive/dealer-owner/PortalSettings';
+import ModuleCatalog from '@/pages/exclusive/dealer-owner/ModuleCatalog';
+import ModuleDetail from '@/pages/exclusive/dealer-owner/ModuleDetail';
 
 // ─── Exclusive: Client ─────────────────────────────────────────────────────
 import FIOffers from '@/pages/exclusive/client/FIOffers';
@@ -276,6 +279,7 @@ export function OperatorAdminPortalSection() {
       <Route path="/operator/admin/assist-live-chat">{() => <OperatorAdminLayout><AssistLiveChatPage /></OperatorAdminLayout>}</Route>
       <Route path="/operator/admin/assist-analytics">{() => <OperatorAdminLayout><AssistAnalyticsPage /></OperatorAdminLayout>}</Route>
       <Route path="/operator/admin/remote-support">{() => <OperatorAdminLayout><RemoteDashboard /></OperatorAdminLayout>}</Route>
+      <Route path="/operator/admin/modules">{() => <OperatorAdminLayout><ModuleManagement /></OperatorAdminLayout>}</Route>
       {/* Default */}
       <Route>{() => <Redirect to="/operator/admin/dashboard" />}</Route>
     </Switch>
@@ -364,6 +368,8 @@ export function DealerOwnerPortalSection() {
       <Route path="/:dealerId/owner/settings">{() => <DealerOwnerLayout><Settings /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/import">{() => <DealerOwnerLayout><ImportData /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/whats-new">{() => <DealerOwnerLayout><Changelog /></DealerOwnerLayout>}</Route>
+      <Route path="/:dealerId/owner/modules/:moduleSlug">{() => <DealerOwnerLayout><ModuleDetail /></DealerOwnerLayout>}</Route>
+      <Route path="/:dealerId/owner/modules">{() => <DealerOwnerLayout><ModuleCatalog /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/dashboard">{() => <DealerOwnerLayout><Dashboard /></DealerOwnerLayout>}</Route>
       <Route>{() => <DealerFallback role="owner" />}</Route>
     </Switch>

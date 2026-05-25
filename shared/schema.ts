@@ -241,6 +241,45 @@ export const dealershipModules = pgTable("dealership_modules", {
   index("dealership_modules_module_idx").on(table.moduleKey),
 ]);
 
+// ==================== 4D. SERVICE MODULES (Module Marketplace) ====================
+
+export const serviceModules = pgTable("service_modules", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: text("name").notNull(),
+  slug: text("slug").notNull().unique(),
+  tagline: text("tagline"),
+  description: text("description"),
+  features: jsonb("features").$type<string[]>().default(sql`'[]'::jsonb`),
+  icon: text("icon"),
+  category: text("category").notNull().default("Claims"), // Claims | Finance | Operations | Sales | Support
+  monthlyPrice: decimal("monthly_price", { precision: 10, scale: 2 }).default("0"),
+  perTransactionFee: decimal("per_transaction_fee", { precision: 10, scale: 2 }),
+  setupFee: decimal("setup_fee", { precision: 10, scale: 2 }),
+  isBase: boolean("is_base").notNull().default(false),
+  isActive: boolean("is_active").notNull().default(true),
+  sortOrder: integer("sort_order").notNull().default(0),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+}, (table) => [
+  index("service_modules_slug_idx").on(table.slug),
+  index("service_modules_category_idx").on(table.category),
+]);
+
+// ==================== 4E. DEALER MODULE SUBSCRIPTIONS ====================
+
+export const dealerModuleSubscriptions = pgTable("dealer_module_subscriptions", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  dealershipId: uuid("dealership_id").notNull(),
+  moduleId: uuid("module_id").notNull(),
+  status: text("status").notNull().default("active"), // active | paused | cancelled
+  subscribedAt: timestamp("subscribed_at").defaultNow().notNull(),
+  cancelledAt: timestamp("cancelled_at"),
+  monthlyRate: decimal("monthly_rate", { precision: 10, scale: 2 }),
+}, (table) => [
+  index("dealer_module_subs_dealership_idx").on(table.dealershipId),
+  index("dealer_module_subs_module_idx").on(table.moduleId),
+]);
+
 // ==================== 5. UNITS ====================
 
 export const units = pgTable("units", {

@@ -231,6 +231,11 @@ export default function OperatorAdminLayout({ children }: Props) {
             <div className="nav-label">{t('nav.crm')}</div>
             <Link className={`nav-item ${isActive('crm') ? 'active' : ''}`} to="crm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/></svg>{t('nav.crm')}</Link>
           </div>
+          {/* Platform section — Module Catalog management */}
+          <div className="nav-section">
+            <div className="nav-label">Platform</div>
+            <Link className={`nav-item ${isActive('modules') ? 'active' : ''}`} to="modules"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>{t('modules.moduleManagement')}</Link>
+          </div>
           <div className="nav-section">
             <div className="nav-label">{t('nav.system')}</div>
             <Link className={`nav-item ${isActive('roadmap') ? 'active' : ''}`} to="roadmap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21 3 6"/><line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/></svg>{t('nav.roadmap')}</Link>

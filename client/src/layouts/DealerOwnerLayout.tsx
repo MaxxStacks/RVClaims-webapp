@@ -3,6 +3,7 @@ import { Link, useLocation } from 'wouter';
 import { useAuth } from '@/hooks/use-auth';
 import { useLanguage } from '@/hooks/use-language';
 import { apiFetch } from '@/lib/api';
+import { useQuery } from '@tanstack/react-query';
 import ds360Icon from '@assets/ds360_favicon.png';
 import type { Language } from '@/lib/i18n';
 import { MobileBottomNav } from '@/components/MobileBottomNav';
@@ -64,8 +65,27 @@ export default function DealerOwnerLayout({ children }: Props) {
     } catch {}
   };
   const unreadCount = notifItems.filter(n => !n.isRead).length;
-  const { modules: enabledModules, loading: modulesLoading } = useEnabledModules();
-  const mod = (key: string) => modulesLoading || hasModule(enabledModules, key);
+  const { modules: enabledModules, loading: modulesLoading, isFailOpen } = useEnabledModules();
+  const mod = (key: string) => modulesLoading || hasModule(enabledModules, key, isFailOpen);
+
+  // DS360 Services section — active subscriptions + total module count
+  const dealershipId = user?.dealershipId as string | undefined;
+  const { data: subsData } = useQuery({
+    queryKey: ['dealerSubscriptions', dealershipId],
+    queryFn: () => apiFetch<{ subscriptions: { id: string; moduleSlug: string | null; moduleName: string | null }[] }>(
+      `/api/dealerships/${dealershipId}/subscriptions`
+    ),
+    enabled: !!dealershipId,
+    staleTime: 5 * 60 * 1000,
+  });
+  const { data: allModulesData } = useQuery({
+    queryKey: ['serviceModules'],
+    queryFn: () => apiFetch<{ modules: { id: string; isBase: boolean }[] }>('/api/modules'),
+    staleTime: 5 * 60 * 1000,
+  });
+  const activeSubs = (subsData?.subscriptions || []).filter(s => s.moduleName);
+  const totalModules = allModulesData?.modules?.filter(m => !m.isBase).length ?? 0;
+  const moreAvailable = Math.max(0, totalModules - activeSubs.length);
 
   return (
     <>
@@ -115,6 +135,41 @@ export default function DealerOwnerLayout({ children }: Props) {
             <Link className={`nav-item ${isActive('invoices') ? 'active' : ''}`} to="invoices"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>{t('nav.invoices')}</Link>
             <Link className={`nav-item ${isActive('billing') ? 'active' : ''}`} to="billing"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>{t('nav.billing')}</Link>
           </div>
+          {/* ─── DS360 Services section ─────────────────────────────── */}
+          <div className="nav-section" style={{ borderTop: '1px solid var(--border, #e8e8e8)', paddingTop: 8, marginTop: 4 }}>
+            <div className="nav-label" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+              {t('nav.ds360Services')}
+            </div>
+            <Link className={`nav-item ${isActive('modules') ? 'active' : ''}`} to="modules">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+              {t('nav.browseServices')}
+            </Link>
+            {activeSubs.map((sub) => {
+              const slug = sub.moduleSlug || '';
+              return (
+                <Link
+                  key={sub.id}
+                  className={`nav-item ${isActive('modules/' + slug) ? 'active' : ''}`}
+                  to={`modules/${slug}`}
+                  style={{ paddingLeft: sidebarCollapsed ? undefined : 24 }}
+                >
+                  <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#22c55e', flexShrink: 0, display: 'inline-block' }} />
+                  <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{sub.moduleName}</span>
+                </Link>
+              );
+            })}
+            {moreAvailable > 0 && !sidebarCollapsed && (
+              <Link
+                className="nav-item"
+                to="modules"
+                style={{ fontSize: 11, color: '#033280', fontWeight: 600, paddingLeft: 24 }}
+              >
+                {moreAvailable} {t('nav.moreAvailable')}
+              </Link>
+            )}
+          </div>
+
           <div className="nav-section">
             <div className="nav-label">{t('nav.settings')}</div>
             <Link className={`nav-item ${isActive('notifications') ? 'active' : ''}`} to="notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>{t('nav.notifications')}</Link>

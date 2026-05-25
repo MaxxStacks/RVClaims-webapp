@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'wouter';
 import { useAuth } from '@/hooks/use-auth';
 import { apiFetch } from '@/lib/api';
+import { useQuery } from '@tanstack/react-query';
 import ds360Icon from '@assets/ds360_favicon.png';
 import { useLanguage } from '@/hooks/use-language';
 import type { Language } from '@/lib/i18n';
@@ -64,8 +65,20 @@ export default function DealerStaffLayout({ children }: Props) {
     } catch {}
   };
   const unreadCount = notifItems.filter(n => !n.isRead).length;
-  const { modules: enabledModules, loading: modulesLoading } = useEnabledModules();
-  const mod = (key: string) => modulesLoading || hasModule(enabledModules, key);
+  const { modules: enabledModules, loading: modulesLoading, isFailOpen } = useEnabledModules();
+  const mod = (key: string) => modulesLoading || hasModule(enabledModules, key, isFailOpen);
+
+  // DS360 Services — show active subscriptions for staff (read-only, no browse link)
+  const dealershipId = user?.dealershipId as string | undefined;
+  const { data: subsData } = useQuery({
+    queryKey: ['dealerSubscriptions', dealershipId],
+    queryFn: () => apiFetch<{ subscriptions: { id: string; moduleSlug: string | null; moduleName: string | null }[] }>(
+      `/api/dealerships/${dealershipId}/subscriptions`
+    ),
+    enabled: !!dealershipId,
+    staleTime: 5 * 60 * 1000,
+  });
+  const activeSubs = (subsData?.subscriptions || []).filter(s => s.moduleName);
 
   return (
     <>
@@ -96,6 +109,22 @@ export default function DealerStaffLayout({ children }: Props) {
             <Link className={`nav-item ${isActive('documents') ? 'active' : ''}`} to="documents"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>{t('nav.documents')}</Link>
             <Link className={`nav-item ${isActive('messages') ? 'active' : ''}`} to="messages"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>{t('nav.messages')}</Link>
           </div>
+          {/* DS360 Services — staff sees active modules only, no browse/subscribe */}
+          {activeSubs.length > 0 && (
+            <div className="nav-section" style={{ borderTop: '1px solid var(--border, #e8e8e8)', paddingTop: 8, marginTop: 4 }}>
+              <div className="nav-label" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                {t('nav.ds360Services')}
+              </div>
+              {activeSubs.map((sub) => (
+                <div key={sub.id} className="nav-item" style={{ cursor: 'default', opacity: 0.85 }}>
+                  <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#22c55e', flexShrink: 0, display: 'inline-block' }} />
+                  <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{sub.moduleName}</span>
+                </div>
+              ))}
+            </div>
+          )}
+
           <div className="nav-section">
             <div className="nav-label">{t('nav.system')}</div>
             <Link className={`nav-item ${isActive('notifications') ? 'active' : ''}`} to="notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>{t('nav.notifications')}</Link>
