@@ -1768,3 +1768,28 @@ export type WalletFundingTier = typeof walletFundingTiers.$inferSelect;
 export type InsertDealerWallet = typeof dealerWallets.$inferInsert;
 export type InsertWalletTransaction = typeof walletTransactions.$inferInsert;
 export type InsertWalletFundingTier = typeof walletFundingTiers.$inferInsert;
+
+// ==================== SIGNATURES ====================
+
+export const SIGNATURE_PARENT_TYPES = [
+  "pdi", "work_order", "invoice", "deal_jacket", "consignment", "custom",
+] as const;
+
+export const signatures = pgTable("signatures", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  parentType: text("parent_type", { enum: SIGNATURE_PARENT_TYPES }).notNull(),
+  parentId: uuid("parent_id").notNull(),
+  signerName: text("signer_name").notNull(),
+  signerRole: text("signer_role").notNull(),
+  signatureImageUrl: text("signature_image_url").notNull(),
+  timestamp: timestamp("timestamp", { withTimezone: true }).defaultNow(),
+  ipAddress: text("ip_address"),
+  userAgent: text("user_agent"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+}, (table) => [
+  index("signatures_parent_idx").on(table.parentType, table.parentId),
+]);
+
+export const insertSignatureSchema = createInsertSchema(signatures).omit({ id: true, createdAt: true });
+export type Signature = typeof signatures.$inferSelect;
+export type InsertSignature = z.infer<typeof insertSignatureSchema>;

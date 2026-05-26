@@ -5,6 +5,9 @@ import { useAuth } from '@/hooks/use-auth';
 import { BarcodeDisplay, QRCodeDisplay, generateBarcodeString } from '@/lib/barcode';
 import PrintButton from '@/components/PrintButton';
 import PrintHeader from '@/components/PrintHeader';
+import SignatureCapture, { type SignatureData } from '@/components/SignatureCapture';
+import SignatureDisplay from '@/components/SignatureDisplay';
+import { useSignatures, useSaveSignature } from '@/hooks/useSignatures';
 
 const STATUS_LABELS: Record<string, string> = {
   unassigned: 'Unassigned', assigned: 'Assigned', en_route: 'En Route',
@@ -70,6 +73,28 @@ export default function WorkOrderDetail() {
   const [timeHours, setTimeHours] = useState('');
   const [timeLogging, setTimeLogging] = useState(false);
   const [msg, setMsg] = useState('');
+
+  // Signatures
+  const { data: woSignatures = [] } = useSignatures('work_order', workOrderId ?? undefined);
+  const saveSignature = useSaveSignature();
+
+  const handleSignatureComplete = (signerRoleKey: string) => (data: SignatureData) => {
+    if (!workOrderId) return;
+    saveSignature.mutate(
+      {
+        parentType: 'work_order',
+        parentId: workOrderId,
+        signerName: data.signerName,
+        signerRole: signerRoleKey,
+        signatureImage: data.signatureImageUrl,
+        userAgent: data.userAgent,
+      },
+      {
+        onSuccess: () => showMsg('Signature saved.'),
+        onError: () => showMsg('Failed to save signature.'),
+      }
+    );
+  };
 
   const loadData = async () => {
     if (!workOrderId) return;
@@ -364,7 +389,69 @@ export default function WorkOrderDetail() {
         </div>
       </div>
 
-      {/* Signature section — visible only in print */}
+      {/* ── DIGITAL SIGNATURES ───────────────────────────────────────── */}
+
+      {/* Customer Authorization — shown for authorization purpose */}
+      <div className="pn" style={{ marginTop: 20, marginBottom: 16 }}>
+        <div className="pn-h">
+          <span className="pn-t">Customer Authorization</span>
+          <span style={{ fontSize: 11, color: '#888' }}>Authorize repair work</span>
+        </div>
+        <div style={{ padding: '16px 20px' }}>
+          {woSignatures.filter(s => s.signerRole === 'customer_auth').length > 0 ? (
+            <SignatureDisplay
+              signatures={woSignatures.filter(s => s.signerRole === 'customer_auth')}
+              title="Customer has authorized the work"
+            />
+          ) : (
+            <SignatureCapture
+              signerRole="customer_auth"
+              legalText="By signing, I authorize the dealership to perform the described repair work on my unit."
+              onSignatureComplete={handleSignatureComplete('customer_auth')}
+            />
+          )}
+        </div>
+      </div>
+
+      {/* Completion Sign-Off — shown when work is completed */}
+      {(wo.status === 'completed' || wo.status === 'invoiced' || woSignatures.filter(s => s.signerRole === 'technician' || s.signerRole === 'customer_completion').length > 0) && (
+        <div className="pn" style={{ marginBottom: 16 }}>
+          <div className="pn-h">
+            <span className="pn-t">Completion Sign-Off</span>
+            <span style={{ fontSize: 11, color: '#888' }}>Work completion confirmation</span>
+          </div>
+          <div style={{ padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: 20 }}>
+            {/* Technician sign-off */}
+            <div>
+              <div style={{ fontSize: 12, fontWeight: 600, color: '#374151', marginBottom: 10 }}>Technician</div>
+              {woSignatures.filter(s => s.signerRole === 'technician').length > 0 ? (
+                <SignatureDisplay signatures={woSignatures.filter(s => s.signerRole === 'technician')} />
+              ) : (
+                <SignatureCapture
+                  signerRole="technician"
+                  legalText="I confirm the described work has been completed as described."
+                  onSignatureComplete={handleSignatureComplete('technician')}
+                />
+              )}
+            </div>
+            {/* Customer sign-off */}
+            <div>
+              <div style={{ fontSize: 12, fontWeight: 600, color: '#374151', marginBottom: 10 }}>Customer</div>
+              {woSignatures.filter(s => s.signerRole === 'customer_completion').length > 0 ? (
+                <SignatureDisplay signatures={woSignatures.filter(s => s.signerRole === 'customer_completion')} />
+              ) : (
+                <SignatureCapture
+                  signerRole="customer_completion"
+                  legalText="I confirm the described work has been completed as described and I am satisfied with the results."
+                  onSignatureComplete={handleSignatureComplete('customer_completion')}
+                />
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Signature section — visible only in print (legacy blank lines replaced by digital above) */}
       <div className="print-only" style={{ marginTop: 32, display: 'flex', gap: 64 }}>
         <div>
           <div style={{ fontSize: '10pt', fontWeight: 600, marginBottom: 4 }}>Technician Signature</div>

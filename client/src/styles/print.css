@@ -237,6 +237,21 @@
   }
 }
 
+  /* ── DIGITAL SIGNATURES ──────────────────────────────────── */
+  /* Hide the live capture widget — only the stored display is printed */
+  .signature-capture-wrapper { display: none !important; }
+
+  /* Show stored signature display block */
+  .signature-display {
+    display: block !important;
+    page-break-inside: avoid;
+  }
+
+  .signature-display img { max-height: 80px; }
+
+  .sig-meta { font-size: 9pt; color: #555 !important; }
+}
+
 /* ── SCREEN: hide print-only elements ─────────────────────── */
 @media screen {
   .print-header { display: none; }

@@ -5,6 +5,9 @@ import { useAuth } from '@/hooks/use-auth';
 import { BarcodeDisplay, QRCodeDisplay, generateBarcodeString } from '@/lib/barcode';
 import PrintButton from '@/components/PrintButton';
 import PrintHeader from '@/components/PrintHeader';
+import SignatureCapture, { type SignatureData } from '@/components/SignatureCapture';
+import SignatureDisplay from '@/components/SignatureDisplay';
+import { useSignatures, useSaveSignature } from '@/hooks/useSignatures';
 
 interface InvoiceLineItem {
   id: string;
@@ -61,6 +64,28 @@ export default function InvoiceDetail() {
   const [isLoading, setIsLoading] = useState(true);
   const [dataError, setDataError] = useState<string | null>(null);
   const [actionLoading, setActionLoading] = useState(false);
+
+  // Signatures
+  const { data: invoiceSignatures = [] } = useSignatures('invoice', invoice?.id);
+  const saveSignature = useSaveSignature();
+
+  const handleInvoiceSignatureComplete = (data: SignatureData) => {
+    if (!invoice?.id) return;
+    saveSignature.mutate(
+      {
+        parentType: 'invoice',
+        parentId: invoice.id,
+        signerName: data.signerName,
+        signerRole: 'customer',
+        signatureImage: data.signatureImageUrl,
+        userAgent: data.userAgent,
+      },
+      {
+        onSuccess: () => showToast('Signature saved.'),
+        onError: () => showToast('Failed to save signature.'),
+      }
+    );
+  };
 
   // Toast
   const [toastMsg, setToastMsg] = useState('');
@@ -390,6 +415,26 @@ export default function InvoiceDetail() {
               </div>
             </div>
           )}
+
+          {/* ── Customer Acknowledgment Signature ── */}
+          <div className="cd-section" style={{ marginTop: 12 }}>
+            <div className="cd-section-h">Customer Acknowledgment</div>
+            <div style={{ padding: '14px 16px' }}>
+              {invoiceSignatures.filter(s => s.signerRole === 'customer').length > 0 ? (
+                <SignatureDisplay
+                  signatures={invoiceSignatures.filter(s => s.signerRole === 'customer')}
+                  title="Acknowledged"
+                />
+              ) : (
+                <SignatureCapture
+                  signerRole="customer"
+                  legalText="I acknowledge the charges listed on this invoice are correct and authorize payment."
+                  onSignatureComplete={handleInvoiceSignatureComplete}
+                  required={false}
+                />
+              )}
+            </div>
+          </div>
 
           <div className="cd-section">
             <div className="cd-section-h">Financials</div>
