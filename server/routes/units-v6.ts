@@ -3,6 +3,7 @@ import { db } from "../db";
 import { units, claims, v6Uploads, documents, dealerships, users } from "@shared/schema";
 import { eq, and, or, desc, ilike } from "drizzle-orm";
 import { requireAuth } from "../middleware/auth";
+import { createDealJacket } from "../lib/dealJacket";
 
 const router = Router();
 router.use(requireAuth);
@@ -181,6 +182,23 @@ router.patch("/:id", async (req: Request, res: Response) => {
 
   await db.update(units).set(updates).where(eq(units.id, unit.id));
   const [updated] = await db.select().from(units).where(eq(units.id, unit.id)).limit(1);
+
+  // Auto-create deal jacket when unit is marked as sold with a customer
+  if (updates.status === "sold" && updated.customerId && updated.dealershipId) {
+    try {
+      await createDealJacket(
+        updated.id,
+        updated.customerId,
+        updated.dealershipId,
+        u.id,
+        updated.soldDate || new Date().toISOString().split("T")[0]
+      );
+    } catch (err) {
+      // Non-blocking — log but don't fail the update
+      console.error("Auto-create deal jacket on PATCH failed (non-blocking):", err);
+    }
+  }
+
   res.json({ ...updated, make: updated.manufacturer });
 });
 
@@ -206,12 +224,33 @@ router.post("/:id/assign-customer", async (req: Request, res: Response) => {
     return res.status(403).json({ error: "Forbidden" });
   }
   const { customerId } = req.body;
+  const unitId = req.params.id;
+
+  const [existingUnit] = await db.select().from(units).where(eq(units.id, unitId)).limit(1);
+
   await db.update(units).set({
     customerId,
     soldDate: new Date().toISOString().split("T")[0],
     status: "sold",
     updatedAt: new Date(),
-  }).where(eq(units.id, req.params.id));
+  }).where(eq(units.id, unitId));
+
+  // Auto-create deal jacket when unit is assigned to customer (sold)
+  if (customerId && existingUnit?.dealershipId) {
+    try {
+      await createDealJacket(
+        unitId,
+        customerId,
+        existingUnit.dealershipId,
+        u.id,
+        new Date().toISOString().split("T")[0]
+      );
+    } catch (err) {
+      // Non-blocking — log but don't fail the status update
+      console.error("Auto-create deal jacket failed (non-blocking):", err);
+    }
+  }
+
   res.json({ ok: true });
 });
 

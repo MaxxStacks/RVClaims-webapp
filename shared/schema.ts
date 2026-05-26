@@ -1853,3 +1853,78 @@ export type PdiInspection = typeof pdiInspections.$inferSelect;
 export type InsertPdiInspection = z.infer<typeof insertPdiInspectionSchema>;
 export type PdiChecklistItem = typeof pdiChecklistItems.$inferSelect;
 export type InsertPdiChecklistItem = z.infer<typeof insertPdiChecklistItemSchema>;
+
+// ==================== DEAL JACKET TABLES ====================
+
+export const DEAL_JACKET_STATUSES = ["incomplete", "complete"] as const;
+export const DEAL_JACKET_DOCUMENT_TYPES = [
+  "bill_of_sale", "financing_agreement", "fi_acceptance", "manufacturer_warranty",
+  "extended_warranty", "trade_in_appraisal", "pdi_signoff", "customer_consent",
+  "insurance", "registration", "custom",
+] as const;
+export const DEAL_JACKET_SOURCE_TYPES = [
+  "uploaded", "linked_document", "linked_fi_deal", "linked_warranty",
+  "linked_pdi", "linked_financing",
+] as const;
+export const DEAL_JACKET_DOC_STATUSES = ["present", "missing", "pending"] as const;
+export const DEAL_JACKET_PERMISSION_SECTIONS = [
+  "full_jacket", "warranty_docs", "financing_details", "fi_products",
+  "pdi_record", "upload_documents", "photos",
+] as const;
+
+export const dealJackets = pgTable("deal_jackets", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  unitId: uuid("unit_id").notNull(),
+  customerId: uuid("customer_id").notNull(),
+  dealershipId: uuid("dealership_id").notNull(),
+  saleDate: date("sale_date"),
+  status: text("status", { enum: DEAL_JACKET_STATUSES }).notNull().default("incomplete"),
+  completenessScore: integer("completeness_score").notNull().default(0),
+  notes: text("notes"),
+  createdBy: uuid("created_by"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+}, (table) => [
+  index("deal_jackets_unit_idx").on(table.unitId),
+  index("deal_jackets_customer_idx").on(table.customerId),
+  index("deal_jackets_dealership_idx").on(table.dealershipId),
+]);
+
+export const dealJacketDocuments = pgTable("deal_jacket_documents", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  jacketId: uuid("jacket_id").notNull(),
+  documentType: text("document_type", { enum: DEAL_JACKET_DOCUMENT_TYPES }).notNull(),
+  documentName: text("document_name").notNull(),
+  sourceType: text("source_type", { enum: DEAL_JACKET_SOURCE_TYPES }).notNull(),
+  sourceId: uuid("source_id"),
+  fileUrl: text("file_url"),
+  isRequired: boolean("is_required").notNull().default(false),
+  status: text("status", { enum: DEAL_JACKET_DOC_STATUSES }).notNull().default("missing"),
+  uploadedBy: uuid("uploaded_by"),
+  uploadedAt: timestamp("uploaded_at"),
+}, (table) => [
+  index("deal_jacket_docs_jacket_idx").on(table.jacketId),
+]);
+
+export const dealJacketPermissions = pgTable("deal_jacket_permissions", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  dealershipId: uuid("dealership_id").notNull(),
+  role: text("role").notNull(),
+  section: text("section", { enum: DEAL_JACKET_PERMISSION_SECTIONS }).notNull(),
+  allowed: boolean("allowed").notNull().default(false),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+}, (table) => [
+  index("deal_jacket_perms_dealership_idx").on(table.dealershipId),
+  index("deal_jacket_perms_role_idx").on(table.role),
+]);
+
+export const insertDealJacketSchema = createInsertSchema(dealJackets).omit({ id: true, createdAt: true, updatedAt: true });
+export const insertDealJacketDocumentSchema = createInsertSchema(dealJacketDocuments).omit({ id: true });
+export const insertDealJacketPermissionSchema = createInsertSchema(dealJacketPermissions).omit({ id: true, updatedAt: true });
+
+export type DealJacket = typeof dealJackets.$inferSelect;
+export type InsertDealJacket = z.infer<typeof insertDealJacketSchema>;
+export type DealJacketDocument = typeof dealJacketDocuments.$inferSelect;
+export type InsertDealJacketDocument = z.infer<typeof insertDealJacketDocumentSchema>;
+export type DealJacketPermission = typeof dealJacketPermissions.$inferSelect;
+export type InsertDealJacketPermission = z.infer<typeof insertDealJacketPermissionSchema>;

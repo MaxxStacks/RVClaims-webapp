@@ -249,6 +249,27 @@
   .signature-display img { max-height: 80px; }
 
   .sig-meta { font-size: 9pt; color: #555 !important; }
+
+  /* ── DEAL JACKET ──────────────────────────────────────────── */
+  /* Ensure photo section canvases (barcodes/QR) render in print */
+  .dj-photo-section canvas { display: block !important; }
+
+  /* Missing required doc rows — keep amber tint in print */
+  .dj-doc-row-missing { background: #fff8e1 !important; }
+
+  /* Completeness bar — always render as a block in print */
+  .dj-completeness-bar { display: block !important; }
+
+  /* Deal jacket header — keep brand colour */
+  .dj-header-title { color: #033280 !important; font-size: 16pt; font-weight: 700; }
+
+  /* Hide upload/action buttons inside deal jacket */
+  .dj-upload-btn,
+  .dj-add-doc-btn { display: none !important; }
+
+  /* Doc table — full width */
+  .dj-doc-table { width: 100% !important; page-break-inside: auto; }
+  .dj-doc-table tr { page-break-inside: avoid; }
 }
 
 /* ── SCREEN: hide print-only elements ─────────────────────── */

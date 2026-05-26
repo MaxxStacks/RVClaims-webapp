@@ -1,10 +1,82 @@
-import { useState, lazy, Suspense } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
+import { apiFetch } from '@/lib/api';
+import { useAuth } from '@/hooks/use-auth';
 
 const ScreenShareGenerator = lazy(() => import('@/components/remote-support/ScreenShareGenerator'));
 const DocumentTransfer = lazy(() => import('@/components/remote-support/DocumentTransfer'));
 
+const DJ_ROLES = ['financial_manager', 'shop_manager', 'service_manager', 'dealer_staff', 'technician'] as const;
+const DJ_SECTIONS = ['full_jacket', 'warranty_docs', 'financing_details', 'fi_products', 'pdi_record', 'upload_documents', 'photos'] as const;
+const DJ_SECTION_LABELS: Record<string, string> = {
+  full_jacket: 'Full Jacket', warranty_docs: 'Warranty Docs', financing_details: 'Financing Details',
+  fi_products: 'F&I Products', pdi_record: 'PDI Record', upload_documents: 'Upload Docs', photos: 'Photos',
+};
+const DJ_ROLE_LABELS: Record<string, string> = {
+  financial_manager: 'Finance Mgr', shop_manager: 'Shop Mgr', service_manager: 'Service Mgr',
+  dealer_staff: 'Staff', technician: 'Technician',
+};
+
 export default function DealerSettings() {
-  const [tab, setTab] = useState<'ds-profile'|'ds-security'|'ds-dealership'|'ds-subscription'|'ds-notifpref'|'ds-remote'>('ds-profile');
+  const [tab, setTab] = useState<'ds-profile'|'ds-security'|'ds-dealership'|'ds-subscription'|'ds-notifpref'|'ds-remote'|'ds-dj-perms'>('ds-profile');
+  const { user } = useAuth();
+  const [djPerms, setDjPerms] = useState<Record<string, Record<string, boolean>>>({});
+  const [djPermsLoading, setDjPermsLoading] = useState(false);
+  const [djPermsSaving, setDjPermsSaving] = useState(false);
+
+  useEffect(() => {
+    if (tab !== 'ds-dj-perms' || !user?.dealershipId) return;
+    setDjPermsLoading(true);
+    apiFetch<any>(`/api/deal-jackets/permissions-by-dealership?dealershipId=${user.dealershipId}`)
+      .then(d => {
+        const perms: Record<string, Record<string, boolean>> = {};
+        (d.permissions || []).forEach((p: any) => {
+          if (!perms[p.role]) perms[p.role] = {};
+          perms[p.role][p.section] = p.allowed;
+        });
+        setDjPerms(perms);
+      })
+      .catch(() => {
+        // Fall back to defaults (no rows seeded yet)
+        const defaults: Record<string, Record<string, boolean>> = {};
+        DJ_ROLES.forEach(role => {
+          defaults[role] = {};
+          DJ_SECTIONS.forEach(sec => { defaults[role][sec] = false; });
+        });
+        setDjPerms(defaults);
+      })
+      .finally(() => setDjPermsLoading(false));
+  }, [tab, user?.dealershipId]);
+
+  const toggleDjPerm = (role: string, section: string) => {
+    setDjPerms(prev => ({
+      ...prev,
+      [role]: { ...prev[role], [section]: !prev[role]?.[section] },
+    }));
+  };
+
+  const saveDjPerms = async () => {
+    if (!user?.dealershipId) return;
+    setDjPermsSaving(true);
+    try {
+      const calls: Promise<any>[] = [];
+      DJ_ROLES.forEach(role => {
+        DJ_SECTIONS.forEach(sec => {
+          calls.push(
+            apiFetch('/api/deal-jackets/permissions', {
+              method: 'PATCH',
+              body: JSON.stringify({
+                dealershipId: user.dealershipId,
+                role, section: sec, allowed: djPerms[role]?.[sec] || false,
+              }),
+            })
+          );
+        });
+      });
+      await Promise.all(calls);
+      showToast('Permissions saved');
+    } catch { showToast('Failed to save permissions'); }
+    setDjPermsSaving(false);
+  };
   const [showShare, setShowShare] = useState(false);
   const [toast, setToast] = useState('');
   const showToast = (msg: string) => { setToast(msg); setTimeout(() => setToast(''), 2800); };
@@ -23,6 +95,8 @@ export default function DealerSettings() {
           <div className={`settings-link ${tab === 'ds-dealership' ? 'active' : ''}`} onClick={() => setTab('ds-dealership')}>Dealership Account</div>
           <div className={`settings-link ${tab === 'ds-subscription' ? 'active' : ''}`} onClick={() => setTab('ds-subscription')}>Subscription & Billing</div>
           <div className={`settings-link ${tab === 'ds-notifpref' ? 'active' : ''}`} onClick={() => setTab('ds-notifpref')}>Notification Preferences</div>
+          <div style={{fontSize: 11, textTransform: 'uppercase', letterSpacing: 1, color: '#bbb', fontWeight: 600, padding: '16px 0 8px', borderTop: '1px solid #f0f0f0', marginTop: 8}}>Deal Jackets</div>
+          <div className={`settings-link ${tab === 'ds-dj-perms' ? 'active' : ''}`} onClick={() => setTab('ds-dj-perms')}>Permissions</div>
           <div style={{fontSize: 11, textTransform: 'uppercase', letterSpacing: 1, color: '#bbb', fontWeight: 600, padding: '16px 0 8px', borderTop: '1px solid #f0f0f0', marginTop: 8}}>Support</div>
           <div className={`settings-link ${tab === 'ds-remote' ? 'active' : ''}`} onClick={() => { setTab('ds-remote'); fetch('/api/remote/dealer/session-history').then(r => r.json()).then(d => { if (d.success) setSessionHistory(d.sessions ?? []); }).catch(() => {}); }}>Remote Support</div>
         </div>
@@ -289,6 +363,61 @@ export default function DealerSettings() {
                     </tbody>
                   </table>
                 )}
+              </div>
+            </div>
+          )}
+
+          {tab === 'ds-dj-perms' && (
+            <div className="pn">
+              <div className="pn-h">
+                <span className="pn-t">Deal Jacket Permissions</span>
+                <span style={{fontSize: 12, color: '#888'}}>Control which staff roles can access each section of a deal jacket. Dealer Owner always has full access.</span>
+              </div>
+              <div style={{padding: '16px 20px'}}>
+                {djPermsLoading ? (
+                  <div style={{color: '#888', fontSize: 13}}>Loading permissions…</div>
+                ) : (
+                  <div style={{overflowX: 'auto'}}>
+                    <table style={{width: '100%', borderCollapse: 'collapse', fontSize: 12}}>
+                      <thead>
+                        <tr style={{background: '#f8f9fb'}}>
+                          <th style={{padding: '8px 12px', textAlign: 'left', fontWeight: 700, color: '#555', borderBottom: '1px solid #e8e8e8'}}>Section</th>
+                          {DJ_ROLES.map(role => (
+                            <th key={role} style={{padding: '8px 12px', textAlign: 'center', fontWeight: 700, color: '#555', borderBottom: '1px solid #e8e8e8', whiteSpace: 'nowrap'}}>
+                              {DJ_ROLE_LABELS[role] || role}
+                            </th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {DJ_SECTIONS.map(section => (
+                          <tr key={section} style={{borderBottom: '1px solid #f0f0f0'}}>
+                            <td style={{padding: '8px 12px', fontWeight: 600, color: '#374151'}}>{DJ_SECTION_LABELS[section] || section}</td>
+                            {DJ_ROLES.map(role => (
+                              <td key={role} style={{padding: '8px 12px', textAlign: 'center'}}>
+                                <input
+                                  type="checkbox"
+                                  checked={djPerms[role]?.[section] || false}
+                                  onChange={() => toggleDjPerm(role, section)}
+                                  style={{width: 16, height: 16, cursor: 'pointer', accentColor: '#033280'}}
+                                />
+                              </td>
+                            ))}
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+                <div style={{marginTop: 16}}>
+                  <button
+                    className="btn btn-p"
+                    onClick={saveDjPerms}
+                    disabled={djPermsSaving}
+                  >
+                    {djPermsSaving ? 'Saving…' : 'Save Permissions'}
+                  </button>
+                </div>
               </div>
             </div>
           )}

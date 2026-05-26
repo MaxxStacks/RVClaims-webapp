@@ -16,6 +16,7 @@ const TYPE_CODES: Record<string, string> = {
   warranty: 'WRN',
   partsOrder: 'PRT',
   pdi: 'PDI',
+  deal_jacket: 'DJK',
 };
 
 // ─── URL path map ─────────────────────────────────────────────────────────────
@@ -28,6 +29,7 @@ const URL_PATHS: Record<string, string> = {
   warranty: 'warranties',
   partsOrder: 'parts-orders',
   pdi: 'pdi',
+  deal_jacket: 'deal-jackets',
 };
 
 // ─── Generate deterministic barcode string ────────────────────────────────────
@@ -55,7 +57,7 @@ export function generateQRUrl(entityType: string, entityId: string): string {
 export function parseDS360Barcode(
   text: string
 ): { type: string; shortId: string; raw: string } | null {
-  const match = text.match(/DS360-(UNIT|CLM|WO|INV|DOC|WRN|PRT|PDI)-([A-Z0-9]{8})-\d{2}/);
+  const match = text.match(/DS360-(UNIT|CLM|WO|INV|DOC|WRN|PRT|PDI|DJK)-([A-Z0-9]{8})-\d{2}/);
   if (!match) return null;
 
   const typeCodeMap: Record<string, string> = {
@@ -67,6 +69,7 @@ export function parseDS360Barcode(
     WRN: 'warranty',
     PRT: 'partsOrder',
     PDI: 'pdi',
+    DJK: 'deal_jacket',
   };
 
   return {

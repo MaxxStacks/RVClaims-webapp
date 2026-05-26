@@ -7,6 +7,42 @@ import { BarcodeDisplay, QRCodeDisplay, generateBarcodeString } from '@/lib/barc
 import PrintButton from '@/components/PrintButton';
 import PrintHeader from '@/components/PrintHeader';
 
+// Deal jacket inline helper
+function DealJacketCard({ unitId, location, navigate }: { unitId: string; location: string; navigate: (to: string) => void }) {
+  const [jackets, setJackets] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    apiFetch<any>(`/api/deal-jackets/by-unit/${unitId}`)
+      .then(d => { setJackets(Array.isArray(d.jackets) ? d.jackets : []); setLoading(false); })
+      .catch(() => setLoading(false));
+  }, [unitId]);
+  const openJacket = (jk: any) => {
+    const segs = location.split('/').filter(Boolean);
+    const base = segs.length >= 2 ? `/${segs[0]}/${segs[1]}` : '';
+    navigate(`${base}/customers/${jk.customerId}/jacket/${jk.id}`);
+  };
+  if (loading) return null;
+  if (jackets.length === 0) return null;
+  const jk = jackets[0];
+  return (
+    <div style={{ margin: '10px 20px 0', padding: '12px 16px', background: '#f0f9ff', border: '1px solid #bae6fd', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0369a1" strokeWidth="2"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+        <span style={{ fontSize: 13, fontWeight: 600, color: '#0369a1' }}>Deal Jacket</span>
+        <span style={{ fontSize: 11, padding: '2px 8px', borderRadius: 10, fontWeight: 700, background: jk.status === 'complete' ? '#dcfce7' : '#fff7ed', color: jk.status === 'complete' ? '#16a34a' : '#d97706' }}>
+          {jk.completenessScore}% complete
+        </span>
+      </div>
+      <button
+        onClick={() => openJacket(jk)}
+        style={{ padding: '4px 12px', borderRadius: 6, border: '1px solid #0369a1', background: 'transparent', color: '#0369a1', fontSize: 12, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}
+      >
+        Open Jacket
+      </button>
+    </div>
+  );
+}
+
 export default function UnitDetail() {
   const [location, navigate] = useLocation();
   const params = useParams<{ unitId: string }>();
@@ -702,6 +738,11 @@ export default function UnitDetail() {
                 )}
               </div>
             </div>
+          )}
+
+          {/* Deal Jacket card (sold units only, dealer owner) */}
+          {!editMode && unit.status === 'sold' && (isDealerOwner || isOperator) && unitId && (
+            <DealJacketCard unitId={unitId} location={location} navigate={navigate} />
           )}
         </div>
       )}

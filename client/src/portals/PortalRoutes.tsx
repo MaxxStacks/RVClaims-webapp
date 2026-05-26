@@ -126,6 +126,8 @@ import PDITemplateManagement from '@/pages/exclusive/operator-admin/PDITemplateM
 
 // ─── Exclusive: Dealer Owner ───────────────────────────────────────────────
 import PhotoUpload from '@/pages/exclusive/dealer-owner/PhotoUpload';
+import DealJacketList from '@/pages/exclusive/dealer-owner/DealJacketList';
+import DealJacket from '@/pages/exclusive/dealer-owner/DealJacket';
 import DO_Marketplace from '@/pages/exclusive/dealer-owner/Marketplace';
 import Consignment from '@/pages/exclusive/dealer-owner/Consignment';
 import Marketing from '@/pages/exclusive/dealer-owner/Marketing';
@@ -147,6 +149,7 @@ import ReportIssue from '@/pages/exclusive/client/ReportIssue';
 import QuickChat from '@/pages/exclusive/client/QuickChat';
 import Roadside from '@/pages/exclusive/client/Roadside';
 import CL_Messages from '@/pages/exclusive/client/Messages';
+import DealJacketView from '@/pages/exclusive/client/DealJacketView';
 
 // ─── Exclusive: Service Manager ────────────────────────────────────────────
 import Scheduling from '@/pages/exclusive/service-manager/Scheduling';
@@ -358,6 +361,8 @@ export function DealerOwnerPortalSection() {
       <Route path="/:dealerId/owner/parts/new">{() => <DealerOwnerLayout><PartsNew /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/parts/:orderId">{() => <DealerOwnerLayout><PartsDetail /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/parts">{() => <DealerOwnerLayout><Parts /></DealerOwnerLayout>}</Route>
+      <Route path="/:dealerId/owner/deal-jackets">{() => <DealerOwnerLayout><DealJacketList /></DealerOwnerLayout>}</Route>
+      <Route path="/:dealerId/owner/customers/:customerId/jacket/:jacketId">{() => <DealerOwnerLayout><DealJacket /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/customers/invite">{() => <DealerOwnerLayout><InviteCustomer /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/customers/:customerId">{() => <DealerOwnerLayout><CustomerDetail /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/customers">{() => <DealerOwnerLayout><Customers /></DealerOwnerLayout>}</Route>
@@ -441,6 +446,7 @@ export function ClientPortalSection() {
       <Route path="/:dealerId/client/tickets">{() => <ClientLayout><CustomerTickets /></ClientLayout>}</Route>
       <Route path="/:dealerId/client/my-unit">{() => <ClientLayout><UnitDetail /></ClientLayout>}</Route>
       <Route path="/:dealerId/client/warranty">{() => <ClientLayout><Warranty /></ClientLayout>}</Route>
+      <Route path="/:dealerId/client/jacket/:jacketId">{() => <ClientLayout><DealJacketView /></ClientLayout>}</Route>
       <Route path="/:dealerId/client/documents">{() => <ClientLayout><Documents /></ClientLayout>}</Route>
       <Route path="/:dealerId/client/fi-products">{() => <ClientLayout><FAndI /></ClientLayout>}</Route>
       <Route path="/:dealerId/client/fi-offers">{() => <ClientLayout><FIOffers /></ClientLayout>}</Route>
