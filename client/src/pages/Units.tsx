@@ -191,6 +191,26 @@ export default function Units() {
               {t('scanner.scanUnit')}
             </button>
           )}
+          {/* Batch Import — visible to dealer roles */}
+          {isDealer && (
+            <button
+              className="btn btn-o btn-sm"
+              style={{ display: 'flex', alignItems: 'center', gap: 6 }}
+              onClick={() => {
+                const segs = location.split('/').filter(Boolean);
+                const batchPath = segs.length >= 2 ? `/${segs[0]}/${segs[1]}/units/batch-scan` : '/units/batch-scan';
+                navigate(batchPath);
+              }}
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <rect x="2" y="7" width="20" height="14" rx="2"/>
+                <path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/>
+                <line x1="12" y1="12" x2="12" y2="17"/>
+                <line x1="9" y1="14.5" x2="15" y2="14.5"/>
+              </svg>
+              {t('arrivals.batchImport')}
+            </button>
+          )}
           <PrintButton title={`Unit Inventory Report — ${printDate}`} />
           {canAddUnit && (
             <div style={{ marginLeft: isDealer ? 0 : 'auto' }}>

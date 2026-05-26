@@ -210,6 +210,7 @@ export default function OperatorAdminLayout({ children }: Props) {
           <div className="nav-section">
             <div className="nav-label">{t('nav.management')}</div>
             <Link className={`nav-item ${isActive('units') ? 'active' : ''}`} to="units"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4a2 2 0 012 2v6a2 2 0 01-2 2h-4"/><circle cx="5.5" cy="18" r="2.5"/><circle cx="18.5" cy="18" r="2.5"/></svg>{t('nav.units')}</Link>
+            <Link className={`nav-item ${isActive('arrivals') ? 'active' : ''}`} to="arrivals"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>{t('arrivals.arrivalsQueue')}</Link>
             <Link className={`nav-item ${isActive('dealers') ? 'active' : ''}`} to="dealers"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>{t('nav.dealers')}</Link>
             <Link className={`nav-item ${isActive('frc') ? 'active' : ''}`} to="frc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>{t('nav.frcCodes')}</Link>
           </div>

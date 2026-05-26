@@ -1,8 +1,9 @@
 import { Router, type Request, type Response } from "express";
 import { db } from "../db";
 import { units, claims, v6Uploads, documents, dealerships, users } from "@shared/schema";
-import { eq, and, or, desc, ilike } from "drizzle-orm";
+import { eq, and, or, desc, ilike, lt, isNull, isNotNull } from "drizzle-orm";
 import { requireAuth } from "../middleware/auth";
+import { notifyOperators } from "../lib/notifications";
 import { createDealJacket } from "../lib/dealJacket";
 
 const router = Router();
@@ -410,6 +411,226 @@ router.delete("/:id/photos/:photoId", async (req: Request, res: Response) => {
   }
   await db.delete(v6Uploads).where(eq(v6Uploads.id, photo.id));
   res.json({ ok: true });
+});
+
+// POST /api/v6/units/batch-import — dealer_owner or dealer_staff
+router.post("/batch-import", async (req: Request, res: Response) => {
+  const u = req.user!;
+  if (!["dealer_owner", "dealer_staff", "operator_admin"].includes(u.role)) {
+    return res.status(403).json({ error: "Forbidden" });
+  }
+
+  const dealershipId = u.dealershipId || req.body.dealershipId;
+  if (!dealershipId) return res.status(400).json({ error: "No dealership context" });
+
+  const inputUnits: Array<{
+    vin: string;
+    manufacturer?: string;
+    model?: string;
+    year?: string | number;
+    weight?: string;
+    rawScanData?: string;
+  }> = req.body.units;
+
+  if (!Array.isArray(inputUnits) || inputUnits.length === 0) {
+    return res.status(400).json({ error: "units array is required and must not be empty" });
+  }
+
+  const created: Array<{ id: string; vin: string; status: string }> = [];
+  const duplicates: Array<{ vin: string; status: string; existingId: string }> = [];
+  const invalid: Array<{ vin: string; status: string; reason: string }> = [];
+
+  const now = new Date();
+  const deadline = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+
+  for (const item of inputUnits) {
+    const vinRaw = (item.vin || "").trim().toUpperCase();
+
+    if (!vinRaw) {
+      invalid.push({ vin: vinRaw, status: "invalid", reason: "empty VIN" });
+      continue;
+    }
+
+    // Check for duplicate within this dealership
+    const existing = await db
+      .select({ id: units.id, vin: units.vin })
+      .from(units)
+      .where(and(eq(units.vin, vinRaw), eq(units.dealershipId, dealershipId)))
+      .limit(1);
+
+    if (existing.length > 0) {
+      duplicates.push({ vin: vinRaw, status: "duplicate", existingId: existing[0].id });
+      continue;
+    }
+
+    try {
+      const yearInt = item.year ? parseInt(String(item.year), 10) : null;
+      const [newUnit] = await db.insert(units).values({
+        vin: vinRaw,
+        manufacturer: item.manufacturer || null,
+        model: item.model || null,
+        year: yearInt && !isNaN(yearInt) ? yearInt : null,
+        status: "pending_arrival" as any,
+        dealershipId,
+        arrivalDate: now,
+        dafDeadline: deadline,
+        customData: item.rawScanData ? { rawScanData: item.rawScanData } : {},
+      }).returning({ id: units.id, vin: units.vin });
+
+      created.push({ id: newUnit.id, vin: newUnit.vin, status: "created" });
+    } catch (err: any) {
+      // Could be a unique constraint race condition
+      if (err?.code === "23505") {
+        duplicates.push({ vin: vinRaw, status: "duplicate", existingId: "unknown" });
+      } else {
+        invalid.push({ vin: vinRaw, status: "error", reason: err?.message || "insert failed" });
+      }
+    }
+  }
+
+  // Notify operators if any were created
+  if (created.length > 0) {
+    // Fetch dealership name
+    const [dealership] = await db
+      .select({ name: dealerships.name })
+      .from(dealerships)
+      .where(eq(dealerships.id, dealershipId))
+      .limit(1);
+
+    const dealerName = dealership?.name || "A dealer";
+
+    try {
+      await notifyOperators({
+        type: "system",
+        title: `${created.length} new arrival${created.length > 1 ? "s" : ""} — DAF pending`,
+        message: `${dealerName} submitted ${created.length} new unit arrival${created.length > 1 ? "s" : ""} pending DAF inspection`,
+        linkTo: "/operator/admin/arrivals",
+      });
+    } catch (notifErr) {
+      console.error("[batch-import] notification failed (non-blocking):", notifErr);
+    }
+  }
+
+  return res.status(201).json({
+    created: created.length,
+    duplicates: duplicates.length,
+    invalid: invalid.length,
+    units: [...created, ...duplicates, ...invalid],
+  });
+});
+
+// GET /api/v6/units/arrivals — pending_arrival units
+router.get("/arrivals", async (req: Request, res: Response) => {
+  const u = req.user!;
+  const { dealershipId: dsFilter, assignedOperatorId: aoFilter, overdue } = req.query as Record<string, string>;
+  const now = new Date();
+
+  const conditions: any[] = [eq(units.status, "pending_arrival" as any)];
+
+  if (["dealer_owner", "dealer_staff"].includes(u.role)) {
+    if (!u.dealershipId) return res.json([]);
+    conditions.push(eq(units.dealershipId, u.dealershipId));
+  } else if (!["operator_admin", "operator_staff"].includes(u.role)) {
+    return res.status(403).json({ error: "Forbidden" });
+  }
+
+  // Operator filters
+  if (["operator_admin", "operator_staff"].includes(u.role)) {
+    if (dsFilter) conditions.push(eq(units.dealershipId, dsFilter));
+    if (aoFilter === "unassigned") {
+      conditions.push(isNull(units.assignedOperatorId));
+    } else if (aoFilter) {
+      conditions.push(eq(units.assignedOperatorId, aoFilter));
+    }
+    if (overdue === "true") {
+      conditions.push(lt(units.dafDeadline, now));
+    }
+  }
+
+  const rows = await db
+    .select({
+      unit: units,
+      dealerName: dealerships.name,
+    })
+    .from(units)
+    .leftJoin(dealerships, eq(units.dealershipId, dealerships.id))
+    .where(and(...conditions))
+    .orderBy(units.dafDeadline, desc(units.createdAt))
+    .limit(500);
+
+  const enriched = rows.map(({ unit, dealerName }) => ({
+    ...unit,
+    dealerName: dealerName || null,
+    isOverdue: unit.dafDeadline ? unit.dafDeadline < now : false,
+    make: unit.manufacturer,
+  }));
+
+  res.json(enriched);
+});
+
+// PATCH /api/v6/units/:id/assign — operator_admin only
+router.patch("/:id/assign", async (req: Request, res: Response) => {
+  const u = req.user!;
+  if (u.role !== "operator_admin") {
+    return res.status(403).json({ error: "Forbidden — operator_admin only" });
+  }
+
+  const { assignedOperatorId } = req.body;
+  if (!assignedOperatorId) {
+    return res.status(400).json({ error: "assignedOperatorId required" });
+  }
+
+  const [unit] = await db.select().from(units).where(eq(units.id, req.params.id)).limit(1);
+  if (!unit) return res.status(404).json({ error: "Unit not found" });
+
+  await db.update(units)
+    .set({ assignedOperatorId, updatedAt: new Date() })
+    .where(eq(units.id, unit.id));
+
+  const [updated] = await db.select().from(units).where(eq(units.id, unit.id)).limit(1);
+  res.json({ ...updated, make: updated.manufacturer });
+});
+
+// POST /api/v6/units/:id/send-daf-reminder — operator_admin only
+router.post("/:id/send-daf-reminder", async (req: Request, res: Response) => {
+  const u = req.user!;
+  if (u.role !== "operator_admin") {
+    return res.status(403).json({ error: "Forbidden — operator_admin only" });
+  }
+
+  const [unit] = await db.select().from(units).where(eq(units.id, req.params.id)).limit(1);
+  if (!unit) return res.status(404).json({ error: "Unit not found" });
+
+  // Find dealer_owner for this dealership
+  const ownerRows = await db
+    .select({ id: users.id, firstName: users.firstName })
+    .from(users)
+    .where(and(
+      eq(users.dealershipId, unit.dealershipId),
+      eq(users.role, "dealer_owner"),
+      eq(users.isActive, true),
+    ))
+    .limit(1);
+
+  if (ownerRows.length > 0) {
+    const arrivalStr = unit.arrivalDate
+      ? new Date(unit.arrivalDate).toLocaleDateString("en-CA")
+      : "recently";
+    try {
+      const { createNotification } = await import("../lib/notifications");
+      await createNotification({
+        userId: ownerRows[0].id,
+        type: "system",
+        title: `DAF Reminder: Unit ${unit.vin}`,
+        message: `Unit ${unit.vin} submitted on ${arrivalStr} is still pending DAF inspection photos`,
+        linkTo: `/operator/admin/arrivals`,
+      });
+    } catch (err) {
+      console.error("[send-daf-reminder] notification failed:", err);
+    }
+  }
+
+  res.json({ sent: true, dealerFound: ownerRows.length > 0 });
 });
 
 export default router;

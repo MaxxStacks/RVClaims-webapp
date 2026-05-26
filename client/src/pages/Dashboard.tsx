@@ -303,43 +303,76 @@ function DealerDashboard() {
 
   return (
     <div className="page active">
-      {/* Scan Unit — prominent first card */}
-      <div
-        style={{
-          background: 'linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)',
-          border: '1.5px solid #86efac',
-          borderRadius: 14, padding: '20px 24px',
-          marginBottom: 20, cursor: 'pointer',
-          display: 'flex', alignItems: 'center', gap: 16,
-        }}
-        onClick={() => navigate(`${basePath}/scan`)}
-        onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.borderColor = '#16a34a'; (e.currentTarget as HTMLDivElement).style.boxShadow = '0 4px 16px rgba(22,163,74,0.12)'; }}
-        onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.borderColor = '#86efac'; (e.currentTarget as HTMLDivElement).style.boxShadow = 'none'; }}
-      >
-        <div style={{
-          width: 52, height: 52, borderRadius: 12, background: '#16a34a',
-          display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-        }}>
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-            <rect x="3" y="3" width="7" height="7" rx="1" />
-            <rect x="14" y="3" width="7" height="7" rx="1" />
-            <rect x="3" y="14" width="7" height="7" rx="1" />
-            <path d="M14 14h7v7h-7z" />
-          </svg>
-        </div>
-        <div style={{ flex: 1 }}>
-          <div style={{ fontSize: 16, fontWeight: 700, color: '#1e293b', marginBottom: 3 }}>
-            {t('scanner.scanUnit')}
+      {/* Scan Unit + Batch Import — prominent cards row */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: 12, marginBottom: 20 }}>
+        {/* Scan Unit */}
+        <div
+          style={{
+            background: 'linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)',
+            border: '1.5px solid #86efac',
+            borderRadius: 14, padding: '20px 24px',
+            cursor: 'pointer',
+            display: 'flex', alignItems: 'center', gap: 16,
+          }}
+          onClick={() => navigate(`${basePath}/scan`)}
+          onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.borderColor = '#16a34a'; (e.currentTarget as HTMLDivElement).style.boxShadow = '0 4px 16px rgba(22,163,74,0.12)'; }}
+          onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.borderColor = '#86efac'; (e.currentTarget as HTMLDivElement).style.boxShadow = 'none'; }}
+        >
+          <div style={{
+            width: 52, height: 52, borderRadius: 12, background: '#16a34a',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+          }}>
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+              <rect x="3" y="3" width="7" height="7" rx="1" />
+              <rect x="14" y="3" width="7" height="7" rx="1" />
+              <rect x="3" y="14" width="7" height="7" rx="1" />
+              <path d="M14 14h7v7h-7z" />
+            </svg>
           </div>
-          <div style={{ fontSize: 13, color: '#16a34a', fontWeight: 500 }}>
-            {t('scanner.scanSubtitle')}
+          <div style={{ flex: 1 }}>
+            <div style={{ fontSize: 16, fontWeight: 700, color: '#1e293b', marginBottom: 3 }}>
+              {t('scanner.scanUnit')}
+            </div>
+            <div style={{ fontSize: 13, color: '#16a34a', fontWeight: 500 }}>
+              {t('scanner.scanSubtitle')}
+            </div>
+          </div>
+          <div style={{
+            background: '#16a34a', color: 'white', borderRadius: 8,
+            padding: '8px 16px', fontSize: 13, fontWeight: 700, flexShrink: 0,
+          }}>
+            Scan Now
           </div>
         </div>
-        <div style={{
-          background: '#16a34a', color: 'white', borderRadius: 8,
-          padding: '8px 16px', fontSize: 13, fontWeight: 700, flexShrink: 0,
-        }}>
-          Scan Now
+
+        {/* Batch Import */}
+        <div
+          style={{
+            background: 'linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%)',
+            border: '1.5px solid #93c5fd',
+            borderRadius: 14, padding: '20px 20px',
+            cursor: 'pointer',
+            display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 8,
+            minWidth: 110,
+          }}
+          onClick={() => navigate(`${basePath}/units/batch-scan`)}
+          onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.borderColor = '#3b82f6'; (e.currentTarget as HTMLDivElement).style.boxShadow = '0 4px 16px rgba(59,130,246,0.12)'; }}
+          onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.borderColor = '#93c5fd'; (e.currentTarget as HTMLDivElement).style.boxShadow = 'none'; }}
+        >
+          <div style={{
+            width: 44, height: 44, borderRadius: 10, background: '#3b82f6',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+              <rect x="2" y="7" width="20" height="14" rx="2"/>
+              <path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/>
+              <line x1="12" y1="12" x2="12" y2="17"/>
+              <line x1="9" y1="14.5" x2="15" y2="14.5"/>
+            </svg>
+          </div>
+          <div style={{ fontSize: 12, fontWeight: 700, color: '#1e40af', textAlign: 'center' as const }}>
+            {t('arrivals.batchImport')}
+          </div>
         </div>
       </div>
 

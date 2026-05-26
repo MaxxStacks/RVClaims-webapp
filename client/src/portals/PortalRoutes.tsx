@@ -117,9 +117,11 @@ import AssistAnalyticsPage from '@/pages/exclusive/operator-admin/AssistAnalytic
 import RemoteDashboard from '@/components/remote-support/RemoteDashboard';
 import ModuleManagement from '@/pages/exclusive/operator-admin/ModuleManagement';
 import WalletManagement from '@/pages/exclusive/operator-admin/WalletManagement';
+import ArrivalsQueue from '@/pages/exclusive/operator-admin/ArrivalsQueue';
 
 // ─── Exclusive: Shared ─────────────────────────────────────────────────────
 import ScanUnit from '@/pages/exclusive/shared/ScanUnit';
+import BatchScan from '@/pages/exclusive/shared/BatchScan';
 import PDIChecklist from '@/pages/exclusive/shared/PDIChecklist';
 import PDIDetail from '@/pages/exclusive/shared/PDIDetail';
 import PDITemplateManagement from '@/pages/exclusive/operator-admin/PDITemplateManagement';
@@ -296,6 +298,7 @@ export function OperatorAdminPortalSection() {
       <Route path="/operator/admin/remote-support">{() => <OperatorAdminLayout><RemoteDashboard /></OperatorAdminLayout>}</Route>
       <Route path="/operator/admin/modules">{() => <OperatorAdminLayout><ModuleManagement /></OperatorAdminLayout>}</Route>
       <Route path="/operator/admin/wallets">{() => <OperatorAdminLayout><WalletManagement /></OperatorAdminLayout>}</Route>
+      <Route path="/operator/admin/arrivals">{() => <OperatorAdminLayout><ArrivalsQueue /></OperatorAdminLayout>}</Route>
       {/* Default */}
       <Route>{() => <Redirect to="/operator/admin/dashboard" />}</Route>
     </Switch>
@@ -342,6 +345,7 @@ export function DealerOwnerPortalSection() {
     <ProtectedRoute allowedRoles={['dealer_owner']} requireDealershipId={true}>
     <Switch>
       <Route path="/:dealerId/owner/scan">{() => <DealerOwnerLayout><ScanUnit /></DealerOwnerLayout>}</Route>
+      <Route path="/:dealerId/owner/units/batch-scan">{() => <DealerOwnerLayout><BatchScan /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/claims/new">{() => <DealerOwnerLayout><ClaimNew /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/claims/:claimId">{() => <DealerOwnerLayout><ClaimDetail /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/claims">{() => <DealerOwnerLayout><Claims /></DealerOwnerLayout>}</Route>
@@ -407,6 +411,7 @@ export function DealerStaffPortalSection() {
     <ProtectedRoute allowedRoles={['dealer_staff']} requireDealershipId={true}>
     <Switch>
       <Route path="/:dealerId/staff/scan">{() => <DealerStaffLayout><ScanUnit /></DealerStaffLayout>}</Route>
+      <Route path="/:dealerId/staff/units/batch-scan">{() => <DealerStaffLayout><BatchScan /></DealerStaffLayout>}</Route>
       <Route path="/:dealerId/staff/claims/:claimId">{() => <DealerStaffLayout><ClaimDetail /></DealerStaffLayout>}</Route>
       <Route path="/:dealerId/staff/claims">{() => <DealerStaffLayout><Claims /></DealerStaffLayout>}</Route>
       <Route path="/:dealerId/staff/units/:unitId/pdi/new">{() => <DealerStaffLayout><PDIChecklist /></DealerStaffLayout>}</Route>
