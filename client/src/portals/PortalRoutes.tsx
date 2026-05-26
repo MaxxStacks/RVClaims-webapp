@@ -120,6 +120,9 @@ import WalletManagement from '@/pages/exclusive/operator-admin/WalletManagement'
 
 // ─── Exclusive: Shared ─────────────────────────────────────────────────────
 import ScanUnit from '@/pages/exclusive/shared/ScanUnit';
+import PDIChecklist from '@/pages/exclusive/shared/PDIChecklist';
+import PDIDetail from '@/pages/exclusive/shared/PDIDetail';
+import PDITemplateManagement from '@/pages/exclusive/operator-admin/PDITemplateManagement';
 
 // ─── Exclusive: Dealer Owner ───────────────────────────────────────────────
 import PhotoUpload from '@/pages/exclusive/dealer-owner/PhotoUpload';
@@ -199,8 +202,12 @@ export function OperatorAdminPortalSection() {
       <Route path="/operator/admin/dealers">{() => <OperatorAdminLayout><DealerManagement /></OperatorAdminLayout>}</Route>
       {/* Units */}
       <Route path="/operator/admin/units/new">{() => <OperatorAdminLayout><AddUnit /></OperatorAdminLayout>}</Route>
+      <Route path="/operator/admin/units/:unitId/pdi/new">{() => <OperatorAdminLayout><PDIChecklist /></OperatorAdminLayout>}</Route>
       <Route path="/operator/admin/units/:unitId">{() => <OperatorAdminLayout><UnitDetail /></OperatorAdminLayout>}</Route>
       <Route path="/operator/admin/units">{() => <OperatorAdminLayout><Units /></OperatorAdminLayout>}</Route>
+      {/* PDI */}
+      <Route path="/operator/admin/pdi/templates">{() => <OperatorAdminLayout><PDITemplateManagement /></OperatorAdminLayout>}</Route>
+      <Route path="/operator/admin/pdi/:pdiId">{() => <OperatorAdminLayout><PDIDetail /></OperatorAdminLayout>}</Route>
       {/* Claims */}
       <Route path="/operator/admin/claims/:claimId">{() => <OperatorAdminLayout><ClaimDetail /></OperatorAdminLayout>}</Route>
       <Route path="/operator/admin/claims">{() => <OperatorAdminLayout><Claims /></OperatorAdminLayout>}</Route>
@@ -336,8 +343,10 @@ export function DealerOwnerPortalSection() {
       <Route path="/:dealerId/owner/claims/:claimId">{() => <DealerOwnerLayout><ClaimDetail /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/claims">{() => <DealerOwnerLayout><Claims /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/units/new">{() => <DealerOwnerLayout><UnitNew /></DealerOwnerLayout>}</Route>
+      <Route path="/:dealerId/owner/units/:unitId/pdi/new">{() => <DealerOwnerLayout><PDIChecklist /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/units/:unitId">{() => <DealerOwnerLayout><UnitDetail /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/units">{() => <DealerOwnerLayout><Units /></DealerOwnerLayout>}</Route>
+      <Route path="/:dealerId/owner/pdi/:pdiId">{() => <DealerOwnerLayout><PDIDetail /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/financing/new">{() => <DealerOwnerLayout><FinancingNew /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/financing/:finId">{() => <DealerOwnerLayout><FinancingDetail /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/financing">{() => <DealerOwnerLayout><Financing /></DealerOwnerLayout>}</Route>
@@ -395,8 +404,10 @@ export function DealerStaffPortalSection() {
       <Route path="/:dealerId/staff/scan">{() => <DealerStaffLayout><ScanUnit /></DealerStaffLayout>}</Route>
       <Route path="/:dealerId/staff/claims/:claimId">{() => <DealerStaffLayout><ClaimDetail /></DealerStaffLayout>}</Route>
       <Route path="/:dealerId/staff/claims">{() => <DealerStaffLayout><Claims /></DealerStaffLayout>}</Route>
+      <Route path="/:dealerId/staff/units/:unitId/pdi/new">{() => <DealerStaffLayout><PDIChecklist /></DealerStaffLayout>}</Route>
       <Route path="/:dealerId/staff/units/:unitId">{() => <DealerStaffLayout><UnitDetail /></DealerStaffLayout>}</Route>
       <Route path="/:dealerId/staff/units">{() => <DealerStaffLayout><Units /></DealerStaffLayout>}</Route>
+      <Route path="/:dealerId/staff/pdi/:pdiId">{() => <DealerStaffLayout><PDIDetail /></DealerStaffLayout>}</Route>
       <Route path="/:dealerId/staff/customer-tickets/:ticketId">{() => <DealerStaffLayout><TicketDetail /></DealerStaffLayout>}</Route>
       <Route path="/:dealerId/staff/customer-tickets">{() => <DealerStaffLayout><CustomerTickets /></DealerStaffLayout>}</Route>
       <Route path="/:dealerId/staff/staff">{() => <DealerStaffLayout><StaffManagement /></DealerStaffLayout>}</Route>
@@ -550,6 +561,8 @@ export function ShopTechPortalSection() {
     <ProtectedRoute allowedRoles={['technician']} requireDealershipId={true}>
     <Switch>
       <Route path="/:dealerId/shop-tech/scan">{() => <ShopTechLayout><ScanUnit /></ShopTechLayout>}</Route>
+      <Route path="/:dealerId/shop-tech/units/:unitId/pdi/new">{() => <ShopTechLayout><PDIChecklist /></ShopTechLayout>}</Route>
+      <Route path="/:dealerId/shop-tech/pdi/:pdiId">{() => <ShopTechLayout><PDIDetail /></ShopTechLayout>}</Route>
       <Route path="/:dealerId/shop-tech/work-orders/:workOrderId">{() => <ShopTechLayout><WorkOrderDetail /></ShopTechLayout>}</Route>
       <Route path="/:dealerId/shop-tech/work-orders">{() => <ShopTechLayout><WorkOrders /></ShopTechLayout>}</Route>
       <Route path="/:dealerId/shop-tech/dashboard">{() => <ShopTechLayout><Dashboard /></ShopTechLayout>}</Route>
@@ -567,6 +580,8 @@ export function OnSiteTechPortalSection() {
     <ProtectedRoute allowedRoles={['technician']} requireDealershipId={true}>
     <Switch>
       <Route path="/:dealerId/on-site-tech/scan">{() => <OnSiteTechLayout><ScanUnit /></OnSiteTechLayout>}</Route>
+      <Route path="/:dealerId/on-site-tech/units/:unitId/pdi/new">{() => <OnSiteTechLayout><PDIChecklist /></OnSiteTechLayout>}</Route>
+      <Route path="/:dealerId/on-site-tech/pdi/:pdiId">{() => <OnSiteTechLayout><PDIDetail /></OnSiteTechLayout>}</Route>
       <Route path="/:dealerId/on-site-tech/work-orders/:workOrderId">{() => <OnSiteTechLayout><WorkOrderDetail /></OnSiteTechLayout>}</Route>
       <Route path="/:dealerId/on-site-tech/work-orders">{() => <OnSiteTechLayout><WorkOrders /></OnSiteTechLayout>}</Route>
       <Route path="/:dealerId/on-site-tech/dashboard">{() => <OnSiteTechLayout><Dashboard /></OnSiteTechLayout>}</Route>

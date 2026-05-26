@@ -1793,3 +1793,63 @@ export const signatures = pgTable("signatures", {
 export const insertSignatureSchema = createInsertSchema(signatures).omit({ id: true, createdAt: true });
 export type Signature = typeof signatures.$inferSelect;
 export type InsertSignature = z.infer<typeof insertSignatureSchema>;
+
+// ==================== PDI INSPECTION TABLES ====================
+
+export const PDI_INSPECTION_STATUSES = ["in_progress", "tech_signed", "completed", "failed"] as const;
+export const PDI_ITEM_STATUSES = ["pass", "fail", "na", "pending"] as const;
+
+export const pdiTemplates = pgTable("pdi_templates", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  unitType: text("unit_type").notNull(),
+  section: text("section").notNull(),
+  itemName: text("item_name").notNull(),
+  sortOrder: integer("sort_order").notNull().default(0),
+  isDefault: boolean("is_default").notNull().default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const pdiInspections = pgTable("pdi_inspections", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  unitId: uuid("unit_id").notNull(),
+  dealershipId: uuid("dealership_id").notNull(),
+  unitType: text("unit_type").notNull(),
+  status: text("status", { enum: PDI_INSPECTION_STATUSES }).notNull().default("in_progress"),
+  overallPassRate: decimal("overall_pass_rate", { precision: 5, scale: 2 }),
+  failedItemCount: integer("failed_item_count").default(0),
+  technicianId: uuid("technician_id"),
+  technicianName: text("technician_name"),
+  techSignedAt: timestamp("tech_signed_at"),
+  customerSignedAt: timestamp("customer_signed_at"),
+  notes: text("notes"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+}, (table) => [
+  index("pdi_inspections_unit_idx").on(table.unitId),
+  index("pdi_inspections_dealership_idx").on(table.dealershipId),
+]);
+
+export const pdiChecklistItems = pgTable("pdi_checklist_items", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  inspectionId: uuid("inspection_id").notNull(),
+  section: text("section").notNull(),
+  itemName: text("item_name").notNull(),
+  status: text("status", { enum: PDI_ITEM_STATUSES }).notNull().default("pending"),
+  note: text("note"),
+  photoUrl: text("photo_url"),
+  sortOrder: integer("sort_order").notNull().default(0),
+  updatedAt: timestamp("updated_at").defaultNow(),
+}, (table) => [
+  index("pdi_checklist_inspection_idx").on(table.inspectionId),
+]);
+
+export const insertPdiTemplateSchema = createInsertSchema(pdiTemplates).omit({ id: true, createdAt: true });
+export const insertPdiInspectionSchema = createInsertSchema(pdiInspections).omit({ id: true, createdAt: true, updatedAt: true });
+export const insertPdiChecklistItemSchema = createInsertSchema(pdiChecklistItems).omit({ id: true, updatedAt: true });
+
+export type PdiTemplate = typeof pdiTemplates.$inferSelect;
+export type InsertPdiTemplate = z.infer<typeof insertPdiTemplateSchema>;
+export type PdiInspection = typeof pdiInspections.$inferSelect;
+export type InsertPdiInspection = z.infer<typeof insertPdiInspectionSchema>;
+export type PdiChecklistItem = typeof pdiChecklistItems.$inferSelect;
+export type InsertPdiChecklistItem = z.infer<typeof insertPdiChecklistItemSchema>;

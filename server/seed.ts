@@ -7,6 +7,7 @@ import { users, dealerships, products, platformSettings, walletFundingTiers } fr
 import { hashPassword } from "./lib/auth";
 import { eq } from "drizzle-orm";
 import { seedModules } from "./db/seedModules";
+import { seedPDI } from "./db/seedPDI";
 
 async function seed() {
   console.log("🌱 Seeding database...");
@@ -247,6 +248,9 @@ async function seed() {
 
   // ==================== SERVICE MODULES ====================
   await seedModules();
+
+  // ==================== PDI TEMPLATES ====================
+  await seedPDI();
 
   // ==================== WALLET FUNDING TIERS ====================
   const existingTiers = await db.select().from(walletFundingTiers).limit(1);

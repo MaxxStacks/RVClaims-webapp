@@ -38,14 +38,15 @@ export default function UnitDetail() {
   const canUploadPhotos = isOperatorAdmin || isDealerOwner || isDealerStaff;
   const canDeletePhotos = isOperatorAdmin || isDealerOwner;
   const canCreateClaim = isDealerOwner || isDealerStaff;
-  // Client cannot see Claims or Photos tabs
-  const visibleTabs = ['Info', 'Claims', 'Documents', 'Photos'].filter(tabKey => {
+  // Client cannot see Claims or Photos tabs; client also cannot start a new PDI
+  const visibleTabs = ['Info', 'PDI', 'Claims', 'Documents', 'Photos'].filter(tabKey => {
     if (tabKey === 'Claims' && isClient) return false;
     if (tabKey === 'Photos' && isClient) return false;
     return true;
   });
   const tabLabel: Record<string, string> = {
     Info: t('units.info'),
+    PDI: t('pdi.pdiInspection'),
     Claims: t('nav.claims'),
     Documents: t('units.documents'),
     Photos: t('common.photos'),
@@ -84,6 +85,10 @@ export default function UnitDetail() {
 
   // Photo lightbox
   const [lightboxUrl, setLightboxUrl] = useState<string | null>(null);
+
+  // PDI inspections
+  const [pdiInspections, setPdiInspections] = useState<any[]>([]);
+  const [pdiLoading, setPdiLoading] = useState(false);
 
   // Toast
   const [toastMsg, setToastMsg] = useState('');
@@ -149,11 +154,22 @@ export default function UnitDetail() {
     } catch { setWarranty(null); }
   }, [unitId]);
 
+  const loadPdi = useCallback(async () => {
+    if (!unitId) return;
+    setPdiLoading(true);
+    try {
+      const res = await apiFetch<any>(`/api/units/${unitId}/pdi`);
+      setPdiInspections(Array.isArray(res.inspections) ? res.inspections : []);
+    } catch { setPdiInspections([]); }
+    finally { setPdiLoading(false); }
+  }, [unitId]);
+
   useEffect(() => { loadUnit(); }, [loadUnit]);
   useEffect(() => { loadClaims(); }, [loadClaims]);
   useEffect(() => { loadDocuments(); }, [loadDocuments]);
   useEffect(() => { loadPhotos(); }, [loadPhotos]);
   useEffect(() => { loadWarranty(); }, [loadWarranty]);
+  useEffect(() => { loadPdi(); }, [loadPdi]);
 
   // ─── Back navigation ──────────────────────────────────────────────────────
   const handleBack = () => {
@@ -183,6 +199,25 @@ export default function UnitDetail() {
     if (unitsIdx >= 0) {
       const base = '/' + segments.slice(0, unitsIdx).join('/');
       navigate(`${base}/claims/new`);
+    }
+  };
+
+  // ─── PDI navigation helpers ───────────────────────────────────────────────
+  const goToNewPdi = () => {
+    const segments = location.split('/').filter(Boolean);
+    const unitsIdx = segments.indexOf('units');
+    if (unitsIdx >= 0) {
+      const base = '/' + segments.slice(0, unitsIdx + 2).join('/'); // includes unitId
+      navigate(`${base}/pdi/new`);
+    }
+  };
+
+  const goToPdiDetail = (pdiId: string) => {
+    const segments = location.split('/').filter(Boolean);
+    const unitsIdx = segments.indexOf('units');
+    if (unitsIdx >= 0) {
+      const base = '/' + segments.slice(0, unitsIdx).join('/');
+      navigate(`${base}/pdi/${pdiId}`);
     }
   };
 
@@ -504,6 +539,9 @@ export default function UnitDetail() {
             onClick={() => setActiveTab(tab)}
           >
             {tabLabel[tab] || tab}
+            {tab === 'PDI' && pdiInspections.length > 0 && (
+              <span style={{ marginLeft: 6, background: '#e5e7eb', borderRadius: 10, padding: '1px 6px', fontSize: 11 }}>{pdiInspections.length}</span>
+            )}
             {tab === 'Claims' && claims.length > 0 && (
               <span style={{ marginLeft: 6, background: '#e5e7eb', borderRadius: 10, padding: '1px 6px', fontSize: 11 }}>{claims.length}</span>
             )}
@@ -663,6 +701,126 @@ export default function UnitDetail() {
                   </>
                 )}
               </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ── TAB: PDI ─────────────────────────────────────────────────────── */}
+      {activeTab === 'PDI' && (
+        <div className="pn">
+          {/* Header */}
+          <div style={{ padding: '12px 20px', borderBottom: '1px solid #f0f0f0', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 }}>
+            <div style={{ fontSize: 13, fontWeight: 600 }}>
+              {t('pdi.pdiInspection')} ({pdiInspections.length})
+            </div>
+            {!isClient && (
+              <button className="btn btn-p btn-sm" onClick={goToNewPdi}>
+                + {t('pdi.newInspection')}
+              </button>
+            )}
+          </div>
+
+          {pdiLoading ? (
+            <div style={{ padding: 32, textAlign: 'center', color: '#888', fontSize: 13 }}>{t('common.loading')}</div>
+          ) : pdiInspections.length === 0 ? (
+            /* Empty state */
+            <div style={{ padding: '40px 20px', textAlign: 'center' }}>
+              <div style={{ width: 56, height: 56, background: '#f0f4ff', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 12px' }}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M9 11l3 3L22 4" />
+                  <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
+                </svg>
+              </div>
+              <div style={{ fontSize: 14, fontWeight: 600, color: '#374151', marginBottom: 4 }}>{t('pdi.noPDI')}</div>
+              <div style={{ fontSize: 13, color: '#9ca3af', marginBottom: 20 }}>{t('pdi.startFirst')}</div>
+              {!isClient && (
+                <button className="btn btn-p btn-sm" onClick={goToNewPdi}>
+                  {t('pdi.startInspection')}
+                </button>
+              )}
+            </div>
+          ) : (
+            <div>
+              {/* Most recent PDI — expanded summary */}
+              {(() => {
+                const latest = pdiInspections[0];
+                const passRate = latest.overallPassRate ? Math.round(parseFloat(latest.overallPassRate)) : null;
+                const statusColors: Record<string, string> = {
+                  completed: '#16a34a', tech_signed: '#2563eb', in_progress: '#d97706', failed: '#dc2626',
+                };
+                const sColor = statusColors[latest.status] || '#6b7280';
+                return (
+                  <div style={{ padding: '16px 20px', borderBottom: '1px solid #f0f0f0' }}>
+                    <div style={{ fontSize: 12, fontWeight: 600, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 10 }}>
+                      {t('pdi.mostRecent')}
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
+                      {/* Pass rate */}
+                      <div style={{ textAlign: 'center', minWidth: 72 }}>
+                        <div style={{ fontSize: 28, fontWeight: 800, color: passRate !== null ? (passRate >= 90 ? '#16a34a' : passRate >= 75 ? '#d97706' : '#dc2626') : '#9ca3af', lineHeight: 1 }}>
+                          {passRate !== null ? `${passRate}%` : '—'}
+                        </div>
+                        <div style={{ fontSize: 11, color: '#9ca3af', marginTop: 2, textTransform: 'uppercase' }}>{t('pdi.passRate')}</div>
+                      </div>
+                      {/* Details */}
+                      <div style={{ flex: 1, minWidth: 140 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+                          <span style={{ display: 'inline-flex', alignItems: 'center', padding: '2px 10px', borderRadius: 14, fontSize: 11, fontWeight: 600, background: sColor + '20', color: sColor, border: `1px solid ${sColor}40` }}>
+                            {latest.status?.replace(/_/g, ' ')}
+                          </span>
+                        </div>
+                        <div style={{ fontSize: 12, color: '#6b7280' }}>
+                          {latest.createdAt ? new Date(latest.createdAt).toLocaleDateString('en-CA', { year: 'numeric', month: 'short', day: 'numeric' }) : '—'}
+                          {latest.technicianName && ` · ${latest.technicianName}`}
+                          {latest.failedItemCount ? ` · ${latest.failedItemCount} ${t('pdi.failedItems')}` : ''}
+                        </div>
+                      </div>
+                      {/* Actions */}
+                      <div style={{ display: 'flex', gap: 8, flexShrink: 0 }}>
+                        <button className="btn btn-p btn-sm" onClick={() => goToPdiDetail(latest.id)}>
+                          {t('pdi.viewPDI')}
+                        </button>
+                        <PrintButton title={`PDI-${latest.id?.slice(0, 8).toUpperCase()} — ${unitTitle}`} />
+                      </div>
+                    </div>
+                  </div>
+                );
+              })()}
+
+              {/* Previous inspections list */}
+              {pdiInspections.length > 1 && (
+                <div style={{ padding: '12px 20px' }}>
+                  <div style={{ fontSize: 12, fontWeight: 600, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8 }}>
+                    {t('pdi.previousInspection')} ({pdiInspections.length - 1})
+                  </div>
+                  {pdiInspections.slice(1).map((pdi: any) => {
+                    const pRate = pdi.overallPassRate ? Math.round(parseFloat(pdi.overallPassRate)) : null;
+                    const sc: Record<string, string> = { completed: '#16a34a', tech_signed: '#2563eb', in_progress: '#d97706', failed: '#dc2626' };
+                    return (
+                      <div
+                        key={pdi.id}
+                        style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '8px 0', borderTop: '1px solid #f0f0f0', cursor: 'pointer' }}
+                        onClick={() => goToPdiDetail(pdi.id)}
+                      >
+                        <div style={{ fontSize: 18, fontWeight: 800, color: pRate !== null ? (pRate >= 90 ? '#16a34a' : pRate >= 75 ? '#d97706' : '#dc2626') : '#9ca3af', minWidth: 48, textAlign: 'right' }}>
+                          {pRate !== null ? `${pRate}%` : '—'}
+                        </div>
+                        <div style={{ flex: 1 }}>
+                          <span style={{ display: 'inline-flex', alignItems: 'center', padding: '1px 8px', borderRadius: 12, fontSize: 11, fontWeight: 600, background: (sc[pdi.status] || '#6b7280') + '20', color: sc[pdi.status] || '#6b7280', marginRight: 8 }}>
+                            {pdi.status?.replace(/_/g, ' ')}
+                          </span>
+                          <span style={{ fontSize: 12, color: '#9ca3af' }}>
+                            {pdi.createdAt ? new Date(pdi.createdAt).toLocaleDateString() : '—'}
+                            {pdi.technicianName && ` · ${pdi.technicianName}`}
+                          </span>
+                        </div>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="2"><polyline points="9 18 15 12 9 6" /></svg>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           )}
         </div>

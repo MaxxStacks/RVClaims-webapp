@@ -53,6 +53,7 @@ import consignmentRouter from './consignment';
 import modulesRouter from './modules';
 import walletsRouter from './wallets';
 import signaturesRouter from './signatures';
+import pdiRouter from './pdi';
 
 // Import existing routes for backward compat
 import { storage } from "../storage";
@@ -141,6 +142,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.use('/api', modulesRouter);    // /api/modules, /api/dealerships/:id/subscriptions
   app.use('/api', walletsRouter);    // /api/wallets, /api/wallets/my, /api/wallets/funding-tiers
   app.use('/api', signaturesRouter); // /api/signatures
+  app.use('/api', pdiRouter);        // /api/pdi, /api/pdi/templates, /api/units/:unitId/pdi
 
   // ==================== EXISTING ROUTES (backward compat) ====================
 
