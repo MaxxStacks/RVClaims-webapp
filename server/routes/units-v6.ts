@@ -5,6 +5,7 @@ import { eq, and, or, desc, ilike, lt, isNull, isNotNull } from "drizzle-orm";
 import { requireAuth } from "../middleware/auth";
 import { notifyOperators } from "../lib/notifications";
 import { createDealJacket } from "../lib/dealJacket";
+import { autoLinkKnowledgeBase } from "../lib/knowledgeBase";
 
 const router = Router();
 router.use(requireAuth);
@@ -148,6 +149,13 @@ router.post("/", async (req: Request, res: Response) => {
     dealershipId,
     rvType: rvType || null,
   }).returning();
+
+  // Auto-link KB entries (non-blocking)
+  try {
+    await autoLinkKnowledgeBase(created.id, created.manufacturer, created.model, created.year);
+  } catch (err) {
+    console.error('KB auto-link failed (non-blocking):', err);
+  }
 
   res.status(201).json({ ...created, make: created.manufacturer });
 });
@@ -475,9 +483,14 @@ router.post("/batch-import", async (req: Request, res: Response) => {
         arrivalDate: now,
         dafDeadline: deadline,
         customData: item.rawScanData ? { rawScanData: item.rawScanData } : {},
-      }).returning({ id: units.id, vin: units.vin });
+      }).returning({ id: units.id, vin: units.vin, manufacturer: units.manufacturer, model: units.model, year: units.year });
 
       created.push({ id: newUnit.id, vin: newUnit.vin, status: "created" });
+
+      // Auto-link KB entries (non-blocking)
+      autoLinkKnowledgeBase(newUnit.id, newUnit.manufacturer, newUnit.model, newUnit.year).catch(
+        (err) => console.error('KB auto-link (batch) failed (non-blocking):', err),
+      );
     } catch (err: any) {
       // Could be a unique constraint race condition
       if (err?.code === "23505") {

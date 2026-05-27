@@ -15,15 +15,22 @@ function ClientDashboard() {
   const [openTickets, setOpenTickets] = useState(0);
   const [activeClaims, setActiveClaims] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [kbResources, setKbResources] = useState<any[]>([]);
 
   useEffect(() => {
     const load = async () => {
       setIsLoading(true);
       try {
         await Promise.all([
-          apiFetch<any>('/api/v6/units').then(d => {
+          apiFetch<any>('/api/v6/units').then(async d => {
             const units = Array.isArray(d) ? d : d.units || [];
-            setClientUnit(units[0] || null);
+            const unit = units[0] || null;
+            setClientUnit(unit);
+            if (unit?.id) {
+              apiFetch<any>(`/api/units/${unit.id}/knowledge`)
+                .then(kr => { setKbResources(Array.isArray(kr.entries) ? kr.entries.slice(0, 4) : []); })
+                .catch(() => {});
+            }
           }).catch(() => {}),
           apiFetch<any>('/api/warranty-plans').then(d => {
             const ws = Array.isArray(d) ? d : d.warrantyPlans || d.plans || [];
@@ -166,6 +173,45 @@ function ClientDashboard() {
           <span className="qb-t">{t('dashboard.newTicket')}</span>
         </div>
       </div>
+
+      {/* KB Resources card */}
+      {kbResources.length > 0 && (
+        <div className="pn" style={{marginBottom: 20}}>
+          <div className="pn-h">
+            <span className="pn-t">{t('kb.resources')}</span>
+            <span className="pn-a" onClick={() => navigate('my-unit')}>{t('kb.browseAllManuals')}</span>
+          </div>
+          <div style={{padding: '0 20px 16px'}}>
+            {kbResources.map((entry: any) => {
+              const iconMap: Record<string, JSX.Element> = {
+                owners_manual: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>,
+                maintenance_schedule: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>,
+                video: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>,
+                how_to_article: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" strokeWidth="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>,
+              };
+              const typeLabels: Record<string, string> = {
+                owners_manual: t('kb.ownersManual'),
+                maintenance_schedule: t('kb.maintenanceSchedule'),
+                video: 'Video',
+                how_to_article: t('kb.howToArticle'),
+                troubleshooting_guide: t('kb.troubleshootingGuide'),
+              };
+              return (
+                <div key={entry.id} style={{display:'flex',alignItems:'center',gap:10,padding:'10px 0',borderBottom:'1px solid #f5f5f5'}}>
+                  <div style={{width:28,height:28,background:'#f8fafc',borderRadius:6,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+                    {iconMap[entry.contentType] || iconMap.how_to_article}
+                  </div>
+                  <div style={{flex:1,minWidth:0}}>
+                    <div style={{fontSize:13,fontWeight:600,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{entry.title}</div>
+                    <div style={{fontSize:11,color:'#888'}}>{typeLabels[entry.contentType] || entry.contentType}</div>
+                  </div>
+                  <span className="pn-a" onClick={() => navigate('my-unit')}>View</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       {/* Unit info card + warranty status */}
       {clientUnit && (

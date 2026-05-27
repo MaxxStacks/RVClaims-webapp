@@ -75,7 +75,7 @@ export default function UnitDetail() {
   const canDeletePhotos = isOperatorAdmin || isDealerOwner;
   const canCreateClaim = isDealerOwner || isDealerStaff;
   // Client cannot see Claims or Photos tabs; client also cannot start a new PDI
-  const visibleTabs = ['Info', 'PDI', 'Claims', 'Documents', 'Photos'].filter(tabKey => {
+  const visibleTabs = ['Info', 'PDI', 'Claims', 'Documents', 'Photos', 'Resources'].filter(tabKey => {
     if (tabKey === 'Claims' && isClient) return false;
     if (tabKey === 'Photos' && isClient) return false;
     return true;
@@ -86,6 +86,7 @@ export default function UnitDetail() {
     Claims: t('nav.claims'),
     Documents: t('units.documents'),
     Photos: t('common.photos'),
+    Resources: t('kb.resources'),
   };
 
   // ─── State ────────────────────────────────────────────────────────────────
@@ -125,6 +126,12 @@ export default function UnitDetail() {
   // PDI inspections
   const [pdiInspections, setPdiInspections] = useState<any[]>([]);
   const [pdiLoading, setPdiLoading] = useState(false);
+
+  // Knowledge Base resources
+  const [kbEntries, setKbEntries] = useState<any[]>([]);
+  const [kbMatchTypes, setKbMatchTypes] = useState<Record<string, string>>({});
+  const [kbLoading, setKbLoading] = useState(false);
+  const [kbViewing, setKbViewing] = useState<any | null>(null);
 
   // Toast
   const [toastMsg, setToastMsg] = useState('');
@@ -200,12 +207,24 @@ export default function UnitDetail() {
     finally { setPdiLoading(false); }
   }, [unitId]);
 
+  const loadKb = useCallback(async () => {
+    if (!unitId) return;
+    setKbLoading(true);
+    try {
+      const res = await apiFetch<any>(`/api/units/${unitId}/knowledge`);
+      setKbEntries(Array.isArray(res.entries) ? res.entries : []);
+      setKbMatchTypes(res.matchTypes || {});
+    } catch { setKbEntries([]); }
+    finally { setKbLoading(false); }
+  }, [unitId]);
+
   useEffect(() => { loadUnit(); }, [loadUnit]);
   useEffect(() => { loadClaims(); }, [loadClaims]);
   useEffect(() => { loadDocuments(); }, [loadDocuments]);
   useEffect(() => { loadPhotos(); }, [loadPhotos]);
   useEffect(() => { loadWarranty(); }, [loadWarranty]);
   useEffect(() => { loadPdi(); }, [loadPdi]);
+  useEffect(() => { loadKb(); }, [loadKb]);
 
   // ─── Back navigation ──────────────────────────────────────────────────────
   const handleBack = () => {
@@ -1043,6 +1062,110 @@ export default function UnitDetail() {
                   )}
                 </div>
               ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ── TAB: RESOURCES (KB) ─────────────────────────────────────────── */}
+      {activeTab === 'Resources' && (
+        <div className="pn">
+          {/* KB content viewer modal */}
+          {kbViewing && (
+            <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16 }} onClick={e => { if (e.target === e.currentTarget) setKbViewing(null); }}>
+              <div style={{ background: 'var(--surface,#fff)', borderRadius: 12, width: '100%', maxWidth: 860, maxHeight: '90vh', overflow: 'auto', boxShadow: '0 20px 60px rgba(0,0,0,0.25)' }}>
+                <div style={{ padding: '16px 20px', borderBottom: '1px solid #f0f0f0', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12 }}>
+                  <div>
+                    <div style={{ fontSize: 15, fontWeight: 700 }}>{kbViewing.title}</div>
+                    <div style={{ fontSize: 12, color: '#888', marginTop: 2 }}>{kbViewing.manufacturer}{kbViewing.modelFamily ? ` · ${kbViewing.modelFamily}` : ''}</div>
+                  </div>
+                  <button onClick={() => setKbViewing(null)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#888', fontSize: 22, lineHeight: 1, flexShrink: 0 }}>×</button>
+                </div>
+                <div style={{ padding: 20 }}>
+                  {kbViewing.fileUrl && (
+                    <div>
+                      <object data={kbViewing.fileUrl} type="application/pdf" width="100%" style={{ height: 600, borderRadius: 6, border: '1px solid #e5e7eb' }}>
+                        <p style={{ fontSize: 13, color: '#888' }}>PDF preview unavailable.</p>
+                      </object>
+                      <div style={{ marginTop: 10 }}>
+                        <a href={kbViewing.fileUrl} target="_blank" rel="noreferrer" className="btn btn-o btn-sm">{t('kb.downloadPdf')}</a>
+                      </div>
+                    </div>
+                  )}
+                  {kbViewing.videoUrl && (() => {
+                    const ytMatch = kbViewing.videoUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([a-zA-Z0-9_-]{11})/);
+                    const vmMatch = kbViewing.videoUrl.match(/vimeo\.com\/(\d+)/);
+                    if (ytMatch) return (
+                      <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden', borderRadius: 6 }}>
+                        <iframe src={`https://www.youtube.com/embed/${ytMatch[1]}`} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 'none' }} allowFullScreen title={kbViewing.title} />
+                      </div>
+                    );
+                    if (vmMatch) return (
+                      <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden', borderRadius: 6 }}>
+                        <iframe src={`https://player.vimeo.com/video/${vmMatch[1]}`} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 'none' }} allowFullScreen title={kbViewing.title} />
+                      </div>
+                    );
+                    return <a href={kbViewing.videoUrl} target="_blank" rel="noreferrer" className="btn btn-o btn-sm">Open Video</a>;
+                  })()}
+                  {kbViewing.articleContent && (
+                    <div style={{ fontSize: 14, lineHeight: 1.7 }}>
+                      {kbViewing.articleContent.split('\n').map((p: string, i: number) => <p key={i} style={{ marginBottom: 10 }}>{p}</p>)}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+
+          <div style={{ padding: '12px 20px', borderBottom: '1px solid #f0f0f0' }}>
+            <div style={{ fontSize: 13, fontWeight: 600 }}>{t('kb.resources')}</div>
+          </div>
+
+          {kbLoading ? (
+            <div style={{ padding: 32, textAlign: 'center', color: '#888', fontSize: 13 }}>{t('common.loading')}</div>
+          ) : kbEntries.length === 0 ? (
+            <div style={{ padding: '40px 20px', textAlign: 'center' }}>
+              <div style={{ width: 48, height: 48, background: '#f0f4ff', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 12px' }}>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="1.5"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+              </div>
+              <div style={{ fontSize: 14, fontWeight: 600, color: '#374151', marginBottom: 4 }}>No manuals or guides linked to this unit yet.</div>
+              <div style={{ fontSize: 13, color: '#9ca3af' }}>Resources are automatically matched when content is added to the Knowledge Base.</div>
+            </div>
+          ) : (
+            <div>
+              {/* Group by content type */}
+              {Array.from(new Set(kbEntries.map((e: any) => e.contentType))).map((ct: string) => {
+                const ctEntries = kbEntries.filter((e: any) => e.contentType === ct);
+                const ctLabel: Record<string, string> = {
+                  owners_manual: t('kb.ownersManual'), maintenance_schedule: t('kb.maintenanceSchedule'),
+                  troubleshooting_guide: t('kb.troubleshootingGuide'), how_to_article: t('kb.howToArticle'),
+                  video: 'Videos', spec_sheet: t('kb.specSheet'), wiring_diagram: t('kb.wiringDiagram'),
+                  parts_catalog: t('kb.partsCatalog'), bulletin: t('kb.bulletin'), recall_notice: t('kb.recallNotice'),
+                };
+                return (
+                  <div key={ct}>
+                    <div style={{ padding: '10px 20px', background: '#fafafa', borderBottom: '1px solid #f0f0f0', fontSize: 11, fontWeight: 700, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                      {ctLabel[ct] || ct} ({ctEntries.length})
+                    </div>
+                    {ctEntries.map((entry: any) => (
+                      <div key={entry.id} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 20px', borderBottom: '1px solid #f5f5f5' }}>
+                        <div style={{ flex: 1, minWidth: 0 }}>
+                          <div style={{ fontSize: 13, fontWeight: 600 }}>{entry.title}</div>
+                          {(entry.yearStart || entry.yearEnd) && (
+                            <div style={{ fontSize: 11, color: '#888', marginTop: 2 }}>
+                              {entry.yearStart ?? '—'}–{entry.yearEnd ?? 'present'}
+                            </div>
+                          )}
+                        </div>
+                        <div style={{ fontSize: 10, color: '#9ca3af', flexShrink: 0 }}>
+                          {kbMatchTypes[entry.id] === 'exact' ? 'Exact match' : kbMatchTypes[entry.id] === 'model_family' ? 'Family match' : 'General'}
+                        </div>
+                        <button className="btn btn-o btn-sm" onClick={() => setKbViewing(entry)}>View</button>
+                      </div>
+                    ))}
+                  </div>
+                );
+              })}
             </div>
           )}
         </div>

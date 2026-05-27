@@ -1973,3 +1973,58 @@ export const aiClaimFeedback = pgTable("ai_claim_feedback", {
 export const insertAiClaimFeedbackSchema = createInsertSchema(aiClaimFeedback).omit({ id: true, createdAt: true });
 export type AiClaimFeedback = typeof aiClaimFeedback.$inferSelect;
 export type InsertAiClaimFeedback = z.infer<typeof insertAiClaimFeedbackSchema>;
+
+// ==================== KNOWLEDGE BASE ====================
+
+export const KB_CONTENT_TYPES = [
+  "owners_manual", "maintenance_schedule", "troubleshooting_guide", "how_to_article",
+  "video", "spec_sheet", "wiring_diagram", "parts_catalog", "bulletin", "recall_notice",
+] as const;
+
+export const KB_MATCH_TYPES = ["exact", "model_family", "manufacturer", "manual"] as const;
+
+export const knowledgeBaseEntries = pgTable("knowledge_base_entries", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  title: text("title").notNull(),
+  description: text("description"),
+  contentType: text("content_type", { enum: KB_CONTENT_TYPES }).notNull(),
+  manufacturer: text("manufacturer").notNull(),
+  modelFamily: text("model_family"),
+  modelNumber: text("model_number"),
+  yearStart: integer("year_start"),
+  yearEnd: integer("year_end"),
+  fileUrl: text("file_url"),
+  videoUrl: text("video_url"),
+  articleContent: text("article_content"),
+  tags: jsonb("tags").$type<string[]>().default(sql`'[]'::jsonb`),
+  isPublished: boolean("is_published").notNull().default(true),
+  viewCount: integer("view_count").notNull().default(0),
+  createdBy: uuid("created_by"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+}, (table) => [
+  index("kb_entries_manufacturer_idx").on(table.manufacturer),
+  index("kb_entries_mfr_family_idx").on(table.manufacturer, table.modelFamily),
+  index("kb_entries_content_type_idx").on(table.contentType),
+  index("kb_entries_published_idx").on(table.isPublished),
+]);
+
+export const unitKnowledgeLinks = pgTable("unit_knowledge_links", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  unitId: uuid("unit_id").notNull(),
+  entryId: uuid("entry_id").notNull(),
+  matchType: text("match_type", { enum: KB_MATCH_TYPES }).notNull(),
+  autoLinked: boolean("auto_linked").notNull().default(true),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+}, (table) => [
+  index("ukl_unit_idx").on(table.unitId),
+  index("ukl_entry_idx").on(table.entryId),
+]);
+
+export const insertKnowledgeBaseEntrySchema = createInsertSchema(knowledgeBaseEntries).omit({ id: true, createdAt: true, updatedAt: true });
+export const insertUnitKnowledgeLinkSchema = createInsertSchema(unitKnowledgeLinks).omit({ id: true, createdAt: true });
+
+export type KnowledgeBaseEntry = typeof knowledgeBaseEntries.$inferSelect;
+export type InsertKnowledgeBaseEntry = z.infer<typeof insertKnowledgeBaseEntrySchema>;
+export type UnitKnowledgeLink = typeof unitKnowledgeLinks.$inferSelect;
+export type InsertUnitKnowledgeLink = z.infer<typeof insertUnitKnowledgeLinkSchema>;

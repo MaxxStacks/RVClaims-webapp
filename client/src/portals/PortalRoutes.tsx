@@ -118,6 +118,7 @@ import RemoteDashboard from '@/components/remote-support/RemoteDashboard';
 import ModuleManagement from '@/pages/exclusive/operator-admin/ModuleManagement';
 import WalletManagement from '@/pages/exclusive/operator-admin/WalletManagement';
 import ArrivalsQueue from '@/pages/exclusive/operator-admin/ArrivalsQueue';
+import KnowledgeBaseManagement from '@/pages/exclusive/operator-admin/KnowledgeBaseManagement';
 
 // ─── Exclusive: Shared ─────────────────────────────────────────────────────
 import ScanUnit from '@/pages/exclusive/shared/ScanUnit';
@@ -125,6 +126,7 @@ import BatchScan from '@/pages/exclusive/shared/BatchScan';
 import PDIChecklist from '@/pages/exclusive/shared/PDIChecklist';
 import PDIDetail from '@/pages/exclusive/shared/PDIDetail';
 import PDITemplateManagement from '@/pages/exclusive/operator-admin/PDITemplateManagement';
+import KnowledgeBaseBrowse from '@/pages/exclusive/shared/KnowledgeBaseBrowse';
 
 // ─── Exclusive: Dealer Owner ───────────────────────────────────────────────
 import PhotoUpload from '@/pages/exclusive/dealer-owner/PhotoUpload';
@@ -299,6 +301,7 @@ export function OperatorAdminPortalSection() {
       <Route path="/operator/admin/modules">{() => <OperatorAdminLayout><ModuleManagement /></OperatorAdminLayout>}</Route>
       <Route path="/operator/admin/wallets">{() => <OperatorAdminLayout><WalletManagement /></OperatorAdminLayout>}</Route>
       <Route path="/operator/admin/arrivals">{() => <OperatorAdminLayout><ArrivalsQueue /></OperatorAdminLayout>}</Route>
+      <Route path="/operator/admin/knowledge-base">{() => <OperatorAdminLayout><KnowledgeBaseManagement /></OperatorAdminLayout>}</Route>
       {/* Default */}
       <Route>{() => <Redirect to="/operator/admin/dashboard" />}</Route>
     </Switch>
@@ -396,6 +399,7 @@ export function DealerOwnerPortalSection() {
       <Route path="/:dealerId/owner/modules/:moduleSlug">{() => <DealerOwnerLayout><ModuleDetail /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/modules">{() => <DealerOwnerLayout><ModuleCatalog /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/wallet">{() => <DealerOwnerLayout><WalletDashboard /></DealerOwnerLayout>}</Route>
+      <Route path="/:dealerId/owner/knowledge-base">{() => <DealerOwnerLayout><KnowledgeBaseBrowse /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/dashboard">{() => <DealerOwnerLayout><Dashboard /></DealerOwnerLayout>}</Route>
       <Route>{() => <DealerFallback role="owner" />}</Route>
     </Switch>
@@ -430,6 +434,7 @@ export function DealerStaffPortalSection() {
       <Route path="/:dealerId/staff/notifications">{() => <DealerStaffLayout><Notifications /></DealerStaffLayout>}</Route>
       <Route path="/:dealerId/staff/import">{() => <DealerStaffLayout><ImportData /></DealerStaffLayout>}</Route>
       <Route path="/:dealerId/staff/whats-new">{() => <DealerStaffLayout><Changelog /></DealerStaffLayout>}</Route>
+      <Route path="/:dealerId/staff/knowledge-base">{() => <DealerStaffLayout><KnowledgeBaseBrowse /></DealerStaffLayout>}</Route>
       <Route path="/:dealerId/staff/dashboard">{() => <DealerStaffLayout><Dashboard /></DealerStaffLayout>}</Route>
       <Route>{() => <DealerFallback role="staff" />}</Route>
     </Switch>
@@ -492,6 +497,7 @@ export function ServiceManagerPortalSection() {
       <Route path="/:dealerId/service-manager/parts">{() => <ServiceManagerLayout><Parts /></ServiceManagerLayout>}</Route>
       <Route path="/:dealerId/service-manager/service-appointments">{() => <ServiceManagerLayout><ServiceAppointments /></ServiceManagerLayout>}</Route>
       <Route path="/:dealerId/service-manager/settings">{() => <ServiceManagerLayout><ServiceSettings /></ServiceManagerLayout>}</Route>
+      <Route path="/:dealerId/service-manager/knowledge-base">{() => <ServiceManagerLayout><KnowledgeBaseBrowse /></ServiceManagerLayout>}</Route>
       <Route path="/:dealerId/service-manager/dashboard">{() => <ServiceManagerLayout><Dashboard /></ServiceManagerLayout>}</Route>
       <Route>{() => <DealerFallback role="service-manager" />}</Route>
     </Switch>
@@ -576,6 +582,7 @@ export function ShopTechPortalSection() {
       <Route path="/:dealerId/shop-tech/pdi/:pdiId">{() => <ShopTechLayout><PDIDetail /></ShopTechLayout>}</Route>
       <Route path="/:dealerId/shop-tech/work-orders/:workOrderId">{() => <ShopTechLayout><WorkOrderDetail /></ShopTechLayout>}</Route>
       <Route path="/:dealerId/shop-tech/work-orders">{() => <ShopTechLayout><WorkOrders /></ShopTechLayout>}</Route>
+      <Route path="/:dealerId/shop-tech/knowledge-base">{() => <ShopTechLayout><KnowledgeBaseBrowse /></ShopTechLayout>}</Route>
       <Route path="/:dealerId/shop-tech/dashboard">{() => <ShopTechLayout><Dashboard /></ShopTechLayout>}</Route>
       <Route>{() => <DealerFallback role="shop-tech" />}</Route>
     </Switch>
@@ -595,6 +602,7 @@ export function OnSiteTechPortalSection() {
       <Route path="/:dealerId/on-site-tech/pdi/:pdiId">{() => <OnSiteTechLayout><PDIDetail /></OnSiteTechLayout>}</Route>
       <Route path="/:dealerId/on-site-tech/work-orders/:workOrderId">{() => <OnSiteTechLayout><WorkOrderDetail /></OnSiteTechLayout>}</Route>
       <Route path="/:dealerId/on-site-tech/work-orders">{() => <OnSiteTechLayout><WorkOrders /></OnSiteTechLayout>}</Route>
+      <Route path="/:dealerId/on-site-tech/knowledge-base">{() => <OnSiteTechLayout><KnowledgeBaseBrowse /></OnSiteTechLayout>}</Route>
       <Route path="/:dealerId/on-site-tech/dashboard">{() => <OnSiteTechLayout><Dashboard /></OnSiteTechLayout>}</Route>
       <Route>{() => <DealerFallback role="on-site-tech" />}</Route>
     </Switch>
