@@ -73,8 +73,9 @@ const NotFound = lazy(() => import("@/pages/not-found"));
 const PortalSelectV6 = lazy(() => import("@/pages/PortalSelectV6"));
 const FiSessionPage = lazy(() => import("@/pages/FiSession"));
 
-// Session 3: 16-portal route sections
+// Session 3: 16-portal route sections + DS360 Superadmin
 import {
+  SuperAdminPortalSection,
   OperatorAdminPortalSection,
   OperatorStaffPortalSection,
   DealerOwnerPortalSection,
@@ -317,7 +318,8 @@ function App() {
   // Portal sub-paths are isolated from the marketing layout.
   // /operator, /dealer, /client, /bidder (exact) serve login pages in the marketing Switch.
   // Only sub-paths (/:rest*) trigger portal mode.
-  const isPortal = location.startsWith('/operator/') ||
+  const isPortal = location.startsWith('/superadmin/') ||
+                   location.startsWith('/operator/') ||
                    location.startsWith('/dealer/') ||
                    location.startsWith('/client/') ||
                    location.startsWith('/bidder/') ||
@@ -350,6 +352,10 @@ function App() {
           <RemoteSupportProvider>
           <Suspense fallback={null}>
             <Switch>
+              {/* DS360 Superadmin portal — /superadmin/* */}
+              <Route path="/superadmin/:rest*" component={SuperAdminPortalSection} />
+              <Route path="/superadmin" component={SuperAdminPortalSection} />
+
               {/* Session 3: Operator portals — BEFORE /operator/:rest* catch-all */}
               <Route path="/operator/admin/:rest*" component={OperatorAdminPortalSection} />
               <Route path="/operator/admin" component={OperatorAdminPortalSection} />

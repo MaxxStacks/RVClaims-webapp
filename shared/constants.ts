@@ -1,10 +1,10 @@
 // shared/constants.ts — Role permissions, sequence generators, platform defaults
 
-export type UserRole = "operator_admin" | "operator_staff" | "dealer_owner" | "dealer_staff" | "technician" | "service_manager" | "shop_manager" | "parts_dept" | "public_bidder" | "consignor" | "client" | "bidder" | "supplier";
+export type UserRole = "ds360_superadmin" | "operator_admin" | "operator_staff" | "dealer_owner" | "dealer_staff" | "technician" | "service_manager" | "shop_manager" | "parts_dept" | "public_bidder" | "consignor" | "client" | "bidder" | "supplier";
 
-export const OPERATOR_ROLES: UserRole[] = ["operator_admin", "operator_staff"];
+export const OPERATOR_ROLES: UserRole[] = ["ds360_superadmin", "operator_admin", "operator_staff"];
 export const DEALER_ROLES: UserRole[] = ["dealer_owner", "dealer_staff", "technician", "service_manager", "shop_manager", "parts_dept", "public_bidder", "consignor"];
-export const ALL_ROLES: UserRole[] = ["operator_admin", "operator_staff", "dealer_owner", "dealer_staff", "technician", "service_manager", "shop_manager", "parts_dept", "public_bidder", "consignor", "client", "bidder", "supplier"];
+export const ALL_ROLES: UserRole[] = ["ds360_superadmin", "operator_admin", "operator_staff", "dealer_owner", "dealer_staff", "technician", "service_manager", "shop_manager", "parts_dept", "public_bidder", "consignor", "client", "bidder", "supplier"];
 
 // Permission matrix — what each role can access
 export const PERMISSIONS: Record<UserRole, {
@@ -21,6 +21,20 @@ export const PERMISSIONS: Record<UserRole, {
   canCreateInvoices: boolean;
   canViewFinancials: boolean;
 }> = {
+  ds360_superadmin: {
+    canAccessOperatorPortal: true,
+    canAccessDealerPortal: false,
+    canAccessClientPortal: false,
+    canAccessBidderPortal: false,
+    canManageBilling: true,
+    canManageStaff: true,
+    canManagePlatformSettings: true,
+    canViewAllDealers: true,
+    canProcessClaims: true,
+    canManageFrcCodes: true,
+    canCreateInvoices: true,
+    canViewFinancials: true,
+  },
   operator_admin: {
     canAccessOperatorPortal: true,
     canAccessDealerPortal: false,

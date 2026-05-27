@@ -126,6 +126,15 @@ import RemindersOverview from '@/pages/exclusive/operator-admin/RemindersOvervie
 import LoyaltyStats from '@/pages/exclusive/operator-admin/LoyaltyStats';
 import AISupportStats from '@/pages/exclusive/operator-admin/AISupportStats';
 
+// ─── Exclusive: DS360 Superadmin ──────────────────────────────────────────
+import SuperAdminDashboard from '@/pages/exclusive/superadmin/SuperAdminDashboard';
+import OperatorManagement from '@/pages/exclusive/superadmin/OperatorManagement';
+import OperatorDetail from '@/pages/exclusive/superadmin/OperatorDetail';
+import OnboardOperator from '@/pages/exclusive/superadmin/OnboardOperator';
+import PlatformRevenue from '@/pages/exclusive/superadmin/PlatformRevenue';
+import GlobalSettings from '@/pages/exclusive/superadmin/GlobalSettings';
+import SuperAdminLayout from '@/layouts/SuperAdminLayout';
+
 // ─── Exclusive: Supplier ───────────────────────────────────────────────────
 import SupplierDashboard from '@/pages/exclusive/supplier/SupplierDashboard';
 import SupplierOrders from '@/pages/exclusive/supplier/SupplierOrders';
@@ -776,6 +785,25 @@ export function MarketplaceStaffPortalSection() {
       <Route path="/marketplace/staff/bids">{() => <MarketplaceStaffLayout><MktTransactions /></MarketplaceStaffLayout>}</Route>
       <Route path="/marketplace/staff/dashboard">{() => <MarketplaceStaffLayout><Dashboard /></MarketplaceStaffLayout>}</Route>
       <Route>{() => <Redirect to="/marketplace/staff/dashboard" />}</Route>
+    </Switch>
+    </ProtectedRoute>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// 0. DS360 SUPERADMIN — /superadmin/*
+// ═══════════════════════════════════════════════════════════════════════════
+export function SuperAdminPortalSection() {
+  return (
+    <ProtectedRoute allowedRoles={['ds360_superadmin']}>
+    <Switch>
+      <Route path="/superadmin/operators/new">{() => <SuperAdminLayout><OnboardOperator /></SuperAdminLayout>}</Route>
+      <Route path="/superadmin/operators/:operatorId">{() => <SuperAdminLayout><OperatorDetail /></SuperAdminLayout>}</Route>
+      <Route path="/superadmin/operators">{() => <SuperAdminLayout><OperatorManagement /></SuperAdminLayout>}</Route>
+      <Route path="/superadmin/revenue">{() => <SuperAdminLayout><PlatformRevenue /></SuperAdminLayout>}</Route>
+      <Route path="/superadmin/settings">{() => <SuperAdminLayout><GlobalSettings /></SuperAdminLayout>}</Route>
+      <Route path="/superadmin/dashboard">{() => <SuperAdminLayout><SuperAdminDashboard /></SuperAdminLayout>}</Route>
+      <Route>{() => <Redirect to="/superadmin/dashboard" />}</Route>
     </Switch>
     </ProtectedRoute>
   );

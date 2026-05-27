@@ -65,6 +65,7 @@ import analyticsRouter from './analytics';
 import complianceRouter from './compliance';
 import locationsRouter from './locations';
 import suppliersRouter from './suppliers';
+import superadminRouter, { operatorsMeRouter } from './superadmin';
 
 // Import existing routes for backward compat
 import { storage } from "../storage";
@@ -169,6 +170,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.use('/api/suppliers', suppliersRouter);  // /api/suppliers, /api/suppliers/me, /api/suppliers/catalog, /api/suppliers/orders
   app.use('/api/supplier-catalog', suppliersRouter);   // alias for catalog browsing
   app.use('/api/supplier-orders', suppliersRouter);    // alias for order placement
+  app.use('/api/superadmin', superadminRouter);        // /api/superadmin/* — ds360_superadmin only
+  app.use('/api/operators', operatorsMeRouter);        // /api/operators/me — operator branding
 
   // ==================== EXISTING ROUTES (backward compat) ====================
 

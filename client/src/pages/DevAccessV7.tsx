@@ -8,6 +8,7 @@ import type { UserRole } from "@shared/schema";
 // so these URLs bypass the /dealer/:rest* v6 catch-all and hit the v7 portal sections.
 const DEV_DEALER_ID = "dev-dealer-001";
 const PORTAL_TARGETS: Record<string, string> = {
+  ds360_superadmin:     "/superadmin/dashboard",
   operator_admin:       "/operator/admin/dashboard",
   operator_staff:       "/operator/staff/dashboard",
   dealer_owner:         `/${DEV_DEALER_ID}/owner/dashboard`,
@@ -35,6 +36,14 @@ interface RoleCard {
 }
 
 const SECTIONS: { label: string; color: string; bg: string; roles: RoleCard[] }[] = [
+  {
+    label: "DS360 Platform",
+    color: "#7c3aed",
+    bg: "#ede9fe",
+    roles: [
+      { role: "ds360_superadmin", urlRole: "ds360_superadmin", label: "DS360 Superadmin", desc: "Platform owner — manages all operators, licensing, revenue share, global settings" },
+    ],
+  },
   {
     label: "Operator Portal",
     color: "#033280",

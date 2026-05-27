@@ -13,6 +13,7 @@ import rateLimit from "express-rate-limit";
 import { registerRoutes } from "./routes/index";
 import { initBlogCron } from "./blog/cron";
 import { migrateExistingDealersToLocations } from "./lib/locationMigration";
+import { migrateToMultiOperator } from "./lib/operatorMigration";
 import { setupVite, serveStatic, log } from "./vite";
 
 const app = express();
@@ -107,6 +108,17 @@ app.use((req, res, next) => {
     })
     .catch((err) => {
       console.error("[LOCATION MIGRATION] Startup migration error:", err);
+    });
+
+  // Non-blocking auto-migration: create default operator + assign existing dealers/users
+  migrateToMultiOperator()
+    .then(({ operatorCreated, dealershipsUpdated, usersUpdated }) => {
+      if (operatorCreated) {
+        log(`[OPERATOR MIGRATION] Default operator created — ${dealershipsUpdated} dealership(s) + ${usersUpdated} user(s) assigned`);
+      }
+    })
+    .catch((err) => {
+      console.error("[OPERATOR MIGRATION] Startup migration error:", err);
     });
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {

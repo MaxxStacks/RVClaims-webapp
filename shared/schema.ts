@@ -9,7 +9,7 @@ import { z } from "zod";
 
 // ==================== ROLE & STATUS ENUMS ====================
 
-export const USER_ROLES = ["operator_admin", "operator_staff", "dealer_owner", "dealer_staff", "technician", "service_manager", "shop_manager", "parts_dept", "public_bidder", "consignor", "client", "bidder", "supplier"] as const;
+export const USER_ROLES = ["ds360_superadmin", "operator_admin", "operator_staff", "dealer_owner", "dealer_staff", "technician", "service_manager", "shop_manager", "parts_dept", "public_bidder", "consignor", "client", "bidder", "supplier"] as const;
 export const INVITE_ROLES = ["operator_staff", "dealer_owner", "dealer_staff", "technician", "service_manager", "shop_manager", "parts_dept", "public_bidder", "consignor", "client"] as const;
 export const DEALERSHIP_PLANS = ["plan_a", "plan_b", "custom"] as const;
 export const DEALERSHIP_STATUSES = ["active", "suspended", "pending"] as const;
@@ -96,6 +96,8 @@ export const users = pgTable("users", {
   customData: jsonb("custom_data").default(sql`'{}'`),
   // Multi-location: null = main/all locations
   locationId: uuid("location_id"),
+  // White-label: which operator this user belongs to (null = DS360 default operator)
+  operatorId: uuid("operator_id"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 }, (table) => [
@@ -103,6 +105,7 @@ export const users = pgTable("users", {
   index("users_dealership_idx").on(table.dealershipId),
   index("users_role_idx").on(table.role),
   index("users_location_idx").on(table.locationId),
+  index("users_operator_idx").on(table.operatorId),
 ]);
 
 // ==================== 2. SESSIONS ====================
@@ -229,9 +232,49 @@ export const dealerships = pgTable("dealerships", {
   // Multi-location tier
   multiLocationEnabled: boolean("multi_location_enabled").default(false),
   crossLocationInventory: boolean("cross_location_inventory").default(false),
+  // White-label: which operator manages this dealership (null = DS360 default operator)
+  operatorId: uuid("operator_id"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
-});
+}, (table) => [
+  index("dealerships_operator_idx").on(table.operatorId),
+]);
+
+// ==================== 4A. OPERATORS (White-Label Multi-Tenancy) ====================
+
+export const OPERATOR_LICENSE_TIERS = ["starter", "professional", "enterprise"] as const;
+export const OPERATOR_STATUSES = ["pending", "active", "suspended", "cancelled"] as const;
+
+export const operators = pgTable("operators", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: text("name").notNull(),
+  slug: text("slug").notNull().unique(),
+  contactName: text("contact_name"),
+  contactEmail: text("contact_email"),
+  contactPhone: text("contact_phone"),
+  address: text("address"),
+  country: text("country").default("CA"),
+  logoUrl: text("logo_url"),
+  primaryColor: text("primary_color").default("#033280"),
+  secondaryColor: text("secondary_color").default("#0cb22c"),
+  customDomain: text("custom_domain"),
+  licenseTier: text("license_tier", { enum: OPERATOR_LICENSE_TIERS }).default("starter"),
+  maxDealers: integer("max_dealers").default(25),
+  monthlyFee: decimal("monthly_fee", { precision: 10, scale: 2 }).default("999.00"),
+  revenueSharePercent: decimal("revenue_share_percent", { precision: 5, scale: 2 }).default("15.00"),
+  stripeConnectAccountId: text("stripe_connect_account_id"),
+  status: text("status", { enum: OPERATOR_STATUSES }).default("pending"),
+  activatedAt: timestamp("activated_at"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+}, (table) => [
+  index("operators_slug_idx").on(table.slug),
+  index("operators_status_idx").on(table.status),
+]);
+
+export const insertOperatorSchema = createInsertSchema(operators).omit({ id: true, createdAt: true, updatedAt: true });
+export type Operator = typeof operators.$inferSelect;
+export type InsertOperator = z.infer<typeof insertOperatorSchema>;
 
 // ==================== 4B. MODULE CATALOG ====================
 
@@ -1295,6 +1338,7 @@ export type PublicUser = {
   role: import("./constants").UserRole;
   dealershipId: string | null;
   locationId: string | null;
+  operatorId: string | null;
   timezone: string | null;
   language: string | null;
   lastLoginAt: Date | null;

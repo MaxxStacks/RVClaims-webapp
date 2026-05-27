@@ -9,6 +9,7 @@ import type { UserRole } from '@shared/schema';
 // Dealer roles that need a dealerId prefix send the user back to the dev
 // selector so they can pick the correct dealership context.
 const ROLE_HOME: Partial<Record<UserRole, string>> = {
+  ds360_superadmin: '/superadmin/dashboard',
   operator_admin:  '/operator/admin/dashboard',
   operator_staff:  '/operator/staff/dashboard',
   dealer_owner:    '/dev-access-v7',
