@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { apiFetch } from '@/lib/api';
 import { useAuth } from '@/hooks/use-auth';
 import { useLanguage } from '@/hooks/use-language';
+import { useLocationContext } from '@/contexts/LocationContext';
 
 // ── Client Portal Dashboard ──────────────────────────────────────────────────
 function ClientDashboard() {
@@ -421,6 +422,7 @@ function DealerDashboard() {
   const [location, navigate] = useLocation();
   const { user } = useAuth();
   const { t } = useLanguage();
+  const { locations, currentLocationId, isMultiLocation } = useLocationContext();
   const [claims, setClaims] = useState<any[]>([]);
   const [units, setUnits] = useState<any[]>([]);
   const [dataError, setDataError] = useState<string | null>(null);
@@ -431,12 +433,38 @@ function DealerDashboard() {
     return segs.length >= 2 ? `/${segs[0]}/${segs[1]}` : '';
   })();
 
+  const dealershipId = user?.dealershipId as string | undefined;
+
+  // Per-location stats (only when dealer_owner and isMultiLocation)
+  const { data: locationStatsMap } = useQuery({
+    queryKey: ['location-stats-all', dealershipId, locations.map(l => l.id).join(',')],
+    queryFn: async () => {
+      if (!dealershipId || !isMultiLocation) return {};
+      const results = await Promise.all(
+        locations.map(async (loc) => {
+          try {
+            const stats = await apiFetch<{ units: number; claims: number; workOrders: number; activeStaff: number }>(
+              `/api/dealerships/${dealershipId}/locations/${loc.id}/stats`
+            );
+            return [loc.id, stats] as const;
+          } catch {
+            return [loc.id, { units: 0, claims: 0, workOrders: 0, activeStaff: 0 }] as const;
+          }
+        })
+      );
+      return Object.fromEntries(results);
+    },
+    enabled: !!dealershipId && isMultiLocation && user?.role === 'dealer_owner',
+    staleTime: 60000,
+  });
+
   useEffect(() => {
+    const locationParam = currentLocationId ? `?locationId=${currentLocationId}` : '';
     Promise.all([
-      apiFetch<any>('/api/v6/claims').then(d => setClaims(Array.isArray(d) ? d : d.claims || [])).catch(() => {}),
-      apiFetch<any>('/api/v6/units').then(d => setUnits(Array.isArray(d) ? d : d.units || [])).catch(() => {}),
+      apiFetch<any>(`/api/v6/claims${locationParam}`).then(d => setClaims(Array.isArray(d) ? d : d.claims || [])).catch(() => {}),
+      apiFetch<any>(`/api/v6/units${locationParam}`).then(d => setUnits(Array.isArray(d) ? d : d.units || [])).catch(() => {}),
     ]).catch(err => setDataError(err?.message || 'Failed to load'));
-  }, []);
+  }, [currentLocationId]);
 
   const activeClaims = claims.filter((c: any) => c.status !== 'closed' && c.status !== 'paid').length;
 
@@ -526,6 +554,49 @@ function DealerDashboard() {
           <div className="sc-v">{units.length}</div>
         </div>
       </div>
+
+      {/* Per-location breakdown — only shown to dealer_owner with 2+ locations and All Locations selected */}
+      {isMultiLocation && !currentLocationId && user?.role === 'dealer_owner' && locationStatsMap && (
+        <div style={{ background: 'var(--bg-card, #fff)', border: '1px solid #e0e0e0', borderRadius: 10, padding: '16px 20px', marginTop: 16, marginBottom: 4 }}>
+          <div style={{ fontSize: 13, fontWeight: 600, color: '#033280', marginBottom: 10, display: 'flex', alignItems: 'center', gap: 6 }}>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#033280" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            {t('location.stats')}
+          </div>
+          <div className="tw">
+            <table>
+              <thead>
+                <tr>
+                  <th style={{ textAlign: 'left' as const }}>{t('location.name')}</th>
+                  <th style={{ textAlign: 'right' as const }}>{t('nav.units')}</th>
+                  <th style={{ textAlign: 'right' as const }}>{t('dashboard.activeClaims')}</th>
+                  <th style={{ textAlign: 'right' as const }}>WOs</th>
+                </tr>
+              </thead>
+              <tbody>
+                {locations.map((loc) => {
+                  const s = locationStatsMap[loc.id] ?? { units: 0, claims: 0, workOrders: 0 };
+                  return (
+                    <tr key={loc.id}>
+                      <td style={{ fontWeight: 500 }}>
+                        {loc.name}
+                        {loc.isMain && <span style={{ marginLeft: 6, fontSize: 10, background: '#033280', color: '#fff', borderRadius: 3, padding: '1px 5px', fontWeight: 700 }}>{t('location.main')}</span>}
+                      </td>
+                      <td style={{ textAlign: 'right' as const, color: '#555' }}>{s.units}</td>
+                      <td style={{ textAlign: 'right' as const, color: '#555' }}>{s.claims}</td>
+                      <td style={{ textAlign: 'right' as const, color: '#555' }}>{s.workOrders}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+          <div style={{ marginTop: 8, textAlign: 'right' as const }}>
+            <span onClick={() => navigate(`${basePath}/locations`)} style={{ fontSize: 12, color: '#033280', fontWeight: 600, cursor: 'pointer' }}>
+              {t('location.title')} →
+            </span>
+          </div>
+        </div>
+      )}
 
       {/* Quick actions */}
       <div className="qg">

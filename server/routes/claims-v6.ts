@@ -59,7 +59,7 @@ async function nextClaimNumber(): Promise<string> {
 // GET /api/v6/claims — scoped by role with filters
 router.get("/", async (req: Request, res: Response) => {
   const u = req.user!;
-  const { status, type, manufacturer, dealershipId: filterDealershipId, search } = req.query as Record<string, string>;
+  const { status, type, manufacturer, dealershipId: filterDealershipId, search, locationId: qLocationId } = req.query as Record<string, string>;
 
   try {
     const conditions: any[] = [];
@@ -69,6 +69,13 @@ router.get("/", async (req: Request, res: Response) => {
     } else if (["dealer_owner", "dealer_staff"].includes(u.role)) {
       if (!u.dealershipId) return res.json([]);
       conditions.push(eq(claims.dealershipId, u.dealershipId));
+
+      // Location scoping
+      if (qLocationId) {
+        conditions.push(eq(claims.locationId, qLocationId));
+      } else if (u.role === "dealer_staff" && (u as any).locationId) {
+        conditions.push(eq(claims.locationId, (u as any).locationId));
+      }
     } else if (u.role === "client") {
       if (!u.id) return res.json([]);
       const clientUnits = await db.select({ id: units.id }).from(units).where(eq(units.customerId, u.id));

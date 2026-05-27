@@ -149,6 +149,7 @@ import PortalSettings from '@/pages/exclusive/dealer-owner/PortalSettings';
 import ModuleCatalog from '@/pages/exclusive/dealer-owner/ModuleCatalog';
 import ModuleDetail from '@/pages/exclusive/dealer-owner/ModuleDetail';
 import WalletDashboard from '@/pages/exclusive/dealer-owner/WalletDashboard';
+import LocationManagement from '@/pages/exclusive/dealer-owner/LocationManagement';
 
 // ─── Exclusive: Client ─────────────────────────────────────────────────────
 import FIOffers from '@/pages/exclusive/client/FIOffers';
@@ -429,6 +430,7 @@ export function DealerOwnerPortalSection() {
       <Route path="/:dealerId/owner/modules/:moduleSlug">{() => <DealerOwnerLayout><ModuleDetail /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/modules">{() => <DealerOwnerLayout><ModuleCatalog /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/wallet">{() => <DealerOwnerLayout><WalletDashboard /></DealerOwnerLayout>}</Route>
+      <Route path="/:dealerId/owner/locations">{() => <DealerOwnerLayout><LocationManagement /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/knowledge-base">{() => <DealerOwnerLayout><KnowledgeBaseBrowse /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/payment-plans">{() => <DealerOwnerLayout><PaymentPlans /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/upsell">{() => <DealerOwnerLayout><UpsellDashboard /></DealerOwnerLayout>}</Route>

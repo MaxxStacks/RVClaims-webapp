@@ -12,6 +12,7 @@ import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import { registerRoutes } from "./routes/index";
 import { initBlogCron } from "./blog/cron";
+import { migrateExistingDealersToLocations } from "./lib/locationMigration";
 import { setupVite, serveStatic, log } from "./vite";
 
 const app = express();
@@ -96,6 +97,17 @@ app.use((req, res, next) => {
 
   initWebSocket(server);
   initBlogCron();
+
+  // Non-blocking auto-migration: ensure every dealer has at least a 'Main' location
+  migrateExistingDealersToLocations()
+    .then(({ locationsCreated }) => {
+      if (locationsCreated > 0) {
+        log(`[LOCATION MIGRATION] Created ${locationsCreated} Main location(s) for existing dealers`);
+      }
+    })
+    .catch((err) => {
+      console.error("[LOCATION MIGRATION] Startup migration error:", err);
+    });
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
     const status = err.status || err.statusCode || 500;

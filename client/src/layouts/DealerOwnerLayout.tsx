@@ -9,6 +9,8 @@ import type { Language } from '@/lib/i18n';
 import { MobileBottomNav } from '@/components/MobileBottomNav';
 import { useEnabledModules, hasModule } from '@/hooks/useEnabledModules';
 import { useWallet } from '@/hooks/useWallet';
+import { LocationProvider } from '@/contexts/LocationContext';
+import LocationSwitcher from '@/components/LocationSwitcher';
 
 interface Props { children?: React.ReactNode; }
 
@@ -90,6 +92,7 @@ export default function DealerOwnerLayout({ children }: Props) {
   const moreAvailable = Math.max(0, totalModules - activeSubs.length);
 
   return (
+    <LocationProvider>
     <>
       <nav className={`sidebar${sidebarCollapsed ? ' collapsed' : ''}`}>
         <div className="sidebar-logo">
@@ -228,6 +231,7 @@ export default function DealerOwnerLayout({ children }: Props) {
 
           <div className="nav-section">
             <div className="nav-label">{t('nav.settings')}</div>
+            <Link className={`nav-item ${isActive('locations') ? 'active' : ''}`} to="locations"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>{t('location.title')}</Link>
             <Link className={`nav-item ${isActive('notifications') ? 'active' : ''}`} to="notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>{t('nav.notifications')}</Link>
             <Link className={`nav-item ${isActive('staff') ? 'active' : ''}`} to="staff"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>{t('nav.staff')}</Link>
             <Link className={`nav-item ${isActive('branding') ? 'active' : ''}`} to="branding"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>{t('nav.branding')}</Link>
@@ -261,6 +265,7 @@ export default function DealerOwnerLayout({ children }: Props) {
             </div>
           </div>
           <div className="header-right">
+            <LocationSwitcher />
             <div className="lang-toggle">
               <button className={`lang-btn-opt ${lang === 'en' ? 'active' : ''}`} onClick={() => handleSetLang('en')}>EN</button>
               <button className={`lang-btn-opt ${lang === 'fr' ? 'active' : ''}`} onClick={() => handleSetLang('fr')}>FR</button>
@@ -318,5 +323,6 @@ export default function DealerOwnerLayout({ children }: Props) {
         />
       </div>
     </>
+    </LocationProvider>
   );
 }

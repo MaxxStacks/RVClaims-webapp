@@ -94,12 +94,15 @@ export const users = pgTable("users", {
   lastLoginAt: timestamp("last_login_at"),
   isActive: boolean("is_active").default(true).notNull(),
   customData: jsonb("custom_data").default(sql`'{}'`),
+  // Multi-location: null = main/all locations
+  locationId: uuid("location_id"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 }, (table) => [
   index("users_email_idx").on(table.email),
   index("users_dealership_idx").on(table.dealershipId),
   index("users_role_idx").on(table.role),
+  index("users_location_idx").on(table.locationId),
 ]);
 
 // ==================== 2. SESSIONS ====================
@@ -132,6 +135,32 @@ export const invitations = pgTable("invitations", {
   index("invitations_token_idx").on(table.token),
   index("invitations_email_idx").on(table.email),
 ]);
+
+// ==================== 3B. DEALERSHIP LOCATIONS ====================
+
+export const dealershipLocations = pgTable("dealership_locations", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  dealershipId: uuid("dealership_id").notNull(),
+  name: text("name").notNull(),
+  address: text("address"),
+  city: text("city"),
+  province: text("province"),
+  postalCode: text("postal_code"),
+  phone: text("phone"),
+  email: text("email"),
+  managerUserId: uuid("manager_user_id"),
+  isMain: boolean("is_main").default(false).notNull(),
+  isActive: boolean("is_active").default(true).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+}, (table) => [
+  index("dealership_locations_dealership_idx").on(table.dealershipId),
+  index("dealership_locations_active_idx").on(table.isActive),
+]);
+
+export const insertDealershipLocationSchema = createInsertSchema(dealershipLocations).omit({ id: true, createdAt: true, updatedAt: true });
+export type DealershipLocation = typeof dealershipLocations.$inferSelect;
+export type InsertDealershipLocation = z.infer<typeof insertDealershipLocationSchema>;
 
 // ==================== 4. DEALERSHIPS ====================
 
@@ -197,6 +226,9 @@ export const dealerships = pgTable("dealerships", {
   addressLine1: text("address_line_1"),
   addressLine2: text("address_line_2"),
   stateProvince: text("state_province"),
+  // Multi-location tier
+  multiLocationEnabled: boolean("multi_location_enabled").default(false),
+  crossLocationInventory: boolean("cross_location_inventory").default(false),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
@@ -320,12 +352,15 @@ export const units = pgTable("units", {
   assignedOperatorId: uuid("assigned_operator_id"),
   dafDeadline: timestamp("daf_deadline"),
   customData: jsonb("custom_data").default(sql`'{}'`),
+  // Multi-location: null = main/default location
+  locationId: uuid("location_id"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 }, (table) => [
   index("units_vin_idx").on(table.vin),
   index("units_dealership_idx").on(table.dealershipId),
   index("units_status_idx").on(table.status),
+  index("units_location_idx").on(table.locationId),
 ]);
 
 // ==================== 6. CLAIMS ====================
@@ -360,6 +395,8 @@ export const claims = pgTable("claims", {
   submittedToMfrAt: timestamp("submitted_to_mfr_at"),
   approvedAt: timestamp("approved_at"),
   customData: jsonb("custom_data").default(sql`'{}'`),
+  // Multi-location: null = main/default location
+  locationId: uuid("location_id"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 }, (table) => [
@@ -367,6 +404,7 @@ export const claims = pgTable("claims", {
   index("claims_dealership_idx").on(table.dealershipId),
   index("claims_unit_idx").on(table.unitId),
   index("claims_status_idx").on(table.status),
+  index("claims_location_idx").on(table.locationId),
 ]);
 
 // ==================== 7. CLAIM FRC LINES ====================
@@ -735,6 +773,11 @@ export const dealershipsRelations = relations(dealerships, ({ many }) => ({
   claims: many(claims),
   invoices: many(invoices),
   tickets: many(tickets),
+  locations: many(dealershipLocations),
+}));
+
+export const dealershipLocationsRelations = relations(dealershipLocations, ({ one }) => ({
+  dealership: one(dealerships, { fields: [dealershipLocations.dealershipId], references: [dealerships.id] }),
 }));
 
 export const unitsRelations = relations(units, ({ one, many }) => ({
@@ -1251,6 +1294,7 @@ export type PublicUser = {
   avatarUrl: string | null;
   role: import("./constants").UserRole;
   dealershipId: string | null;
+  locationId: string | null;
   timezone: string | null;
   language: string | null;
   lastLoginAt: Date | null;
@@ -1367,6 +1411,8 @@ export const workOrders = pgTable("work_orders", {
   notes: text("notes"),
   techNotes: text("tech_notes"),
   gpsTrack: jsonb("gps_track").$type<{ lat: number; lng: number; ts: string }[]>().default([]),
+  // Multi-location: null = main/default location
+  locationId: uuid("location_id"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 }, (table) => [
@@ -1375,6 +1421,7 @@ export const workOrders = pgTable("work_orders", {
   index("work_orders_claim_idx").on(table.claimId),
   index("work_orders_status_idx").on(table.status),
   index("work_orders_scheduled_idx").on(table.scheduledFor),
+  index("work_orders_location_idx").on(table.locationId),
 ]);
 
 export const workOrderLabor = pgTable("work_order_labor", {

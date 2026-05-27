@@ -23,13 +23,23 @@ function computeWarrantyStatus(endDate: string | null | undefined): "active" | "
 // GET /api/v6/units
 router.get("/", async (req: Request, res: Response) => {
   const u = req.user!;
-  const { status, manufacturer, customerId, search } = req.query as Record<string, string>;
+  const { status, manufacturer, customerId, search, locationId: qLocationId } = req.query as Record<string, string>;
 
   const conditions: ReturnType<typeof eq>[] = [];
 
   if (["dealer_owner", "dealer_staff", "technician"].includes(u.role)) {
     if (!u.dealershipId) return res.json([]);
     conditions.push(eq(units.dealershipId, u.dealershipId));
+
+    // Location scoping:
+    // - dealer_staff/technician with locationId assigned: auto-filter to their location
+    // - dealer_owner with explicit locationId query param: filter to that location
+    // - dealer_owner with no locationId param: return all (no filter)
+    if (qLocationId) {
+      conditions.push(eq(units.locationId, qLocationId));
+    } else if (["dealer_staff", "technician"].includes(u.role) && (u as any).locationId) {
+      conditions.push(eq(units.locationId, (u as any).locationId));
+    }
   } else if (u.role === "client") {
     conditions.push(eq(units.customerId, u.id));
   } else if (!["operator_admin", "operator_staff"].includes(u.role)) {

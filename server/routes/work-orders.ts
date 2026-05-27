@@ -89,9 +89,19 @@ router.get("/", requireAuth, async (req: Request, res: Response) => {
     } else {
       const did = (dealershipId as string) || req.user!.dealershipId;
       if (!did) return res.json([]);
-      rows = await db.select().from(workOrders)
-        .where(eq(workOrders.dealershipId, did))
-        .orderBy(desc(workOrders.createdAt));
+      const userLocationId = (req.user as any).locationId as string | undefined;
+      const qLocationId = req.query.locationId as string | undefined;
+      const filterLocationId = qLocationId ?? (role === "dealer_staff" && userLocationId ? userLocationId : undefined);
+
+      if (filterLocationId) {
+        rows = await db.select().from(workOrders)
+          .where(and(eq(workOrders.dealershipId, did), eq(workOrders.locationId, filterLocationId)))
+          .orderBy(desc(workOrders.createdAt));
+      } else {
+        rows = await db.select().from(workOrders)
+          .where(eq(workOrders.dealershipId, did))
+          .orderBy(desc(workOrders.createdAt));
+      }
     }
 
     if (status) rows = rows.filter((w) => w.status === status);
