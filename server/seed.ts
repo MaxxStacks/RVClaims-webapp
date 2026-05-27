@@ -3,7 +3,7 @@
 // Creates the operator admin account and sample dealership for development
 
 import { db } from "./db";
-import { users, dealerships, products, platformSettings, walletFundingTiers, financingPartners } from "@shared/schema";
+import { users, dealerships, products, platformSettings, walletFundingTiers, financingPartners, upsellTemplates } from "@shared/schema";
 import { hashPassword } from "./lib/auth";
 import { eq } from "drizzle-orm";
 import { seedModules } from "./db/seedModules";
@@ -265,6 +265,65 @@ async function seed() {
     console.log("  ✅ Financing partners seeded (6 partners: 3 CA, 3 US)");
   } else {
     console.log("  ⏭️  Financing partners already exist");
+  }
+
+  // ==================== UPSELL TEMPLATES ====================
+  const existingUpsellTemplates = await db.select().from(upsellTemplates).limit(1);
+  if (existingUpsellTemplates.length === 0) {
+    await db.insert(upsellTemplates).values([
+      {
+        triggerType: "warranty_expiry",
+        productType: "extended_warranty",
+        subjectTemplate: "Your warranty is expiring soon, {{customerName}}",
+        messageTemplate: "Hi {{customerName}}, your warranty on your {{unitYear}} {{unitMake}} {{unitModel}} expires on {{expiryDate}}. Protect your investment with an Extended Warranty plan — covering all major systems for up to 5 more years.",
+        isActive: true,
+      },
+      {
+        triggerType: "unit_age",
+        productType: "protection_package",
+        subjectTemplate: "Protect your {{unitYear}} {{unitMake}}",
+        messageTemplate: "Hi {{customerName}}, your {{unitYear}} {{unitMake}} {{unitModel}} is now over 3 years old. This is the perfect time to add a Protection Package covering paint, fabric, and interior.",
+        isActive: true,
+      },
+      {
+        triggerType: "unit_age",
+        productType: "roadside",
+        subjectTemplate: "Are you covered on the road?",
+        messageTemplate: "Hi {{customerName}}, units over 5 years old benefit most from 24/7 Roadside Assistance. Never get stranded — add coverage today.",
+        isActive: true,
+      },
+      {
+        triggerType: "service_gap",
+        productType: "maintenance_package",
+        subjectTemplate: "We miss you, {{customerName}}!",
+        messageTemplate: "Hi {{customerName}}, it has been over a year since your {{unitYear}} {{unitMake}} was serviced. Book your annual checkup and keep your warranty valid.",
+        isActive: true,
+      },
+      {
+        triggerType: "seasonal",
+        productType: "winterization",
+        subjectTemplate: "Winter is coming — is your RV ready?",
+        messageTemplate: "Hi {{customerName}}, before the cold hits, protect your {{unitYear}} {{unitMake}} with professional winterization. Book now before spots fill up.",
+        isActive: true,
+      },
+      {
+        triggerType: "seasonal",
+        productType: "de_winterization",
+        subjectTemplate: "Spring is here — time to hit the road!",
+        messageTemplate: "Hi {{customerName}}, get your {{unitYear}} {{unitMake}} ready for the season with our de-winterization service. Limited availability — book early.",
+        isActive: true,
+      },
+      {
+        triggerType: "fi_gap",
+        productType: "gap_coverage",
+        subjectTemplate: "Are you protected against depreciation?",
+        messageTemplate: "Hi {{customerName}}, your {{unitYear}} {{unitMake}} {{unitModel}} does not have GAP coverage on file. If your unit is totaled, GAP insurance covers the difference between your settlement and what you owe.",
+        isActive: true,
+      },
+    ]);
+    console.log("  ✅ Upsell templates seeded (7 templates)");
+  } else {
+    console.log("  ⏭️  Upsell templates already exist");
   }
 
   // ==================== PDI TEMPLATES ====================

@@ -57,6 +57,7 @@ import pdiRouter from './pdi';
 import dealJacketsRouter from './dealJackets';
 import knowledgeBaseRouter from './knowledgeBase';
 import paymentPlansRouter, { partnersRouter as financingPartnersRouter } from './paymentPlans';
+import upsellRouter from './upsell';
 
 // Import existing routes for backward compat
 import { storage } from "../storage";
@@ -150,6 +151,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.use('/api', knowledgeBaseRouter); // /api/knowledge-base, /api/units/:unitId/knowledge
   app.use('/api/payment-plans', paymentPlansRouter);       // /api/payment-plans
   app.use('/api/financing-partners', financingPartnersRouter); // /api/financing-partners
+  app.use('/api/upsell', upsellRouter);                    // /api/upsell/*
 
   // ==================== EXISTING ROUTES (backward compat) ====================
 

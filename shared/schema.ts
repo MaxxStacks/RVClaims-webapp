@@ -2105,3 +2105,73 @@ export type KnowledgeBaseEntry = typeof knowledgeBaseEntries.$inferSelect;
 export type InsertKnowledgeBaseEntry = z.infer<typeof insertKnowledgeBaseEntrySchema>;
 export type UnitKnowledgeLink = typeof unitKnowledgeLinks.$inferSelect;
 export type InsertUnitKnowledgeLink = z.infer<typeof insertUnitKnowledgeLinkSchema>;
+
+// ==================== SMART UPSELL ENGINE ====================
+
+export const UPSELL_TRIGGER_TYPES = [
+  "warranty_expiry", "unit_age", "service_gap", "seasonal", "fi_gap", "high_mileage", "custom",
+] as const;
+
+export const UPSELL_PRODUCT_TYPES = [
+  "extended_warranty", "gap_coverage", "roadside", "protection_package",
+  "maintenance_package", "winterization", "de_winterization", "spring_prep", "custom",
+] as const;
+
+export const UPSELL_URGENCY_LEVELS = ["high", "medium", "low"] as const;
+
+export const UPSELL_STATUSES = [
+  "new", "reviewed", "sent", "opened", "clicked", "accepted", "declined", "expired", "dismissed",
+] as const;
+
+export const UPSELL_CURRENCIES = ["CAD", "USD"] as const;
+
+export const upsellOpportunities = pgTable("upsell_opportunities", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  dealershipId: uuid("dealership_id").notNull(),
+  customerId: uuid("customer_id").notNull(),
+  unitId: uuid("unit_id").notNull(),
+  triggerType: text("trigger_type", { enum: UPSELL_TRIGGER_TYPES }).notNull(),
+  triggerDetails: jsonb("trigger_details").$type<Record<string, unknown>>().default(sql`'{}'::jsonb`),
+  recommendedProductType: text("recommended_product_type", { enum: UPSELL_PRODUCT_TYPES }).notNull(),
+  recommendedProductId: uuid("recommended_product_id"),
+  estimatedValue: decimal("estimated_value", { precision: 10, scale: 2 }).notNull(),
+  currency: text("currency", { enum: UPSELL_CURRENCIES }).default("CAD").notNull(),
+  urgency: text("urgency", { enum: UPSELL_URGENCY_LEVELS }).default("medium").notNull(),
+  status: text("status", { enum: UPSELL_STATUSES }).default("new").notNull(),
+  offerMessage: text("offer_message"),
+  sentAt: timestamp("sent_at"),
+  openedAt: timestamp("opened_at"),
+  clickedAt: timestamp("clicked_at"),
+  respondedAt: timestamp("responded_at"),
+  expiresAt: timestamp("expires_at"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+}, (table) => [
+  index("upsell_opp_dealership_idx").on(table.dealershipId),
+  index("upsell_opp_customer_idx").on(table.customerId),
+  index("upsell_opp_unit_idx").on(table.unitId),
+  index("upsell_opp_status_idx").on(table.status),
+  index("upsell_opp_trigger_idx").on(table.triggerType),
+]);
+
+export const upsellTemplates = pgTable("upsell_templates", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  triggerType: text("trigger_type", { enum: UPSELL_TRIGGER_TYPES }).notNull(),
+  productType: text("product_type", { enum: UPSELL_PRODUCT_TYPES }).notNull(),
+  subjectTemplate: text("subject_template").notNull(),
+  messageTemplate: text("message_template").notNull(),
+  isActive: boolean("is_active").default(true).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+}, (table) => [
+  index("upsell_tmpl_trigger_idx").on(table.triggerType),
+  index("upsell_tmpl_product_idx").on(table.productType),
+]);
+
+export const insertUpsellOpportunitySchema = createInsertSchema(upsellOpportunities).omit({ id: true, createdAt: true, updatedAt: true });
+export const insertUpsellTemplateSchema = createInsertSchema(upsellTemplates).omit({ id: true, createdAt: true, updatedAt: true });
+
+export type UpsellOpportunity = typeof upsellOpportunities.$inferSelect;
+export type InsertUpsellOpportunity = z.infer<typeof insertUpsellOpportunitySchema>;
+export type UpsellTemplate = typeof upsellTemplates.$inferSelect;
+export type InsertUpsellTemplate = z.infer<typeof insertUpsellTemplateSchema>;

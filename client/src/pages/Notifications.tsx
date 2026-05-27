@@ -2,15 +2,29 @@ import { useState, useEffect } from 'react';
 import { apiFetch } from '@/lib/api';
 import { useAuth } from '@/hooks/use-auth';
 import { useLanguage } from '@/hooks/use-language';
+import { useToast } from '@/hooks/use-toast';
 
 function fmtDate(d: string) {
   return new Date(d).toLocaleDateString('en-CA', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
 }
 
+// Helper: extract upsell opportunity ID from linkTo like "/notifications?upsell=<id>"
+function getUpsellId(linkTo?: string | null): string | null {
+  if (!linkTo) return null;
+  try {
+    const url = new URL(linkTo, window.location.origin);
+    return url.searchParams.get('upsell');
+  } catch {
+    return null;
+  }
+}
+
 export default function Notifications() {
   const { user } = useAuth();
   const { t } = useLanguage();
+  const { toast } = useToast();
   const isOpAdmin = user?.role === 'operator_admin';
+  const [upsellResponding, setUpsellResponding] = useState<Record<string, boolean>>({});
 
   const [opDealers, setOpDealers] = useState<any[]>([]);
   const [notifSending, setNotifSending] = useState(false);
@@ -63,6 +77,25 @@ export default function Notifications() {
     } catch {} finally { setMarkingAll(false); }
   };
 
+  const respondToUpsell = async (notifId: string, upsellId: string, response: 'accepted' | 'declined') => {
+    setUpsellResponding(prev => ({ ...prev, [upsellId]: true }));
+    try {
+      await apiFetch(`/api/upsell/opportunities/${upsellId}/respond`, {
+        method: 'POST',
+        body: JSON.stringify({ response }),
+      });
+      await markRead(notifId);
+      toast({ title: response === 'accepted' ? 'Offer accepted!' : 'Offer declined.' });
+      // Refresh inbox
+      const d = await apiFetch<any>('/api/notifications');
+      setInbox(Array.isArray(d.notifications) ? d.notifications : []);
+    } catch {
+      toast({ title: 'Failed to respond. Please try again.' });
+    } finally {
+      setUpsellResponding(prev => ({ ...prev, [upsellId]: false }));
+    }
+  };
+
   const displayed = filter === 'unread' ? inbox.filter(n => !n.isRead) : inbox;
   const unreadCount = inbox.filter(n => !n.isRead).length;
 
@@ -94,20 +127,44 @@ export default function Notifications() {
           {filter === 'unread' ? 'No unread notifications.' : 'No notifications yet.'}
         </div>
       )}
-      {!inboxLoading && displayed.map(n => (
-        <div
-          key={n.id}
-          style={{ padding: '14px 20px', borderBottom: '1px solid #f0f0f0', background: n.isRead ? 'transparent' : '#f0f5ff', cursor: n.linkTo ? 'pointer' : 'default', display: 'flex', gap: 12, alignItems: 'flex-start' }}
-          onClick={() => { if (!n.isRead) markRead(n.id); if (n.linkTo) window.location.href = n.linkTo; }}
-        >
-          {!n.isRead && <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#033280', marginTop: 5, flexShrink: 0 }} />}
-          <div style={{ flex: 1 }}>
-            <div style={{ fontSize: 13, fontWeight: n.isRead ? 400 : 600, color: '#222', marginBottom: 3 }}>{n.title}</div>
-            {n.message && <div style={{ fontSize: 12, color: '#666', lineHeight: 1.5 }}>{n.message}</div>}
-            <div style={{ fontSize: 11, color: '#aaa', marginTop: 6 }}>{fmtDate(n.createdAt)}</div>
+      {!inboxLoading && displayed.map(n => {
+        const upsellId = getUpsellId(n.linkTo);
+        const isUpsellOffer = !!upsellId;
+        const isResponding = upsellId ? !!upsellResponding[upsellId] : false;
+
+        return (
+          <div
+            key={n.id}
+            style={{ padding: '14px 20px', borderBottom: '1px solid #f0f0f0', background: n.isRead ? 'transparent' : '#f0f5ff', cursor: isUpsellOffer ? 'default' : n.linkTo ? 'pointer' : 'default', display: 'flex', gap: 12, alignItems: 'flex-start' }}
+            onClick={!isUpsellOffer ? () => { if (!n.isRead) markRead(n.id); if (n.linkTo) window.location.href = n.linkTo; } : undefined}
+          >
+            {!n.isRead && <div style={{ width: 8, height: 8, borderRadius: '50%', background: isUpsellOffer ? '#0cb22c' : '#033280', marginTop: 5, flexShrink: 0 }} />}
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: 13, fontWeight: n.isRead ? 400 : 600, color: '#222', marginBottom: 3 }}>{n.title}</div>
+              {n.message && <div style={{ fontSize: 12, color: '#666', lineHeight: 1.5 }}>{n.message}</div>}
+              {isUpsellOffer && !n.isRead && (
+                <div style={{ display: 'flex', gap: 8, marginTop: 10 }}>
+                  <button
+                    onClick={() => respondToUpsell(n.id, upsellId!, 'accepted')}
+                    disabled={isResponding}
+                    style={{ background: '#0cb22c', color: '#fff', border: 'none', borderRadius: 6, padding: '6px 14px', fontSize: 12, fontWeight: 600, cursor: isResponding ? 'not-allowed' : 'pointer', fontFamily: 'inherit' }}
+                  >
+                    {t('upsell.acceptOffer')}
+                  </button>
+                  <button
+                    onClick={() => respondToUpsell(n.id, upsellId!, 'declined')}
+                    disabled={isResponding}
+                    style={{ background: 'none', color: '#888', border: '1px solid #e0e0e0', borderRadius: 6, padding: '6px 14px', fontSize: 12, cursor: isResponding ? 'not-allowed' : 'pointer', fontFamily: 'inherit' }}
+                  >
+                    {t('upsell.declineOffer')}
+                  </button>
+                </div>
+              )}
+              <div style={{ fontSize: 11, color: '#aaa', marginTop: 6 }}>{fmtDate(n.createdAt)}</div>
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 

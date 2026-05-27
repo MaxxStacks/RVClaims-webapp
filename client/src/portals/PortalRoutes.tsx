@@ -120,6 +120,7 @@ import WalletManagement from '@/pages/exclusive/operator-admin/WalletManagement'
 import ArrivalsQueue from '@/pages/exclusive/operator-admin/ArrivalsQueue';
 import KnowledgeBaseManagement from '@/pages/exclusive/operator-admin/KnowledgeBaseManagement';
 import PaymentPlanManagement from '@/pages/exclusive/operator-admin/PaymentPlanManagement';
+import UpsellStats from '@/pages/exclusive/operator-admin/UpsellStats';
 
 // ─── Exclusive: Shared ─────────────────────────────────────────────────────
 import ScanUnit from '@/pages/exclusive/shared/ScanUnit';
@@ -172,6 +173,7 @@ import Inventory from '@/pages/exclusive/parts-manager/Inventory';
 // ─── Exclusive: Financial Manager ─────────────────────────────────────────
 import RevenueDashboard from '@/pages/exclusive/financial-manager/RevenueDashboard';
 import PaymentPlans from '@/pages/exclusive/dealer-owner/PaymentPlans';
+import UpsellDashboard from '@/pages/exclusive/dealer-owner/UpsellDashboard';
 import MyPaymentPlans from '@/pages/exclusive/client/MyPaymentPlans';
 
 // ─── Exclusive: Public Bidder ──────────────────────────────────────────────
@@ -308,6 +310,7 @@ export function OperatorAdminPortalSection() {
       <Route path="/operator/admin/arrivals">{() => <OperatorAdminLayout><ArrivalsQueue /></OperatorAdminLayout>}</Route>
       <Route path="/operator/admin/knowledge-base">{() => <OperatorAdminLayout><KnowledgeBaseManagement /></OperatorAdminLayout>}</Route>
       <Route path="/operator/admin/payment-plans">{() => <OperatorAdminLayout><PaymentPlanManagement /></OperatorAdminLayout>}</Route>
+      <Route path="/operator/admin/upsell-stats">{() => <OperatorAdminLayout><UpsellStats /></OperatorAdminLayout>}</Route>
       {/* Default */}
       <Route>{() => <Redirect to="/operator/admin/dashboard" />}</Route>
     </Switch>
@@ -407,6 +410,7 @@ export function DealerOwnerPortalSection() {
       <Route path="/:dealerId/owner/wallet">{() => <DealerOwnerLayout><WalletDashboard /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/knowledge-base">{() => <DealerOwnerLayout><KnowledgeBaseBrowse /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/payment-plans">{() => <DealerOwnerLayout><PaymentPlans /></DealerOwnerLayout>}</Route>
+      <Route path="/:dealerId/owner/upsell">{() => <DealerOwnerLayout><UpsellDashboard /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/dashboard">{() => <DealerOwnerLayout><Dashboard /></DealerOwnerLayout>}</Route>
       <Route>{() => <DealerFallback role="owner" />}</Route>
     </Switch>
