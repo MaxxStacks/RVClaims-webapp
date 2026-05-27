@@ -188,6 +188,8 @@ import NpsDashboard from '@/pages/exclusive/operator-admin/NpsDashboard';
 import CustomerSurvey from '@/pages/exclusive/client/CustomerSurvey';
 import OperatorAnalytics from '@/pages/exclusive/operator-admin/OperatorAnalytics';
 import DealerAnalytics from '@/pages/exclusive/dealer-owner/DealerAnalytics';
+import ComplianceDashboard from '@/pages/exclusive/dealer-owner/ComplianceDashboard';
+import OperatorCompliance from '@/pages/exclusive/operator-admin/OperatorCompliance';
 
 // ─── Exclusive: Public Bidder ──────────────────────────────────────────────
 import PB_Profile from '@/pages/exclusive/public-bidder/Profile';
@@ -329,6 +331,7 @@ export function OperatorAdminPortalSection() {
       <Route path="/operator/admin/ai-support-stats">{() => <OperatorAdminLayout><AISupportStats /></OperatorAdminLayout>}</Route>
       <Route path="/operator/admin/reviews">{() => <OperatorAdminLayout><NpsDashboard /></OperatorAdminLayout>}</Route>
       <Route path="/operator/admin/analytics">{() => <OperatorAdminLayout><OperatorAnalytics /></OperatorAdminLayout>}</Route>
+      <Route path="/operator/admin/compliance">{() => <OperatorAdminLayout><OperatorCompliance /></OperatorAdminLayout>}</Route>
       {/* Default */}
       <Route>{() => <Redirect to="/operator/admin/dashboard" />}</Route>
     </Switch>
@@ -434,6 +437,7 @@ export function DealerOwnerPortalSection() {
       <Route path="/:dealerId/owner/ai-support">{() => <DealerOwnerLayout><AISupportConfig /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/reviews">{() => <DealerOwnerLayout><ReviewsDashboard /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/analytics">{() => <DealerOwnerLayout><DealerAnalytics /></DealerOwnerLayout>}</Route>
+      <Route path="/:dealerId/owner/compliance">{() => <DealerOwnerLayout><ComplianceDashboard /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/dashboard">{() => <DealerOwnerLayout><Dashboard /></DealerOwnerLayout>}</Route>
       <Route>{() => <DealerFallback role="owner" />}</Route>
     </Switch>

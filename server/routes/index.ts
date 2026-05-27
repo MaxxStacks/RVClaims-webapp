@@ -62,6 +62,7 @@ import remindersRouter from './reminders';
 import loyaltyRouter from './loyalty';
 import reviewsRouter from './reviews';
 import analyticsRouter from './analytics';
+import complianceRouter from './compliance';
 
 // Import existing routes for backward compat
 import { storage } from "../storage";
@@ -160,6 +161,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.use('/api/loyalty', loyaltyRouter);                  // /api/loyalty/program, /api/loyalty/rewards, /api/loyalty/points, /api/loyalty/stats
   app.use('/api/reviews', reviewsRouter);                  // /api/reviews, /api/reviews/stats, /api/reviews/config, /api/reviews/:id, /api/reviews/:id/approve, /api/reviews/:id/flag, /api/reviews/:id/respond
   app.use('/api/analytics', analyticsRouter);              // /api/analytics/operator, /api/analytics/dealer, /api/analytics/export, /api/analytics/schedule
+  app.use('/api/compliance', complianceRouter);            // /api/compliance/check, /api/compliance/status, /api/compliance/exceptions, /api/compliance/report, /api/compliance/templates, /api/compliance/aggregate
 
   // ==================== EXISTING ROUTES (backward compat) ====================
 

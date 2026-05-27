@@ -2484,4 +2484,91 @@ export const analyticsReportSchedules = pgTable("analytics_report_schedules", {
 
 export const insertAnalyticsReportScheduleSchema = createInsertSchema(analyticsReportSchedules).omit({ id: true, createdAt: true, updatedAt: true });
 export type AnalyticsReportSchedule = typeof analyticsReportSchedules.$inferSelect;
+
+// ==================== COMPLIANCE MANAGER ====================
+
+export const COMPLIANCE_CATEGORIES = [
+  'dealer_licensing', 'disclosure', 'advertising', 'consumer_protection',
+  'warranty', 'financial', 'privacy', 'safety',
+] as const;
+export const COMPLIANCE_VERIFICATION_METHODS = [
+  'document_check', 'field_check', 'manual_review',
+] as const;
+export const COMPLIANCE_SEVERITIES = ['critical', 'high', 'medium', 'low'] as const;
+export const COMPLIANCE_STATUSES = [
+  'compliant', 'non_compliant', 'pending_review', 'waived',
+] as const;
+export const COMPLIANCE_REPORT_TYPES = [
+  'full_audit', 'document_completeness', 'financial', 'custom',
+] as const;
+
+export const complianceTemplates = pgTable("compliance_templates", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  country: text("country").notNull(),
+  jurisdiction: text("jurisdiction").notNull(),
+  regulatorName: text("regulator_name").notNull(),
+  regulatorFullName: text("regulator_full_name").notNull(),
+  category: text("category", { enum: COMPLIANCE_CATEGORIES }).notNull(),
+  requirementName: text("requirement_name").notNull(),
+  requirementDescription: text("requirement_description").notNull(),
+  documentRequired: text("document_required"),
+  verificationMethod: text("verification_method", { enum: COMPLIANCE_VERIFICATION_METHODS }).notNull(),
+  verificationField: text("verification_field"),
+  severity: text("severity", { enum: COMPLIANCE_SEVERITIES }).notNull(),
+  isActive: boolean("is_active").default(true).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+}, (table) => [
+  index("compliance_tpl_country_idx").on(table.country),
+  index("compliance_tpl_jurisdiction_idx").on(table.jurisdiction),
+  index("compliance_tpl_category_idx").on(table.category),
+  index("compliance_tpl_active_idx").on(table.isActive),
+]);
+
+export const complianceChecks = pgTable("compliance_checks", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  dealershipId: uuid("dealership_id").notNull(),
+  templateId: uuid("template_id").notNull(),
+  unitId: uuid("unit_id"),
+  customerId: uuid("customer_id"),
+  status: text("status", { enum: COMPLIANCE_STATUSES }).default("pending_review").notNull(),
+  details: jsonb("details").$type<Record<string, unknown>>(),
+  resolvedAt: timestamp("resolved_at"),
+  resolvedBy: uuid("resolved_by"),
+  resolutionNote: text("resolution_note"),
+  checkedAt: timestamp("checked_at").defaultNow().notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+}, (table) => [
+  index("compliance_checks_dealership_idx").on(table.dealershipId),
+  index("compliance_checks_template_idx").on(table.templateId),
+  index("compliance_checks_status_idx").on(table.status),
+  index("compliance_checks_dealership_template_idx").on(table.dealershipId, table.templateId),
+]);
+
+export const complianceReports = pgTable("compliance_reports", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  dealershipId: uuid("dealership_id").notNull(),
+  reportType: text("report_type", { enum: COMPLIANCE_REPORT_TYPES }).notNull(),
+  jurisdiction: text("jurisdiction").notNull(),
+  dateFrom: date("date_from").notNull(),
+  dateTo: date("date_to").notNull(),
+  generatedBy: uuid("generated_by").notNull(),
+  reportData: jsonb("report_data").$type<Record<string, unknown>>().notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+}, (table) => [
+  index("compliance_reports_dealership_idx").on(table.dealershipId),
+  index("compliance_reports_type_idx").on(table.reportType),
+  index("compliance_reports_created_idx").on(table.createdAt),
+]);
+
+export const insertComplianceTemplateSchema = createInsertSchema(complianceTemplates).omit({ id: true, createdAt: true, updatedAt: true });
+export const insertComplianceCheckSchema = createInsertSchema(complianceChecks).omit({ id: true, createdAt: true });
+export const insertComplianceReportSchema = createInsertSchema(complianceReports).omit({ id: true, createdAt: true });
+
+export type ComplianceTemplate = typeof complianceTemplates.$inferSelect;
+export type InsertComplianceTemplate = z.infer<typeof insertComplianceTemplateSchema>;
+export type ComplianceCheck = typeof complianceChecks.$inferSelect;
+export type InsertComplianceCheck = z.infer<typeof insertComplianceCheckSchema>;
+export type ComplianceReport = typeof complianceReports.$inferSelect;
+export type InsertComplianceReport = z.infer<typeof insertComplianceReportSchema>;
 export type InsertAnalyticsReportSchedule = z.infer<typeof insertAnalyticsReportScheduleSchema>;

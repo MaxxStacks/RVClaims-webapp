@@ -8,6 +8,7 @@ import { hashPassword } from "./lib/auth";
 import { eq } from "drizzle-orm";
 import { seedModules } from "./db/seedModules";
 import { seedPDI } from "./db/seedPDI";
+import { seedComplianceTemplates } from "./db/seedCompliance";
 
 async function seed() {
   console.log("🌱 Seeding database...");
@@ -328,6 +329,9 @@ async function seed() {
 
   // ==================== PDI TEMPLATES ====================
   await seedPDI();
+
+  // ==================== COMPLIANCE TEMPLATES ====================
+  await seedComplianceTemplates();
 
   // ==================== WALLET FUNDING TIERS ====================
   const existingTiers = await db.select().from(walletFundingTiers).limit(1);
