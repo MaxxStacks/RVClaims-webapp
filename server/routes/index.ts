@@ -61,6 +61,7 @@ import upsellRouter from './upsell';
 import remindersRouter from './reminders';
 import loyaltyRouter from './loyalty';
 import reviewsRouter from './reviews';
+import analyticsRouter from './analytics';
 
 // Import existing routes for backward compat
 import { storage } from "../storage";
@@ -158,6 +159,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.use('/api/reminders', remindersRouter);              // /api/reminders, /api/reminders/*/send, /api/customer-preferences
   app.use('/api/loyalty', loyaltyRouter);                  // /api/loyalty/program, /api/loyalty/rewards, /api/loyalty/points, /api/loyalty/stats
   app.use('/api/reviews', reviewsRouter);                  // /api/reviews, /api/reviews/stats, /api/reviews/config, /api/reviews/:id, /api/reviews/:id/approve, /api/reviews/:id/flag, /api/reviews/:id/respond
+  app.use('/api/analytics', analyticsRouter);              // /api/analytics/operator, /api/analytics/dealer, /api/analytics/export, /api/analytics/schedule
 
   // ==================== EXISTING ROUTES (backward compat) ====================
 

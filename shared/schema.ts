@@ -2463,3 +2463,25 @@ export type CustomerReview = typeof customerReviews.$inferSelect;
 export type InsertCustomerReview = z.infer<typeof insertCustomerReviewSchema>;
 export type ReviewConfig = typeof reviewConfig.$inferSelect;
 export type InsertReviewConfig = z.infer<typeof insertReviewConfigSchema>;
+
+// ==================== ANALYTICS REPORT SCHEDULES ====================
+
+export const ANALYTICS_FREQUENCIES = ["daily", "weekly", "monthly"] as const;
+
+export const analyticsReportSchedules = pgTable("analytics_report_schedules", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  dealershipId: uuid("dealership_id").notNull(),
+  frequency: text("frequency", { enum: ANALYTICS_FREQUENCIES }).notNull().default("weekly"),
+  recipientEmails: jsonb("recipient_emails").$type<string[]>().default(sql`'[]'::jsonb`),
+  reportSections: jsonb("report_sections").$type<string[]>().default(sql`'[]'::jsonb`),
+  isActive: boolean("is_active").notNull().default(true),
+  lastSentAt: timestamp("last_sent_at"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+}, (table) => [
+  index("analytics_schedules_dealership_idx").on(table.dealershipId),
+]);
+
+export const insertAnalyticsReportScheduleSchema = createInsertSchema(analyticsReportSchedules).omit({ id: true, createdAt: true, updatedAt: true });
+export type AnalyticsReportSchedule = typeof analyticsReportSchedules.$inferSelect;
+export type InsertAnalyticsReportSchedule = z.infer<typeof insertAnalyticsReportScheduleSchema>;

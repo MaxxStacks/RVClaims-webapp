@@ -173,6 +173,12 @@ export default function DealerOwnerLayout({ children }: Props) {
             {mod('ai_support') && <Link className={`nav-item ${isActive('ai-support') ? 'active' : ''}`} to="ai-support"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>{t('aiSupport.aiSupportNav')}</Link>}
             {mod('reputation_management') && <Link className={`nav-item ${isActive('reviews') ? 'active' : ''}`} to="reviews"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>{t('review.reviewsDashboard')}</Link>}
           </div>
+          {mod('advanced_analytics') && (
+          <div className="nav-section">
+            <div className="nav-label">{t('analytics.title')}</div>
+            <Link className={`nav-item ${isActive('analytics') ? 'active' : ''}`} to="analytics"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>{t('analytics.title')}</Link>
+          </div>
+          )}
           <div className="nav-section">
             <div className="nav-label">{t('nav.billing')}</div>
             <Link className={`nav-item ${isActive('invoices') ? 'active' : ''}`} to="invoices"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>{t('nav.invoices')}</Link>
