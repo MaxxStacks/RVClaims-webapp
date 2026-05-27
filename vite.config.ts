@@ -4,7 +4,12 @@ import path from "path";
 import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
 import { createRequire } from "module";
 const _require = createRequire(import.meta.url);
-const pkg = _require("./package.json") as { version: string };
+// Safe read: vite.config.ts is bundled into dist/index.js via server/vite.ts.
+// In that context import.meta.url resolves to dist/, where package.json does
+// not exist.  npm_package_version is set by npm at build time and is the
+// reliable fallback so the bundle never crashes on startup.
+let pkg: { version: string } = { version: process.env.npm_package_version ?? "1.0.0" };
+try { pkg = _require("./package.json") as { version: string }; } catch { /* bundled context */ }
 
 export default defineConfig({
   plugins: [

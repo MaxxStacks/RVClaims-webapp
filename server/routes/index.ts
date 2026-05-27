@@ -177,7 +177,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { resolve, dirname } = await import("path");
       const { fileURLToPath } = await import("url");
       const __dir = dirname(fileURLToPath(import.meta.url));
-      const pkgPath = resolve(__dir, "../../package.json");
+      const pkgPath = resolve(__dir, "../package.json");
       const pkgData = JSON.parse(readFileSync(pkgPath, "utf-8")) as { version: string };
       appVersion = pkgData.version;
     } catch { /* keep fallback */ }
