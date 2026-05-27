@@ -59,6 +59,7 @@ import knowledgeBaseRouter from './knowledgeBase';
 import paymentPlansRouter, { partnersRouter as financingPartnersRouter } from './paymentPlans';
 import upsellRouter from './upsell';
 import remindersRouter from './reminders';
+import loyaltyRouter from './loyalty';
 
 // Import existing routes for backward compat
 import { storage } from "../storage";
@@ -154,6 +155,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.use('/api/financing-partners', financingPartnersRouter); // /api/financing-partners
   app.use('/api/upsell', upsellRouter);                    // /api/upsell/*
   app.use('/api/reminders', remindersRouter);              // /api/reminders, /api/reminders/*/send, /api/customer-preferences
+  app.use('/api/loyalty', loyaltyRouter);                  // /api/loyalty/program, /api/loyalty/rewards, /api/loyalty/points, /api/loyalty/stats
 
   // ==================== EXISTING ROUTES (backward compat) ====================
 

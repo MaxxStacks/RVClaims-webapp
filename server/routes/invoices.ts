@@ -2,7 +2,7 @@
 
 import { Router, type Request, type Response } from "express";
 import { db } from "../db";
-import { invoices, invoiceLineItems, insertInvoiceSchema, insertInvoiceLineItemSchema } from "@shared/schema";
+import { invoices, invoiceLineItems, insertInvoiceSchema, insertInvoiceLineItemSchema, loyaltyPrograms, loyaltyPoints } from "@shared/schema";
 import { eq, and, desc, sum, count } from "drizzle-orm";
 import { requireAuth } from "../middleware/auth";
 import { scopeToDealership, canAccessDealership, requireRole } from "../middleware/rbac";
@@ -140,6 +140,65 @@ router.patch("/:id", requireAuth, requireRole("operator_admin"), async (req: Req
     }
 
     const [updated] = await db.update(invoices).set(updates).where(eq(invoices.id, req.params.id)).returning();
+
+    // Non-blocking loyalty point credit when invoice is marked paid
+    if (req.body.status === "paid" && updated) {
+      (async () => {
+        try {
+          const invoice = updated;
+          if (!invoice.dealershipId || !invoice.total) return;
+
+          // Find the loyalty program for this dealership
+          const [program] = await db
+            .select()
+            .from(loyaltyPrograms)
+            .where(eq(loyaltyPrograms.dealershipId, invoice.dealershipId))
+            .limit(1);
+
+          if (!program || !program.isActive) return;
+
+          // Find the customer linked to the invoice via the claim -> unit -> customerId chain
+          // We look for any client user for this dealership (best effort for now)
+          // Idempotency: check if a loyalty_points record already exists for this invoice
+          const [existing] = await db
+            .select({ id: loyaltyPoints.id })
+            .from(loyaltyPoints)
+            .where(
+              and(
+                eq(loyaltyPoints.programId, program.id),
+                eq(loyaltyPoints.referenceType, "invoice"),
+                eq(loyaltyPoints.referenceId, invoice.id),
+              )
+            )
+            .limit(1);
+
+          if (existing) return; // already credited — idempotent
+
+          // Only credit if we can identify the customer (via claim->unit chain or direct field)
+          // For now we store invoice.id as referenceId and skip if no customerId can be resolved
+          // TODO: resolve customerId from invoice.claimId -> claims.unitId -> units.customerId
+          // This is a best-effort non-blocking credit; the invoice update always succeeds
+
+          const invoiceTotal = parseFloat(invoice.total);
+          if (isNaN(invoiceTotal) || invoiceTotal <= 0) return;
+
+          const pointsToCredit = Math.floor(invoiceTotal * parseFloat(program.pointsPerDollarService || "1"));
+          if (pointsToCredit <= 0) return;
+
+          // Note: customerId resolution requires a join — we log a TODO here
+          // When the full customer linkage is implemented, insert loyalty_points for the customer
+          console.log(`[Loyalty] Invoice ${invoice.id} paid — would credit ${pointsToCredit} pts for program ${program.id}. TODO: resolve customerId.`);
+          // TODO: once customerId is resolved from claim->unit chain, insert:
+          // await db.insert(loyaltyPoints).values({ programId: program.id, customerId, points: pointsToCredit, type: 'service_visit', description: `Service visit — Invoice #${invoice.invoiceNumber}`, referenceType: 'invoice', referenceId: invoice.id });
+        } catch (err) {
+          // Never fail the invoice update if loyalty credit fails
+          console.error("[Loyalty] Non-blocking loyalty credit error:", err);
+        }
+      })();
+    }
+
+    // TODO: Credit loyalty points (pointsPerFiPurchase) when F&I deal accepted
+
     res.json({ success: true, invoice: updated });
   } catch (error) {
     console.error("Patch invoice error:", error);

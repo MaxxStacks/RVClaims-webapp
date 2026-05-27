@@ -122,6 +122,7 @@ import KnowledgeBaseManagement from '@/pages/exclusive/operator-admin/KnowledgeB
 import PaymentPlanManagement from '@/pages/exclusive/operator-admin/PaymentPlanManagement';
 import UpsellStats from '@/pages/exclusive/operator-admin/UpsellStats';
 import RemindersOverview from '@/pages/exclusive/operator-admin/RemindersOverview';
+import LoyaltyStats from '@/pages/exclusive/operator-admin/LoyaltyStats';
 
 // ─── Exclusive: Shared ─────────────────────────────────────────────────────
 import ScanUnit from '@/pages/exclusive/shared/ScanUnit';
@@ -178,6 +179,8 @@ import UpsellDashboard from '@/pages/exclusive/dealer-owner/UpsellDashboard';
 import MyPaymentPlans from '@/pages/exclusive/client/MyPaymentPlans';
 import ClientSettings from '@/pages/exclusive/client/Settings';
 import RemindersDashboard from '@/pages/exclusive/dealer-owner/RemindersDashboard';
+import LoyaltyConfig from '@/pages/exclusive/dealer-owner/LoyaltyConfig';
+import CustomerLoyalty from '@/pages/exclusive/client/CustomerLoyalty';
 
 // ─── Exclusive: Public Bidder ──────────────────────────────────────────────
 import PB_Profile from '@/pages/exclusive/public-bidder/Profile';
@@ -315,6 +318,7 @@ export function OperatorAdminPortalSection() {
       <Route path="/operator/admin/payment-plans">{() => <OperatorAdminLayout><PaymentPlanManagement /></OperatorAdminLayout>}</Route>
       <Route path="/operator/admin/upsell-stats">{() => <OperatorAdminLayout><UpsellStats /></OperatorAdminLayout>}</Route>
       <Route path="/operator/admin/reminders">{() => <OperatorAdminLayout><RemindersOverview /></OperatorAdminLayout>}</Route>
+      <Route path="/operator/admin/loyalty-stats">{() => <OperatorAdminLayout><LoyaltyStats /></OperatorAdminLayout>}</Route>
       {/* Default */}
       <Route>{() => <Redirect to="/operator/admin/dashboard" />}</Route>
     </Switch>
@@ -416,6 +420,7 @@ export function DealerOwnerPortalSection() {
       <Route path="/:dealerId/owner/payment-plans">{() => <DealerOwnerLayout><PaymentPlans /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/upsell">{() => <DealerOwnerLayout><UpsellDashboard /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/reminders">{() => <DealerOwnerLayout><RemindersDashboard /></DealerOwnerLayout>}</Route>
+      <Route path="/:dealerId/owner/loyalty">{() => <DealerOwnerLayout><LoyaltyConfig /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/dashboard">{() => <DealerOwnerLayout><Dashboard /></DealerOwnerLayout>}</Route>
       <Route>{() => <DealerFallback role="owner" />}</Route>
     </Switch>
@@ -489,6 +494,7 @@ export function ClientPortalSection() {
       <Route path="/:dealerId/client/pdi/:pdiId">{() => <ClientLayout><ClientPDIView /></ClientLayout>}</Route>
       <Route path="/:dealerId/client/knowledge-base">{() => <ClientLayout><ClientKnowledgeBase /></ClientLayout>}</Route>
       <Route path="/:dealerId/client/payment-plans">{() => <ClientLayout><MyPaymentPlans /></ClientLayout>}</Route>
+      <Route path="/:dealerId/client/loyalty">{() => <ClientLayout><CustomerLoyalty /></ClientLayout>}</Route>
       <Route path="/:dealerId/client/settings">{() => <ClientLayout><ClientSettings /></ClientLayout>}</Route>
       <Route path="/:dealerId/client/dashboard">{() => <ClientLayout><Dashboard /></ClientLayout>}</Route>
       <Route>{() => <DealerFallback role="client" />}</Route>

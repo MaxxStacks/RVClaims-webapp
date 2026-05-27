@@ -5,6 +5,8 @@ import ds360Icon from '@assets/ds360_favicon.png';
 import { useLanguage } from '@/hooks/use-language';
 import type { Language } from '@/lib/i18n';
 import { MobileBottomNav } from '@/components/MobileBottomNav';
+import { apiFetch } from '@/lib/api';
+import { useQuery } from '@tanstack/react-query';
 
 interface Props { children?: React.ReactNode; }
 
@@ -51,6 +53,15 @@ export default function ClientLayout({ children }: Props) {
   const [location, setLocation] = useLocation();
   const { user, logout } = useAuth();
   const { showPrompt, handleAllow, handleDismiss } = usePushPermissionPrompt();
+
+  // Check if dealer has loyalty module active
+  const { data: loyaltyProgData } = useQuery({
+    queryKey: ['loyalty-program-check'],
+    queryFn: () => apiFetch<{ success: boolean; program: { isActive: boolean; programName: string } }>('/api/loyalty/program'),
+    retry: false,
+    staleTime: 10 * 60 * 1000,
+  });
+  const hasLoyalty = loyaltyProgData?.program?.isActive === true;
 
   useEffect(() => {
     if (theme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
@@ -99,6 +110,7 @@ export default function ClientLayout({ children }: Props) {
             <Link className={`nav-item ${isActive('my-services') ? 'active' : ''}`} to="my-services"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>{t('nav.myServices')}</Link>
             <Link className={`nav-item ${isActive('roadside') ? 'active' : ''}`} to="roadside"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 015 12.84a19.79 19.79 0 01-3.07-8.67A2 2 0 013.92 2h3a2 2 0 012 1.72"/></svg>{t('nav.roadside')}</Link>
             <Link className={`nav-item ${isActive('payment-plans') ? 'active' : ''}`} to="payment-plans"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/><line x1="6" y1="15" x2="10" y2="15"/></svg>{t('paymentPlan.myPaymentPlans')}</Link>
+            {hasLoyalty && <Link className={`nav-item ${isActive('loyalty') ? 'active' : ''}`} to="loyalty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>{t('loyalty.myPoints')}</Link>}
           </div>
           <div className="nav-section">
             <div className="nav-label">{t('nav.account')}</div>

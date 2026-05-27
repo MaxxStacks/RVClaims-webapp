@@ -2255,3 +2255,85 @@ export type ServiceReminderSend = typeof serviceReminderSends.$inferSelect;
 export type InsertServiceReminderSend = z.infer<typeof insertServiceReminderSendSchema>;
 export type CustomerNotificationPreferences = typeof customerNotificationPreferences.$inferSelect;
 export type InsertCustomerNotificationPreferences = z.infer<typeof insertCustomerNotificationPreferencesSchema>;
+
+// ==================== LOYALTY PROGRAM ====================
+
+export const LOYALTY_REWARD_TYPES = ['percentage_discount', 'fixed_discount', 'free_service', 'parts_credit', 'custom'] as const;
+export const LOYALTY_POINT_TYPES = ['service_visit', 'referral', 'fi_purchase', 'survey', 'redemption', 'manual_credit', 'manual_debit'] as const;
+export const LOYALTY_REFERENCE_TYPES = ['invoice', 'fi_deal', 'survey', 'reward'] as const;
+export const LOYALTY_REFERRAL_STATUSES = ['sent', 'registered', 'completed'] as const;
+
+export const loyaltyPrograms = pgTable("loyalty_programs", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  dealershipId: uuid("dealership_id").notNull().unique(),
+  programName: text("program_name").notNull(),
+  isActive: boolean("is_active").default(true).notNull(),
+  pointsPerDollarService: decimal("points_per_dollar_service", { precision: 8, scale: 2 }).default("1"),
+  pointsPerReferral: integer("points_per_referral").default(500).notNull(),
+  pointsPerFiPurchase: integer("points_per_fi_purchase").default(250).notNull(),
+  pointsPerSurvey: integer("points_per_survey").default(100).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+}, (table) => [
+  index("loyalty_programs_dealership_idx").on(table.dealershipId),
+]);
+
+export const loyaltyRewards = pgTable("loyalty_rewards", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  programId: uuid("program_id").notNull(),
+  name: text("name").notNull(),
+  description: text("description"),
+  pointCost: integer("point_cost").notNull(),
+  rewardType: text("reward_type", { enum: LOYALTY_REWARD_TYPES }).notNull(),
+  rewardValue: decimal("reward_value", { precision: 10, scale: 2 }),
+  isActive: boolean("is_active").default(true).notNull(),
+  redemptionCount: integer("redemption_count").default(0).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+}, (table) => [
+  index("loyalty_rewards_program_idx").on(table.programId),
+]);
+
+export const loyaltyPoints = pgTable("loyalty_points", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  programId: uuid("program_id").notNull(),
+  customerId: uuid("customer_id").notNull(),
+  points: integer("points").notNull(),
+  type: text("type", { enum: LOYALTY_POINT_TYPES }).notNull(),
+  description: text("description"),
+  referenceType: text("reference_type", { enum: LOYALTY_REFERENCE_TYPES }),
+  referenceId: uuid("reference_id"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+}, (table) => [
+  index("loyalty_points_program_idx").on(table.programId),
+  index("loyalty_points_customer_idx").on(table.customerId),
+  index("loyalty_points_ref_idx").on(table.referenceType, table.referenceId),
+]);
+
+export const loyaltyReferrals = pgTable("loyalty_referrals", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  programId: uuid("program_id").notNull(),
+  referrerId: uuid("referrer_id").notNull(),
+  referredEmail: text("referred_email").notNull(),
+  referredCustomerId: uuid("referred_customer_id"),
+  status: text("status", { enum: LOYALTY_REFERRAL_STATUSES }).default("sent").notNull(),
+  pointsAwarded: boolean("points_awarded").default(false).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+}, (table) => [
+  index("loyalty_referrals_program_idx").on(table.programId),
+  index("loyalty_referrals_referrer_idx").on(table.referrerId),
+]);
+
+export const insertLoyaltyProgramSchema = createInsertSchema(loyaltyPrograms).omit({ id: true, createdAt: true, updatedAt: true });
+export const insertLoyaltyRewardSchema = createInsertSchema(loyaltyRewards).omit({ id: true, createdAt: true, updatedAt: true });
+export const insertLoyaltyPointSchema = createInsertSchema(loyaltyPoints).omit({ id: true, createdAt: true });
+export const insertLoyaltyReferralSchema = createInsertSchema(loyaltyReferrals).omit({ id: true, createdAt: true });
+
+export type LoyaltyProgram = typeof loyaltyPrograms.$inferSelect;
+export type InsertLoyaltyProgram = z.infer<typeof insertLoyaltyProgramSchema>;
+export type LoyaltyReward = typeof loyaltyRewards.$inferSelect;
+export type InsertLoyaltyReward = z.infer<typeof insertLoyaltyRewardSchema>;
+export type LoyaltyPoints = typeof loyaltyPoints.$inferSelect;
+export type InsertLoyaltyPoints = z.infer<typeof insertLoyaltyPointSchema>;
+export type LoyaltyReferral = typeof loyaltyReferrals.$inferSelect;
+export type InsertLoyaltyReferral = z.infer<typeof insertLoyaltyReferralSchema>;
