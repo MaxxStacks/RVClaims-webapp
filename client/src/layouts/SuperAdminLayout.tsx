@@ -7,6 +7,7 @@ import { useAuth } from '@/hooks/use-auth';
 import { useLanguage } from '@/hooks/use-language';
 import ds360Icon from '@assets/ds360_favicon.png';
 import type { Language } from '@/lib/i18n';
+import SidebarFooter from '@/components/SidebarFooter';
 
 interface Props { children?: React.ReactNode; }
 
@@ -106,6 +107,7 @@ export default function SuperAdminLayout({ children }: Props) {
               {t('nav.signOut') || 'Sign Out'}
             </button>
           )}
+        <SidebarFooter />
         </div>
       </nav>
 

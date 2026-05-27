@@ -11,6 +11,7 @@ import { useEnabledModules, hasModule } from '@/hooks/useEnabledModules';
 import { useWallet } from '@/hooks/useWallet';
 import { LocationProvider } from '@/contexts/LocationContext';
 import LocationSwitcher from '@/components/LocationSwitcher';
+import SidebarFooter from '@/components/SidebarFooter';
 
 interface Props { children?: React.ReactNode; }
 
@@ -253,6 +254,7 @@ export default function DealerOwnerLayout({ children }: Props) {
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
             Sign Out
           </button>
+          <SidebarFooter />
         </div>
       </nav>
       <div className={`main${sidebarCollapsed ? ' collapsed-main' : ''}`}>

@@ -8,6 +8,7 @@ import { apiFetch } from '@/lib/api';
 import ds360Icon from '@assets/ds360_favicon.png';
 import type { Language } from '@/lib/i18n';
 import { MobileBottomNav } from '@/components/MobileBottomNav';
+import SidebarFooter from '@/components/SidebarFooter';
 import { useQuery } from '@tanstack/react-query';
 
 interface Props { children?: React.ReactNode; }
@@ -183,6 +184,7 @@ export default function SupplierLayout({ children }: Props) {
             {!sidebarCollapsed && <span>{t('common.signOut') || 'Sign Out'}</span>}
           </button>
         </div>
+        {!sidebarCollapsed && <SidebarFooter />}
       </aside>
 
       {/* Main Area */}

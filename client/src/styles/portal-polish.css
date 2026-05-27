@@ -1,0 +1,129 @@
+/* DS360 CSS Custom Properties & UI Polish
+ * Imported after portal.css in main.tsx
+ * Uses custom properties — never hardcode colors.
+ */
+
+:root {
+  --ds360-navy: #033280;
+  --ds360-green: #0cb22c;
+  --ds360-sidebar-width: 260px;
+  --ds360-appbar-height: 64px;
+  --ds360-card-radius: 12px;
+  --ds360-card-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  --ds360-card-shadow-hover: 0 4px 12px rgba(0,0,0,0.1);
+  --ds360-input-height: 40px;
+  --ds360-input-radius: 8px;
+  --ds360-transition: 150ms ease;
+  --ds360-text-primary: #111827;
+  --ds360-text-secondary: #6b7280;
+  --ds360-text-muted: #9ca3af;
+  --ds360-border: #e5e7eb;
+  --ds360-bg-subtle: #f9fafb;
+  --ds360-success: #10b981;
+  --ds360-warning: #f59e0b;
+  --ds360-danger: #ef4444;
+}
+
+/* Sidebar nav item polish */
+.ds360-nav-item {
+  padding: 12px 16px;
+  border-radius: 8px;
+  transition: background-color var(--ds360-transition), color var(--ds360-transition);
+  cursor: pointer;
+}
+.ds360-nav-item:hover { background-color: var(--ds360-bg-subtle); }
+.ds360-nav-item.active {
+  background-color: rgba(3, 50, 128, 0.08);
+  border-left: 3px solid var(--ds360-navy);
+  color: var(--ds360-navy);
+  font-weight: 600;
+}
+
+/* Card polish */
+.ds360-card {
+  border-radius: var(--ds360-card-radius);
+  box-shadow: var(--ds360-card-shadow);
+  background: white;
+  transition: box-shadow var(--ds360-transition), transform var(--ds360-transition);
+}
+.ds360-card:hover {
+  box-shadow: var(--ds360-card-shadow-hover);
+  transform: translateY(-1px);
+}
+
+/* Status badge polish */
+.ds360-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+.ds360-badge-green { background: #dcfce7; color: #15803d; }
+.ds360-badge-yellow { background: #fef9c3; color: #a16207; }
+.ds360-badge-red { background: #fee2e2; color: #b91c1c; }
+.ds360-badge-blue { background: #dbeafe; color: #1d4ed8; }
+.ds360-badge-gray { background: #f3f4f6; color: #4b5563; }
+
+/* Table polish */
+.ds360-table thead th {
+  background: var(--ds360-bg-subtle);
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ds360-text-secondary);
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--ds360-border);
+}
+.ds360-table tbody tr {
+  border-bottom: 1px solid var(--ds360-border);
+  transition: background-color var(--ds360-transition);
+}
+.ds360-table tbody tr:hover { background-color: #f0f4ff; }
+
+/* Skeleton loading */
+@keyframes ds360-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+.ds360-skeleton {
+  background: var(--ds360-border);
+  border-radius: 4px;
+  animation: ds360-pulse 1.5s ease-in-out infinite;
+}
+
+/* Empty state */
+.ds360-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  text-align: center;
+  color: var(--ds360-text-muted);
+}
+.ds360-empty-state svg { margin-bottom: 16px; opacity: 0.4; }
+.ds360-empty-state p { font-size: 14px; margin-bottom: 16px; }
+
+/* Sidebar version footer */
+.ds360-sidebar-version-footer {
+  font-size: 11px;
+  color: #9ca3af;
+  text-align: center;
+  padding: 12px 16px 8px;
+  border-top: 1px solid rgba(0,0,0,0.06);
+  margin-top: 4px;
+  line-height: 1.6;
+}
+.ds360-sidebar-version-footer .ds360-version-number {
+  font-weight: 600;
+  color: #6b7280;
+}
+.ds360-sidebar-version-footer .ds360-powered-by {
+  font-size: 10px;
+  color: #d1d5db;
+  margin-top: 2px;
+}

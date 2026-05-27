@@ -1,10 +1,11 @@
 {
   "name": "dealersuite360",
-  "version": "1.0.0",
+  "version": "1.3.0",
   "type": "module",
   "license": "MIT",
   "scripts": {
     "dev": "cross-env NODE_ENV=development tsx server/index.ts",
+    "prebuild": "tsx scripts/bump-version.ts && tsx scripts/update-changelog.ts",
     "build": "vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist",
     "prerender": "npx tsx scripts/prerender.ts",
     "start": "cross-env NODE_ENV=production node dist/index.js",

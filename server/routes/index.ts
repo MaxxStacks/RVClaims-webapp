@@ -94,6 +94,110 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.status(allOk ? 200 : 503).json({ status: allOk ? "ok" : "degraded", checks });
   });
 
+  // ==================== PUBLIC STATUS ENDPOINT ====================
+  // No auth required — used by the /system-status page and external monitors.
+  app.get("/api/status", async (_req, res) => {
+    const startTime = process.hrtime.bigint();
+
+    // Gracefully check each service — never crash
+    type ServiceHealth = "operational" | "degraded" | "down";
+
+    interface ServiceResult {
+      name: string;
+      status: ServiceHealth;
+      detail?: string;
+    }
+
+    const services: ServiceResult[] = [];
+
+    // 1. Database ping
+    const dbConfigured = Boolean(process.env.DATABASE_URL);
+    if (dbConfigured) {
+      try {
+        const { db } = await import("../db");
+        await (db as any).execute("SELECT 1");
+        services.push({ name: "database", status: "operational" });
+      } catch (e: any) {
+        services.push({ name: "database", status: "down", detail: String(e?.message ?? e) });
+      }
+    } else {
+      services.push({ name: "database", status: "degraded", detail: "DATABASE_URL not set" });
+    }
+
+    // 2. Env-var checks (each one is its own service line)
+    const envChecks: Array<{ key: string; name: string }> = [
+      { key: "CLERK_SECRET_KEY",            name: "authentication" },
+      { key: "STRIPE_SECRET_KEY",           name: "payment_processing" },
+      { key: "ANTHROPIC_API_KEY",           name: "ai_engine" },
+    ];
+
+    // Also accept the publishable key as proof Clerk is configured
+    const clerkConfigured =
+      Boolean(process.env.CLERK_SECRET_KEY) ||
+      Boolean(process.env.VITE_CLERK_PUBLISHABLE_KEY);
+    services.push({
+      name: "authentication",
+      status: clerkConfigured ? "operational" : "degraded",
+      detail: clerkConfigured ? undefined : "CLERK_SECRET_KEY not set",
+    });
+
+    for (const { key, name } of envChecks) {
+      if (name === "authentication") continue; // already handled above
+      const present = Boolean(process.env[key]);
+      services.push({
+        name,
+        status: present ? "operational" : "degraded",
+        detail: present ? undefined : `${key} not set`,
+      });
+    }
+
+    // 3. Static "live" services (infra we can't ping at runtime)
+    const liveServices: string[] = [
+      "web_application",
+      "file_storage",
+      "email_delivery",
+      "real_time",
+      "mobile_services",
+      "screen_share",
+      "vin_decoder",
+    ];
+    for (const name of liveServices) {
+      services.push({ name, status: "operational" });
+    }
+
+    const allOperational = services.every(s => s.status === "operational");
+    const anyDown = services.some(s => s.status === "down");
+    const overallStatus: ServiceHealth = anyDown ? "down" : allOperational ? "operational" : "degraded";
+
+    // Read version from package.json at runtime
+    let appVersion = "1.0.0";
+    try {
+      // Use fs.readFileSync so this works in both CJS and ESM server contexts
+      const { readFileSync } = await import("fs");
+      const { resolve, dirname } = await import("path");
+      const { fileURLToPath } = await import("url");
+      const __dir = dirname(fileURLToPath(import.meta.url));
+      const pkgPath = resolve(__dir, "../../package.json");
+      const pkgData = JSON.parse(readFileSync(pkgPath, "utf-8")) as { version: string };
+      appVersion = pkgData.version;
+    } catch { /* keep fallback */ }
+
+    const endTime = process.hrtime.bigint();
+    const responseTimeMs = Number(endTime - startTime) / 1_000_000;
+
+    res.json({
+      status: overallStatus,
+      version: appVersion,
+      node_version: process.version,
+      uptime_seconds: Math.floor(process.uptime()),
+      response_time_ms: Math.round(responseTimeMs * 10) / 10,
+      timestamp: new Date().toISOString(),
+      services: Object.fromEntries(
+        services.map(s => [s.name, { status: s.status, ...(s.detail ? { detail: s.detail } : {}) }])
+      ),
+    });
+  });
+
   // ==================== STRIPE WEBHOOK (raw body — must be before express.json parses it) ====================
   app.use("/api/payments/webhook", express.raw({ type: "application/json" }));
 

@@ -7,6 +7,7 @@ import "./styles/portal.css";
 import './styles/portal-responsive.css';
 import './styles/portal-mobile.css';
 import './styles/print.css';
+import './styles/portal-polish.css';
 import { initMobileSidebar, registerServiceWorker } from './lib/mobile';
 import { initMobileApp } from './lib/mobile-init';
 import toyHaulerUrl from "@assets/generated_images/Modern_luxury_toy_hauler_2050a416.webp";
