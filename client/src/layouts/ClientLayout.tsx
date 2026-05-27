@@ -7,6 +7,7 @@ import type { Language } from '@/lib/i18n';
 import { MobileBottomNav } from '@/components/MobileBottomNav';
 import { apiFetch } from '@/lib/api';
 import { useQuery } from '@tanstack/react-query';
+import CustomerChatBot from '@/components/CustomerChatBot';
 
 interface Props { children?: React.ReactNode; }
 
@@ -62,6 +63,19 @@ export default function ClientLayout({ children }: Props) {
     staleTime: 10 * 60 * 1000,
   });
   const hasLoyalty = loyaltyProgData?.program?.isActive === true;
+
+  // AI Support Bot — check if active for this dealership
+  const dealershipId = user?.dealershipId as string | undefined;
+  const { data: aiSupportData } = useQuery({
+    queryKey: ['ai-support-config', dealershipId],
+    queryFn: () => apiFetch<{ isActive: boolean; greetingMessage: string; dealerName: string }>(
+      `/api/ai/customer-chat/config?dealershipId=${dealershipId}`
+    ),
+    enabled: !!dealershipId,
+    retry: false,
+    staleTime: 5 * 60 * 1000,
+  });
+  const showChatBot = aiSupportData?.isActive === true && !!dealershipId;
 
   useEffect(() => {
     if (theme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
@@ -171,6 +185,15 @@ export default function ClientLayout({ children }: Props) {
             </div>
           </div>
         </div>
+      )}
+
+      {/* AI Support Bot widget — persists across all client pages */}
+      {showChatBot && dealershipId && (
+        <CustomerChatBot
+          dealershipId={dealershipId}
+          dealerName={aiSupportData?.dealerName ?? ''}
+          greetingMessage={aiSupportData?.greetingMessage}
+        />
       )}
 
       <div className={`main${sidebarCollapsed ? ' collapsed-main' : ''}`}>

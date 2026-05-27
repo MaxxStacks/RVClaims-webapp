@@ -123,6 +123,7 @@ import PaymentPlanManagement from '@/pages/exclusive/operator-admin/PaymentPlanM
 import UpsellStats from '@/pages/exclusive/operator-admin/UpsellStats';
 import RemindersOverview from '@/pages/exclusive/operator-admin/RemindersOverview';
 import LoyaltyStats from '@/pages/exclusive/operator-admin/LoyaltyStats';
+import AISupportStats from '@/pages/exclusive/operator-admin/AISupportStats';
 
 // ─── Exclusive: Shared ─────────────────────────────────────────────────────
 import ScanUnit from '@/pages/exclusive/shared/ScanUnit';
@@ -181,6 +182,7 @@ import ClientSettings from '@/pages/exclusive/client/Settings';
 import RemindersDashboard from '@/pages/exclusive/dealer-owner/RemindersDashboard';
 import LoyaltyConfig from '@/pages/exclusive/dealer-owner/LoyaltyConfig';
 import CustomerLoyalty from '@/pages/exclusive/client/CustomerLoyalty';
+import AISupportConfig from '@/pages/exclusive/dealer-owner/AISupportConfig';
 
 // ─── Exclusive: Public Bidder ──────────────────────────────────────────────
 import PB_Profile from '@/pages/exclusive/public-bidder/Profile';
@@ -319,6 +321,7 @@ export function OperatorAdminPortalSection() {
       <Route path="/operator/admin/upsell-stats">{() => <OperatorAdminLayout><UpsellStats /></OperatorAdminLayout>}</Route>
       <Route path="/operator/admin/reminders">{() => <OperatorAdminLayout><RemindersOverview /></OperatorAdminLayout>}</Route>
       <Route path="/operator/admin/loyalty-stats">{() => <OperatorAdminLayout><LoyaltyStats /></OperatorAdminLayout>}</Route>
+      <Route path="/operator/admin/ai-support-stats">{() => <OperatorAdminLayout><AISupportStats /></OperatorAdminLayout>}</Route>
       {/* Default */}
       <Route>{() => <Redirect to="/operator/admin/dashboard" />}</Route>
     </Switch>
@@ -421,6 +424,7 @@ export function DealerOwnerPortalSection() {
       <Route path="/:dealerId/owner/upsell">{() => <DealerOwnerLayout><UpsellDashboard /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/reminders">{() => <DealerOwnerLayout><RemindersDashboard /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/loyalty">{() => <DealerOwnerLayout><LoyaltyConfig /></DealerOwnerLayout>}</Route>
+      <Route path="/:dealerId/owner/ai-support">{() => <DealerOwnerLayout><AISupportConfig /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/dashboard">{() => <DealerOwnerLayout><Dashboard /></DealerOwnerLayout>}</Route>
       <Route>{() => <DealerFallback role="owner" />}</Route>
     </Switch>

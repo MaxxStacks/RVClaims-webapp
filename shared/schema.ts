@@ -2256,6 +2256,71 @@ export type InsertServiceReminderSend = z.infer<typeof insertServiceReminderSend
 export type CustomerNotificationPreferences = typeof customerNotificationPreferences.$inferSelect;
 export type InsertCustomerNotificationPreferences = z.infer<typeof insertCustomerNotificationPreferencesSchema>;
 
+// ==================== AI SUPPORT BOT ====================
+
+export const aiSupportConfig = pgTable("ai_support_config", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  dealershipId: uuid("dealership_id").notNull().unique(),
+  isActive: boolean("is_active").default(true).notNull(),
+  greetingMessage: text("greeting_message").default("Hi! I can help with questions about your warranty, claims, and service. How can I help?").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+}, (table) => [
+  index("ai_support_config_dealership_idx").on(table.dealershipId),
+]);
+
+export const aiSupportFaqs = pgTable("ai_support_faqs", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  dealershipId: uuid("dealership_id").notNull(),
+  question: text("question").notNull(),
+  answer: text("answer").notNull(),
+  sortOrder: integer("sort_order").default(0).notNull(),
+  isActive: boolean("is_active").default(true).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+}, (table) => [
+  index("ai_support_faqs_dealership_idx").on(table.dealershipId),
+  index("ai_support_faqs_active_idx").on(table.isActive),
+]);
+
+export const aiChatConversations = pgTable("ai_chat_conversations", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  dealershipId: uuid("dealership_id").notNull(),
+  customerId: uuid("customer_id").notNull(),
+  messageCount: integer("message_count").default(0).notNull(),
+  lastMessageAt: timestamp("last_message_at"),
+  status: text("status").default("active").notNull(), // 'active' | 'escalated' | 'closed'
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+}, (table) => [
+  index("ai_chat_conv_dealership_idx").on(table.dealershipId),
+  index("ai_chat_conv_customer_idx").on(table.customerId),
+  index("ai_chat_conv_status_idx").on(table.status),
+]);
+
+export const aiChatMessages = pgTable("ai_chat_messages", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  conversationId: uuid("conversation_id").notNull(),
+  role: text("role").notNull(), // 'customer' | 'assistant'
+  content: text("content").notNull(),
+  actions: jsonb("actions").$type<Record<string, unknown>[] | null>(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+}, (table) => [
+  index("ai_chat_messages_conv_idx").on(table.conversationId),
+]);
+
+export const insertAiSupportConfigSchema = createInsertSchema(aiSupportConfig).omit({ id: true, createdAt: true, updatedAt: true });
+export const insertAiSupportFaqSchema = createInsertSchema(aiSupportFaqs).omit({ id: true, createdAt: true });
+export const insertAiChatConversationSchema = createInsertSchema(aiChatConversations).omit({ id: true, createdAt: true });
+export const insertAiChatMessageSchema = createInsertSchema(aiChatMessages).omit({ id: true, createdAt: true });
+
+export type AiSupportConfig = typeof aiSupportConfig.$inferSelect;
+export type InsertAiSupportConfig = z.infer<typeof insertAiSupportConfigSchema>;
+export type AiSupportFaq = typeof aiSupportFaqs.$inferSelect;
+export type InsertAiSupportFaq = z.infer<typeof insertAiSupportFaqSchema>;
+export type AiChatConversation = typeof aiChatConversations.$inferSelect;
+export type InsertAiChatConversation = z.infer<typeof insertAiChatConversationSchema>;
+export type AiChatMessage = typeof aiChatMessages.$inferSelect;
+export type InsertAiChatMessage = z.infer<typeof insertAiChatMessageSchema>;
+
 // ==================== LOYALTY PROGRAM ====================
 
 export const LOYALTY_REWARD_TYPES = ['percentage_discount', 'fixed_discount', 'free_service', 'parts_credit', 'custom'] as const;
