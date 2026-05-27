@@ -2402,3 +2402,64 @@ export type LoyaltyPoints = typeof loyaltyPoints.$inferSelect;
 export type InsertLoyaltyPoints = z.infer<typeof insertLoyaltyPointSchema>;
 export type LoyaltyReferral = typeof loyaltyReferrals.$inferSelect;
 export type InsertLoyaltyReferral = z.infer<typeof insertLoyaltyReferralSchema>;
+
+// ==================== REPUTATION MANAGEMENT ====================
+
+export const REVIEW_TRIGGER_TYPES = [
+  "work_order_completed", "claim_closed", "service_appointment", "manual",
+] as const;
+
+export const REVIEW_STATUSES = [
+  "pending", "reviewed", "approved_for_publish", "flagged", "resolved", "published",
+] as const;
+
+export const REVIEW_PUBLISH_TARGETS = ["google", "facebook", "both"] as const;
+
+export const customerReviews = pgTable("customer_reviews", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  dealershipId: uuid("dealership_id").notNull(),
+  customerId: uuid("customer_id").notNull(),
+  unitId: uuid("unit_id"),
+  triggerType: text("trigger_type", { enum: REVIEW_TRIGGER_TYPES }).notNull(),
+  triggerReferenceId: uuid("trigger_reference_id"),
+  rating: integer("rating"),                   // 1-5, null until customer responds
+  comment: text("comment"),
+  dealerResponse: text("dealer_response"),
+  status: text("status", { enum: REVIEW_STATUSES }).notNull().default("pending"),
+  publishTarget: text("publish_target", { enum: REVIEW_PUBLISH_TARGETS }),
+  publishedAt: timestamp("published_at"),
+  npsScore: integer("nps_score"),              // 0-10, nullable (kept for forward compat)
+  sentAt: timestamp("sent_at").notNull().defaultNow(),
+  respondedAt: timestamp("responded_at"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+}, (table) => [
+  index("customer_reviews_dealership_idx").on(table.dealershipId),
+  index("customer_reviews_customer_idx").on(table.customerId),
+  index("customer_reviews_status_idx").on(table.status),
+  index("customer_reviews_trigger_idx").on(table.triggerType),
+]);
+
+export const reviewConfig = pgTable("review_config", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  dealershipId: uuid("dealership_id").notNull().unique(),
+  isActive: boolean("is_active").notNull().default(true),
+  sendDelayHours: integer("send_delay_hours").notNull().default(24),
+  googlePlaceId: text("google_place_id"),
+  facebookPageUrl: text("facebook_page_url"),
+  customThankYouMessage: text("custom_thank_you_message"),
+  autoSendOnWorkOrderComplete: boolean("auto_send_on_work_order_complete").notNull().default(true),
+  autoSendOnClaimClose: boolean("auto_send_on_claim_close").notNull().default(true),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+}, (table) => [
+  index("review_config_dealership_idx").on(table.dealershipId),
+]);
+
+export const insertCustomerReviewSchema = createInsertSchema(customerReviews).omit({ id: true, createdAt: true, updatedAt: true });
+export const insertReviewConfigSchema = createInsertSchema(reviewConfig).omit({ id: true, createdAt: true, updatedAt: true });
+
+export type CustomerReview = typeof customerReviews.$inferSelect;
+export type InsertCustomerReview = z.infer<typeof insertCustomerReviewSchema>;
+export type ReviewConfig = typeof reviewConfig.$inferSelect;
+export type InsertReviewConfig = z.infer<typeof insertReviewConfigSchema>;

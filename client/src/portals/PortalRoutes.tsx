@@ -183,6 +183,9 @@ import RemindersDashboard from '@/pages/exclusive/dealer-owner/RemindersDashboar
 import LoyaltyConfig from '@/pages/exclusive/dealer-owner/LoyaltyConfig';
 import CustomerLoyalty from '@/pages/exclusive/client/CustomerLoyalty';
 import AISupportConfig from '@/pages/exclusive/dealer-owner/AISupportConfig';
+import ReviewsDashboard from '@/pages/exclusive/dealer-owner/ReviewsDashboard';
+import NpsDashboard from '@/pages/exclusive/operator-admin/NpsDashboard';
+import CustomerSurvey from '@/pages/exclusive/client/CustomerSurvey';
 
 // ─── Exclusive: Public Bidder ──────────────────────────────────────────────
 import PB_Profile from '@/pages/exclusive/public-bidder/Profile';
@@ -322,6 +325,7 @@ export function OperatorAdminPortalSection() {
       <Route path="/operator/admin/reminders">{() => <OperatorAdminLayout><RemindersOverview /></OperatorAdminLayout>}</Route>
       <Route path="/operator/admin/loyalty-stats">{() => <OperatorAdminLayout><LoyaltyStats /></OperatorAdminLayout>}</Route>
       <Route path="/operator/admin/ai-support-stats">{() => <OperatorAdminLayout><AISupportStats /></OperatorAdminLayout>}</Route>
+      <Route path="/operator/admin/reviews">{() => <OperatorAdminLayout><NpsDashboard /></OperatorAdminLayout>}</Route>
       {/* Default */}
       <Route>{() => <Redirect to="/operator/admin/dashboard" />}</Route>
     </Switch>
@@ -425,6 +429,7 @@ export function DealerOwnerPortalSection() {
       <Route path="/:dealerId/owner/reminders">{() => <DealerOwnerLayout><RemindersDashboard /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/loyalty">{() => <DealerOwnerLayout><LoyaltyConfig /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/ai-support">{() => <DealerOwnerLayout><AISupportConfig /></DealerOwnerLayout>}</Route>
+      <Route path="/:dealerId/owner/reviews">{() => <DealerOwnerLayout><ReviewsDashboard /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/dashboard">{() => <DealerOwnerLayout><Dashboard /></DealerOwnerLayout>}</Route>
       <Route>{() => <DealerFallback role="owner" />}</Route>
     </Switch>
@@ -499,6 +504,7 @@ export function ClientPortalSection() {
       <Route path="/:dealerId/client/knowledge-base">{() => <ClientLayout><ClientKnowledgeBase /></ClientLayout>}</Route>
       <Route path="/:dealerId/client/payment-plans">{() => <ClientLayout><MyPaymentPlans /></ClientLayout>}</Route>
       <Route path="/:dealerId/client/loyalty">{() => <ClientLayout><CustomerLoyalty /></ClientLayout>}</Route>
+      <Route path="/:dealerId/client/review/:reviewId">{() => <CustomerSurvey />}</Route>
       <Route path="/:dealerId/client/settings">{() => <ClientLayout><ClientSettings /></ClientLayout>}</Route>
       <Route path="/:dealerId/client/dashboard">{() => <ClientLayout><Dashboard /></ClientLayout>}</Route>
       <Route>{() => <DealerFallback role="client" />}</Route>

@@ -19,6 +19,10 @@ import {
   workOrderLabor,
   technicians,
   users,
+  customerReviews,
+  reviewConfig,
+  notifications,
+  dealerships,
 } from "@shared/schema";
 import { eq, desc, and } from "drizzle-orm";
 import { requireAuth } from "../middleware/auth";
@@ -284,6 +288,42 @@ router.patch("/:id/status", requireAuth, async (req: Request, res: Response) => 
     }
 
     res.json(updated);
+
+    // ── Auto-trigger review survey on WO completion (non-blocking) ──
+    if (status === "completed" && existing.customerId && existing.dealershipId) {
+      // TODO: Implement sendDelayHours — currently sends immediately; needs cron job to delay by config.sendDelayHours
+      ;(async () => {
+        try {
+          const [cfg] = await db.select().from(reviewConfig)
+            .where(eq(reviewConfig.dealershipId, existing.dealershipId))
+            .limit(1);
+          if (cfg?.isActive && cfg.autoSendOnWorkOrderComplete) {
+            const [review] = await db.insert(customerReviews).values({
+              dealershipId: existing.dealershipId,
+              customerId: existing.customerId!,
+              unitId: existing.unitId ?? null,
+              triggerType: "work_order_completed",
+              triggerReferenceId: existing.id,
+              status: "pending",
+              sentAt: new Date(),
+            }).returning();
+
+            const [dealer] = await db.select({ name: dealerships.name })
+              .from(dealerships).where(eq(dealerships.id, existing.dealershipId)).limit(1);
+
+            await db.insert(notifications).values({
+              userId: existing.customerId!,
+              type: "system",
+              title: "How was your experience?",
+              message: `${dealer?.name ?? "Your dealer"} values your feedback. Tap to share.`,
+              linkTo: `/${existing.dealershipId}/client/review/${review.id}`,
+            });
+          }
+        } catch (reviewErr) {
+          console.error("[work-orders] review trigger failed:", reviewErr);
+        }
+      })();
+    }
   } catch (err: any) {
     res.status(500).json({ message: err.message || "Failed to update status" });
   }

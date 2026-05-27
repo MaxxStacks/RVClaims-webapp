@@ -2,7 +2,7 @@
 
 import { Router, type Request, type Response } from "express";
 import { db } from "../db";
-import { claims, units, dealerships, v6Uploads, users } from "@shared/schema";
+import { claims, units, dealerships, v6Uploads, users, customerReviews, reviewConfig, notifications } from "@shared/schema";
 import { eq, and, desc, inArray, ilike, or, sql } from "drizzle-orm";
 import { requireAuth } from "../middleware/auth";
 import { emitEvent } from "../lib/event-bus";
@@ -518,6 +518,47 @@ router.post("/:id/transition", async (req: Request, res: Response) => {
         },
         stateChanges: [`claim.status: ${claim.status} → ${toStatus}`],
       });
+    }
+
+    // ── Auto-trigger review survey on claim close (non-blocking) ──
+    if (toStatus === "closed" || toStatus === "completed") {
+      // TODO: Implement sendDelayHours — currently sends immediately; needs cron job to delay by config.sendDelayHours
+      ;(async () => {
+        try {
+          const [cfg] = await db.select().from(reviewConfig)
+            .where(eq(reviewConfig.dealershipId, claim.dealershipId))
+            .limit(1);
+          if (!cfg?.isActive || !cfg.autoSendOnClaimClose) return;
+
+          // Get customer from unit
+          const [unit] = await db.select({ customerId: units.customerId })
+            .from(units).where(eq(units.id, claim.unitId)).limit(1);
+          if (!unit?.customerId) return;
+
+          const [review] = await db.insert(customerReviews).values({
+            dealershipId: claim.dealershipId,
+            customerId: unit.customerId,
+            unitId: claim.unitId,
+            triggerType: "claim_closed",
+            triggerReferenceId: claim.id,
+            status: "pending",
+            sentAt: new Date(),
+          }).returning();
+
+          const [dealer] = await db.select({ name: dealerships.name })
+            .from(dealerships).where(eq(dealerships.id, claim.dealershipId)).limit(1);
+
+          await db.insert(notifications).values({
+            userId: unit.customerId,
+            type: "system",
+            title: "How was your experience?",
+            message: `${dealer?.name ?? "Your dealer"} values your feedback. Tap to share.`,
+            linkTo: `/${claim.dealershipId}/client/review/${review.id}`,
+          });
+        } catch (reviewErr) {
+          console.error("[claims-v6/transition] review trigger failed:", reviewErr);
+        }
+      })();
     }
 
     res.json({ ok: true });
