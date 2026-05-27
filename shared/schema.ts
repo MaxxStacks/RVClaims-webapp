@@ -1933,3 +1933,43 @@ export type DealJacketDocument = typeof dealJacketDocuments.$inferSelect;
 export type InsertDealJacketDocument = z.infer<typeof insertDealJacketDocumentSchema>;
 export type DealJacketPermission = typeof dealJacketPermissions.$inferSelect;
 export type InsertDealJacketPermission = z.infer<typeof insertDealJacketPermissionSchema>;
+
+// ==================== AI CLAIM DRAFTING ====================
+
+export const AI_CLAIM_ACTIONS = [
+  "accepted_as_is",
+  "accepted_with_edits",
+  "dismissed",
+  "merged",
+  "split",
+] as const;
+
+export const aiClaimFeedback = pgTable("ai_claim_feedback", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  claimId: uuid("claim_id").notNull(),
+  issueNumber: integer("issue_number").notNull(),
+  photoIndices: jsonb("photo_indices").$type<number[]>().notNull().default(sql`'[]'::jsonb`),
+  aiOriginal: jsonb("ai_original").$type<{
+    complaint: string;
+    cause: string;
+    correction: string;
+    category: string;
+    severity: string;
+    confidence: number;
+  }>().notNull(),
+  operatorFinal: jsonb("operator_final").$type<{
+    complaint: string;
+    cause: string;
+    correction: string;
+  } | null>(),
+  action: text("action", { enum: AI_CLAIM_ACTIONS }).notNull(),
+  operatorId: uuid("operator_id"),
+  claimLineId: uuid("claim_line_id"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+}, (table) => [
+  index("ai_claim_feedback_claim_idx").on(table.claimId),
+]);
+
+export const insertAiClaimFeedbackSchema = createInsertSchema(aiClaimFeedback).omit({ id: true, createdAt: true });
+export type AiClaimFeedback = typeof aiClaimFeedback.$inferSelect;
+export type InsertAiClaimFeedback = z.infer<typeof insertAiClaimFeedbackSchema>;

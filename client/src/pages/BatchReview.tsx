@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useLocation, useParams } from 'wouter';
 import { apiFetch } from '@/lib/api';
+import AiCccPanel from '@/components/AiCccPanel';
+import { useAuth } from '@/hooks/use-auth';
 
 interface IssueGroup {
   id: string;
@@ -44,6 +46,8 @@ const FRC_FALLBACK: Record<string, Array<{ code: string; description: string; ho
 export default function BatchReview() {
   const [location, navigate] = useLocation();
   const params = useParams<{ batchId: string }>();
+  const { user } = useAuth();
+  const isOperator = user?.role === 'operator_admin' || user?.role === 'operator_staff';
 
   // Extract batchId from either params or URL path
   const batchId = params.batchId || (() => {
@@ -301,6 +305,27 @@ export default function BatchReview() {
               ))}
             </div>
           </div>
+
+          {/* AI Claim Drafting — operator only */}
+          {isOperator && (
+            <AiCccPanel
+              claimId={batch?.claimId || null}
+              photos={batchPhotos.map((p: any) => ({
+                url: p.url || p.publicUrl || '',
+                id: p.id,
+                category: p.photoType || p.category,
+              }))}
+              unitInfo={batch?.unit ? {
+                vin: batch.unit.vin,
+                year: batch.unit.year,
+                manufacturer: batch.manufacturer || batch.unit.manufacturer,
+                model: batch.unit.model,
+              } : {
+                manufacturer: batch?.manufacturer,
+              }}
+              onFrcLineCreated={() => loadBatch()}
+            />
+          )}
         </div>
 
         {/* Right: issue groups */}

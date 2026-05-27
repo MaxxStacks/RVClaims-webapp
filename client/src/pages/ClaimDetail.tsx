@@ -6,6 +6,7 @@ import { useLanguage } from '@/hooks/use-language';
 import { BarcodeDisplay, QRCodeDisplay, generateBarcodeString } from '@/lib/barcode';
 import PrintButton from '@/components/PrintButton';
 import PrintHeader from '@/components/PrintHeader';
+import AiCccPanel from '@/components/AiCccPanel';
 
 interface FrcLine {
   id: string;
@@ -400,6 +401,25 @@ export default function ClaimDetail() {
                 ))}
               </div>
             </div>
+          )}
+
+          {/* AI Claim Drafting — operator only */}
+          {isOperator && (
+            <AiCccPanel
+              claimId={claimId || null}
+              photos={(claimPhotos || []).map(p => ({
+                url: p.publicUrl,
+                id: p.id,
+                category: p.photoType,
+              }))}
+              unitInfo={unit ? {
+                vin: unit.vin,
+                year: unit.year,
+                manufacturer: unit.manufacturer,
+                model: unit.model,
+              } : undefined}
+              onFrcLineCreated={() => loadClaim()}
+            />
           )}
 
           {/* Parts Orders linked to this claim */}
