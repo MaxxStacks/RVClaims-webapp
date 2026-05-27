@@ -81,6 +81,8 @@ const PORTALS: PortalDef[] = [
   { name: "Marketplace Admin",      role: "operator_admin",          route: "/marketplace/admin",           status: "operational" },
   { name: "Marketplace Staff",      role: "operator_staff",          route: "/marketplace/staff",           status: "operational" },
   { name: "Supplier Portal",        role: "supplier",                route: "/supplier",                    status: "operational" },
+  { name: "Marketplace Bidder",     role: "bidder",                  route: "/marketplace/bidder",          status: "operational" },
+  { name: "Marketplace Consignor",  role: "consignor",               route: "/marketplace/consignor",       status: "operational" },
 ];
 
 // ─── Static modules data ───────────────────────────────────────────────────────
@@ -109,6 +111,9 @@ const MODULES: ModuleDef[] = [
   { name: "Roadside Assistance",         category: "Consumer Direct",  price: "Consumer",    status: "coming_soon" },
   { name: "Extended Warranty (B2C)",     category: "Consumer Direct",  price: "Consumer",    status: "coming_soon" },
   { name: "RV Protection Packages",      category: "Consumer Direct",  price: "Consumer",    status: "coming_soon" },
+  // Platform tools
+  { name: "TechFlow Work Orders",        category: "Platform Tools",   price: "Included",    status: "operational" },
+  { name: "DS360 Assist",                category: "Platform Tools",   price: "Included",    status: "operational" },
 ];
 
 // ─── Static service groups ────────────────────────────────────────────────────
@@ -164,7 +169,7 @@ const GROUPS: Group[] = [
             date: "April 2026",
             type: "minor",
             changes: [
-              "18-portal architecture with 215+ routes and 157+ page components",
+              "20-portal architecture with 215+ routes and 157+ page components",
               "Clerk JWT auth with role-based portal routing",
               "LiveKit screen share, DS360 Assist, CRM, analytics, compliance",
               "Data import wizard with CSV templates and custom field passthrough",
@@ -278,7 +283,7 @@ const GROUPS: Group[] = [
             date: "April 2026",
             type: "minor",
             changes: [
-              "publicMetadata.role as RBAC source of truth across all 18 portals",
+              "publicMetadata.role as RBAC source of truth across all 20 portals",
               "Dev role override via localStorage (ds360-dev-role) for QA testing",
               "Clerk webhook → API sync on user.created / user.updated",
             ],
@@ -683,19 +688,20 @@ export default function SystemStatus() {
       canonical="/system-status"
     >
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
-      <section style={{ paddingTop: 96, paddingBottom: 64, background: "linear-gradient(to bottom, #f8fafc, white)" }}>
+      <section style={{ paddingTop: 96, paddingBottom: 64, background: "#033280" }}>
         <div style={{ maxWidth: 960, margin: "0 auto", padding: "0 24px", textAlign: "center" }}>
-          <h1 style={{ fontSize: 40, fontWeight: 700, color: "#0f172a", marginBottom: 12, fontFamily: "Inter, system-ui, sans-serif" }}>
-            System Status
+          <h1 style={{ fontSize: 28, fontWeight: 700, color: "#fff", marginBottom: 8, fontFamily: "Inter, system-ui, sans-serif" }}>
+            DealerSuite360 System Status
           </h1>
-          <p style={{ fontSize: 16, color: "#64748b", marginBottom: 32, fontFamily: "Inter, system-ui, sans-serif" }}>
-            Real-time health, version history, and upcoming updates for all Dealer Suite 360 services.
+          <p style={{ fontSize: 15, color: "rgba(255,255,255,0.75)", marginBottom: 32, fontFamily: "Inter, system-ui, sans-serif" }}>
+            The complete RV dealership operating platform — real-time health across all services, portals, and modules.
           </p>
 
           {/* Overall banner */}
           <div style={{
             display: "inline-flex", alignItems: "center", gap: 12,
-            background: overallBg, border: `1px solid ${overallBorder}`,
+            background: anyIssue ? "rgba(239,68,68,0.15)" : "rgba(34,197,94,0.15)",
+            border: `1px solid ${anyIssue ? "rgba(239,68,68,0.4)" : "rgba(34,197,94,0.4)"}`,
             borderRadius: 16, padding: "14px 28px",
           }}>
             <span style={{
@@ -703,7 +709,7 @@ export default function SystemStatus() {
               display: "inline-block", boxShadow: `0 0 0 4px ${overallDot}33`,
               animation: anyIssue ? "none" : "pulse 2s infinite",
             }} />
-            <span style={{ fontSize: 20, fontWeight: 700, color: overallText, fontFamily: "Inter, system-ui, sans-serif" }}>
+            <span style={{ fontSize: 20, fontWeight: 700, color: anyIssue ? "#fca5a5" : "#86efac", fontFamily: "Inter, system-ui, sans-serif" }}>
               {overallLabel}
             </span>
           </div>
@@ -711,7 +717,7 @@ export default function SystemStatus() {
           {/* Stats row */}
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 0, marginTop: 40, flexWrap: "wrap" }}>
             {[
-              { value: apiLoading ? "…" : (apiError ? "99.9%" : "99.9%"), label: "30-day uptime" },
+              { value: apiLoading ? "…" : "99.9%", label: "30-day uptime" },
               { value: `${operationalCount}/${allServices.length}`, label: "Services operational" },
               { value: `${portalOperationalCount}/${PORTALS.length}`, label: "Portals live" },
               { value: `${moduleActiveCount}/${MODULES.length}`, label: "Modules active" },
@@ -719,10 +725,10 @@ export default function SystemStatus() {
             ].map((stat, i, arr) => (
               <div key={stat.label} style={{ display: "flex", alignItems: "center" }}>
                 <div style={{ textAlign: "center", padding: "0 28px" }}>
-                  <div style={{ fontSize: 28, fontWeight: 700, color: "#0f172a", fontFamily: "Inter, system-ui, sans-serif" }}>{stat.value}</div>
-                  <div style={{ fontSize: 13, color: "#64748b", fontFamily: "Inter, system-ui, sans-serif" }}>{stat.label}</div>
+                  <div style={{ fontSize: 28, fontWeight: 700, color: "#fff", fontFamily: "Inter, system-ui, sans-serif" }}>{stat.value}</div>
+                  <div style={{ fontSize: 13, color: "rgba(255,255,255,0.65)", fontFamily: "Inter, system-ui, sans-serif" }}>{stat.label}</div>
                 </div>
-                {i < arr.length - 1 && <div style={{ width: 1, height: 40, background: "#e2e8f0" }} />}
+                {i < arr.length - 1 && <div style={{ width: 1, height: 40, background: "rgba(255,255,255,0.2)" }} />}
               </div>
             ))}
           </div>
@@ -730,28 +736,50 @@ export default function SystemStatus() {
           {/* Live API data row */}
           {apiStatus && !apiError && (
             <div style={{ display: "flex", justifyContent: "center", gap: 24, marginTop: 20, flexWrap: "wrap" }}>
-              <span style={{ fontSize: 12, color: "#94a3b8", fontFamily: "Inter, system-ui, sans-serif" }}>
+              <span style={{ fontSize: 12, color: "rgba(255,255,255,0.55)", fontFamily: "Inter, system-ui, sans-serif" }}>
                 Platform v{apiStatus.version}
               </span>
-              <span style={{ fontSize: 12, color: "#94a3b8" }}>·</span>
-              <span style={{ fontSize: 12, color: "#94a3b8", fontFamily: "Inter, system-ui, sans-serif" }}>
+              <span style={{ fontSize: 12, color: "rgba(255,255,255,0.35)" }}>·</span>
+              <span style={{ fontSize: 12, color: "rgba(255,255,255,0.55)", fontFamily: "Inter, system-ui, sans-serif" }}>
                 Node {apiStatus.node_version}
               </span>
-              <span style={{ fontSize: 12, color: "#94a3b8" }}>·</span>
-              <span style={{ fontSize: 12, color: "#94a3b8", fontFamily: "Inter, system-ui, sans-serif" }}>
+              <span style={{ fontSize: 12, color: "rgba(255,255,255,0.35)" }}>·</span>
+              <span style={{ fontSize: 12, color: "rgba(255,255,255,0.55)", fontFamily: "Inter, system-ui, sans-serif" }}>
                 Uptime {formatUptime(apiStatus.uptime_seconds)}
               </span>
-              <span style={{ fontSize: 12, color: "#94a3b8" }}>·</span>
-              <span style={{ fontSize: 12, color: "#94a3b8", fontFamily: "Inter, system-ui, sans-serif" }}>
+              <span style={{ fontSize: 12, color: "rgba(255,255,255,0.35)" }}>·</span>
+              <span style={{ fontSize: 12, color: "rgba(255,255,255,0.55)", fontFamily: "Inter, system-ui, sans-serif" }}>
                 Live data · auto-refreshes every 60s
               </span>
             </div>
           )}
           {apiError && (
-            <p style={{ fontSize: 12, color: "#94a3b8", marginTop: 20, fontFamily: "Inter, system-ui, sans-serif" }}>
+            <p style={{ fontSize: 12, color: "rgba(255,255,255,0.45)", marginTop: 20, fontFamily: "Inter, system-ui, sans-serif" }}>
               Showing cached data — live health check unavailable
             </p>
           )}
+        </div>
+      </section>
+
+      {/* ── Platform Info Bar ──────────────────────────────────────────────── */}
+      <section style={{ background: "#f8fafc", borderBottom: "1px solid #e2e8f0" }}>
+        <div style={{ maxWidth: 960, margin: "0 auto", padding: "14px 24px", display: "flex", flexWrap: "wrap", gap: 0, justifyContent: "center", alignItems: "center" }}>
+          {[
+            { label: "Version", value: "v6.2.0" },
+            { label: "DB Tables", value: "85+" },
+            { label: "API Modules", value: "65" },
+            { label: "Roles", value: "14" },
+            { label: "Portals", value: "20" },
+            { label: "Modules", value: "20" },
+          ].map((stat, i, arr) => (
+            <div key={stat.label} style={{ display: "flex", alignItems: "center" }}>
+              <div style={{ textAlign: "center", padding: "0 20px" }}>
+                <span style={{ fontSize: 14, fontWeight: 700, color: "#033280", fontFamily: "Inter, system-ui, sans-serif" }}>{stat.value}</span>
+                <span style={{ fontSize: 12, color: "#64748b", fontFamily: "Inter, system-ui, sans-serif", marginLeft: 6 }}>{stat.label}</span>
+              </div>
+              {i < arr.length - 1 && <div style={{ width: 1, height: 28, background: "#e2e8f0" }} />}
+            </div>
+          ))}
         </div>
       </section>
 
@@ -995,7 +1023,7 @@ export default function SystemStatus() {
                 {MODULES.length} subscribable modules — {moduleActiveCount} active
               </p>
             </div>
-            {(["Core Claims", "Financial", "Revenue Growth", "Marketplace", "Consumer Direct"] as const).map(category => {
+            {(["Core Claims", "Financial", "Revenue Growth", "Marketplace", "Consumer Direct", "Platform Tools"] as const).map(category => {
               const catModules = MODULES.filter(m => m.category === category);
               return (
                 <div key={category} style={{ marginBottom: 40 }}>

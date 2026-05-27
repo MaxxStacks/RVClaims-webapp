@@ -323,6 +323,7 @@ function App() {
                    location.startsWith('/dealer/') ||
                    location.startsWith('/client/') ||
                    location.startsWith('/bidder/') ||
+                   location.startsWith('/supplier/') ||
                    location.startsWith('/marketplace/bidder') ||
                    location.startsWith('/marketplace/consignor') ||
                    location.startsWith('/marketplace/independent') ||

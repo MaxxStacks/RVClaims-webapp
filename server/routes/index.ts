@@ -169,18 +169,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     const anyDown = services.some(s => s.status === "down");
     const overallStatus: ServiceHealth = anyDown ? "down" : allOperational ? "operational" : "degraded";
 
-    // Read version from package.json at runtime
-    let appVersion = "1.0.0";
-    try {
-      // Use fs.readFileSync so this works in both CJS and ESM server contexts
-      const { readFileSync } = await import("fs");
-      const { resolve, dirname } = await import("path");
-      const { fileURLToPath } = await import("url");
-      const __dir = dirname(fileURLToPath(import.meta.url));
-      const pkgPath = resolve(__dir, "../package.json");
-      const pkgData = JSON.parse(readFileSync(pkgPath, "utf-8")) as { version: string };
-      appVersion = pkgData.version;
-    } catch { /* keep fallback */ }
+    // Read version from env var — set by Node at startup from package.json,
+    // or from APP_VERSION env var (Railway / Docker builds), or hardcoded fallback.
+    // This avoids any runtime file I/O that can crash in containerised builds.
+    const appVersion = process.env.npm_package_version ?? process.env.APP_VERSION ?? '6.2.0';
 
     const endTime = process.hrtime.bigint();
     const responseTimeMs = Number(endTime - startTime) / 1_000_000;

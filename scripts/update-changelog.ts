@@ -164,6 +164,12 @@ function renderMarkdown(entries: VersionEntry[]): string {
 
 // ── Main ──────────────────────────────────────────────────────────────────────
 function main() {
+  // Guard: bail out early if git is not available (e.g. Railway CI builds).
+  try { execSync('git --version', { stdio: 'ignore', timeout: 3000 }); } catch {
+    console.log('[update-changelog] git not available — skipping changelog update');
+    process.exit(0);
+  }
+
   const commits = getGitCommits();
   const newEntry = classifyCommits(commits);
 

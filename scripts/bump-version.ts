@@ -86,6 +86,12 @@ function applyBump(bump: BumpType): string {
 
 // ── Main ──────────────────────────────────────────────────────────────────────
 function main() {
+  // Guard: bail out early if git is not available (e.g. Railway CI builds).
+  try { execSync('git --version', { stdio: 'ignore', timeout: 3000 }); } catch {
+    console.log('[bump-version] git not available — skipping version bump');
+    process.exit(0);
+  }
+
   const commits = getRecentCommits();
   const bump = determineBump(commits);
   const newVersion = applyBump(bump);
