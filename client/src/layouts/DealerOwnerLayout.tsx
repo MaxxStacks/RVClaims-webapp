@@ -168,6 +168,7 @@ export default function DealerOwnerLayout({ children }: Props) {
             {mod('marketing') && <Link className={`nav-item ${isActive('marketing') ? 'active' : ''}`} to="marketing"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>{t('nav.marketing')}</Link>}
             <Link className={`nav-item ${isActive('sales-services') ? 'active' : ''}`} to="sales-services"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>{t('nav.salesServices')}</Link>
             {mod('smart_upsell') && <Link className={`nav-item ${isActive('upsell') ? 'active' : ''}`} to="upsell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>{t('upsell.title')}</Link>}
+            {mod('service_reminders') && <Link className={`nav-item ${isActive('reminders') ? 'active' : ''}`} to="reminders"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>{t('reminder.title')}</Link>}
           </div>
           <div className="nav-section">
             <div className="nav-label">{t('nav.billing')}</div>

@@ -2175,3 +2175,83 @@ export type UpsellOpportunity = typeof upsellOpportunities.$inferSelect;
 export type InsertUpsellOpportunity = z.infer<typeof insertUpsellOpportunitySchema>;
 export type UpsellTemplate = typeof upsellTemplates.$inferSelect;
 export type InsertUpsellTemplate = z.infer<typeof insertUpsellTemplateSchema>;
+
+// ==================== SERVICE REMINDERS ====================
+
+export const REMINDER_TEMPLATE_TYPES = [
+  "winterization", "de_winterization", "spring_prep", "warranty_expiry", "annual_service", "custom",
+] as const;
+
+export const REMINDER_TRIGGER_TYPES = ["date_based", "event_based"] as const;
+
+export const REMINDER_SEND_CHANNELS = ["push", "email", "sms"] as const;
+
+export const REMINDER_SEND_STATUSES = ["queued", "sent", "delivered", "failed", "opted_out"] as const;
+
+export const serviceReminders = pgTable("service_reminders", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  dealershipId: uuid("dealership_id").notNull(),
+  name: text("name").notNull(),
+  templateType: text("template_type", { enum: REMINDER_TEMPLATE_TYPES }).notNull(),
+  triggerType: text("trigger_type", { enum: REMINDER_TRIGGER_TYPES }).notNull(),
+  triggerConfig: jsonb("trigger_config").$type<Record<string, unknown>>().default(sql`'{}'::jsonb`),
+  subject: text("subject").notNull(),
+  message: text("message").notNull(),
+  includeProductPromotion: boolean("include_product_promotion").default(false),
+  promotedProductIds: jsonb("promoted_product_ids").$type<string[]>(),
+  isActive: boolean("is_active").default(true),
+  recipientFilter: jsonb("recipient_filter").$type<Record<string, unknown>>().default(sql`'{}'::jsonb`),
+  lastSentAt: timestamp("last_sent_at"),
+  sendCount: integer("send_count").default(0),
+  createdBy: uuid("created_by").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+}, (table) => [
+  index("service_reminders_dealership_idx").on(table.dealershipId),
+  index("service_reminders_active_idx").on(table.isActive),
+  index("service_reminders_template_idx").on(table.templateType),
+]);
+
+export const serviceReminderSends = pgTable("service_reminder_sends", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  reminderId: uuid("reminder_id").notNull(),
+  customerId: uuid("customer_id").notNull(),
+  unitId: uuid("unit_id").notNull(),
+  channel: text("channel", { enum: REMINDER_SEND_CHANNELS }).notNull(),
+  status: text("status", { enum: REMINDER_SEND_STATUSES }).default("queued"),
+  sentAt: timestamp("sent_at").defaultNow().notNull(),
+  openedAt: timestamp("opened_at"),
+}, (table) => [
+  index("srs_reminder_idx").on(table.reminderId),
+  index("srs_customer_idx").on(table.customerId),
+  index("srs_status_idx").on(table.status),
+  index("srs_sent_at_idx").on(table.sentAt),
+]);
+
+export const customerNotificationPreferences = pgTable("customer_notification_preferences", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: uuid("user_id").notNull().unique(),
+  pushEnabled: boolean("push_enabled").default(true),
+  emailEnabled: boolean("email_enabled").default(true),
+  smsEnabled: boolean("sms_enabled").default(false),
+  marketingOptIn: boolean("marketing_opt_in").default(true),
+  reminderCategories: jsonb("reminder_categories").$type<{
+    service: boolean; warranty: boolean; seasonal: boolean; promotions: boolean;
+  }>().default(sql`'{"service":true,"warranty":true,"seasonal":true,"promotions":true}'::jsonb`),
+  pushPromptLastShown: timestamp("push_prompt_last_shown"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+}, (table) => [
+  index("cnp_user_idx").on(table.userId),
+]);
+
+export const insertServiceReminderSchema = createInsertSchema(serviceReminders).omit({ id: true, createdAt: true, updatedAt: true });
+export const insertServiceReminderSendSchema = createInsertSchema(serviceReminderSends).omit({ id: true });
+export const insertCustomerNotificationPreferencesSchema = createInsertSchema(customerNotificationPreferences).omit({ id: true, createdAt: true, updatedAt: true });
+
+export type ServiceReminder = typeof serviceReminders.$inferSelect;
+export type InsertServiceReminder = z.infer<typeof insertServiceReminderSchema>;
+export type ServiceReminderSend = typeof serviceReminderSends.$inferSelect;
+export type InsertServiceReminderSend = z.infer<typeof insertServiceReminderSendSchema>;
+export type CustomerNotificationPreferences = typeof customerNotificationPreferences.$inferSelect;
+export type InsertCustomerNotificationPreferences = z.infer<typeof insertCustomerNotificationPreferencesSchema>;
