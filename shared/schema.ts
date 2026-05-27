@@ -9,7 +9,7 @@ import { z } from "zod";
 
 // ==================== ROLE & STATUS ENUMS ====================
 
-export const USER_ROLES = ["operator_admin", "operator_staff", "dealer_owner", "dealer_staff", "technician", "service_manager", "shop_manager", "parts_dept", "public_bidder", "consignor", "client", "bidder"] as const;
+export const USER_ROLES = ["operator_admin", "operator_staff", "dealer_owner", "dealer_staff", "technician", "service_manager", "shop_manager", "parts_dept", "public_bidder", "consignor", "client", "bidder", "supplier"] as const;
 export const INVITE_ROLES = ["operator_staff", "dealer_owner", "dealer_staff", "technician", "service_manager", "shop_manager", "parts_dept", "public_bidder", "consignor", "client"] as const;
 export const DEALERSHIP_PLANS = ["plan_a", "plan_b", "custom"] as const;
 export const DEALERSHIP_STATUSES = ["active", "suspended", "pending"] as const;
@@ -2619,3 +2619,132 @@ export type InsertComplianceCheck = z.infer<typeof insertComplianceCheckSchema>;
 export type ComplianceReport = typeof complianceReports.$inferSelect;
 export type InsertComplianceReport = z.infer<typeof insertComplianceReportSchema>;
 export type InsertAnalyticsReportSchedule = z.infer<typeof insertAnalyticsReportScheduleSchema>;
+
+// ==================== SUPPLIER PORTAL ====================
+
+export const SUPPLIER_VERIFICATION_STATUSES = ["pending", "verified", "rejected", "suspended"] as const;
+export const SUPPLIER_SUBSCRIPTION_STATUSES = ["trial", "active", "paused", "cancelled"] as const;
+export const SUPPLIER_CATALOG_CATEGORIES = [
+  "exterior", "interior", "plumbing", "electrical", "appliances",
+  "hvac", "structural", "accessories", "chemicals", "tools", "other",
+] as const;
+export const SUPPLIER_ORDER_STATUSES = [
+  "pending", "confirmed", "processing", "shipped", "delivered", "cancelled",
+] as const;
+export const SUPPLIER_CONNECTION_STATUSES = ["pending", "active", "blocked"] as const;
+
+export const suppliers = pgTable("suppliers", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: uuid("user_id"),
+  companyName: text("company_name").notNull(),
+  contactName: text("contact_name"),
+  email: text("email").notNull(),
+  phone: text("phone"),
+  address: text("address"),
+  city: text("city"),
+  province: text("province"),
+  country: text("country").default("CA"),
+  website: text("website"),
+  description: text("description"),
+  logoUrl: text("logo_url"),
+  verificationStatus: text("verification_status", { enum: SUPPLIER_VERIFICATION_STATUSES }).default("pending"),
+  subscriptionStatus: text("subscription_status", { enum: SUPPLIER_SUBSCRIPTION_STATUSES }).default("trial"),
+  stripeCustomerId: text("stripe_customer_id"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+}, (table) => [
+  index("suppliers_user_idx").on(table.userId),
+  index("suppliers_verification_idx").on(table.verificationStatus),
+  index("suppliers_email_idx").on(table.email),
+]);
+
+export const supplierCatalogItems = pgTable("supplier_catalog_items", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  supplierId: uuid("supplier_id").notNull(),
+  partNumber: text("part_number").notNull(),
+  name: text("name").notNull(),
+  description: text("description"),
+  category: text("category", { enum: SUPPLIER_CATALOG_CATEGORIES }).default("other"),
+  manufacturer: text("manufacturer"),
+  price: decimal("price", { precision: 10, scale: 2 }).notNull(),
+  currency: text("currency").default("CAD"),
+  inStock: boolean("in_stock").default(true),
+  stockQuantity: integer("stock_quantity"),
+  leadTimeDays: integer("lead_time_days"),
+  imageUrl: text("image_url"),
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+}, (table) => [
+  index("catalog_supplier_idx").on(table.supplierId),
+  index("catalog_category_idx").on(table.category),
+  index("catalog_active_idx").on(table.isActive),
+  index("catalog_part_number_idx").on(table.partNumber),
+]);
+
+export const supplierDealerConnections = pgTable("supplier_dealer_connections", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  supplierId: uuid("supplier_id").notNull(),
+  dealershipId: uuid("dealership_id").notNull(),
+  status: text("status", { enum: SUPPLIER_CONNECTION_STATUSES }).default("active"),
+  connectedAt: timestamp("connected_at").defaultNow().notNull(),
+}, (table) => [
+  index("supplier_dealer_conn_supplier_idx").on(table.supplierId),
+  index("supplier_dealer_conn_dealer_idx").on(table.dealershipId),
+]);
+
+export const supplierOrders = pgTable("supplier_orders", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  supplierId: uuid("supplier_id").notNull(),
+  dealershipId: uuid("dealership_id").notNull(),
+  partsOrderId: uuid("parts_order_id"),
+  orderNumber: text("order_number").notNull(),
+  status: text("status", { enum: SUPPLIER_ORDER_STATUSES }).default("pending"),
+  totalAmount: decimal("total_amount", { precision: 10, scale: 2 }).notNull(),
+  currency: text("currency").default("CAD"),
+  shippingAddress: text("shipping_address"),
+  trackingNumber: text("tracking_number"),
+  carrier: text("carrier"),
+  estimatedDelivery: date("estimated_delivery"),
+  confirmedAt: timestamp("confirmed_at"),
+  shippedAt: timestamp("shipped_at"),
+  deliveredAt: timestamp("delivered_at"),
+  notes: text("notes"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+}, (table) => [
+  index("supplier_orders_supplier_idx").on(table.supplierId),
+  index("supplier_orders_dealer_idx").on(table.dealershipId),
+  index("supplier_orders_status_idx").on(table.status),
+  index("supplier_orders_number_idx").on(table.orderNumber),
+]);
+
+export const supplierOrderItems = pgTable("supplier_order_items", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  orderId: uuid("order_id").notNull(),
+  catalogItemId: uuid("catalog_item_id").notNull(),
+  quantity: integer("quantity").notNull(),
+  unitPrice: decimal("unit_price", { precision: 10, scale: 2 }).notNull(),
+  totalPrice: decimal("total_price", { precision: 10, scale: 2 }).notNull(),
+}, (table) => [
+  index("supplier_order_items_order_idx").on(table.orderId),
+]);
+
+// Insert schemas
+export const insertSupplierSchema = createInsertSchema(suppliers).omit({ id: true, createdAt: true, updatedAt: true });
+export const insertSupplierCatalogItemSchema = createInsertSchema(supplierCatalogItems).omit({ id: true, createdAt: true, updatedAt: true });
+export const insertSupplierDealerConnectionSchema = createInsertSchema(supplierDealerConnections).omit({ id: true, connectedAt: true });
+export const insertSupplierOrderSchema = createInsertSchema(supplierOrders).omit({ id: true, createdAt: true, updatedAt: true });
+export const insertSupplierOrderItemSchema = createInsertSchema(supplierOrderItems).omit({ id: true });
+
+// TypeScript types
+export type Supplier = typeof suppliers.$inferSelect;
+export type InsertSupplier = z.infer<typeof insertSupplierSchema>;
+export type SupplierCatalogItem = typeof supplierCatalogItems.$inferSelect;
+export type InsertSupplierCatalogItem = z.infer<typeof insertSupplierCatalogItemSchema>;
+export type SupplierDealerConnection = typeof supplierDealerConnections.$inferSelect;
+export type InsertSupplierDealerConnection = z.infer<typeof insertSupplierDealerConnectionSchema>;
+export type SupplierOrder = typeof supplierOrders.$inferSelect;
+export type InsertSupplierOrder = z.infer<typeof insertSupplierOrderSchema>;
+export type SupplierOrderItem = typeof supplierOrderItems.$inferSelect;
+export type InsertSupplierOrderItem = z.infer<typeof insertSupplierOrderItemSchema>;

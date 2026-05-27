@@ -24,6 +24,7 @@ const PORTAL_TARGETS: Record<string, string> = {
   independent_bidder:   "/marketplace/independent/dashboard",
   marketplace_admin:    "/marketplace/admin/dashboard",
   marketplace_staff:    "/marketplace/staff/dashboard",
+  supplier:             "/supplier/dashboard",
 };
 
 interface RoleCard {
@@ -64,6 +65,14 @@ const SECTIONS: { label: string; color: string; bg: string; roles: RoleCard[] }[
       { role: "financial_manager", urlRole: "dealer_owner",    label: "Financial Manager",  desc: "Financial reporting, invoicing, billing, revenue dashboards" },
       { role: "shop_tech",         urlRole: "technician",      label: "Shop Technician",    desc: "Assigned shop work orders only — no WO creation, no billing, no admin" },
       { role: "on_site_tech",      urlRole: "technician",      label: "On-Site Technician", desc: "Mobile/field work orders, on-site dispatch — no billing, no admin" },
+    ],
+  },
+  {
+    label: "Supplier Portal",
+    color: "#0891b2",
+    bg: "#ecfeff",
+    roles: [
+      { role: "supplier", urlRole: "supplier", label: "Supplier", desc: "Parts supplier — catalog management, incoming orders, connected dealers" },
     ],
   },
   {

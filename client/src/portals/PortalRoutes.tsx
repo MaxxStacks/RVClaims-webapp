@@ -18,6 +18,7 @@ import ConsignorLayout from '@/layouts/ConsignorLayout';
 import IndependentBidderLayout from '@/layouts/IndependentBidderLayout';
 import MarketplaceAdminLayout from '@/layouts/MarketplaceAdminLayout';
 import MarketplaceStaffLayout from '@/layouts/MarketplaceStaffLayout';
+import SupplierLayout from '@/layouts/SupplierLayout';
 
 // ─── Shared pages ──────────────────────────────────────────────────────────
 import Dashboard from '@/pages/Dashboard';
@@ -125,8 +126,19 @@ import RemindersOverview from '@/pages/exclusive/operator-admin/RemindersOvervie
 import LoyaltyStats from '@/pages/exclusive/operator-admin/LoyaltyStats';
 import AISupportStats from '@/pages/exclusive/operator-admin/AISupportStats';
 
+// ─── Exclusive: Supplier ───────────────────────────────────────────────────
+import SupplierDashboard from '@/pages/exclusive/supplier/SupplierDashboard';
+import SupplierOrders from '@/pages/exclusive/supplier/SupplierOrders';
+import SupplierOrderDetail from '@/pages/exclusive/supplier/SupplierOrderDetail';
+import SupplierCatalog from '@/pages/exclusive/supplier/SupplierCatalog';
+import SupplierDealers from '@/pages/exclusive/supplier/SupplierDealers';
+import SupplierPayments from '@/pages/exclusive/supplier/SupplierPayments';
+import SupplierSettings from '@/pages/exclusive/supplier/SupplierSettings';
+import OperatorSuppliers from '@/pages/exclusive/operator-admin/OperatorSuppliers';
+
 // ─── Exclusive: Shared ─────────────────────────────────────────────────────
 import ScanUnit from '@/pages/exclusive/shared/ScanUnit';
+import SupplierBrowse from '@/pages/exclusive/shared/SupplierBrowse';
 import BatchScan from '@/pages/exclusive/shared/BatchScan';
 import PDIChecklist from '@/pages/exclusive/shared/PDIChecklist';
 import PDIDetail from '@/pages/exclusive/shared/PDIDetail';
@@ -333,6 +345,7 @@ export function OperatorAdminPortalSection() {
       <Route path="/operator/admin/reviews">{() => <OperatorAdminLayout><NpsDashboard /></OperatorAdminLayout>}</Route>
       <Route path="/operator/admin/analytics">{() => <OperatorAdminLayout><OperatorAnalytics /></OperatorAdminLayout>}</Route>
       <Route path="/operator/admin/compliance">{() => <OperatorAdminLayout><OperatorCompliance /></OperatorAdminLayout>}</Route>
+      <Route path="/operator/admin/suppliers">{() => <OperatorAdminLayout><OperatorSuppliers /></OperatorAdminLayout>}</Route>
       {/* Default */}
       <Route>{() => <Redirect to="/operator/admin/dashboard" />}</Route>
     </Switch>
@@ -440,6 +453,7 @@ export function DealerOwnerPortalSection() {
       <Route path="/:dealerId/owner/reviews">{() => <DealerOwnerLayout><ReviewsDashboard /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/analytics">{() => <DealerOwnerLayout><DealerAnalytics /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/compliance">{() => <DealerOwnerLayout><ComplianceDashboard /></DealerOwnerLayout>}</Route>
+      <Route path="/:dealerId/owner/suppliers">{() => <DealerOwnerLayout><SupplierBrowse /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/dashboard">{() => <DealerOwnerLayout><Dashboard /></DealerOwnerLayout>}</Route>
       <Route>{() => <DealerFallback role="owner" />}</Route>
     </Switch>
@@ -585,6 +599,7 @@ export function PartsManagerPortalSection() {
       <Route path="/:dealerId/parts-manager/inventory">{() => <PartsManagerLayout><Inventory /></PartsManagerLayout>}</Route>
       <Route path="/:dealerId/parts-manager/claims/:claimId">{() => <PartsManagerLayout><ClaimDetail /></PartsManagerLayout>}</Route>
       <Route path="/:dealerId/parts-manager/claims">{() => <PartsManagerLayout><Claims /></PartsManagerLayout>}</Route>
+      <Route path="/:dealerId/parts-manager/suppliers">{() => <PartsManagerLayout><SupplierBrowse /></PartsManagerLayout>}</Route>
       <Route path="/:dealerId/parts-manager/dashboard">{() => <PartsManagerLayout><Dashboard /></PartsManagerLayout>}</Route>
       <Route>{() => <DealerFallback role="parts-manager" />}</Route>
     </Switch>
@@ -761,6 +776,26 @@ export function MarketplaceStaffPortalSection() {
       <Route path="/marketplace/staff/bids">{() => <MarketplaceStaffLayout><MktTransactions /></MarketplaceStaffLayout>}</Route>
       <Route path="/marketplace/staff/dashboard">{() => <MarketplaceStaffLayout><Dashboard /></MarketplaceStaffLayout>}</Route>
       <Route>{() => <Redirect to="/marketplace/staff/dashboard" />}</Route>
+    </Switch>
+    </ProtectedRoute>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// 17. SUPPLIER — /supplier/*
+// ═══════════════════════════════════════════════════════════════════════════
+export function SupplierPortalSection() {
+  return (
+    <ProtectedRoute allowedRoles={['supplier']}>
+    <Switch>
+      <Route path="/supplier/orders/:orderId">{() => <SupplierLayout><SupplierOrderDetail /></SupplierLayout>}</Route>
+      <Route path="/supplier/orders">{() => <SupplierLayout><SupplierOrders /></SupplierLayout>}</Route>
+      <Route path="/supplier/catalog">{() => <SupplierLayout><SupplierCatalog /></SupplierLayout>}</Route>
+      <Route path="/supplier/dealers">{() => <SupplierLayout><SupplierDealers /></SupplierLayout>}</Route>
+      <Route path="/supplier/payments">{() => <SupplierLayout><SupplierPayments /></SupplierLayout>}</Route>
+      <Route path="/supplier/settings">{() => <SupplierLayout><SupplierSettings /></SupplierLayout>}</Route>
+      <Route path="/supplier/dashboard">{() => <SupplierLayout><SupplierDashboard /></SupplierLayout>}</Route>
+      <Route>{() => <Redirect to="/supplier/dashboard" />}</Route>
     </Switch>
     </ProtectedRoute>
   );

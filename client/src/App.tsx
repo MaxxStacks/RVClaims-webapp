@@ -91,6 +91,7 @@ import {
   IndependentBidderPortalSection,
   MarketplaceAdminPortalSection,
   MarketplaceStaffPortalSection,
+  SupplierPortalSection,
 } from './portals/PortalRoutes';
 const UnitProfilePageOperator = lazy(async () => {
   const { default: Comp } = await import("@/components/units/UnitProfilePage");
@@ -366,6 +367,10 @@ function App() {
               <Route path="/marketplace/admin" component={MarketplaceAdminPortalSection} />
               <Route path="/marketplace/staff/:rest*" component={MarketplaceStaffPortalSection} />
               <Route path="/marketplace/staff" component={MarketplaceStaffPortalSection} />
+
+              {/* Supplier portal */}
+              <Route path="/supplier/:rest*" component={SupplierPortalSection} />
+              <Route path="/supplier" component={SupplierPortalSection} />
 
               {/* Session 3: Dealer role portals — dynamic :dealerId prefix, last in Switch */}
               <Route path="/:dealerId/owner/:rest*" component={DealerOwnerPortalSection} />

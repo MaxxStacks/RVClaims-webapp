@@ -64,6 +64,7 @@ import reviewsRouter from './reviews';
 import analyticsRouter from './analytics';
 import complianceRouter from './compliance';
 import locationsRouter from './locations';
+import suppliersRouter from './suppliers';
 
 // Import existing routes for backward compat
 import { storage } from "../storage";
@@ -165,6 +166,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.use('/api/compliance', complianceRouter);            // /api/compliance/check, /api/compliance/status, /api/compliance/exceptions, /api/compliance/report, /api/compliance/templates, /api/compliance/aggregate
   app.use('/api/dealerships/:id/locations', locationsRouter); // /api/dealerships/:id/locations + settings/multi-location
   app.use('/api/dealerships/:id/settings', locationsRouter);  // /api/dealerships/:id/settings/multi-location
+  app.use('/api/suppliers', suppliersRouter);  // /api/suppliers, /api/suppliers/me, /api/suppliers/catalog, /api/suppliers/orders
+  app.use('/api/supplier-catalog', suppliersRouter);   // alias for catalog browsing
+  app.use('/api/supplier-orders', suppliersRouter);    // alias for order placement
 
   // ==================== EXISTING ROUTES (backward compat) ====================
 

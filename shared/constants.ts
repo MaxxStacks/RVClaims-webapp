@@ -1,10 +1,10 @@
 // shared/constants.ts — Role permissions, sequence generators, platform defaults
 
-export type UserRole = "operator_admin" | "operator_staff" | "dealer_owner" | "dealer_staff" | "technician" | "service_manager" | "shop_manager" | "parts_dept" | "public_bidder" | "consignor" | "client" | "bidder";
+export type UserRole = "operator_admin" | "operator_staff" | "dealer_owner" | "dealer_staff" | "technician" | "service_manager" | "shop_manager" | "parts_dept" | "public_bidder" | "consignor" | "client" | "bidder" | "supplier";
 
 export const OPERATOR_ROLES: UserRole[] = ["operator_admin", "operator_staff"];
 export const DEALER_ROLES: UserRole[] = ["dealer_owner", "dealer_staff", "technician", "service_manager", "shop_manager", "parts_dept", "public_bidder", "consignor"];
-export const ALL_ROLES: UserRole[] = ["operator_admin", "operator_staff", "dealer_owner", "dealer_staff", "technician", "service_manager", "shop_manager", "parts_dept", "public_bidder", "consignor", "client", "bidder"];
+export const ALL_ROLES: UserRole[] = ["operator_admin", "operator_staff", "dealer_owner", "dealer_staff", "technician", "service_manager", "shop_manager", "parts_dept", "public_bidder", "consignor", "client", "bidder", "supplier"];
 
 // Permission matrix — what each role can access
 export const PERMISSIONS: Record<UserRole, {
@@ -189,6 +189,20 @@ export const PERMISSIONS: Record<UserRole, {
     canCreateInvoices: false,
     canViewFinancials: false,
   },
+  supplier: {
+    canAccessOperatorPortal: false,
+    canAccessDealerPortal: false,
+    canAccessClientPortal: false,
+    canAccessBidderPortal: false,
+    canManageBilling: false,
+    canManageStaff: false,
+    canManagePlatformSettings: false,
+    canViewAllDealers: false,
+    canProcessClaims: false,
+    canManageFrcCodes: false,
+    canCreateInvoices: false,
+    canViewFinancials: false,
+  },
 };
 
 // Sequence number generators
@@ -232,6 +246,10 @@ export function generatePlanNumber(): string {
 export function generateOrderNumber(): string {
   const seq = String(Math.floor(Math.random() * 9999) + 1).padStart(4, "0");
   return `PO-${seq}`;
+}
+
+export function generateSupplierOrderNumber(count: number): string {
+  return `SO-${String(count).padStart(5, "0")}`;
 }
 
 // Platform defaults
