@@ -3,7 +3,7 @@
 // Creates the operator admin account and sample dealership for development
 
 import { db } from "./db";
-import { users, dealerships, products, platformSettings, walletFundingTiers } from "@shared/schema";
+import { users, dealerships, products, platformSettings, walletFundingTiers, financingPartners } from "@shared/schema";
 import { hashPassword } from "./lib/auth";
 import { eq } from "drizzle-orm";
 import { seedModules } from "./db/seedModules";
@@ -248,6 +248,24 @@ async function seed() {
 
   // ==================== SERVICE MODULES ====================
   await seedModules();
+
+  // ==================== FINANCING PARTNERS ====================
+  const existingPartners = await db.select().from(financingPartners).limit(1);
+  if (existingPartners.length === 0) {
+    await db.insert(financingPartners).values([
+      // Canadian partners
+      { name: "PayBright",  country: "CA", referralFeePercent: "2.5", minAmount: "500",   maxAmount: "25000", availableTerms: [3, 6, 12, 24] },
+      { name: "Financeit",  country: "CA", referralFeePercent: "3.0", minAmount: "1000",  maxAmount: "50000", availableTerms: [6, 12, 24]    },
+      { name: "iFinance",   country: "CA", referralFeePercent: "2.0", minAmount: "500",   maxAmount: "20000", availableTerms: [3, 6, 12]     },
+      // US partners
+      { name: "Affirm",     country: "US", referralFeePercent: "3.5", minAmount: "500",   maxAmount: "30000", availableTerms: [3, 6, 12, 24] },
+      { name: "Bread",      country: "US", referralFeePercent: "3.0", minAmount: "750",   maxAmount: "25000", availableTerms: [6, 12, 24]    },
+      { name: "Synchrony",  country: "US", referralFeePercent: "2.8", minAmount: "500",   maxAmount: "35000", availableTerms: [3, 6, 12, 24] },
+    ]);
+    console.log("  ✅ Financing partners seeded (6 partners: 3 CA, 3 US)");
+  } else {
+    console.log("  ⏭️  Financing partners already exist");
+  }
 
   // ==================== PDI TEMPLATES ====================
   await seedPDI();

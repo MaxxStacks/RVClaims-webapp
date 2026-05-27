@@ -221,6 +221,7 @@ export default function OperatorAdminLayout({ children }: Props) {
             <Link className={`nav-item ${isActive('warranty-plans') ? 'active' : ''}`} to="warranty-plans"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 12l2 2 4-4"/></svg>{t('nav.warrantyPlans')}</Link>
             <Link className={`nav-item ${isActive('parts') ? 'active' : ''}`} to="parts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>{t('nav.parts')}</Link>
             <Link className={`nav-item ${isActive('marketplace') ? 'active' : ''}`} to="marketplace"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a4 4 0 00-8 0v2"/></svg>{t('nav.marketplace')}</Link>
+            <Link className={`nav-item ${isActive('payment-plans') ? 'active' : ''}`} to="payment-plans"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/><line x1="6" y1="15" x2="10" y2="15"/></svg>{t('paymentPlan.title')}</Link>
           </div>
           <div className="nav-section">
             <div className="nav-label">{t('nav.finance')}</div>

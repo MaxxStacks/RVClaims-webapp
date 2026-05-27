@@ -8,6 +8,7 @@ import PrintHeader from '@/components/PrintHeader';
 import SignatureCapture, { type SignatureData } from '@/components/SignatureCapture';
 import SignatureDisplay from '@/components/SignatureDisplay';
 import { useSignatures, useSaveSignature } from '@/hooks/useSignatures';
+import PaymentPlanModal from '@/components/PaymentPlanModal';
 
 const STATUS_LABELS: Record<string, string> = {
   unassigned: 'Unassigned', assigned: 'Assigned', en_route: 'En Route',
@@ -73,6 +74,11 @@ export default function WorkOrderDetail() {
   const [timeHours, setTimeHours] = useState('');
   const [timeLogging, setTimeLogging] = useState(false);
   const [msg, setMsg] = useState('');
+  const [paymentPlanOpen, setPaymentPlanOpen] = useState(false);
+
+  const PAYMENT_PLAN_THRESHOLD = (() => {
+    try { return parseFloat(localStorage.getItem(`ds360-payment-plan-threshold-${user?.dealershipId}`) || '500') || 500; } catch { return 500; }
+  })();
 
   // Signatures
   const { data: woSignatures = [] } = useSignatures('work_order', workOrderId ?? undefined);
@@ -196,6 +202,8 @@ export default function WorkOrderDetail() {
 
   const statusInfo = STATUS_LABELS[wo.status] || wo.status || '—';
   const totalLabor = labor.reduce((sum, l) => sum + parseFloat(l.hours || '0'), 0);
+  const canOfferPaymentPlan = role === 'dealer_owner' &&
+    parseFloat(wo.estimatedTotal || wo.total || '0') >= PAYMENT_PLAN_THRESHOLD;
 
   return (
     <div className="page active">
@@ -231,6 +239,14 @@ export default function WorkOrderDetail() {
             <BarcodeDisplay entityType="workOrder" entityId={wo.id} size="sm" />
             <QRCodeDisplay entityType="workOrder" entityId={wo.id} size={56} />
           </div>
+        )}
+        {canOfferPaymentPlan && (
+          <button
+            style={{ background: '#0cb22c', color: '#fff', border: 'none', borderRadius: 6, cursor: 'pointer', padding: '6px 12px', fontSize: 12, fontWeight: 600, marginLeft: 8, flexShrink: 0 }}
+            onClick={() => setPaymentPlanOpen(true)}
+          >
+            Offer Payment Plan
+          </button>
         )}
       </div>
 
@@ -464,6 +480,16 @@ export default function WorkOrderDetail() {
           <div style={{ fontSize: '9pt', color: '#555', marginTop: 6 }}>Name / Date</div>
         </div>
       </div>
+
+      <PaymentPlanModal
+        isOpen={paymentPlanOpen}
+        onClose={() => setPaymentPlanOpen(false)}
+        onSuccess={() => showMsg('Application submitted. The financing partner will review within 24 hours.')}
+        serviceAmount={parseFloat(wo?.estimatedTotal || wo?.total || '0')}
+        serviceDescription={`Work Order ${wo?.workOrderNumber || wo?.id?.slice(0, 8)}`}
+        workOrderId={wo?.id}
+        unitId={wo?.unitId}
+      />
     </div>
   );
 }

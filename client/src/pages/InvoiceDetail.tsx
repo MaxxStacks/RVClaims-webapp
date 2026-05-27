@@ -8,6 +8,7 @@ import PrintHeader from '@/components/PrintHeader';
 import SignatureCapture, { type SignatureData } from '@/components/SignatureCapture';
 import SignatureDisplay from '@/components/SignatureDisplay';
 import { useSignatures, useSaveSignature } from '@/hooks/useSignatures';
+import PaymentPlanModal from '@/components/PaymentPlanModal';
 
 interface InvoiceLineItem {
   id: string;
@@ -64,6 +65,14 @@ export default function InvoiceDetail() {
   const [isLoading, setIsLoading] = useState(true);
   const [dataError, setDataError] = useState<string | null>(null);
   const [actionLoading, setActionLoading] = useState(false);
+  const [paymentPlanOpen, setPaymentPlanOpen] = useState(false);
+
+  // Payment plan threshold (default $500, can be customized per dealer)
+  const PAYMENT_PLAN_THRESHOLD = (() => {
+    try { return parseFloat(localStorage.getItem(`ds360-payment-plan-threshold-${user?.dealershipId}`) || '500') || 500; } catch { return 500; }
+  })();
+  const canOfferPaymentPlan = (isDealerOwner || isFinancialManager) &&
+    invoice && parseFloat(invoice.total || '0') >= PAYMENT_PLAN_THRESHOLD;
 
   // Signatures
   const { data: invoiceSignatures = [] } = useSignatures('invoice', invoice?.id);
@@ -280,6 +289,17 @@ export default function InvoiceDetail() {
             Pay Now
           </button>
         )}
+        {/* Offer Payment Plan button — visible to dealer owner / financial manager when invoice meets threshold */}
+        {canOfferPaymentPlan && (
+          <button
+            className="btn btn-sm"
+            onClick={() => setPaymentPlanOpen(true)}
+            style={{ background: '#0cb22c', color: '#fff', border: 'none', borderRadius: 6, cursor: 'pointer', padding: '6px 12px', fontSize: 12, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 5 }}
+          >
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+            Offer Payment Plan
+          </button>
+        )}
         <PrintButton title={`Invoice — ${invoice.invoiceNumber || invoice.id?.slice(0, 8)}`} />
         {/* Barcode widget */}
         {invoice.id && (
@@ -461,6 +481,17 @@ export default function InvoiceDetail() {
           </div>
         </div>
       </div>
+
+      {/* Payment Plan Modal */}
+      <PaymentPlanModal
+        isOpen={paymentPlanOpen}
+        onClose={() => setPaymentPlanOpen(false)}
+        onSuccess={() => showToast('Application submitted. The financing partner will review within 24 hours.')}
+        serviceAmount={total}
+        currency={(invoice.currency as 'CAD' | 'USD') || 'CAD'}
+        serviceDescription={`Invoice ${invoice.invoiceNumber}`}
+        invoiceId={invoice.id}
+      />
     </div>
   );
 }

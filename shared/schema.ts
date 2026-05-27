@@ -865,6 +865,83 @@ export type PlatformSetting = typeof platformSettings.$inferSelect;
 export type ModuleCatalog = typeof moduleCatalog.$inferSelect;
 export type DealershipModule = typeof dealershipModules.$inferSelect;
 
+// ==================== 29. FINANCING PARTNERS (Service Payment Plans) ====================
+
+export const FINANCING_PARTNER_COUNTRIES = ['CA', 'US', 'BOTH'] as const;
+export const SERVICE_PAYMENT_PLAN_STATUSES = [
+  'draft', 'submitted', 'approved', 'declined', 'active', 'completed', 'cancelled',
+] as const;
+export const PAYMENT_PLAN_TERMS = [3, 6, 12, 24] as const;
+export const INCOME_RANGES = [
+  'under_30k', '30k_50k', '50k_75k', '75k_100k', 'over_100k',
+] as const;
+
+export const financingPartners = pgTable("financing_partners", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: text("name").notNull(),
+  country: text("country", { enum: FINANCING_PARTNER_COUNTRIES }).notNull().default('BOTH'),
+  apiEndpoint: text("api_endpoint"),
+  isActive: boolean("is_active").default(true).notNull(),
+  referralFeePercent: decimal("referral_fee_percent", { precision: 5, scale: 2 }).default("0"),
+  minAmount: decimal("min_amount", { precision: 10, scale: 2 }).default("500"),
+  maxAmount: decimal("max_amount", { precision: 10, scale: 2 }).default("25000"),
+  availableTerms: jsonb("available_terms").$type<number[]>().default(sql`'[3,6,12,24]'::jsonb`),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+}, (table) => [
+  index("financing_partners_country_idx").on(table.country),
+  index("financing_partners_active_idx").on(table.isActive),
+]);
+
+// ==================== 30. SERVICE PAYMENT PLANS ====================
+
+export const servicePaymentPlans = pgTable("service_payment_plans", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  dealershipId: uuid("dealership_id").notNull(),
+  customerId: uuid("customer_id"),
+  unitId: uuid("unit_id"),
+  invoiceId: uuid("invoice_id"),
+  workOrderId: uuid("work_order_id"),
+  financingPartnerId: uuid("financing_partner_id"),
+  amount: decimal("amount", { precision: 10, scale: 2 }).notNull(),
+  currency: text("currency").notNull().default("CAD"),
+  term: integer("term").notNull().default(12),
+  monthlyPayment: decimal("monthly_payment", { precision: 10, scale: 2 }),
+  interestRate: decimal("interest_rate", { precision: 5, scale: 2 }),
+  status: text("status", { enum: SERVICE_PAYMENT_PLAN_STATUSES }).default("draft").notNull(),
+  // Customer info snapshot
+  customerName: text("customer_name"),
+  customerEmail: text("customer_email"),
+  incomeRange: text("income_range", { enum: INCOME_RANGES }),
+  consentGiven: boolean("consent_given").default(false),
+  // Service description
+  serviceDescription: text("service_description"),
+  // Partner integration
+  applicationData: jsonb("application_data").default(sql`'{}'::jsonb`),
+  approvalData: jsonb("approval_data"),
+  partnerApplicationId: text("partner_application_id"),
+  // DS360 revenue
+  referralFee: decimal("referral_fee", { precision: 10, scale: 2 }),
+  // Timestamps
+  submittedAt: timestamp("submitted_at"),
+  approvedAt: timestamp("approved_at"),
+  completedAt: timestamp("completed_at"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+}, (table) => [
+  index("spp_dealership_idx").on(table.dealershipId),
+  index("spp_customer_idx").on(table.customerId),
+  index("spp_status_idx").on(table.status),
+]);
+
+export const insertFinancingPartnerSchema = createInsertSchema(financingPartners).omit({ id: true, createdAt: true, updatedAt: true });
+export const insertServicePaymentPlanSchema = createInsertSchema(servicePaymentPlans).omit({ id: true, createdAt: true, updatedAt: true });
+
+export type FinancingPartner = typeof financingPartners.$inferSelect;
+export type InsertFinancingPartner = z.infer<typeof insertFinancingPartnerSchema>;
+export type ServicePaymentPlan = typeof servicePaymentPlans.$inferSelect;
+export type InsertServicePaymentPlan = z.infer<typeof insertServicePaymentPlanSchema>;
+
 // Backward compat with existing codebase
 export const contacts = pgTable("contacts", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),

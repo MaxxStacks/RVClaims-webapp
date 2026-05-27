@@ -119,6 +119,7 @@ import ModuleManagement from '@/pages/exclusive/operator-admin/ModuleManagement'
 import WalletManagement from '@/pages/exclusive/operator-admin/WalletManagement';
 import ArrivalsQueue from '@/pages/exclusive/operator-admin/ArrivalsQueue';
 import KnowledgeBaseManagement from '@/pages/exclusive/operator-admin/KnowledgeBaseManagement';
+import PaymentPlanManagement from '@/pages/exclusive/operator-admin/PaymentPlanManagement';
 
 // ─── Exclusive: Shared ─────────────────────────────────────────────────────
 import ScanUnit from '@/pages/exclusive/shared/ScanUnit';
@@ -170,6 +171,8 @@ import Inventory from '@/pages/exclusive/parts-manager/Inventory';
 
 // ─── Exclusive: Financial Manager ─────────────────────────────────────────
 import RevenueDashboard from '@/pages/exclusive/financial-manager/RevenueDashboard';
+import PaymentPlans from '@/pages/exclusive/dealer-owner/PaymentPlans';
+import MyPaymentPlans from '@/pages/exclusive/client/MyPaymentPlans';
 
 // ─── Exclusive: Public Bidder ──────────────────────────────────────────────
 import PB_Profile from '@/pages/exclusive/public-bidder/Profile';
@@ -304,6 +307,7 @@ export function OperatorAdminPortalSection() {
       <Route path="/operator/admin/wallets">{() => <OperatorAdminLayout><WalletManagement /></OperatorAdminLayout>}</Route>
       <Route path="/operator/admin/arrivals">{() => <OperatorAdminLayout><ArrivalsQueue /></OperatorAdminLayout>}</Route>
       <Route path="/operator/admin/knowledge-base">{() => <OperatorAdminLayout><KnowledgeBaseManagement /></OperatorAdminLayout>}</Route>
+      <Route path="/operator/admin/payment-plans">{() => <OperatorAdminLayout><PaymentPlanManagement /></OperatorAdminLayout>}</Route>
       {/* Default */}
       <Route>{() => <Redirect to="/operator/admin/dashboard" />}</Route>
     </Switch>
@@ -402,6 +406,7 @@ export function DealerOwnerPortalSection() {
       <Route path="/:dealerId/owner/modules">{() => <DealerOwnerLayout><ModuleCatalog /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/wallet">{() => <DealerOwnerLayout><WalletDashboard /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/knowledge-base">{() => <DealerOwnerLayout><KnowledgeBaseBrowse /></DealerOwnerLayout>}</Route>
+      <Route path="/:dealerId/owner/payment-plans">{() => <DealerOwnerLayout><PaymentPlans /></DealerOwnerLayout>}</Route>
       <Route path="/:dealerId/owner/dashboard">{() => <DealerOwnerLayout><Dashboard /></DealerOwnerLayout>}</Route>
       <Route>{() => <DealerFallback role="owner" />}</Route>
     </Switch>
@@ -474,6 +479,7 @@ export function ClientPortalSection() {
       <Route path="/:dealerId/client/notifications">{() => <ClientLayout><Notifications /></ClientLayout>}</Route>
       <Route path="/:dealerId/client/pdi/:pdiId">{() => <ClientLayout><ClientPDIView /></ClientLayout>}</Route>
       <Route path="/:dealerId/client/knowledge-base">{() => <ClientLayout><ClientKnowledgeBase /></ClientLayout>}</Route>
+      <Route path="/:dealerId/client/payment-plans">{() => <ClientLayout><MyPaymentPlans /></ClientLayout>}</Route>
       <Route path="/:dealerId/client/settings">{() => <ClientLayout><Settings /></ClientLayout>}</Route>
       <Route path="/:dealerId/client/dashboard">{() => <ClientLayout><Dashboard /></ClientLayout>}</Route>
       <Route>{() => <DealerFallback role="client" />}</Route>
