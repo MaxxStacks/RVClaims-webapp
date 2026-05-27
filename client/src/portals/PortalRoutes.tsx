@@ -154,6 +154,8 @@ import QuickChat from '@/pages/exclusive/client/QuickChat';
 import Roadside from '@/pages/exclusive/client/Roadside';
 import CL_Messages from '@/pages/exclusive/client/Messages';
 import DealJacketView from '@/pages/exclusive/client/DealJacketView';
+import ClientPDIView from '@/pages/exclusive/client/PDIView';
+import ClientKnowledgeBase from '@/pages/exclusive/client/KnowledgeBase';
 
 // ─── Exclusive: Service Manager ────────────────────────────────────────────
 import Scheduling from '@/pages/exclusive/service-manager/Scheduling';
@@ -469,6 +471,9 @@ export function ClientPortalSection() {
       <Route path="/:dealerId/client/quick-chat">{() => <ClientLayout><QuickChat /></ClientLayout>}</Route>
       <Route path="/:dealerId/client/roadside">{() => <ClientLayout><Roadside /></ClientLayout>}</Route>
       <Route path="/:dealerId/client/messages">{() => <ClientLayout><CL_Messages /></ClientLayout>}</Route>
+      <Route path="/:dealerId/client/notifications">{() => <ClientLayout><Notifications /></ClientLayout>}</Route>
+      <Route path="/:dealerId/client/pdi/:pdiId">{() => <ClientLayout><ClientPDIView /></ClientLayout>}</Route>
+      <Route path="/:dealerId/client/knowledge-base">{() => <ClientLayout><ClientKnowledgeBase /></ClientLayout>}</Route>
       <Route path="/:dealerId/client/settings">{() => <ClientLayout><Settings /></ClientLayout>}</Route>
       <Route path="/:dealerId/client/dashboard">{() => <ClientLayout><Dashboard /></ClientLayout>}</Route>
       <Route>{() => <DealerFallback role="client" />}</Route>

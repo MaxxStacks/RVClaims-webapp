@@ -722,6 +722,7 @@ export const portalTranslations = {
       filterAll: "All",
       filterComplete: "Complete",
       filterIncomplete: "Incomplete",
+      viewDocuments: "View Documents",
     },
 
     kb: {
@@ -1506,6 +1507,7 @@ export const portalTranslations = {
       filterAll: "Tous",
       filterComplete: "Complets",
       filterIncomplete: "Incomplets",
+      viewDocuments: "Voir les documents",
     },
 
     kb: {

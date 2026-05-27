@@ -8,12 +8,49 @@ import { MobileBottomNav } from '@/components/MobileBottomNav';
 
 interface Props { children?: React.ReactNode; }
 
+// Push notification permission prompt — respects user preference, re-asks at most monthly
+function usePushPermissionPrompt() {
+  const [showPrompt, setShowPrompt] = useState(false);
+
+  useEffect(() => {
+    // Only prompt on web (not needed for Capacitor which handles it separately)
+    if (!('Notification' in window)) return;
+    if (Notification.permission === 'granted' || Notification.permission === 'denied') return;
+
+    const STORAGE_KEY = 'ds360-push-prompt-last';
+    const ONE_MONTH_MS = 30 * 24 * 60 * 60 * 1000;
+    const lastAsked = localStorage.getItem(STORAGE_KEY);
+
+    if (!lastAsked || Date.now() - parseInt(lastAsked, 10) > ONE_MONTH_MS) {
+      // Delay so the user has a moment to orient before seeing the prompt
+      const timer = setTimeout(() => setShowPrompt(true), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
+  const handleAllow = async () => {
+    localStorage.setItem('ds360-push-prompt-last', String(Date.now()));
+    setShowPrompt(false);
+    if ('Notification' in window) {
+      await Notification.requestPermission();
+    }
+  };
+
+  const handleDismiss = () => {
+    localStorage.setItem('ds360-push-prompt-last', String(Date.now()));
+    setShowPrompt(false);
+  };
+
+  return { showPrompt, handleAllow, handleDismiss };
+}
+
 export default function ClientLayout({ children }: Props) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [theme, setTheme] = useState(() => localStorage.getItem('ds360-theme') || '');
   const { language: lang, setLanguage, t } = useLanguage();
   const [location, setLocation] = useLocation();
   const { user, logout } = useAuth();
+  const { showPrompt, handleAllow, handleDismiss } = usePushPermissionPrompt();
 
   useEffect(() => {
     if (theme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
@@ -53,6 +90,7 @@ export default function ClientLayout({ children }: Props) {
           </div>
           <div className="nav-section">
             <div className="nav-label">{t('nav.services')}</div>
+            <Link className={`nav-item ${isActive('knowledge-base') ? 'active' : ''}`} to="knowledge-base"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>{t('kb.resources')}</Link>
             <Link className={`nav-item ${isActive('fi-products') ? 'active' : ''}`} to="fi-products"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>{t('nav.fiProducts')}</Link>
             <Link className={`nav-item ${isActive('fi-offers') ? 'active' : ''}`} to="fi-offers"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>{t('nav.fiOffers')}</Link>
             <Link className={`nav-item ${isActive('my-financing') ? 'active' : ''}`} to="my-financing"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>{t('nav.myFinancing')}</Link>
@@ -63,6 +101,7 @@ export default function ClientLayout({ children }: Props) {
           </div>
           <div className="nav-section">
             <div className="nav-label">{t('nav.account')}</div>
+            <Link className={`nav-item ${isActive('notifications') ? 'active' : ''}`} to="notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>{t('nav.notifications')}</Link>
             <Link className={`nav-item ${isActive('tickets') ? 'active' : ''}`} to="tickets"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>{t('nav.supportTickets')}</Link>
             <Link className={`nav-item ${isActive('quick-chat') ? 'active' : ''}`} to="quick-chat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>{t('nav.quickChat')}</Link>
             <Link className={`nav-item ${isActive('messages') ? 'active' : ''}`} to="messages"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>{t('nav.messages')}</Link>
@@ -83,6 +122,44 @@ export default function ClientLayout({ children }: Props) {
           </button>
         </div>
       </nav>
+      {/* Push notification permission prompt */}
+      {showPrompt && (
+        <div style={{
+          position: 'fixed', bottom: 80, left: '50%', transform: 'translateX(-50%)',
+          background: '#033280', color: '#fff', borderRadius: 12, padding: '16px 20px',
+          boxShadow: '0 8px 32px rgba(3,50,128,0.35)', zIndex: 9998,
+          width: 'calc(100% - 32px)', maxWidth: 380,
+          display: 'flex', gap: 14, alignItems: 'flex-start',
+        }}>
+          <div style={{width: 36, height: 36, background: 'rgba(255,255,255,0.15)', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0}}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+              <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+              <path d="M13.73 21a2 2 0 01-3.46 0"/>
+            </svg>
+          </div>
+          <div style={{flex: 1}}>
+            <div style={{fontSize: 14, fontWeight: 600, marginBottom: 4}}>Stay updated</div>
+            <div style={{fontSize: 12, opacity: 0.85, lineHeight: 1.5, marginBottom: 12}}>
+              Get notified when your claims are updated, tickets are replied to, or warranty coverage changes.
+            </div>
+            <div style={{display: 'flex', gap: 8}}>
+              <button
+                onClick={handleAllow}
+                style={{flex: 1, padding: '8px 12px', background: '#0cb22c', color: '#fff', border: 'none', borderRadius: 6, fontSize: 12, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit'}}
+              >
+                Allow Notifications
+              </button>
+              <button
+                onClick={handleDismiss}
+                style={{padding: '8px 12px', background: 'rgba(255,255,255,0.1)', color: '#fff', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 6, fontSize: 12, fontWeight: 500, cursor: 'pointer', fontFamily: 'inherit'}}
+              >
+                Not Now
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className={`main${sidebarCollapsed ? ' collapsed-main' : ''}`}>
         <header className="header">
           <div className="header-left">

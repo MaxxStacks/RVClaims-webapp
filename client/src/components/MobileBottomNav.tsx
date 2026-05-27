@@ -247,6 +247,40 @@ export function MobileBottomNav({ portalType, activePage, onNavigate, parents = 
     return () => window.removeEventListener('click', close);
   }, [moreOpen]);
 
+  // Build client-specific more items
+  const clientMoreItems = portalType === 'client' ? [
+    {
+      icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4a2 2 0 012 2v6a2 2 0 01-2 2h-4"/><circle cx="5.5" cy="18" r="2.5"/><circle cx="18.5" cy="18" r="2.5"/></svg>,
+      label: 'My Unit',
+      sub: 'Vehicle details, VIN, specs',
+      id: 'my-unit',
+    },
+    {
+      icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>,
+      label: 'Documents',
+      sub: 'Warranty certs, contracts, PDI',
+      id: 'documents',
+    },
+    {
+      icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>,
+      label: 'Deal Jacket',
+      sub: 'Sale documents, warranty, PDI',
+      id: 'documents',
+    },
+    {
+      icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>,
+      label: 'Quick Chat',
+      sub: 'Message your dealer',
+      id: 'quick-chat',
+    },
+    {
+      icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>,
+      label: 'Report an Issue',
+      sub: 'Submit warranty issue with photos',
+      id: 'report-issue',
+    },
+  ] : [];
+
   return (
     <>
       {/* More sheet backdrop */}
@@ -254,17 +288,29 @@ export function MobileBottomNav({ portalType, activePage, onNavigate, parents = 
         <div
           onClick={(e) => e.stopPropagation()}
           style={{
-            position: 'fixed', bottom: 60, left: 0, right: 0, zIndex: 9999,
+            position: 'fixed', bottom: 64, left: 0, right: 0, zIndex: 9999,
             display: 'flex', justifyContent: 'center',
           }}
         >
           <div style={{
-            background: 'white', borderRadius: 12, boxShadow: '0 -4px 24px rgba(0,0,0,0.12)',
-            border: '1px solid #e8e8e8', overflow: 'hidden', width: '90%', maxWidth: 360,
+            background: 'var(--bg-card, white)', borderRadius: 12, boxShadow: '0 -4px 24px rgba(0,0,0,0.12)',
+            border: '1px solid var(--border, #e8e8e8)', overflow: 'hidden', width: '90%', maxWidth: 360,
+            maxHeight: '70vh', overflowY: 'auto',
           }}>
             <div style={{ padding: '10px 14px 4px', fontSize: 11, fontWeight: 700, color: '#aaa', textTransform: 'uppercase', letterSpacing: '0.06em', fontFamily: 'Inter, system-ui, sans-serif' }}>
               More
             </div>
+            {/* Client-specific extra nav items */}
+            {clientMoreItems.map((item) => (
+              <MoreMenuItem
+                key={item.id + item.label}
+                icon={item.icon}
+                label={item.label}
+                sub={item.sub}
+                onClick={() => { setMoreOpen(false); onNavigate(item.id); }}
+              />
+            ))}
+            {clientMoreItems.length > 0 && <div style={{ height: 1, background: '#f0f0f0', margin: '0 14px' }} />}
             <MoreMenuItem
               icon={<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>}
               label="Settings"

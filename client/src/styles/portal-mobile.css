@@ -202,7 +202,19 @@ body {
   [style*="grid-template-columns: 2fr 1fr"],
   [style*="gridTemplateColumns: '2fr 1fr'"],
   [style*="grid-template-columns: 1fr 1fr"],
-  [style*="gridTemplateColumns: '1fr 1fr'"] {
+  [style*="gridTemplateColumns: '1fr 1fr'"],
+  [style*="grid-template-columns: 260px 1fr"],
+  [style*="gridTemplateColumns: '260px 1fr'"],
+  [style*="grid-template-columns: repeat(3,1fr)"],
+  [style*="gridTemplateColumns: 'repeat(3,1fr)'"],
+  [style*="grid-template-columns: repeat(2, 1fr)"],
+  [style*="gridTemplateColumns: 'repeat(2, 1fr)'"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* === Protection plans: stack on mobile === */
+  [style*="repeat(3,1fr)"],
+  [style*="repeat(3, 1fr)"] {
     grid-template-columns: 1fr !important;
   }
 

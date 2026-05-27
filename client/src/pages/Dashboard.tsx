@@ -16,6 +16,7 @@ function ClientDashboard() {
   const [activeClaims, setActiveClaims] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [kbResources, setKbResources] = useState<any[]>([]);
+  const [dealJacket, setDealJacket] = useState<any>(null);
 
   useEffect(() => {
     const load = async () => {
@@ -29,6 +30,9 @@ function ClientDashboard() {
             if (unit?.id) {
               apiFetch<any>(`/api/units/${unit.id}/knowledge`)
                 .then(kr => { setKbResources(Array.isArray(kr.entries) ? kr.entries.slice(0, 4) : []); })
+                .catch(() => {});
+              apiFetch<any>(`/api/deal-jackets/unit/${unit.id}`)
+                .then(dj => { setDealJacket(dj.jacket || dj || null); })
                 .catch(() => {});
             }
           }).catch(() => {}),
@@ -157,11 +161,11 @@ function ClientDashboard() {
           </svg>
           <span className="qb-t">{t('dashboard.contactDealer')}</span>
         </div>
-        <div className="qb" onClick={() => navigate('warranty')}>
+        <div className="qb" onClick={() => navigate('documents')}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/>
           </svg>
-          <span className="qb-t">{t('dashboard.viewWarranty')}</span>
+          <span className="qb-t">{t('nav.documents')}</span>
         </div>
         <div className="qb" onClick={() => navigate('tickets/new')}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -173,6 +177,36 @@ function ClientDashboard() {
           <span className="qb-t">{t('dashboard.newTicket')}</span>
         </div>
       </div>
+
+      {/* Deal Jacket card */}
+      {dealJacket && (
+        <div className="pn" style={{marginBottom: 20}}>
+          <div className="pn-h">
+            <span className="pn-t" style={{display: 'flex', alignItems: 'center', gap: 6}}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+              {t('dealJacket.dealJacket')}
+            </span>
+            <span className="pn-a" onClick={() => navigate(`jacket/${dealJacket.id}`)}>{t('common.view')}</span>
+          </div>
+          <div style={{padding: '12px 20px', display: 'flex', alignItems: 'center', gap: 16}}>
+            <div style={{flex: 1}}>
+              <div style={{fontSize: 12, color: '#888', marginBottom: 4}}>
+                {clientUnit ? `${clientUnit.year} ${clientUnit.manufacturer} ${clientUnit.model}` : 'Your RV'}
+              </div>
+              <span className={`bg ${dealJacket.status === 'complete' ? 'active' : 'pending'}`} style={{fontSize: 11}}>
+                {dealJacket.status === 'complete' ? t('dealJacket.jacketComplete') : t('dealJacket.jacketIncomplete')}
+              </span>
+            </div>
+            <button
+              className="btn btn-o btn-sm"
+              onClick={() => navigate(`jacket/${dealJacket.id}`)}
+              style={{flexShrink: 0}}
+            >
+              {t('dealJacket.viewDocuments')}
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* KB Resources card */}
       {kbResources.length > 0 && (
