@@ -39,9 +39,9 @@ export default function DealerDashboard({ onNavigate }: Props) {
 
   useEffect(() => {
     Promise.all([
-      apiFetch<any[]>("/api/v6/claims").catch(() => []),
-      apiFetch<any[]>("/api/v6/units").catch(() => []),
-      apiFetch<any[]>("/api/v6/notifications").catch(() => []),
+      apiFetch<any[]>("/api/claims").catch(() => []),
+      apiFetch<any[]>("/api/units").catch(() => []),
+      apiFetch<any[]>("/api/notification-deliveries").catch(() => []),
     ]).then(([c, u, n]) => {
       setClaims(Array.isArray(c) ? c : []);
       setUnitCount(Array.isArray(u) ? u.length : 0);
@@ -132,7 +132,7 @@ export default function DealerDashboard({ onNavigate }: Props) {
             <div style={{ fontSize: 14, fontWeight: 600, color: "#111", marginBottom: 12 }}>Quick Actions</div>
             <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
               <ActionBtn label="+ New Claim" onClick={() => onNavigate("dealer.ops.inventory")} primary />
-              <ActionBtn label="Add Unit" onClick={() => navigate("/dealer-v6/units/new")} />
+              <ActionBtn label="Add Unit" onClick={() => navigate("/dev-dealer-001/owner/units/new")} />
               <ActionBtn label="View All Claims" onClick={() => onNavigate("dealer.ops.claims")} />
               <ActionBtn label="View Inventory" onClick={() => onNavigate("dealer.ops.inventory")} />
             </div>

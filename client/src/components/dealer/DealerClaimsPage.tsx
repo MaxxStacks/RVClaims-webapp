@@ -21,8 +21,8 @@ export default function DealerClaimsPage() {
     setLoading(true);
     try {
       const [c, u] = await Promise.all([
-        apiFetch<any[]>("/api/v6/claims"),
-        apiFetch<any[]>("/api/v6/units"),
+        apiFetch<any[]>("/api/claims"),
+        apiFetch<any[]>("/api/units"),
       ]);
       setClaims(c);
       setUnits(u);
@@ -69,10 +69,10 @@ export default function DealerClaimsPage() {
           <div style={{maxHeight: 240, overflowY: "auto", display: "grid", gap: 6}}>
             {units.length === 0 ? (
               <div style={{padding: 20, textAlign: "center", color: "#888", fontSize: 12}}>
-                No units in inventory. <a href="/dealer-v6/units/new" style={{color: "#033280"}}>Add one</a>
+                No units in inventory. <a href="/dev-dealer-001/owner/units/new" style={{color: "#033280"}}>Add one</a>
               </div>
             ) : units.map(u => (
-              <div key={u.id} onClick={() => navigate(`/dealer-v6/units/${u.id}/claims/new`)}
+              <div key={u.id} onClick={() => navigate(`/dev-dealer-001/owner/units/${u.id}/claims/new`)}
                 style={{padding: 10, border: "1px solid #e5e7eb", borderRadius: 8, cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", background: "white"}}
                 onMouseEnter={e => e.currentTarget.style.background = "#f7f7f7"}
                 onMouseLeave={e => e.currentTarget.style.background = "white"}>
@@ -112,7 +112,7 @@ export default function DealerClaimsPage() {
           </thead>
           <tbody>
             {filtered.map(c => (
-              <tr key={c.id} onClick={() => c.unitId && navigate(`/dealer-v6/units/${c.unitId}`)}
+              <tr key={c.id} onClick={() => c.unitId && navigate(`/dev-dealer-001/owner/units/${c.unitId}`)}
                 style={{borderBottom: "1px solid #f5f5f5", fontSize: 13, cursor: c.unitId ? "pointer" : "default"}}
                 onMouseEnter={e => { if (c.unitId) e.currentTarget.style.background = "#f7f7f7"; }}
                 onMouseLeave={e => e.currentTarget.style.background = "white"}>

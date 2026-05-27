@@ -36,7 +36,7 @@ export default function PhotoUploader({ scope, scopeId, photoType = "general", o
       const headers: Record<string, string> = { "Content-Type": "application/json" };
       if (token) headers["Authorization"] = `Bearer ${token}`;
 
-      const presignRes = await fetch("/api/v6/uploads/presign", {
+      const presignRes = await fetch("/api/uploads/presign", {
         method: "POST",
         headers,
         body: JSON.stringify({ scope, scopeId, filename: file.name, contentType: file.type, photoType }),
@@ -59,7 +59,7 @@ export default function PhotoUploader({ scope, scopeId, photoType = "general", o
         xhr.send(file);
       });
 
-      const confirmRes = await fetch(`/api/v6/uploads/confirm/${photoId}`, {
+      const confirmRes = await fetch(`/api/uploads/confirm/${photoId}`, {
         method: "POST", headers, credentials: "include",
       });
       if (!confirmRes.ok) throw new Error(`Confirm failed: ${confirmRes.status}`);

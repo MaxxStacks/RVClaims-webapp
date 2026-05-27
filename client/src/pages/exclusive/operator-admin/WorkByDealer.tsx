@@ -39,7 +39,7 @@ export default function WorkByDealer() {
 
   // Load dealer list
   useEffect(() => {
-    apiFetch<any>('/api/v6/dealerships')
+    apiFetch<any>('/api/dealerships')
       .then(d => {
         const rows = Array.isArray(d) ? d : d.dealerships || [];
         setDealers(rows);
@@ -54,8 +54,8 @@ export default function WorkByDealer() {
     setLoadingData(true);
     setError('');
     Promise.all([
-      apiFetch<any>(`/api/v6/dealerships/${selectedId}`).catch(() => null),
-      apiFetch<any[]>(`/api/v6/claims?dealershipId=${selectedId}&limit=50`).catch(() => []),
+      apiFetch<any>(`/api/dealerships/${selectedId}`).catch(() => null),
+      apiFetch<any[]>(`/api/claims?dealershipId=${selectedId}&limit=50`).catch(() => []),
       apiFetch<any[]>(`/api/work-orders?dealershipId=${selectedId}`).catch(() => []),
     ]).then(([dl, cl, wo]) => {
       setDealer((dl as any)?.dealership || dl || null);

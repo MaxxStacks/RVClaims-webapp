@@ -58,7 +58,7 @@ export default function ClientKnowledgeBase() {
       setDataError(null);
       try {
         // Get the customer's unit first
-        const unitData = await apiFetch<any>('/api/v6/units').catch(() => null);
+        const unitData = await apiFetch<any>('/api/units').catch(() => null);
         const units = unitData ? (Array.isArray(unitData) ? unitData : unitData.units || []) : [];
         const myUnit = units[0] || null;
         setUnit(myUnit);

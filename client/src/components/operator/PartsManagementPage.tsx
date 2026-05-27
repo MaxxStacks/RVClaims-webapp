@@ -23,14 +23,14 @@ export default function PartsManagementPage() {
   async function refresh() {
     setLoading(true);
     try {
-      const list = await apiFetch<any[]>("/api/v6/parts-orders");
+      const list = await apiFetch<any[]>("/api/parts-orders");
       setOrders(list);
     } finally { setLoading(false); }
   }
   useEffect(() => { refresh(); }, []);
 
   async function transition(id: string, toStatus: string, extras: any = {}) {
-    await apiFetch(`/api/v6/parts-orders/${id}/transition`, {
+    await apiFetch(`/api/parts-orders/${id}/transition`, {
       method: "POST", body: JSON.stringify({ toStatus, ...extras }),
     });
     await refresh();

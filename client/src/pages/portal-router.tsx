@@ -1,21 +1,22 @@
 import { useUser } from "@clerk/clerk-react";
 import { useEffect, useRef } from "react";
 
-// Sub-paths required — exact paths (/client, /dealer, etc.) are redirect-to-/login stubs in the router.
-// Must include a sub-path segment to match /client/:rest*, /dealer/:rest*, etc.
+// Role-to-portal URL mapping. Dealer roles use /:dealerId/role/... paths.
+// portal-router is used when navigating back to portal root.
+const DEV_DEALER_ID = "dev-dealer-001";
 const ROLE_TARGETS: Record<string, string> = {
-  operator_admin:   "/operator-v6",
-  operator_staff:   "/operator-v6",
-  dealer_owner:     "/dealer-v6",
-  dealer_staff:     "/dealer-v6",
-  service_manager:  "/dealer-v6",
-  shop_manager:     "/dealer-v6",
-  parts_dept:       "/dealer-v6",
-  technician:       "/dealer-v6",
-  public_bidder:    "/dealer-v6",
-  consignor:        "/dealer-v6",
-  bidder:           "/bidder-v6",
-  client:           "/client-v6",
+  operator_admin:   "/operator/admin/dashboard",
+  operator_staff:   "/operator/staff/dashboard",
+  dealer_owner:     `/${DEV_DEALER_ID}/owner/dashboard`,
+  dealer_staff:     `/${DEV_DEALER_ID}/staff/dashboard`,
+  service_manager:  `/${DEV_DEALER_ID}/service-manager/dashboard`,
+  shop_manager:     `/${DEV_DEALER_ID}/shop-manager/dashboard`,
+  parts_dept:       `/${DEV_DEALER_ID}/parts-manager/dashboard`,
+  technician:       `/${DEV_DEALER_ID}/shop-tech/dashboard`,
+  public_bidder:    "/marketplace/bidder/dashboard",
+  consignor:        "/marketplace/consignor/dashboard",
+  bidder:           "/marketplace/independent/dashboard",
+  client:           `/${DEV_DEALER_ID}/client/dashboard`,
 };
 
 export default function PortalRouter() {

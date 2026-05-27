@@ -23,7 +23,7 @@ export default function ClaimNew() {
   const manufacturer = selectedUnit?.manufacturer || '';
 
   useEffect(() => {
-    apiFetch<any>('/api/v6/units')
+    apiFetch<any>('/api/units')
       .then(d => setUnits(Array.isArray(d) ? d : []))
       .catch(() => setUnits([]))
       .finally(() => setUnitsLoading(false));
@@ -38,7 +38,7 @@ export default function ClaimNew() {
     setErrorMsg(null);
     setSubmitting(true);
     try {
-      const res = await apiFetch<any>('/api/v6/claims', {
+      const res = await apiFetch<any>('/api/claims', {
         method: 'POST',
         body: JSON.stringify({
           unitId: selectedUnitId,

@@ -17,15 +17,15 @@ export default function NewUnitPage() {
   });
 
   useEffect(() => {
-    apiFetch<any[]>("/api/v6/units").then(rows => setRecentUnits(rows.slice(0, 10))).catch(() => {});
+    apiFetch<any[]>("/api/units").then(rows => setRecentUnits(rows.slice(0, 10))).catch(() => {});
   }, []);
 
   async function submit() {
     if (!form.vin || !form.make) { showToast("VIN and make required"); return; }
     setSubmitting(true);
     try {
-      const created = await apiFetch<any>("/api/v6/units", { method: "POST", body: JSON.stringify(form) });
-      navigate(`/dealer-v6/units/${created.id}`);
+      const created = await apiFetch<any>("/api/units", { method: "POST", body: JSON.stringify(form) });
+      navigate(`/dev-dealer-001/owner/units/${created.id}`);
     } catch (err: any) {
       showToast("Failed: " + (err.message || err));
     } finally { setSubmitting(false); }
@@ -34,12 +34,12 @@ export default function NewUnitPage() {
   return (
     <div style={{display: "flex", minHeight: "100vh", background: "#f5f6f8"}}>
       <div style={{width: 240, background: "white", borderRight: "1px solid #e5e7eb", padding: 20, overflowY: "auto"}}>
-        <button onClick={() => navigate("/dealer-v6")} style={{background: "none", border: 0, color: "#033280", fontSize: 12, cursor: "pointer", marginBottom: 20}}>
+        <button onClick={() => navigate("/dev-dealer-001/owner/dashboard")} style={{background: "none", border: 0, color: "#033280", fontSize: 12, cursor: "pointer", marginBottom: 20}}>
           ← Back to Inventory
         </button>
         <div style={{fontSize: 11, color: "#888", textTransform: "uppercase", fontWeight: 600, marginBottom: 12}}>Recent Units</div>
         {recentUnits.map(u => (
-          <div key={u.id} onClick={() => navigate(`/dealer-v6/units/${u.id}`)}
+          <div key={u.id} onClick={() => navigate(`/dev-dealer-001/owner/units/${u.id}`)}
             style={{padding: "8px 10px", marginBottom: 4, borderRadius: 4, cursor: "pointer", fontSize: 12}}
             onMouseEnter={e => e.currentTarget.style.background = "#f5f5f5"}
             onMouseLeave={e => e.currentTarget.style.background = "transparent"}>
@@ -84,7 +84,7 @@ export default function NewUnitPage() {
         </Section>
 
         <div style={{display: "flex", justifyContent: "flex-end", gap: 8, marginTop: 24}}>
-          <button onClick={() => navigate("/dealer-v6")} style={{padding: "10px 18px", border: "1px solid #e0e0e0", background: "white", borderRadius: 8, cursor: "pointer"}}>
+          <button onClick={() => navigate("/dev-dealer-001/owner/dashboard")} style={{padding: "10px 18px", border: "1px solid #e0e0e0", background: "white", borderRadius: 8, cursor: "pointer"}}>
             Cancel
           </button>
           <button onClick={submit} disabled={submitting}

@@ -29,7 +29,7 @@ const CATALOG: Record<string, FanOut[]> = {
       to_roles: ["operator_admin", "operator_staff"],
       in_app: true, email: true, sms: "opt_in",
       priority: "action_required",
-      cta: { label: "Assign or Work Claim", route: "/operator-v6" },
+      cta: { label: "Assign or Work Claim", route: "/operator/admin/dashboard" },
       body_template: (p) => ({
         title: "New claim submitted",
         body: `${p.dealerName || "A dealer"} submitted claim ${p.claimNumber} on VIN ${p.vin}`,
@@ -41,7 +41,7 @@ const CATALOG: Record<string, FanOut[]> = {
       to_roles: ["operator_staff"],
       in_app: true, email: true, sms: "opt_in",
       priority: "action_required",
-      cta: { label: "Work this claim", route: "/operator-v6" },
+      cta: { label: "Work this claim", route: "/operator/admin/dashboard" },
       body_template: (p) => ({
         title: "Claim assigned to you",
         body: `Claim ${p.claimNumber} (${p.dealerName}) was assigned to you for review`,
@@ -74,7 +74,7 @@ const CATALOG: Record<string, FanOut[]> = {
       to_roles: ["dealer_owner", "dealer_staff"],
       in_app: true, email: true, sms: "opt_in",
       priority: "action_required",
-      cta: { label: "Respond to operator", route: "/dealer-v6" },
+      cta: { label: "Respond to operator", route: "/dev-dealer-001/owner/dashboard" },
       body_template: (p) => ({
         title: "Information requested",
         body: `Operator needs more info on claim ${p.claimNumber}: ${p.message?.slice(0, 100) || ""}`,
@@ -86,7 +86,7 @@ const CATALOG: Record<string, FanOut[]> = {
       to_roles: ["operator_staff"],
       in_app: true, email: true, sms: "opt_in",
       priority: "action_required",
-      cta: { label: "Review reply", route: "/operator-v6" },
+      cta: { label: "Review reply", route: "/operator/admin/dashboard" },
       body_template: (p) => ({
         title: "Dealer responded",
         body: `${p.dealerName} responded on claim ${p.claimNumber}`,
@@ -118,7 +118,7 @@ const CATALOG: Record<string, FanOut[]> = {
       to_roles: ["dealer_owner", "dealer_staff"],
       in_app: true, email: true, sms: "opt_in",
       priority: "action_required",
-      cta: { label: "Order Parts", route: "/dealer-v6" },
+      cta: { label: "Order Parts", route: "/dev-dealer-001/owner/dashboard" },
       body_template: (p) => ({
         title: "Claim APPROVED",
         body: `Claim ${p.claimNumber} approved for $${p.approvedAmount}. Order parts to begin repair.`,
@@ -139,7 +139,7 @@ const CATALOG: Record<string, FanOut[]> = {
       to_roles: ["dealer_owner", "dealer_staff"],
       in_app: true, email: true, sms: "opt_in",
       priority: "urgent",
-      cta: { label: "Discuss with operator", route: "/dealer-v6" },
+      cta: { label: "Discuss with operator", route: "/dev-dealer-001/owner/dashboard" },
       body_template: (p) => ({
         title: "Claim DENIED",
         body: `Claim ${p.claimNumber} was denied. Reason: ${p.denialReason || "see details"}`,
@@ -149,7 +149,7 @@ const CATALOG: Record<string, FanOut[]> = {
       to_roles: ["client"],
       in_app: true, email: true, sms: "opt_in",
       priority: "action_required",
-      cta: { label: "Contact your dealer", route: "/client-v6" },
+      cta: { label: "Contact your dealer", route: "/dev-dealer-001/client/dashboard" },
       body_template: (p) => ({
         title: "Claim update",
         body: `Your claim has an update — please contact your dealer for details`,
@@ -161,7 +161,7 @@ const CATALOG: Record<string, FanOut[]> = {
       to_roles: ["dealer_owner", "dealer_staff"],
       in_app: true, email: true, sms: "opt_in",
       priority: "action_required",
-      cta: { label: "Review breakdown", route: "/dealer-v6" },
+      cta: { label: "Review breakdown", route: "/dev-dealer-001/owner/dashboard" },
       body_template: (p) => ({
         title: "Partial approval",
         body: `Claim ${p.claimNumber} partially approved. Some FRC lines approved, others denied.`,
@@ -205,7 +205,7 @@ const CATALOG: Record<string, FanOut[]> = {
       to_roles: ["operator_admin", "operator_staff"],
       in_app: true, email: false, sms: "opt_in",
       priority: "informational" as const,
-      cta: { label: "Review parts order", route: "/operator-v6" },
+      cta: { label: "Review parts order", route: "/operator/admin/dashboard" },
       body_template: (p: any) => ({
         title: "New parts order initiated",
         body: `Order ${p.orderNumber} from ${p.dealerName} (${p.itemCount} items, ${p.totalQuantity} units)`,
@@ -259,7 +259,7 @@ const CATALOG: Record<string, FanOut[]> = {
       to_roles: ["dealer_owner", "dealer_staff"],
       in_app: true, email: true, sms: "opt_in",
       priority: "action_required" as const,
-      cta: { label: "Begin repair", route: "/dealer-v6" },
+      cta: { label: "Begin repair", route: "/dev-dealer-001/owner/dashboard" },
       body_template: (p: any) => ({
         title: "Parts received — repair can begin",
         body: `Order ${p.orderNumber} received. Repair work can now start on the associated claim.`,
@@ -280,7 +280,7 @@ const CATALOG: Record<string, FanOut[]> = {
       to_roles: ["dealer_owner", "dealer_staff"],
       in_app: true, email: true, sms: "opt_in",
       priority: "action_required" as const,
-      cta: { label: "Fulfill order", route: "/dealer-v6" },
+      cta: { label: "Fulfill order", route: "/dev-dealer-001/owner/dashboard" },
       body_template: (p: any) => ({
         title: "New retail parts order",
         body: `Customer ${p.customerName || ""} placed order ${p.orderNumber} for ${p.itemCount} items.`,

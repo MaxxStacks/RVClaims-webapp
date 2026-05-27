@@ -67,15 +67,15 @@ export default function FAndINew() {
           apiFetch<any>('/api/fi/products').catch(() => ({ products: [] })),
           apiFetch<any>(
             user?.dealershipId
-              ? `/api/v6/units?dealershipId=${user.dealershipId}&limit=50`
-              : '/api/v6/units?limit=50'
+              ? `/api/units?dealershipId=${user.dealershipId}&limit=50`
+              : '/api/units?limit=50'
           ).catch(() => ({ units: [] })),
         ]);
         setProducts(Array.isArray(pData.products) ? pData.products : []);
         setUnits(Array.isArray(uData.units) ? uData.units : []);
 
         if (isOperatorAdmin) {
-          const dData = await apiFetch<any>('/api/v6/dealerships').catch(() => ({ dealerships: [] }));
+          const dData = await apiFetch<any>('/api/dealerships').catch(() => ({ dealerships: [] }));
           setDealers(Array.isArray(dData.dealerships) ? dData.dealerships : []);
         }
       } catch (err) {

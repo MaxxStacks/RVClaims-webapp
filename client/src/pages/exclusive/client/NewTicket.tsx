@@ -58,7 +58,7 @@ export default function NewTicket() {
         fd.append('file', file);
         fd.append('scope', 'general');
         try {
-          const r = await fetch('/api/v6/uploads', { method: 'POST', body: fd });
+          const r = await fetch('/api/uploads', { method: 'POST', body: fd });
           if (r.ok) {
             const p = await r.json();
             attachmentUrls.push(p.publicUrl || p.url || p.storageKey);

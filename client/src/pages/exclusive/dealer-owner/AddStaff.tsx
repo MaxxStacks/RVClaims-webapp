@@ -49,7 +49,7 @@ export default function AddStaff() {
     }
     setSending(true);
     try {
-      await apiFetch(`/api/v6/dealerships/${dealerId}/staff`, {
+      await apiFetch(`/api/dealerships/${dealerId}/staff`, {
         method: 'POST',
         body: JSON.stringify({ email: email.trim(), role }),
       });

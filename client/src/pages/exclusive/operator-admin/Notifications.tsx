@@ -13,7 +13,7 @@ export default function Notifications() {
   const [sendFeedback, setSendFeedback] = useState<'sent' | 'error' | ''>('');
 
   useEffect(() => {
-    apiFetch<any>('/api/v6/dealerships').then(d => setOpDealers(Array.isArray(d) ? d : [])).catch(() => {});
+    apiFetch<any>('/api/dealerships').then(d => setOpDealers(Array.isArray(d) ? d : [])).catch(() => {});
     apiFetch<any>('/api/notifications?type=sent')
       .then(d => setSentHistory(Array.isArray(d) ? d : (d?.notifications || [])))
       .catch(() => {})

@@ -69,7 +69,7 @@ export default function FinancingApps() {
       const [appsData, reportData, dealersData] = await Promise.all([
         apiFetch<any>('/api/financing/applications'),
         apiFetch<any>('/api/financing/reports'),
-        apiFetch<any>('/api/v6/dealerships').catch(() => []),
+        apiFetch<any>('/api/dealerships').catch(() => []),
       ]);
       setApps(Array.isArray(appsData.applications) ? appsData.applications : []);
       setSummary(reportData.summary || null);

@@ -177,7 +177,7 @@ export default function FAndI() {
   useEffect(() => {
     if (!showPresenterModal) return;
     const dealershipId = user?.dealershipId;
-    apiFetch<any>(dealershipId ? `/api/v6/units?dealershipId=${dealershipId}&limit=50` : '/api/v6/units?limit=50')
+    apiFetch<any>(dealershipId ? `/api/units?dealershipId=${dealershipId}&limit=50` : '/api/units?limit=50')
       .then(d => setPresenterUnits(Array.isArray(d.units) ? d.units : []))
       .catch(() => setPresenterUnits([]));
   }, [showPresenterModal, user?.dealershipId]);

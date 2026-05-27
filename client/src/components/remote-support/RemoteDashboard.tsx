@@ -73,7 +73,7 @@ export default function RemoteDashboard() {
   useEffect(() => {
     loadHistory();
     // Load dealer list for request section
-    apiFetch<any>("/api/v6/dealerships?limit=100")
+    apiFetch<any>("/api/dealerships?limit=100")
       .then((data) => {
         const list = Array.isArray(data) ? data : data?.dealerships ?? [];
         setDealers(list.map((d: any) => ({ id: d.id, name: d.name })));

@@ -41,8 +41,8 @@ export default function ClientDashboard({ onNavigate }: Props) {
 
   useEffect(() => {
     Promise.all([
-      apiFetch<any[]>("/api/v6/units").catch(() => []),
-      apiFetch<any[]>("/api/v6/claims").catch(() => []),
+      apiFetch<any[]>("/api/units").catch(() => []),
+      apiFetch<any[]>("/api/claims").catch(() => []),
     ]).then(([u, c]) => {
       setUnits(Array.isArray(u) ? u : []);
       setClaims(Array.isArray(c) ? c : []);
@@ -80,7 +80,7 @@ export default function ClientDashboard({ onNavigate }: Props) {
                 <WarrantyBadge label="Service Contract" status={vehicle.serviceContractActive ? "active" : "none"} until={vehicle.serviceContractEnd} />
               </div>
 
-              <button onClick={() => navigate(`/client-v6/units/${vehicle.id}`)}
+              <button onClick={() => navigate(`/dev-dealer-001/client/units/${vehicle.id}`)}
                 style={{ padding: "9px 18px", background: "#033280", color: "white", border: 0, borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
                 View My Vehicle →
               </button>
@@ -110,7 +110,7 @@ export default function ClientDashboard({ onNavigate }: Props) {
             <div style={{ fontSize: 14, fontWeight: 600, color: "#111", marginBottom: 12 }}>Quick Actions</div>
             <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
               {vehicle && (
-                <ActionBtn label="My Vehicle" onClick={() => navigate(`/client-v6/units/${vehicle.id}`)} primary />
+                <ActionBtn label="My Vehicle" onClick={() => navigate(`/dev-dealer-001/client/units/${vehicle.id}`)} primary />
               )}
               <ActionBtn label="View Claims" onClick={() => onNavigate("client.main.claims")} />
               <ActionBtn label="My Warranties" onClick={() => onNavigate("client.main.warranties")} />

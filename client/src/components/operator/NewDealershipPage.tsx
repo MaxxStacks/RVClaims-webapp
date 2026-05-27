@@ -26,7 +26,7 @@ export default function NewDealershipPage() {
   const [enabledKeys, setEnabledKeys] = useState<string[]>(["claims"]);
 
   useEffect(() => {
-    apiFetch<any[]>("/api/v6/dealerships/catalog/modules").then(setCatalog).catch(() => setCatalog([]));
+    apiFetch<any[]>("/api/dealerships/catalog/modules").then(setCatalog).catch(() => setCatalog([]));
   }, []);
 
   function next() {
@@ -40,15 +40,15 @@ export default function NewDealershipPage() {
   async function submit() {
     setSubmitting(true);
     try {
-      const created = await apiFetch<any>("/api/v6/dealerships", {
+      const created = await apiFetch<any>("/api/dealerships", {
         method: "POST",
         body: JSON.stringify({ ...biz, brandingTier: tier }),
       });
       for (const key of enabledKeys) {
         if (key === "claims") continue;
-        await apiFetch(`/api/v6/dealerships/${created.id}/modules/${key}`, { method: "POST", body: JSON.stringify({}) });
+        await apiFetch(`/api/dealerships/${created.id}/modules/${key}`, { method: "POST", body: JSON.stringify({}) });
       }
-      navigate(`/operator-v6/dealerships/${created.id}`);
+      navigate(`/operator/admin/dealerships/${created.id}`);
     } catch (err: any) {
       showToast("Failed: " + (err.message || err));
     } finally { setSubmitting(false); }
@@ -57,7 +57,7 @@ export default function NewDealershipPage() {
   return (
     <div style={{display: "flex", minHeight: "100vh", background: "#f5f6f8"}}>
       <div style={{width: 240, background: "white", borderRight: "1px solid #e5e7eb", padding: 24}}>
-        <button onClick={() => navigate("/operator-v6/dealerships")} style={{background: "none", border: 0, color: "#033280", fontSize: 12, cursor: "pointer", marginBottom: 24}}>
+        <button onClick={() => navigate("/operator/admin/dealerships")} style={{background: "none", border: 0, color: "#033280", fontSize: 12, cursor: "pointer", marginBottom: 24}}>
           ← Cancel
         </button>
         <div style={{fontSize: 11, color: "#888", textTransform: "uppercase", fontWeight: 600, marginBottom: 12}}>New Dealership</div>

@@ -56,14 +56,14 @@ export default function LocationManagement() {
 
   const { data: staffData } = useQuery({
     queryKey: ['dealership-staff', dealershipId],
-    queryFn: () => apiFetch<{ users: StaffUser[] }>(`/api/v6/users?dealershipId=${dealershipId}&role=dealer_staff`),
+    queryFn: () => apiFetch<{ users: StaffUser[] }>(`/api/users?dealershipId=${dealershipId}&role=dealer_staff`),
     enabled: !!dealershipId,
   });
   const staff: StaffUser[] = staffData?.users ?? [];
 
   const { data: dealershipData } = useQuery({
     queryKey: ['dealership-detail', dealershipId],
-    queryFn: () => apiFetch<{ dealership: { multiLocationEnabled: boolean; crossLocationInventory: boolean } }>(`/api/v6/dealerships/${dealershipId}`),
+    queryFn: () => apiFetch<{ dealership: { multiLocationEnabled: boolean; crossLocationInventory: boolean } }>(`/api/dealerships/${dealershipId}`),
     enabled: !!dealershipId,
   });
   const multiEnabled = dealershipData?.dealership?.multiLocationEnabled ?? false;

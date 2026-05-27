@@ -132,7 +132,7 @@ export default function Documents() {
           load();
         } else if (result.extracted?.vin) {
           try {
-            const units = await apiFetch<any>(`/api/v6/units?vin=${result.extracted.vin}&limit=5`);
+            const units = await apiFetch<any>(`/api/units?vin=${result.extracted.vin}&limit=5`);
             setUnitMatches(Array.isArray(units.units) ? units.units : []);
           } catch {
             setUnitMatches([]);
@@ -152,7 +152,7 @@ export default function Documents() {
     if (!selectedUnitId || !scanFilename) return;
     setScanFiling(true);
     try {
-      await apiFetch(`/api/v6/units/${selectedUnitId}/documents`, {
+      await apiFetch(`/api/units/${selectedUnitId}/documents`, {
         method: 'POST',
         body: JSON.stringify({
           name: scanFilename,

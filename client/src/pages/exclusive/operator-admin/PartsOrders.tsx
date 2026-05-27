@@ -30,7 +30,7 @@ export default function PartsOrders() {
     setError('');
     const params = new URLSearchParams();
     if (filterDealer) params.set('dealershipId', filterDealer);
-    apiFetch<any[]>(`/api/v6/parts-orders${params.toString() ? '?' + params : ''}`)
+    apiFetch<any[]>(`/api/parts-orders${params.toString() ? '?' + params : ''}`)
       .then(d => setOrders(Array.isArray(d) ? d : []))
       .catch(() => setError('Failed to load parts orders.'))
       .finally(() => setLoading(false));
@@ -41,7 +41,7 @@ export default function PartsOrders() {
   const transition = async (id: string, toStatus: string, extra?: Record<string, string>) => {
     setTransitioning(id);
     try {
-      await apiFetch(`/api/v6/parts-orders/${id}/transition`, {
+      await apiFetch(`/api/parts-orders/${id}/transition`, {
         method: 'POST',
         body: JSON.stringify({ toStatus, ...extra }),
       });

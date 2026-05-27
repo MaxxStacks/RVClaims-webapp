@@ -172,7 +172,7 @@ export default function DealJacket() {
   const loadPhotos = useCallback(async () => {
     if (!unit?.id) return;
     try {
-      const data = await apiFetch<any[]>(`/api/v6/units/${unit.id}/photos`);
+      const data = await apiFetch<any[]>(`/api/units/${unit.id}/photos`);
       setPhotos(Array.isArray(data) ? data : []);
     } catch { setPhotos([]); }
   }, [unit?.id]);
@@ -203,7 +203,7 @@ export default function DealJacket() {
     setUploadingForDocId(doc.id);
     try {
       // Presign upload
-      const presignRes = await apiFetch<any>('/api/v6/uploads/presign', {
+      const presignRes = await apiFetch<any>('/api/uploads/presign', {
         method: 'POST',
         body: JSON.stringify({
           scope: 'general',
@@ -246,7 +246,7 @@ export default function DealJacket() {
     try {
       let fileUrl: string | undefined;
       if (addDocFile) {
-        const presignRes = await apiFetch<any>('/api/v6/uploads/presign', {
+        const presignRes = await apiFetch<any>('/api/uploads/presign', {
           method: 'POST',
           body: JSON.stringify({
             scope: 'general',

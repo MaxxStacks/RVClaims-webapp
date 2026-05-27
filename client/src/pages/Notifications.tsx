@@ -41,7 +41,7 @@ export default function Notifications() {
 
   useEffect(() => {
     if (isOpAdmin) {
-      apiFetch<any>('/api/v6/dealerships?limit=200')
+      apiFetch<any>('/api/dealerships?limit=200')
         .then(d => setOpDealers(Array.isArray(d) ? d : (d?.dealerships ?? [])))
         .catch(() => {});
     }

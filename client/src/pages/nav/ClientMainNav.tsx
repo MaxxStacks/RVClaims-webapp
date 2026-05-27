@@ -9,7 +9,7 @@ const ROLES: Record<string, any> = {
 };
 
 const URL_MAP: Record<string, string> = {
-  "client.main.vehicle": "/client-v6/units",
+  "client.main.vehicle": "/dev-dealer-001/client/units",
 };
 
 interface Props {
@@ -53,7 +53,7 @@ export default function ClientMainNav({ currentPage, onShowPage }: Props) {
     if (onShowPage) {
       onShowPage(pageId);
     } else {
-      navigate(URL_MAP[pageId] || "/client-v6");
+      navigate(URL_MAP[pageId] || "/dev-dealer-001/client/dashboard");
     }
   };
 

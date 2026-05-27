@@ -1,4 +1,4 @@
-// server/routes/frc-codes-v6.ts — FRC code library (/api/v6/frc-codes and /api/frc-codes)
+// server/routes/frc-codes.ts — FRC code library (/api/frc-codes and /api/frc-codes)
 // Static library — DB table not yet created. Serves from in-memory data.
 
 import { Router, type Request, type Response } from "express";
@@ -48,7 +48,7 @@ const FRC_CODE_LIBRARY: Record<string, Array<{code: string; description: string;
   ],
 };
 
-// GET /api/v6/frc-codes?manufacturer=Jayco&search=water&category=Plumbing
+// GET /api/frc-codes?manufacturer=Jayco&search=water&category=Plumbing
 router.get("/", (req: Request, res: Response) => {
   const { manufacturer, search, category } = req.query as Record<string, string>;
 
@@ -81,7 +81,7 @@ router.get("/", (req: Request, res: Response) => {
   res.json({ frcCodes: codes });
 });
 
-// POST /api/v6/frc-codes — add custom code (operator only)
+// POST /api/frc-codes — add custom code (operator only)
 router.post("/", (req: Request, res: Response) => {
   const u = req.user!;
   if (!["operator_admin"].includes(u.role)) {

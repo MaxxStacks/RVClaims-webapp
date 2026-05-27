@@ -40,7 +40,7 @@ export default function BrandingSettings() {
 
   useEffect(() => {
     if (!dealerId) return;
-    apiFetch<any>(`/api/v6/dealerships/${dealerId}`)
+    apiFetch<any>(`/api/dealerships/${dealerId}`)
       .then(d => {
         const data = d.dealership || d;
         setDealerName(data.name || '');
@@ -83,7 +83,7 @@ export default function BrandingSettings() {
       const formData = new FormData();
       formData.append('file', file);
       if (dealerId) formData.append('dealershipId', dealerId);
-      const res = await fetch('/api/v6/uploads', { method: 'POST', body: formData });
+      const res = await fetch('/api/uploads', { method: 'POST', body: formData });
       if (res.ok) {
         const data = await res.json();
         setLogoUrl(data.url || data.publicUrl || data.fileUrl || '');
@@ -102,7 +102,7 @@ export default function BrandingSettings() {
     if (!dealerId) return;
     setSaving(true);
     try {
-      await apiFetch(`/api/v6/dealerships/${dealerId}/branding`, {
+      await apiFetch(`/api/dealerships/${dealerId}/branding`, {
         method: 'PATCH',
         body: JSON.stringify({
           logoUrl,
@@ -124,7 +124,7 @@ export default function BrandingSettings() {
     if (!dealerId) return;
     setSaving(true);
     try {
-      await apiFetch(`/api/v6/dealerships/${dealerId}/branding`, {
+      await apiFetch(`/api/dealerships/${dealerId}/branding`, {
         method: 'PATCH',
         body: JSON.stringify({ customDomain }),
       });

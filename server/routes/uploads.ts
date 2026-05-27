@@ -9,7 +9,7 @@ import { emitEvent } from "../lib/event-bus";
 const router = Router();
 router.use(requireAuth);
 
-// POST /api/v6/uploads/presign
+// POST /api/uploads/presign
 router.post("/presign", async (req: Request, res: Response) => {
   const { scope, scopeId, filename, contentType, photoType } = req.body;
   if (!scope || !contentType) return res.status(400).json({ error: "scope and contentType required" });
@@ -38,7 +38,7 @@ router.post("/presign", async (req: Request, res: Response) => {
   });
 });
 
-// POST /api/v6/uploads/confirm/:photoId
+// POST /api/uploads/confirm/:photoId
 router.post("/confirm/:photoId", async (req: Request, res: Response) => {
   const [photo] = await db.select().from(v6Uploads).where(eq(v6Uploads.id, req.params.photoId)).limit(1);
   if (!photo) return res.status(404).json({ error: "Photo not found" });
@@ -72,7 +72,7 @@ router.post("/confirm/:photoId", async (req: Request, res: Response) => {
   res.json({ ok: true, publicUrl: photo.publicUrl });
 });
 
-// GET /api/v6/uploads/by-claim/:claimId
+// GET /api/uploads/by-claim/:claimId
 router.get("/by-claim/:claimId", async (req: Request, res: Response) => {
   const [claim] = await db.select().from(claims).where(eq(claims.id, req.params.claimId)).limit(1);
   if (!claim) return res.status(404).json({ error: "Not found" });

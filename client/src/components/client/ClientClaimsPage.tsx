@@ -32,7 +32,7 @@ export default function ClientClaimsPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    apiFetch<any[]>("/api/v6/claims")
+    apiFetch<any[]>("/api/claims")
       .then(rows => setClaims((rows || []).filter(c => c.status !== "draft")))
       .catch(() => setClaims([]))
       .finally(() => setLoading(false));

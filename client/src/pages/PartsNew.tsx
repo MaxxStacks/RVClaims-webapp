@@ -82,7 +82,7 @@ export default function PartsNew() {
   // Load dealers (operator only)
   useEffect(() => {
     if (!isOperator) return;
-    apiFetch<any>('/api/v6/dealerships')
+    apiFetch<any>('/api/dealerships')
       .then(d => setDealers(Array.isArray(d) ? d : d.dealerships || []))
       .catch(() => {});
   }, [isOperator]);
@@ -91,7 +91,7 @@ export default function PartsNew() {
   const dealershipId = isOperator ? selectedDealerId : user?.dealershipId;
   useEffect(() => {
     if (!dealershipId) return;
-    apiFetch<any>(`/api/v6/claims?dealershipId=${dealershipId}&limit=100`)
+    apiFetch<any>(`/api/claims?dealershipId=${dealershipId}&limit=100`)
       .then(d => setClaims(Array.isArray(d) ? d : d.claims || []))
       .catch(() => {});
   }, [dealershipId]);
@@ -137,7 +137,7 @@ export default function PartsNew() {
         })),
       };
 
-      const order = await apiFetch<any>('/api/v6/parts-orders', {
+      const order = await apiFetch<any>('/api/parts-orders', {
         method: 'POST',
         body: JSON.stringify(payload),
       });

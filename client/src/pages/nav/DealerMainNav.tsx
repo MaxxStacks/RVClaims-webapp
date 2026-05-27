@@ -60,7 +60,7 @@ const ROLES: Record<string, any> = {
 };
 
 const URL_MAP: Record<string, string> = {
-  "dealer.ops.inventory": "/dealer-v6/units",
+  "dealer.ops.inventory": "/dev-dealer-001/owner/units",
 };
 
 interface Props {
@@ -106,7 +106,7 @@ export default function DealerMainNav({ currentPage, onShowPage }: Props) {
     if (onShowPage) {
       onShowPage(pageId);
     } else {
-      navigate(URL_MAP[pageId] || "/dealer-v6");
+      navigate(URL_MAP[pageId] || "/dev-dealer-001/owner/dashboard");
     }
   };
 

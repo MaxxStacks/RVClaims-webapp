@@ -21,7 +21,7 @@ export default function DealerAccountsListPage() {
       const params = new URLSearchParams();
       if (filter.search) params.set("search", filter.search);
       if (filter.status) params.set("status", filter.status);
-      const list = await apiFetch<any[]>(`/api/v6/dealerships?${params.toString()}`);
+      const list = await apiFetch<any[]>(`/api/dealerships?${params.toString()}`);
       setDealerships(list);
     } finally { setLoading(false); }
   }
@@ -41,7 +41,7 @@ export default function DealerAccountsListPage() {
           <div style={{fontSize: 11, color: "#888", textTransform: "uppercase", fontWeight: 600}}>Management</div>
           <h1 style={{margin: "4px 0 0", fontSize: 20, fontWeight: 700}}>Dealer Accounts</h1>
         </div>
-        <button onClick={() => navigate("/operator-v6/dealerships/new")}
+        <button onClick={() => navigate("/operator/admin/dealerships/new")}
           style={{padding: "10px 18px", background: "#22c55e", color: "white", border: 0, borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: "pointer"}}>
           + New Dealership
         </button>
@@ -87,7 +87,7 @@ export default function DealerAccountsListPage() {
           </thead>
           <tbody>
             {dealerships.map(d => (
-              <tr key={d.id} onClick={() => navigate(`/operator-v6/dealerships/${d.id}`)}
+              <tr key={d.id} onClick={() => navigate(`/operator/admin/dealerships/${d.id}`)}
                 style={{borderBottom: "1px solid #f5f5f5", fontSize: 13, cursor: "pointer"}}
                 onMouseEnter={e => e.currentTarget.style.background = "#f7f7f7"}
                 onMouseLeave={e => e.currentTarget.style.background = "white"}>

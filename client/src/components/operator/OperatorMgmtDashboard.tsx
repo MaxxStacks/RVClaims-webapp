@@ -15,10 +15,10 @@ export default function OperatorMgmtDashboard({ onNavigate }: Props) {
 
   useEffect(() => {
     Promise.all([
-      apiFetch<any[]>("/api/v6/dealerships").catch(() => []),
-      apiFetch<{ count: number }>("/api/v6/dealerships/pending-count").catch(() => ({ count: 0 })),
-      apiFetch<any[]>("/api/v6/claims").catch(() => []),
-      apiFetch<any[]>("/api/v6/notifications").catch(() => []),
+      apiFetch<any[]>("/api/dealerships").catch(() => []),
+      apiFetch<{ count: number }>("/api/dealerships/pending-count").catch(() => ({ count: 0 })),
+      apiFetch<any[]>("/api/claims").catch(() => []),
+      apiFetch<any[]>("/api/notification-deliveries").catch(() => []),
     ]).then(([d, p, c, n]) => {
       setDealers(Array.isArray(d) ? d : []);
       setPendingCount((p as any)?.count ?? 0);

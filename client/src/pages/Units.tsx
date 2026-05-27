@@ -57,7 +57,7 @@ export default function Units() {
       if (searchVin) params.set('search', searchVin);
       if (filterMfr) params.set('manufacturer', filterMfr);
       if (filterStatus) params.set('status', filterStatus);
-      const data = await apiFetch<any>(`/api/v6/units?${params}`);
+      const data = await apiFetch<any>(`/api/units?${params}`);
       setUnits(Array.isArray(data) ? data : data.units || []);
     } catch (err: any) {
       setDataError(err?.message || 'Failed to load units');
@@ -69,7 +69,7 @@ export default function Units() {
   // Load dealer list for operator filter
   useEffect(() => {
     if (showDealerFilter) {
-      apiFetch<any>('/api/v6/dealerships')
+      apiFetch<any>('/api/dealerships')
         .then(d => setDealers(Array.isArray(d) ? d : d.dealerships || []))
         .catch(() => {});
     }
@@ -114,7 +114,7 @@ export default function Units() {
     e.stopPropagation();
     if (!window.confirm('Delete this unit? This cannot be undone.')) return;
     try {
-      await apiFetch(`/api/v6/units/${unitId}`, { method: 'DELETE' });
+      await apiFetch(`/api/units/${unitId}`, { method: 'DELETE' });
       showToast('Unit deleted');
       loadUnits();
     } catch (err: any) {

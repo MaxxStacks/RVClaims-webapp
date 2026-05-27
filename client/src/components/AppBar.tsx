@@ -19,10 +19,10 @@ const PORTAL_LABELS: Record<string, string> = {
 };
 
 const PORTAL_HOME: Record<string, string> = {
-  operator: "/operator-v6",
-  dealer: "/dealer-v6",
-  client: "/client-v6",
-  bidder: "/bidder-v6",
+  operator: "/operator/admin/dashboard",
+  dealer: "/dev-dealer-001/owner/dashboard",
+  client: "/dev-dealer-001/client/dashboard",
+  bidder: "/marketplace/bidder/dashboard",
 };
 
 export default function AppBar({ context, contextLabel }: AppBarProps) {
@@ -48,7 +48,7 @@ export default function AppBar({ context, contextLabel }: AppBarProps) {
   useEffect(() => {
     if (contextLabel) { setResolvedLabel(contextLabel); return; }
     if (context === "dealer" || context === "client") {
-      apiFetch<any>("/api/v6/dealerships/branding/me")
+      apiFetch<any>("/api/dealerships/branding/me")
         .then(d => { if (d?.name) setResolvedLabel(d.name); })
         .catch(() => {});
     }
@@ -57,7 +57,7 @@ export default function AppBar({ context, contextLabel }: AppBarProps) {
   // Poll notifications every 30s
   useEffect(() => {
     function fetchNotifs() {
-      apiFetch<any[]>("/api/v6/notifications")
+      apiFetch<any[]>("/api/notification-deliveries")
         .then(rows => {
           setNotifications(rows || []);
           setUnreadCount((rows || []).filter((n: any) => !n.isRead).length);
@@ -81,7 +81,7 @@ export default function AppBar({ context, contextLabel }: AppBarProps) {
   }, []);
 
   async function markAllRead() {
-    await apiFetch("/api/v6/notifications/mark-all-read", { method: "POST" }).catch(() => {});
+    await apiFetch("/api/notification-deliveries/mark-all-read", { method: "POST" }).catch(() => {});
     setNotifications(n => n.map(x => ({ ...x, isRead: true })));
     setUnreadCount(0);
   }

@@ -11,7 +11,7 @@ export default function PhotoGallery({ claimId, refreshKey = 0 }: Props) {
   const [lightbox, setLightbox] = useState<string | null>(null);
 
   useEffect(() => {
-    apiFetch<any[]>(`/api/v6/uploads/by-claim/${claimId}`)
+    apiFetch<any[]>(`/api/uploads/by-claim/${claimId}`)
       .then(setPhotos)
       .catch(() => setPhotos([]));
   }, [claimId, refreshKey]);

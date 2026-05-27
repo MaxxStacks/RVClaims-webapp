@@ -1,6 +1,6 @@
-// server/routes/notifications-v6.ts — Notification delivery API (/api/v6/notifications)
+// server/routes/notification-deliveries.ts — Notification delivery API (/api/notification-deliveries)
 // Uses notification_deliveries table (event bus fan-out output).
-// Separate from legacy /api/notifications (platform.ts notifications table).
+// Separate from /api/notifications (platform.ts notifications table — legacy).
 
 import { Router } from "express";
 import { db } from "../db";
@@ -11,7 +11,7 @@ import { requireAuth } from "../middleware/auth";
 const router = Router();
 router.use(requireAuth);
 
-// GET /api/v6/notifications — last 50, newest first
+// GET /api/notification-deliveries — last 50, newest first
 router.get("/", async (req, res) => {
   try {
     const rows = await db.select().from(notificationDeliveries)
@@ -23,12 +23,12 @@ router.get("/", async (req, res) => {
       .limit(50);
     res.json(rows);
   } catch (err) {
-    console.error("[notifications-v6 GET /]", err);
+    console.error("[notification-deliveries GET /]", err);
     res.status(500).json({ error: "Internal server error" });
   }
 });
 
-// GET /api/v6/notifications/unread-count
+// GET /api/notification-deliveries/unread-count
 router.get("/unread-count", async (req, res) => {
   try {
     const rows = await db.select({ id: notificationDeliveries.id }).from(notificationDeliveries)
@@ -39,12 +39,12 @@ router.get("/unread-count", async (req, res) => {
       ));
     res.json({ count: rows.length });
   } catch (err) {
-    console.error("[notifications-v6 GET /unread-count]", err);
+    console.error("[notification-deliveries GET /unread-count]", err);
     res.status(500).json({ error: "Internal server error" });
   }
 });
 
-// POST /api/v6/notifications/mark-all-read — must come before /:id/read
+// POST /api/notification-deliveries/mark-all-read — must come before /:id/read
 router.post("/mark-all-read", async (req, res) => {
   try {
     await db.update(notificationDeliveries)
@@ -55,12 +55,12 @@ router.post("/mark-all-read", async (req, res) => {
       ));
     res.json({ ok: true });
   } catch (err) {
-    console.error("[notifications-v6 POST /mark-all-read]", err);
+    console.error("[notification-deliveries POST /mark-all-read]", err);
     res.status(500).json({ error: "Internal server error" });
   }
 });
 
-// POST /api/v6/notifications/:id/read
+// POST /api/notification-deliveries/:id/read
 router.post("/:id/read", async (req, res) => {
   try {
     await db.update(notificationDeliveries)
@@ -71,7 +71,7 @@ router.post("/:id/read", async (req, res) => {
       ));
     res.json({ ok: true });
   } catch (err) {
-    console.error("[notifications-v6 POST /:id/read]", err);
+    console.error("[notification-deliveries POST /:id/read]", err);
     res.status(500).json({ error: "Internal server error" });
   }
 });

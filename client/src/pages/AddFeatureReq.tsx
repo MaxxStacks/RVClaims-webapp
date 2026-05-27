@@ -11,7 +11,7 @@ export default function AddFeatureReq() {
   });
 
   useEffect(() => {
-    apiFetch<any>('/api/v6/dealerships').then(d => setOpDealers(Array.isArray(d) ? d : [])).catch(() => {});
+    apiFetch<any>('/api/dealerships').then(d => setOpDealers(Array.isArray(d) ? d : [])).catch(() => {});
   }, []);
 
   const handleSubmit = async () => {

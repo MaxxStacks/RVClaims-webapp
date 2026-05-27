@@ -92,7 +92,7 @@ export default function DealerDetail() {
       try {
         // Operator path: get full detail with users, modules, catalog, kpis
         if (isOperator) {
-          const data = await apiFetch<any>(`/api/v6/dealerships/${dealerId}`);
+          const data = await apiFetch<any>(`/api/dealerships/${dealerId}`);
           const d = data.dealership || data;
           setDealer(d);
           setUsers_(data.users || []);
@@ -102,7 +102,7 @@ export default function DealerDetail() {
           populateDealerState(d);
         } else if (isDealer) {
           // Dealer: load their own dealership
-          const data = await apiFetch<any>(`/api/v6/dealerships/${dealerId}`);
+          const data = await apiFetch<any>(`/api/dealerships/${dealerId}`);
           const d = data.dealership || data;
           setDealer(d);
           setModules(data.modules || []);
@@ -121,7 +121,7 @@ export default function DealerDetail() {
   // Load staff when Staff tab is active
   useEffect(() => {
     if (activeTab !== 'Staff' || !dealerId) return;
-    apiFetch<any>(`/api/v6/dealerships/${dealerId}/staff`)
+    apiFetch<any>(`/api/dealerships/${dealerId}/staff`)
       .then(d => setStaff(Array.isArray(d) ? d : d?.staff || []))
       .catch(() => {});
   }, [activeTab, dealerId]);
@@ -137,7 +137,7 @@ export default function DealerDetail() {
   // Load pricing when Pricing tab is active
   useEffect(() => {
     if (activeTab !== 'Pricing' || !dealerId || !isOperatorAdmin) return;
-    apiFetch<any>(`/api/v6/dealerships/${dealerId}/pricing`)
+    apiFetch<any>(`/api/dealerships/${dealerId}/pricing`)
       .then(d => {
         setPricing(d);
         setPricingForm({
@@ -186,7 +186,7 @@ export default function DealerDetail() {
     if (!dealerId) return;
     setInfoSaving(true);
     try {
-      const updated = await apiFetch<any>(`/api/v6/dealerships/${dealerId}`, {
+      const updated = await apiFetch<any>(`/api/dealerships/${dealerId}`, {
         method: 'PATCH',
         body: JSON.stringify(infoEdit),
       });
@@ -202,7 +202,7 @@ export default function DealerDetail() {
   const handleStatusChange = async (status: string) => {
     if (!dealerId) return;
     try {
-      await apiFetch(`/api/v6/dealerships/${dealerId}/status`, {
+      await apiFetch(`/api/dealerships/${dealerId}/status`, {
         method: 'PATCH',
         body: JSON.stringify({ status }),
       });
@@ -217,10 +217,10 @@ export default function DealerDetail() {
     if (!dealerId || !isOperatorAdmin) return;
     try {
       if (currentlyEnabled) {
-        await apiFetch(`/api/v6/dealerships/${dealerId}/modules/${moduleKey}`, { method: 'DELETE' });
+        await apiFetch(`/api/dealerships/${dealerId}/modules/${moduleKey}`, { method: 'DELETE' });
         setModules(m => m.filter(x => x.moduleKey !== moduleKey));
       } else {
-        await apiFetch(`/api/v6/dealerships/${dealerId}/modules/${moduleKey}`, { method: 'POST', body: JSON.stringify({}) });
+        await apiFetch(`/api/dealerships/${dealerId}/modules/${moduleKey}`, { method: 'POST', body: JSON.stringify({}) });
         setModules(m => [...m, { moduleKey, status: 'enabled' }]);
       }
       showToast(`Module ${currentlyEnabled ? 'disabled' : 'enabled'}`);
@@ -233,7 +233,7 @@ export default function DealerDetail() {
     if (!dealerId) return;
     setPricingSaving(true);
     try {
-      await apiFetch(`/api/v6/dealerships/${dealerId}/pricing`, {
+      await apiFetch(`/api/dealerships/${dealerId}/pricing`, {
         method: 'PATCH',
         body: JSON.stringify(pricingForm),
       });
@@ -249,7 +249,7 @@ export default function DealerDetail() {
     if (!dealerId) return;
     setBrandingSaving(true);
     try {
-      await apiFetch(`/api/v6/dealerships/${dealerId}/branding`, {
+      await apiFetch(`/api/dealerships/${dealerId}/branding`, {
         method: 'PATCH',
         body: JSON.stringify({ logoUrl, primaryColor, secondaryColor, customDomain, welcomeMessage }),
       });
@@ -269,7 +269,7 @@ export default function DealerDetail() {
       const formData = new FormData();
       formData.append('file', file);
       if (dealerId) formData.append('dealershipId', dealerId);
-      const res = await fetch('/api/v6/uploads', { method: 'POST', body: formData });
+      const res = await fetch('/api/uploads', { method: 'POST', body: formData });
       if (res.ok) {
         const data = await res.json();
         setLogoUrl(data.url || data.publicUrl || data.fileUrl || '');
@@ -286,7 +286,7 @@ export default function DealerDetail() {
     if (!inviteEmail || !dealerId) return;
     setInviteSending(true);
     try {
-      await apiFetch(`/api/v6/dealerships/${dealerId}/staff`, {
+      await apiFetch(`/api/dealerships/${dealerId}/staff`, {
         method: 'POST',
         body: JSON.stringify({ email: inviteEmail, role: inviteRole }),
       });
@@ -294,7 +294,7 @@ export default function DealerDetail() {
       setInviteEmail('');
       setShowInvite(false);
       // Reload staff
-      const d = await apiFetch<any>(`/api/v6/dealerships/${dealerId}/staff`);
+      const d = await apiFetch<any>(`/api/dealerships/${dealerId}/staff`);
       setStaff(Array.isArray(d) ? d : d?.staff || []);
     } catch {
       showToast('Failed to send invitation');
@@ -306,7 +306,7 @@ export default function DealerDetail() {
   const handleRemoveStaff = async (userId: string) => {
     if (!dealerId) return;
     try {
-      await apiFetch(`/api/v6/dealerships/${dealerId}/staff/${userId}`, { method: 'DELETE' });
+      await apiFetch(`/api/dealerships/${dealerId}/staff/${userId}`, { method: 'DELETE' });
       setStaff(s => s.filter(x => x.id !== userId));
       showToast('Staff member removed');
     } catch {
@@ -317,7 +317,7 @@ export default function DealerDetail() {
   const handleRoleChange = async (userId: string, role: string) => {
     if (!dealerId) return;
     try {
-      await apiFetch(`/api/v6/dealerships/${dealerId}/staff/${userId}/role`, {
+      await apiFetch(`/api/dealerships/${dealerId}/staff/${userId}/role`, {
         method: 'PATCH',
         body: JSON.stringify({ role }),
       });

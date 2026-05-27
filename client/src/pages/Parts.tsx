@@ -113,7 +113,7 @@ export default function Parts() {
     setIsLoading(true);
     setDataError(null);
     try {
-      const d = await apiFetch<any>('/api/v6/parts-orders');
+      const d = await apiFetch<any>('/api/parts-orders');
       setOrders(Array.isArray(d) ? d : d.orders || []);
     } catch (err: any) {
       setDataError(err?.message || 'Failed to load parts orders');

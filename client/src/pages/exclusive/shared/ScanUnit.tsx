@@ -133,7 +133,7 @@ export default function ScanUnit() {
   // ── Search unit by short ID (for barcode lookup) ─────────────────────────
   const searchUnitByShortId = async (shortId: string) => {
     try {
-      const data = await apiFetch<any>(`/api/v6/units?search=${shortId}`);
+      const data = await apiFetch<any>(`/api/units?search=${shortId}`);
       const units: FoundUnit[] = Array.isArray(data) ? data : data.units || [];
       const match = units.find((u: any) =>
         u.id?.replace(/-/g, '').toUpperCase().startsWith(shortId)
@@ -151,7 +151,7 @@ export default function ScanUnit() {
   // ── Search unit by VIN ────────────────────────────────────────────────────
   const searchUnitByVin = useCallback(async (vin: string): Promise<FoundUnit | null> => {
     try {
-      const data = await apiFetch<any>(`/api/v6/units?search=${encodeURIComponent(vin)}`);
+      const data = await apiFetch<any>(`/api/units?search=${encodeURIComponent(vin)}`);
       const units: FoundUnit[] = Array.isArray(data) ? data : data.units || [];
       return units.find((u: any) =>
         u.vin?.toUpperCase() === vin.toUpperCase()

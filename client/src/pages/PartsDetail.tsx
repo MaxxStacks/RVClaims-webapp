@@ -128,7 +128,7 @@ export default function PartsDetail() {
     setIsLoading(true);
     setDataError(null);
     try {
-      const d = await apiFetch<any>(`/api/v6/parts-orders/${orderId}`);
+      const d = await apiFetch<any>(`/api/parts-orders/${orderId}`);
       const ord: PartsOrder = d.order || d;
       setOrder(ord);
       setItems(d.items || []);
@@ -157,7 +157,7 @@ export default function PartsDetail() {
     if (!status) { showToast('Select a status to transition to.'); return; }
     setIsSaving(true);
     try {
-      await apiFetch(`/api/v6/parts-orders/${orderId}/transition`, {
+      await apiFetch(`/api/parts-orders/${orderId}/transition`, {
         method: 'POST',
         body: JSON.stringify({
           toStatus: status,

@@ -30,7 +30,7 @@ export default function DealershipDetailPage() {
   async function refresh() {
     setLoading(true);
     try {
-      const result = await apiFetch<any>(`/api/v6/dealerships/${params.id}`);
+      const result = await apiFetch<any>(`/api/dealerships/${params.id}`);
       setData(result);
       setEdit(result.dealership);
     } finally { setLoading(false); }
@@ -46,28 +46,28 @@ export default function DealershipDetailPage() {
     const allowed = ["name", "email", "phone", "addressLine1", "addressLine2", "city", "stateProvince", "postalCode", "country", "brandingTier", "status", "logoUrl", "primaryColor", "secondaryColor", "fontFamily", "emailFromName", "customSubdomain"];
     const body: any = {};
     for (const k of allowed) if (edit[k] !== undefined) body[k] = edit[k];
-    await apiFetch(`/api/v6/dealerships/${params.id}`, { method: "PATCH", body: JSON.stringify(body) });
+    await apiFetch(`/api/dealerships/${params.id}`, { method: "PATCH", body: JSON.stringify(body) });
     setEditing(false);
     await refresh();
   }
 
   async function approve() {
     if (!confirm("Approve this dealership?")) return;
-    await apiFetch(`/api/v6/dealerships/${params.id}/approve`, { method: "POST", body: JSON.stringify({}) });
+    await apiFetch(`/api/dealerships/${params.id}/approve`, { method: "POST", body: JSON.stringify({}) });
     await refresh();
   }
   async function reject() {
     const notes = prompt("Reason for rejection:");
     if (notes === null) return;
-    await apiFetch(`/api/v6/dealerships/${params.id}/reject`, { method: "POST", body: JSON.stringify({ notes }) });
+    await apiFetch(`/api/dealerships/${params.id}/reject`, { method: "POST", body: JSON.stringify({ notes }) });
     await refresh();
   }
 
   async function toggleModule(moduleKey: string, enable: boolean) {
     if (enable) {
-      await apiFetch(`/api/v6/dealerships/${params.id}/modules/${moduleKey}`, { method: "POST", body: JSON.stringify({}) });
+      await apiFetch(`/api/dealerships/${params.id}/modules/${moduleKey}`, { method: "POST", body: JSON.stringify({}) });
     } else {
-      await apiFetch(`/api/v6/dealerships/${params.id}/modules/${moduleKey}`, { method: "DELETE" });
+      await apiFetch(`/api/dealerships/${params.id}/modules/${moduleKey}`, { method: "DELETE" });
     }
     await refresh();
   }

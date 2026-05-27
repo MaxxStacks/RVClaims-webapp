@@ -35,7 +35,7 @@ export default function DealerManagement() {
       const params = new URLSearchParams();
       if (search) params.set('search', search);
       if (statusFilter) params.set('status', statusFilter);
-      const data = await apiFetch<any>(`/api/v6/dealerships?${params}`);
+      const data = await apiFetch<any>(`/api/dealerships?${params}`);
       setDealers(Array.isArray(data) ? data : data?.dealerships || []);
       setDataError(null);
     } catch (err: any) {
@@ -58,7 +58,7 @@ export default function DealerManagement() {
 
   const handleStatusChange = async (id: string, status: string) => {
     try {
-      await apiFetch(`/api/v6/dealerships/${id}/status`, {
+      await apiFetch(`/api/dealerships/${id}/status`, {
         method: 'PATCH',
         body: JSON.stringify({ status }),
       });

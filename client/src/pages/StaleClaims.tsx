@@ -7,7 +7,7 @@ export default function StaleClaims() {
   const [opClaims, setOpClaims] = useState<any[]>([]);
 
   useEffect(() => {
-    apiFetch<any>('/api/v6/claims').then(d => setOpClaims(Array.isArray(d) ? d : [])).catch(() => {});
+    apiFetch<any>('/api/claims').then(d => setOpClaims(Array.isArray(d) ? d : [])).catch(() => {});
   }, []);
 
   const handleFollowUp = (_id: string, _num: string) => {};

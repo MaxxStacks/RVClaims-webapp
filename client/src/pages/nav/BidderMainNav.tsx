@@ -46,7 +46,7 @@ export default function BidderMainNav({ currentPage, onShowPage }: Props) {
     if (onShowPage) {
       onShowPage(pageId);
     } else {
-      navigate("/bidder-v6");
+      navigate("/marketplace/independent/dashboard");
     }
   };
 

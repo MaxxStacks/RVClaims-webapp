@@ -107,7 +107,7 @@ export default function PDIChecklist() {
   useEffect(() => {
     if (!unitId) return;
     setUnitLoading(true);
-    apiFetch<any>(`/api/v6/units/${unitId}`)
+    apiFetch<any>(`/api/units/${unitId}`)
       .then((data) => {
         const u = data.unit || data;
         setUnit(u);
@@ -245,7 +245,7 @@ export default function PDIChecklist() {
   const handleItemPhoto = async (itemId: string, file: File) => {
     if (!inspectionId || !unitId) return;
     try {
-      const presign = await apiFetch<any>('/api/v6/uploads/presign', {
+      const presign = await apiFetch<any>('/api/uploads/presign', {
         method: 'POST',
         body: JSON.stringify({
           scope: 'units', scopeId: unitId,
@@ -258,7 +258,7 @@ export default function PDIChecklist() {
         method: 'PUT', body: file,
         headers: { 'Content-Type': file.type || 'image/jpeg' },
       });
-      await apiFetch(`/api/v6/uploads/confirm/${presign.photoId}`, { method: 'POST' });
+      await apiFetch(`/api/uploads/confirm/${presign.photoId}`, { method: 'POST' });
       const url: string = presign.publicUrl;
 
       // Update item in DB

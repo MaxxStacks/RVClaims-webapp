@@ -24,10 +24,10 @@ export default function OperatorOpsDashboard({ onNavigate }: Props) {
 
   useEffect(() => {
     Promise.all([
-      apiFetch<any[]>("/api/v6/claims").catch(() => []),
-      apiFetch<any[]>("/api/v6/dealerships").catch(() => []),
-      apiFetch<{ count: number }>("/api/v6/dealerships/pending-count").catch(() => ({ count: 0 })),
-      apiFetch<any[]>("/api/v6/notifications").catch(() => []),
+      apiFetch<any[]>("/api/claims").catch(() => []),
+      apiFetch<any[]>("/api/dealerships").catch(() => []),
+      apiFetch<{ count: number }>("/api/dealerships/pending-count").catch(() => ({ count: 0 })),
+      apiFetch<any[]>("/api/notification-deliveries").catch(() => []),
     ]).then(([c, d, p, n]) => {
       setClaims(Array.isArray(c) ? c : []);
       setDealerCount(Array.isArray(d) ? d.length : 0);

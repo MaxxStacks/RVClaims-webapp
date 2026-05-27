@@ -23,9 +23,9 @@ export default function NotificationBell() {
 
   async function refresh() {
     try {
-      const list = await apiFetch<Notification[]>("/api/v6/notifications");
+      const list = await apiFetch<Notification[]>("/api/notification-deliveries");
       setNotifs(list);
-      const { count } = await apiFetch<{ count: number }>("/api/v6/notifications/unread-count");
+      const { count } = await apiFetch<{ count: number }>("/api/notification-deliveries/unread-count");
       setUnreadCount(count);
     } catch (err) {
       console.error("[NotificationBell] refresh failed", err);
@@ -57,7 +57,7 @@ export default function NotificationBell() {
   }, []);
 
   async function markAllRead() {
-    await apiFetch("/api/v6/notifications/mark-all-read", { method: "POST" });
+    await apiFetch("/api/notification-deliveries/mark-all-read", { method: "POST" });
     await refresh();
   }
 

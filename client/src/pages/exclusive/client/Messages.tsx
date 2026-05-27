@@ -40,7 +40,7 @@ export default function Messages() {
 
   useEffect(() => {
     if (user?.dealershipId) {
-      apiFetch<any>(`/api/v6/dealerships/${user.dealershipId}`)
+      apiFetch<any>(`/api/dealerships/${user.dealershipId}`)
         .then(d => setDealership(d.dealership || d))
         .catch(() => {});
     }

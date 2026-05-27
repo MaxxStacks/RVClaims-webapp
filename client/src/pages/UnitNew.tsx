@@ -19,7 +19,7 @@ export default function UnitNew() {
 
   useEffect(() => {
     if (showDealerPicker) {
-      apiFetch<any>('/api/v6/dealerships')
+      apiFetch<any>('/api/dealerships')
         .then(d => setDealers(Array.isArray(d) ? d : d.dealerships || []))
         .catch(() => {});
     }
@@ -109,7 +109,7 @@ export default function UnitNew() {
         payload.dealershipId = form.dealershipId;
       }
 
-      const res = await apiFetch<any>('/api/v6/units', {
+      const res = await apiFetch<any>('/api/units', {
         method: 'POST',
         body: JSON.stringify(payload),
       });

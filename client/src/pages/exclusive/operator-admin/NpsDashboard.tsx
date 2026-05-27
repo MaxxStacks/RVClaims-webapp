@@ -85,7 +85,7 @@ export default function NpsDashboard() {
 
   const { data: dealershipsData } = useQuery<{ dealerships: { id: string; name: string }[] }>({
     queryKey: ['dealerships-list'],
-    queryFn: () => apiFetch('/api/v6/dealerships?limit=500'),
+    queryFn: () => apiFetch('/api/dealerships?limit=500'),
   });
 
   // Build per-dealer rows

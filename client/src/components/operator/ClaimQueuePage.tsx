@@ -43,7 +43,7 @@ export default function ClaimQueuePage() {
       if (filters.type) params.set("type", filters.type);
       if (filters.manufacturer) params.set("manufacturer", filters.manufacturer);
       if (filters.search) params.set("search", filters.search);
-      const list = await apiFetch<any[]>(`/api/v6/claims?${params.toString()}`);
+      const list = await apiFetch<any[]>(`/api/claims?${params.toString()}`);
       setClaimsList((list || []).filter(c => c.status !== "draft"));
     } finally { setLoading(false); }
   }
@@ -54,14 +54,14 @@ export default function ClaimQueuePage() {
     setSelectedClaimId(claimId);
     setDetailLoading(true);
     try {
-      const detail = await apiFetch<any>(`/api/v6/claims/${claimId}`);
+      const detail = await apiFetch<any>(`/api/claims/${claimId}`);
       setClaimDetail(detail);
     } finally { setDetailLoading(false); }
   }
 
   async function performAction(action: string, body?: any) {
     if (!selectedClaimId) return;
-    await apiFetch(`/api/v6/claims/${selectedClaimId}/${action}`, {
+    await apiFetch(`/api/claims/${selectedClaimId}/${action}`, {
       method: "POST", body: JSON.stringify(body || {}),
     });
     await refresh();

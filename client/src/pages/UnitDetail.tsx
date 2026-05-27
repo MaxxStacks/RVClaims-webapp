@@ -148,7 +148,7 @@ export default function UnitDetail() {
     setIsLoading(true);
     setDataError(null);
     try {
-      const data = await apiFetch<any>(`/api/v6/units/${unitId}`);
+      const data = await apiFetch<any>(`/api/units/${unitId}`);
       setUnit(data.unit || null);
       setDealership(data.dealership || null);
       setCustomer(data.customer || null);
@@ -162,7 +162,7 @@ export default function UnitDetail() {
   const loadClaims = useCallback(async () => {
     if (!unitId || isClient) return;
     try {
-      const data = await apiFetch<any[]>(`/api/v6/units/${unitId}/claims`);
+      const data = await apiFetch<any[]>(`/api/units/${unitId}/claims`);
       setClaims(Array.isArray(data) ? data : []);
     } catch { setClaims([]); }
   }, [unitId, isClient]);
@@ -170,7 +170,7 @@ export default function UnitDetail() {
   const loadDocuments = useCallback(async () => {
     if (!unitId) return;
     try {
-      const data = await apiFetch<any[]>(`/api/v6/units/${unitId}/documents`);
+      const data = await apiFetch<any[]>(`/api/units/${unitId}/documents`);
       setDocuments(Array.isArray(data) ? data : []);
     } catch { setDocuments([]); }
   }, [unitId]);
@@ -180,7 +180,7 @@ export default function UnitDetail() {
     try {
       const params = new URLSearchParams();
       if (photoFilter) params.set('category', photoFilter);
-      const data = await apiFetch<any[]>(`/api/v6/units/${unitId}/photos?${params}`);
+      const data = await apiFetch<any[]>(`/api/units/${unitId}/photos?${params}`);
       setPhotos(Array.isArray(data) ? data : []);
     } catch { setPhotos([]); }
   }, [unitId, isClient, photoFilter]);
@@ -281,7 +281,7 @@ export default function UnitDetail() {
     if (!unitId) return;
     setEditSaving(true);
     try {
-      const updated = await apiFetch<any>(`/api/v6/units/${unitId}`, {
+      const updated = await apiFetch<any>(`/api/units/${unitId}`, {
         method: 'PATCH',
         body: JSON.stringify(editForm),
       });
@@ -340,7 +340,7 @@ export default function UnitDetail() {
     if (!scanDocFile || !unitId) return;
     setDocUploading(true);
     try {
-      const presignRes = await apiFetch<any>('/api/v6/uploads/presign', {
+      const presignRes = await apiFetch<any>('/api/uploads/presign', {
         method: 'POST',
         body: JSON.stringify({
           scope: 'units', scopeId: unitId,
@@ -353,8 +353,8 @@ export default function UnitDetail() {
         method: 'PUT', body: scanDocFile,
         headers: { 'Content-Type': scanDocFile.type || 'application/octet-stream' },
       });
-      await apiFetch(`/api/v6/uploads/confirm/${presignRes.photoId}`, { method: 'POST' });
-      await apiFetch(`/api/v6/units/${unitId}/documents`, {
+      await apiFetch(`/api/uploads/confirm/${presignRes.photoId}`, { method: 'POST' });
+      await apiFetch(`/api/units/${unitId}/documents`, {
         method: 'POST',
         body: JSON.stringify({
           name: scanDocFile.name, url: presignRes.publicUrl,
@@ -380,7 +380,7 @@ export default function UnitDetail() {
     setDocUploading(true);
     try {
       // Use v6 presign flow for R2, then confirm
-      const presignRes = await apiFetch<any>('/api/v6/uploads/presign', {
+      const presignRes = await apiFetch<any>('/api/uploads/presign', {
         method: 'POST',
         body: JSON.stringify({
           scope: 'units',
@@ -399,10 +399,10 @@ export default function UnitDetail() {
       });
 
       // Confirm upload
-      await apiFetch(`/api/v6/uploads/confirm/${presignRes.photoId}`, { method: 'POST' });
+      await apiFetch(`/api/uploads/confirm/${presignRes.photoId}`, { method: 'POST' });
 
       // Register as document record
-      await apiFetch(`/api/v6/units/${unitId}/documents`, {
+      await apiFetch(`/api/units/${unitId}/documents`, {
         method: 'POST',
         body: JSON.stringify({
           name: file.name,
@@ -425,7 +425,7 @@ export default function UnitDetail() {
   const handleDeleteDoc = async (docId: string) => {
     if (!window.confirm('Delete this document?')) return;
     try {
-      await apiFetch(`/api/v6/units/${unitId}/documents/${docId}`, { method: 'DELETE' });
+      await apiFetch(`/api/units/${unitId}/documents/${docId}`, { method: 'DELETE' });
       showToast('Document deleted');
       loadDocuments();
     } catch (err: any) {
@@ -440,7 +440,7 @@ export default function UnitDetail() {
     e.target.value = '';
     setPhotoUploading(true);
     try {
-      const presignRes = await apiFetch<any>('/api/v6/uploads/presign', {
+      const presignRes = await apiFetch<any>('/api/uploads/presign', {
         method: 'POST',
         body: JSON.stringify({
           scope: 'units',
@@ -457,7 +457,7 @@ export default function UnitDetail() {
         headers: { 'Content-Type': file.type },
       });
 
-      await apiFetch(`/api/v6/uploads/confirm/${presignRes.photoId}`, { method: 'POST' });
+      await apiFetch(`/api/uploads/confirm/${presignRes.photoId}`, { method: 'POST' });
 
       showToast('Photo uploaded');
       loadPhotos();
@@ -471,7 +471,7 @@ export default function UnitDetail() {
   const handleDeletePhoto = async (photoId: string) => {
     if (!window.confirm('Delete this photo?')) return;
     try {
-      await apiFetch(`/api/v6/units/${unitId}/photos/${photoId}`, { method: 'DELETE' });
+      await apiFetch(`/api/units/${unitId}/photos/${photoId}`, { method: 'DELETE' });
       showToast('Photo deleted');
       loadPhotos();
     } catch (err: any) {

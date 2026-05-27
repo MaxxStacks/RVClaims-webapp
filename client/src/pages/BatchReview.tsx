@@ -84,7 +84,7 @@ export default function BatchReview() {
 
       // Load FRC codes for manufacturer
       const mfr = d.batch?.manufacturer || 'Jayco';
-      const frcData = await apiFetch<any>(`/api/v6/frc-codes?manufacturer=${encodeURIComponent(mfr)}`).catch(() => null);
+      const frcData = await apiFetch<any>(`/api/frc-codes?manufacturer=${encodeURIComponent(mfr)}`).catch(() => null);
       if (frcData?.frcCodes?.length > 0) {
         setFrcCodes(frcData.frcCodes.map((c: any) => ({ code: c.code, description: c.description, hours: c.laborHours || 1.0 })));
       } else {

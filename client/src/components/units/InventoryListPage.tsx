@@ -26,9 +26,16 @@ const STATUS_COLOR: Record<string, string> = {
   sold_out_of_state: "#888",
 };
 
+const CONTEXT_BASE: Record<string, string> = {
+  operator: "/operator/admin",
+  dealer: "/dev-dealer-001/owner",
+  client: "/dev-dealer-001/client",
+};
+
 export default function InventoryListPage({ context }: Props) {
   const apiFetch = useApiFetch();
   const [, navigate] = useLocation();
+  const contextBase = CONTEXT_BASE[context] || `/dev-dealer-001/owner`;
   const [units, setUnits] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState({ status: "", search: "" });
@@ -38,7 +45,7 @@ export default function InventoryListPage({ context }: Props) {
       const params = new URLSearchParams();
       if (filter.status) params.set("status", filter.status);
       if (filter.search) params.set("search", filter.search);
-      const list = await apiFetch<any[]>(`/api/v6/units?${params.toString()}`);
+      const list = await apiFetch<any[]>(`/api/units?${params.toString()}`);
       setUnits(Array.isArray(list) ? list : []);
     } catch (e) {
       console.error("[InventoryListPage] fetch error", e);
@@ -65,7 +72,7 @@ export default function InventoryListPage({ context }: Props) {
           <h1 style={{ margin: "4px 0 0", fontSize: 20, fontWeight: 700 }}>Units</h1>
         </div>
         {context !== "client" && (
-          <button onClick={() => navigate(`/${context}-v6/units/new`)}
+          <button onClick={() => navigate(`${contextBase}/units/new`)}
             style={{ padding: "8px 16px", background: "#033280", color: "white", border: 0, borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
             + New Unit
           </button>
@@ -127,7 +134,7 @@ export default function InventoryListPage({ context }: Props) {
           <tbody>
             {units.map(u => (
               <tr key={u.id}
-                onClick={() => navigate(`/${context}-v6/units/${u.id}`)}
+                onClick={() => navigate(`${contextBase}/units/${u.id}`)}
                 style={{ borderBottom: "1px solid #f5f5f5", fontSize: 13, cursor: "pointer" }}
                 onMouseEnter={e => (e.currentTarget.style.background = "#f7f7f7")}
                 onMouseLeave={e => (e.currentTarget.style.background = "white")}>

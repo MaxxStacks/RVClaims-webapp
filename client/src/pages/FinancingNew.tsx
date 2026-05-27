@@ -89,7 +89,7 @@ export default function FinancingNew() {
   // Load dealerships list (operator_admin only)
   useEffect(() => {
     if (!isOperatorAdmin) return;
-    apiFetch<any>('/api/v6/dealerships')
+    apiFetch<any>('/api/dealerships')
       .then(d => setDealers(Array.isArray(d) ? d : d.dealerships || []))
       .catch(() => {});
   }, [isOperatorAdmin]);
@@ -104,7 +104,7 @@ export default function FinancingNew() {
   // Load customers when dealershipId is set
   useEffect(() => {
     if (!dealershipId) return;
-    apiFetch<any>(`/api/v6/users?dealershipId=${dealershipId}&role=client`)
+    apiFetch<any>(`/api/users?dealershipId=${dealershipId}&role=client`)
       .then(d => setCustomers(Array.isArray(d) ? d : d.users || d.customers || []))
       .catch(() => {});
   }, [dealershipId]);
@@ -112,7 +112,7 @@ export default function FinancingNew() {
   // Load units when dealershipId is set
   useEffect(() => {
     if (!dealershipId) return;
-    apiFetch<any>(`/api/v6/units?dealershipId=${dealershipId}`)
+    apiFetch<any>(`/api/units?dealershipId=${dealershipId}`)
       .then(d => setUnits(Array.isArray(d) ? d : d.units || []))
       .catch(() => {});
   }, [dealershipId]);

@@ -60,10 +60,10 @@ export default function CreateInvoice() {
   };
 
   useEffect(() => {
-    apiFetch<any>('/api/v6/dealerships')
+    apiFetch<any>('/api/dealerships')
       .then(d => setDealers(Array.isArray(d) ? d : []))
       .catch(() => setDealers([]));
-    apiFetch<any>('/api/v6/claims')
+    apiFetch<any>('/api/claims')
       .then(d => setClaims(Array.isArray(d) ? d : []))
       .catch(() => setClaims([]));
   }, []);

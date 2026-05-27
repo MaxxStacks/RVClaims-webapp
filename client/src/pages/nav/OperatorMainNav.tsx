@@ -48,7 +48,7 @@ export default function OperatorMainNav({ currentPage, onShowPage }: Props) {
     if (onShowPage) {
       onShowPage(pageId);
     } else {
-      navigate(URL_MAP[pageId] || "/operator-v6");
+      navigate(URL_MAP[pageId] || "/operator/admin/dashboard");
     }
   };
 

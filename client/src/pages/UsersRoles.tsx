@@ -8,7 +8,7 @@ export default function UsersRoles() {
   const [dataError, setDataError] = useState<string | null>(null);
 
   useEffect(() => {
-    apiFetch<any>('/api/v6/users').then(d => setOpUsers(Array.isArray(d) ? d : [])).catch(err => setDataError(err?.message || 'Failed to load'));
+    apiFetch<any>('/api/users').then(d => setOpUsers(Array.isArray(d) ? d : [])).catch(err => setDataError(err?.message || 'Failed to load'));
   }, []);
 
   const filteredUsers = opUsers.filter(u => {
@@ -20,15 +20,15 @@ export default function UsersRoles() {
 
   const handleInviteUser = async (email: string, role: string) => {
     try {
-      await apiFetch('/api/v6/users/invite', { method: 'POST', body: JSON.stringify({ email, role }) });
-      const d = await apiFetch<any>('/api/v6/users');
+      await apiFetch('/api/users/invite', { method: 'POST', body: JSON.stringify({ email, role }) });
+      const d = await apiFetch<any>('/api/users');
       setOpUsers(Array.isArray(d) ? d : []);
     } catch {}
   };
 
   const handleDeactivateUser = async (id: string) => {
     try {
-      await apiFetch(`/api/v6/users/${id}`, { method: 'PUT', body: JSON.stringify({ status: 'inactive' }) });
+      await apiFetch(`/api/users/${id}`, { method: 'PUT', body: JSON.stringify({ status: 'inactive' }) });
       setOpUsers(prev => prev.map(u => u.id === id ? { ...u, status: 'inactive' } : u));
     } catch {}
   };

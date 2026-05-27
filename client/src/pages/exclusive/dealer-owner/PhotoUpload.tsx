@@ -41,7 +41,7 @@ export default function PhotoUpload() {
   const manufacturer = selectedUnit?.manufacturer || '';
 
   useEffect(() => {
-    apiFetch<any>('/api/v6/units')
+    apiFetch<any>('/api/units')
       .then(d => setUnits(Array.isArray(d) ? d : []))
       .catch(() => setUnits([]));
   }, []);
@@ -68,7 +68,7 @@ export default function PhotoUpload() {
 
       try {
         // Step 1: Get presigned URL
-        const presignRes = await apiFetch<any>('/api/v6/uploads/presign', {
+        const presignRes = await apiFetch<any>('/api/uploads/presign', {
           method: 'POST',
           body: JSON.stringify({
             scope: 'units',
@@ -91,7 +91,7 @@ export default function PhotoUpload() {
         }
 
         // Step 3: Confirm upload to server
-        await apiFetch('/api/v6/uploads/confirm/' + presignRes.photoId, {
+        await apiFetch('/api/uploads/confirm/' + presignRes.photoId, {
           method: 'POST',
         });
 

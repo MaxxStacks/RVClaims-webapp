@@ -40,7 +40,7 @@ export default function StaffManagement() {
     if (!dealerId) return;
     setLoading(true);
     try {
-      const d = await apiFetch<any>(`/api/v6/dealerships/${dealerId}/staff`);
+      const d = await apiFetch<any>(`/api/dealerships/${dealerId}/staff`);
       setStaff(Array.isArray(d) ? d : d?.staff || []);
       setDataError(null);
     } catch (err: any) {
@@ -56,7 +56,7 @@ export default function StaffManagement() {
     if (!inviteEmail || !dealerId) return;
     setInviteSending(true);
     try {
-      await apiFetch(`/api/v6/dealerships/${dealerId}/staff`, {
+      await apiFetch(`/api/dealerships/${dealerId}/staff`, {
         method: 'POST',
         body: JSON.stringify({ email: inviteEmail, role: inviteRole }),
       });
@@ -74,7 +74,7 @@ export default function StaffManagement() {
   const handleRemove = async (userId: string) => {
     if (!dealerId) return;
     try {
-      await apiFetch(`/api/v6/dealerships/${dealerId}/staff/${userId}`, { method: 'DELETE' });
+      await apiFetch(`/api/dealerships/${dealerId}/staff/${userId}`, { method: 'DELETE' });
       setStaff(s => s.filter(x => x.id !== userId));
       showToast('Staff member removed');
     } catch {
@@ -85,7 +85,7 @@ export default function StaffManagement() {
   const handleRoleChange = async (userId: string, role: string) => {
     if (!dealerId) return;
     try {
-      await apiFetch(`/api/v6/dealerships/${dealerId}/staff/${userId}/role`, {
+      await apiFetch(`/api/dealerships/${dealerId}/staff/${userId}/role`, {
         method: 'PATCH',
         body: JSON.stringify({ role }),
       });

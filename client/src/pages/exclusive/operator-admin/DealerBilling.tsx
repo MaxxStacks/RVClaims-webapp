@@ -32,8 +32,8 @@ export default function DealerBilling() {
   useEffect(() => {
     if (!dealerId) return;
     Promise.all([
-      apiFetch<any>(`/api/v6/dealerships/${dealerId}`),
-      apiFetch<any>(`/api/v6/dealerships/${dealerId}/pricing`),
+      apiFetch<any>(`/api/dealerships/${dealerId}`),
+      apiFetch<any>(`/api/dealerships/${dealerId}/pricing`),
     ]).then(([dData, pData]) => {
       const d = dData.dealership || dData;
       setDealer(d);
@@ -54,7 +54,7 @@ export default function DealerBilling() {
     if (!dealerId) return;
     setSaving(true);
     try {
-      await apiFetch(`/api/v6/dealerships/${dealerId}/pricing`, {
+      await apiFetch(`/api/dealerships/${dealerId}/pricing`, {
         method: 'PATCH',
         body: JSON.stringify(pricingForm),
       });

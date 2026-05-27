@@ -21,7 +21,7 @@ export default function NewClaimPage() {
   const showToast = (msg: string) => { setToast(msg); setTimeout(() => setToast(''), 2800); };
 
   useEffect(() => {
-    apiFetch<any>(`/api/v6/units/${params.unitId}`)
+    apiFetch<any>(`/api/units/${params.unitId}`)
       .then(d => setUnit(d.unit))
       .catch(() => setUnit(null))
       .finally(() => setLoading(false));
@@ -32,7 +32,7 @@ export default function NewClaimPage() {
     if (!type || draftCreating || draftClaimId) return;
     setDraftCreating(true);
     try {
-      const created = await apiFetch<any>("/api/v6/claims", {
+      const created = await apiFetch<any>("/api/claims", {
         method: "POST",
         body: JSON.stringify({
           unitId: params.unitId,
@@ -62,11 +62,11 @@ export default function NewClaimPage() {
     if (photoCount === 0) { showToast("At least 1 photo is required before submitting"); return; }
     setSubmitting(true);
     try {
-      await apiFetch(`/api/v6/claims/${draftClaimId}/submit`, {
+      await apiFetch(`/api/claims/${draftClaimId}/submit`, {
         method: "POST",
         body: JSON.stringify({}),
       });
-      navigate(`/dealer-v6/units/${params.unitId}`);
+      navigate(`/dev-dealer-001/owner/units/${params.unitId}`);
     } catch (err: any) {
       showToast("Submit failed: " + (err.message || err));
     } finally {
@@ -78,11 +78,11 @@ export default function NewClaimPage() {
     if (draftClaimId) {
       setCancelling(true);
       try {
-        await apiFetch(`/api/v6/claims/${draftClaimId}`, { method: "DELETE" });
+        await apiFetch(`/api/claims/${draftClaimId}`, { method: "DELETE" });
       } catch {}
       setCancelling(false);
     }
-    navigate(`/dealer-v6/units/${params.unitId}`);
+    navigate(`/dev-dealer-001/owner/units/${params.unitId}`);
   }
 
   if (loading) return <div style={{padding: 40, textAlign: "center"}}>Loading...</div>;

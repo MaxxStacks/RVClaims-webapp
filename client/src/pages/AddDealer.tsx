@@ -62,7 +62,7 @@ export default function AddDealer() {
     }
     setSaving(true);
     try {
-      const created = await apiFetch<any>('/api/v6/dealerships', {
+      const created = await apiFetch<any>('/api/dealerships', {
         method: 'POST',
         body: JSON.stringify({
           name: form.name,
@@ -83,7 +83,7 @@ export default function AddDealer() {
       // Update pricing if customized
       if (created?.id) {
         try {
-          await apiFetch(`/api/v6/dealerships/${created.id}/pricing`, {
+          await apiFetch(`/api/dealerships/${created.id}/pricing`, {
             method: 'PATCH',
             body: JSON.stringify({
               plan: form.plan,

@@ -40,7 +40,7 @@ function ClientDashboard() {
       setIsLoading(true);
       try {
         await Promise.all([
-          apiFetch<any>('/api/v6/units').then(async d => {
+          apiFetch<any>('/api/units').then(async d => {
             const units = Array.isArray(d) ? d : d.units || [];
             const unit = units[0] || null;
             setClientUnit(unit);
@@ -61,7 +61,7 @@ function ClientDashboard() {
             const t = Array.isArray(d) ? d : d.tickets || [];
             setOpenTickets(t.length);
           }).catch(() => {}),
-          apiFetch<any>('/api/v6/claims').then(d => {
+          apiFetch<any>('/api/claims').then(d => {
             const c = Array.isArray(d) ? d : d.claims || [];
             setActiveClaims(c.filter((cl: any) => cl.status !== 'closed' && cl.status !== 'paid').length);
           }).catch(() => {}),
@@ -371,7 +371,7 @@ function OperatorDashboard() {
   const [dataError, setDataError] = useState<string | null>(null);
 
   useEffect(() => {
-    Promise.all([apiFetch<any>('/api/v6/claims'), apiFetch<any>('/api/v6/dealerships')])
+    Promise.all([apiFetch<any>('/api/claims'), apiFetch<any>('/api/dealerships')])
       .then(([cd, dd]) => { setOpClaims(Array.isArray(cd) ? cd : []); setOpDealers(Array.isArray(dd) ? dd : []); })
       .catch(err => setDataError(err?.message || 'Failed to load'));
     apiFetch<any>('/api/batches?status=uploaded').then(d => setOpBatches(d.batches || [])).catch(() => {});
@@ -461,8 +461,8 @@ function DealerDashboard() {
   useEffect(() => {
     const locationParam = currentLocationId ? `?locationId=${currentLocationId}` : '';
     Promise.all([
-      apiFetch<any>(`/api/v6/claims${locationParam}`).then(d => setClaims(Array.isArray(d) ? d : d.claims || [])).catch(() => {}),
-      apiFetch<any>(`/api/v6/units${locationParam}`).then(d => setUnits(Array.isArray(d) ? d : d.units || [])).catch(() => {}),
+      apiFetch<any>(`/api/claims${locationParam}`).then(d => setClaims(Array.isArray(d) ? d : d.claims || [])).catch(() => {}),
+      apiFetch<any>(`/api/units${locationParam}`).then(d => setUnits(Array.isArray(d) ? d : d.units || [])).catch(() => {}),
     ]).catch(err => setDataError(err?.message || 'Failed to load'));
   }, [currentLocationId]);
 

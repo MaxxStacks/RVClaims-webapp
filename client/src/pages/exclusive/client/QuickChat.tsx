@@ -38,7 +38,7 @@ export default function QuickChat() {
   // Load dealership info
   useEffect(() => {
     if (user?.dealershipId) {
-      apiFetch<any>(`/api/v6/dealerships/${user.dealershipId}`)
+      apiFetch<any>(`/api/dealerships/${user.dealershipId}`)
         .then(d => setDealership(d.dealership || d))
         .catch(() => {});
     }

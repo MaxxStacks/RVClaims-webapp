@@ -22,10 +22,10 @@ export default function Claims() {
   const isPartsManager = user?.role === 'parts_dept';
 
   useEffect(() => {
-    apiFetch<any>('/api/v6/claims').then(d => setOpClaims(Array.isArray(d) ? d : [])).catch(err => setDataError(err?.message || 'Failed to load'));
+    apiFetch<any>('/api/claims').then(d => setOpClaims(Array.isArray(d) ? d : [])).catch(err => setDataError(err?.message || 'Failed to load'));
     // Only fetch dealerships list for operators (used by the dealer filter dropdown)
     if (isOperator) {
-      apiFetch<any>('/api/v6/dealerships').then(d => setOpDealers(Array.isArray(d) ? d : [])).catch(() => {});
+      apiFetch<any>('/api/dealerships').then(d => setOpDealers(Array.isArray(d) ? d : [])).catch(() => {});
     }
   }, [isOperator]);
 

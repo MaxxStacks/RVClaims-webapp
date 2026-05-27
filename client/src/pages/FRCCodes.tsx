@@ -11,7 +11,7 @@ export default function FRCCodes() {
   const [addFrcForm, setAddFrcForm] = useState({ code: '', description: '', category: 'Structural', hours: '' });
 
   useEffect(() => {
-    apiFetch<any>('/api/v6/frc-codes').then(d => setFrcCodes(Array.isArray(d) ? d : [])).catch(() => {});
+    apiFetch<any>('/api/frc-codes').then(d => setFrcCodes(Array.isArray(d) ? d : [])).catch(() => {});
   }, []);
 
   const filteredFrcCodes = frcCodes.filter(c => {
@@ -28,8 +28,8 @@ export default function FRCCodes() {
     if (!addFrcForm.code) return;
     setAddFrcSaving(true);
     try {
-      await apiFetch('/api/v6/frc-codes', { method: 'POST', body: JSON.stringify({ ...addFrcForm, manufacturer: frcMfr }) });
-      const d = await apiFetch<any>('/api/v6/frc-codes');
+      await apiFetch('/api/frc-codes', { method: 'POST', body: JSON.stringify({ ...addFrcForm, manufacturer: frcMfr }) });
+      const d = await apiFetch<any>('/api/frc-codes');
       setFrcCodes(Array.isArray(d) ? d : []);
       setShowAddFrc(false);
       setAddFrcForm({ code: '', description: '', category: 'Structural', hours: '' });

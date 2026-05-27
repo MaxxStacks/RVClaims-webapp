@@ -28,7 +28,7 @@ export default function PartsMgmt() {
   const load = () => {
     setLoading(true);
     setError('');
-    apiFetch<any[]>('/api/v6/parts-orders')
+    apiFetch<any[]>('/api/parts-orders')
       .then(d => setOrders(Array.isArray(d) ? d : []))
       .catch(() => setError('Failed to load parts orders.'))
       .finally(() => setLoading(false));
@@ -39,7 +39,7 @@ export default function PartsMgmt() {
   const transition = async (id: string, toStatus: string, extra?: Record<string, string>) => {
     setTransitioning(id);
     try {
-      await apiFetch(`/api/v6/parts-orders/${id}/transition`, {
+      await apiFetch(`/api/parts-orders/${id}/transition`, {
         method: 'POST',
         body: JSON.stringify({ toStatus, ...extra }),
       });

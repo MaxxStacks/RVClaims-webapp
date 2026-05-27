@@ -106,7 +106,7 @@ export default function ArrivalsQueue() {
       if (filterDealer) params.set('dealershipId', filterDealer);
       if (filterStatus === 'overdue') params.set('overdue', 'true');
       if (filterStatus === 'unassigned') params.set('assignedOperatorId', 'unassigned');
-      const data = await apiFetch<any[]>(`/api/v6/units/arrivals?${params}`);
+      const data = await apiFetch<any[]>(`/api/units/arrivals?${params}`);
       setArrivals(Array.isArray(data) ? data : []);
     } catch (err: any) {
       setDataError(err?.message || 'Failed to load arrivals');
@@ -125,7 +125,7 @@ export default function ArrivalsQueue() {
 
   // Load operator staff list for assign dropdown
   useEffect(() => {
-    apiFetch<any>('/api/v6/users?role=operator_staff&role=operator_admin')
+    apiFetch<any>('/api/users?role=operator_staff&role=operator_admin')
       .then(d => {
         const list: OperatorUser[] = Array.isArray(d) ? d : d.users || [];
         setOperators(list.filter((o: OperatorUser) =>
@@ -137,7 +137,7 @@ export default function ArrivalsQueue() {
 
   // Load dealer list for filter
   useEffect(() => {
-    apiFetch<any>('/api/v6/dealerships')
+    apiFetch<any>('/api/dealerships')
       .then(d => {
         const list = Array.isArray(d) ? d : d.dealerships || [];
         setDealers(list.map((x: any) => ({ id: x.id, name: x.name })));
@@ -187,7 +187,7 @@ export default function ArrivalsQueue() {
     if (!rowAssignId) return;
     setRowAssigning(true);
     try {
-      await apiFetch(`/api/v6/units/${unitId}/assign`, {
+      await apiFetch(`/api/units/${unitId}/assign`, {
         method: 'PATCH',
         body: JSON.stringify({ assignedOperatorId: rowAssignId }),
       });
@@ -209,7 +209,7 @@ export default function ArrivalsQueue() {
     let successCount = 0;
     for (const unitId of Array.from(selected)) {
       try {
-        await apiFetch(`/api/v6/units/${unitId}/assign`, {
+        await apiFetch(`/api/units/${unitId}/assign`, {
           method: 'PATCH',
           body: JSON.stringify({ assignedOperatorId: bulkAssignId }),
         });
@@ -229,7 +229,7 @@ export default function ArrivalsQueue() {
   const handleSendReminder = async (unitId: string, vin: string) => {
     setSendingReminder(unitId);
     try {
-      await apiFetch(`/api/v6/units/${unitId}/send-daf-reminder`, { method: 'POST' });
+      await apiFetch(`/api/units/${unitId}/send-daf-reminder`, { method: 'POST' });
       toast.show(`Reminder sent for VIN ${vin}`);
     } catch (err: any) {
       toast.show(err?.message || 'Failed to send reminder');

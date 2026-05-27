@@ -58,7 +58,7 @@ export default function Customers() {
   // Load units for invite dropdown (dealer only)
   useEffect(() => {
     if (canInvite && user?.dealershipId) {
-      apiFetch<any>(`/api/v6/units?dealershipId=${user.dealershipId}`)
+      apiFetch<any>(`/api/units?dealershipId=${user.dealershipId}`)
         .then(d => setUnits(Array.isArray(d) ? d : d.units || []))
         .catch(() => {});
     }

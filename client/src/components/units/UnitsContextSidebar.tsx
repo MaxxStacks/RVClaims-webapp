@@ -3,6 +3,11 @@ import { useApiFetch } from "@/lib/api";
 import { useLocation } from "wouter";
 import { LAYOUT } from "@/components/layout/tokens";
 
+const CONTEXT_BASE: Record<string, string> = {
+  operator: "/operator/admin",
+  dealer: "/dev-dealer-001/owner",
+};
+
 interface Props {
   context: "operator" | "dealer";
   activeId?: string;
@@ -11,6 +16,7 @@ interface Props {
 export default function UnitsContextSidebar({ context, activeId }: Props) {
   const apiFetch = useApiFetch();
   const [, navigate] = useLocation();
+  const contextBase = CONTEXT_BASE[context] || "/dev-dealer-001/owner";
   const [units, setUnits] = useState<any[]>([]);
   const [filter, setFilter] = useState({ search: "", status: "" });
 
@@ -18,14 +24,14 @@ export default function UnitsContextSidebar({ context, activeId }: Props) {
     const p = new URLSearchParams();
     if (filter.status) p.set("status", filter.status);
     if (filter.search) p.set("search", filter.search);
-    apiFetch<any[]>(`/api/v6/units?${p.toString()}`).then(setUnits).catch(() => {});
+    apiFetch<any[]>(`/api/units?${p.toString()}`).then(setUnits).catch(() => {});
   }, [filter.status, filter.search]);
 
   return (
     <>
       <div style={{ padding: 16, borderBottom: `1px solid ${LAYOUT.borderLighter}` }}>
         <button
-          onClick={() => navigate(`/${context}-v6/units/new`)}
+          onClick={() => navigate(`${contextBase}/units/new`)}
           style={{ background: "none", border: 0, color: LAYOUT.navy, fontSize: 12, cursor: "pointer", padding: 0, marginBottom: 12, fontWeight: 600 }}
         >
           + New Unit
@@ -59,7 +65,7 @@ export default function UnitsContextSidebar({ context, activeId }: Props) {
           return (
             <div
               key={u.id}
-              onClick={() => navigate(`/${context}-v6/units/${u.id}`)}
+              onClick={() => navigate(`${contextBase}/units/${u.id}`)}
               style={{
                 padding: `${LAYOUT.sidebarItemPaddingY}px ${LAYOUT.sidebarItemPaddingX}px`,
                 cursor: "pointer",

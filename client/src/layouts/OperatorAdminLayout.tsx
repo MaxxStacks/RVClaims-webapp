@@ -101,7 +101,7 @@ export default function OperatorAdminLayout({ children }: Props) {
   // Load dealer list when RS dropdown opens
   useEffect(() => {
     if (!rsOpen || rsDealers.length > 0) return;
-    apiFetch<any>('/api/v6/dealerships?limit=100')
+    apiFetch<any>('/api/dealerships?limit=100')
       .then(data => {
         const list = Array.isArray(data) ? data : (data?.dealerships ?? []);
         setRsDealers(list.map((d: any) => ({ id: d.id, name: d.name })));

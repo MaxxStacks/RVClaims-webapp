@@ -20,7 +20,7 @@ export default function DealerPartsOrdersPage() {
   const showToast = (msg: string) => { setToast(msg); setTimeout(() => setToast(''), 2800); };
 
   async function refresh() {
-    const list = await apiFetch<any[]>("/api/v6/parts-orders");
+    const list = await apiFetch<any[]>("/api/parts-orders");
     setOrders(list);
   }
   useEffect(() => { refresh(); }, []);
@@ -33,7 +33,7 @@ export default function DealerPartsOrdersPage() {
     if (lines.length === 0) { showToast("Add at least one item (format: PART-NUM | description | qty)"); return; }
     setSubmitting(true);
     try {
-      await apiFetch("/api/v6/parts-orders", {
+      await apiFetch("/api/parts-orders", {
         method: "POST",
         body: JSON.stringify({ supplier: form.supplier, items: lines }),
       });

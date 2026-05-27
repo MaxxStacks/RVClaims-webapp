@@ -1,16 +1,17 @@
 import { useUser } from "@clerk/clerk-react";
 import { useState } from "react";
 
+const DEV_DEALER_ID = "dev-dealer-001";
 const PORTAL_TARGETS: Record<string, string> = {
-  operator_admin: "/operator-v6",
-  operator_staff: "/operator-v6",
-  dealer_owner: "/dealer-v6",
-  dealer_staff: "/dealer-v6",
-  technician: "/dealer-v6",
-  public_bidder: "/dealer-v6",
-  consignor: "/dealer-v6",
-  client: "/client-v6",
-  bidder: "/bidder-v6",
+  operator_admin: "/operator/admin/dashboard",
+  operator_staff: "/operator/staff/dashboard",
+  dealer_owner: `/${DEV_DEALER_ID}/owner/dashboard`,
+  dealer_staff: `/${DEV_DEALER_ID}/staff/dashboard`,
+  technician: `/${DEV_DEALER_ID}/shop-tech/dashboard`,
+  public_bidder: "/marketplace/bidder/dashboard",
+  consignor: "/marketplace/consignor/dashboard",
+  client: `/${DEV_DEALER_ID}/client/dashboard`,
+  bidder: "/marketplace/independent/dashboard",
 };
 
 const ROLE_LABELS: Record<string, string> = {

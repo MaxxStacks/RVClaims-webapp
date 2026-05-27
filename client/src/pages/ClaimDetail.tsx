@@ -118,15 +118,15 @@ export default function ClaimDetail() {
     setIsLoading(true);
     setDataError(null);
     try {
-      const d = await apiFetch<any>(`/api/v6/claims/${claimId}`);
+      const d = await apiFetch<any>(`/api/claims/${claimId}`);
       setClaim(d.claim || null);
       setUnit(d.unit || null);
       setDealership(d.dealership || null);
       setCustomer(d.customer || null);
-      setFrcLines([]); // FRC lines not returned by v6 endpoint — use claims endpoint
+      setFrcLines([]); // FRC lines not returned by claims endpoint — use claims endpoint
 
       // Load photos separately
-      const photosData = await apiFetch<any[]>(`/api/v6/uploads/by-claim/${claimId}`).catch(() => []);
+      const photosData = await apiFetch<any[]>(`/api/uploads/by-claim/${claimId}`).catch(() => []);
       setClaimPhotos(Array.isArray(photosData) ? photosData : []);
 
       // Load FRC lines from the older claims endpoint
@@ -136,7 +136,7 @@ export default function ClaimDetail() {
       }
 
       // Load parts orders linked to this claim
-      const partsData = await apiFetch<any>(`/api/v6/parts-orders?claimId=${claimId}`).catch(() => []);
+      const partsData = await apiFetch<any>(`/api/parts-orders?claimId=${claimId}`).catch(() => []);
       setClaimParts(Array.isArray(partsData) ? partsData : partsData?.orders || []);
     } catch (err: any) {
       setDataError(err?.message || 'Failed to load claim');
@@ -166,7 +166,7 @@ export default function ClaimDetail() {
     if (!statusTo) { showToast('Select a status to transition to.'); return; }
     setStatusSaving(true);
     try {
-      await apiFetch(`/api/v6/claims/${claimId}/transition`, {
+      await apiFetch(`/api/claims/${claimId}/transition`, {
         method: 'POST',
         body: JSON.stringify({
           toStatus: statusTo,
@@ -210,7 +210,7 @@ export default function ClaimDetail() {
   const handleCloseClaim = async () => {
     setClosingClaim(true);
     try {
-      await apiFetch(`/api/v6/claims/${claimId}`, {
+      await apiFetch(`/api/claims/${claimId}`, {
         method: 'PATCH',
         body: JSON.stringify({ status: 'closed' }),
       });
@@ -225,7 +225,7 @@ export default function ClaimDetail() {
 
   const handleAssignToMe = async () => {
     try {
-      await apiFetch(`/api/v6/claims/${claimId}/assign`, {
+      await apiFetch(`/api/claims/${claimId}/assign`, {
         method: 'POST',
         body: JSON.stringify({}),
       });

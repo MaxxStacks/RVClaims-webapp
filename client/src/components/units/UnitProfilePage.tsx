@@ -32,7 +32,7 @@ export default function UnitProfilePage({ context }: Props) {
   async function refresh() {
     setLoading(true);
     try {
-      const result = await apiFetch<any>(`/api/v6/units/${params.id}`);
+      const result = await apiFetch<any>(`/api/units/${params.id}`);
       setData(result);
       setEditing(result.unit);
     } catch (e) {
@@ -58,7 +58,7 @@ export default function UnitProfilePage({ context }: Props) {
       for (const f of fields) {
         if (editing[f] !== undefined) body[f] = editing[f];
       }
-      await apiFetch(`/api/v6/units/${params.id}`, { method: "PATCH", body: JSON.stringify(body) });
+      await apiFetch(`/api/units/${params.id}`, { method: "PATCH", body: JSON.stringify(body) });
       await refresh();
     } finally {
       setSaving(false);
@@ -96,7 +96,7 @@ export default function UnitProfilePage({ context }: Props) {
             </div>
           </div>
           {context === "dealer" && (
-            <button onClick={() => navigate(`/dealer-v6/units/${params.id}/claims/new`)}
+            <button onClick={() => navigate(`/dev-dealer-001/owner/units/${params.id}/claims/new`)}
               style={{ padding: "10px 18px", background: "#22c55e", color: "white", border: 0, borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
               + New Claim
             </button>

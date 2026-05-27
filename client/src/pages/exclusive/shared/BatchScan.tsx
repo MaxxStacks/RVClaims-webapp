@@ -141,7 +141,7 @@ export default function BatchScan() {
   // ── Duplicate check against server ────────────────────────────────────────
   const checkDuplicate = useCallback(async (vin: string, localId: string) => {
     try {
-      const data = await apiFetch<any>(`/api/v6/units?search=${encodeURIComponent(vin)}`);
+      const data = await apiFetch<any>(`/api/units?search=${encodeURIComponent(vin)}`);
       const existing: any[] = Array.isArray(data) ? data : data.units || [];
       const match = existing.find((u: any) => u.vin?.toUpperCase() === vin.toUpperCase());
       setScannedUnits(prev =>
@@ -285,7 +285,7 @@ export default function BatchScan() {
     setSubmitting(true);
     setShowConfirm(false);
     try {
-      const result = await apiFetch<SubmitResult>('/api/v6/units/batch-import', {
+      const result = await apiFetch<SubmitResult>('/api/units/batch-import', {
         method: 'POST',
         body: JSON.stringify({
           units: readyUnits.map(u => ({

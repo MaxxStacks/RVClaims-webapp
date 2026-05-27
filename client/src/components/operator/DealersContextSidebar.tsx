@@ -17,14 +17,14 @@ export default function DealersContextSidebar({ activeId }: Props) {
     const p = new URLSearchParams();
     if (filter.reviewStatus) p.set("reviewStatus", filter.reviewStatus);
     if (filter.search) p.set("search", filter.search);
-    apiFetch<any[]>(`/api/v6/dealerships?${p.toString()}`).then(setDealers).catch(() => {});
+    apiFetch<any[]>(`/api/dealerships?${p.toString()}`).then(setDealers).catch(() => {});
   }, [filter.reviewStatus, filter.search]);
 
   return (
     <>
       <div style={{ padding: 16, borderBottom: `1px solid ${LAYOUT.borderLighter}` }}>
         <button
-          onClick={() => navigate("/operator-v6/dealerships/new")}
+          onClick={() => navigate("/operator/admin/dealerships/new")}
           style={{ background: "none", border: 0, color: LAYOUT.navy, fontSize: 12, cursor: "pointer", padding: 0, marginBottom: 12, fontWeight: 600 }}
         >
           + New Dealership
@@ -58,7 +58,7 @@ export default function DealersContextSidebar({ activeId }: Props) {
           return (
             <div
               key={d.id}
-              onClick={() => navigate(`/operator-v6/dealerships/${d.id}`)}
+              onClick={() => navigate(`/operator/admin/dealerships/${d.id}`)}
               style={{
                 padding: `${LAYOUT.sidebarItemPaddingY}px ${LAYOUT.sidebarItemPaddingX}px`,
                 cursor: "pointer",

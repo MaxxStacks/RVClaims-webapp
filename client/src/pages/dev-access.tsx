@@ -2,20 +2,21 @@ import { useState } from "react";
 import { useUser } from "@clerk/clerk-react";
 import logoLight from "@assets/DS360_logo_light.png";
 
+const DEV_DEALER_ID = "dev-dealer-001";
 const PORTAL_TARGETS: Record<string, string> = {
-  operator_admin:       "/operator-v6",
-  operator_staff:       "/operator-v6",
-  dealer_owner:         "/dealer-v6",
-  dealer_staff:         "/dealer-v6",
-  client:               "/client-v6",
-  service_manager:      "/dealer-v6",
-  shop_manager:         "/dealer-v6",
-  parts_manager:        "/dealer-v6",
-  financial_manager:    "/dealer-v6",
-  shop_technician:      "/dealer-v6",
-  on_site_technician:   "/dealer-v6",
-  public_bidder:        "/bidder-v6",
-  consignor:            "/bidder-v6",
+  operator_admin:       "/operator/admin/dashboard",
+  operator_staff:       "/operator/staff/dashboard",
+  dealer_owner:         `/${DEV_DEALER_ID}/owner/dashboard`,
+  dealer_staff:         `/${DEV_DEALER_ID}/staff/dashboard`,
+  client:               `/${DEV_DEALER_ID}/client/dashboard`,
+  service_manager:      `/${DEV_DEALER_ID}/service-manager/dashboard`,
+  shop_manager:         `/${DEV_DEALER_ID}/shop-manager/dashboard`,
+  parts_manager:        `/${DEV_DEALER_ID}/parts-manager/dashboard`,
+  financial_manager:    `/${DEV_DEALER_ID}/financial-manager/dashboard`,
+  shop_technician:      `/${DEV_DEALER_ID}/shop-tech/dashboard`,
+  on_site_technician:   `/${DEV_DEALER_ID}/on-site-tech/dashboard`,
+  public_bidder:        "/marketplace/bidder/dashboard",
+  consignor:            "/marketplace/consignor/dashboard",
 };
 
 interface RoleCard {

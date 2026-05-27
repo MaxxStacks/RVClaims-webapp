@@ -80,7 +80,7 @@ const createUnitWorkflow: WorkflowDefinition = {
       validation: { required: true },
     },
   ],
-  onCompleteEndpoint: "/api/v6/units",
+  onCompleteEndpoint: "/api/units",
 };
 
 const createClientWorkflow: WorkflowDefinition = {
@@ -150,7 +150,7 @@ const createClientWorkflow: WorkflowDefinition = {
       validation: { required: true },
     },
   ],
-  onCompleteEndpoint: "/api/v6/units",
+  onCompleteEndpoint: "/api/units",
 };
 
 const fileClaimWorkflow: WorkflowDefinition = {
@@ -223,7 +223,7 @@ const fileClaimWorkflow: WorkflowDefinition = {
       validation: { required: true },
     },
   ],
-  onCompleteEndpoint: "/api/v6/claims",
+  onCompleteEndpoint: "/api/claims",
 };
 
 const addStaffWorkflow: WorkflowDefinition = {
@@ -276,7 +276,7 @@ const addStaffWorkflow: WorkflowDefinition = {
       validation: { required: true },
     },
   ],
-  onCompleteEndpoint: "/api/v6/users/invite",
+  onCompleteEndpoint: "/api/users/invite",
 };
 
 export const ALL_WORKFLOWS: WorkflowDefinition[] = [
